@@ -49,7 +49,7 @@ export default function Header() {
         <Nav>
           <ul>
             <li onClick={() => navigate('/mycareer')}>내커리어</li>
-            <li onClick={() => navigate('/resume')}>이력관리</li>
+            <li onClick={() => navigate('/history')}>이력관리</li>
             <li onClick={() => navigate('/apply')}>지원관리</li>
             <li onClick={() => navigate('/community')}>커뮤니티</li>
             <li onClick={() => navigate('/login')}>로그인</li>
