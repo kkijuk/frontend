@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import MyPage from "./pages/Mypage";
+import MyCareer from "./pages/Mycareer";
+import Resume from "./pages/Resume";
+import Apply from "./pages/Apply";
+import Community from "./pages/Community";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} /> {/* 메인 */}
+
+          <Route path="/login" element={<Login />} /> {/* 커뮤니티 */}
+          <Route path="/signup" element={<Signup />} /> {/* 커뮤니티 */}
+          <Route path="/mypage" element={<MyPage />} /> {/* 마이 페이지 */}
+
+          <Route path="/mycareer" element={<MyCareer />} /> {/* 내커리어 */}
+          <Route path="/resume" element={<Resume />} /> {/* 이력관리 */}
+          <Route path="/apply" element={<Apply />} /> {/* 지원관리 */}
+          <Route path="/community" element={<Community />} /> {/* 커뮤니티 */}
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
