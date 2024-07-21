@@ -65,11 +65,11 @@ export default function DetailAdd() {
             <Top>
                 <Title>
                     <Label>제목</Label>
-                    <InputBox height="50px" width="500px" placeholderText="활동 제목을 작성하세요" />
+                    <InputBox height="50px" width="460px" placeholderText="활동 제목을 작성하세요" />
                 </Title>
                 <Date>
                     <Label>날짜</Label>
-                    <InputBox height="50px" width="200px" placeholderText="날짜를 선택하세요" />
+                    <InputBox height="50px" width="240px" placeholderText="날짜를 선택하세요" />
                 </Date>
             </Top>
             <Middle>
