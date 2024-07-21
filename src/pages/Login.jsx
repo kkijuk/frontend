@@ -36,9 +36,9 @@ const LoginScreen = styled.div`
     background-color: #3AAF85; /* Updated button color */
     color: white;
     font-family: Pretendard;
-font-size: 17px;
-font-style: normal;
-font-weight: 500;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
 
     cursor: pointer;
     margin-top: 50px; /* Adjust this value to move the button down */
@@ -46,7 +46,7 @@ font-weight: 500;
 
   .button:hover {
     background-color: #66A386;
-  }
+  } 
 
   a {
     color: #3AAF85; /* Updated link color to match the new button color */
