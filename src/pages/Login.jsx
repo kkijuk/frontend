@@ -66,7 +66,7 @@ font-weight: 500;
 
   .checkbox {
     margin-right: 5px; /* Adjust this value to reduce space between the checkbox and the label */
-    padding-right: 0px; /* Optional: Adjust padding to prevent overlap */
+    padding-right: 0px; 
   }
 
   .label {
