@@ -40,7 +40,7 @@ const Tag = styled.div`
     gap: 10px;
     border-radius: 10px;
     background-color: ${(props) => getBackgroundColor(props.category)};
-    color: #000;
+    color: #FFF;
     text-align: center;
     font-family: Pretendard;
     font-size: 12px;
