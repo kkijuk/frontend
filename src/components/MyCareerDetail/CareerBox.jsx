@@ -75,25 +75,7 @@ const Nickname = styled.div`
   margin-bottom: 10px;
 `;
 
-const Triangle = styled.div`
-  position: absolute;
-  bottom: -16px; /* 수정된 부분 */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 21px;
-  height: 21px;
-  display: ${(props) => (props.selected ? 'block' : 'none')};
-  
-  &::before {
-    content: '';
-    display: block;
-    width: 0;
-    height: 0;
-    border-left: 10.5px solid transparent;
-    border-right: 10.5px solid transparent;
-    border-top: 10.5px solid ${(props) => getBackgroundColor(props.category)};
-  }
-`;
+
 
 export default function Careerbox({ startDate, endDate, careerName, category, selected, onClick }) {
   return (
