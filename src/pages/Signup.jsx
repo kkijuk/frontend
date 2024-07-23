@@ -82,8 +82,8 @@ const SignupScreen = styled.div`
    .agreement input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
-    background-color: #e0e0e0; /* 체크박스가 체크되지 않았을 때 회색 */
-    border: 1px solid #e0e0e0; /* 체크박스의 선 색상 */
+    background-color: #e0e0e0; 
+    border: 1px solid #e0e0e0; /
     padding: 9px;
     border-radius: 50%;
     display: inline-block;
@@ -105,8 +105,8 @@ const SignupScreen = styled.div`
   }
 
   .agreement input[type="checkbox"]:checked {
-    background-color: #000; /* 체크박스가 체크되었을 때 검정색 */
-    border: 1px solid #000; /* 체크박스의 선 색상 */
+    background-color: #000; 
+    border: 1px solid #000; 
   }
 
   .agreement label {
@@ -219,9 +219,3 @@ const SignupPage = () => {
 };
 
 export default SignupPage;
-
-
-
-
-
-

@@ -5,19 +5,19 @@ import logo from '../assets/logo.png';
 
 const HeaderWrapper = styled.div`
   width: 100%;
-  border-bottom: 1px solid #ccc; /* Gray line below the header */
+  border-bottom: 1px solid #ccc; 
 `;
 
 const HeaderStyle = styled.div`
-  max-width: 1420px; /* Ensure the content is centered within the wrapper */
+  max-width: 1420px; 
   height: 70px;
   flex-shrink: 0;
   background-color: #FFFFFF;
   display: flex;
   align-items: center;
   font-size: 15px;
-  margin: 0 auto; /* Center the content */
-  padding: 0 20px; /* Add some padding for smaller screens */
+  margin: 0 auto;
+  padding: 0 20px; 
   img {
     margin-left: 200px;
     margin-right: 30px;
@@ -41,7 +41,7 @@ const Nav = styled.nav`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    position: relative; /* Needed for the active underline */
+    position: relative; 
   }
 
   .login-signup {
@@ -53,15 +53,15 @@ const Nav = styled.nav`
   }
 
   .active {
-    color: #333; /* Ensure active tab has the same color */
+    color: #333; 
   }
   .active::after {
     content: '';
     position: absolute;
     width: 100%;
     height: 3px;
-    background-color: #00A652; /* Green underline */
-    bottom: -22px; /* Position it just under the border */
+    background-color: #00A652; 
+    bottom: -22px; 
     left: 0;
   }
 `;
