@@ -5,8 +5,8 @@ import TabMenu from '../components/TabMenu';
 import ViewToggle from '../components/ViewToggle';
 import CalendarView from '../components/CalendarView';
 import ListView from '../components/ListView';
-import AddJobButton from '../components/AddJobButton';
-import AddJobModal from '../components/AddJobModal';
+import AddJobButton from '../components/shared/AddJobButton';
+import AddJobModal from '../components/shared/AddJobModal';
 
 const Container = styled.div`
   max-width: 1200px;
@@ -18,6 +18,8 @@ const Container = styled.div`
 
 const fakeData = [
   { date: '2024-07-11', label: '인턴', details: '[OO기업] 2024 하반기 인턴 채용' },
+  { date: '2024-08-15', label: '신입', details: '[XX기업] 2024 신입사원 모집' },
+  { date: '2024-09-01', label: '경력', details: '[YY기업] 경력직 채용 공고' },
 ];
 
 export default function Apply() {
@@ -38,9 +40,7 @@ export default function Apply() {
       {activeTab === 'schedule' && (
         <>
           <ViewToggle view={view} onToggle={setView} />
-          {view === 'calendar' && (
-            <CalendarView date={date} setDate={setDate} />
-          )}
+          {view === 'calendar' && <CalendarView date={date} setDate={setDate} />}
           {view === 'list' && <ListView data={jobs} />}
         </>
       )}

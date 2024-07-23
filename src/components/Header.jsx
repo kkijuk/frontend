@@ -9,15 +9,15 @@ const HeaderWrapper = styled.div`
 `;
 
 const HeaderStyle = styled.div`
-  width: 1420px;
+  max-width: 1420px; /* Ensure the content is centered within the wrapper */
   height: 70px;
   flex-shrink: 0;
   background-color: #FFFFFF;
   display: flex;
   align-items: center;
   font-size: 15px;
-  margin-left: 300px;
-  margin-right: 10px;
+  margin: 0 auto; /* Center the content */
+  padding: 0 20px; /* Add some padding for smaller screens */
   img {
     margin-left: 200px;
     margin-right: 30px;
@@ -124,3 +124,4 @@ export default function Header() {
     </HeaderWrapper>
   );
 }
+
