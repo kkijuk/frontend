@@ -13,7 +13,7 @@ const LoginScreen = styled.div`
   p {
     color: #707070;
     font-weight: bold;
-    margin-bottom: 30px; /* Adjust this value to increase the space between text and input fields */
+    margin-bottom: 30px;
   }
 
   .textInput {
@@ -33,23 +33,23 @@ const LoginScreen = styled.div`
     margin: 10px 0;
     border: none;
     border-radius: 10px;
-    background-color: #3AAF85; /* Updated button color */
+    background-color: #3AAF85; /
     color: white;
     font-family: Pretendard;
-font-size: 17px;
-font-style: normal;
-font-weight: 500;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
 
     cursor: pointer;
-    margin-top: 50px; /* Adjust this value to move the button down */
+    margin-top: 50px; 
   }
 
   .button:hover {
     background-color: #66A386;
-  }
+  } 
 
   a {
-    color: #3AAF85; /* Updated link color to match the new button color */
+    color: #3AAF85; 
     text-decoration: none;
   }
 
@@ -61,11 +61,11 @@ font-weight: 500;
     display: flex;
     align-items: center;
     margin-top: 0px;
-    margin-left: 20px; /* Adjust this value to move the checkbox to the left */
+    margin-left: 20px; 
   }
 
   .checkbox {
-    margin-right: 5px; /* Adjust this value to reduce space between the checkbox and the label */
+    margin-right: 5px;
     padding-right: 0px; 
   }
 
