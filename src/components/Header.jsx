@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../assets/logo.png';
 
-
 const HeaderWrapper = styled.div`
   width: 100%;
   border-bottom: 1px solid #ccc; /* Gray line below the header */
@@ -17,15 +16,14 @@ const HeaderStyle = styled.div`
   display: flex;
   align-items: center;
   font-size: 15px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 300px;
+  margin-right: 10px;
   img {
     margin-left: 200px;
-    margin-right: 15px;
+    margin-right: 30px;
     cursor: pointer;
   }
 `;
-
 
 const Nav = styled.nav`
   ul {
@@ -44,6 +42,14 @@ const Nav = styled.nav`
     font-weight: 700;
     line-height: normal;
     position: relative; /* Needed for the active underline */
+  }
+
+  .login-signup {
+    color: #707070;
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 3px;
+    margin-right: 7px;
   }
 
   .active {
@@ -102,13 +108,13 @@ export default function Header() {
             </li>
             <li
               onClick={() => navigate('/login')}
-              className={location.pathname === '/login' ? 'active' : ''}
+              className={`login-signup ${location.pathname === '/login' ? 'active' : ''}`}
             >
               로그인
             </li>
             <li
               onClick={() => navigate('/signup')}
-              className={location.pathname === '/signup' ? 'active' : ''}
+              className={`login-signup ${location.pathname === '/signup' ? 'active' : ''}`}
             >
               회원가입
             </li>
