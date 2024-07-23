@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import AbilityTag from './shared/AbilityTag';
+import AbilityTag from '../shared/AbilityTag';
 import EditIcon from '@mui/icons-material/Edit';
 
 
