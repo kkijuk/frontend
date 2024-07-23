@@ -161,7 +161,7 @@ const AddJobModal = ({ onClose, onSave }) => {
                placeholder="YYYY-MM-DD"
                value={endDate}
                onChange={(e) => setEndDate(e.target.value)}
-               onFocus={(e) => (e.target.type = 'datetime-local')}
+               onFocus={(e) => (e.target.type = '')}
                onBlur={(e) => (e.target.type = 'text')}
             />
           </div>
