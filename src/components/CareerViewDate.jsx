@@ -7,9 +7,7 @@ const BackgroundSection = styled.div`
   left: 50%;
   transform: translateX(-50%);
   background-color: #f0f0f0;
-  margin-top: 20px;
   position: relative;
-  padding: 20px 0;
   box-sizing: border-box;
 `;
 
@@ -25,7 +23,6 @@ const ContentSection = styled.div`
 const AdListStyled = styled.div`
   padding: 20px;
   border-radius: 10px;
-  margin-top: 30px;
 `;
 
 const AdDateSection = styled.div`

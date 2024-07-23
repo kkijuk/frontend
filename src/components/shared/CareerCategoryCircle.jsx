@@ -16,7 +16,7 @@ const getBackgroundColor = (category) => {
       case '프로젝트':
         color = '#78D333';
         break;
-      case '아르바이트':
+      case '아르바이트/인턴':
         color = '#FA7C79';
         break;
       case '교육':
