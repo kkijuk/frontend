@@ -34,6 +34,13 @@ const SignupScreen = styled.div`
     cursor: pointer;
     margin: 10px 0;
     height: 45px;
+    color: #FFF;
+text-align: center;
+font-family: Pretendard;
+font-size: 16px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
   }
 
   a {
@@ -73,6 +80,13 @@ const SignupScreen = styled.div`
     width: 150px;
     margin-left: 25px; 
     height: 40px;
+    color: var(--white, #FFF);
+text-align: center;
+font-family: Pretendard;
+font-size: 14px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
   }
 
   .phone-verification, .verification-code {
@@ -100,6 +114,7 @@ const SignupScreen = styled.div`
     width: 150px;
     margin-left: 25px; 
     height: 40px; 
+    font-size: 14px;
   }
 
   .agreement {

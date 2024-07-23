@@ -43,6 +43,9 @@ const Nav = styled.nav`
     line-height: normal;
     position: relative; 
   }
+     li:hover {
+    color: #707070;
+  }
 
   .login-signup {
     color: #707070;
