@@ -1,6 +1,68 @@
-export default function Mycareer() {
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import Title from '../components/Title';
+import CareerView from '../components/CareerView'; //시간순/분류별 선택
+import CareerViewDate from '../components/CareerViewDate'; //시간순 정렬 컴포넌트
+import CareerViewCategory from '../components/CareerViewCategory'; //분류별 정렬 컴포넌트
+import AddJobButton from '../components/shared/AddJobButton'; //버튼추가
+import AddCareerModal from '../components/shared/AddCareerModal'; //모달 내용
+import CareerNameTag from '../components/shared/CareerNameTag'; //분류별 색상
 
-    return (
-        <div>내커리어</div> // 코드 작성 시 삭제해주세요!
-    )
+const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 15px;
+`;
+
+const dummyData = [
+    { startDate: '2023.06.24', endDate: '2024.01.10', careerName: '학원 아르바이트', category: '아르바이트', alias: 'OO학원' },
+    { startDate: '2023.06.24', endDate: '2024.02.10', careerName: 'IT 서비스 개발 동아리', category: '동아리', alias: 'UMC' },
+    { startDate: '2024.02.11', endDate: '2024.04.11', careerName: '데이터분석 공모전', category: '공모전/대회', alias: 'dd 공모전'},
+    { startDate: '2024.04.01', endDate: '2024.06.01', careerName: 'UXUI 소학회', category: '동아리', alias: 'SWUX' },
+];
+
+export default function Mycareer() {
+  const [view, setView] = useState('date');
+  const [showModal, setShowModal] = useState(false);
+  const [careers, setCareers] = useState(dummyData);
+
+  const handleAddJob = (newCareer) => {
+    setCareers([...careers, newCareer]);
+  };
+
+  return (
+    <Container>
+      <Title>내 커리어</Title>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <Title>활동 목록</Title>
+
+
+
+          <CareerView view={view} onToggle={setView} />
+          {view === 'date' && <CareerViewDate data={careers} />}
+          {view === 'category' && <CareerViewCategory data={careers} />}
+
+
+
+      <AddJobButton onClick={() => setShowModal(true)} />
+      {showModal && (
+        <AddCareerModal
+          onClose={() => setShowModal(false)}
+          onSave={handleAddJob}
+        />
+      )}
+    </Container>
+  );
 }
