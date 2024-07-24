@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -13,7 +13,6 @@ import MyCareerDetail from './pages/MycareerDetail';
 import styled from 'styled-components';
 import SignupSuccess from "./pages/SignupSuccess";
 
-
 const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -26,31 +25,39 @@ const MainContent = styled.div`
   flex-direction: column;
 `;
 
-function App() {
+const App = () => {
+  const location = useLocation();
+  const isSignupSuccess = location.pathname === "/signup-success";
+
   return (
-    <Router>
-      <AppContainer>
+    <AppContainer>
       <div className="App">
         <Header />
         <MainContent>
-        <Routes>
-          <Route path="/" element={<Home />} /> {/* 메인 */}
-
-          <Route path="/login" element={<Login />} /> {/* 커뮤니티 */}
-          <Route path="/signup" element={<Signup />} /> {/* 커뮤니티 */}
-          <Route path="/mypage" element={<MyPage />} /> {/* 마이 페이지 */}
-          <Route path="/mycareerdetail" element={<MyCareerDetail />} /> {/* 내커리어 상세*/}
-          <Route path="/mycareer" element={<MyCareer />} /> {/* 내커리어 */}
-          <Route path="/history" element={<History />} /> {/* 이력관리 */}
-          <Route path="/apply" element={<Apply />} /> {/* 지원관리 */}
-          <Route path="/community" element={<Community />} /> {/* 커뮤니티 */}
-        </Routes>
+          <Routes>
+            <Route path="/" element={<Home />} /> {/* 메인 */}
+            <Route path="/login" element={<Login />} /> {/* 로그인 */}
+            <Route path="/signup" element={<Signup />} /> {/* 회원가입 */}
+            <Route path="/signup-success" element={<SignupSuccess />} /> {/* 회원가입 성공 */}
+            <Route path="/mypage" element={<MyPage />} /> {/* 마이 페이지 */}
+            <Route path="/mycareerdetail" element={<MyCareerDetail />} /> {/* 내 커리어 상세 */}
+            <Route path="/mycareer" element={<MyCareer />} /> {/* 내 커리어 */}
+            <Route path="/history" element={<History />} /> {/* 이력 관리 */}
+            <Route path="/apply" element={<Apply />} /> {/* 지원 관리 */}
+            <Route path="/community" element={<Community />} /> {/* 커뮤니티 */}
+          </Routes>
         </MainContent>
-        <Footer />
+        {!isSignupSuccess && <Footer />}
       </div>
-      </AppContainer>
-    </Router>
+    </AppContainer>
   );
 }
 
-export default App;
+const AppWrapper = () => (
+  <Router>
+    <App />
+  </Router>
+);
+
+export default AppWrapper;
+
