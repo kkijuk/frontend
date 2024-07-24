@@ -64,20 +64,19 @@ line-height: normal;
   .email-verification {
     display: flex;
     justify-content: space-between;
-    width: 300px;
-    margin-left: 40px;
-    margin-right: auto;
+    width: 350px;
+    margin-left: 35px;
     height: 55px;
   }
 
   .email-input {
     flex: 2;
-    margin-right: 5px;
+    margin-right: 10px;
   }
 
   .check-button {
     flex: 1;
-    width: 150px;
+    width: 100px;
     margin-left: 25px; 
     height: 40px;
     color: var(--white, #FFF);
@@ -92,8 +91,8 @@ line-height: normal;
   .phone-verification, .verification-code {
    display: flex;
     justify-content: space-between;
-    width: 300px;
-    margin-left: 40px;
+    width: 350px;
+     margin-left: 35px;
     margin-right: auto;
     height: 55px;
   }
