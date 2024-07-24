@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Title from '../components/Title';
-import CareerView from '../components/CareerView'; //시간순/분류별 선택
-import CareerViewDate from '../components/CareerViewDate'; //시간순 정렬 컴포넌트
-import CareerViewCategory from '../components/CareerViewCategory'; //분류별 정렬 컴포넌트
+import Title from '../components/Apply/Title';
+import CareerView from '../components/Mycareer/CareerView'; //시간순/분류별 선택
+import CareerViewDate from '../components/Mycareer/CareerViewDate'; //시간순 정렬 컴포넌트
+import CareerViewCategory from '../components/Mycareer/CareerViewCategory'; //분류별 정렬 컴포넌트
 import AddJobButton from '../components/shared/AddJobButton'; //버튼추가
 import AddCareerModal from '../components/shared/AddCareerModal'; //모달 내용
-import CareerTimeline from '../components/CareerTimeline'; //타임라인 임포트
+import CareerTimeline from '../components/Mycareer/CareerTimeline'; //타임라인 임포트
 
 const Container = styled.div`
   max-width: 1200px;
