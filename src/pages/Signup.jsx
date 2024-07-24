@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import EmailVerification from '../components/EmailVerification';
-import InputField from '../components/InputField';
-import VerificationCode from '../components/VerificationCode';
-import Agreement from '../components/Agreement';
-import Modal from '../components/AgreementModal';
-import SignupForm from '../components/SignupForm';
+import EmailVerification from '../components/User/EmailVerification';
+import InputField from '../components/User/InputField';
+import VerificationCode from '../components/User/VerificationCode';
+import Agreement from '../components/User/Agreement';
+import Modal from '../components/User/AgreementModal';
+import SignupForm from '../components/User/SignupForm';
 
 const SignupPage = () => {
   const [email, setEmail] = useState('');

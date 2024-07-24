@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import CareerCategoryCircle from '../components/shared/CareerCategoryCircle';
+import CareerCategoryCircle from '../shared/CareerCategoryCircle';
 
 const BackgroundSection = styled.div`
   width: 100vw;
@@ -78,7 +78,6 @@ const Label = styled.span`
   flex-shrink: 0;
 `;
 
-
 const TagContainer = styled.div`
     display: flex;
     align-items: center;
@@ -92,38 +91,35 @@ const sortByDate = (data) => {
   });
 };
 
-const groupByCategory = (data) => {
+const groupByDate = (data) => {
   return data.reduce((acc, current) => {
-    const category = current.category;
-    if (!acc[category]) {
-      acc[category] = [];
+    const year = current.startDate.split('.')[0];
+    if (!acc[year]) {
+      acc[year] = [];
     }
-    acc[category].push(current);
+    acc[year].push(current);
     return acc;
   }, {});
 };
 
-const CareerViewCategory = ({ data }) => {
-  const groupedData = groupByCategory(data);
-  for (const category in groupedData) {
-    groupedData[category] = sortByDate(groupedData[category]);
-  }
-
-  const sortedCategories = Object.keys(groupedData);
-
+const CareerViewDate = ({ data }) => {
+  const sortedData = sortByDate(data);
+  const groupedData = groupByDate(sortedData);
+  const sortedYears = Object.keys(groupedData).sort((a, b) => b - a);
   return (
     <BackgroundSection>
       <ContentSection background="#f0f0f0">
         <AdListStyled>
-          {sortedCategories.map((category, index) => (
+          {sortedYears.map((year, index) => (
             <AdDateSection key={index}>
-              <TagContainer>
-                      <CareerCategoryCircle category={category} />
-                      <AdDate>{category}</AdDate>
-              </TagContainer>
-              {groupedData[category].map((ad, idx) => (
+              <AdDate>{year}</AdDate>
+              {groupedData[year].map((ad, idx) => (
                 <AdItem key={idx}>
                   <AdDetails>
+                    <TagContainer>
+                        <CareerCategoryCircle category={ad.category} />
+                        <Label>{ad.category}</Label>
+                      </TagContainer>
                     <AdTitle>{ad.careerName}</AdTitle>
                     <div>{ad.alias}</div>
                     <div>{ad.startDate} - {ad.endDate}</div>
@@ -137,7 +133,8 @@ const CareerViewCategory = ({ data }) => {
     </BackgroundSection>
   );
 };
-export default CareerViewCategory;
+
+export default CareerViewDate;
 
 
 
