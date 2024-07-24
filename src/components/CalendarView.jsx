@@ -13,7 +13,7 @@ const StyledCalendar = styled(Calendar)`
   width: 100%;
   max-width: 800px;
   background: white;
-  border: none;
+  border: 10px;
   border-radius: 15px;
 `;
 

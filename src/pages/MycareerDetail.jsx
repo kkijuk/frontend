@@ -1,27 +1,25 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import Careerbox from '../components/CareerBox';
-import CareerList from '../components/CareerList';
-import DetailAdd from '../components/DetailAdd';
-import AbilityTag from '../components/shared/AbilityTag';
+import Careerbox from '../components/MyCareerDetail/CareerBox';
+import CareerList from '../components/MyCareerDetail/CareerList';
+import DetailAdd from '../components/MyCareerDetail/DetailAdd';
 import CareerNameTag from '../components/shared/CareerNameTag';
 
 const Body = styled.div`
     width: 100vw;
-    height: 950px;
-    border: 1px solid black;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column; /*Top이랑 CareerBox를 세로 방향 정렬*/
     box-sizing: border-box; /* 추가 */
 
+    padding-bottom: 100px;
 `;
 
 const Container1 = styled.div`
     width: 820px;
     height: 299px;
-    border: 1px solid black;
     display: flex;
     flex-direction: column; /* Top과 CareerBox를 세로 방향으로 정렬 */
     justify-content: center; /* 수직 방향으로 중앙 정렬 */
@@ -33,7 +31,6 @@ const Container1 = styled.div`
 const Top = styled.div`
     width: 820px;
     height: 108px;
-    border: 1px solid black;  
     padding-bottom: 5px;
     box-sizing: border-box; /* 추가 */
     padding-top: 35px; /* 추가된 부분 */
@@ -51,9 +48,6 @@ const CareerBoxList = styled.div`
     height: 72px;
     align-items: flex-start;
     gap: 10px;
-    border: 1px solid black;
-    box-sizing: border-box; /* 추가 */
-
     overflow-x: auto; /* 가로 스크롤 추가 */
     overflow-y: hidden; /* 세로 스크롤 숨김 */
     white-space: nowrap; /* 줄바꿈을 하지 않음 */
@@ -63,7 +57,6 @@ const CareerBoxList = styled.div`
 const Box = styled.div` /*Box는 다 빈칸채우기 위한 애들임!*/
     width: 800px;
     height: 30px;
-    border: 1px solid black;
     box-sizing: border-box; /* 추가 */
 
 `;
@@ -71,16 +64,13 @@ const Box = styled.div` /*Box는 다 빈칸채우기 위한 애들임!*/
 const CareerTitle = styled.div`
     width: 800px;
     height: 89px;
-    border: 1px solid black;
-    box-sizing: border-box; /* 추가 */
+    box-sizing: border-box; 
 
 `;
 
 const Container2 = styled.div`
     width: 800px;
     height: 477px;
-    border: 1px solid black; 
-    box-sizing: border-box; /* 추가 */
   
 `;
 
@@ -88,22 +78,22 @@ const Box2 = styled.div`
     width: 800px;
     height: 2px;
 
-    box-sizing: border-box; /* 추가 */
 
 `;
 
 const CareerListBox = styled.div`
     width: 800px;
     height: 475px;
-    border: 1px solid black;
-    box-sizing: border-box; /* 추가 */
+ 
+
+    overflow-y: auto; /* Enables vertical scrolling */
+    overflow-x: hidden;
 
 `
 
 const Container3 = styled.div`
     width: 800px;
     height: 174px;
-    border: 1px solid black;
     display: flex;
     justify-content: center;
     align-items: flex-end; /* 항목을 아래쪽에 정렬 */
@@ -208,6 +198,12 @@ export default function MycareerDetail() {
             date: '2024.04.24', 
             contents: '피그마로 와이어프레임 제작\n상세 내역 상세 내역 상세 내역 ', 
             detailTag: ['Figma 활용 능력','React 활용 능력', 'Spring 활용 능력' ]
+        },
+        { 
+            title: '기획서 작성', 
+            date: '2024.05.26', 
+            contents: '기획서 초안 작성\n어쩌구 저쩌구 어쩌구..', 
+            detailTag: ['Notion 활용 능력','Figma 활용 능력']
         },
         { 
             title: '기획서 작성', 

@@ -10,12 +10,29 @@ import Community from "./pages/Community";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import MyCareerDetail from './pages/MycareerDetail';
+import styled from 'styled-components';
+import SignupSuccess from "./pages/SignupSuccess";
+
+
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+
+const MainContent = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
 
 function App() {
   return (
     <Router>
+      <AppContainer>
       <div className="App">
         <Header />
+        <MainContent>
         <Routes>
           <Route path="/" element={<Home />} /> {/* 메인 */}
 
@@ -29,8 +46,10 @@ function App() {
           <Route path="/apply" element={<Apply />} /> {/* 지원관리 */}
           <Route path="/community" element={<Community />} /> {/* 커뮤니티 */}
         </Routes>
+        </MainContent>
         <Footer />
       </div>
+      </AppContainer>
     </Router>
   );
 }

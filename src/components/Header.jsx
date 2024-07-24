@@ -1,35 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../assets/logo.png';
 
 const HeaderWrapper = styled.div`
   width: 100%;
-  border-bottom: 1px solid #ccc; 
+  border-bottom: 1px solid #ccc;
 `;
 
 const HeaderStyle = styled.div`
-  max-width: 1420px; 
+  max-width: 1420px;
   height: 70px;
   flex-shrink: 0;
   background-color: #FFFFFF;
   display: flex;
   align-items: center;
+  justify-content: center; 
   font-size: 15px;
   margin: 0 auto;
-  padding: 0 20px; 
-  img {
-    margin-left: 200px;
-    margin-right: 30px;
-    cursor: pointer;
-  }
+  padding: 0 20px;
+`;
+
+const NavContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const Nav = styled.nav`
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+
   ul {
     list-style: none;
     display: flex;
     padding: 0;
+    margin: 0;
   }
   li {
     margin-left: 30px;
@@ -41,9 +47,11 @@ const Nav = styled.nav`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    position: relative; 
+    position: relative;
   }
-
+  li:hover {
+    color: #707070;
+  }
   .login-signup {
     color: #707070;
     font-size: 16px;
@@ -51,24 +59,38 @@ const Nav = styled.nav`
     margin-top: 3px;
     margin-right: 7px;
   }
-
   .active {
-    color: #333; 
+    color: #333;
   }
   .active::after {
     content: '';
     position: absolute;
     width: 100%;
     height: 3px;
-    background-color: #00A652; 
-    bottom: -22px; 
+    background-color: #00A652;
+    bottom: -22px;
     left: 0;
   }
+`;
+
+const UserProfileButton = styled.button`
+  width: 45px;
+  height: 45px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 10px;
+  background-color: #F1F1F1;
+  cursor: pointer;
+  margin-left: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isLoggedin, setIsLoggedin] = useState(true);
 
   return (
     <HeaderWrapper>
@@ -83,7 +105,7 @@ export default function Header() {
         <Nav>
           <ul>
             <li
-              onClick={() => navigate('/mycareer')}
+              onClick={() => navigate('/mycareerdetail')}
               className={location.pathname === '/mycareer' ? 'active' : ''}
             >
               내커리어
@@ -124,4 +146,6 @@ export default function Header() {
     </HeaderWrapper>
   );
 }
+
+
 

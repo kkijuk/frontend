@@ -33,20 +33,16 @@ const LoginScreen = styled.div`
     margin: 10px 0;
     border: none;
     border-radius: 10px;
-    background-color: #3AAF85; /
+    background-color: #3AAF85; 
     color: white;
     font-family: Pretendard;
     font-size: 17px;
     font-style: normal;
     font-weight: 500;
-
     cursor: pointer;
     margin-top: 50px; 
   }
 
-  .button:hover {
-    background-color: #66A386;
-  } 
 
   a {
     color: #3AAF85; 
@@ -122,7 +118,7 @@ const LoginPage = () => {
       </div>
       <button className="button" onClick={handleLogin}>로그인</button>
       <div>
-        <a href="/signup">회원가입</a> | <a href="/forgot">아이디/비밀번호 찾기</a>
+        <a href="/signup">회원가입</a> | <a href="/forgot">비밀번호 찾기</a>
       </div>
     </LoginScreen>
   );
