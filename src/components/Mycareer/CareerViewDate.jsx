@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import CareerCategoryCircle from '../components/shared/CareerCategoryCircle';
+import CareerCategoryCircle from '../shared/CareerCategoryCircle';
 
 const BackgroundSection = styled.div`
   width: 100vw;
