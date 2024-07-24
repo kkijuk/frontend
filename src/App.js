@@ -27,7 +27,8 @@ const MainContent = styled.div`
 
 const App = () => {
   const location = useLocation();
-  const isSignupSuccess = location.pathname === "/signup-success";
+  const hideFooterPaths = ["/signup-success", "/login", "/signup"];
+  const hideFooter = hideFooterPaths.includes(location.pathname);
 
   return (
     <AppContainer>
@@ -47,7 +48,7 @@ const App = () => {
             <Route path="/community" element={<Community />} /> {/* 커뮤니티 */}
           </Routes>
         </MainContent>
-        {!isSignupSuccess && <Footer />}
+        {!hideFooter && <Footer />}
       </div>
     </AppContainer>
   );
@@ -60,4 +61,5 @@ const AppWrapper = () => (
 );
 
 export default AppWrapper;
+
 
