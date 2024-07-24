@@ -83,7 +83,7 @@ export default function Header() {
         <Nav>
           <ul>
             <li
-              onClick={() => navigate('/mycareerdetail')}
+              onClick={() => navigate('/mycareer')}
               className={location.pathname === '/mycareer' ? 'active' : ''}
             >
               내커리어

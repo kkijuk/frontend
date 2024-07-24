@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import InputBox from '../shared/InputBox';
 import ReactCalendar from '../shared/Calendar';
 import moment from 'moment';
+import TagBox from '../shared/TagBox';
+
 
 const Box = styled.div`
     height: 384px;
     width: 800px;
     padding: 24px 40px;
-    border: 1px solid black;
-    box-sizing: border-box;
+    
 `;
 
 const Top = styled.div`
@@ -17,16 +18,24 @@ const Top = styled.div`
     justify-content: space-between;
     height: 79px;
     width: 720px;
+    margin-top: 22px;
+    
 `;
 
 const Middle = styled.div`
-    height: 147px;
+    height: 1429x;
     width: 800px;
     margin-top: 18px;
+    
 `;
 
 const Button = styled.div`
-    height: 63px;
+    height: 50px;
+    display: flex;
+    gap: 15px; /* 버튼 사이에 15px 간격 추가 */
+    margin-bottom: 24px;
+    
+    
 `;
 
 const Title = styled.div`
@@ -67,6 +76,56 @@ const Label = styled.div`
     margin-bottom: 8px;
 `;
 
+const Cancel = styled.div`
+    width: 150px;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    border: 1.5px solid var(--sub-rd, #FA7C79);
+    box-sizing: border-box;
+
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--sub-rd, #FA7C79);
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+`
+
+const Save = styled.div`
+    width: 555px;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: var(--main-01, #3AAF85);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #FFF;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+
+`
+
+const Line = styled.div`
+    width : 800px;
+    height: 2px;
+    background: var(--gray-03, #D9D9D9);
+`
+
+
 export default function DetailAdd() {
     const [showCalendar, setShowCalendar] = useState(false);
     const [selectedDate, setSelectedDate] = useState('');
@@ -86,7 +145,7 @@ export default function DetailAdd() {
                 setSelectedDate(formattedStartDate);
             } else {
                 // 두 날짜가 다른 경우
-                setSelectedDate(`${formattedStartDate} - ${formattedEndDate}`);
+                setSelectedDate(`${formattedStartDate} ~ ${formattedEndDate}`);
             }
         } else {
             // 배열이 아닌 경우 또는 날짜가 하나만 선택된 경우
@@ -114,8 +173,12 @@ export default function DetailAdd() {
                 <Label>내용</Label>
                 <InputBox height="100px" width="720px" placeholderText="활동 세부 내용을 작성하세요" />
             </Middle>
+            <TagBox></TagBox>
             <Button>
+                <Cancel>취소</Cancel>
+                <Save>저장</Save>
             </Button>
+            <Line></Line>
         </Box>
     );
 }
