@@ -1,6 +1,64 @@
-export default function Signup() {
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import EmailVerification from '../components/EmailVerification';
+import InputField from '../components/InputField';
+import VerificationCode from '../components/VerificationCode';
+import Agreement from '../components/Agreement';
+import Modal from '../components/AgreementModal';
+import SignupForm from '../components/SignupForm';
 
-    return (
-        <div>회원가입</div> // 코드 작성 시 삭제해주세요!
-    )
-}
+const SignupPage = () => {
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [contact, setContact] = useState('');
+  const [verificationCode, setVerificationCode] = useState('');
+  const [birthdate, setBirthdate] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const [agreements1, setAgreements1] = useState(false);
+  const [agreements2, setAgreements2] = useState(false);
+  const [agreements3, setAgreements3] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleSignup = () => {
+    console.log('회원가입 시도:', email, name, contact, verificationCode, birthdate, password, agreements1, agreements2, agreements3);
+  };
+
+  const handleModal = () => {
+    setShowModal(!showModal);
+  };
+
+  return (
+    <>
+      <SignupForm
+        email={email}
+        setEmail={setEmail}
+        name={name}
+        setName={setName}
+        contact={contact}
+        setContact={setContact}
+        verificationCode={verificationCode}
+        setVerificationCode={setVerificationCode}
+        birthdate={birthdate}
+        setBirthdate={setBirthdate}
+        password={password}
+        setPassword={setPassword}
+        confirmPassword={confirmPassword}
+        setConfirmPassword={setConfirmPassword}
+        agreements1={agreements1}
+        setAgreements1={setAgreements1}
+        agreements2={agreements2}
+        setAgreements2={setAgreements2}
+        agreements3={agreements3}
+        setAgreements3={setAgreements3}
+        handleSignup={handleSignup}
+        handleModal={handleModal}
+      />
+      <Modal show={showModal} handleModal={handleModal} />
+    </>
+  );
+};
+
+export default SignupPage;
