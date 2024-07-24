@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Title from '../components/Title';
-import TabMenu from '../components/TabMenu';
-import ViewToggle from '../components/ViewToggle';
-import CalendarView from '../components/CalendarView';
-import ListView from '../components/ListView';
+import Title from '../components/Apply/Title';
+import TabMenu from '../components/Apply/TabMenu';
+import ViewToggle from '../components/Apply/ViewToggle';
+import CalendarView from '../components/Apply/CalendarView';
+import ListView from '../components/Apply/ListView';
 import AddJobButton from '../components/shared/AddJobButton';
 import AddJobModal from '../components/shared/AddJobModal';
 

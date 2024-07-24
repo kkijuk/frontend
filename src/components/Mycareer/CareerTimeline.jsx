@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import CareerNameTag from '../components/shared/CareerNameTag';
+import CareerNameTag from '../shared/CareerNameTag';
 
 const TimelineBox = styled.div`
     flex-shrink: 0;
