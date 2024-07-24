@@ -90,7 +90,7 @@ const UserProfileButton = styled.button`
 export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isLoggedin, setIsLoggedin] = useState(false);
+  const [isLoggedin, setIsLoggedin] = useState(true);
 
   return (
     <HeaderWrapper>
@@ -167,5 +167,6 @@ export default function Header() {
     </HeaderWrapper>
   );
 }
+
 
 

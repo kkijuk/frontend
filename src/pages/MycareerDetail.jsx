@@ -48,8 +48,6 @@ const CareerBoxList = styled.div`
     height: 72px;
     align-items: flex-start;
     gap: 10px;
-    box-sizing: border-box; /* 추가 */
-
     overflow-x: auto; /* 가로 스크롤 추가 */
     overflow-y: hidden; /* 세로 스크롤 숨김 */
     white-space: nowrap; /* 줄바꿈을 하지 않음 */
@@ -73,7 +71,6 @@ const CareerTitle = styled.div`
 const Container2 = styled.div`
     width: 800px;
     height: 477px;
-    box-sizing: border-box; 
   
 `;
 
@@ -81,15 +78,13 @@ const Box2 = styled.div`
     width: 800px;
     height: 2px;
 
-    box-sizing: border-box; /* 추가 */
 
 `;
 
 const CareerListBox = styled.div`
     width: 800px;
     height: 475px;
-    border: 1px solid black;
-    box-sizing: border-box; /* 추가 */
+ 
 
     overflow-y: auto; /* Enables vertical scrolling */
     overflow-x: hidden;
@@ -99,7 +94,6 @@ const CareerListBox = styled.div`
 const Container3 = styled.div`
     width: 800px;
     height: 174px;
-    border: 1px solid black;
     display: flex;
     justify-content: center;
     align-items: flex-end; /* 항목을 아래쪽에 정렬 */
