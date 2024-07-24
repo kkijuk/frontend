@@ -18,8 +18,8 @@ const Container = styled.div`
 
 const fakeData = [
   { date: '2024-07-11', label: '인턴', details: '[OO기업] 2024 하반기 인턴 채용' },
-  { date: '2024-08-15', label: '신입', details: '[XX기업] 2024 신입사원 모집' },
-  { date: '2024-09-01', label: '경력', details: '[YY기업] 경력직 채용 공고' },
+  { date: '2024-08-15', label: '신입', details: '[OO기업] 2024 신입사원 모집' },
+  { date: '2024-09-01', label: '경력', details: '[OO기업] 경력직 채용 공고' },
 ];
 
 export default function Apply() {

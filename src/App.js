@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import MyCareerDetail from './pages/MycareerDetail';
 import styled from 'styled-components';
+import SignupSuccess from "./pages/SignupSuccess";
 
 
 const AppContainer = styled.div`
