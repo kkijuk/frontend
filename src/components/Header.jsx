@@ -23,7 +23,7 @@ const HeaderStyle = styled.div`
 
 const NavContainer = styled.div`
   display: flex;
-  align-items: center; 
+  align-items: center;
 `;
 
 const Nav = styled.nav`
@@ -106,8 +106,8 @@ export default function Header() {
           <Nav>
             <ul>
               <li
-                onClick={() => navigate('/mycareerdetail')}
-                className={location.pathname === '/mycareerdetail' ? 'active' : ''}
+                onClick={() => navigate('/mycareer')} /* detail페이지로 확인해보려면 밑줄까지 바꿔야됨 */
+                className={location.pathname === '/mycareer' ? 'active' : ''} 
               >
                 내커리어
               </li>
@@ -167,6 +167,5 @@ export default function Header() {
     </HeaderWrapper>
   );
 }
-
 
 
