@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import logo from '../assets/logo.png';
+export default function Login() {
 
+<<<<<<< HEAD
+    return (
+        <div>로그인</div> // 코드 작성 시 삭제해주세요!
+    )
+}
+=======
 const LoginScreen = styled.div`
   max-width: 400px;
   margin: 50px auto;
@@ -125,3 +129,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+>>>>>>> a318f0fd875c3887b51aaa11821afba53848260a

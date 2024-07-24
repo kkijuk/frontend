@@ -41,7 +41,6 @@ function App() {
           <Route path="/mypage" element={<MyPage />} /> {/* 마이 페이지 */}
 
           <Route path="/mycareer" element={<MyCareer />} /> {/* 내커리어 */}
-          <Route path="/mycareerdetail" element={<MyCareerDetail />} /> {/* 내커리어 상세*/}
           <Route path="/history" element={<History />} /> {/* 이력관리 */}
           <Route path="/apply" element={<Apply />} /> {/* 지원관리 */}
           <Route path="/community" element={<Community />} /> {/* 커뮤니티 */}
