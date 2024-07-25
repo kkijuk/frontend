@@ -7,6 +7,8 @@ import CalendarView from '../components/Apply/CalendarView';
 import ListView from '../components/Apply/ListView';
 import AddJobButton from '../components/shared/AddJobButton';
 import AddJobModal from '../components/shared/AddJobModal';
+import WaitingList from '../components/Apply/WaitingList';
+import ApplyList from '../components/Apply/ApplyList';
 
 const Container = styled.div`
   max-width: 1200px;
@@ -14,6 +16,18 @@ const Container = styled.div`
   padding: 20px;
   background-color: white;
   border-radius: 15px;
+`;
+
+const TopSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`;
+
+const StatusContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const fakeData = [
@@ -37,9 +51,15 @@ export default function Apply() {
     <Container>
       <Title>지원관리</Title>
       <TabMenu activeTab={activeTab} onTabClick={setActiveTab} />
+      <TopSection>
+        <StatusContainer>
+          <WaitingList />
+          <ApplyList />
+        </StatusContainer>
+        <ViewToggle view={view} onToggle={setView} />
+      </TopSection>
       {activeTab === 'schedule' && (
         <>
-          <ViewToggle view={view} onToggle={setView} />
           {view === 'calendar' && (
             <>
               <CalendarView date={date} setDate={setDate} />
@@ -60,3 +80,4 @@ export default function Apply() {
     </Container>
   );
 }
+

@@ -29,12 +29,12 @@ const ToggleButton = styled.button`
   align-items: center;
   justify-content: center;
   color: #000;
-text-align: center;
-font-family: Pretendard;
-font-size: 14px;
-font-style: normal;
-font-weight: 500;
-line-height: normal;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
   color: ${props => (props.active ? '#000' : '#666')}; /* 활성화 상태에 따라 글자 색 변경 */
   font-weight: ${props => (props.active ? 'bold' : 'normal')}; /* 활성화 상태에 따라 글자 두께 변경 */
 `;
