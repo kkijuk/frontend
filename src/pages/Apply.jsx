@@ -40,7 +40,12 @@ export default function Apply() {
       {activeTab === 'schedule' && (
         <>
           <ViewToggle view={view} onToggle={setView} />
-          {view === 'calendar' && <CalendarView date={date} setDate={setDate} />}
+          {view === 'calendar' && (
+            <>
+              <CalendarView date={date} setDate={setDate} />
+              <ListView data={jobs} />
+            </>
+          )}
           {view === 'list' && <ListView data={jobs} />}
         </>
       )}
@@ -55,4 +60,3 @@ export default function Apply() {
     </Container>
   );
 }
-
