@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import './history.css'
-import Toggle from '../../components/history(moni)/Toggle'
-import ButtonOptions from '../../components/history(moni)/ButtonOptions'
-import SubNav from '../../components/history(moni)/SubNav'
-// import ContentTitle from '../../components/history(moni)/ContentTitle'
-import Convert from '../../components/history(moni)/Convert'
+import Toggle from '../../components/History/Toggle'
+import ButtonOptions from '../../components/History/ButtonOptions'
+import SubNav from '../../components/History/SubNav'
+// import ContentTitle from '../../components/History/ContentTitle'
+import Convert from '../../components/History/Convert'
 
-export default function Self_Individual() {
+export default function Master() {
     const [isChecked, setIsChecked] = useState(true);
     const handleToggleClick=()=>{
         setIsChecked(!isChecked);
@@ -18,7 +18,7 @@ export default function Self_Individual() {
             <BaseDiv>
                 <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
                     <h1 style={{marginBottom:'36px', display:'inline-block'}}>이력관리</h1>
-                    <Convert></Convert>  
+                    <Convert></Convert>
                 </div>
                 <SubNav></SubNav>
                 <div style={{width:'820px', position:'relative', display:'inline-block'}}>

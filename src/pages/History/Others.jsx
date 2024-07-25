@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import './history.css'
-import Toggle from '../../components/history(moni)/Toggle'
-import ButtonOptions from '../../components/history(moni)/ButtonOptions'
-import SubNav from '../../components/history(moni)/SubNav'
-// import ContentTitle from '../../components/history(moni)/ContentTitle'
+import Toggle from '../../components/History/Toggle'
+import ButtonOptions from '../../components/History/ButtonOptions'
+import SubNav from '../../components/History/SubNav'
+// import ContentTitle from '../../components/History/ContentTitle'
 
-export default function Self_Individual_Others() {
+export default function Others() {
     const [isChecked, setIsChecked] = useState(true);
     const handleToggleClick=()=>{
         setIsChecked(!isChecked);

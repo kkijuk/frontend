@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import './history.css'
-import Toggle from '../../components/history(moni)/Toggle'
-import ButtonOptions from '../../components/history(moni)/ButtonOptions'
-import SubNav from '../../components/history(moni)/SubNav'
+import Toggle from '../../components/History/Toggle'
+import ButtonOptions from '../../components/History/ButtonOptions'
+import SubNav from '../../components/History/SubNav'
 // import ContentTitle from '../../components/history(moni)/ContentTitle'
-import GeneralButton from '../../components/shared/buttons/GeneralButton'
+// import GeneralButton from '../../components/shared/buttons/GeneralButton'
 
-export default function Rewrite() {
+export default function OthersRewrite() {
     const [isChecked, setIsChecked] = useState(true);
     const handleToggleClick=()=>{
         setIsChecked(!isChecked);
@@ -36,7 +36,8 @@ export default function Rewrite() {
                 </form>
                 <AddButton>+</AddButton>
                 <div>
-                    <GeneralButton type="delete" text="삭제" width="160px"></GeneralButton>
+                    {/* <GeneralButton type="delete" text="삭제" width="160px"></GeneralButton> */}
+                    <Button></Button>
                 </div>
             </BaseDiv>
         </BackgroundDiv>
@@ -136,4 +137,10 @@ const AddButton = styled.button`
     font-size: 30px;
     cursor:pointer;
     
+`
+const Button = styled.button`
+    height: 50px;
+    border:none;
+    border-radius: 10px; 
+    cursor:pointer;
 `
