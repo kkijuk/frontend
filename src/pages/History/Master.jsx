@@ -1,17 +1,58 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import './history.css'
+import SubNav from '../../components/History/SubNav'
+import Convert from '../../components/History/Convert'
 import Toggle from '../../components/History/Toggle'
 import ButtonOptions from '../../components/History/ButtonOptions'
-import SubNav from '../../components/History/SubNav'
-// import ContentTitle from '../../components/History/ContentTitle'
-import Convert from '../../components/History/Convert'
 
 export default function Master() {
     const [isChecked, setIsChecked] = useState(true);
+    const navigate = useNavigate();
+
     const handleToggleClick=()=>{
         setIsChecked(!isChecked);
+        navigate('/history/list')
     }
+
+    const handleSButtonClick=(id)=>{
+        navigate(`/history/${id}`)
+    }
+
+    const dummyData=[
+        {
+            "id": 100, "title":"UMC"
+        },
+        {
+            "id": 101, "title":"현대"
+        },
+        {
+            "id": 102, "title":"카카오"
+        }
+    ]
+
+    const dummyData2 = [
+        {
+            "id": 1,
+            "oneLiner": "한줄소개",
+            "question1":{
+                "subTitle": "소제목",
+                "content": "아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요."
+            },
+            "question2":{
+                "subTitle": "소제목",
+                "content": "아직 지원동기 및 포부를 작성하지 않았어요."
+            },
+            "question3":{
+                "subTitle": "소제목",
+                "content": "아직 지원동기 및 포부를 작성하지 않았어요."
+            },
+            "created_at": "2024-07-23T15:47:38.011066",
+            "updated_at": "2024-07-23 15:47"
+        }
+    ]
+    const content = dummyData2[0];
 
     return (
         <BackgroundDiv>
@@ -22,9 +63,12 @@ export default function Master() {
                 </div>
                 <SubNav></SubNav>
                 <div style={{width:'820px', position:'relative', display:'inline-block'}}>
-                    <SButton type="button">Master</SButton>
-                    <SButton type="button">UMC</SButton>
-                    <SButton type="button">새로</SButton>
+                    <SButton type="button">Master</SButton> 
+                    {dummyData.map(resume=>(
+                        <SButton type = "button" key={resume.id} onClick={()=>handleSButtonClick(resume.id)}>
+                            {resume.title}
+                        </SButton>
+                    ))}
                     <div style={{position:'absolute', right:0, display:'inline-block'}}>
                         <Toggle
                             checked={isChecked}
@@ -33,18 +77,15 @@ export default function Master() {
                     </div>
                 </div>
                 <ContentTitle>
-                    <h1 style={{display:'inline-block'}}>Master</h1>
-                    <p className='lastUpdated' style={{display:'inline-block', position:'absolute', top:'10px', right:0}}>마지막 수정일시: 2022-02-02 00:00</p>
+                    <h1 style={{display:'inline-block'}}>{content.oneLiner}</h1>
+                    <p className='lastUpdated' style={{display:'inline-block', position:'absolute', top:'10px', right:0}}>마지막 수정일시: {content.updated_at}</p>
                 </ContentTitle>
-                <form>
-                    <InputTitle placeholder='한줄소개' style={{height:'50px', marginBottom:'12px'}}></InputTitle>
-                    <InputTitle placeholder='자기소개를 작성하세요' style={{height:'150px',marginBottom:'35px'}}></InputTitle>
-                    <h3>지원동기</h3>
-                    <InputTitle placeholder='지원동기를 작성하세요' style={{height:'150px',marginBottom:'35px'}}></InputTitle>
-                    <h3>장단점</h3>
-                    <InputTitle placeholder='장단점을 작성하세요' style={{height:'150px',marginBottom:'35px'}}></InputTitle>
-
-                </form>
+                <h3>1. 지원동기 및 포부 [{content.question1.subTitle}]</h3>
+                <ContentBox>{content.question1.content}</ContentBox>
+                <h3>2. 장단점 [{content.question2.subTitle}]</h3>
+                <ContentBox>{content.question2.content}</ContentBox>
+                <h3>3. 직무적합성 [{content.question3.subTitle}]</h3>
+                <ContentBox>{content.question3.content}</ContentBox>
                 <ButtonOptions></ButtonOptions>
             </BaseDiv>
         </BackgroundDiv>
@@ -96,17 +137,15 @@ const ContentTitle=styled.div`
     margin-bottom:33px;
 `
 
-const InputTitle = styled.input`
-    width: 820px;
-    flex-shrink: 0;
-    border:none;
-    border-radius: 10px;
-    background: var(--gray-06, #F5F5F5);    
-    padding-left: 20px;
+const ContentBox = styled.div`
     color: var(--gray-02, #707070);
-    font-family:Regular;
-    font-size:16px;
-    font-weight:400;
-    line-height:normal;
+    font-family: Regular;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom:40px;
 `
+
+
 

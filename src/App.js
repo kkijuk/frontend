@@ -52,9 +52,9 @@ function App() {
           <Route path="/mycareer" element={<MyCareer />} /> {/* 내커리어 */}
           <Route path="/history" element={<History />} /> {/* 이력관리 */}
           <Route path="/history/master" element={<Master/>}/>
-          <Route path="/history/others" element={<Others/>}/>
-          <Route path="/history/master_rewrite" element={<MasterRewrite/>}/>
-          <Route path="/history/others_rewrite" element={<OthersRewrite/>}/>
+          <Route path="/history/:id" element={<Others/>}/>
+          <Route path="/history/master/rewrite" element={<MasterRewrite/>}/>
+          <Route path="/history/:id/rewrite" element={<OthersRewrite/>}/>
           <Route path="/history/list" element={<List/>}/>
           <Route path="/history/select" element={<Select/>}/>
           <Route path="/history/add_apply" element={<AddApply/>}/>

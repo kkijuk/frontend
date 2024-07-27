@@ -13,7 +13,7 @@ const SubNav =({category})=>{
                 active={location.pathname === '/history'}>이력서</NavItems>
             <NavItems 
                 onClick={()=>navigate('/history/master')} 
-                active={location.pathname === '/history/master'}>자기소개서</NavItems>
+                active={location.pathname === '/history/list'}>자기소개서</NavItems>
             <NavItems 
                 onClick={()=>navigate('/history/portfolio')} 
                 active={location.pathname === '/history/portfolio'}>포트폴리오</NavItems>
