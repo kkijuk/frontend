@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Title from '../components/Apply/Title';
 import TabMenu from '../components/Apply/TabMenu';
 import ViewToggle from '../components/Apply/ViewToggle';
 import CalendarView from '../components/Apply/CalendarView';
@@ -11,11 +11,21 @@ import WaitingList from '../components/Apply/WaitingList';
 import ApplyList from '../components/Apply/ApplyList';
 
 const Container = styled.div`
-  max-width: 1200px;
+  idth: 100%;
+  max-width: 850px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 24px 40px;
   background-color: white;
   border-radius: 15px;
+`;
+
+const Title = styled.h1`
+  color: var(--black, #000);
+  font-family: Pretendard;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  margin-left: 18px;
 `;
 
 const TopSection = styled.div`
@@ -31,9 +41,9 @@ const StatusContainer = styled.div`
 `;
 
 const fakeData = [
-  { date: '2024-07-11', label: '인턴', details: '[OO기업] 2024 하반기 인턴 채용' },
-  { date: '2024-08-15', label: '신입', details: '[OO기업] 2024 신입사원 모집' },
-  { date: '2024-09-01', label: '경력', details: '[OO기업] 경력직 채용 공고' },
+  { id: 1, date: '2024-07-11', label: '인턴', details: '[OO기업] 2024 하반기 인턴 채용' },
+  { id: 2, date: '2024-08-15', label: '신입', details: '[OO기업] 2024 신입사원 모집' },
+  { id: 3, date: '2024-09-01', label: '경력', details: '[OO기업] 경력직 채용 공고' },
 ];
 
 export default function Apply() {
@@ -42,9 +52,14 @@ export default function Apply() {
   const [date, setDate] = useState(new Date());
   const [showModal, setShowModal] = useState(false);
   const [jobs, setJobs] = useState(fakeData);
+  const navigate = useNavigate();
 
   const handleAddJob = (newJob) => {
     setJobs([...jobs, newJob]);
+  };
+
+  const handleJobClick = (job) => {
+    navigate(`/apply-detail/${job.id}`, { state: { job } });
   };
 
   return (
@@ -63,13 +78,13 @@ export default function Apply() {
           {view === 'calendar' && (
             <>
               <CalendarView date={date} setDate={setDate} />
-              <ListView data={jobs} />
+              <ListView data={jobs} onJobClick={handleJobClick} />
             </>
           )}
-          {view === 'list' && <ListView data={jobs} />}
+          {view === 'list' && <ListView data={jobs} onJobClick={handleJobClick} />}
         </>
       )}
-      {activeTab === 'status' && <ListView data={jobs} />}
+      {activeTab === 'status' && <ListView data={jobs} onJobClick={handleJobClick} />}
       <AddJobButton onClick={() => setShowModal(true)} />
       {showModal && (
         <AddJobModal
@@ -80,4 +95,5 @@ export default function Apply() {
     </Container>
   );
 }
+
 

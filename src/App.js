@@ -12,6 +12,8 @@ import Signup from "./pages/Signup";
 import MyCareerDetail from './pages/MycareerDetail';
 import styled from 'styled-components';
 import SignupSuccess from "./pages/SignupSuccess";
+import ApplyDetail from './pages/ApplyDetail';
+
 
 const AppContainer = styled.div`
   display: flex;
@@ -46,6 +48,7 @@ const App = () => {
             <Route path="/history" element={<History />} /> {/* 이력 관리 */}
             <Route path="/apply" element={<Apply />} /> {/* 지원 관리 */}
             <Route path="/community" element={<Community />} /> {/* 커뮤니티 */}
+            <Route path="/apply-detail/:id" element={<ApplyDetail />} />
           </Routes>
         </MainContent>
         {!hideFooter && <Footer />}

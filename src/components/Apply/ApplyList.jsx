@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const StatusItem = styled.div`
   background-color: #F5F5F5;
-  border-radius: 15px;
+  border-radius: 12px;
   padding: 9px;
   margin-right: 10px;
   display: flex;
