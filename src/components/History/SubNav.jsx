@@ -6,17 +6,20 @@ const SubNav =({category})=>{
     const navigate = useNavigate();
     const location = useLocation();
 
+    const isResumeActive = location.pathname === '/history';
+    const isPortfolioActive = location.pathname.startWith === '/history/portfolio';
+
     return(
         <Nav>
             <NavItems 
                 onClick={()=>navigate('/history')} 
-                active={location.pathname === '/history'}>이력서</NavItems>
+                active={isResumeActive}>이력서</NavItems>
             <NavItems 
                 onClick={()=>navigate('/history/master')} 
-                active={location.pathname === '/history/list'}>자기소개서</NavItems>
+                active={!isResumeActive && !isPortfolioActive}>자기소개서</NavItems>
             <NavItems 
                 onClick={()=>navigate('/history/portfolio')} 
-                active={location.pathname === '/history/portfolio'}>포트폴리오</NavItems>
+                active={isPortfolioActive}>포트폴리오</NavItems>
             <Linear/>
         </Nav>
     )

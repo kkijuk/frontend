@@ -18,10 +18,11 @@ const ModalContent = styled.div`
   padding: 20px;
   border-radius: 10px;
   width: 820px;
-height: 620px;
-flex-shrink: 0;
+  height: 620px;
+  flex-shrink: 0;
   max-width: 90%;
   position: relative;
+  z-index:1000;
 `;
 
 const CloseButton = styled.button`

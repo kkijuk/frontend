@@ -1,26 +1,81 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import './history.css'
+import SubNav from '../../components/History/SubNav'
+import Convert from '../../components/History/Convert'
 import Toggle from '../../components/History/Toggle'
 import ButtonOptions from '../../components/History/ButtonOptions'
-import SubNav from '../../components/History/SubNav'
-// import ContentTitle from '../../components/History/ContentTitle'
 
 export default function Others() {
+    const navigate = useNavigate();
     const [isChecked, setIsChecked] = useState(true);
+
     const handleToggleClick=()=>{
         setIsChecked(!isChecked);
+        navigate('/history/list/3');
     }
+
+    const handleMasterClick=()=>{
+        navigate('/history/master')
+    }
+
+    const handleSButtonClick=(id)=>{
+        navigate(`/history/${id}`)
+    }
+
+    const dummyData=[
+        {
+            "id": 100, "title":"UMC"
+        },
+        {
+            "id": 101, "title":"현대"
+        },
+        {
+            "id": 102, "title":"카카오"
+        }
+    ]
+    const dummyData2 = [
+        {
+            "id": 100,
+            "oneLiner": "UMC 7기 지원",
+            "questions":[
+                {
+                    "subTitle": "첫 번째 질문",
+                    "content": "아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요."
+                },
+                {
+                    "subTitle": "두 번째 질문",
+                    "content": "아직 지원동기 및 포부를 작성하지 않았어요."
+                },
+                {
+                    "subTitle": "세 번째 질문",
+                    "content": "아직 지원동기 및 포부를 작성하지 않았어요."
+                }
+            ],
+            "complete":0,
+            "career_tag":["동아리","서비스 기획"],
+            "deadline": "2024-07-23T15:47:38.011066",
+            "updated_at": "2024-07-23 15:47"
+        }
+    ]
+    const resume = dummyData2[0];
 
     return (
         <BackgroundDiv>
             <BaseDiv>
-                <h1 style={{marginBottom:'36px'}}>이력관리</h1>
+                <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                    <h1 style={{marginBottom:'36px', display:'inline-block'}}>이력관리</h1>
+                    <Convert></Convert>
+                </div>
                 <SubNav></SubNav>
                 <div style={{width:'820px', position:'relative', display:'inline-block'}}>
-                    <SButton type="button">Master</SButton>
-                    <SButton type="button">UMC</SButton>
-                    <SButton type="button">새로</SButton>
+                    <SButton onClick={handleMasterClick} type="button">Master</SButton> 
+                    {dummyData.map(resume=>(
+                        <SButton type = "button" key={resume.id} onClick={()=>handleSButtonClick(resume.id)}>
+                            {resume.title}
+                        </SButton>
+                    ))}
                     <div style={{position:'absolute', right:0, display:'inline-block'}}>
                         <Toggle
                             checked={isChecked}
@@ -29,42 +84,27 @@ export default function Others() {
                     </div>
                 </div>
                 <ContentTitle>
-                    <h1 style={{position:'relative',display:'inline-block', marginRight:'12px'}}>UMC 7기</h1>
-                    {/* 여기에 태그 불러오기 */}
-                    <Tag style={{color:'white'}}>작성중</Tag>
-                    <Tag style={{background: '#F5F5F5', color:'#3AAF85'}}>동아리</Tag>
-                    <Tag style={{background: '#F5F5F5', color:'#3AAF85'}}>서비스기획</Tag>
+                    <h1 style={{position:'relative',display:'inline-block', marginRight:'12px'}}>{resume.oneLiner}</h1>
+                    <Tag style={{color:'white'}}>{resume.complete ? "작성 완료" : "작성 중"}</Tag>
+                    {resume.career_tag.map(tag=>(
+                        <Tag style={{background: '#F5F5F5', color:'#3AAF85'}}>{tag}</Tag>
+                    ))}
+
                     <div style={{display:'inline-block',position:'absolute',right:0}}>
-                        <p className='lastUpdated' style={{color:'red', marginBottom:'8px'}}>공고 마감 일시 : 2024-07-17 00:00 (D-7)</p>
-                        <p className='lastUpdated' style={{marginTop:0}}>마지막 수정일시: 2022-02-02 00:00</p>                  
+                        <p className='lastUpdated' style={{color:'red', marginBottom:'8px'}}>공고 마감 일시 : {resume.deadline}</p>
+                        <p className='lastUpdated' style={{marginTop:0}}>마지막 수정일시: {resume.updated_at}</p>                  
                     </div>
-                    
-                    
                 </ContentTitle>
-                
                 <div>
-                    {/* ListItem 컴포넌트 사용 예정 */}
-                    <div>
-                        <h3>1. 첫 번째질문</h3>
+                    {resume.questions.map(question =>(
+                        <div>
+                        <h3>{question.subTitle}</h3>
                         <div style={{height:'100px'}}>
-                            <p>저는~입니다.</p>   
+                            <p>{question.content}</p>   
                         </div>
 
                     </div>
-                    <div>
-                        <h3>2. 두 번째질문</h3>
-                        <div style={{height:'100px'}}>
-                            <p>저는~입니다.</p>   
-                        </div>
-
-                    </div>
-                    <div>
-                        <h3>3. 세 번째 질문</h3>
-                        <div style={{height:'100px'}}>
-                            <p>저는~입니다.</p>   
-                        </div>
-
-                    </div>
+                    ))}
                 </div>
                 <ButtonOptions></ButtonOptions>
             </BaseDiv>

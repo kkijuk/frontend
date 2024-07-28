@@ -17,8 +17,10 @@ import Master from "./pages/History/Master";
 import Others from "./pages/History/Others"
 import MasterRewrite from "./pages/History/MasterRewrite"
 import OthersRewrite from "./pages/History/OthersRewrite"
+import ListHeader from "./pages/History/ListHeader"
 import List from "./pages/History/List"
-import Select from "./pages/History/Select"
+import SelectHeader from "./pages/History/SelectHeader"
+import Select from './pages/History/Select';
 import AddApply from "./pages/History/AddApply"
 import Portfolio from "./pages/History/Portfolio"
 
@@ -55,8 +57,12 @@ function App() {
           <Route path="/history/:id" element={<Others/>}/>
           <Route path="/history/master/rewrite" element={<MasterRewrite/>}/>
           <Route path="/history/:id/rewrite" element={<OthersRewrite/>}/>
-          <Route path="/history/list" element={<List/>}/>
-          <Route path="/history/select" element={<Select/>}/>
+          <Route path="/history/list" element={<ListHeader/>}>
+            <Route path=":state" element={<List/>}/>
+          </Route>
+          <Route path="/history/select" element={<SelectHeader/>}>
+            <Route path=":id" element={<Select/>}/>
+          </Route>
           <Route path="/history/add_apply" element={<AddApply/>}/>
           <Route path="/history/portfolio" element={<Portfolio/>}/>
           <Route path="/apply" element={<Apply />} /> {/* 지원관리 */}

@@ -8,12 +8,12 @@ import Toggle from '../../components/History/Toggle'
 import ButtonOptions from '../../components/History/ButtonOptions'
 
 export default function Master() {
-    const [isChecked, setIsChecked] = useState(true);
     const navigate = useNavigate();
+    const [isChecked, setIsChecked] = useState(true);
 
     const handleToggleClick=()=>{
         setIsChecked(!isChecked);
-        navigate('/history/list')
+        navigate('/history/list/3');
     }
 
     const handleSButtonClick=(id)=>{
@@ -36,18 +36,10 @@ export default function Master() {
         {
             "id": 1,
             "oneLiner": "한줄소개",
-            "question1":{
-                "subTitle": "소제목",
-                "content": "아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요."
-            },
-            "question2":{
-                "subTitle": "소제목",
-                "content": "아직 지원동기 및 포부를 작성하지 않았어요."
-            },
-            "question3":{
-                "subTitle": "소제목",
-                "content": "아직 지원동기 및 포부를 작성하지 않았어요."
-            },
+            "introduce": "자기소개입니다.",
+            "reason_for_applying":"지원동기입니다.",
+            "strengths_and_weaknesses":"장단점입니다.",
+            "job_fit":"직무적합성입니다.",
             "created_at": "2024-07-23T15:47:38.011066",
             "updated_at": "2024-07-23 15:47"
         }
@@ -77,15 +69,26 @@ export default function Master() {
                     </div>
                 </div>
                 <ContentTitle>
-                    <h1 style={{display:'inline-block'}}>{content.oneLiner}</h1>
+                    <h1 style={{display:'inline-block'}}>Master</h1>
                     <p className='lastUpdated' style={{display:'inline-block', position:'absolute', top:'10px', right:0}}>마지막 수정일시: {content.updated_at}</p>
                 </ContentTitle>
-                <h3>1. 지원동기 및 포부 [{content.question1.subTitle}]</h3>
+                <ContentBox>{content.oneLiner}</ContentBox>    
+                <ContentBox>{content.introduce}</ContentBox>  
+                <h2>지원동기</h2>
+                <ContentBox>{content.reason_for_applying}</ContentBox>  
+                <h2>장단점</h2>
+                <ContentBox>{content.strengths_and_weaknesses}</ContentBox>  
+                <h2>직무적합성</h2>
+                <ContentBox>{content.job_fit}</ContentBox>  
+
+
+                {/*초안*/}
+                {/* <h3>1. 지원동기 및 포부 [{content.question1.subTitle}]</h3>
                 <ContentBox>{content.question1.content}</ContentBox>
                 <h3>2. 장단점 [{content.question2.subTitle}]</h3>
                 <ContentBox>{content.question2.content}</ContentBox>
                 <h3>3. 직무적합성 [{content.question3.subTitle}]</h3>
-                <ContentBox>{content.question3.content}</ContentBox>
+                <ContentBox>{content.question3.content}</ContentBox> */}
                 <ButtonOptions></ButtonOptions>
             </BaseDiv>
         </BackgroundDiv>
@@ -144,7 +147,7 @@ const ContentBox = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    margin-bottom:40px;
+    margin-bottom:60px;
 `
 
 

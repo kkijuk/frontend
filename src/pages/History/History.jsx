@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import './history.css'
+// import './history.css'
 import SubNav from '../../components/History/SubNav'
 
 export default function History(){
