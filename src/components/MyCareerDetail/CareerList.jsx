@@ -1,7 +1,8 @@
-import React from 'react';
+import React,{useState} from 'react';
 import styled from 'styled-components';
 import AbilityTag from '../shared/AbilityTag';
 import EditIcon from '@mui/icons-material/Edit';
+import DetailAdd from './DetailAdd';
 
 
 const Box = styled.div`
@@ -68,6 +69,13 @@ const EditIconStyled = styled(EditIcon)`
 `;
 
 export default function CareerList({title, date, contents, detailTag}) {
+    const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
+
+    const handleEditClick = () => {
+        setIsDetailAddVisible(!isDetailAddVisible);
+    };
+
+
     return (
         <div>
             <Box>
@@ -81,9 +89,11 @@ export default function CareerList({title, date, contents, detailTag}) {
                     ))}
                 </Contents>
                 <AbilityTag tags={detailTag} />
-                <EditIconStyled titleAccess="Edit" />
+                <EditIconStyled titleAccess="Edit" onClick={handleEditClick} />
 
             </Box>
+            {isDetailAddVisible && <DetailAdd />}
+
             <Line></Line>
         </div>
     );
