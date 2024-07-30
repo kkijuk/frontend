@@ -41,6 +41,8 @@ const ModalTitle = styled.h2`
   margin-bottom: 10px;
   font-size: 1.5em;
   margin-left: 105px;
+  font-family: 'Bold';
+  font-size: 24px;
 `;
 
 const Divider = styled.div`
@@ -57,6 +59,8 @@ const Label = styled.label`
   font-weight: bold;
   margin-left: 100px;
   margin-top: 20px;
+  font-family: 'ExtraLight';
+  font-size: 18px;
 `;
 
 const LabelStart = styled.label`
@@ -65,6 +69,8 @@ const LabelStart = styled.label`
   font-weight: bold;
   margin-left: 90px;
   margin-top: 10px;
+  font-family: 'ExtraLight';
+  font-size: 18px;
 `;
 
 const LabelEnd = styled.label`
@@ -73,6 +79,8 @@ const LabelEnd = styled.label`
   font-weight: bold;
   margin-right: 70px;
   margin-top: 10px;
+  font-family: 'ExtraLight';
+  font-size: 18px;
 `;
 
 const InputWrapper = styled.div`
@@ -91,6 +99,8 @@ const Input = styled.input`
   font-size: 1em;
   margin-top: 10px;
   height: 25px;
+  font-family: 'ExtraLight';
+  font-size: 16px;
 `;
 
 const InputDateStart = styled.input`
@@ -104,6 +114,8 @@ const InputDateStart = styled.input`
   background: #F5F5F5;
   font-size: 1em;
   margin-top: -10px;
+  font-family: 'ExtraLight';
+  font-size: 16px;
 `;
 
 const InputDateEnd = styled.input`
@@ -117,6 +129,8 @@ const InputDateEnd = styled.input`
   background: #F5F5F5;
   font-size: 1em;
   margin-top: -10px;
+  font-family: 'ExtraLight';
+  font-size: 16px;
 `;
 
 const InputWrapperStart = styled.div`
@@ -154,6 +168,8 @@ const SaveButton = styled.button`
   margin-top: 10px;
   margin: 20px auto 0 auto;
   margin-left: 105px;
+  font-family: 'ExtraLight';
+  font-size: 18px;
   &:hover {
     background-color: #35a576;
   }
@@ -165,6 +181,8 @@ const LabelTag = styled.label`
   font-weight: bold;
   margin-left: 96px;
   margin-top: 5px;
+  font-family: 'ExtraLight';
+  font-size: 18px;
 `;
 
 const LabelLink = styled.label`
@@ -173,6 +191,8 @@ const LabelLink = styled.label`
   font-weight: bold;
   margin-left: 95px;
   margin-top: 25px;
+  font-family: 'ExtraLight';
+  font-size: 18px;
 `;
 
 const InputWrapperTag = styled.div`
@@ -183,6 +203,8 @@ const InputWrapperTag = styled.div`
 const InputWrapperLink = styled.div`
   margin-top: 10px;
   margin-left: 90px;
+  font-family: 'ExtraLight';
+  font-size: 16px;
 `;
 
 const TagBoxWrapper = styled.div`
@@ -194,6 +216,8 @@ const ErrorMessage = styled.p`
   font-size: 0.9em;
   margin-top: 10px;
   text-align: center;
+  font-family: 'ExtraLight';
+  font-size: 16px;
 `;
 
 const FieldWrapper = styled.div`
