@@ -9,9 +9,10 @@ import AddJobButton from '../components/shared/AddJobButton';
 import AddJobModal from '../components/shared/AddJobModal';
 import WaitingList from '../components/Apply/WaitingList';
 import ApplyList from '../components/Apply/ApplyList';
+import ApplyStatus from '../components/Apply/ApplyStatus'; 
 
 const Container = styled.div`
-  idth: 100%;
+  width: 100%;
   max-width: 850px;
   margin: 0 auto;
   padding: 24px 40px;
@@ -66,15 +67,15 @@ export default function Apply() {
     <Container>
       <Title>지원관리</Title>
       <TabMenu activeTab={activeTab} onTabClick={setActiveTab} />
-      <TopSection>
-        <StatusContainer>
-          <WaitingList />
-          <ApplyList />
-        </StatusContainer>
-        <ViewToggle view={view} onToggle={setView} />
-      </TopSection>
       {activeTab === 'schedule' && (
         <>
+          <TopSection>
+            <StatusContainer>
+              <WaitingList count={jobs.length} />
+              <ApplyList count={jobs.length} />
+            </StatusContainer>
+            <ViewToggle view={view} onToggle={setView} />
+          </TopSection>
           {view === 'calendar' && (
             <>
               <CalendarView date={date} setDate={setDate} />
@@ -84,7 +85,14 @@ export default function Apply() {
           {view === 'list' && <ListView data={jobs} onJobClick={handleJobClick} />}
         </>
       )}
-      {activeTab === 'status' && <ListView data={jobs} onJobClick={handleJobClick} />}
+      {activeTab === 'status' && (
+        <TopSection>
+          <StatusContainer>
+            {/* 지원 현황에서는 아무것도 보이지 않음 */}
+          </StatusContainer>
+          <ApplyStatus /> 
+        </TopSection>
+      )}
       <AddJobButton onClick={() => setShowModal(true)} />
       {showModal && (
         <AddJobModal
@@ -95,5 +103,7 @@ export default function Apply() {
     </Container>
   );
 }
+
+
 
 
