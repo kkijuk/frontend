@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import moment from 'moment';
@@ -7,7 +7,7 @@ import 'react-calendar/dist/Calendar.css';
 const CalendarWrapper = styled.div`
   .react-calendar {
     width: 281px;
-    height: 239px;
+    height: 263px;
     flex-shrink: 0;
     border-radius: 10px;
     border: 1px solid var(--gray-03, #D9D9D9);
@@ -28,10 +28,9 @@ const CalendarWrapper = styled.div`
     height: 20px;
   }
 
-    .react-calendar__month-view__weekdays abbr {
+  .react-calendar__month-view__weekdays abbr {
     text-decoration: none;
   }
-
 
   .react-calendar__navigation button .prev-icon {
     transform: rotate(180deg);
@@ -48,51 +47,47 @@ const CalendarWrapper = styled.div`
     color: var(--sub-bu, #77AFF2);
   }
 
- 
   .react-calendar__tile {
-  background: #fff;
-  color: #000;
-  margin-top: 3px;
-  margin-bottom: 3px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    background: #fff;
+    color: #000;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-.react-calendar__tile--now {
-  background: none;
-}
+  .react-calendar__tile--now {
+    background: none;
+  }
 
   .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
     width: 35px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  background: var(--main-01, #3AAF85) !important;
-  color: var(--white, #FFF) !important;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background: var(--main-01, #3AAF85) !important;
+    color: var(--white, #FFF) !important;
   }
 
-
-
- .react-calendar--selectRange .react-calendar__tile--hover {
+  .react-calendar--selectRange .react-calendar__tile--hover {
     background-color: var(--main-03, #E1FAED); 
-}
+  }
 
-.react-calendar__tile--active{
-  width: 35px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  background: var(--main-01, #3AAF85) !important;
-  color: var(--white, #FFF) !important;
-}
-
+  .react-calendar__tile--active {
+    width: 35px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background: var(--main-01, #3AAF85) !important;
+    color: var(--white, #FFF) !important;
+  }
 
   .react-calendar__month-view__days__day--neighboringMonth {
     color: rgba(66, 66, 66, 0.30);
@@ -108,7 +103,9 @@ const ChevronDownIcon = ({ className }) => (
 );
 
 export default function ReactCalendar({ onChange }) {
-  const [value, setValue] = useState([new Date(), new Date()]); // 초기값은 현재 날짜
+  const [value, setValue] = useState([new Date(), new Date()]);
+  const [isOpen, setIsOpen] = useState(true); //캘린더 외부 클릭시 닫히게 하기 위해 추가
+  const calendarRef = useRef(); //얘도 위와 동일
 
   const handleDateChange = (date) => {
     if (Array.isArray(date)) {
@@ -123,27 +120,42 @@ export default function ReactCalendar({ onChange }) {
     onChange(date);
   };
 
+  const handleClickOutside = (event) => {
+    if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <CalendarWrapper>
-      <Calendar
-        onChange={handleDateChange}
-        selectRange={true}
-        value={value}
-        formatDay={(locale, date) => moment(date).format('D')} // '일' 없애기 + 'DD'는 한자리수 날짜에 0 포함. 'D'는 미포함
-        calendarType="gregory" // 시작 요일을 일요일로 설정
-        next2Label={null} // +1년 & +10년 이동 버튼 숨기기
-        prev2Label={null} // -1년 & -10년 이동 버튼 숨기기
-        nextLabel={<ChevronDownIcon className="next-icon" />} // 사용자 지정 아이콘으로 설정
-        prevLabel={<ChevronDownIcon className="prev-icon" />} // 사용자 지정 아이콘으로 설정
-        navigationLabel={({ date }) => moment(date).format('YYYY M월')} // '년' 글자 없애고 'YYYY M월' 형식으로 설정
-        tileClassName={({ date, view }) => {
-          // 오늘 날짜 표시를 제거
-          if (moment(date).isSame(new Date(), 'day')) {
-            return 'react-calendar__tile--now';
-          }
-          return '';
-        }}
-      />
-    </CalendarWrapper>
+    isOpen && (
+      <CalendarWrapper ref={calendarRef}>
+        <Calendar
+          onChange={handleDateChange}
+          selectRange={true}
+          value={value}
+          formatDay={(locale, date) => moment(date).format('D')}
+          calendarType="gregory"
+          next2Label={null}
+          prev2Label={null}
+          nextLabel={<ChevronDownIcon className="next-icon" />}
+          prevLabel={<ChevronDownIcon className="prev-icon" />}
+          navigationLabel={({ date }) => moment(date).format('YYYY M월')}
+          tileClassName={({ date, view }) => {
+            if (moment(date).isSame(new Date(), 'day')) {
+              return 'react-calendar__tile--now';
+            }
+            return '';
+          }}
+          showFixedNumberOfWeeks={true}
+        />
+      </CalendarWrapper>
+    )
   );
 }
