@@ -125,7 +125,7 @@ export default function Header() {
           <Nav>
             <ul>
               <li
-                onClick={() => navigate('/mycareerdetail')} /* detail페이지로 확인해보려면 밑줄까지 바꿔야됨 */
+                onClick={() => navigate('/mycareerdetail')} 
                 className={location.pathname === '/mycareerdetail' ? 'active' : ''} 
               >
                 내커리어

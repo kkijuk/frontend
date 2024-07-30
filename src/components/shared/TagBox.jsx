@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import AbilityTag from './AbilityTag'; // AbilityTag 컴포넌트 가져오기
 
 const Box = styled.div`
-    width: 833px;
+    width: 720px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-top: 15px;
     margin-bottom: 13px;
     position: relative; /* 자식 요소의 절대 위치를 위한 상대 위치 설정 */
+
 `;
 
 const Row = styled.div`
@@ -34,18 +35,20 @@ const Text = styled.div`
 
 const TagInputContainer = styled.div`
     width: 668px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #F5F5F5;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    border-radius: 10px;
-    background: #F5F5F5;
-    padding: 5px 10px;
     gap: 5px;
 `;
 
 const TagInput = styled.input`
     flex: 1;
     border: none; /* 테두리 제거 */
+    padding-left: 20px;
     background: #F5F5F5;
     font-family: Pretendard;
     font-size: 16px;

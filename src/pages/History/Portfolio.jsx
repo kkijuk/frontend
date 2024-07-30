@@ -1,16 +1,24 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import './history.css'
+import SubNav from '../../components/History/SubNav'
+import Alert from '../../components/History/Alert'
 
-import GeneralButton from '../../components/shared/buttons/GeneralButton'
+const Portfolio=()=>{
+    const [modalOpend, setModalOpend] = useState(false);
 
-export default function Portfolio(){
+    const toggle=()=>{
+        setModalOpend(!modalOpend);
+    }
+
+    
+
     return(
-        <>
+        <>  
+            {modalOpend && <Alert closeModal={toggle}></Alert>}
             <p>포트폴리오</p>
-            <GeneralButton type="submit" text="b1" style={{width:'20px'}}></GeneralButton>
-            <GeneralButton type="delete" text="b1"></GeneralButton>
-            <GeneralButton type="select" text="b1"></GeneralButton>
-            <GeneralButton type="select" text="b1"></GeneralButton>
+            <button onClick={toggle}>삭제</button>
         </>
     )
 }
+export default Portfolio
