@@ -16,7 +16,7 @@ const StatusAll = styled.button`
   justify-content: center;
   align-items: center;
   border: 2px solid #3AAF85;
-  border-radius: 14px;
+  border-radius: 13px;
   padding: 9px 18px;
   color: ${props => (props.active ? '#fff' : 'black')};
   cursor: pointer;
@@ -24,7 +24,7 @@ const StatusAll = styled.button`
   margin-bottom: -12px;
   text-align: center;
   font-family: 'Medium';
-  font-size: 14px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -38,7 +38,7 @@ const StatusNotApply = styled.button`
   justify-content: center;
   align-items: center;
   border: 2px solid #D9D9D9;
-  border-radius: 14px;
+  border-radius: 13px;
   padding: 9px 18px;
   color: ${props => (props.active ? '#fff' : 'black')};
   cursor: pointer;
@@ -46,7 +46,7 @@ const StatusNotApply = styled.button`
   margin-bottom: -12px;
   text-align: center;
   font-family: 'Medium';
-  font-size: 14px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -60,7 +60,7 @@ const StatusApply = styled.button`
   display: flex;
   align-items: center;
   border: 2px solid #B0B0B0;
-  border-radius: 14px;
+  border-radius: 13px;
   padding: 9px 18px;
   color: ${props => (props.active ? '#fff' : 'black')};
   cursor: pointer;
@@ -68,7 +68,7 @@ const StatusApply = styled.button`
   margin-bottom: -12px;
   text-align: center;
   font-family: 'Medium';
-  font-size: 14px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -82,7 +82,7 @@ const StatusApplying = styled.button`
   display: flex;
   align-items: center;
   border: 2px solid #707070;
-  border-radius: 14px;
+  border-radius: 13px;
   padding: 9px 18px;
   color: ${props => (props.active ? '#fff' : 'black')};
   cursor: pointer;
@@ -90,7 +90,7 @@ const StatusApplying = styled.button`
   margin-bottom: -12px;
   text-align: center;
   font-family: 'Medium';
-  font-size: 14px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -104,7 +104,7 @@ const StatusAccepted = styled.button`
   display: flex;
   align-items: center;
   border: 2px solid #78D333;
-  border-radius: 14px;
+  border-radius: 13px;
   padding: 9px 18px;
   color: ${props => (props.active ? '#fff' : 'black')};
   cursor: pointer;
@@ -112,7 +112,7 @@ const StatusAccepted = styled.button`
   margin-bottom: -12px;
   text-align: center;
   font-family: 'Medium';
-  font-size: 14px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -126,7 +126,7 @@ const StatusRejected = styled.button`
   display: flex;
   align-items: center;
   border: 2px solid #FA7C79;
-  border-radius: 14px;
+  border-radius: 13px;
   padding: 9px 18px;
   color: ${props => (props.active ? '#fff' : 'black')};
   cursor: pointer;
@@ -134,7 +134,7 @@ const StatusRejected = styled.button`
   margin-bottom: -12px;
   text-align: center;
   font-family: 'Medium';
-  font-size: 14px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;

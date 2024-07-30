@@ -6,7 +6,7 @@ import ViewToggle from '../components/Apply/ViewToggle';
 import CalendarView from '../components/Apply/CalendarView';
 import ListView from '../components/Apply/ListView';
 import AddJobButton from '../components/shared/AddJobButton';
-import AddJobModal from '../components/shared/AddJobModal';
+import AddApplyModal from '../components/shared/AddApplyModal';
 import WaitingList from '../components/Apply/WaitingList';
 import ApplyList from '../components/Apply/ApplyList';
 import ApplyStatus from '../components/Apply/ApplyStatus'; 
@@ -95,7 +95,7 @@ export default function Apply() {
       )}
       <AddJobButton onClick={() => setShowModal(true)} />
       {showModal && (
-        <AddJobModal
+        <AddApplyModal
           onClose={() => setShowModal(false)}
           onSave={handleAddJob}
         />
