@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import TagBox from '../Apply/ModalTagBox'; 
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -17,9 +18,7 @@ const ModalContent = styled.div`
   background: white;
   padding: 20px;
   border-radius: 10px;
-  width: 820px;
-height: 620px;
-flex-shrink: 0;
+  width: 500px;
   max-width: 90%;
   position: relative;
 `;
@@ -30,8 +29,7 @@ const CloseButton = styled.button`
   right: 10px;
   background: transparent;
   border: none;
-  color: #999;
-  font-size: 3em;
+  font-size: 1.5em;
   cursor: pointer;
 `;
 
@@ -48,7 +46,7 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  width: 300px;
+  width: 100%;
   padding: 12px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
@@ -57,7 +55,7 @@ const Input = styled.input`
 `;
 
 const InputDate = styled.input`
-  width: 200px;
+  width: 100%;
   padding: 12px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
@@ -68,21 +66,6 @@ const InputDate = styled.input`
 const Row = styled.div`
   display: flex;
   gap: 10px;
-`;
-
-const TagButton = styled.button`
-  background-color: #3AAF85;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-  margin-top: 10px;
-
-  &:hover {
-    background-color: #35a576;
-  }
 `;
 
 const SaveButton = styled.button`
@@ -109,25 +92,31 @@ const ErrorMessage = styled.p`
 
 const AddJobModal = ({ onClose, onSave }) => {
   const [title, setTitle] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [tags, setTags] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [tags, setTags] = useState([]);
   const [link, setLink] = useState('');
+  const [status, setStatus] = useState('planned'); // 공고 상태는 추가 시 항상 "planned"
 
   const handleSave = () => {
-    if (!title || !startDate || !endDate || !tags) {
+    if (!title || !startTime || !endTime) {
       alert("필수 정보를 입력하세요!");
       return;
     }
 
     onSave({
       title,
-      startDate,
-      endDate,
-      tags: tags.split(',').map(tag => tag.trim()),
+      startTime,
+      endTime,
+      status,
+      tags,
       link,
     });
     onClose();
+  };
+
+  const handleTagChange = (newTags) => {
+    setTags(newTags);
   };
 
   return (
@@ -135,7 +124,7 @@ const AddJobModal = ({ onClose, onSave }) => {
       <ModalContent>
         <CloseButton onClick={onClose}>×</CloseButton>
         <ModalTitle>새로운 공고 추가</ModalTitle>
-        <Label>공고 제목 *</Label>
+        <Label>지원 제목 *</Label>
         <Input
           type="text"
           placeholder="활동 제목을 작성하세요"
@@ -144,37 +133,25 @@ const AddJobModal = ({ onClose, onSave }) => {
         />
         <Row>
           <div>
-            <Label>접수 시작 일시</Label>
+            <Label>공고 모집 시작 날짜 *</Label>
             <InputDate
-               type="text"
-               placeholder="YYYY-MM-DD"
-               value={startDate}
-               onChange={(e) => setStartDate(e.target.value)}
-               onFocus={(e) => (e.target.type = 'datetime-local')}
-               onBlur={(e) => (e.target.type = 'text')}
+              type="datetime-local"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
             />
           </div>
           <div>
-            <Label>접수 마감 일시 *</Label>
+            <Label>공고 모집 종료 날짜 *</Label>
             <InputDate
-               type="text"
-               placeholder="YYYY-MM-DD"
-               value={endDate}
-               onChange={(e) => setEndDate(e.target.value)}
-               onFocus={(e) => (e.target.type = '')}
-               onBlur={(e) => (e.target.type = 'text')}
+              type="datetime-local"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
             />
           </div>
         </Row>
-        <Label>태그 *</Label>
-        <Input
-          type="text"
-          placeholder="동아리, 서비스 기획"
-          value={tags}
-          onChange={(e) => setTags(e.target.value)}
-        />
-        <TagButton>+</TagButton>
-        <Label>링크</Label>
+        <Label>태그</Label>
+        <TagBox onTagChange={handleTagChange} />
+        <Label>지원 링크</Label>
         <Input
           type="text"
           placeholder="공고 혹은 접수 페이지 링크를 입력하세요"
@@ -182,13 +159,9 @@ const AddJobModal = ({ onClose, onSave }) => {
           onChange={(e) => setLink(e.target.value)}
         />
         <SaveButton onClick={handleSave}>저장</SaveButton>
-        <ErrorMessage>필수 정보를 입력하세요!</ErrorMessage>
       </ModalContent>
     </ModalBackdrop>
   );
 };
 
 export default AddJobModal;
-
-
-

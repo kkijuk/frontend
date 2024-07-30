@@ -69,7 +69,7 @@ const EditDeleteContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 30px;
-  margin-right: 16px; /* 아이콘을 오른쪽으로 이동 */
+  margin-right: 0px; /* 아이콘을 오른쪽으로 이동 */
 `;
 
 const SubHeader = styled.div`
