@@ -18,7 +18,7 @@ const Select =()=>{
     const data = dummyData[0];
 
     const handleNextClick =()=>{
-        navigate(`/history/:${id}/rewrite`);
+        navigate(`/history/others/:${id}/rewrite`);
     }
 
     return(

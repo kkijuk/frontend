@@ -5,21 +5,9 @@ import './history.css'
 import SubNav from '../../components/History/SubNav'
 import Convert from '../../components/History/Convert'
 import Toggle from '../../components/History/Toggle'
-import ButtonOptions from '../../components/History/ButtonOptions'
+import ButtonOptions from '../../components/History/AddButton'
 
-export default function Master() {
-    const navigate = useNavigate();
-    const [isChecked, setIsChecked] = useState(true);
-
-    const handleToggleClick=()=>{
-        setIsChecked(!isChecked);
-        navigate('/history/list/3');
-    }
-
-    const handleSButtonClick=(id)=>{
-        navigate(`/history/${id}`)
-    }
-
+const Master=()=> {
     const dummyData=[
         {
             "id": 100, "title":"UMC"
@@ -46,28 +34,11 @@ export default function Master() {
     ]
     const content = dummyData2[0];
 
+    const navigate = useNavigate();
+
     return (
         <BackgroundDiv>
             <BaseDiv>
-                <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
-                    <h1 style={{marginBottom:'36px', display:'inline-block'}}>이력관리</h1>
-                    <Convert></Convert>
-                </div>
-                <SubNav></SubNav>
-                <div style={{width:'820px', position:'relative', display:'inline-block'}}>
-                    <SButton type="button">Master</SButton> 
-                    {dummyData.map(resume=>(
-                        <SButton type = "button" key={resume.id} onClick={()=>handleSButtonClick(resume.id)}>
-                            {resume.title}
-                        </SButton>
-                    ))}
-                    <div style={{position:'absolute', right:0, display:'inline-block'}}>
-                        <Toggle
-                            checked={isChecked}
-                            onChange={handleToggleClick}
-                        />
-                    </div>
-                </div>
                 <ContentTitle>
                     <h1 style={{display:'inline-block'}}>Master</h1>
                     <p className='lastUpdated' style={{display:'inline-block', position:'absolute', top:'10px', right:0}}>마지막 수정일시: {content.updated_at}</p>
@@ -89,11 +60,16 @@ export default function Master() {
                 <ContentBox>{content.question2.content}</ContentBox>
                 <h3>3. 직무적합성 [{content.question3.subTitle}]</h3>
                 <ContentBox>{content.question3.content}</ContentBox> */}
-                <ButtonOptions></ButtonOptions>
+                <EditButton onClick={()=>navigate('/history/master/rewrite')} style={{right:'100px'}}>
+                    <svg width="60" height="60" viewBox="2-2 80 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path id="Vector" d="M20 39.7509V46H26.2491L44.6799 27.5692L38.4308 21.3201L20 39.7509ZM49.5126 22.7366C50.1625 22.0867 50.1625 21.0368 49.5126 20.3869L45.6131 16.4874C44.9632 15.8375 43.9133 15.8375 43.2634 16.4874L40.2139 19.537L46.463 25.7861L49.5126 22.7366Z" fill="white"/>
+                    </svg>
+                </EditButton>
             </BaseDiv>
         </BackgroundDiv>
     )
 }
+export default Master
 
 const BackgroundDiv = styled.div`
     width: 100%;
@@ -149,6 +125,16 @@ const ContentBox = styled.div`
     line-height: normal;
     margin-bottom:60px;
 `
-
+const EditButton = styled.button`
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 50%;
+    background-color: #B0B0B0;
+    color: white;
+    position: fixed;
+    bottom: 20px;
+    cursor: pointer;
+`
 
 

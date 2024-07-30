@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import './history.css'
 import SubNav from '../../components/History/SubNav'
 import Convert from '../../components/History/Convert'
 import Toggle from '../../components/History/Toggle'
-import ButtonOptions from '../../components/History/ButtonOptions'
+import ButtonOptions from '../../components/History/AddButton.jsx'
 import Alert from '../../components/History/Alert'
 import AddJobModal from '../../components/shared/AddJobModal.jsx'
 
 
-export default function OthersRewrite() {
+const OthersRewrite=()=> {
     const dummyData = [
         {
             "id": 100,
@@ -46,15 +46,22 @@ export default function OthersRewrite() {
 
     const resume = dummyData[0];
     const navigate = useNavigate();
+    const { id } = useParams();
 
     const [questions, setQuestions] = useState(resume.questions);
     const [modalOpend, setModalOpend] = useState(false);
     const [dropdownOpend, setDropdownOpend] = useState(false);
     const [isCompleted, setIsCompleted] = useState(resume.complete);
     const [addJobModalOpened, setAddJobModalOpened] = useState(false);
+    const [show, setShow] = useState(false);
 
     const handleAddClick =()=>{
-        setQuestions([...questions,{number:questions.length,subTitle:'', content:''}]);
+        let count = 0;
+        questions.map(question=>{
+            if(!(question.subTitle)&&!question.content) {count++; console.log(question.number);}
+        })
+        if(count<3) setQuestions([...questions,{number:questions.length,subTitle:'', content:''}]);
+        else showLimiter();
     }
 
     const handleInputChange = (number, field, event)=>{
@@ -64,9 +71,17 @@ export default function OthersRewrite() {
         setQuestions(newQuestions);     
     }
 
+    //저장 로직
+    //1. handleSubmit
+    //2. autoSubmit: setTimeout(handleSubmit, 30000)
+    //3. handleSaveClick: handleSubmit + navigate
+    const autoSubmit=()=>{
+
+    }
+
     const handleSubmit = (event)=>{
         event.preventDefault();
-        navigate(-1);
+        navigate(`/history/others/${id}`);
         //수정 요청
         console.log('폼 제출', questions);
     }
@@ -89,9 +104,21 @@ export default function OthersRewrite() {
         setAddJobModalOpened(!addJobModalOpened);
     }
 
+    const showLimiter=()=>{
+        setShow(true);
+        setTimeout(()=>{
+            setShow(false);
+        },3000);
+    }
+
+    const deleteItem=(number)=>{
+        const deletedQuestions = questions.filter(question=>question.number!==number);
+        setQuestions(deletedQuestions);
+    }
 
     return (
         <BackgroundDiv>
+            <Limiter show={show}>빈 질문을 먼저 채워주세요!</Limiter>
             {modalOpend && <Alert closeModal={toggleModal}></Alert>}
             {addJobModalOpened && <AddJobModal onClose={toggleAddJobModal} style={{position:'relative', zIndex:1000}}></AddJobModal>}
             <BaseDiv>
@@ -126,7 +153,8 @@ export default function OthersRewrite() {
                 <p className='lastUpdated' style={{marginTop:0}}>마지막 수정일시: {resume.updated_at}</p>                  
                 <form>
                     {questions.map((question)=>(
-                        <div>
+                        <div style={{position:'relative'}}>
+                            <Delete onClick={()=>deleteItem(question.number)}>삭제</Delete>
                             <InputTitle
                                 placeholder={`${question.number+1} 질문을 작성하세요`}
                                 style={{height:'50px', marginBottom:'12px'}}
@@ -160,6 +188,7 @@ export default function OthersRewrite() {
         </BackgroundDiv>
     )
 }
+export default OthersRewrite
 
 const BackgroundDiv = styled.div`
     width: 100%;
@@ -285,4 +314,32 @@ const DropdownItem=styled.p`
     line-height: normal;
     cursor:pointer;
 
+`
+const Limiter = styled.div`
+    width:200px;
+    height: 80px;
+    background-color: RGBA(0,0,0,0.7);
+    color:white;
+    font-family:Regular;
+    font-size:16px;
+    border-radius:10px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:fixed;
+    top:550px;
+    opacity: ${props => props.show ? 1 : 0};
+    transition: opacity 1s;
+`
+
+const Delete = styled.div`
+    width: 30px;
+    height: 20px;
+    color: #707070;
+    font-size:15px;
+    font-family:Regular;
+    cursor:pointer;
+    position:absolute;
+    top: 16px;
+    right:10px;
 `

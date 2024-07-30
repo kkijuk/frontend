@@ -4,7 +4,7 @@ import './history.css'
 import SubNav from '../../components/History/SubNav'
 import Alert from '../../components/History/Alert'
 
-export default function Portfolio(){
+const Portfolio=()=>{
     const [modalOpend, setModalOpend] = useState(false);
 
     const toggle=()=>{
@@ -18,7 +18,7 @@ export default function Portfolio(){
             {modalOpend && <Alert closeModal={toggle}></Alert>}
             <p>포트폴리오</p>
             <button onClick={toggle}>삭제</button>
-            <SubNav></SubNav>
         </>
     )
 }
+export default Portfolio

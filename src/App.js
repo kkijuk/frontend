@@ -12,6 +12,8 @@ import Signup from "./pages/Signup";
 import MyCareerDetail from './pages/MycareerDetail';
 import styled from 'styled-components';
 import SignupSuccess from "./pages/SignupSuccess";
+import SubNav from './components/History/SubNav';
+import ViewOptions from './pages/History/ViewOptions';
 import History from "./pages/History";
 import Master from "./pages/History/Master";
 import Others from "./pages/History/Others"
@@ -52,25 +54,31 @@ function App() {
           <Route path="/mypage" element={<MyPage />} /> {/* 마이 페이지 */}
           <Route path="/mycareerdetail" element={<MyCareerDetail />} /> {/* 내커리어 상세*/}
           <Route path="/mycareer" element={<MyCareer />} /> {/* 내커리어 */}
-          <Route path="/history" element={<History />} /> {/* 이력관리 */}
-          <Route path="/history/master" element={<Master/>}/>
-          <Route path="/history/:id" element={<Others/>}/>
+
+          {/* 이력관리 라우팅 */}
+          <Route element={<SubNav/>}>
+            <Route element={<ViewOptions/>}>
+              <Route path="/history/master" element={<Master/>}/>
+              <Route path="/history/others/:id" element={<Others/>}/>
+              <Route path="/history/list/:state" element={<List/>}/>
+            </Route>
+            
+            <Route path="/history" element={<History/>}/>
+            <Route path="/history/portfolio" element={<Portfolio/>}/>
+          </Route>
           <Route path="/history/master/rewrite" element={<MasterRewrite/>}/>
-          <Route path="/history/:id/rewrite" element={<OthersRewrite/>}/>
-          <Route path="/history/list" element={<ListHeader/>}>
-            <Route path=":state" element={<List/>}/>
+          <Route path="/history/others/:id/rewrite" element={<OthersRewrite/>}/>
+          <Route path="/history/select" element={<SelectHeader />}>
+            <Route path=":id" element={<Select />} />
           </Route>
-          <Route path="/history/select" element={<SelectHeader/>}>
-            <Route path=":id" element={<Select/>}/>
-          </Route>
-          <Route path="/history/add_apply" element={<AddApply/>}/>
-          <Route path="/history/portfolio" element={<Portfolio/>}/>
+          <Route path="/history/add_apply" element={<AddApply />} />
+          
           <Route path="/apply" element={<Apply />} /> {/* 지원관리 */}
           <Route path="/community" element={<Community />} /> {/* 커뮤니티 */}
         </Routes>
         </MainContent>
         <Footer />
-      </div>
+      </div>    
       </AppContainer>
     </Router>
   );

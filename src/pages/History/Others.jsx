@@ -1,28 +1,13 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import './history.css'
 import SubNav from '../../components/History/SubNav'
 import Convert from '../../components/History/Convert'
 import Toggle from '../../components/History/Toggle'
-import ButtonOptions from '../../components/History/ButtonOptions'
+import ButtonOptions from '../../components/History/AddButton'
 
-export default function Others() {
-    const navigate = useNavigate();
-    const [isChecked, setIsChecked] = useState(true);
-
-    const handleToggleClick=()=>{
-        setIsChecked(!isChecked);
-        navigate('/history/list/3');
-    }
-
-    const handleMasterClick=()=>{
-        navigate('/history/master')
-    }
-
-    const handleSButtonClick=(id)=>{
-        navigate(`/history/${id}`)
-    }
+const Others=()=> {
 
     const dummyData=[
         {
@@ -61,28 +46,16 @@ export default function Others() {
     ]
     const resume = dummyData2[0];
 
+    const navigate = useNavigate();
+    const {id} = useParams();
+
+    useEffect(()=>{
+
+    },[id]);
+
     return (
         <BackgroundDiv>
             <BaseDiv>
-                <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
-                    <h1 style={{marginBottom:'36px', display:'inline-block'}}>이력관리</h1>
-                    <Convert></Convert>
-                </div>
-                <SubNav></SubNav>
-                <div style={{width:'820px', position:'relative', display:'inline-block'}}>
-                    <SButton onClick={handleMasterClick} type="button">Master</SButton> 
-                    {dummyData.map(resume=>(
-                        <SButton type = "button" key={resume.id} onClick={()=>handleSButtonClick(resume.id)}>
-                            {resume.title}
-                        </SButton>
-                    ))}
-                    <div style={{position:'absolute', right:0, display:'inline-block'}}>
-                        <Toggle
-                            checked={isChecked}
-                            onChange={handleToggleClick}
-                        />
-                    </div>
-                </div>
                 <ContentTitle>
                     <h1 style={{position:'relative',display:'inline-block', marginRight:'12px'}}>{resume.oneLiner}</h1>
                     <Tag style={{color:'white'}}>{resume.complete ? "작성 완료" : "작성 중"}</Tag>
@@ -106,11 +79,16 @@ export default function Others() {
                     </div>
                     ))}
                 </div>
-                <ButtonOptions></ButtonOptions>
+                <EditButton onClick={()=>navigate(`/history/others/${id}/rewrite`)} style={{right:'100px'}}>
+                    <svg width="60" height="60" viewBox="2-2 80 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path id="Vector" d="M20 39.7509V46H26.2491L44.6799 27.5692L38.4308 21.3201L20 39.7509ZM49.5126 22.7366C50.1625 22.0867 50.1625 21.0368 49.5126 20.3869L45.6131 16.4874C44.9632 15.8375 43.9133 15.8375 43.2634 16.4874L40.2139 19.537L46.463 25.7861L49.5126 22.7366Z" fill="white"/>
+                    </svg>
+                </EditButton>
             </BaseDiv>
         </BackgroundDiv>
     )
 }
+export default Others
 
 const BackgroundDiv = styled.div`
     width: 100%;
@@ -174,5 +152,15 @@ const Tag=styled.div`
     font-weight: 400;
     line-height: normal;
 `
-
+const EditButton = styled.button`
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 50%;
+    background-color: #B0B0B0;
+    color: white;
+    position: fixed;
+    bottom: 20px;
+    cursor: pointer;
+`
 
