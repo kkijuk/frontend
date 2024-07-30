@@ -14,6 +14,7 @@ const LoginScreen = styled.div`
     color: #707070;
     font-weight: bold;
     margin-bottom: 30px;
+    text-align: center; 
   }
 
   .textInput {
