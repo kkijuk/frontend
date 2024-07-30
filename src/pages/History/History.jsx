@@ -3,10 +3,11 @@ import styled from 'styled-components'
 // import './history.css'
 import SubNav from '../../components/History/SubNav'
 
-export default function History(){
+const History=()=>{
     return(
         <div style={{background:'black'}}>
             <SubNav></SubNav>
         </div >
     )
 }
+export default History

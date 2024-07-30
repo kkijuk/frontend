@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -34,6 +34,14 @@ const SelectHeader =()=>{
         },
     ]
 
+    const navigate = useNavigate();
+    const [currentApply, setCurrentApply] = useState(dummyData[0].id);
+
+    const handleClickItem=(id)=>{
+        setCurrentApply(id);
+        navigate(`/history/select/${id}`);
+    }
+
     return(
         <BackgroundDiv>
             <BaseDiv>
@@ -44,7 +52,13 @@ const SelectHeader =()=>{
                     <ItemsDiv>
                         {
                             dummyData.map(resume=>(
-                                <Item>{resume.title}</Item>
+                                <Item 
+                                    onClick={()=>{handleClickItem(resume.id)}}  
+                                    style={{backgroundColor: currentApply===resume.id ? '#E1FAED' :'#F5F5F5',
+                                            color: currentApply===resume.id ? 'black' :'#707070',
+                                            border: currentApply===resume.id ? '2px solid var(--main-01, #3AAF85)' :'none'}}>
+                                {resume.title}
+                                </Item>
                             ))
                         }
                     </ItemsDiv>
@@ -95,7 +109,7 @@ const ItemsDiv=styled.div`
     overflow-x:auto;
     gap:10px;
     flex: 1;
-        white-space: nowrap; /* 항목들이 한 줄에 배치되도록 설정 */
+    white-space: nowrap; /* 항목들이 한 줄에 배치되도록 설정 */
 
     &::-webkit-scrollbar {
         height: 0px;
@@ -111,22 +125,13 @@ const Item=styled.div`
     align-items: center;
     gap: 10px;
     border-radius: 10px;
-    background: var(--gray-06, #F5F5F5);    
-    color: var(--gray-02, #707070);
     text-align: center;
     font-family: Regular;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-
-    &:active{
-        border-radius: 10px;
-        border: 2px solid var(--main-01, #3AAF85);
-        background: var(--main-03, #E1FAED);
-        color: var(--black, #000);
-        font-weight: 700;
-    }
+    cursor:pointer;
 `
 
 const AddButton = styled.div`

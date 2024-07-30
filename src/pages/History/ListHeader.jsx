@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import SubNav from '../../components/History/SubNav'
 import Toggle from '../../components/History/Toggle'
-import ButtonOptions from "../../components/History/ButtonOptions";
+import ButtonOptions from "../../components/History/AddButton";
 
 const ListHeader =()=>{
     const dummyData=[
@@ -71,7 +71,7 @@ const ListHeader =()=>{
                     </div>
                 </div>
                 <ButtonOptions></ButtonOptions>
-                <Outlet/>
+                
             </BaseDiv>
         </BackgroundDiv>
     )

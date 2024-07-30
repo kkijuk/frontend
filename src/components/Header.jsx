@@ -48,6 +48,7 @@ const Nav = styled.nav`
     font-weight: 700;
     line-height: normal;
     position: relative;
+    font-family:Medium;
   }
   li:hover {
     color: #707070;

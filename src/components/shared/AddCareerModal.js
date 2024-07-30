@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import CategoryGroup from '../shared/CategoryGroup';
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -17,70 +18,136 @@ const ModalContent = styled.div`
   background: white;
   padding: 20px;
   border-radius: 10px;
-  width: 500px;
+  width: 60vw;
+  height: 80vh;
   max-width: 90%;
+  max-height: 90vh;
+  overflow-y: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+`;
+
+const ContentArea = styled.div`
+  width: 70%;
+  max-width: 90%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+`;
+
+const CategoryArea = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 25px;
+  gap: 10px;
+  overflow-x: auto; /* 가로 스크롤 추가 */
+  overflow-y: hidden; /* 세로 스크롤 숨김 */
+  white-space: nowrap; /* 줄바꿈을 하지 않음 */
 `;
 
 const CloseButton = styled.button`
   position: absolute;
-  top: 10px;
-  right: 10px;
+  display: flex;
+  top: 20px;
+  right: 30px;
   background: transparent;
   border: none;
-  font-size: 1.5em;
+  font-size: 3em;
+  color: #999;
   cursor: pointer;
 `;
 
 const ModalTitle = styled.h2`
-  margin-top: 0;
+  margin-top: 20px;
   margin-bottom: 20px;
-  font-size: 1.5em;
+  font-size: 2em;
+
+  color: var(--main-01, #3AAF85);
+  text-align: center;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 `;
 
 const Label = styled.label`
-  display: block;
+  display: inline-block;
   margin-bottom: 5px;
-  font-weight: bold;
+  color: var(--black, #000);
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 `;
 
+const Info = styled.label`
+  color: var(--main-01, #3AAF85);
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-left: 15px;
+`
+
 const Input = styled.input`
-  width: 300px;
+  width: 97%;
+  height: 5%;
   padding: 12px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  margin-bottom: 25px;
+  border: 1px solid #F5F5F5;
   font-size: 1em;
+  font-family: Pretendard;
+  border-radius: 10px;
+  background: #F5F5F5;
+`;
+
+const InputLong = styled.textarea`
+  width: 97%;
+  height: 15%;
+  padding: 12px;
+  margin-bottom: 25px;
+  border: 1px solid #F5F5F5;
+  font-family: Pretendard;
+  font-size: 1em;
+  border-radius: 10px;
+  background: #F5F5F5;
+  vertical-align: top;
+  overflow: auto;
 `;
 
 const InputDate = styled.input`
-  width: 200px;
+  font-family: Pretendard;
+  font-size: 1em;
+  width: 100%;
+  height: 100%;
   padding: 12px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  margin-bottom: 25px;
+  border: 1px solid #F5F5F5;
+  border-radius: 10px;
+  background: #F5F5F5;
   font-size: 1em;
 `;
 
 const Row = styled.div`
+  width: 100%;
+  height: 5%;
   display: flex;
   gap: 10px;
 `;
 
-const TagButton = styled.button`
-  background-color: #3AAF85;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-  margin-top: 10px;
-
-  &:hover {
-    background-color: #35a576;
-  }
-`;
+const DateBox = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: ${(props) => (props.align === 'right' ? 'flex-end' : 'flex-start')};
+`
 
 const SaveButton = styled.button`
   width: 100%;
@@ -91,7 +158,10 @@ const SaveButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   font-size: 1em;
-  margin-top: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:hover {
     background-color: #35a576;
@@ -99,30 +169,79 @@ const SaveButton = styled.button`
 `;
 
 const ErrorMessage = styled.p`
-  color: red;
+  color: ${(props) => (props.isError ? 'red' : 'white')};
   font-size: 0.9em;
   margin-top: 10px;
 `;
 
+const RadioContainer = styled.div`
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  margin-top: 35px;
+`;
+
+const HiddenRadio = styled.input.attrs({ type: 'radio' })`
+  opacity: 0;
+  width: 0;
+  height: 0;
+`;
+
+const StyledRadio = styled.div`
+  width: 20px;
+  height: 20px;
+  background: ${(props) => (props.checked ? '#3AAF85' : '#F5F5F5')};
+  border-radius: 50%;
+  transition: all 150ms;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid ${(props) => (props.checked ? '#3AAF85' : '#ccc')};
+
+  &:after {
+    content: "";
+    display: ${(props) => (props.checked ? 'block' : 'none')};
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white;
+  }
+`;
+
 const AddCareerModal = ({ onClose, onSave }) => {
-  const [title, setTitle] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  
+  const [category, setCategory] = useState('');
+  const [careerName, setCareerName] = useState('');
+  const [alias, setAlias] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [tags, setTags] = useState('');
-  const [link, setLink] = useState('');
+  const [checked, setChecked] = useState(false);
+  const [content, setContent] = useState('');
 
-  const handleSave = () => {
-    if (!title || !startDate || !endDate || !tags) {
-      alert("필수 정보를 입력하세요!");
-      return;
-    }
+  const hasError = !category || !careerName || !alias || (!checked && (!startDate || !endDate));
+
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+    setCategory(selectedCategory);
+  };
+
+    const handleSave = () => {
+      if (hasError) {
+        alert("필수 정보를 입력하세요!");
+        return;
+      }
+    
 
     onSave({
-      title,
+      category,
+      careerName,
+      alias,
       startDate,
       endDate,
-      tags: tags.split(',').map(tag => tag.trim()),
-      link,
+      checked,
+      content,
     });
     onClose();
   };
@@ -131,55 +250,75 @@ const AddCareerModal = ({ onClose, onSave }) => {
     <ModalBackdrop>
       <ModalContent>
         <CloseButton onClick={onClose}>×</CloseButton>
-        <ModalTitle>활동 추가</ModalTitle>
-        <Label>공고 제목 *</Label>
-        <Input
-          type="text"
-          placeholder="활동 제목을 작성하세요"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <Row>
-          <div>
-            <Label>접수 시작 일시</Label>
-            <InputDate
-               type="text"
-               placeholder="YYYY-MM-DD"
-               value={startDate}
-               onChange={(e) => setStartDate(e.target.value)}
-               onFocus={(e) => (e.target.type = 'date')}
-               onBlur={(e) => (e.target.type = 'text')}
-            />
-          </div>
-          <div>
-            <Label>접수 마감 일시 *</Label>
-            <InputDate
-               type="text"
-               placeholder="YYYY-MM-DD"
-               value={endDate}
-               onChange={(e) => setEndDate(e.target.value)}
-               onFocus={(e) => (e.target.type = 'date')}
-               onBlur={(e) => (e.target.type = 'text')}
-            />
-          </div>
-        </Row>
-        <Label>태그 *</Label>
-        <Input
-          type="text"
-          placeholder="동아리, 서비스 기획"
-          value={tags}
-          onChange={(e) => setTags(e.target.value)}
-        />
-        <TagButton>+</TagButton>
-        <Label>링크</Label>
-        <Input
-          type="text"
-          placeholder="공고 혹은 접수 페이지 링크를 입력하세요"
-          value={link}
-          onChange={(e) => setLink(e.target.value)}
-        />
-        <SaveButton onClick={handleSave}>저장</SaveButton>
-        <ErrorMessage>필수 정보를 입력하세요!</ErrorMessage>
+        <ContentArea>
+          <ModalTitle>활동 추가</ModalTitle>
+          <Label>분류</Label>
+          <CategoryArea>
+            {["동아리", "대외활동", "공모전/대회", "프로젝트", "아르바이트/인턴", "교육", "기타활동"].map((category) => (
+              <CategoryGroup 
+                key={category} 
+                category={category} 
+                selected={selectedCategory === category} 
+                onClick={() => handleCategorySelect(category)} 
+              />
+            ))}
+          </CategoryArea>
+          <Label>활동명</Label>
+          <Info>활동의 성격이 잘 드러나도록 작성해 주세요.</Info>
+          <Input
+            type="text"
+            placeholder="ex) 광고 기획 동아리, 앱 개발 프로젝트 등"
+            value={careerName}
+            onChange={(e) => setCareerName(e.target.value)}
+          />
+          <Label>별칭</Label>
+          <Info>활동(동아리, 프로젝트 등)의 이름을 작성해 주세요.</Info>
+          <Input
+            type="text"
+            placeholder="ex) UMC, 멋쟁이사자처럼 등"
+            value={alias}
+            onChange={(e) => setAlias(e.target.value)}
+          />
+          <Label>기간</Label>
+          <Row>
+            <DateBox>
+              <InputDate
+                type="text"
+                placeholder="YYYY-MM-DD"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                onFocus={(e) => (e.target.type = 'date')}
+                onBlur={(e) => (e.target.type = 'text')}
+              />
+            </DateBox>
+            <Label style={{margin: '10px 15px'}}>~</Label>
+            <DateBox align="right">
+              <InputDate
+                type="text"
+                placeholder="YYYY-MM-DD"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                onFocus={(e) => (e.target.type = 'date')}
+                onBlur={(e) => (e.target.type = 'text')}
+              />
+            </DateBox>
+          </Row>
+          <RadioContainer onClick={() => setChecked(!checked)}>
+            <HiddenRadio checked={checked} />
+            <StyledRadio checked={checked} />
+            <Info style={{ marginLeft: '5px' }}>아직 모르겠어요</Info>
+          </RadioContainer>
+          <Label>활동내역(선택)</Label>
+          <Info>주요 활동 내용을 요약하여 작성해 주세요.</Info>
+          <InputLong
+            type="text"
+            placeholder="TIP! 서술형이 아닌 개조식으로 작성하는 것이 좋아요.(50자 이내)"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+          <SaveButton onClick={handleSave}>저장</SaveButton>
+          <ErrorMessage isError={hasError}>필수 정보를 입력하세요!</ErrorMessage>
+        </ContentArea>
       </ModalContent>
     </ModalBackdrop>
   );

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import SubNav from '../../components/History/SubNav'
 import Toggle from '../../components/History/Toggle'
-import ButtonOptions from '../../components/History/ButtonOptions'
+import ButtonOptions from '../../components/History/AddButton'
 
 const MasterRewrite =()=>{
 
