@@ -25,12 +25,13 @@ const StatusText = styled.span`
   justify-content: center;
 `;
 
-const WaitingList = () => {
+const WaitingList = ({ count }) => {
   return (
     <StatusItem>
-      <StatusText>기다리는 공고</StatusText>
+      <StatusText>기다리는 공고 {count}</StatusText>
     </StatusItem>
   );
 };
 
 export default WaitingList;
+
