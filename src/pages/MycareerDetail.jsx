@@ -25,6 +25,7 @@ const Container1 = styled.div`
   justify-content: center; /* 수직 방향으로 중앙 정렬 */
   align-items: center; /* 수평 방향으로 중앙 정렬 */
   box-sizing: border-box; /* 추가 */
+  border: 1px solid black;
 `;
 
 const Top = styled.div`
@@ -70,8 +71,8 @@ const Container2 = styled.div`
 `;
 
 const Box2 = styled.div`
-  width: 800px;
-  height: 2px;
+  width: 720px;
+  padding: 10px;
 `;
 
 const CareerListBox = styled.div`
@@ -153,11 +154,11 @@ export default function MycareerDetail() {
   const [isAdding, setIsAdding] = useState(false);
 
   const dummyData = [
-    { startDate: '2023.06', endDate: '2024.01', careerName: '학원 아르바이트', category: '아르바이트/인턴', alias: '학원 알바' },
-    { startDate: '2024.03', endDate: '2024.08', careerName: 'IT 서비스 개발 동아리', category: '동아리', alias: 'UMC' },
-    { startDate: '2023.06', endDate: '2024.01', careerName: '데이터분석 공모전', category: '공모전/대회', alias: 'dd 공모전'},
-    { startDate: '2023.06', endDate: '2024.01', careerName: 'UXUI 소학회', category: '동아리', alias: 'SWUX' },
-    { startDate: '2023.06', endDate: '2024.01', careerName: 'oo 서포터즈 3기', category: '대외활동', alias: 'oo 서포터즈' },
+    { startDate: '2023.06', endDate: '2024.01', careerName: '학원 아르바이트', category: '아르바이트/인턴', alias: '학원 알바', careertext: 'dkdkdkdkddkdkdkdkdk' },
+    { startDate: '2024.03', endDate: '2024.08', careerName: 'IT 서비스 개발 동아리', category: '동아리', alias: 'UMC', careertext: 'dkdkdkdkddkdkdkdkㄴㄴㄴㄴdk' },
+    { startDate: '2023.06', endDate: '2024.01', careerName: '데이터분석 공모전', category: '공모전/대회', alias: 'dd 공모전', careertext: 'dkdkdkdkddkdkdkdkㅁㄴㅇㄹㅁㄴㅇㄹ'},
+    { startDate: '2023.06', endDate: '2024.01', careerName: 'UXUI 소학회', category: '동아리', alias: 'SWUX', careertext: 'dkdkdkdkddkdkdkdkdk'},
+    { startDate: '2023.06', endDate: '2024.01', careerName: 'oo 서포터즈 3기', category: '대외활동', alias: 'oo 서포터즈', careertext: 'dkdkdkdkddkdkdkdkdk' },
     { startDate: '2023.06', endDate: '2024.01', careerName: '디자인 개인 프로젝트', category: '프로젝트', alias: '디자인 프로젝트' }
   ];
 
@@ -221,6 +222,7 @@ export default function MycareerDetail() {
                 <CareerNameT>
                   <CareerNameTag careerName={[selectedCareer.careerName]} category={selectedCareer.category} />
                 </CareerNameT>
+                
               </ActivityRecordWrapper>
             )}
             {selectedCareer && (
@@ -229,9 +231,10 @@ export default function MycareerDetail() {
           </div>
           <EditIconBig />
         </CareerTitle>
+      
       </Container1>
       <Container2>
-        <Box2></Box2>
+        
         <CareerListBox>
           {dummyData2.map((item, index) => (
             <CareerList
