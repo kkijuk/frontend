@@ -33,7 +33,7 @@ const getBackgroundColor = (category, selected) => {
 
 const CareerBox = styled.div`
   display: flex;
-  height: 35px;
+  height: 28px;
   padding: 6px 16px;
   justify-content: center;
   align-items: center;

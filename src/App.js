@@ -25,6 +25,7 @@ import SelectHeader from "./pages/History/SelectHeader"
 import Select from './pages/History/Select';
 import AddApply from "./pages/History/AddApply"
 import Portfolio from "./pages/History/Portfolio"
+import ApplyDetail from './pages/ApplyDetail';
 
 
 const AppContainer = styled.div`
@@ -72,6 +73,7 @@ function App() {
           <Route path="/history/add_apply" element={<AddApply />} />
           
           <Route path="/apply" element={<Apply />} /> {/* 지원관리 */}
+          <Route path="/apply-detail/:id" element={<ApplyDetail />} />
           <Route path="/community" element={<Community />} /> {/* 커뮤니티 */}
         </Routes>
         </MainContent>

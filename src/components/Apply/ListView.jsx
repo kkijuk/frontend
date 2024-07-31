@@ -50,6 +50,7 @@ const AdItem = styled.div`
   padding: 15px;
   margin-bottom: 10px;
   box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
+  cursor: pointer; /* Add pointer cursor for clickable items */
 `;
 
 const AdDetails = styled.div`
@@ -92,7 +93,7 @@ const groupByDate = (data) => {
   }, {});
 };
 
-const ListView = ({ data }) => {
+const ListView = ({ data, onJobClick }) => {
   const groupedData = groupByDate(data);
   return (
     <BackgroundSection>
@@ -102,7 +103,7 @@ const ListView = ({ data }) => {
             <AdDateSection key={index}>
               <AdDate>{date}</AdDate>
               {groupedData[date].map((ad, idx) => (
-                <AdItem key={idx}>
+                <AdItem key={idx} onClick={() => onJobClick(ad)}>
                   <AdDetails>
                     <Label>{ad.label}</Label>
                     <AdTitle>{ad.details}</AdTitle>
@@ -118,11 +119,3 @@ const ListView = ({ data }) => {
 };
 
 export default ListView;
-
-
-
-
-
-
-
-

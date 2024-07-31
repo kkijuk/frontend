@@ -6,8 +6,11 @@ import VerificationCode from './VerificationCode';
 import Agreement from './Agreement';
 
 const SignupScreen = styled.div`
+  align-items: center;
+  justify-content: center; 
   max-width: 400px;
   margin: 50px auto;
+  margin-right: 750px;
   padding: 20px;
   background: white;
   border-radius: 10px;
@@ -16,6 +19,7 @@ const SignupScreen = styled.div`
   h2 {
     color: #3AAF85;
     text-align: center;
+    font-size: 28px;
   }
 
   input[type="text"], input[type="email"], input[type="password"], input[type="date"], button {

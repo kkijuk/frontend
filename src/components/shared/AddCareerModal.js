@@ -64,7 +64,7 @@ const CloseButton = styled.button`
 `;
 
 const ModalTitle = styled.h2`
-  margin-top: 20px;
+  margin-top: 30px;
   margin-bottom: 20px;
   font-size: 2em;
 
@@ -99,7 +99,7 @@ const Info = styled.label`
 
 const Input = styled.input`
   width: 97%;
-  height: 5%;
+  height: 4%;
   padding: 12px;
   margin-bottom: 25px;
   border: 1px solid #F5F5F5;
@@ -132,13 +132,14 @@ const InputDate = styled.input`
   margin-bottom: 25px;
   border: 1px solid #F5F5F5;
   border-radius: 10px;
-  background: #F5F5F5;
+  background: ${(props) => (props.disabled ? '#D9D9D9' : '#F5F5F5')};
+  color: ${(props) => (props.disabled ? '#A9A9A9' : '#000')};
   font-size: 1em;
 `;
 
 const Row = styled.div`
   width: 100%;
-  height: 5%;
+  height: 4%;
   display: flex;
   gap: 10px;
 `;
@@ -209,6 +210,12 @@ const StyledRadio = styled.div`
   }
 `;
 
+const RadioWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+
 const AddCareerModal = ({ onClose, onSave }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   
@@ -220,7 +227,7 @@ const AddCareerModal = ({ onClose, onSave }) => {
   const [checked, setChecked] = useState(false);
   const [content, setContent] = useState('');
 
-  const hasError = !category || !careerName || !alias || (!checked && (!startDate || !endDate));
+  const hasError = !category || !careerName || !alias || (!checked && (!startDate || !endDate)) || (checked && !startDate);
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
@@ -300,12 +307,15 @@ const AddCareerModal = ({ onClose, onSave }) => {
                 onChange={(e) => setEndDate(e.target.value)}
                 onFocus={(e) => (e.target.type = 'date')}
                 onBlur={(e) => (e.target.type = 'text')}
+                disabled={checked}
               />
             </DateBox>
           </Row>
-          <RadioContainer onClick={() => setChecked(!checked)}>
-            <HiddenRadio checked={checked} />
-            <StyledRadio checked={checked} />
+          <RadioContainer>
+            <RadioWrapper onClick={() => setChecked(!checked)}>
+              <HiddenRadio checked={checked} />
+              <StyledRadio checked={checked} />
+            </RadioWrapper>
             <Info style={{ marginLeft: '5px' }}>아직 모르겠어요</Info>
           </RadioContainer>
           <Label>활동내역(선택)</Label>
@@ -318,6 +328,7 @@ const AddCareerModal = ({ onClose, onSave }) => {
           />
           <SaveButton onClick={handleSave}>저장</SaveButton>
           <ErrorMessage isError={hasError}>필수 정보를 입력하세요!</ErrorMessage>
+          <br></br>
         </ContentArea>
       </ModalContent>
     </ModalBackdrop>
