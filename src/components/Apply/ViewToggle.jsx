@@ -28,15 +28,14 @@ const ToggleButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #000;
+  color: ${props => (props.active ? '#000' : '#666')};
   text-align: center;
-  font-family: Pretendard;
+  font-family:'Regular';
   font-size: 14px;
   font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  color: ${props => (props.active ? '#000' : '#666')}; /* 활성화 상태에 따라 글자 색 변경 */
-  font-weight: ${props => (props.active ? 'bold' : 'normal')}; /* 활성화 상태에 따라 글자 두께 변경 */
+  font-weight: ${props => (props.active ? 'bold' : 'normal')};
+
+  transition: all 0.2s ease; /* Add a longer duration and easing effect for a smoother transition */
 `;
 
 const ViewToggle = ({ view, onToggle }) => {
@@ -55,5 +54,6 @@ const ViewToggle = ({ view, onToggle }) => {
 };
 
 export default ViewToggle;
+
 
 

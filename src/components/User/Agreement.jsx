@@ -13,3 +13,4 @@ const Agreement = ({ checked, setChecked, label, handleModal }) => (
 );
 
 export default Agreement;
+

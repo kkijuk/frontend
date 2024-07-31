@@ -32,7 +32,7 @@ const Text = styled.div`
 `;
 
 const TagInputContainer = styled.div`
-    width: 300px;
+    width: 650px;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -57,11 +57,11 @@ const TagInput = styled.input`
 
 const TagBoxList = styled.div`
     width: 300px;
-    height: 350px;
+    height: 120px;
     flex-shrink: 0;
     border-radius: 10px;
     background: var(--white, #FFF);
-    box-shadow: 0px 5px 10px 0px #D9D9D9;
+    box-shadow: 0px 0.5px 1px 0px ;
     position: absolute;
     top: 40px;
     left: 0;
@@ -76,17 +76,36 @@ const TagBoxListContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 22px;
+        padding: 0px 8px;
+        border-radius: 10px;
+        background: #F5F5F5;
+        color: var(--main-01, #3AAF85);
+        text-align: center;
+        font-family: Pretendard;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        cursor: pointer;
+        border: 1px solid #F5F5F5;
+    }
 `;
 
 const WhiteTag = styled.div`
-    display: flex;
+     display: flex;
     align-items: center;
     height: 22px;
-    padding: 0px 8px;
+    padding: 0px 8px; /* 간격 조정 */
     justify-content: center;
-    gap: 5px;
+    gap: 5px; /* 태그와 x 버튼 간 간격 조정 */
     border-radius: 10px;
-    background: #FFF;
+    background: #FFF; /* 흰색 배경 */
     color: var(--main-01, #3AAF85);
     text-align: center;
     font-family: Pretendard;
