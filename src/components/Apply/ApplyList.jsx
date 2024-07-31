@@ -9,16 +9,15 @@ const StatusItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 130px;
-  height: 20px;
+  width: 120px;
+  height: 15px;
 `;
 
 const StatusText = styled.span`
   color: var(--black, #000);
   text-align: center;
-  font-family: Pretendard;
+  font-family: Light;
   font-size: 14px;
-  font-style: normal;
   font-weight: bold;
   line-height: normal;
   align-items: center;

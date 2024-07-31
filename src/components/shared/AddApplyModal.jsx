@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import TagBox from '../Apply/ModalTagBox'; 
+import TagBox from '../Apply/ModalTagBox';
+import { createRecruit } from '../../api/Recruit'; // 실제 파일 위치에 맞게 경로 수정
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -48,9 +49,9 @@ const ModalTitle = styled.h2`
 const Divider = styled.div`
   width: 650px;
   height: 6px;
-  background-color: #ccc; 
+  background-color: #ccc;
   margin-bottom: 20px;
-  margin: 0 auto 20px; 
+  margin: 0 auto 20px;
 `;
 
 const Label = styled.label`
@@ -61,6 +62,11 @@ const Label = styled.label`
   margin-top: 20px;
   font-family: 'ExtraLight';
   font-size: 18px;
+  
+  &::after {
+    content: ' *';
+    color: #FC5555;
+  }
 `;
 
 const LabelStart = styled.label`
@@ -68,9 +74,14 @@ const LabelStart = styled.label`
   margin-bottom: 5px;
   font-weight: bold;
   margin-left: 90px;
-  margin-top: 10px; 
+  margin-top: 10px;
   font-family: 'ExtraLight';
   font-size: 18px;
+  
+  &::after {
+    content: ' *';
+    color: #FC5555;
+  }
 `;
 
 const LabelEnd = styled.label`
@@ -78,9 +89,14 @@ const LabelEnd = styled.label`
   margin-bottom: 5px;
   font-weight: bold;
   margin-right: 70px;
-  margin-top: 10px; 
+  margin-top: 10px;
   font-family: 'ExtraLight';
   font-size: 18px;
+  
+  &::after {
+    content: ' *';
+    color: #FC5555;
+  }
 `;
 
 const InputWrapper = styled.div`
@@ -101,7 +117,7 @@ const Input = styled.input`
   height: 25px;
   font-family: 'ExtraLight';
   font-size: 16px;
-  
+  outline: none;
 `;
 
 const InputDateStart = styled.input`
@@ -109,22 +125,7 @@ const InputDateStart = styled.input`
   padding: 12px;
   height: 25px;
   margin-bottom: 10px;
-  margin-left: 85px; 
-  border: 1px solid #F5F5F5;
-  border-radius: 10px;
-  background: #F5F5F5;
-  font-size: 1em;
-   margin-top: -10px;
-   font-family: 'ExtraLight';
-  font-size: 16px;
-`;
-
-const InputDateEnd = styled.input`
-  width: 300px;
-  height: 25px;
-  padding: 12px;
-  margin-bottom: 15px;
-  margin-right: 75px; 
+  margin-left: 85px;
   border: 1px solid #F5F5F5;
   border-radius: 10px;
   background: #F5F5F5;
@@ -132,20 +133,37 @@ const InputDateEnd = styled.input`
   margin-top: -10px;
   font-family: 'ExtraLight';
   font-size: 16px;
+  outline: none;
+`;
+
+const InputDateEnd = styled.input`
+  width: 300px;
+  height: 25px;
+  padding: 12px;
+  margin-bottom: 15px;
+  margin-right: 75px;
+  border: 1px solid #F5F5F5;
+  border-radius: 10px;
+  background: #F5F5F5;
+  font-size: 1em;
+  margin-top: -10px;
+  font-family: 'ExtraLight';
+  font-size: 16px;
+  outline: none;
 `;
 
 const InputWrapperStart = styled.div`
-  margin-top: 30px; 
+  margin-top: 30px;
 `;
 
 const InputWrapperEnd = styled.div`
-  margin-top: 30px; 
+  margin-top: 30px;
 `;
 
 const Row = styled.div`
   display: flex;
-   justify-content: center; 
-  gap: 0px; 
+  justify-content: center;
+  gap: 0px;
   width: 100%;
 `;
 
@@ -167,24 +185,25 @@ const SaveButton = styled.button`
   cursor: pointer;
   font-size: 1em;
   margin-top: 10px;
-  margin: 20px auto 0 auto; 
+  margin: 20px auto 0 auto;
   margin-left: 105px;
   font-family: 'ExtraLight';
   font-size: 18px;
-  &:hover {
-    background-color: #35a576;
-  }
 `;
-
 
 const LabelTag = styled.label`
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
   margin-left: 96px;
-  margin-top: 5px; 
+  margin-top: 5px;
   font-family: 'ExtraLight';
   font-size: 18px;
+  
+  &::after {
+    content: ' *';
+    color: #FC5555;
+  }
 `;
 
 const LabelLink = styled.label`
@@ -192,27 +211,26 @@ const LabelLink = styled.label`
   margin-bottom: 10px;
   font-weight: bold;
   margin-left: 95px;
-  margin-top: 25px; 
+  margin-top: 25px;
   font-family: 'ExtraLight';
   font-size: 18px;
 `;
 
 const InputWrapperTag = styled.div`
-  margin-top: 20px; 
-   margin-left: 90px;
+  margin-top: 20px;
+  margin-left: 90px;
 `;
 
 const InputWrapperLink = styled.div`
-  margin-top: 10px; 
-   margin-left: 90px;
-   font-family: 'ExtraLight';
+  margin-top: 10px;
+  margin-left: 90px;
+  font-family: 'ExtraLight';
   font-size: 16px;
 `;
 
 const TagBoxWrapper = styled.div`
-  margin-top: 20px; 
+  margin-top: 20px;
 `;
-
 
 const ErrorMessage = styled.p`
   color: red;
@@ -225,11 +243,10 @@ const ErrorMessage = styled.p`
 
 const FieldWrapper = styled.div`
   margin-bottom: 10px;
-  
 `;
 
 const LabelContainer = styled.div`
-  margin-top: 10px; 
+  margin-top: 10px;
 `;
 
 const AddApplyModal = ({ onClose, onSave }) => {
@@ -238,24 +255,52 @@ const AddApplyModal = ({ onClose, onSave }) => {
   const [endTime, setEndTime] = useState('');
   const [tags, setTags] = useState([]);
   const [link, setLink] = useState('');
-  const [status, setStatus] = useState('planned');  
+  const [status, setStatus] = useState('planned');
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!title || !startTime || !endTime) {
       alert("필수 정보를 입력하세요!");
       return;
     }
-
-    onSave({
+  
+    // startTime과 endTime을 "YYYY-MM-DD HH:mm" 형식으로 변환하는 함수
+    const formatDateTime = (dateTime) => {
+      const date = new Date(dateTime);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0'); 
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      return `${year}-${month}-${day} ${hours}:${minutes}`;
+    };
+  
+    const formattedStartTime = formatDateTime(startTime);
+    const formattedEndTime = formatDateTime(endTime);
+  
+    console.log("Formatted Start Time (YYYY-MM-DD HH:mm):", formattedStartTime);
+    console.log("Formatted End Time (YYYY-MM-DD HH:mm):", formattedEndTime);
+  
+    const recruitData = {
       title,
-      startTime,
-      endTime,
+      startTime: formattedStartTime,
+      endTime: formattedEndTime,
       status,
       tags,
       link,
-    });
-    onClose();
+    };
+  
+    try {
+      const response = await createRecruit(recruitData);
+      console.log("Recruit created successfully:", response);
+      onSave(response);
+      onClose();
+    } catch (error) {
+      console.error("Error creating recruit:", error);
+      alert("공고 생성에 실패했습니다.");
+    }
   };
+  
+  
 
   const handleTagChange = (newTags) => {
     setTags(newTags);
@@ -266,10 +311,10 @@ const AddApplyModal = ({ onClose, onSave }) => {
       <ModalContent>
         <CloseButton onClick={onClose}>×</CloseButton>
         <ModalTitle>새로운 공고 추가</ModalTitle>
-        <Divider /> 
+        <Divider />
         <FieldWrapper>
-          <Label>공고 제목 *</Label>
-          <InputWrapper> 
+          <Label>공고 제목</Label>
+          <InputWrapper>
             <Input
               type="text"
               placeholder="활동 제목을 작성하세요"
@@ -279,56 +324,54 @@ const AddApplyModal = ({ onClose, onSave }) => {
           </InputWrapper>
         </FieldWrapper>
         <Row>
-        <InputWrapper> 
-  <FieldWrapper>
-    <LabelStart>접수 시작 일시 *</LabelStart>
-    <InputWrapperStart>
-      <InputDateStart
-        type="datetime-local"
-        value={startTime}
-        onChange={(e) => setStartTime(e.target.value)}
-      />
-    </InputWrapperStart>
-  </FieldWrapper>
-</InputWrapper> 
-<InputWrapper> 
-  <FieldWrapper>
-    <LabelEnd>접수 마감 일시 *</LabelEnd>
-    <InputWrapperEnd>
-      <InputDateEnd
-        type="datetime-local"
-        value={endTime}
-        onChange={(e) => setEndTime(e.target.value)}
-      />
-    </InputWrapperEnd>
-  </FieldWrapper>
-</InputWrapper>
+          <InputWrapper>
+            <FieldWrapper>
+              <LabelStart>접수 시작 일시</LabelStart>
+              <InputWrapperStart>
+                <InputDateStart
+                  type="datetime-local"
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
+                />
+              </InputWrapperStart>
+            </FieldWrapper>
+          </InputWrapper>
+          <InputWrapper>
+            <FieldWrapper>
+              <LabelEnd>접수 마감 일시</LabelEnd>
+              <InputWrapperEnd>
+                <InputDateEnd
+                  type="datetime-local"
+                  value={endTime}
+                  onChange={(e) => setEndTime(e.target.value)}
+                />
+              </InputWrapperEnd>
+            </FieldWrapper>
+          </InputWrapper>
         </Row>
         <FieldWrapper>
-  <LabelTag>태그 *</LabelTag>
-  <InputWrapperTag>
-    <TagBoxWrapper>
-      <TagBox onTagChange={handleTagChange} />
-    </TagBoxWrapper>
-  </InputWrapperTag>
-</FieldWrapper>
-
-<FieldWrapper>
-<LabelContainer>
-    <LabelLink>링크</LabelLink>
-  </LabelContainer>
-  <InputWrapperLink>
-    <Input
-      type="text"
-      placeholder="공고 혹은 접수 페이지 링크를 입력하세요"
-      value={link}
-      onChange={(e) => setLink(e.target.value)}
-    />
-  </InputWrapperLink>
-</FieldWrapper>
-
+          <LabelTag>태그</LabelTag>
+          <InputWrapperTag>
+            <TagBoxWrapper>
+              <TagBox onTagChange={handleTagChange} />
+            </TagBoxWrapper>
+          </InputWrapperTag>
+        </FieldWrapper>
+        <FieldWrapper>
+          <LabelContainer>
+            <LabelLink>링크</LabelLink>
+          </LabelContainer>
+          <InputWrapperLink>
+            <Input
+              type="text"
+              placeholder="공고 혹은 접수 페이지 링크를 입력하세요"
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
+            />
+          </InputWrapperLink>
+        </FieldWrapper>
         <ErrorMessage>*필수 정보를 입력하세요!</ErrorMessage>
-        <ButtonWrapper> 
+        <ButtonWrapper>
           <SaveButton onClick={handleSave}>확인</SaveButton>
         </ButtonWrapper>
       </ModalContent>
@@ -337,5 +380,7 @@ const AddApplyModal = ({ onClose, onSave }) => {
 };
 
 export default AddApplyModal;
+
+
 
 

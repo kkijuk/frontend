@@ -82,19 +82,60 @@ const EditDeleteContainer = styled.div`
 `;
 
 const SubHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #F5F5F5;
-  padding: 16px;
-  border-radius: 8px;
-  margin-top: 16px;
+    width: 825px;
+    height: 60px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: var(--gray-06, #F5F5F5);
+    padding: 15px 10px;
+    position:relative;
+    margin-top: 30px;
 `;
 
-const InfoLabel = styled.div`
-  font-size: 14px;
-  color: #707070;
+const InfoLabelStart = styled.div`
+    width:250px;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    position:absolute;
 `;
+
+const InfoLabelEnd = styled.div`
+    width:250px;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    position:absolute;
+    margin-left:100px;
+`;
+
+const TagLabel = styled.div`
+   width:250px;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    position:absolute;
+  margin-top: 40px;
+`;
+
+const Tag=styled.div`
+    display: inline-flex;
+    height: 22px;
+    padding: 0px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    font-family:'Regular';
+    font-size:12px;
+    text-align: center;
+    font-weight: 400;
+    line-height: normal;
+    background: white;
+    color: var(--main-01, #3AAF85);
+    margin-left: 10px;
+    `
 
 const DateText = styled.div`
   color: #707070;
@@ -189,11 +230,6 @@ const DeleteIconStyled = styled(DeleteSvgIcon)`
   cursor: pointer;
 `;
 
-const TagLabel = styled.div`
-  font-size: 14px;
-  color: #707070;
-`;
-
 const ApplyDetail = () => {
   const location = useLocation();
   const { job } = location.state;
@@ -230,9 +266,9 @@ const ApplyDetail = () => {
           </EditDeleteContainer>
         </TitleContainer>
         <SubHeader>
-          <InfoLabel>접수시작: {job.startDate}</InfoLabel>
-          <InfoLabel>접수마감: {job.endDate}</InfoLabel>
-          <TagLabel>태그</TagLabel>
+          <InfoLabelStart>접수시작: {job.startDate}</InfoLabelStart>
+          <InfoLabelEnd>접수마감: {job.endDate}</InfoLabelEnd>
+          <TagLabel>태그<Tag>동아리</Tag></TagLabel>
         </SubHeader>
       </Header>
       <Section>

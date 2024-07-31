@@ -61,6 +61,10 @@ const Label = styled.label`
   margin-top: 20px;
   font-family: 'ExtraLight';
   font-size: 18px;
+   &::after {
+    content: ' *';
+    color: #FC5555;
+  }
 `;
 
 const LabelStart = styled.label`
@@ -71,6 +75,10 @@ const LabelStart = styled.label`
   margin-top: 10px;
   font-family: 'ExtraLight';
   font-size: 18px;
+   &::after {
+    content: ' *';
+    color: #FC5555;
+  }
 `;
 
 const LabelEnd = styled.label`
@@ -81,6 +89,10 @@ const LabelEnd = styled.label`
   margin-top: 10px;
   font-family: 'ExtraLight';
   font-size: 18px;
+   &::after {
+    content: ' *';
+    color: #FC5555;
+  }
 `;
 
 const InputWrapper = styled.div`
@@ -131,6 +143,7 @@ const InputDateEnd = styled.input`
   margin-top: -10px;
   font-family: 'ExtraLight';
   font-size: 16px;
+  
 `;
 
 const InputWrapperStart = styled.div`
@@ -183,6 +196,10 @@ const LabelTag = styled.label`
   margin-top: 5px;
   font-family: 'ExtraLight';
   font-size: 18px;
+   &::after {
+    content: ' *';
+    color: #FC5555;
+  }
 `;
 
 const LabelLink = styled.label`
@@ -273,7 +290,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
         <ModalTitle>공고 수정</ModalTitle>
         <Divider /> 
         <FieldWrapper>
-          <Label>공고 제목 *</Label>
+          <Label>공고 제목</Label>
           <InputWrapper> 
             <Input
               type="text"
@@ -286,7 +303,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
         <Row>
           <InputWrapper> 
             <FieldWrapper>
-              <LabelStart>접수 시작 일시 *</LabelStart>
+              <LabelStart>접수 시작 일시</LabelStart>
               <InputWrapperStart>
                 <InputDateStart
                   type="datetime-local"
@@ -298,7 +315,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
           </InputWrapper> 
           <InputWrapper> 
             <FieldWrapper>
-              <LabelEnd>접수 마감 일시 *</LabelEnd>
+              <LabelEnd>접수 마감 일시</LabelEnd>
               <InputWrapperEnd>
                 <InputDateEnd
                   type="datetime-local"
@@ -310,7 +327,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
           </InputWrapper>
         </Row>
         <FieldWrapper>
-          <LabelTag>태그 *</LabelTag>
+          <LabelTag>태그</LabelTag>
           <InputWrapperTag>
             <TagBoxWrapper>
               <TagBox onTagChange={handleTagChange} initialTags={tags} />
