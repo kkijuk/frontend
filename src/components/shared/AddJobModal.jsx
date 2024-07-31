@@ -15,10 +15,10 @@ const ModalBackdrop = styled.div`
 
 const ModalContent = styled.div`
   background: white;
-  padding: 20px;
+  padding: 35px 100px;
   border-radius: 10px;
-  width: 820px;
-  height: 620px;
+  width: 620px;
+  height: 550px;
   flex-shrink: 0;
   max-width: 90%;
   position: relative;
@@ -38,7 +38,7 @@ const CloseButton = styled.button`
 
 const ModalTitle = styled.h2`
   margin-top: 0;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   font-size: 1.5em;
 `;
 
@@ -49,26 +49,30 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  width: 300px;
+  width: 575px;
   padding: 12px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
+  margin-bottom: 30px;
+  border:none;
   border-radius: 5px;
+  background:#F5F5F5; 
   font-size: 1em;
+  
 `;
 
 const InputDate = styled.input`
-  width: 200px;
+  width: 270px;
   padding: 12px;
   margin-bottom: 15px;
-  border: 1px solid #ccc;
+  border:none;
   border-radius: 5px;
+  background:#F5F5F5; 
   font-size: 1em;
 `;
 
 const Row = styled.div`
   display: flex;
   gap: 10px;
+  justify-content:space-between;
 `;
 
 const TagButton = styled.button`
@@ -95,7 +99,6 @@ const SaveButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   font-size: 1em;
-  margin-top: 20px;
 
   &:hover {
     background-color: #35a576;
@@ -105,7 +108,8 @@ const SaveButton = styled.button`
 const ErrorMessage = styled.p`
   color: red;
   font-size: 0.9em;
-  margin-top: 10px;
+  font-weight:500;
+  margin-bottom: 10px;
 `;
 
 const AddJobModal = ({ onClose, onSave }) => {
@@ -136,7 +140,8 @@ const AddJobModal = ({ onClose, onSave }) => {
       <ModalContent>
         <CloseButton onClick={onClose}>×</CloseButton>
         <ModalTitle>새로운 공고 추가</ModalTitle>
-        <Label>공고 제목 *</Label>
+        <div style={{width:'580px',height:'6px',background:'#D9D9D9',marginBottom:'30px'}}/>
+        <Label>공고 제목 <span style={{color:'red'}}>*</span></Label>
         <Input
           type="text"
           placeholder="활동 제목을 작성하세요"
@@ -156,7 +161,7 @@ const AddJobModal = ({ onClose, onSave }) => {
             />
           </div>
           <div>
-            <Label>접수 마감 일시 *</Label>
+            <Label>접수 마감 일시 <span style={{color:'red'}}>*</span></Label>
             <InputDate
                type="text"
                placeholder="YYYY-MM-DD"
@@ -167,12 +172,13 @@ const AddJobModal = ({ onClose, onSave }) => {
             />
           </div>
         </Row>
-        <Label>태그 *</Label>
+        <Label>태그 <span style={{color:'red'}}>*</span></Label>
         <Input
           type="text"
           placeholder="동아리, 서비스 기획"
           value={tags}
           onChange={(e) => setTags(e.target.value)}
+          style={{width:'200px'}}
         />
         <TagButton>+</TagButton>
         <Label>링크</Label>
@@ -182,8 +188,8 @@ const AddJobModal = ({ onClose, onSave }) => {
           value={link}
           onChange={(e) => setLink(e.target.value)}
         />
-        <SaveButton onClick={handleSave}>저장</SaveButton>
-        <ErrorMessage>필수 정보를 입력하세요!</ErrorMessage>
+        <ErrorMessage>*필수 정보를 입력하세요!</ErrorMessage>
+        <SaveButton onClick={handleSave}>확인</SaveButton>
       </ModalContent>
     </ModalBackdrop>
   );

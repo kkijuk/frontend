@@ -68,9 +68,7 @@ function App() {
           </Route>
           <Route path="/history/master/rewrite" element={<MasterRewrite/>}/>
           <Route path="/history/others/:id/rewrite" element={<OthersRewrite/>}/>
-          <Route path="/history/select" element={<SelectHeader />}>
-            <Route path=":id" element={<Select />} />
-          </Route>
+          <Route path="/history/select" element={<Select />}/>
           <Route path="/history/add_apply" element={<AddApply />} />
           
           <Route path="/apply" element={<Apply />} /> {/* 지원관리 */}
