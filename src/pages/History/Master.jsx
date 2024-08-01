@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import api from '../../Axios'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import './history.css'
@@ -35,22 +36,52 @@ const Master=()=> {
     const content = dummyData2[0];
 
     const navigate = useNavigate();
+    
+    const [questions, setQuestions]=useState({
+        oneLiner:"",
+        introduction:"",
+        motive:"",
+        prosAndCons:"",
+        //job_fit 필요
+    })
+
+    //(API) 마스터 조회
+    useEffect(()=>{
+        api.get('/history/intro/master')
+            .then(response=>{
+                const Data = response.data.data[0];
+                console.log(Data);
+                setQuestions({
+                    oneLiner:Data.oneLiner,
+                    introduction:Data.introduction,
+                    motive:Data.motive,
+                    prosAndCons:Data.prosAndCons
+                })
+            })
+            .catch(error=>{
+                console.log("Error:", error);
+            })
+    },[])
+
+    useEffect(()=>{
+        console.log(questions)
+    },[questions]);
 
     return (
         <BackgroundDiv>
             <BaseDiv>
                 <ContentTitle>
                     <h1 style={{display:'inline-block'}}>Master</h1>
-                    <p className='lastUpdated' style={{display:'inline-block', position:'absolute', top:'10px', right:0}}>마지막 수정일시: {content.updated_at}</p>
+                    <p className='lastUpdated' style={{display:'inline-block', position:'absolute', top:'10px', right:0}}>마지막 수정일시: api수정필요</p>
                 </ContentTitle>
-                <ContentBox>{content.oneLiner}</ContentBox>    
-                <ContentBox>{content.introduce}</ContentBox>  
+                <ContentBox>{questions.oneLiner ? questions.oneLiner : "아직 한줄소개를 작성하지 않았어요."}</ContentBox>    
+                <ContentBox>{questions.introduction ? questions.introduction : "아직 자기소개를 작성하지 않았어요."}</ContentBox>  
                 <h2>지원동기</h2>
-                <ContentBox>{content.reason_for_applying}</ContentBox>  
+                <ContentBox>{questions.motive ? questions.motive : "아직 지원동기를 작성하지 않았어요."}</ContentBox>  
                 <h2>장단점</h2>
-                <ContentBox>{content.strengths_and_weaknesses}</ContentBox>  
+                <ContentBox>{questions.prosAndCons ? questions.prosAndCons : "아직 장단점을 작성하지 않았어요."}</ContentBox>  
                 <h2>직무적합성</h2>
-                <ContentBox>{content.job_fit}</ContentBox>  
+                <ContentBox>api수정필요</ContentBox>  
 
 
                 {/*초안*/}

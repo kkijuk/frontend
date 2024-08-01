@@ -1,4 +1,5 @@
-import React from "react";
+import api from "../../Axios";
+import React,{useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import SubNav from '../../components/History/SubNav'
@@ -23,10 +24,52 @@ const MasterRewrite =()=>{
 
     const navigate = useNavigate();
 
+    const [questions, setQuestions] = useState({
+        oneLiner:"",
+        introduction:"",
+        motive:"",
+        prosAndCons:"",
+    }) 
+
+    const handleOnChange =(id,value)=>{
+        setQuestions(prevQuestions => ({ ...prevQuestions, [id]: value }));
+        console.log(questions);
+    }
+
+    //(API) 마스터 조회
+    useEffect(()=>{
+        api.get('/history/intro/master')
+            .then(response=>{
+                const Data = response.data.data[0];
+                console.log(Data);
+                setQuestions({
+                    oneLiner:Data.oneLiner,
+                    introduction:Data.introduction,
+                    motive:Data.motive,
+                    prosAndCons:Data.prosAndCons
+                })
+            })
+            .catch(error=>{
+                console.log("Error:", error);
+            })
+    },[])
+
+    const submitData =()=>{
+        api.patch('/history/intro/master/1',questions)
+            .then(response=>{
+                console.log(response.data);
+            })
+            .catch(error=>{
+                console.log("Error: ", error);
+            })
+    }
+
+    // setInterval({submitData},5000);
+
     const handleSubmit = (event)=>{
         event.preventDefault();
-        navigate(-1);
-        //수정 요청
+        // navigate('/history/master');
+        submitData();
     }
 
     return(
@@ -36,37 +79,42 @@ const MasterRewrite =()=>{
                 <Linear style={{width:'820px'}}/>
                 <p className='lastUpdated' style={{marginTop:0}}>마지막 수정일시: {content.updated_at}</p>           
                 <InputTitle
+                    id="oneLiner"
                     placeholder="한줄소개를 작성하세요"
                     style={{height:'50px', marginBottom:'12px'}}
-                    value={content.oneLiner||''}
-                    //onChange
+                    value={questions.oneLiner||''}
+                    onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
                 <InputTitle
+                    id="introduction"   
                     placeholder="자기소개를 작성하세요"
                     style={{height:'150px', marginBottom:'12px'}}
-                    value={content.introduce||''}
-                    //onChange
+                    value={questions.introduction||''}
+                    onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
                 <h2>지원동기</h2>
                 <InputTitle
+                    id="motive"
                     placeholder="지원동기를 작성하세요"
                     style={{height:'150px', marginBottom:'12px'}}
-                    value={content.reason_for_applying||''}
-                    //onChange
+                    value={questions.motive||''}
+                    onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
                 <h2>장단점</h2>
                 <InputTitle
+                    id="prosAndCons"
                     placeholder="장단점을 작성하세요"
                     style={{height:'150px', marginBottom:'12px'}}
-                    value={content.strengths_and_weaknesses||''}
-                    //onChange
+                    value={questions.prosAndCons||''}
+                    onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
                 <h2>직무적합성</h2>
                 <InputTitle
+                    id="jobFit"
                     placeholder="직무적합성을 작성하세요"
                     style={{height:'150px', marginBottom:'12px'}}
                     value={content.job_fit||''}
-                    //onChange
+                    onChange={console.log('api수정필요-직무적합성 추가')}
                 />
                 <div style={{height:'70px'}}></div>
                 <Button 
@@ -100,12 +148,12 @@ const BaseDiv = styled.div`
 `
 
 const InputTitle = styled.input`
-    width: 820px;
+    width: 780px;
     flex-shrink: 0;
     border:none;
     border-radius: 10px;
     background: var(--gray-06, #F5F5F5);    
-    padding-left: 20px;
+    padding: 0px 20px;
     color: var(--gray-02, #707070);
     font-family:Regular;
     font-size:16px;

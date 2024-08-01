@@ -14,7 +14,7 @@ import styled from 'styled-components';
 import SignupSuccess from "./pages/SignupSuccess";
 import SubNav from './components/History/SubNav';
 import ViewOptions from './pages/History/ViewOptions';
-import History from "./pages/History";
+import History from "./pages/History/History";
 import Master from "./pages/History/Master";
 import Others from "./pages/History/Others"
 import MasterRewrite from "./pages/History/MasterRewrite"
@@ -23,6 +23,7 @@ import ListHeader from "./pages/History/ListHeader"
 import List from "./pages/History/List"
 import SelectHeader from "./pages/History/SelectHeader"
 import Select from './pages/History/Select';
+// import EducationItem from './components/History/EducationItem';
 import AddApply from "./pages/History/AddApply"
 import Portfolio from "./pages/History/Portfolio"
 import ApplyDetail from './pages/ApplyDetail';
@@ -57,6 +58,7 @@ function App() {
           <Route path="/mycareer" element={<MyCareer />} /> {/* 내커리어 */}
 
           {/* 이력관리 라우팅 */}
+          {/* <Route path="/test" element={<EducationItem/>}/> */}
           <Route element={<SubNav/>}>
             <Route element={<ViewOptions/>}>
               <Route path="/history/master" element={<Master/>}/>

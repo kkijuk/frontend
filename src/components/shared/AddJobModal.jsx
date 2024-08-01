@@ -110,6 +110,7 @@ const ErrorMessage = styled.p`
   font-size: 0.9em;
   font-weight:500;
   margin-bottom: 10px;
+  
 `;
 
 const AddJobModal = ({ onClose, onSave }) => {

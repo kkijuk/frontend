@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import api from '../../Axios'
+import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import './history.css'
@@ -7,22 +8,22 @@ import Convert from '../../components/History/Convert'
 import Toggle from '../../components/History/Toggle'
 import ButtonOptions from '../../components/History/AddButton'
 
-const Others=()=> {
+const Others=({recruitId})=> {
 
     const dummyData=[
         {
-            "id": 100, "title":"UMC"
+            "id": 2, "title":"UMC"
         },
         {
             "id": 101, "title":"현대"
         },
         {
-            "id": 102, "title":"카카오"
+            "id": 1, "title":"카카오"
         }
     ]
     const dummyData2 = [
         {
-            "id": 100,
+            "id": 2,
             "oneLiner": "UMC 7기 지원",
             "questions":[
                 {
@@ -48,6 +49,7 @@ const Others=()=> {
 
     const navigate = useNavigate();
     const {id} = useParams();
+    id = recruitId;
 
     useEffect(()=>{
 

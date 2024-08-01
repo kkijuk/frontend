@@ -8,7 +8,7 @@ const Select =()=>{
     //(API) 미지원 공고 정보 불러오기
     const data = [
         {
-            "recruitId":3,
+            "recruitId":1,
             "title":"카카오",
             "startTime": "2024-09-01 10:11",
             "endTime": "2025-02-20 10:11",
