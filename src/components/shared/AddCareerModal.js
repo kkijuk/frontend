@@ -278,7 +278,10 @@ const AddCareerModal = ({ onClose, onSave }) => {
         alert("필수 정보를 입력하세요!");
         return;
       }
-    
+      else if(moment(startDate).isAfter(moment(endDate))){
+        alert("시작일과 종료일을 다시 확인해 주세요!");
+        return;
+      }
 
     onSave({
       category,
