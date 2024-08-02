@@ -270,7 +270,7 @@ const AddCareerModal = ({ onClose, onSave }) => {
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
-    setCategory(selectedCategory);
+    setCategory(category);
   };
 
     const handleSave = () => {
