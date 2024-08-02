@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import CategoryGroup from '../shared/CategoryGroup';
+import ReactCalendar from '../shared/CalendarSingle';
+import moment from 'moment';
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -126,7 +128,7 @@ const InputLong = styled.textarea`
 const InputDate = styled.input`
   font-family: Pretendard;
   font-size: 1em;
-  width: 100%;
+  width: 93%;
   height: 100%;
   padding: 12px;
   margin-bottom: 25px;
@@ -146,9 +148,16 @@ const Row = styled.div`
 
 const DateBox = styled.div`
   flex: 1;
-  display: flex;
+  flex-direction: column;
   justify-content: ${(props) => (props.align === 'right' ? 'flex-end' : 'flex-start')};
 `
+
+const CalendarWrapper = styled.div`
+  position: absolute;
+  top: 100%; /* input 바로 아래에 위치 */
+  left: 0;
+  z-index: 10;
+`;
 
 const SaveButton = styled.button`
   width: 100%;
@@ -227,6 +236,36 @@ const AddCareerModal = ({ onClose, onSave }) => {
   const [checked, setChecked] = useState(false);
   const [content, setContent] = useState('');
 
+  const startCalendarRef = useRef(null);
+  const endCalendarRef = useRef(null);
+  const [showStartCalendar, setShowStartCalendar] = useState(false);
+  const [showEndCalendar, setShowEndCalendar] = useState(false);
+
+  const handleStartDateChange = (date) => {
+    setStartDate(moment(date).format('YYYY-MM-DD'));
+    setShowStartCalendar(false);
+  };
+
+  const handleEndDateChange = (date) => {
+    setEndDate(moment(date).format('YYYY-MM-DD'));
+    setShowEndCalendar(false);
+  };
+
+  const handleClickOutside = (event) => {
+    if ( (startCalendarRef.current && !startCalendarRef.current.contains(event.target)) &&
+    (endCalendarRef.current && !endCalendarRef.current.contains(event.target))) {
+      setShowStartCalendar(false);
+      setShowEndCalendar(false);
+    }
+  };
+  
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const hasError = !category || !careerName || !alias || (!checked && (!startDate || !endDate)) || (checked && !startDate);
 
   const handleCategorySelect = (category) => {
@@ -239,7 +278,10 @@ const AddCareerModal = ({ onClose, onSave }) => {
         alert("필수 정보를 입력하세요!");
         return;
       }
-    
+      else if(moment(startDate).isAfter(moment(endDate))){
+        alert("시작일과 종료일을 다시 확인해 주세요!");
+        return;
+      }
 
     onSave({
       category,
@@ -294,9 +336,15 @@ const AddCareerModal = ({ onClose, onSave }) => {
                 placeholder="YYYY-MM-DD"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                onFocus={(e) => (e.target.type = 'date')}
-                onBlur={(e) => (e.target.type = 'text')}
+                onClick={() => setShowStartCalendar(!showStartCalendar)}
+                readOnly
               />
+              {showStartCalendar && (
+                <ReactCalendar
+                  onChange={handleStartDateChange}
+                  
+                />
+              )}
             </DateBox>
             <Label style={{margin: '10px 15px'}}>~</Label>
             <DateBox align="right">
@@ -305,10 +353,16 @@ const AddCareerModal = ({ onClose, onSave }) => {
                 placeholder="YYYY-MM-DD"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                onFocus={(e) => (e.target.type = 'date')}
-                onBlur={(e) => (e.target.type = 'text')}
+                onClick={() => setShowEndCalendar(!showEndCalendar)}
+                readOnly
                 disabled={checked}
               />
+              {showEndCalendar && (
+                <ReactCalendar
+                  onChange={handleEndDateChange}
+                  
+                />
+              )}
             </DateBox>
           </Row>
           <RadioContainer>
