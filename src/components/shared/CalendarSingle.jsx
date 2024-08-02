@@ -110,6 +110,7 @@ export default function ReactCalendar({ onChange }) {
   const handleDateChange = (date) => {
     setValue(date);
     onChange(date);
+    onChange(moment(date).format('YYYY.MM.DD'));
   };
 
   const handleClickOutside = (event) => {
@@ -138,7 +139,7 @@ export default function ReactCalendar({ onChange }) {
           prev2Label={null}
           nextLabel={<ChevronDownIcon className="next-icon" />}
           prevLabel={<ChevronDownIcon className="prev-icon" />}
-          navigationLabel={({ date }) => moment(date).format('YYYY M월')}
+          navigationLabel={({ date }) => moment(date).format('YYYY.MM.DD')}
           tileClassName={({ date, view }) => {
             if (value && moment(date).isSame(value, 'day')) {
               return 'react-calendar__tile--active';

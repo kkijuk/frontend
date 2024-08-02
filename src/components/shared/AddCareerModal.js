@@ -242,12 +242,12 @@ const AddCareerModal = ({ onClose, onSave }) => {
   const [showEndCalendar, setShowEndCalendar] = useState(false);
 
   const handleStartDateChange = (date) => {
-    setStartDate(moment(date).format('YYYY-MM-DD'));
+    setStartDate(moment(date).format('YYYY.MM.DD'));
     setShowStartCalendar(false);
   };
 
   const handleEndDateChange = (date) => {
-    setEndDate(moment(date).format('YYYY-MM-DD'));
+    setEndDate(moment(date).format('YYYY.MM.DD'));
     setShowEndCalendar(false);
   };
 
@@ -278,21 +278,34 @@ const AddCareerModal = ({ onClose, onSave }) => {
         alert("필수 정보를 입력하세요!");
         return;
       }
-      else if(moment(startDate).isAfter(moment(endDate))){
+      else if(!checked &&(moment(startDate).isAfter(moment(endDate)))){
         alert("시작일과 종료일을 다시 확인해 주세요!");
         return;
       }
 
-    onSave({
-      category,
-      careerName,
-      alias,
-      startDate,
-      endDate,
-      checked,
-      content,
-    });
-    onClose();
+      if(checked){
+        onSave({
+          category,
+          careerName,
+          alias,
+          startDate,
+          checked,
+          content,
+        });
+        onClose();
+      }
+      else{
+        onSave({
+          category,
+          careerName,
+          alias,
+          startDate,
+          endDate,
+          checked,
+          content,
+        });
+        onClose();
+      }
   };
 
   return (
