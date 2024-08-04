@@ -27,6 +27,7 @@ import AddApply from "./pages/History/AddApply"
 import Portfolio from "./pages/History/Portfolio"
 import ApplyDetail from './pages/ApplyDetail';
 import AuthenticationAccount from './pages/Mypage/AuthenticationAccount';
+import SignupInterest from './pages/SignupInterest';
 
 
 const AppContainer = styled.div`
@@ -56,6 +57,9 @@ function App() {
           <Route path="/mypage" element={<MyPage />} /> {/* 마이 페이지 */}
           <Route path="/mycareerdetail" element={<MyCareerDetail />} /> {/* 내커리어 상세*/}
           <Route path="/mycareer" element={<MyCareer />} /> {/* 내커리어 */}
+          
+          <Route path="/SignupInterest" element={<SignupInterest />} />
+
 
           {/* 이력관리 라우팅 */}
           <Route element={<SubNav/>}>

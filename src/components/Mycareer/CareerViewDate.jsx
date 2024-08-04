@@ -12,7 +12,7 @@ const BackgroundSection = styled.div`
 `;
 
 const ContentSection = styled.div`
-  max-width: 1200px;
+  max-width: 820px;
   margin: 0 auto;
   padding: 20px;
   background-color: ${({ background }) => background || 'white'};
