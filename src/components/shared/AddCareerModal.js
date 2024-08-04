@@ -68,7 +68,7 @@ const CloseButton = styled.button`
 const ModalTitle = styled.h2`
   margin-top: 30px;
   margin-bottom: 20px;
-  font-size: 2em;
+  font-size: 32px;
 
   color: var(--main-01, #3AAF85);
   text-align: center;
@@ -163,11 +163,16 @@ const SaveButton = styled.button`
   width: 100%;
   background-color: #3AAF85;
   color: white;
-  padding: 10px 20px;
+  padding: 15px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 1em;
+  font-size: 18px;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 
   display: flex;
   justify-content: center;
@@ -242,12 +247,12 @@ const AddCareerModal = ({ onClose, onSave }) => {
   const [showEndCalendar, setShowEndCalendar] = useState(false);
 
   const handleStartDateChange = (date) => {
-    setStartDate(moment(date).format('YYYY-MM-DD'));
+    setStartDate(moment(date).format('YYYY.MM.DD'));
     setShowStartCalendar(false);
   };
 
   const handleEndDateChange = (date) => {
-    setEndDate(moment(date).format('YYYY-MM-DD'));
+    setEndDate(moment(date).format('YYYY.MM.DD'));
     setShowEndCalendar(false);
   };
 
@@ -270,7 +275,7 @@ const AddCareerModal = ({ onClose, onSave }) => {
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
-    setCategory(selectedCategory);
+    setCategory(category);
   };
 
     const handleSave = () => {
@@ -278,21 +283,34 @@ const AddCareerModal = ({ onClose, onSave }) => {
         alert("필수 정보를 입력하세요!");
         return;
       }
-      else if(moment(startDate).isAfter(moment(endDate))){
+      else if(!checked &&(moment(startDate).isAfter(moment(endDate)))){
         alert("시작일과 종료일을 다시 확인해 주세요!");
         return;
       }
 
-    onSave({
-      category,
-      careerName,
-      alias,
-      startDate,
-      endDate,
-      checked,
-      content,
-    });
-    onClose();
+      if(checked){
+        onSave({
+          category,
+          careerName,
+          alias,
+          startDate,
+          checked,
+          content,
+        });
+        onClose();
+      }
+      else{
+        onSave({
+          category,
+          careerName,
+          alias,
+          startDate,
+          endDate,
+          checked,
+          content,
+        });
+        onClose();
+      }
   };
 
   return (

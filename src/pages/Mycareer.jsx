@@ -9,7 +9,7 @@ import AddCareerModal from '../components/shared/AddCareerModal'; //모달 내�
 import CareerTimeline from '../components/Mycareer/CareerTimeline'; //타임라인 임포트
 
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 820px;
   margin: 0 auto;
   padding: 20px;
   background-color: white;
