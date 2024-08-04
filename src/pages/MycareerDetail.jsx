@@ -58,11 +58,24 @@ const Box = styled.div` /*Box는 다 빈칸채우기 위한 애들임!*/
 
 const CareerTitle = styled.div`
   width: 800px;
-  height: 89px;
+  height: auto;
   box-sizing: border-box; 
   display: flex;
   justify-content: space-between; /* 왼쪽에 텍스트, 오른쪽에 아이콘 배치 */
   align-items: flex-start; /* 텍스트와 아이콘을 수직 정렬 */
+  border: 1px solid black;
+  padding-bottom: 10px; /* 추가 */
+`;
+
+const ActivityDetails = styled.div`
+  width: 720px;
+  color: #000;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 18px;
 `;
 
 const Container2 = styled.div`
@@ -154,7 +167,7 @@ export default function MycareerDetail() {
   const [isAdding, setIsAdding] = useState(false);
 
   const dummyData = [
-    { startDate: '2023.06', endDate: '2024.01', careerName: '학원 아르바이트', category: '아르바이트/인턴', alias: '학원 알바', careertext: 'dkdkdkdkddkdkdkdkdk' },
+    { startDate: '2023.06', endDate: '2024.01', careerName: '학원 아르바이트', category: '아르바이트/인턴', alias: '학원 알바', careertext: 'dkdkdkdkddkdkdkdkdk가나다라마바사 아자차카타파하 스페이스 스페이스 스페이스 스페이ㅡ 스페이스 언제까지 써야 두줄짜리가 될까요오오오오ㅗㅇ ' },
     { startDate: '2024.03', endDate: '2024.08', careerName: 'IT 서비스 개발 동아리', category: '동아리', alias: 'UMC', careertext: 'dkdkdkdkddkdkdkdkㄴㄴㄴㄴdk' },
     { startDate: '2023.06', endDate: '2024.01', careerName: '데이터분석 공모전', category: '공모전/대회', alias: 'dd 공모전', careertext: 'dkdkdkdkddkdkdkdkㅁㄴㅇㄹㅁㄴㅇㄹ'},
     { startDate: '2023.06', endDate: '2024.01', careerName: 'UXUI 소학회', category: '동아리', alias: 'SWUX', careertext: 'dkdkdkdkddkdkdkdkdk'},
@@ -226,7 +239,10 @@ export default function MycareerDetail() {
               </ActivityRecordWrapper>
             )}
             {selectedCareer && (
-              <ActivityDate>{selectedCareer.startDate} ~ {selectedCareer.endDate}</ActivityDate>
+              <>
+                <ActivityDate>{selectedCareer.startDate} ~ {selectedCareer.endDate}</ActivityDate>
+                <ActivityDetails>{selectedCareer.careertext}</ActivityDetails> {/* 활동내역 텍스트 부분 추가 */}
+              </>
             )}
           </div>
           <EditIconBig />
