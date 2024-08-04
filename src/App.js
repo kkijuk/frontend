@@ -27,7 +27,7 @@ import AddApply from "./pages/History/AddApply"
 import Portfolio from "./pages/History/Portfolio"
 import ApplyDetail from './pages/ApplyDetail';
 import AuthenticationAccount from './pages/Mypage/AuthenticationAccount';
-
+import MyInformation from './pages/Mypage/Myinformation';
 
 const AppContainer = styled.div`
   display: flex;
@@ -82,6 +82,7 @@ function App() {
 
           {/* 마이페이지 라우팅 */}
           <Route path="/mypage/authentication" element={<AuthenticationAccount />} /> {/* 마이 페이지 누르면 나오는 비번 확인 페이지*/}
+          <Route path="/mypage/myinformation" element={<MyInformation />} /> {/* 마이 페이지 누르면 나오는 비번 확인 페이지*/}
 
 
 

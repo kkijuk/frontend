@@ -20,7 +20,7 @@ const SubNav =()=>{
 
                 <Nav>
                     <NavItems 
-                        onClick={()=>navigate('/history')} 
+                        onClick={()=>navigate('/mypage/myinformation')} 
                         active={myInformation}>내정보</NavItems>
                     <NavItems 
                         onClick={()=>navigate('/history/master')} 
