@@ -68,7 +68,7 @@ const CloseButton = styled.button`
 const ModalTitle = styled.h2`
   margin-top: 30px;
   margin-bottom: 20px;
-  font-size: 2em;
+  font-size: 32px;
 
   color: var(--main-01, #3AAF85);
   text-align: center;
@@ -163,11 +163,16 @@ const SaveButton = styled.button`
   width: 100%;
   background-color: #3AAF85;
   color: white;
-  padding: 10px 20px;
+  padding: 15px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 1em;
+  font-size: 18px;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 
   display: flex;
   justify-content: center;
