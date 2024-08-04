@@ -58,7 +58,7 @@ const PasswordInput = styled.input`
     background: #F5F5F5;
     border: none; /* border 속성 제거 */
 
-    padding-left: 17px; /* padding-left 속성 추가 */
+    padding-left: 20px; /* padding-left 속성 추가 */
     box-sizing: border-box; /* box-sizing 속성 추가 */
 
 
@@ -131,7 +131,7 @@ export default function Authentication() {
             </Box1>
             <Box2>
                 <Email>
-                    <Text1 marginBottom="22px">
+                    <Text1 marginBottom="20px">
                         이메일
                     </Text1>
                     <div style={{ color: '#000', fontFamily: 'Pretendard', fontSize: '16px', fontStyle: 'normal', fontWeight: 400, lineHeight: 'normal', marginLeft: '9px', marginTop: '7px' }}>
@@ -139,11 +139,11 @@ export default function Authentication() {
                     </div>
                 </Email>
                 <Password>
-                    <Text1 marginBottom="15px">
+                    <Text1 marginBottom="6px">
                         비밀번호
                     </Text1>
                     <PasswordInput
-                        placeholder="비밀번호를 입력하세요"
+                        placeholder="특수문자 포함, 8자리 이상 입력하세요"
                     />
                 </Password>
             </Box2>
