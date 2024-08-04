@@ -34,7 +34,7 @@ const ViewTitleContainer = styled.div`
 const ViewTitle = styled.div`
   color: var(--black, #000);
   font-family: Pretendard;
-  font-size: 24px;
+  font-size: 22px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
