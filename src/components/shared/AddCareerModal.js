@@ -248,12 +248,12 @@ const AddCareerModal = ({ onClose, onSave }) => {
   const [showEndCalendar, setShowEndCalendar] = useState(false);
 
   const handleStartDateChange = (date) => {
-    setStartDate(moment(date).format('YYYY.MM.DD'));
+    setStartDate(moment(date).format('YYYY-MM-DD'));
     setShowStartCalendar(false);
   };
 
   const handleEndDateChange = (date) => {
-    setEndDate(moment(date).format('YYYY.MM.DD'));
+    setEndDate(moment(date).format('YYYY-MM-DD'));
     setShowEndCalendar(false);
   };
 
