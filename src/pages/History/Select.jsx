@@ -4,91 +4,83 @@ import { useNavigate, useParams } from "react-router-dom";
 import './history.css'
 import styled from "styled-components";
 
-const Select =()=>{
-    //(API) 미지원 공고 정보 불러오기
-    const data = [
-        {
-            "recruitId":1,
-            "title":"카카오",
-            "startTime": "2024-09-01 10:11",
-            "endTime": "2025-02-20 10:11",
-            "tags": [
-                "기업",
-                "백엔드"
-            ]
-        },
-        {
-            "recruitId":4,
-            "title":"네이버",
-            "startTime": "2024-07-20 10:11",
-            "endTime": "2024-08-20 10:11",
-            "tags": [
-                "기업",
-                "풀스택"
-            ]
-        },
-        {
-            "recruitId":5,
-            "title":"현대 오토에버",
-            "startTime": "2024-07-20 10:11",
-            "endTime": "2024-08-20 10:11",
-            "tags": [
-                "기업",
-                "인공지능"
-            ]
-        },
-        {
-            "recruitId":2,
-            "title":"UMC 7기",
-            "startTime": "2024-07-20 10:11",
-            "endTime": "2024-08-20 10:11",
-            "tags": [
-                "동아리",
-                "서비스기획"
-            ]
-        },
-        {
-            "recruitId":6,
-            "title":"구름톤",
-            "startTime": "2024-07-20 10:11",
-            "endTime": "2024-08-20 10:11",
-            "tags": [
-                "해커톤",
-                "프론트엔드"
-            ]
-        },
-    ]
+// Todo
+// - 미지원 공고 api 연결
+// - 선택 공고 상세 api 연결
+// - 자소서 생성 api 연결
+// - 해당 공고 상태 변경 api 연결
+// - 다음 버튼 라우팅
+// - 공고 추가 모달 연결
 
-    const {id} = useParams();
+const Select =()=>{
     const navigate = useNavigate();
 
-    const [currentApply, setCurrentApply] = useState(data[0].recruitId);
-    const [selectedData, setSelectedData] = useState(0);
+    const formattedDate =(date)=>{
+        const year = date.getFullYear();
+        const month = String(date.getMonth()+1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
 
-    useEffect(()=>{
-        console.log("currentApply: ",currentApply);
-        const index = data.findIndex(i=>i.recruitId===currentApply);
-        console.log("index값: ", index);
-        if(index !== -1){
-            setSelectedData(index);
-        }else{
-            setSelectedData(-1);
-        }
-        // console.log("selectedData: ",selectedData)
-        
-    },[currentApply])
-    const isValidIndex = selectedData > -1;//index 예외 처리
-    useEffect(() => {
-        console.log("selectedData: ", selectedData);
-    }, [selectedData]);
-
-    const handleClickItem=(id)=>{
-        setCurrentApply(id);
-        //InfoDiv바꾸기
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
     }
 
+    //(Data) 미지원 공고(id), 선택 공고 세부 정보, 생성된 자소서의 id
+    const [recruits, setRecruits] = useState([]);
+    const [currentApply, setCurrentApply] = useState(0);
+    const [detail, setDetail] = useState({
+        startTime:"",
+        endTime:"",
+        tag:[]
+    })
+    const [newId, setNewId] = useState(0);
+
+    //1. 미지원 공고 불러오기
+    //(API) unapplied 공고 조회
+    useEffect(()=>{
+        //오늘 날짜
+        const now = new Date();
+        const formattedTime = formattedDate(now);
+        const encodedTime = encodeURIComponent(formattedTime);
+
+        api.get(`/recruit/list/valid?time=${encodedTime}`)
+            .then(response=>{
+                console.log(response.data);
+                const recruitsData = response.data.unapplied.recruits;
+                setRecruits(recruitsData);
+                setCurrentApply(recruits[0].id)
+            })
+            .catch(error=>{
+                console.log("Error: ", error);
+            })
+    },[])
+
+    //2. 선택된 미지원 공고 세부정보 불러오기
+    const handleClickItem=(id)=>{
+        setCurrentApply(id);
+    }
+    //(API) 공고 세부정보 조회
+    useEffect(()=>{
+        api.get(`/recruit/${currentApply}`)
+            .then(response=>{
+                console.log(response.data);
+                const detailData = response.data;
+                setDetail({
+                    startTime:detailData.startTime,
+                    endTime:detailData.endTime,
+                    tag:detailData.tags
+                })
+            })
+            .catch(error=>{
+                console.log("Error: ", error);
+            })
+    },[currentApply])
+
+
+
+
+    //3. 해당 공고 자소서 생성하기 
     const handleNextClick =()=>{
-        //(API) 자소서 생성
         const postData = {
             questionList:[
                 {title:"string", content:"string", number:0},
@@ -98,16 +90,30 @@ const Select =()=>{
             state: 0
         };
 
+        //(API) 자소서 생성
         api.post(`/history/intro/${currentApply}`,postData)
             .then(response=>{
                 console.log(response.data);
+                //결과물로 '자소서'아이디 생성되면
+                //useEffect로 id 변화 감지해서, 해당 페이지로 라우팅.
+                setNewId(response.data.data.id);
+                navigate(`/history/others/${newId}/rewrite`);
             })
             .catch(error=>{
                 console.error('Error:',error);
-            })
+        })
 
-        navigate(`/history/others/:${id}/rewrite`);
+        //(API) 해당 공고 상태 변경
+        api.patch(`/recruit/${currentApply}`,{"status":"planned"})
+            .then(response=>{
+                console.log('상태 변경 결과: ', response.data);
+            })
+            .catch(error=>{
+                console.log(error);
+            })
+        
     }
+
 
     return( 
         <BackgroundDiv>
@@ -118,9 +124,9 @@ const Select =()=>{
                 <ListDiv>
                     <ItemsDiv>
                         {
-                            data.map(recruit=>(
+                            recruits.map(recruit=>(
                                 <ListItem 
-                                    onClick={()=>{handleClickItem(recruit.recruitId)}}  
+                                    onClick={()=>{handleClickItem(recruit.id)}}  
                                     style={{backgroundColor: currentApply===recruit.recruitId ? '#E1FAED' :'#F5F5F5',
                                             color: currentApply===recruit.recruitId ? 'black' :'#707070',
                                             border: currentApply===recruit.recruitId ? '2px solid var(--main-01, #3AAF85)' :'none'}}>
@@ -135,16 +141,16 @@ const Select =()=>{
                 <InfoDiv>
                     <Item style={{top:'10px'}}>
                         <p style={{fontWeight:800}}>접수시작</p>
-                        <p >{isValidIndex && data[selectedData].startTime}</p>
+                        <p >{detail.startTime}</p>
                     </Item>
                     <Item style={{top:'10px',right:'150px'}}>
                         <p style={{fontWeight:800}}>접수마감</p>
-                        <p style={{color:'#FC5555'}}>{isValidIndex && data[selectedData].endTime}</p>
+                        <p style={{color:'#FC5555'}}>{detail.endTime}</p>
                     </Item>
                     <Item style={{top:'50px'}}>
                         <p style={{fontWeight:800}}>태그</p>
-                        {data[selectedData].tags.map(tag=>(
-                            <Tag style={{background: '#FFF', color:'#3AAF85'}}>{isValidIndex && tag}</Tag>
+                        {detail.tag.map(tag=>(
+                            <Tag style={{background: '#FFF', color:'#3AAF85'}}>{tag}</Tag>
                         ))}
                     </Item>
                     {/* <button

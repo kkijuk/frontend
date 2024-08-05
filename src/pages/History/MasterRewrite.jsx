@@ -24,18 +24,18 @@ const MasterRewrite =()=>{
 
     const navigate = useNavigate();
 
+    //(Data) 한줄소개, 지원동기및포부 제목 및 내용, 장단점 제목 및 내용, 직무적합성 제목 및 내용
     const [questions, setQuestions] = useState({
         oneLiner:"",
-        introduction:"",
+        motive_title:"",
         motive:"",
+        prosAndCons_title:"",
         prosAndCons:"",
+        job_fit_title:"",
+        job_fit:""
     }) 
 
-    const handleOnChange =(id,value)=>{
-        setQuestions(prevQuestions => ({ ...prevQuestions, [id]: value }));
-        console.log(questions);
-    }
-
+    //1. 마스터 저장 내용 불러오기
     //(API) 마스터 조회
     useEffect(()=>{
         api.get('/history/intro/master')
@@ -44,9 +44,12 @@ const MasterRewrite =()=>{
                 console.log(Data);
                 setQuestions({
                     oneLiner:Data.oneLiner,
-                    introduction:Data.introduction,
-                    motive:Data.motive,
-                    prosAndCons:Data.prosAndCons
+                    motive_title:"",
+                    motive:"",
+                    prosAndCons_title:"",
+                    prosAndCons:"",
+                    job_fit_title:"",
+                    job_fit:""
                 })
             })
             .catch(error=>{
@@ -54,6 +57,14 @@ const MasterRewrite =()=>{
             })
     },[])
 
+    //2. 마스터 변경 내용 수정(저장 버튼 + 정기 호출)
+    const handleOnChange =(id,value)=>{
+        setQuestions(prevQuestions => ({ ...prevQuestions, [id]: value }));
+        console.log(questions);
+    }
+
+
+    //(API) 마스터 수정
     const submitData =()=>{
         api.patch('/history/intro/master/1',questions)
             .then(response=>{
@@ -71,6 +82,7 @@ const MasterRewrite =()=>{
         // navigate('/history/master');
         submitData();
     }
+
 
     return(
         <BackgroundDiv>

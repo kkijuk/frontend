@@ -19,9 +19,7 @@ import Master from "./pages/History/Master";
 import Others from "./pages/History/Others"
 import MasterRewrite from "./pages/History/MasterRewrite"
 import OthersRewrite from "./pages/History/OthersRewrite"
-import ListHeader from "./pages/History/ListHeader"
 import List from "./pages/History/List"
-import SelectHeader from "./pages/History/SelectHeader"
 import Select from './pages/History/Select';
 // import EducationItem from './components/History/EducationItem';
 import AddApply from "./pages/History/AddApply"

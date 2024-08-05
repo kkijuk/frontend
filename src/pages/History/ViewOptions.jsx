@@ -1,8 +1,12 @@
+import api from "../../Axios";
 import React, { useState, useEffect } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Toggle from "../../components/History/Toggle";
 import AddButton from "../../components/History/AddButton";
+
+// Todo  
+// - 옵션 로직 수정
 
 const ViewOptions = () => {
     const dummyData = [
@@ -14,9 +18,48 @@ const ViewOptions = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    //(Data) 토글 체크, 현재 선택한 공고, 리스트 조회 상태, 공고 목록
     const [isChecked, setIsChecked] = useState(location.path !== '/history/list');
-    const [state, setState] = useState(3);
     const [currentApply, setCurrentApply] = useState('master');
+    const [state, setState] = useState(3);
+    const [recruits, setRecruits] = useState([]);
+
+
+    //1. 지원 공고 목록 조회
+    useEffect(()=>{
+        //오늘 날짜
+        const now = new Date();
+        const formattedTime = formattedDate(now);
+        const encodedTime = encodeURIComponent(formattedTime);
+
+        //(API) planned 공고 목록 불러오기
+        api.get(`/recruit/list/valid?time=${encodedTime}`)
+        .then(response=>{
+            console.log("공고목록 조회:", response.data);
+            const Data = response.data.planned.recruits;
+            setRecruits(Data);
+        })
+        .catch(error=>{
+            console.log("Error: ", error);
+        })
+    },[])
+
+    const formattedDate =(date)=>{
+        const year = date.getFullYear();
+        const month = String(date.getMonth()+1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+    }
+    
+
+    //토글 클릭
+    const handleToggleClick = () => {
+        isChecked ? navigate('/history/list/3') : navigate('/history/master');
+        setIsChecked(!isChecked);
+    };
 
     useEffect(() => {
         if (location.pathname === '/history/master') {
@@ -32,6 +75,8 @@ const ViewOptions = () => {
         
     }, [location.pathname]);
 
+
+    // 하위 페이지 라우팅
     const handleApplyClick = (id) => {
         setCurrentApply(id);
         id === 'master'
@@ -44,27 +89,24 @@ const ViewOptions = () => {
         setState(state);
     };
 
-    const handleToggleClick = () => {
-        isChecked ? navigate('/history/list/3') : navigate('/history/master');
-        setIsChecked(!isChecked);
-    };
 
-    const handleEditClick = () => {
-        console.log("currentApply:", currentApply);  // 현재 값 확인용
-        if (location.pathname === '/history/master') {
-            navigate('/history/master/rewrite');
-        } else {
-            if (currentApply && currentApply !== 'master') {
-                navigate(`/history/others/${currentApply}/rewrite`);
-            } else {
-                console.error("currentApply 값이 유효하지 않습니다.");
-            }
-        }
-    };
 
-    const handleAddClick = () => {
-        navigate('/history/select');
-    };
+    // const handleEditClick = () => {
+    //     console.log("currentApply:", currentApply);  // 현재 값 확인용
+    //     if (location.pathname === '/history/master') {
+    //         navigate('/history/master/rewrite');
+    //     } else {
+    //         if (currentApply && currentApply !== 'master') {
+    //             navigate(`/history/others/${currentApply}/rewrite`);
+    //         } else {
+    //             console.error("currentApply 값이 유효하지 않습니다.");
+    //         }
+    //     }
+    // };
+
+    // const handleAddClick = () => {
+    //     navigate('/history/select');
+    // };
 
     return (
         <>
@@ -72,7 +114,7 @@ const ViewOptions = () => {
                 onClick={() => handleApplyClick('master')}
                 style={{ backgroundColor: currentApply === 'master' ? '#E1FAED' : '#F5F5F5' }}
             >Master</SButton>}
-            {isChecked && dummyData.map(resume => (
+            {isChecked && recruits.map(resume => (
                 <SButton type="button"
                     key={resume.id}
                     onClick={() => handleApplyClick(resume.id)}
@@ -121,7 +163,6 @@ const ViewOptions = () => {
 export default ViewOptions;
 
 const SButton = styled.button`
-    width: 76px;
     height: 35px;
     margin-right: 12px;
     font-family: 'Regular';

@@ -1,19 +1,43 @@
-import React from 'react'
+import api from '../../Axios'
+import React, {useState,useEffect} from 'react'
 import styled from 'styled-components'
 import './history.css'
 import SubNav from '../../components/History/SubNav'
 
 const History=()=>{
+
+    //(Data)
+    const [picture, setPicture] = useState('') //프로필
+    const [address, setAddress] = useState('') //주소
+    const [updatedAt, setUpdatedAt] = useState('')//마지막 업데이트
+    const [education, setEducation] = useState([]);
+    const [career, setCareer] = useState([]);
+    const [activity, setActivity] = useState([]);
+
+    //1. 이력서 조회
+
+    //2. 이력서 수정
+
     return(
         <BackgroundDiv>
             <BaseDiv>
-            <Linear></Linear>
-            {/*AddButton 개수 제한 이벤트(onClick)*/}
-            <AddButton >+</AddButton>
-            <Linear></Linear>
-            <AddButton >+</AddButton>
-            <Linear></Linear>
-            <AddButton >+</AddButton>
+                {/* 유저 정보 */}
+                <div style={{width:'150px', height:'200px'}}>
+
+                </div>
+                <Linear></Linear>
+
+                {/* 학력 */}
+                {/*AddButton 개수 제한 이벤트(onClick)*/}
+                <AddButton >+</AddButton>
+                <Linear></Linear>
+
+                {/* 경력 */}
+                <AddButton >+</AddButton>
+                <Linear></Linear>
+
+                {/* 활동 및 경험 */}
+                <AddButton >+</AddButton>
             </BaseDiv>
         </BackgroundDiv>
     )

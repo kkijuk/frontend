@@ -283,7 +283,8 @@ const AddButton = styled.button`
     background: #FFF;
     color:#D9D9D9;
     font-size: 30px;
-    cursor:pointer; 
+    cursor:pointer;
+    
 `
 const Button = styled.button`
     height: 50px;
