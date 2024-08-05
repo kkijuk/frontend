@@ -84,7 +84,7 @@ const Label = styled.span`
 
 const groupByDate = (data) => {
   return data.reduce((acc, current) => {
-    const date = current.date;
+    const date = current.endTime.split(' ')[0];
     if (!acc[date]) {
       acc[date] = [];
     }
@@ -95,6 +95,7 @@ const groupByDate = (data) => {
 
 const ListView = ({ data, onJobClick }) => {
   const groupedData = groupByDate(data);
+
   return (
     <BackgroundSection>
       <ContentSection background="#f0f0f0">
@@ -105,8 +106,8 @@ const ListView = ({ data, onJobClick }) => {
               {groupedData[date].map((ad, idx) => (
                 <AdItem key={idx} onClick={() => onJobClick(ad)}>
                   <AdDetails>
-                    <Label>{ad.label}</Label>
-                    <AdTitle>{ad.details}</AdTitle>
+                    <Label>{ad.status}</Label>
+                    <AdTitle>{ad.title}</AdTitle>
                   </AdDetails>
                 </AdItem>
               ))}
@@ -119,3 +120,7 @@ const ListView = ({ data, onJobClick }) => {
 };
 
 export default ListView;
+
+
+
+
