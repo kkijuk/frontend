@@ -30,6 +30,10 @@ const SignupPage = () => {
     setStep(step + 1);
   };
 
+  const handlePrevStep = () => {
+    setStep(step - 1);
+  };
+
   const handleSignup = () => {
     console.log('회원가입 시도:', email, name, contact, verificationCode, birthdate, password, agreements1, agreements2, agreements3);
     // 회원가입 로직을 추가하고 성공 시 다음 코드 실행
@@ -66,6 +70,8 @@ const SignupPage = () => {
           verificationCode={verificationCode}
           setVerificationCode={setVerificationCode}
           handleNextStep={handleNextStep}
+          handleResendCode={() => { /* 재전송 로직 */ }}
+          handlePrevStep={handlePrevStep}
         />
       )}
       {step === 3 && (
@@ -77,6 +83,7 @@ const SignupPage = () => {
           birthdate={birthdate}
           setBirthdate={setBirthdate}
           handleSignup={handleSignup}
+          handlePrevStep={handlePrevStep}
         />
       )}
       <AgreementModal show={showModal} handleModal={handleModal} />
@@ -85,5 +92,8 @@ const SignupPage = () => {
 };
 
 export default SignupPage;
+
+
+
 
 

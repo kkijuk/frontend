@@ -7,18 +7,18 @@ import EditApplyModal from '../components/Apply/EditApplyModal'; // EditApplyMod
 
 const SvgIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-    <path d="M10.834 9.16732L17.6673 2.33398" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M18.334 5.66602V1.66602H14.334" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M9.16602 1.66602H7.49935C3.33268 1.66602 1.66602 3.33268 1.66602 7.49935V12.4993C1.66602 16.666 3.33268 18.3327 7.49935 18.3327H12.4993C16.666 18.3327 18.3327 16.666 18.3327 12.4993V10.8327" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M10.834 9.16732L17.6673 2.33398" stroke="#707070" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M18.334 5.66602V1.66602H14.334" stroke="#707070" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M9.16602 1.66602H7.49935C3.33268 1.66602 1.66602 3.33268 1.66602 7.49935V12.4993C1.66602 16.666 3.33268 18.3327 7.49935 18.3327H12.4993C16.666 18.3327 18.3327 16.666 18.3327 12.4993V10.8327" stroke="#707070" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
 const DeleteSvgIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
     <path d="M6.83333 9.25H5.55556V25.5C5.55556 26.163 5.8248 26.7989 6.30406 27.2678C6.78332 27.7366 7.43334 28 8.11111 28H20.8889C21.5667 28 22.2167 27.7366 22.6959 27.2678C23.1752 26.7989 23.4444 26.163 23.4444 25.5V9.25H6.83333ZM20.4008 5.5L18.3333 3H10.6667L8.59922 5.5H3V8H26V5.5H20.4008Z" fill="#707070" />
-    <line x1="14.5352" y1="24" x2="14.5352" y2="12" stroke="white" stroke-width="1.5" />
-    <line x1="18.8223" y1="24" x2="18.8223" y2="12" stroke="white" stroke-width="1.5" />
-    <line x1="10.25" y1="24" x2="10.25" y2="12" stroke="white" stroke-width="1.5" />
+    <line x1="14.5352" y1="24" x2="14.5352" y2="12" stroke="white" strokeWidth="1.5" />
+    <line x1="18.8223" y1="24" x2="18.8223" y2="12" stroke="white" strokeWidth="1.5" />
+    <line x1="10.25" y1="24" x2="10.25" y2="12" stroke="white" strokeWidth="1.5" />
   </svg>
 );
 
@@ -32,7 +32,7 @@ const EditSvgIcon = ({ onClick }) => (
     onClick={onClick} // 여기서 onClick 핸들러를 추가합니다.
     style={{ cursor: 'pointer' }} // 클릭 가능한 커서 스타일 추가
   >
-    <path d="M0 18.209V23H4.791L18.9213 8.86974L14.1303 4.07874L0 18.209ZM22.6263 5.1647C23.1246 4.66644 23.1246 3.86155 22.6263 3.36328L19.6367 0.373698C19.1385 -0.124566 18.3336 -0.124566 17.8353 0.373698L15.4973 2.71171L20.2883 7.50271L22.6263 5.1647Z" fill="#707070" />
+    <path d="M0 18.209V23H4.791L18.9213 8.86974L14.1303 4.07874L0 18.209ZM22.6263 5.1647C23.1246 4.66644 23.1246 3.86155 22.6263 3.36328L19.6367 0.373698C19.1385 -0.124566 18.3336 -0.124566 17.8353 0.373698L15.4973 2.71171L20.2883 7.50271L22.6263 5.1647Z" fill="#707070" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
