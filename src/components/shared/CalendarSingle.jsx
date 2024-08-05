@@ -110,7 +110,7 @@ export default function ReactCalendar({ onChange }) {
   const handleDateChange = (date) => {
     setValue(date);
     onChange(date);
-    onChange(moment(date).format('YYYY.MM.DD'));
+    onChange(moment(date).format('YYYY-MM-DD'));
   };
 
   const handleClickOutside = (event) => {
