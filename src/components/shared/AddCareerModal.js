@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CategoryGroup from '../shared/CategoryGroup';
 import ReactCalendar from '../shared/CalendarSingle';
 import moment from 'moment';
+import { addCareer } from '../../api/Mycareer';
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -278,7 +279,7 @@ const AddCareerModal = ({ onClose, onSave }) => {
     setCategory(category);
   };
 
-    const handleSave = () => {
+    const handleSave = async() => {
       if (hasError) {
         alert("필수 정보를 입력하세요!");
         return;
@@ -287,6 +288,16 @@ const AddCareerModal = ({ onClose, onSave }) => {
         alert("시작일과 종료일을 다시 확인해 주세요!");
         return;
       }
+
+      const addCareerData = {
+        category,
+        careerName,
+        alias,
+        startDate,
+        endDate,
+        isUnknown,
+        summary,
+      };
 
       if(isUnknown){
         onSave({
@@ -311,7 +322,19 @@ const AddCareerModal = ({ onClose, onSave }) => {
         });
         onClose();
       }
-  };
+
+      try {
+        const response = await addCareer(addCareerData);
+        console.log("Recruit created successfully:", response);
+        onSave(response);
+        onClose();
+      } catch (error) {
+        console.error("Error creating recruit:", error);
+        alert("공고 생성에 실패했습니다.");
+      }
+
+  
+};
 
   return (
     <ModalBackdrop>
