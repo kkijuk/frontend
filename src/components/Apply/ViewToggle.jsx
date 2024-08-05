@@ -10,7 +10,7 @@ const ViewToggleStyled = styled.div`
 const ToggleContainer = styled.div`
   background-color: #F5F5F5;
   border-radius: 15px;
-  padding: 9px;
+  padding: 7px;
   margin-right: 10px;
   display: flex;
   align-items: center;
@@ -18,13 +18,13 @@ const ToggleContainer = styled.div`
 `;
 
 const ToggleButton = styled.button`
-  padding: 8px 10px;
-  border-radius: 12px;
+  padding: 7px 10px;
+  border-radius: 10px;
   background-color: ${props => (props.active ? 'white' : '#F5F5F5')};
   cursor: pointer;
   border: 2px solid ${props => (props.active ? 'white' : '#F5F5F5')};
-  width: 85px;
-  height: 30px;
+  width: 80px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -54,6 +54,23 @@ const ViewToggle = ({ view, onToggle }) => {
 };
 
 export default ViewToggle;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

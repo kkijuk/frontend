@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import TagBox from '../Apply/ModalTagBox';
-import { createRecruit } from '../../api/Recruit'; // 실제 파일 위치에 맞게 경로 수정
+import { createRecruit } from '../../api/Recruit'; 
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -262,7 +262,7 @@ const AddApplyModal = ({ onClose, onSave }) => {
       alert("필수 정보를 입력하세요!");
       return;
     }
-  
+
     // startTime과 endTime을 "YYYY-MM-DD HH:mm" 형식으로 변환하는 함수
     const formatDateTime = (dateTime) => {
       const date = new Date(dateTime);
@@ -273,13 +273,13 @@ const AddApplyModal = ({ onClose, onSave }) => {
       const minutes = String(date.getMinutes()).padStart(2, '0');
       return `${year}-${month}-${day} ${hours}:${minutes}`;
     };
-  
+
     const formattedStartTime = formatDateTime(startTime);
     const formattedEndTime = formatDateTime(endTime);
-  
+
     console.log("Formatted Start Time (YYYY-MM-DD HH:mm):", formattedStartTime);
     console.log("Formatted End Time (YYYY-MM-DD HH:mm):", formattedEndTime);
-  
+
     const recruitData = {
       title,
       startTime: formattedStartTime,
@@ -288,19 +288,19 @@ const AddApplyModal = ({ onClose, onSave }) => {
       tags,
       link,
     };
-  
+
+    console.log("Recruit Data to be sent:", recruitData); // 요청 데이터 로그 출력
+
     try {
       const response = await createRecruit(recruitData);
       console.log("Recruit created successfully:", response);
-      onSave(response);
+      onSave(response.id); // 생성된 공고의 ID 전달
       onClose();
     } catch (error) {
       console.error("Error creating recruit:", error);
       alert("공고 생성에 실패했습니다.");
     }
   };
-  
-  
 
   const handleTagChange = (newTags) => {
     setTags(newTags);
@@ -380,7 +380,4 @@ const AddApplyModal = ({ onClose, onSave }) => {
 };
 
 export default AddApplyModal;
-
-
-
 

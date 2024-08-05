@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import TabMenu from '../components/Apply/TabMenu';
@@ -9,7 +9,8 @@ import AddJobButton from '../components/shared/AddJobButton';
 import AddApplyModal from '../components/shared/AddApplyModal';
 import WaitingList from '../components/Apply/WaitingList';
 import ApplyList from '../components/Apply/ApplyList';
-import ApplyStatus from '../components/Apply/ApplyStatus'; 
+import ApplyStatus from '../components/Apply/ApplyStatus';
+import { getRecruitDetails } from '../api/RecruitDetails';
 
 const Container = styled.div`
   width: 100%;
@@ -41,22 +42,45 @@ const StatusContainer = styled.div`
   align-items: center;
 `;
 
-const fakeData = [
-  { id: 1, date: '2024-07-11', label: '인턴', details: '[OO기업] 2024 하반기 인턴 채용' },
-  { id: 2, date: '2024-08-15', label: '신입', details: '[OO기업] 2024 신입사원 모집' },
-  { id: 3, date: '2024-09-01', label: '경력', details: '[OO기업] 경력직 채용 공고' },
-];
-
 export default function Apply() {
   const [activeTab, setActiveTab] = useState('schedule');
   const [view, setView] = useState('calendar');
   const [date, setDate] = useState(new Date());
   const [showModal, setShowModal] = useState(false);
-  const [jobs, setJobs] = useState(fakeData);
+  const [jobs, setJobs] = useState([]);
   const navigate = useNavigate();
 
-  const handleAddJob = (newJob) => {
-    setJobs([...jobs, newJob]);
+  // 공고 목록을 마감일시 기준으로 오름차순 정렬하는 함수
+  const sortJobsByEndTime = (jobs) => {
+    return jobs.sort((a, b) => new Date(a.endTime) - new Date(b.endTime));
+  };
+
+  // 페이지가 로드될 때 모든 공고 목록을 가져오는 useEffect
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const recruitIds = [1, 2, 3, 4, 5]; // 여기에 실제로 존재하는 recruit ID 목록을 추가해야 합니다.
+        const recruitDetailsPromises = recruitIds.map(id => getRecruitDetails(id));
+        const recruitDetails = await Promise.all(recruitDetailsPromises);
+        const sortedJobs = sortJobsByEndTime(recruitDetails);
+        setJobs(sortedJobs);
+      } catch (error) {
+        console.error('Error fetching recruits:', error);
+      }
+    };
+
+    fetchJobs();
+  }, []); // 컴포넌트가 마운트될 때 한 번만 실행
+
+  const handleAddJob = async (recruitId) => {
+    try {
+      const recruitDetails = await getRecruitDetails(recruitId); // 공고 생성 후 상세 정보 가져오기
+      const updatedJobs = [...jobs, recruitDetails];
+      const sortedJobs = sortJobsByEndTime(updatedJobs); // 목록을 마감일시 기준으로 정렬
+      setJobs(sortedJobs); // 정렬된 목록을 설정
+    } catch (error) {
+      console.error('Error adding job:', error);
+    }
   };
 
   const handleJobClick = (job) => {
@@ -97,12 +121,17 @@ export default function Apply() {
       {showModal && (
         <AddApplyModal
           onClose={() => setShowModal(false)}
-          onSave={handleAddJob}
+          onSave={handleAddJob} // recruitId 전달
         />
       )}
     </Container>
   );
 }
+
+
+
+
+
 
 
 
