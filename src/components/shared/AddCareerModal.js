@@ -205,18 +205,18 @@ const HiddenRadio = styled.input.attrs({ type: 'radio' })`
 const StyledRadio = styled.div`
   width: 20px;
   height: 20px;
-  background: ${(props) => (props.checked ? '#3AAF85' : '#F5F5F5')};
+  background: ${(props) => (props.isUnknown ? '#3AAF85' : '#F5F5F5')};
   border-radius: 50%;
   transition: all 150ms;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  border: 1px solid ${(props) => (props.checked ? '#3AAF85' : '#ccc')};
+  border: 1px solid ${(props) => (props.isUnknown ? '#3AAF85' : '#ccc')};
 
   &:after {
     content: "";
-    display: ${(props) => (props.checked ? 'block' : 'none')};
+    display: ${(props) => (props.isUnknown ? 'block' : 'none')};
     width: 10px;
     height: 10px;
     border-radius: 50%;
@@ -238,8 +238,8 @@ const AddCareerModal = ({ onClose, onSave }) => {
   const [alias, setAlias] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [checked, setChecked] = useState(false);
-  const [content, setContent] = useState('');
+  const [isUnknown, setIsUnknown] = useState(false);
+  const [summary, setSummary] = useState('');
 
   const startCalendarRef = useRef(null);
   const endCalendarRef = useRef(null);
@@ -271,7 +271,7 @@ const AddCareerModal = ({ onClose, onSave }) => {
     };
   }, []);
 
-  const hasError = !category || !careerName || !alias || (!checked && (!startDate || !endDate)) || (checked && !startDate);
+  const hasError = !category || !careerName || !alias || (!isUnknown && (!startDate || !endDate)) || (isUnknown && !startDate);
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
@@ -283,19 +283,19 @@ const AddCareerModal = ({ onClose, onSave }) => {
         alert("필수 정보를 입력하세요!");
         return;
       }
-      else if(!checked &&(moment(startDate).isAfter(moment(endDate)))){
+      else if(!isUnknown &&(moment(startDate).isAfter(moment(endDate)))){
         alert("시작일과 종료일을 다시 확인해 주세요!");
         return;
       }
 
-      if(checked){
+      if(isUnknown){
         onSave({
           category,
           careerName,
           alias,
           startDate,
-          checked,
-          content,
+          isUnknown,
+          summary,
         });
         onClose();
       }
@@ -306,8 +306,8 @@ const AddCareerModal = ({ onClose, onSave }) => {
           alias,
           startDate,
           endDate,
-          checked,
-          content,
+          isUnknown,
+          summary,
         });
         onClose();
       }
@@ -373,7 +373,7 @@ const AddCareerModal = ({ onClose, onSave }) => {
                 onChange={(e) => setEndDate(e.target.value)}
                 onClick={() => setShowEndCalendar(!showEndCalendar)}
                 readOnly
-                disabled={checked}
+                disabled={isUnknown}
               />
               {showEndCalendar && (
                 <ReactCalendar
@@ -384,9 +384,9 @@ const AddCareerModal = ({ onClose, onSave }) => {
             </DateBox>
           </Row>
           <RadioContainer>
-            <RadioWrapper onClick={() => setChecked(!checked)}>
-              <HiddenRadio checked={checked} />
-              <StyledRadio checked={checked} />
+            <RadioWrapper onClick={() => setIsUnknown(!isUnknown)}>
+              <HiddenRadio isUnknown={isUnknown} />
+              <StyledRadio isUnknown={isUnknown} />
             </RadioWrapper>
             <Info style={{ marginLeft: '5px' }}>아직 모르겠어요</Info>
           </RadioContainer>
@@ -395,8 +395,8 @@ const AddCareerModal = ({ onClose, onSave }) => {
           <InputLong
             type="text"
             placeholder="TIP! 서술형이 아닌 개조식으로 작성하는 것이 좋아요.(50자 이내)"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            value={summary}
+            onChange={(e) => setSummary(e.target.value)}
           />
           <SaveButton onClick={handleSave}>저장</SaveButton>
           <ErrorMessage isError={hasError}>필수 정보를 입력하세요!</ErrorMessage>
