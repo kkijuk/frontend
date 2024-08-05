@@ -3,7 +3,7 @@ import './index.css';
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import MyPage from "./pages/Mypage";
+import MyPage from "./pages/Mypage/Mypage";
 import MyCareer from "./pages/Mycareer";
 import Apply from "./pages/Apply";
 import Community from "./pages/Community";
@@ -26,6 +26,13 @@ import Select from './pages/History/Select';
 import AddApply from "./pages/History/AddApply";
 import Portfolio from "./pages/History/Portfolio";
 import ApplyDetail from './pages/ApplyDetail';
+import AuthenticationAccount from './pages/Mypage/AuthenticationAccount';
+
+import MyInformation from './pages/Mypage/Myinformation';
+
+import SignupInterest from './pages/SignupInterest';
+
+
 
 const AppContainer = styled.div`
   display: flex;
@@ -56,6 +63,10 @@ const App = () => {
           <Route path="/mypage" element={<MyPage />} /> {/* 마이 페이지 */}
           <Route path="/mycareerdetail" element={<MyCareerDetail />} /> {/* 내커리어 상세 */}
           <Route path="/mycareer" element={<MyCareer />} /> {/* 내커리어 */}
+          
+          <Route path="/SignupInterest" element={<SignupInterest />} />
+
+
           {/* 이력관리 라우팅 */}
           <Route element={<SubNav />}>
             <Route element={<ViewOptions />}>
@@ -75,6 +86,14 @@ const App = () => {
           <Route path="/apply" element={<Apply />} /> {/* 지원관리 */}
           <Route path="/apply-detail/:id" element={<ApplyDetail />} />
           <Route path="/community" element={<Community />} /> {/* 커뮤니티 */}
+
+
+          {/* 마이페이지 라우팅 */}
+          <Route path="/mypage/authentication" element={<AuthenticationAccount />} /> {/* 마이 페이지 누르면 나오는 비번 확인 페이지*/}
+          <Route path="/mypage/myinformation" element={<MyInformation />} /> {/* 마이 페이지 누르면 나오는 비번 확인 페이지*/}
+
+
+
         </Routes>
       </MainContent>
       {!hideFooter && <Footer />}

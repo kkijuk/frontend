@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import CategoryGroup from '../shared/CategoryGroup';
+import ReactCalendar from '../shared/CalendarSingle';
+import moment from 'moment';
+import { addCareer } from '../../api/Mycareer';
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -64,9 +67,9 @@ const CloseButton = styled.button`
 `;
 
 const ModalTitle = styled.h2`
-  margin-top: 20px;
+  margin-top: 30px;
   margin-bottom: 20px;
-  font-size: 2em;
+  font-size: 32px;
 
   color: var(--main-01, #3AAF85);
   text-align: center;
@@ -99,7 +102,7 @@ const Info = styled.label`
 
 const Input = styled.input`
   width: 97%;
-  height: 5%;
+  height: 4%;
   padding: 12px;
   margin-bottom: 25px;
   border: 1px solid #F5F5F5;
@@ -126,38 +129,51 @@ const InputLong = styled.textarea`
 const InputDate = styled.input`
   font-family: Pretendard;
   font-size: 1em;
-  width: 100%;
+  width: 93%;
   height: 100%;
   padding: 12px;
   margin-bottom: 25px;
   border: 1px solid #F5F5F5;
   border-radius: 10px;
-  background: #F5F5F5;
+  background: ${(props) => (props.disabled ? '#D9D9D9' : '#F5F5F5')};
+  color: ${(props) => (props.disabled ? '#A9A9A9' : '#000')};
   font-size: 1em;
 `;
 
 const Row = styled.div`
   width: 100%;
-  height: 5%;
+  height: 4%;
   display: flex;
   gap: 10px;
 `;
 
 const DateBox = styled.div`
   flex: 1;
-  display: flex;
+  flex-direction: column;
   justify-content: ${(props) => (props.align === 'right' ? 'flex-end' : 'flex-start')};
 `
+
+const CalendarWrapper = styled.div`
+  position: absolute;
+  top: 100%; /* input 바로 아래에 위치 */
+  left: 0;
+  z-index: 10;
+`;
 
 const SaveButton = styled.button`
   width: 100%;
   background-color: #3AAF85;
   color: white;
-  padding: 10px 20px;
+  padding: 15px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 1em;
+  font-size: 18px;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 
   display: flex;
   justify-content: center;
@@ -190,23 +206,29 @@ const HiddenRadio = styled.input.attrs({ type: 'radio' })`
 const StyledRadio = styled.div`
   width: 20px;
   height: 20px;
-  background: ${(props) => (props.checked ? '#3AAF85' : '#F5F5F5')};
+  background: ${(props) => (props.isUnknown ? '#3AAF85' : '#F5F5F5')};
   border-radius: 50%;
   transition: all 150ms;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  border: 1px solid ${(props) => (props.checked ? '#3AAF85' : '#ccc')};
+  border: 1px solid ${(props) => (props.isUnknown ? '#3AAF85' : '#ccc')};
 
   &:after {
     content: "";
-    display: ${(props) => (props.checked ? 'block' : 'none')};
+    display: ${(props) => (props.isUnknown ? 'block' : 'none')};
     width: 10px;
     height: 10px;
     border-radius: 50%;
     background: white;
   }
+`;
+
+const RadioWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 `;
 
 const AddCareerModal = ({ onClose, onSave }) => {
@@ -217,34 +239,102 @@ const AddCareerModal = ({ onClose, onSave }) => {
   const [alias, setAlias] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [checked, setChecked] = useState(false);
-  const [content, setContent] = useState('');
+  const [isUnknown, setIsUnknown] = useState(false);
+  const [summary, setSummary] = useState('');
 
-  const hasError = !category || !careerName || !alias || (!checked && (!startDate || !endDate));
+  const startCalendarRef = useRef(null);
+  const endCalendarRef = useRef(null);
+  const [showStartCalendar, setShowStartCalendar] = useState(false);
+  const [showEndCalendar, setShowEndCalendar] = useState(false);
+
+  const handleStartDateChange = (date) => {
+    setStartDate(moment(date).format('YYYY-MM-DD'));
+    setShowStartCalendar(false);
+  };
+
+  const handleEndDateChange = (date) => {
+    setEndDate(moment(date).format('YYYY-MM-DD'));
+    setShowEndCalendar(false);
+  };
+
+  const handleClickOutside = (event) => {
+    if ( (startCalendarRef.current && !startCalendarRef.current.contains(event.target)) &&
+    (endCalendarRef.current && !endCalendarRef.current.contains(event.target))) {
+      setShowStartCalendar(false);
+      setShowEndCalendar(false);
+    }
+  };
+  
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const hasError = !category || !careerName || !alias || (!isUnknown && (!startDate || !endDate)) || (isUnknown && !startDate);
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
-    setCategory(selectedCategory);
+    setCategory(category);
   };
 
-    const handleSave = () => {
+    const handleSave = async() => {
       if (hasError) {
         alert("필수 정보를 입력하세요!");
         return;
       }
-    
+      else if(!isUnknown &&(moment(startDate).isAfter(moment(endDate)))){
+        alert("시작일과 종료일을 다시 확인해 주세요!");
+        return;
+      }
 
-    onSave({
-      category,
-      careerName,
-      alias,
-      startDate,
-      endDate,
-      checked,
-      content,
-    });
-    onClose();
-  };
+      const addCareerData = {
+        category,
+        careerName,
+        alias,
+        startDate,
+        endDate,
+        isUnknown,
+        summary,
+      };
+
+      if(isUnknown){
+        onSave({
+          category,
+          careerName,
+          alias,
+          startDate,
+          isUnknown,
+          summary,
+        });
+        onClose();
+      }
+      else{
+        onSave({
+          category,
+          careerName,
+          alias,
+          startDate,
+          endDate,
+          isUnknown,
+          summary,
+        });
+        onClose();
+      }
+
+      try {
+        const response = await addCareer(addCareerData);
+        console.log("Recruit created successfully:", response);
+        onSave(response);
+        onClose();
+      } catch (error) {
+        console.error("Error creating recruit:", error);
+        alert("공고 생성에 실패했습니다.");
+      }
+
+  
+};
 
   return (
     <ModalBackdrop>
@@ -287,9 +377,15 @@ const AddCareerModal = ({ onClose, onSave }) => {
                 placeholder="YYYY-MM-DD"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                onFocus={(e) => (e.target.type = 'date')}
-                onBlur={(e) => (e.target.type = 'text')}
+                onClick={() => setShowStartCalendar(!showStartCalendar)}
+                readOnly
               />
+              {showStartCalendar && (
+                <ReactCalendar
+                  onChange={handleStartDateChange}
+                  
+                />
+              )}
             </DateBox>
             <Label style={{margin: '10px 15px'}}>~</Label>
             <DateBox align="right">
@@ -298,14 +394,23 @@ const AddCareerModal = ({ onClose, onSave }) => {
                 placeholder="YYYY-MM-DD"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                onFocus={(e) => (e.target.type = 'date')}
-                onBlur={(e) => (e.target.type = 'text')}
+                onClick={() => setShowEndCalendar(!showEndCalendar)}
+                readOnly
+                disabled={isUnknown}
               />
+              {showEndCalendar && (
+                <ReactCalendar
+                  onChange={handleEndDateChange}
+                  
+                />
+              )}
             </DateBox>
           </Row>
-          <RadioContainer onClick={() => setChecked(!checked)}>
-            <HiddenRadio checked={checked} />
-            <StyledRadio checked={checked} />
+          <RadioContainer>
+            <RadioWrapper onClick={() => setIsUnknown(!isUnknown)}>
+              <HiddenRadio isUnknown={isUnknown} />
+              <StyledRadio isUnknown={isUnknown} />
+            </RadioWrapper>
             <Info style={{ marginLeft: '5px' }}>아직 모르겠어요</Info>
           </RadioContainer>
           <Label>활동내역(선택)</Label>
@@ -313,11 +418,12 @@ const AddCareerModal = ({ onClose, onSave }) => {
           <InputLong
             type="text"
             placeholder="TIP! 서술형이 아닌 개조식으로 작성하는 것이 좋아요.(50자 이내)"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            value={summary}
+            onChange={(e) => setSummary(e.target.value)}
           />
           <SaveButton onClick={handleSave}>저장</SaveButton>
           <ErrorMessage isError={hasError}>필수 정보를 입력하세요!</ErrorMessage>
+          <br></br>
         </ContentArea>
       </ModalContent>
     </ModalBackdrop>
