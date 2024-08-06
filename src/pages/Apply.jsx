@@ -63,7 +63,14 @@ export default function Apply() {
         const recruitIds = storedIds ? JSON.parse(storedIds) : [];
         const recruitDetailsPromises = recruitIds.map(id => getRecruitDetails(id));
         const recruitDetails = await Promise.all(recruitDetailsPromises);
-        const sortedJobs = sortJobsByEndTime(recruitDetails);
+        const filteredRecruitDetails = recruitDetails.filter(detail => detail && detail.endTime); // null 값과 endTime이 없는 항목 제거
+        // 공고 데이터에 ID가 포함되어 있는지 확인하고 변환
+        const jobsWithIds = recruitDetails.map((job, index) => ({
+          ...job,
+          id: recruitIds[index]
+        }));
+
+        const sortedJobs = sortJobsByEndTime(jobsWithIds);
         setJobs(sortedJobs);
       } catch (error) {
         console.error('Error fetching recruits:', error);
@@ -88,6 +95,8 @@ export default function Apply() {
   };
 
   const handleJobClick = (job) => {
+    console.log('Clicked job ID:', job.id); // 클릭한 공고의 ID 로그 추가
+    console.log('Clicked job:', job); // 클릭한 공고 로그 추가
     navigate(`/apply-detail/${job.id}`, { state: { job } });
   };
 
@@ -131,7 +140,6 @@ export default function Apply() {
     </Container>
   );
 }
-
 
 
 

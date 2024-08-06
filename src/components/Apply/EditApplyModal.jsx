@@ -261,24 +261,24 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
     setLink(job.link || '');
   }, [job]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!title || !startTime || !endTime) {
       alert("필수 정보를 입력하세요!");
       return;
     }
-
-    onSave({
+  
+    await onSave({
       ...job,
-      details: title,
-      startDate: startTime,
-      endDate: endTime,
+      title,
+      startTime,
+      endTime,
       status,
       tags,
       link,
     });
     onClose();
   };
-
+  
   const handleTagChange = (newTags) => {
     setTags(newTags);
   };

@@ -5,6 +5,7 @@ import EditApplyModal from '../components/Apply/EditApplyModal'; // EditApplyMod
 import ApplyDeleteModal from '../components/Apply/ApplyDeleteModal'; // 삭제 모달 컴포넌트 추가
 import { deleteRecruit } from '../api/DeleteRecruit'; // DeleteRecruit API 호출 컴포넌트
 import { getRecruitDetails } from '../api/RecruitDetails'; // RecruitDetails API 호출 컴포넌트
+import { updateRecruit } from '../api/RecruitUpdate';
 
 const SvgIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -72,14 +73,14 @@ const TitleContainer = styled.div`
 const ListTitle = styled.div`
   font-size: 24px;
   font-weight: 700;
-  margin-top: 16px; /* 제목을 아래로 내리기 위해 추가 */
+  margin-top: 16px; 
 `;
 
 const EditDeleteContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 30px;
-  margin-right: 0px; /* 아이콘을 오른쪽으로 이동 */
+  margin-right: 0px; 
 `;
 
 const SubHeader = styled.div`
@@ -184,25 +185,25 @@ const ButtonContainer = styled.div`
 const ApplyButtonContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Flex로 버튼과 제목 사이 공간을 확보 */
-  gap: 15px; /* 버튼 사이에 15px 간격 추가 */
+  justify-content: space-between; 
+  gap: 15px; 
 `;
 
 const ApplyButton = styled.div`
   display: flex;
-  align-items: center; /* 수직 중앙 정렬 */
-  border: 2px solid #707070; /* 테두리 색상 */
-  border-radius: 12px; /* 둥근 모서리 */
-  padding: 9px 18px; /* 내부 여백 */
-  color: #707070; /* 글자 색상 */
+  align-items: center; 
+  border: 2px solid #707070; 
+  border-radius: 12px; 
+  padding: 9px 18px; 
+  color: #707070; 
   cursor: pointer;
-  background: transparent; /* 배경색 투명 */
+  background: transparent; 
   margin-left: 30px;
   margin-bottom: -12px;
 `;
 
 const ApplyButtonText = styled.span`
-  margin-right: 5px; /* 텍스트를 5px 왼쪽으로 이동 */
+  margin-right: 5px; 
 `;
 
 const Button = styled.div`
@@ -210,21 +211,21 @@ const Button = styled.div`
   height: 50px;
   border-radius: 10px;
   background: var(--main-01, #3AAF85);
-  border: none; /* 테두리를 없앰 */
-  color: white; /* 글자 색을 흰색으로 변경 */
-  cursor: pointer; /* 마우스 커서를 포인터로 변경 */
-  position: fixed; /* 화면에 고정 */
-  bottom: 30px; /* 화면 하단에서 30px 위로 위치 */
+  border: none; 
+  color: white; 
+  cursor: pointer; 
+  position: fixed; 
+  bottom: 30px; 
   background: ${props => props.disabled ? 'var(--gray-03, #D9D9D9)' : 'var(--main-01, #3AAF85)'};
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
-  display: flex; /* Flex를 사용하여 중앙 정렬 */
-  align-items: center; /* 수직 중앙 정렬 */
-  justify-content: center; /* 수평 중앙 정렬 */
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
 `;
 
 const EditIconStyled = styled(EditSvgIcon)`
   cursor: pointer;
-  margin-right: 10px; /* 아이콘 사이에 5px 간격 추가 */
+  margin-right: 10px; 
 `;
 
 const DeleteIconStyled = styled(DeleteSvgIcon)`
@@ -242,6 +243,7 @@ const ApplyDetail = () => {
   useEffect(() => {
     const fetchJobDetails = async () => {
       try {
+        console.log('Fetching job details for ID:', id); // ID 로그 추가
         const jobDetails = await getRecruitDetails(id);
         console.log('Fetched job details:', jobDetails);
         setJob(jobDetails);
@@ -258,8 +260,6 @@ const ApplyDetail = () => {
     }
   }, [id, location.state]);
   
-  
-
   const handleEditClick = () => {
     setIsEditModalOpen(true);
   };
@@ -276,11 +276,17 @@ const ApplyDetail = () => {
     setIsDeleteModalOpen(false);
   };
 
-  const handleSave = (updatedJob) => {
-    console.log('Updated job:', updatedJob);
-    // 업데이트된 job 정보를 저장하는 로직을 여기에 추가
+  const handleSave = async (updatedJob) => {
+    try {
+      console.log('Updated job:', updatedJob);
+      const response = await updateRecruit(updatedJob.id, updatedJob);
+      console.log('Update response:', response);
+      setJob(updatedJob); // 성공 시 상태 업데이트
+      setIsEditModalOpen(false); // 모달 닫기
+    } catch (error) {
+      console.error('Error updating job:', error);
+    }
   };
-
 
   const handleDeleteConfirm = async () => {
     try {
@@ -288,8 +294,15 @@ const ApplyDetail = () => {
         console.log('Deleting job with id:', job.id);
         await deleteRecruit(job.id);
         console.log('Job deleted');
+  
+        // 현재 저장된 recruitIds 목록을 가져와 삭제된 ID를 제거한 후 다시 저장
+        const storedIds = localStorage.getItem('recruitIds');
+        const recruitIds = storedIds ? JSON.parse(storedIds) : [];
+        const updatedRecruitIds = recruitIds.filter(id => id !== job.id);
+        localStorage.setItem('recruitIds', JSON.stringify(updatedRecruitIds));
+  
         setIsDeleteModalOpen(false);
-        navigate('/');
+        navigate('/apply');
       } else {
         console.error('Job ID is missing');
       }
@@ -297,6 +310,7 @@ const ApplyDetail = () => {
       console.error('Failed to delete job:', error);
     }
   };
+  
 
   if (!job) {
     return <div>Loading...</div>;
@@ -362,6 +376,7 @@ const ApplyDetail = () => {
 };
 
 export default ApplyDetail;
+
 
 
 

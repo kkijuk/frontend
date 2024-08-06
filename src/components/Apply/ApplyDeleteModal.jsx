@@ -44,9 +44,8 @@ const ButtonContainer = styled.div`
   margin-top: 20px;
 `;
 
-
 const CancelButton = styled.button`
-   width: 120px;
+  width: 120px;
   height: 35px;
   border-radius: 12px;
   cursor: pointer;
@@ -59,7 +58,7 @@ const CancelButton = styled.button`
 `;
 
 const ConfirmButton = styled.button`
-   width: 120px;
+  width: 120px;
   height: 35px;
   border-radius: 12px;
   cursor: pointer;
@@ -71,7 +70,6 @@ const ConfirmButton = styled.button`
   margin-top: 45px;
 `;
 
-
 const ApplyDeleteModal = ({ onClose, onConfirm }) => (
   <Background>
     <Modal>
@@ -81,7 +79,7 @@ const ApplyDeleteModal = ({ onClose, onConfirm }) => (
         정말로 삭제하시겠습니까?
       </ModalTitle>
       <ButtonContainer>
-        <CancelButton onClick={onClose} style={{ border: '1.5px solid #77AFF2', background: '#FFF', color: '#77AFF2'  }}>취소</CancelButton>
+        <CancelButton onClick={onClose} style={{ border: '1.5px solid #77AFF2', background: '#FFF', color: '#77AFF2' }}>취소</CancelButton>
         <ConfirmButton onClick={onConfirm} style={{ border: '1.5px solid red', background: '#FFF', color: 'red' }}>삭제</ConfirmButton>
       </ButtonContainer>
     </Modal>
@@ -89,5 +87,6 @@ const ApplyDeleteModal = ({ onClose, onConfirm }) => (
 );
 
 export default ApplyDeleteModal;
+
 
 

@@ -113,14 +113,17 @@ const StatusCircle = styled.span`
 
 const groupByDate = (data) => {
   return data.reduce((acc, current) => {
-    const date = current.endTime.split(' ')[0];
-    if (!acc[date]) {
-      acc[date] = [];
+    if (current.endTime) {  // endTime이 정의되어 있는지 확인
+      const date = current.endTime.split(' ')[0];
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(current);
     }
-    acc[date].push(current);
     return acc;
   }, {});
 };
+
 
 const ListView = ({ data, onJobClick }) => {
   const groupedData = groupByDate(data);
@@ -133,7 +136,14 @@ const ListView = ({ data, onJobClick }) => {
             <AdDateSection key={index}>
               <AdDate>{date}</AdDate>
               {groupedData[date].map((ad, idx) => (
-                <AdItem key={idx} onClick={() => onJobClick(ad)}>
+                <AdItem 
+                  key={idx} 
+                  onClick={() => {
+                    console.log('Clicked job ID:', ad.id); // 클릭한 공고의 ID 로그 추가
+                    console.log('Clicked job:', ad); // 클릭한 공고 로그 추가
+                    onJobClick(ad);
+                  }}
+                >
                   <TagContainer>
                     {ad.tags.map((tag, tagIdx) => (
                       <Tag key={tagIdx}>{tag}</Tag>
