@@ -59,7 +59,8 @@ export default function Apply() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const recruitIds = [1, 2, 3, 4, 5]; // 여기에 실제로 존재하는 recruit ID 목록을 추가해야 합니다.
+        const storedIds = localStorage.getItem('recruitIds');
+        const recruitIds = storedIds ? JSON.parse(storedIds) : [];
         const recruitDetailsPromises = recruitIds.map(id => getRecruitDetails(id));
         const recruitDetails = await Promise.all(recruitDetailsPromises);
         const sortedJobs = sortJobsByEndTime(recruitDetails);
@@ -78,6 +79,9 @@ export default function Apply() {
       const updatedJobs = [...jobs, recruitDetails];
       const sortedJobs = sortJobsByEndTime(updatedJobs); // 목록을 마감일시 기준으로 정렬
       setJobs(sortedJobs); // 정렬된 목록을 설정
+      const storedIds = localStorage.getItem('recruitIds');
+      const recruitIds = storedIds ? JSON.parse(storedIds) : [];
+      localStorage.setItem('recruitIds', JSON.stringify([...recruitIds, recruitId]));
     } catch (error) {
       console.error('Error adding job:', error);
     }

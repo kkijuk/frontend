@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditApplyModal from '../components/Apply/EditApplyModal'; // EditApplyModal을 포함하는 컴포넌트
+import ApplyDeleteModal from '../components/Apply/ApplyDeleteModal'; // 삭제 모달 컴포넌트 추가
+import { deleteRecruit } from '../api/DeleteRecruit'; // DeleteRecruit API 호출 컴포넌트
+import { getRecruitDetails } from '../api/RecruitDetails'; // RecruitDetails API 호출 컴포넌트
 
 const SvgIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -13,8 +14,8 @@ const SvgIcon = () => (
   </svg>
 );
 
-const DeleteSvgIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+const DeleteSvgIcon = ({ onClick }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none" onClick={onClick} style={{ cursor: 'pointer' }}>
     <path d="M6.83333 9.25H5.55556V25.5C5.55556 26.163 5.8248 26.7989 6.30406 27.2678C6.78332 27.7366 7.43334 28 8.11111 28H20.8889C21.5667 28 22.2167 27.7366 22.6959 27.2678C23.1752 26.7989 23.4444 26.163 23.4444 25.5V9.25H6.83333ZM20.4008 5.5L18.3333 3H10.6667L8.59922 5.5H3V8H26V5.5H20.4008Z" fill="#707070" />
     <line x1="14.5352" y1="24" x2="14.5352" y2="12" stroke="white" strokeWidth="1.5" />
     <line x1="18.8223" y1="24" x2="18.8223" y2="12" stroke="white" strokeWidth="1.5" />
@@ -29,8 +30,8 @@ const EditSvgIcon = ({ onClick }) => (
     height="23"
     viewBox="0 0 23 23"
     fill="none"
-    onClick={onClick} // 여기서 onClick 핸들러를 추가합니다.
-    style={{ cursor: 'pointer' }} // 클릭 가능한 커서 스타일 추가
+    onClick={onClick}
+    style={{ cursor: 'pointer' }}
   >
     <path d="M0 18.209V23H4.791L18.9213 8.86974L14.1303 4.07874L0 18.209ZM22.6263 5.1647C23.1246 4.66644 23.1246 3.86155 22.6263 3.36328L19.6367 0.373698C19.1385 -0.124566 18.3336 -0.124566 17.8353 0.373698L15.4973 2.71171L20.2883 7.50271L22.6263 5.1647Z" fill="#707070" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
@@ -232,21 +233,74 @@ const DeleteIconStyled = styled(DeleteSvgIcon)`
 
 const ApplyDetail = () => {
   const location = useLocation();
-  const { job } = location.state;
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [job, setJob] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchJobDetails = async () => {
+      try {
+        const jobDetails = await getRecruitDetails(id);
+        console.log('Fetched job details:', jobDetails);
+        setJob(jobDetails);
+      } catch (error) {
+        console.error('Error fetching job details:', error);
+      }
+    };
+  
+    if (location.state && location.state.job) {
+      setJob(location.state.job);
+      console.log('Job set from location state:', location.state.job);
+    } else {
+      fetchJobDetails();
+    }
+  }, [id, location.state]);
+  
+  
 
   const handleEditClick = () => {
     setIsEditModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseEditModal = () => {
     setIsEditModalOpen(false);
+  };
+
+  const handleDeleteClick = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
   };
 
   const handleSave = (updatedJob) => {
     console.log('Updated job:', updatedJob);
     // 업데이트된 job 정보를 저장하는 로직을 여기에 추가
   };
+
+
+  const handleDeleteConfirm = async () => {
+    try {
+      if (job && job.id) {
+        console.log('Deleting job with id:', job.id);
+        await deleteRecruit(job.id);
+        console.log('Job deleted');
+        setIsDeleteModalOpen(false);
+        navigate('/');
+      } else {
+        console.error('Job ID is missing');
+      }
+    } catch (error) {
+      console.error('Failed to delete job:', error);
+    }
+  };
+
+  if (!job) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Container>
@@ -257,12 +311,12 @@ const ApplyDetail = () => {
             <ListTitle>{job.title}</ListTitle>
             <ApplyButton>
               <ApplyButtonText>지원하러 가기</ApplyButtonText>
-              <SvgIcon style={{ marginLeft: '5px' }} /> {/* SVG 아이콘 추가 */}
+              <SvgIcon style={{ marginLeft: '5px' }} />
             </ApplyButton>
           </div>
           <EditDeleteContainer>
-          <EditSvgIcon onClick={handleEditClick} />
-            <DeleteIconStyled />
+            <EditSvgIcon onClick={handleEditClick} />
+            <DeleteSvgIcon onClick={handleDeleteClick} />
           </EditDeleteContainer>
         </TitleContainer>
         <SubHeader>
@@ -293,8 +347,14 @@ const ApplyDetail = () => {
       {isEditModalOpen && (
         <EditApplyModal
           job={job}
-          onClose={handleCloseModal}
+          onClose={handleCloseEditModal}
           onSave={handleSave}
+        />
+      )}
+      {isDeleteModalOpen && (
+        <ApplyDeleteModal
+          onClose={handleCloseDeleteModal}
+          onConfirm={handleDeleteConfirm}
         />
       )}
     </Container>
@@ -302,4 +362,8 @@ const ApplyDetail = () => {
 };
 
 export default ApplyDetail;
+
+
+
+
 

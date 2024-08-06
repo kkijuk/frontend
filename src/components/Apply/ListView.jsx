@@ -57,6 +57,11 @@ const AdDetails = styled.div`
   color: #555;
 `;
 
+const AdTitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const AdTitle = styled.div`
   color: var(--black, #000);
   font-family: Pretendard;
@@ -82,6 +87,30 @@ const Label = styled.span`
   margin-bottom: 10px; 
 `;
 
+const TagContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 5px; /* Adjusted margin to remove excess space */
+`;
+
+const Tag = styled.span`
+  background: #F5F5F5;
+  border-radius: 10px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: #707070;
+`;
+
+const StatusCircle = styled.span`
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: ${({ status }) => status === '미지원' ? '#D9D9D9' : '#D9D9D9'}; /* Add other status colors if needed */
+  margin-right: 10px;
+`;
+
 const groupByDate = (data) => {
   return data.reduce((acc, current) => {
     const date = current.endTime.split(' ')[0];
@@ -105,9 +134,16 @@ const ListView = ({ data, onJobClick }) => {
               <AdDate>{date}</AdDate>
               {groupedData[date].map((ad, idx) => (
                 <AdItem key={idx} onClick={() => onJobClick(ad)}>
+                  <TagContainer>
+                    {ad.tags.map((tag, tagIdx) => (
+                      <Tag key={tagIdx}>{tag}</Tag>
+                    ))}
+                  </TagContainer>
                   <AdDetails>
-                    <Label>{ad.status}</Label>
-                    <AdTitle>{ad.title}</AdTitle>
+                    <AdTitleContainer>
+                      <StatusCircle status={ad.status} />
+                      <AdTitle>{ad.title}</AdTitle>
+                    </AdTitleContainer>
                   </AdDetails>
                 </AdItem>
               ))}
@@ -120,6 +156,9 @@ const ListView = ({ data, onJobClick }) => {
 };
 
 export default ListView;
+
+
+
 
 
 
