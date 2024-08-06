@@ -22,7 +22,7 @@ font-family: Pretendard;
 font-size: 18px;
 font-style: normal;
 font-weight: 400;
-line-height: 140%; /* 25.2px */
+line-height: 140%; 
 
 
   .react-calendar__navigation {
@@ -34,7 +34,7 @@ line-height: 140%; /* 25.2px */
   }
 
   .react-calendar__navigation button {
-    display: none; /* Hide default buttons */
+    display: none; 
     
   }
 
