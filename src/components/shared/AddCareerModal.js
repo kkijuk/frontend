@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CategoryGroup from '../shared/CategoryGroup';
 import ReactCalendar from '../shared/CalendarSingle';
 import moment from 'moment';
+import axios from 'axios';
 import { addCareer } from '../../api/Mycareer';
 
 const ModalBackdrop = styled.div`
@@ -231,6 +232,17 @@ const RadioWrapper = styled.div`
   cursor: pointer;
 `;
 
+//다현 추가
+const categoryMap = {
+  "동아리": 1,
+  "대외활동": 2,
+  "공모전/대회": 3,
+  "프로젝트": 4,
+  "아르바이트/인턴": 5,
+  "교육": 6,
+  "기타활동": 7
+};
+
 const AddCareerModal = ({ onClose, onSave }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   
@@ -265,6 +277,13 @@ const AddCareerModal = ({ onClose, onSave }) => {
     }
   };
   
+   //다현 추가
+   const handleCategorySelect = (category) => {
+    const categoryValue = categoryMap[category];
+    setSelectedCategory(category);
+    setCategory(categoryValue);
+  };
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -274,10 +293,7 @@ const AddCareerModal = ({ onClose, onSave }) => {
 
   const hasError = !category || !careerName || !alias || (!isUnknown && (!startDate || !endDate)) || (isUnknown && !startDate);
 
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-    setCategory(category);
-  };
+ 
 
     const handleSave = async() => {
       if (hasError) {
@@ -324,13 +340,17 @@ const AddCareerModal = ({ onClose, onSave }) => {
       }
 
       try {
-        const response = await addCareer(addCareerData);
-        console.log("Recruit created successfully:", response);
-        onSave(response);
+        console.log(addCareerData);
+        await addCareer(addCareerData);
+        onSave(addCareerData);
         onClose();
       } catch (error) {
-        console.error("Error creating recruit:", error);
-        alert("공고 생성에 실패했습니다.");
+        console.log("Error", error.message);
+        if (error.response) {
+          console.log("서버 오류 응답 데이터:", error.response.data);
+          console.log("서버 오류 상태 코드:", error.response.status);
+          console.log("서버 오류 헤더:", error.response.headers);
+        }
       }
 
   

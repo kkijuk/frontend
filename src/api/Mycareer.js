@@ -1,52 +1,29 @@
-const apiUrl = 'http://43.203.222.231/career';
+import axios from "axios";
+const apiUrl = 'https://api.kkijuk.com/career';
 
-export const addCareer = async (data) => {
-  try {
-    const response = await fetch(apiUrl, { 
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-      },
-      body: JSON.stringify(data)
-    });
+export const addCareer = async (addCareerData) => {
+    try {
+        console.log(addCareerData);
+        const response = await axios.post(
+          "https://api.kkijuk.com/career",
+          JSON.stringify(addCareerData),
+          {
+            headers: {
+              'Content-Type': 'application/json; charset=utf-8'
+            }
+          }
+        );
+        console.log("통신 완료 : ", response.data);
+      } catch (error) {
+        console.log("Error", error.message);
+        if(error.response){
+          console.log("서버 오류 응답 데이터:", error.response.data);
+          console.log("서버 오류 상태 코드:", error.response.status);
+          console.log("서버 오류 헤더:", error.response.headers);
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Something went wrong');
-    }
-
-    const responseData = await response.json();
-    return responseData;
-  } catch (error) {
-    console.error("Error creating career:", error.message);
-    throw error;
-  }
+        }
+      }
+      
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
