@@ -1,4 +1,4 @@
-const apiUrl = 'http://43.203.222.231/recruit';
+const apiUrl = 'https://api.kkijuk.com/recruit';
 
 export const createRecruit = async (data) => {
   try {
@@ -16,6 +16,12 @@ export const createRecruit = async (data) => {
     }
 
     const responseData = await response.json();
+
+    // 응답 데이터가 기대하는 형식인지 확인
+    if (!responseData || !responseData.id) {
+      throw new Error('Invalid response format');
+    }
+
     return responseData;
   } catch (error) {
     console.error("Error creating recruit:", error.message);

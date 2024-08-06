@@ -25,7 +25,7 @@ const FormContainer = styled.div`
     background: #D9D9D9;
     border-radius: 10px;
     color: white;
-    margin: 10px auto; /* 중앙 정렬 */
+    margin: 10px auto; 
     font-size: 14px;
     display: inline-block;
     width: 52px;

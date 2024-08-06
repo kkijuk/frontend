@@ -26,7 +26,7 @@ const FormContainer = styled.div`
     background: #D9D9D9;
     border-radius: 10px;
     color: white;
-     margin: 10px auto; /* 중앙 정렬 */
+     margin: 10px auto; 
     font-size: 14px;
     display: inline-block;
     width: 52px;
@@ -50,7 +50,7 @@ const Instructions = styled.p`
   font-family: 'Normal';
   font-size: 18px;
   text-align: center;
-  white-space: nowrap; /* 텍스트를 한 줄로 표시 */
+  white-space: nowrap; 
 `;
 
 const EmailDisplay = styled.p`

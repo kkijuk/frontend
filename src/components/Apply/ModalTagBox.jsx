@@ -101,11 +101,11 @@ const WhiteTag = styled.div`
      display: flex;
     align-items: center;
     height: 22px;
-    padding: 0px 8px; /* 간격 조정 */
+    padding: 0px 8px; 
     justify-content: center;
-    gap: 5px; /* 태그와 x 버튼 간 간격 조정 */
+    gap: 5px; 
     border-radius: 10px;
-    background: #FFF; /* 흰색 배경 */
+    background: #FFF; 
     color: var(--main-01, #3AAF85);
     text-align: center;
     font-family: Pretendard;
