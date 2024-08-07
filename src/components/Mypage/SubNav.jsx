@@ -23,10 +23,10 @@ const SubNav =()=>{
                         onClick={()=>navigate('/mypage/myinformation')} 
                         active={myInformation}>내정보</NavItems>
                     <NavItems 
-                        onClick={()=>navigate('/history/master')} 
+                        onClick={()=>navigate('/mypage/field')} 
                         active={Interest}>관심분야 설정</NavItems>
                     <NavItems 
-                        onClick={()=>navigate('/history/portfolio')} 
+                        onClick={()=>navigate('/mypage/fieldedit')} 
                         active={myAccountMangement}>계정관리</NavItems>
                     <Linear/>
                     <Outlet/>
