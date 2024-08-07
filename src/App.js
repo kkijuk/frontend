@@ -14,17 +14,15 @@ import styled from 'styled-components';
 import SignupSuccess from "./pages/SignupSuccess";
 import SubNav from './components/History/SubNav';
 import ViewOptions from './pages/History/ViewOptions';
-import History from "./pages/History";
+import History from "./pages/History/History";
 import Master from "./pages/History/Master";
-import Others from "./pages/History/Others";
-import MasterRewrite from "./pages/History/MasterRewrite";
-import OthersRewrite from "./pages/History/OthersRewrite";
-import ListHeader from "./pages/History/ListHeader";
-import List from "./pages/History/List";
-import SelectHeader from "./pages/History/SelectHeader";
+import Others from "./pages/History/Others"
+import MasterRewrite from "./pages/History/MasterRewrite"
+import OthersRewrite from "./pages/History/OthersRewrite"
+import List from "./pages/History/List"
 import Select from './pages/History/Select';
-import AddApply from "./pages/History/AddApply";
-import Portfolio from "./pages/History/Portfolio";
+import AddApply from "./pages/History/AddApply"
+import Portfolio from "./pages/History/Portfolio"
 import ApplyDetail from './pages/ApplyDetail';
 import AuthenticationAccount from './pages/Mypage/AuthenticationAccount';
 import AccountMangement from './pages/Mypage/AccountManagement';
@@ -70,20 +68,18 @@ const App = () => {
 
 
           {/* 이력관리 라우팅 */}
-          <Route element={<SubNav />}>
-            <Route element={<ViewOptions />}>
-              <Route path="/history/master" element={<Master />} />
-              <Route path="/history/others/:id" element={<Others />} />
-              <Route path="/history/list/:state" element={<List />} />
+          <Route element={<SubNav/>}>
+            <Route element={<ViewOptions/>}>
+              <Route path="/history/master" element={<Master/>}/>
+              <Route path="/history/others/:id" element={<Others/>}/>
+              <Route path="/history/list/:state" element={<List/>}/>
             </Route>
             <Route path="/history" element={<History />} />
             <Route path="/history/portfolio" element={<Portfolio />} />
           </Route>
-          <Route path="/history/master/rewrite" element={<MasterRewrite />} />
-          <Route path="/history/others/:id/rewrite" element={<OthersRewrite />} />
-          <Route path="/history/select" element={<SelectHeader />}>
-            <Route path=":id" element={<Select />} />
-          </Route>
+          <Route path="/history/master/rewrite" element={<MasterRewrite/>}/>
+          <Route path="/history/others/:id/rewrite" element={<OthersRewrite/>}/>
+          <Route path="/history/select" element={<Select />} />
           <Route path="/history/add_apply" element={<AddApply />} />
           <Route path="/apply" element={<Apply />} /> {/* 지원관리 */}
           <Route path="/apply-detail/:id" element={<ApplyDetail />} />

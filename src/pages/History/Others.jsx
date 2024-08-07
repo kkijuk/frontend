@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import api from '../../Axios'
+import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import './history.css'
@@ -7,75 +8,68 @@ import Convert from '../../components/History/Convert'
 import Toggle from '../../components/History/Toggle'
 import ButtonOptions from '../../components/History/AddButton'
 
-const Others=()=> {
+//Todo
+//Number 주는 방법
 
-    const dummyData=[
-        {
-            "id": 100, "title":"UMC"
-        },
-        {
-            "id": 101, "title":"현대"
-        },
-        {
-            "id": 102, "title":"카카오"
-        }
-    ]
-    const dummyData2 = [
-        {
-            "id": 100,
-            "oneLiner": "UMC 7기 지원",
-            "questions":[
-                {
-                    "subTitle": "첫 번째 질문",
-                    "content": "아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요."
-                },
-                {
-                    "subTitle": "두 번째 질문",
-                    "content": "아직 지원동기 및 포부를 작성하지 않았어요."
-                },
-                {
-                    "subTitle": "세 번째 질문",
-                    "content": "아직 지원동기 및 포부를 작성하지 않았어요."
-                }
-            ],
-            "complete":0,
-            "career_tag":["동아리","서비스 기획"],
-            "deadline": "2024-07-23T15:47:38.011066",
-            "updated_at": "2024-07-23 15:47"
-        }
-    ]
-    const resume = dummyData2[0];
+const Others=()=> {
 
     const navigate = useNavigate();
     const {id} = useParams();
 
-    useEffect(()=>{
+    const [content, setContent] = useState({
+        recruitTitle:"",
+        questionList:[],
+        deadline:"",
+        tags:[],
+        link:"",
+        updatedAt:"",
+        timeSinceUpdate:"",
+        state:0
+    })
 
-    },[id]);
+    useEffect(()=>{
+        api.get(`/history/intro/detail/${id}`)
+            .then(response=>{
+                console.log(response.data);
+                const Data = response.data.data;
+                setContent({
+                    recruitTitle:Data.recruitTitle,
+                    questionList:Data.questionList,
+                    deadline:Data.deadline,
+                    tags:Data.tags,
+                    link:Data.link,
+                    updatedAt:Data.updatedAt,
+                    timeSinceUpdate:Data.timeSinceUpdate,
+                    state:Data.state
+                })
+            })
+            .catch(error=>{
+                console.log(error);
+            })
+    },[]);
 
     return (
         <BackgroundDiv>
             <BaseDiv>
                 <ContentTitle>
-                    <h1 style={{position:'relative',display:'inline-block', marginRight:'12px'}}>{resume.oneLiner}</h1>
-                    <Tag style={{color:'white'}}>{resume.complete ? "작성 완료" : "작성 중"}</Tag>
-                    {resume.career_tag.map(tag=>(
+                    <h1 style={{position:'relative',display:'inline-block', marginRight:'12px'}}>{content.recruitTitle}</h1>
+                    <Tag style={{color:'white'}}>{content.state ? "작성 완료" : "작성 중"}</Tag>
+                    {content.tags.map(tag=>(
                         <Tag style={{background: '#F5F5F5', color:'#3AAF85'}}>{tag}</Tag>
                     ))}
 
                     <div style={{display:'inline-block',position:'absolute',right:0}}>
-                        <p className='lastUpdated' style={{color:'red', marginBottom:'8px'}}>공고 마감 일시 : {resume.deadline}</p>
-                        <p className='lastUpdated' style={{marginTop:0}}>마지막 수정일시: {resume.updated_at}</p>                  
+                        <p className='lastUpdated' style={{color:'red', marginBottom:'8px'}}>공고 마감 일시 : {content.deadline}</p>
+                        <p className='lastUpdated' style={{marginTop:0}}>마지막 수정일시: {content.updatedAt}</p>                  
                     </div>
                 </ContentTitle>
                 <div>
-                    {resume.questions.map(question =>(
+                    {content.questionList.map(question =>(
                         <div>
-                        <h3>{question.subTitle}</h3>
+                        <h3>{question.title}</h3>
                         <div style={{height:'100px'}}>
                             <p>{question.content}</p>   
                         </div>
-
                     </div>
                     ))}
                 </div>

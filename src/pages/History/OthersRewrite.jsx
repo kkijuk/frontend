@@ -117,9 +117,10 @@ const OthersRewrite=()=> {
     }
 
     return (
+        
         <BackgroundDiv>
-            <Limiter show={show}>빈 질문을 먼저 채워주세요!</Limiter>
             {modalOpend && <Alert closeModal={toggleModal}></Alert>}
+            <Limiter show={show}>빈 질문을 먼저 채워주세요!</Limiter>
             {addJobModalOpened && <AddJobModal onClose={toggleAddJobModal} style={{position:'relative', zIndex:1000}}></AddJobModal>}
             <BaseDiv>
                 <ContentTitle>

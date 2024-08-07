@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import api from "../../Axios";
+import React, { useState,useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import SubNav from '../../components/History/SubNav'
 import Toggle from '../../components/History/Toggle'
 import ListItem from "../../components/History/ListItem";
 
+//Todo
+//자기소개서 생성 잘 되는 지 확인하고
+//자기소개서 목록 불러오기
+
 const List =()=>{
-    let { state } = useParams();//state 0(작성중), 1(작성완료), 2(보관중), 3(전체) 중 하나
+
 
     const masterData=[
         {
@@ -45,11 +50,31 @@ const List =()=>{
             "state":2
         },
     ]
-    
+
+    let { state } = useParams();//state 0(작성중), 1(작성완료), 2(보관중), 3(전체) 중 하나
+
     const navigate = useNavigate();
+
+    //(Data) 지원 공고 목록
+    const [recruits, setRecruits] = useState([]);
+
+    //1. 자기소개서 목록 조회
+    useEffect(()=>{
+        api.get('/history/intro/list')
+        .then(response=>{
+            console.log(response.data);
+            const Data = response.data.data;
+            setRecruits(Data);
+            console.log(Data);
+        })
+        .catch(error=>{
+            console.log(error);
+        })
+    },[])
+
     const filterdData = state ==="3"
-    ? dummyData
-    : dummyData.filter(item=>item.state.toString() === state);
+    ? recruits
+    : recruits.filter(item=>item.state.toString() === state);
 
     return(
         <BaseDiv>
@@ -62,7 +87,7 @@ const List =()=>{
             {filterdData.map(item => (
                 <ListItem     
                     key={item.id}
-                    title={item.title}
+                    title={item.recruitTitle}
                     updated_at={item.updated_at}
                     deadline={item.deadline}
                     state={item.state}
