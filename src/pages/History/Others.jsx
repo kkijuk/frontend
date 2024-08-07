@@ -13,32 +13,6 @@ import ButtonOptions from '../../components/History/AddButton'
 
 const Others=()=> {
 
-    const dummyData2 = [
-        {
-            "id": 2,
-            "oneLiner": "UMC 7기 지원",
-            "questions":[
-                {
-                    "subTitle": "첫 번째 질문",
-                    "content": "아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요.아직 지원동기 및 포부를 작성하지 않았어요."
-                },
-                {
-                    "subTitle": "두 번째 질문",
-                    "content": "아직 지원동기 및 포부를 작성하지 않았어요."
-                },
-                {
-                    "subTitle": "세 번째 질문",
-                    "content": "아직 지원동기 및 포부를 작성하지 않았어요."
-                }
-            ],
-            "complete":0,
-            "career_tag":["동아리","서비스 기획"],
-            "deadline": "2024-07-23T15:47:38.011066",
-            "updated_at": "2024-07-23 15:47"
-        }
-    ]
-    const resume = dummyData2[0];
-
     const navigate = useNavigate();
     const {id} = useParams();
 

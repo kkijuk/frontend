@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://43.203.222.231",
+    baseURL: "https://api.kkijuk.com",
     headers:{
         'Content-Type':'application/json'
     }

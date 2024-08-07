@@ -13,32 +13,6 @@ import ButtonOptions from '../../components/History/AddButton'
 // - 소제목 받아오기
 
 const Master=()=> {
-    const dummyData=[
-        {
-            "id": 100, "title":"UMC"
-        },
-        {
-            "id": 101, "title":"현대"
-        },
-        {
-            "id": 102, "title":"카카오"
-        }
-    ]
-
-    const dummyData2 = [
-        {
-            "id": 1,
-            "oneLiner": "한줄소개",
-            "introduce": "자기소개입니다.",
-            "reason_for_applying":"지원동기입니다.",
-            "strengths_and_weaknesses":"장단점입니다.",
-            "job_fit":"직무적합성입니다.",
-            "created_at": "2024-07-23T15:47:38.011066",
-            "updated_at": "2024-07-23 15:47"
-        }
-    ]
-    const content = dummyData2[0];
-
     const navigate = useNavigate();
     
     //(Data) 한줄소개, 지원동기및포부 제목 및 내용, 장단점 제목 및 내용, 직무적합성 제목 및 내용
@@ -61,11 +35,11 @@ const Master=()=> {
                 console.log(Data);
                 setQuestions({
                     oneLiner:Data.oneLiner,
-                    motive_title:"",
+                    motive_title:Data.motiveTitle,
                     motive:Data.introduction,
-                    prosAndCons_title:"",
+                    prosAndCons_title:Data.prosAndConsTitle,
                     prosAndCons:Data.prosAndCons,
-                    job_fit_title:"",
+                    job_fit_title:Data.jobSuitabilityTitle,
                     job_fit:Data.jobSuitability,
                     updated_at:Data.updatedAt
                 })
@@ -89,13 +63,13 @@ const Master=()=> {
                     </p>
                 </ContentTitle>   
 
-                <h3>{questions.motive_title ? questions.motive_title : "1. 지원동기 및 포부 [소제목] api수정필요"}</h3>
+                <h3>{questions.motive_title ? questions.motive_title : "1. 지원동기 및 포부 [소제목]"}</h3>
                 <ContentBox>{questions.motive ? questions.motive : "아직 지원동기를 작성하지 않았어요."}</ContentBox>  
 
-                <h3>{questions.prosAndCons_title ? questions.prosAndCons_title : "2. 장단점 [소제목] api수정필요"}</h3>
+                <h3>{questions.prosAndCons_title ? questions.prosAndCons_title : "2. 장단점 [소제목]"}</h3>
                 <ContentBox>{questions.prosAndCons ? questions.prosAndCons : "아직 장단점을 작성하지 않았어요."}</ContentBox>  
 
-                <h3>{questions.job_fit_title ? questions.job_fit_title : "3. 직무적합성 [소제목] api수정필요"}</h3>
+                <h3>{questions.job_fit_title ? questions.job_fit_title : "3. 직무적합성 [소제목]"}</h3>
                 <ContentBox>{questions.job_fit ? questions.job_fit : "아직 직무적합성을 작성하지 않았어요."}</ContentBox>  
 
                 <EditButton onClick={()=>navigate('/history/master/rewrite')} style={{right:'100px'}}>

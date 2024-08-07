@@ -78,7 +78,6 @@ const Select =()=>{
 
 
 
-
     //3. 해당 공고 자소서 생성하기 
     const handleNextClick =()=>{
         const postData = {
@@ -93,11 +92,10 @@ const Select =()=>{
         //(API) 자소서 생성
         api.post(`/history/intro/${currentApply}`,postData)
             .then(response=>{
-                console.log(response.data);
+                console.log("자소서생성: ",response.data);
                 //결과물로 '자소서'아이디 생성되면
                 //useEffect로 id 변화 감지해서, 해당 페이지로 라우팅.
                 setNewId(response.data.data.id);
-                navigate(`/history/others/${newId}/rewrite`);
             })
             .catch(error=>{
                 console.error('Error:',error);
@@ -113,6 +111,10 @@ const Select =()=>{
             })
         
     }
+
+    useEffect(()=>{
+        if(newId) navigate(`/history/others/${newId}/rewrite`);
+    },[newId])
 
 
     return( 

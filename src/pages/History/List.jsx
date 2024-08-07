@@ -58,34 +58,19 @@ const List =()=>{
     //(Data) 지원 공고 목록
     const [recruits, setRecruits] = useState([]);
 
-    //1. 지원 공고 목록 조회
+    //1. 자기소개서 목록 조회
     useEffect(()=>{
-        //오늘 날짜
-        const now = new Date();
-        const formattedTime = formattedDate(now);
-        const encodedTime = encodeURIComponent(formattedTime);
-
-        //(API) planned 공고 목록 불러오기
-        api.get(`/recruit/list/valid?time=${encodedTime}`)
+        api.get('/history/intro/list')
         .then(response=>{
-            console.log("공고목록 조회:", response.data);
-            const Data = response.data.planned.recruits;
+            console.log(response.data);
+            const Data = response.data.data;
             setRecruits(Data);
+            console.log(Data);
         })
         .catch(error=>{
-            console.log("Error: ", error);
+            console.log(error);
         })
     },[])
-
-    const formattedDate =(date)=>{
-        const year = date.getFullYear();
-        const month = String(date.getMonth()+1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-
-        return `${year}-${month}-${day} ${hours}:${minutes}`;
-    }
 
     const filterdData = state ==="3"
     ? recruits
@@ -102,7 +87,7 @@ const List =()=>{
             {filterdData.map(item => (
                 <ListItem     
                     key={item.id}
-                    title={item.title}
+                    title={item.recruitTitle}
                     updated_at={item.updated_at}
                     deadline={item.deadline}
                     state={item.state}
