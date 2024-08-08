@@ -13,7 +13,7 @@ const BackgroundSection = styled.div`
 `;
 
 const ContentSection = styled.div`
-  max-width: 1200px;
+  max-width: 820px;
   margin: 0 auto;
   padding: 20px;
   background-color: #f0f0f0;
@@ -29,6 +29,7 @@ const AdListStyled = styled.div`
 
 const AdDateSection = styled.div`
   margin-bottom: 30px;
+  
 `;
 
 const AdDate = styled.div`

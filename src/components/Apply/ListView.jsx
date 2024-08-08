@@ -13,13 +13,14 @@ const BackgroundSection = styled.div`
 `;
 
 const ContentSection = styled.div`
-  max-width: 1200px;
+  max-width: 820px;  // 변경된 너비 설정
   margin: 0 auto;
   padding: 20px;
-  background-color: ${({ background }) => background || 'white'};
+  background-color: #f0f0f0;
   border-radius: 15px;
   position: relative;
 `;
+
 
 const AdListStyled = styled.div`
   padding: 20px;
@@ -29,6 +30,7 @@ const AdListStyled = styled.div`
 
 const AdDateSection = styled.div`
   margin-bottom: 30px;
+ 
 `;
 
 const AdDate = styled.div`
