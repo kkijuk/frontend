@@ -217,6 +217,7 @@ export default function MycareerDetail() {
           {dummyData.map((item, index) => (
             <Careerbox
               key={index}
+
               startDate={item.startDate}
               endDate={item.endDate}
               careerName={item.careerName}

@@ -36,7 +36,7 @@ const Master=()=> {
                 setQuestions({
                     oneLiner:Data.oneLiner,
                     motive_title:Data.motiveTitle,
-                    motive:Data.introduction,
+                    motive:Data.motive,
                     prosAndCons_title:Data.prosAndConsTitle,
                     prosAndCons:Data.prosAndCons,
                     job_fit_title:Data.jobSuitabilityTitle,

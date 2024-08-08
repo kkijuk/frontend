@@ -25,5 +25,3 @@ export const addCareer = async (addCareerData) => {
       }
       
 };
-
-

@@ -102,6 +102,7 @@ const MasterRewrite =()=>{
                     value={questions.motive||''}
                     onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
+                <div style={{height:'30px'}}/>
                 <InputTitle
                     id="prosAndConsTitle"
                     placeholder="장단점 제목을 작성하세요"
@@ -116,6 +117,7 @@ const MasterRewrite =()=>{
                     value={questions.prosAndCons||''}
                     onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
+                <div style={{height:'30px'}}/>
                 <InputTitle
                     id="jobSuitabilityTitle"
                     placeholder="직무적합성 제목을 작성하세요"

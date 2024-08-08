@@ -83,8 +83,8 @@ const Select =()=>{
         const postData = {
             questionList:[
                 {title:"string", content:"string", number:0},
-                {title:"string", content:"string", number:0},
-                {title:"string", content:"string", number:0}
+                {title:"string", content:"string", number:1},
+                {title:"string", content:"string", number:2}
             ],
             state: 0
         };

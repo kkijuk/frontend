@@ -35,7 +35,7 @@ const ToggleButton = styled.button`
   font-style: normal;
   font-weight: ${props => (props.active ? 'bold' : 'normal')};
 
-  transition: all 0.2s ease; /* Add a longer duration and easing effect for a smoother transition */
+  transition: all 0.2s ease; 
 `;
 
 const ViewToggle = ({ view, onToggle }) => {
