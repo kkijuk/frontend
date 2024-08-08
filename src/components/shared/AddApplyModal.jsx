@@ -255,7 +255,7 @@ const AddApplyModal = ({ onClose, onSave }) => {
   const [endTime, setEndTime] = useState('');
   const [tags, setTags] = useState([]);
   const [link, setLink] = useState('');
-  const [status, setStatus] = useState('planned');
+  const [status, setStatus] = useState('unapplied');
 
   const handleSave = async () => {
     if (!title || !startTime || !endTime) {

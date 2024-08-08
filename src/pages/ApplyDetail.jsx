@@ -73,14 +73,14 @@ const TitleContainer = styled.div`
 const ListTitle = styled.div`
   font-size: 24px;
   font-weight: 700;
-  margin-top: 16px; 
+  margin-top: 16px; /* 제목을 아래로 내리기 위해 추가 */
 `;
 
 const EditDeleteContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 30px;
-  margin-right: 0px; 
+  margin-right: 0px; /* 아이콘을 오른쪽으로 이동 */
 `;
 
 const SubHeader = styled.div`
@@ -185,25 +185,25 @@ const ButtonContainer = styled.div`
 const ApplyButtonContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between; 
-  gap: 15px; 
+  justify-content: space-between; /* Flex로 버튼과 제목 사이 공간을 확보 */
+  gap: 15px; /* 버튼 사이에 15px 간격 추가 */
 `;
 
 const ApplyButton = styled.div`
   display: flex;
-  align-items: center; 
-  border: 2px solid #707070; 
-  border-radius: 12px; 
-  padding: 9px 18px; 
-  color: #707070; 
+  align-items: center; /* 수직 중앙 정렬 */
+  border: 2px solid #707070; /* 테두리 색상 */
+  border-radius: 12px; /* 둥근 모서리 */
+  padding: 9px 18px; /* 내부 여백 */
+  color: #707070; /* 글자 색상 */
   cursor: pointer;
-  background: transparent; 
+  background: transparent; /* 배경색 투명 */
   margin-left: 30px;
   margin-bottom: -12px;
 `;
 
 const ApplyButtonText = styled.span`
-  margin-right: 5px; 
+  margin-right: 5px; /* 텍스트를 5px 왼쪽으로 이동 */
 `;
 
 const Button = styled.div`
@@ -211,21 +211,21 @@ const Button = styled.div`
   height: 50px;
   border-radius: 10px;
   background: var(--main-01, #3AAF85);
-  border: none; 
-  color: white; 
-  cursor: pointer; 
-  position: fixed; 
-  bottom: 30px; 
+  border: none; /* 테두리를 없앰 */
+  color: white; /* 글자 색을 흰색으로 변경 */
+  cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+  position: fixed; /* 화면에 고정 */
+  bottom: 30px; /* 화면 하단에서 30px 위로 위치 */
   background: ${props => props.disabled ? 'var(--gray-03, #D9D9D9)' : 'var(--main-01, #3AAF85)'};
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
+  display: flex; /* Flex를 사용하여 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  justify-content: center; /* 수평 중앙 정렬 */
 `;
 
 const EditIconStyled = styled(EditSvgIcon)`
   cursor: pointer;
-  margin-right: 10px; 
+  margin-right: 10px; /* 아이콘 사이에 5px 간격 추가 */
 `;
 
 const DeleteIconStyled = styled(DeleteSvgIcon)`
@@ -294,15 +294,8 @@ const ApplyDetail = () => {
         console.log('Deleting job with id:', job.id);
         await deleteRecruit(job.id);
         console.log('Job deleted');
-  
-        // 현재 저장된 recruitIds 목록을 가져와 삭제된 ID를 제거한 후 다시 저장
-        const storedIds = localStorage.getItem('recruitIds');
-        const recruitIds = storedIds ? JSON.parse(storedIds) : [];
-        const updatedRecruitIds = recruitIds.filter(id => id !== job.id);
-        localStorage.setItem('recruitIds', JSON.stringify(updatedRecruitIds));
-  
         setIsDeleteModalOpen(false);
-        navigate('/apply');
+        navigate('/apply');  // apply 페이지로 이동
       } else {
         console.error('Job ID is missing');
       }
@@ -310,7 +303,6 @@ const ApplyDetail = () => {
       console.error('Failed to delete job:', error);
     }
   };
-  
 
   if (!job) {
     return <div>Loading...</div>;
@@ -376,6 +368,8 @@ const ApplyDetail = () => {
 };
 
 export default ApplyDetail;
+
+
 
 
 

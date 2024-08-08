@@ -59,15 +59,16 @@ export default function Apply() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const storedIds = localStorage.getItem('recruitIds');
-        const recruitIds = storedIds ? JSON.parse(storedIds) : [];
-        const recruitDetailsPromises = recruitIds.map(id => getRecruitDetails(id));
-        const recruitDetails = await Promise.all(recruitDetailsPromises);
+        const jobPromises = [];
+        for (let i = 1; i <= 30; i++) {
+          jobPromises.push(getRecruitDetails(i));
+        }
+        const recruitDetails = await Promise.all(jobPromises);
         const filteredRecruitDetails = recruitDetails.filter(detail => detail && detail.endTime); // null 값과 endTime이 없는 항목 제거
-        // 공고 데이터에 ID가 포함되어 있는지 확인하고 변환
-        const jobsWithIds = recruitDetails.map((job, index) => ({
+
+        const jobsWithIds = filteredRecruitDetails.map((job, index) => ({
           ...job,
-          id: recruitIds[index]
+          id: index + 1
         }));
 
         const sortedJobs = sortJobsByEndTime(jobsWithIds);
@@ -83,21 +84,24 @@ export default function Apply() {
   const handleAddJob = async (recruitId) => {
     try {
       const recruitDetails = await getRecruitDetails(recruitId); // 공고 생성 후 상세 정보 가져오기
-      const updatedJobs = [...jobs, recruitDetails];
-      const sortedJobs = sortJobsByEndTime(updatedJobs); // 목록을 마감일시 기준으로 정렬
-      setJobs(sortedJobs); // 정렬된 목록을 설정
-      const storedIds = localStorage.getItem('recruitIds');
-      const recruitIds = storedIds ? JSON.parse(storedIds) : [];
-      localStorage.setItem('recruitIds', JSON.stringify([...recruitIds, recruitId]));
+      if (recruitDetails) {
+        const updatedJobs = [...jobs, { ...recruitDetails, id: recruitId }];
+        const sortedJobs = sortJobsByEndTime(updatedJobs); // 목록을 마감일시 기준으로 정렬
+        setJobs(sortedJobs); // 정렬된 목록을 설정
+      }
     } catch (error) {
       console.error('Error adding job:', error);
     }
   };
 
   const handleJobClick = (job) => {
-    console.log('Clicked job ID:', job.id); // 클릭한 공고의 ID 로그 추가
-    console.log('Clicked job:', job); // 클릭한 공고 로그 추가
-    navigate(`/apply-detail/${job.id}`, { state: { job } });
+    if (job && job.id) {
+      console.log('Clicked job ID:', job.id); // 클릭한 공고의 ID 로그 추가
+      console.log('Clicked job:', job); // 클릭한 공고 로그 추가
+      navigate(`/apply-detail/${job.id}`, { state: { job } });
+    } else {
+      console.error('Job ID is missing or undefined');
+    }
   };
 
   return (
@@ -140,11 +144,3 @@ export default function Apply() {
     </Container>
   );
 }
-
-
-
-
-
-
-
-
