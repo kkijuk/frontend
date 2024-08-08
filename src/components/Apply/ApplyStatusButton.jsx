@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const StatusContainer = styled.div`
   display: flex;
-  width: 1000px;
+  width: 850px;
   align-items: center;
   justify-content: flex-start;
   padding: 10px 0px;
@@ -24,7 +24,7 @@ const StatusButton = styled.button`
   margin-bottom: -12px;
   text-align: center;
   font-family: 'Medium';
-  font-size: 15px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
