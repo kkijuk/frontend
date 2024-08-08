@@ -109,8 +109,11 @@ const StatusCircle = styled.span`
   border-radius: 50%;
   background-color: ${({ status }) => {
     if (status === 'UNAPPLIED') return '#D9D9D9';
-    if (status === 'PLANNED') return '#707070';
-    return '#D9D9D9';
+    if (status === 'PLANNED') return '#B0B0B0';
+    if (status === 'APPLYING') return '#707070';
+    if (status === 'ACCEPTED') return '#78D333';
+    if (status === 'REJECTED') return '#FA7C79';
+    return '#707070';
   }};
   margin-right: 10px;
 `;

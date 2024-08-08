@@ -10,7 +10,7 @@ import AddApplyModal from '../components/shared/AddApplyModal';
 import WaitingList from '../components/Apply/WaitingList';
 import ApplyList from '../components/Apply/ApplyList';
 import ApplyStatus from '../components/Apply/ApplyStatus';
-import { getRecruitDetails } from '../api/RecruitDetails';
+import { getRecruitDetails } from '../api/Apply/RecruitDetails';
 
 const Container = styled.div`
   width: 100%;
@@ -60,18 +60,13 @@ export default function Apply() {
     const fetchJobs = async () => {
       try {
         const jobPromises = [];
-        for (let i = 1; i <= 30; i++) {
+        for (let i = 1; i <= 30; i++) { // 최대 100개의 공고를 가져오도록 설정 (적절한 수로 조정)
           jobPromises.push(getRecruitDetails(i));
         }
         const recruitDetails = await Promise.all(jobPromises);
         const filteredRecruitDetails = recruitDetails.filter(detail => detail && detail.endTime); // null 값과 endTime이 없는 항목 제거
 
-        const jobsWithIds = filteredRecruitDetails.map((job, index) => ({
-          ...job,
-          id: index + 1
-        }));
-
-        const sortedJobs = sortJobsByEndTime(jobsWithIds);
+        const sortedJobs = sortJobsByEndTime(filteredRecruitDetails);
         setJobs(sortedJobs);
       } catch (error) {
         console.error('Error fetching recruits:', error);
@@ -144,3 +139,5 @@ export default function Apply() {
     </Container>
   );
 }
+
+
