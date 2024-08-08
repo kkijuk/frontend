@@ -15,7 +15,7 @@ const BackgroundSection = styled.div`
 const ContentSection = styled.div`
   max-width: 820px;  // 변경된 너비 설정
   margin: 0 auto;
-  padding: 20px;
+  padding: 15px;
   background-color: #f0f0f0;
   border-radius: 15px;
   position: relative;
@@ -62,6 +62,7 @@ const AdDetails = styled.div`
 const AdTitleContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-left: 16px;
 `;
 
 const AdTitle = styled.div`
@@ -71,6 +72,7 @@ const AdTitle = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+   margin-top: 5px;
 `;
 
 const Label = styled.span`
@@ -92,7 +94,8 @@ const Label = styled.span`
 const TagContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 13px;
+  margin-left: 15px;
   margin-bottom: 5px; /* Adjusted margin to remove excess space */
 `;
 
@@ -118,6 +121,7 @@ const StatusCircle = styled.span`
     return '#707070';
   }};
   margin-right: 10px;
+   margin-top: 5px;
 `;
 
 const groupByDate = (data) => {
