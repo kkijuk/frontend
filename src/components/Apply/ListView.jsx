@@ -107,7 +107,11 @@ const StatusCircle = styled.span`
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background-color: ${({ status }) => status === '미지원' ? '#D9D9D9' : '#D9D9D9'}; /* Add other status colors if needed */
+  background-color: ${({ status }) => {
+    if (status === 'UNAPPLIED') return '#D9D9D9';
+    if (status === 'PLANNED') return '#707070';
+    return '#D9D9D9';
+  }};
   margin-right: 10px;
 `;
 
@@ -123,7 +127,6 @@ const groupByDate = (data) => {
     return acc;
   }, {});
 };
-
 
 const ListView = ({ data, onJobClick }) => {
   const groupedData = groupByDate(data);
@@ -166,6 +169,10 @@ const ListView = ({ data, onJobClick }) => {
 };
 
 export default ListView;
+
+
+
+
 
 
 

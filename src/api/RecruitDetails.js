@@ -5,7 +5,8 @@ export const getRecruitDetails = async (id) => {
     const response = await fetch(`${apiUrl}/${id}`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json; charset=utf-8'
+        'Content-Type': 'application/json; charset=utf-8',
+        'accept': '*/*'
       }
     });
 
@@ -26,6 +27,10 @@ export const getRecruitDetails = async (id) => {
     throw error;
   }
 };
+
+
+
+
 
 
 
