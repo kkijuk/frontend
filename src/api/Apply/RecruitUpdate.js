@@ -14,3 +14,4 @@ export const updateRecruit = async (recruitId, updatedJob) => {
     return response.json();
   };
   
+  // 마찬가지로 수정이 필요한 공고 수정 api

@@ -24,10 +24,10 @@ const StatusText = styled.span`
   justify-content: center;
 `;
 
-const ApplyList = () => {
+const ApplyList = ({ count }) => {
   return (
     <StatusItem>
-      <StatusText>지원한 공고</StatusText>
+      <StatusText>지원한 공고 {count}</StatusText>
     </StatusItem>
   );
 };

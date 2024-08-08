@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import TabMenu from '../components/Apply/TabMenu';
-import ViewToggle from '../components/Apply/ViewToggle';
-import CalendarView from '../components/Apply/CalendarView';
-import ListView from '../components/Apply/ListView';
-import AddJobButton from '../components/shared/AddJobButton';
-import AddApplyModal from '../components/shared/AddApplyModal';
-import WaitingList from '../components/Apply/WaitingList';
-import ApplyList from '../components/Apply/ApplyList';
-import ApplyStatus from '../components/Apply/ApplyStatus';
-import { getRecruitDetails } from '../api/RecruitDetails';
+import TabMenu from '../../components/Apply/TabMenu';
+import ViewToggle from '../../components/Apply/ViewToggle';
+import CalendarView from '../../components/Apply/CalendarView';
+import ListView from '../../components/Apply/ListView';
+import AddJobButton from '../../components/shared/AddJobButton';
+import AddApplyModal from '../../components/shared/AddApplyModal';
+import WaitingList from '../../components/Apply/WaitingList';
+import ApplyList from '../../components/Apply/ApplyList';
+import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
 
 const Container = styled.div`
   width: 100%;
@@ -42,8 +41,7 @@ const StatusContainer = styled.div`
   align-items: center;
 `;
 
-export default function Apply() {
-  const [activeTab, setActiveTab] = useState('schedule');
+export default function ApplySchedule() {
   const [view, setView] = useState('calendar');
   const [date, setDate] = useState(new Date());
   const [showModal, setShowModal] = useState(false);
@@ -60,18 +58,13 @@ export default function Apply() {
     const fetchJobs = async () => {
       try {
         const jobPromises = [];
-        for (let i = 1; i <= 30; i++) {
+        for (let i = 1; i <= 30; i++) { // 최대 30개의 공고를 가져오도록 설정 (적절한 수로 조정)
           jobPromises.push(getRecruitDetails(i));
         }
         const recruitDetails = await Promise.all(jobPromises);
         const filteredRecruitDetails = recruitDetails.filter(detail => detail && detail.endTime); // null 값과 endTime이 없는 항목 제거
 
-        const jobsWithIds = filteredRecruitDetails.map((job, index) => ({
-          ...job,
-          id: index + 1
-        }));
-
-        const sortedJobs = sortJobsByEndTime(jobsWithIds);
+        const sortedJobs = sortJobsByEndTime(filteredRecruitDetails);
         setJobs(sortedJobs);
       } catch (error) {
         console.error('Error fetching recruits:', error);
@@ -104,36 +97,27 @@ export default function Apply() {
     }
   };
 
+  const waitingJobs = jobs.filter(job => job.status === 'UNAPPLIED' || job.status === 'PLANNED');
+  const appliedJobs = jobs.filter(job => job.status !== 'UNAPPLIED' && job.status !== 'PLANNED');
+
   return (
     <Container>
-      <Title>지원관리</Title>
-      <TabMenu activeTab={activeTab} onTabClick={setActiveTab} />
-      {activeTab === 'schedule' && (
+      <Title>지원일정</Title>
+      <TabMenu activeTab="schedule" onTabClick={() => navigate('/apply-status')} />
+      <TopSection>
+        <StatusContainer>
+          <WaitingList count={waitingJobs.length} />
+          <ApplyList count={appliedJobs.length} />
+        </StatusContainer>
+        <ViewToggle view={view} onToggle={setView} />
+      </TopSection>
+      {view === 'calendar' && (
         <>
-          <TopSection>
-            <StatusContainer>
-              <WaitingList count={jobs.length} />
-              <ApplyList count={jobs.length} />
-            </StatusContainer>
-            <ViewToggle view={view} onToggle={setView} />
-          </TopSection>
-          {view === 'calendar' && (
-            <>
-              <CalendarView date={date} setDate={setDate} />
-              <ListView data={jobs} onJobClick={handleJobClick} />
-            </>
-          )}
-          {view === 'list' && <ListView data={jobs} onJobClick={handleJobClick} />}
+          <CalendarView date={date} setDate={setDate} />
+          <ListView data={jobs} onJobClick={handleJobClick} />
         </>
       )}
-      {activeTab === 'status' && (
-        <TopSection>
-          <StatusContainer>
-            {/* 지원 현황에서는 아무것도 보이지 않음 */}
-          </StatusContainer>
-          <ApplyStatus /> 
-        </TopSection>
-      )}
+      {view === 'list' && <ListView data={jobs} onJobClick={handleJobClick} />}
       <AddJobButton onClick={() => setShowModal(true)} />
       {showModal && (
         <AddApplyModal

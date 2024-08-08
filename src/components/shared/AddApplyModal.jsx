@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import TagBox from '../Apply/ModalTagBox';
-import { createRecruit } from '../../api/Recruit'; 
+import { createRecruit } from '../../api/Apply/Recruit'; 
 
 const ModalBackdrop = styled.div`
   position: fixed;

@@ -1,16 +1,15 @@
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import './index.css';
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 import Home from "./pages/Home";
 import MyPage from "./pages/Mypage/Mypage";
 import MyCareer from "./pages/Mycareer";
-import Apply from "./pages/Apply";
+import ApplySchedule from "./pages/Apply/ApplySchedule";
+import ApplyStatus from "./pages/Apply/ApplyStatus";
 import Community from "./pages/Community";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import MyCareerDetail from './pages/MycareerDetail';
-import styled from 'styled-components';
 import SignupSuccess from "./pages/SignupSuccess";
 import SubNav from './components/History/SubNav';
 import ViewOptions from './pages/History/ViewOptions';
@@ -25,16 +24,15 @@ import SelectHeader from "./pages/History/SelectHeader";
 import Select from './pages/History/Select';
 import AddApply from "./pages/History/AddApply";
 import Portfolio from "./pages/History/Portfolio";
-import ApplyDetail from './pages/ApplyDetail';
+import ApplyDetail from './pages/Apply/ApplyDetail';
 import AuthenticationAccount from './pages/Mypage/AuthenticationAccount';
 import AccountMangement from './pages/Mypage/AccountManagement';
-
 import MyInformation from './pages/Mypage/Myinformation';
 import Field from './pages/Mypage/Field';
 import FieldEdit from './pages/Mypage/FieldEdit';
 import SignupInterest from './pages/SignupInterest';
-
-
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 const AppContainer = styled.div`
   display: flex;
@@ -58,18 +56,14 @@ const App = () => {
       <Header />
       <MainContent>
         <Routes>
-          <Route path="/" element={<Home />} /> {/* 메인 */}
-          <Route path="/login" element={<Login />} /> {/* 로그인 */}
-          <Route path="/signup" element={<Signup />} /> {/* 회원가입 */}
-          <Route path="/signupsuccess" element={<SignupSuccess />} /> {/* 회원가입 성공 */}
-          <Route path="/mypage" element={<MyPage />} /> {/* 마이 페이지 */}
-          <Route path="/mycareerdetail" element={<MyCareerDetail />} /> {/* 내커리어 상세 */}
-          <Route path="/mycareer" element={<MyCareer />} /> {/* 내커리어 */}
-          
-          <Route path="/SignupInterest" element={<SignupInterest />} />
-
-
-          {/* 이력관리 라우팅 */}
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/signupsuccess" element={<SignupSuccess />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mycareerdetail" element={<MyCareerDetail />} />
+          <Route path="/mycareer" element={<MyCareer />} />
+          <Route path="/signupinterest" element={<SignupInterest />} />
           <Route element={<SubNav />}>
             <Route element={<ViewOptions />}>
               <Route path="/history/master" element={<Master />} />
@@ -85,20 +79,15 @@ const App = () => {
             <Route path=":id" element={<Select />} />
           </Route>
           <Route path="/history/add_apply" element={<AddApply />} />
-          <Route path="/apply" element={<Apply />} /> {/* 지원관리 */}
+          <Route path="/apply-schedule" element={<ApplySchedule />} /> {/* 지원일정 */}
+          <Route path="/apply-status" element={<ApplyStatus />} /> {/* 지원현황 */}
           <Route path="/apply-detail/:id" element={<ApplyDetail />} />
-          <Route path="/community" element={<Community />} /> {/* 커뮤니티 */}
-
-
-          {/* 마이페이지 라우팅 */}
-          <Route path="/mypage/authentication" element={<AuthenticationAccount />} /> {/* 마이 페이지 누르면 나오는 비번 확인 페이지*/}
-          <Route path="/mypage/myinformation" element={<MyInformation />} /> {/* 마이 페이지 누르면 나오는 비번 확인 페이지*/}
-          <Route path="/mypage/accountmanagement" element={<AccountMangement />} /> {/* 마이 페이지 누르면 나오는 비번 확인 페이지*/}
-          <Route path="/mypage/field" element={<Field />} /> {/* 마이 페이지 누르면 나오는 비번 확인 페이지*/}
-          <Route path="/mypage/fieldedit" element={<FieldEdit />} /> {/* 마이 페이지 누르면 나오는 비번 확인 페이지*/}
-
-
-
+          <Route path="/community" element={<Community />} />
+          <Route path="/mypage/authentication" element={<AuthenticationAccount />} />
+          <Route path="/mypage/myinformation" element={<MyInformation />} />
+          <Route path="/mypage/accountmanagement" element={<AccountMangement />} />
+          <Route path="/mypage/field" element={<Field />} />
+          <Route path="/mypage/fieldedit" element={<FieldEdit />} />
         </Routes>
       </MainContent>
       {!hideFooter && <Footer />}
@@ -113,4 +102,3 @@ export default function AppWrapper() {
     </Router>
   );
 }
-
