@@ -322,11 +322,9 @@ const ApplyDetail = () => {
   useEffect(() => {
     const fetchJobDetails = async () => {
       try {
-        console.log('Fetching job details for ID:', id); // ID 로그 추가
         const jobDetails = await getRecruitDetails(id);
-        console.log('Fetched job details:', jobDetails);
         setJob(jobDetails);
-        setStatus(jobDetails.status); // 상태 설정
+        setStatus(jobDetails.status);
       } catch (error) {
         console.error('Error fetching job details:', error);
       }
@@ -334,8 +332,7 @@ const ApplyDetail = () => {
 
     if (location.state && location.state.job) {
       setJob(location.state.job);
-      setStatus(location.state.job.status); // 상태 설정
-      console.log('Job set from location state:', location.state.job);
+      setStatus(location.state.job.status);
     } else {
       fetchJobDetails();
     }
@@ -359,9 +356,7 @@ const ApplyDetail = () => {
 
   const handleSave = async (updatedJob) => {
     try {
-      console.log('Updated job:', updatedJob);
       const response = await updateRecruit(updatedJob.id, updatedJob);
-      console.log('Update response:', response);
       setJob(updatedJob); // 성공 시 상태 업데이트
       setIsEditModalOpen(false); // 모달 닫기
     } catch (error) {
@@ -372,9 +367,7 @@ const ApplyDetail = () => {
   const handleDeleteConfirm = async () => {
     try {
       if (job && job.id) {
-        console.log('Deleting job with id:', job.id);
         await deleteRecruit(job.id);
-        console.log('Job deleted');
         setIsDeleteModalOpen(false);
         navigate('/apply');
       } else {
@@ -388,18 +381,11 @@ const ApplyDetail = () => {
   const handleStatusChange = async (event) => {
     const newStatus = event.target.value;
     setStatus(newStatus);
-  
+
     try {
       await updateRecruitStatus(id, newStatus);
-      console.log('Status updated successfully');
     } catch (error) {
       console.error('Failed to update status:', error);
-    }
-  };
-
-  const handleApplyClick = () => {
-    if (job && job.link) {
-      window.open(job.link, '_blank'); // 링크를 새 창에서 엽니다.
     }
   };
 
@@ -418,7 +404,7 @@ const ApplyDetail = () => {
   return (
     <Container>
       <Title>지원공고 관리</Title>
-      <BackLink to="/apply">&lt; 지원현황</BackLink> {/* 추가된 부분 */}
+      <BackLink to="/apply">&lt; 지원현황</BackLink>
       <Header>
         <TitleContainer>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -438,15 +424,15 @@ const ApplyDetail = () => {
           </EditDeleteContainer>
         </TitleContainer>
         <DropdownContainer status={status}>
-  <Dropdown value={status} onChange={handleStatusChange} valueLength={statusTextMap[status].length}>
-    <option value="UNAPPLIED">미지원</option>
-    <option value="PLANNED">지원 예정</option>
-    <option value="APPLYING">진행 중</option>
-    <option value="ACCEPTED">합격</option>
-    <option value="REJECTED">불합격</option>
-  </Dropdown>
-  <DropdownIcon>▼</DropdownIcon>
-</DropdownContainer>
+          <Dropdown value={status} onChange={handleStatusChange} valueLength={statusTextMap[status].length}>
+            <option value="UNAPPLIED">미지원</option>
+            <option value="PLANNED">지원 예정</option>
+            <option value="APPLYING">진행 중</option>
+            <option value="ACCEPTED">합격</option>
+            <option value="REJECTED">불합격</option>
+          </Dropdown>
+          <DropdownIcon>▼</DropdownIcon>
+        </DropdownContainer>
 
         <SubHeader>
           <InfoLabelStart>접수 시작 {job.startTime}</InfoLabelStart>
