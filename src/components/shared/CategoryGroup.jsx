@@ -4,25 +4,25 @@ import styled from 'styled-components';
 const getBackgroundColor = (category, selected) => {
   let color;
   switch (category) {
-    case '동아리':
+    case '1':
       color = '#FCC400';
       break;
-    case '대외활동':
+    case '2':
       color = '#77AFF2';
       break;
-    case '공모전/대회':
+    case '3':
       color = '#BB7AEF';
       break;
-    case '프로젝트':
+    case '4':
       color = '#78D333';
       break;
-    case '아르바이트/인턴':
+    case '5':
       color = '#FA7C79';
       break;
-    case '교육':
+    case '6':
       color = '#F99538';
       break;
-    case '기타 활동':
+    case '7':
       color = '#707070';
       break;
     default:
