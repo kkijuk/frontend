@@ -8,13 +8,12 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh; /* 부모 컨테이너의 높이를 채워야 가운데 정렬 가능 */
-  height: calc(100vh - 60px); /* SubNav 높이를 고려하여 조정 */
+    
 
 `
 
 const Top = styled.div`
-    width: 484px;
+    width: 464px;
     margin-top: 7px;
     margin-bottim: 31px;
 `
@@ -30,9 +29,10 @@ const Middle = styled.div`
 `
 
 const Bottom = styled.div`
-    width: 484px;
+    width: 464px;
     height: 196px;
     margin-top: 47px;
+
 `
 
 const Text1 = styled.div`
@@ -58,7 +58,7 @@ const Text2 = styled.div`
 const Input = styled.input`
     height: 50px;
     border-radius: 10px;
-    width: ${(props) => props.width || '280'};
+    width: 400px;
     background-color: ${(props) => props.backgroundColor || '#F5F5F5'};
     color: ${(props) => props.color || 'black'};
     border: ${(props) => props.border || 'none'};
@@ -107,7 +107,7 @@ const CustomCheckBox = styled.input.attrs({ type: 'checkbox' })`
 `;
 
 const Button = styled.button`
-    width: 456px;
+    width: 400px;
     height: 50px;
     flex-shrink: 0;
     border-radius: 10px;
@@ -115,7 +115,7 @@ const Button = styled.button`
     border: none;
     color: #FFF;
 
-    margin-left: 14px;
+    margin-left: 32px;
     margin-top: 34px;
     text-align: center;
     font-family: Pretendard;

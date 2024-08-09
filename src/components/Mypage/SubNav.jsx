@@ -26,7 +26,7 @@ const SubNav =()=>{
                         onClick={()=>navigate('/mypage/field')} 
                         active={Interest}>관심분야 설정</NavItems>
                     <NavItems 
-                        onClick={()=>navigate('/mypage/fieldedit')} 
+                        onClick={()=>navigate('/mypage/accountmanagement')} 
                         active={myAccountMangement}>계정관리</NavItems>
                     <Linear/>
                     <Outlet/>
