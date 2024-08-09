@@ -8,6 +8,7 @@ import { getRecruitDetails } from '../../api/Apply/RecruitDetails'; // RecruitDe
 import { updateRecruitStatus } from '../../api/Apply/RecruitStatus'; 
 import { updateRecruit } from '../../api/Apply/RecruitUpdate';
 import { Link } from 'react-router-dom';
+import ReviewList from '../../components/Apply/ReviewList';
 
 const SvgIcon = styled.svg`
   width: 20px;
@@ -73,7 +74,7 @@ const Title = styled.h1`
 const Header = styled.div`
   display: flex;
   flex-direction: column;
-  border-bottom: 2px solid #D9D9D9;
+  border-bottom: 6px solid #D9D9D9;
   padding-bottom: 16px;
   margin-bottom: 24px;
 `;
@@ -96,7 +97,7 @@ const EditDeleteContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 30px;
-  margin-right: 0px; 
+  margin-right: 40px; 
 `;
 
 const SubHeader = styled.div`
@@ -118,6 +119,7 @@ const InfoLabelStart = styled.div`
   gap:50px;
   position:absolute;
   margin-left: 5px;
+  font-family: Bold;
 `;
 
 const InfoLabelEnd = styled.div`
@@ -127,6 +129,7 @@ const InfoLabelEnd = styled.div`
   gap:20px;
   position:absolute;
   margin-left: 300px;
+  font-family: Bold;
 `;
 
 const TagLabel = styled.div`
@@ -137,6 +140,7 @@ const TagLabel = styled.div`
   position:absolute;
   margin-top: 40px;
   margin-left: 5px;
+  font-family: Bold;
 `;
 
 const Tag = styled.div`
@@ -404,7 +408,7 @@ const ApplyDetail = () => {
   return (
     <Container>
       <Title>지원공고 관리</Title>
-      <BackLink to="/apply">&lt; 지원현황</BackLink>
+      <BackLink to="/apply-schedule">&lt; 지원현황</BackLink>
       <Header>
         <TitleContainer>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -445,17 +449,18 @@ const ApplyDetail = () => {
           </TagLabel>
         </SubHeader>
       </Header>
-      <Section>
-        <SectionHeader>코딩테스트</SectionHeader>
-        <Contents>{job.contents}</Contents>
-        <DateText>{job.testDate}</DateText>
-      </Section>
-      <Section>
-        <SectionHeader>면접</SectionHeader>
-        <Contents>{job.interviewContents}</Contents>
-        <DateText>{job.interviewDate}</DateText>
-      </Section>
-      <Line />
+      <ReviewList
+    title="코딩테스트"
+    date={job.testDate || ''}
+    contents={job.contents || ''}
+    
+/>
+<ReviewList
+    title="면접"
+    date={job.interviewDate || ''}
+    contents={job.interviewContents || ''}
+   
+/>
       <ButtonContainer>
         <Button>전형 후기 추가</Button>
       </ButtonContainer>
