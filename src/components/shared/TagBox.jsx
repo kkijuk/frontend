@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import AbilityTag from './AbilityTag'; // AbilityTag 컴포넌트 가져오기
+import { TagBoxApi } from '../../api/Share/Tagbox';
 
 const Box = styled.div`
     width: 720px;
@@ -10,7 +11,6 @@ const Box = styled.div`
     margin-top: 15px;
     margin-bottom: 13px;
     position: relative; /* 자식 요소의 절대 위치를 위한 상대 위치 설정 */
-
 `;
 
 const Row = styled.div`
@@ -34,7 +34,7 @@ const Text = styled.div`
 `;
 
 const TagInputContainer = styled.div`
-    width: 668px;
+    width: 660px;
     height: 34px;
     flex-shrink: 0;
     border-radius: 10px;
@@ -43,16 +43,19 @@ const TagInputContainer = styled.div`
     align-items: center;
     flex-wrap: wrap;
     gap: 5px;
+        padding-left: 5px; /* 전체 컨테이너의 좌측에 패딩 추가 */
+
 `;
 
 const TagInput = styled.input`
     flex: 1;
     border: none; /* 테두리 제거 */
-    padding-left: 20px;
+    padding-left: 5px;
     background: #F5F5F5;
     font-family: Pretendard;
     font-size: 16px;
     color: #999;
+
     &:focus {
         outline: none; /* 포커스 시 외곽선 제거 */
         color: #000; /* 입력 시 텍스트 색상 변경 */
@@ -74,6 +77,7 @@ const TagBoxList = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
+    border: 1px solid black;
 `;
 
 const TagBoxListContainer = styled.div`
@@ -100,6 +104,30 @@ const WhiteTag = styled.div`
     line-height: normal;
 `;
 
+const Tag = styled.div`
+    display: flex;
+    align-items: center;
+    height: 22px;
+    padding: 0px 8px; /* 간격 조정 */
+    justify-content: center;
+    gap: 5px; /* 태그와 x 버튼 간 간격 조정 */
+    border-radius: 10px;
+    background: #F5F5F5;
+    color: var(--main-01, #3AAF85);
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    position: relative;
+    cursor: pointer; 
+
+    &:hover button {
+        visibility: visible; /* Hover 시 x 버튼 보이게 하는 속성*/
+    }
+`;
+
 const CloseButton = styled.button`
     background: none;
     border: none;
@@ -118,10 +146,18 @@ export default function TagBox() {
     const tagInputRef = useRef(null);
     const tagBoxListRef = useRef(null);
 
-    const handleTagClick = () => {
+    const handleTagClick = async () => {
         setIsTagVisible(true);
         if (tagText === '태그 선택 혹은 입력') {
             setTagText(''); // 태그 클릭 시 텍스트 삭제
+        }
+
+        // API 호출하여 태그 목록 불러오기
+        try {
+            const tagList = await TagBoxApi();
+            setAllTags(tagList.map((tag) => tag.tagName)); // tagName만 추출하여 설정
+        } catch (error) {
+            console.error('태그를 불러오는 중 오류 발생:', error);
         }
     };
 
@@ -130,7 +166,7 @@ export default function TagBox() {
     };
 
     const handleTagKeyDown = (e) => {
-        if (e.key === 'Enter' && tagText.trim() !== '' && e.nativeEvent.isComposing == false) {
+        if (e.key === 'Enter' && tagText.trim() !== '' && e.nativeEvent.isComposing === false) {
             e.preventDefault(); // 기본 엔터키 동작 방지
             const newTag = tagText.trim();
 
@@ -158,8 +194,26 @@ export default function TagBox() {
         }
     };
 
-    const handleTagRemove = (tagToRemove) => {
-        setTags((prevTags) => prevTags.filter(tag => tag !== tagToRemove));
+    const handleTagRemoveFromContainer = (tagToRemove, event) => {
+        event.stopPropagation(); // 이벤트 전파 중지
+
+        // TagInputContainer에서 태그 삭제
+        setTags((prevTags) => prevTags.filter((tag) => tag !== tagToRemove));
+    };
+
+    const handleTagRemoveFromList = (tagToRemove, event) => {
+        event.stopPropagation(); // 이벤트 전파 중지
+
+        // TagBoxListContainer와 TagInputContainer에서 태그 삭제
+        setAllTags((prevAllTags) => prevAllTags.filter((tag) => tag !== tagToRemove));
+        setTags((prevTags) => prevTags.filter((tag) => tag !== tagToRemove));
+    };
+
+    const handleTagAddFromList = (tagToAdd) => {
+        // TagInputContainer에 태그 추가
+        if (!tags.includes(tagToAdd)) {
+            setTags((prevTags) => [...prevTags, tagToAdd]);
+        }
     };
 
     useEffect(() => {
@@ -177,7 +231,12 @@ export default function TagBox() {
                     {tags.map((tag, index) => (
                         <WhiteTag key={index}>
                             {tag}
-                            <CloseButton onClick={() => handleTagRemove(tag)}>x</CloseButton>
+                            <CloseButton
+                                onClick={(event) => handleTagRemoveFromContainer(tag, event)}
+                                onMouseDown={(event) => event.stopPropagation()} // 이 부분 추가
+                            >
+                                x
+                            </CloseButton>
                         </WhiteTag>
                     ))}
                     <TagInput
@@ -192,7 +251,15 @@ export default function TagBox() {
                 <TagBoxList ref={tagBoxListRef}>
                     <TagBoxListContainer>
                         {allTags.map((tag, index) => (
-                            <AbilityTag key={index} tags={[tag]} />
+                            <Tag key={index} onClick={() => handleTagAddFromList(tag)}>
+                                {tag}
+                                <CloseButton
+                                    onClick={(event) => handleTagRemoveFromList(tag, event)}
+                                    onMouseDown={(event) => event.stopPropagation()} // 이 부분 추가
+                                >
+                                    x
+                                </CloseButton>
+                            </Tag>
                         ))}
                     </TagBoxListContainer>
                 </TagBoxList>
