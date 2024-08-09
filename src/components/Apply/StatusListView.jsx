@@ -126,8 +126,8 @@ const StatusTitleContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  font-size: 18px;
-  font-family: Light;
+  font-size: 17px;
+  font-family: Regular;
 `;
 
 const groupByStatus = (data) => {
