@@ -251,7 +251,6 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
   const [endTime, setEndTime] = useState(job.endDate || '');
   const [tags, setTags] = useState(job.tags || []);
   const [link, setLink] = useState(job.link || '');
-  const [status, setStatus] = useState('planned');
 
   useEffect(() => {
     setTitle(job.details || '');
@@ -262,23 +261,25 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
   }, [job]);
 
   const handleSave = async () => {
-    if (!title || !startTime || !endTime) {
-      alert("필수 정보를 입력하세요!");
+    // 제목, 태그, 시작/마감 날짜, 링크 중 하나라도 입력된 경우 저장 가능
+    const isAnyFieldFilled = title || tags.length > 0 || (startTime && endTime) || link;
+
+    if (!isAnyFieldFilled) {
+      alert("최소한 하나의 필드를 입력하세요!");
       return;
     }
-  
+
     await onSave({
       ...job,
-      title,
-      startTime,
-      endTime,
-      status,
-      tags,
-      link,
+      title: title || job.title,  // 입력이 없으면 기존 값을 유지
+      startTime: startTime || job.startTime,  // 입력이 없으면 기존 값을 유지
+      endTime: endTime || job.endTime,  // 입력이 없으면 기존 값을 유지
+      tags: tags.length > 0 ? tags : job.tags,  // 입력이 없으면 기존 값을 유지
+      link: link || job.link,  // 입력이 없으면 기존 값을 유지
     });
     onClose();
   };
-  
+
   const handleTagChange = (newTags) => {
     setTags(newTags);
   };
@@ -294,7 +295,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
           <InputWrapper> 
             <Input
               type="text"
-              placeholder="활동 제목을 작성하세요"
+              placeholder="공고 제목을 수정하세요"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
@@ -347,7 +348,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
             />
           </InputWrapperLink>
         </FieldWrapper>
-        <ErrorMessage>*필수 정보를 입력하세요!</ErrorMessage>
+        <ErrorMessage>*최소 하나의 필드를 입력하세요!</ErrorMessage>
         <ButtonWrapper> 
           <SaveButton onClick={handleSave}>저장</SaveButton>
         </ButtonWrapper>

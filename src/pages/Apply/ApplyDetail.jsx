@@ -8,6 +8,7 @@ import { getRecruitDetails } from '../../api/Apply/RecruitDetails'; // RecruitDe
 import { updateRecruitStatus } from '../../api/Apply/RecruitStatus'; 
 import { updateRecruit } from '../../api/Apply/RecruitUpdate';
 import { Link } from 'react-router-dom';
+import ReviewList from '../../components/Apply/ReviewList';
 
 const SvgIcon = styled.svg`
   width: 20px;
@@ -73,7 +74,7 @@ const Title = styled.h1`
 const Header = styled.div`
   display: flex;
   flex-direction: column;
-  border-bottom: 2px solid #D9D9D9;
+  border-bottom: 6px solid #D9D9D9;
   padding-bottom: 16px;
   margin-bottom: 24px;
 `;
@@ -96,7 +97,7 @@ const EditDeleteContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 30px;
-  margin-right: 0px; /* 아이콘을 오른쪽으로 이동 */
+  margin-right: 40px; 
 `;
 
 const SubHeader = styled.div`
@@ -118,6 +119,7 @@ const InfoLabelStart = styled.div`
   gap:50px;
   position:absolute;
   margin-left: 5px;
+  font-family: Bold;
 `;
 
 const InfoLabelEnd = styled.div`
@@ -127,6 +129,7 @@ const InfoLabelEnd = styled.div`
   gap:20px;
   position:absolute;
   margin-left: 300px;
+  font-family: Bold;
 `;
 
 const TagLabel = styled.div`
@@ -137,6 +140,7 @@ const TagLabel = styled.div`
   position:absolute;
   margin-top: 40px;
   margin-left: 5px;
+  font-family: Bold;
 `;
 
 const Tag = styled.div`
@@ -204,25 +208,25 @@ const ButtonContainer = styled.div`
 const ApplyButtonContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Flex로 버튼과 제목 사이 공간을 확보 */
-  gap: 15px; /* 버튼 사이에 15px 간격 추가 */
+  justify-content: space-between; 
+  gap: 15px; 
 `;
 
 const ApplyButton = styled.div`
   display: flex;
-  align-items: center; /* 수직 중앙 정렬 */
-  border: 2px solid ${({ hasLink }) => (hasLink ? '#3AAF85' : '#707070')}; /* 테두리 색상 */
-  border-radius: 12px; /* 둥근 모서리 */
-  padding: 7px 18px; /* 내부 여백 */
-  color: ${props => props.hasLink ? '#3AAF85' : '#707070'}; /* 글자 색상 */
+  align-items: center; 
+  border: 2px solid ${({ hasLink }) => (hasLink ? '#3AAF85' : '#707070')}; 
+  border-radius: 12px; 
+  padding: 7px 18px; 
+  color: ${props => props.hasLink ? '#3AAF85' : '#707070'}; 
   cursor: pointer;
-  background: ${props => props.hasLink ? 'white' : 'transparent'}; /* 배경색 변경 */
+  background: ${props => props.hasLink ? 'white' : 'transparent'}; 
   margin-left: 30px;
   margin-bottom: -12px;
 `;
 
 const ApplyButtonText = styled.span`
-  margin-right: 5px; /* 텍스트를 5px 왼쪽으로 이동 */
+  margin-right: 5px;
 `;
 
 const Button = styled.div`
@@ -230,21 +234,21 @@ const Button = styled.div`
   height: 50px;
   border-radius: 10px;
   background: var(--main-01, #3AAF85);
-  border: none; /* 테두리를 없앰 */
-  color: white; /* 글자 색을 흰색으로 변경 */
-  cursor: pointer; /* 마우스 커서를 포인터로 변경 */
-  position: fixed; /* 화면에 고정 */
-  bottom: 30px; /* 화면 하단에서 30px 위로 위치 */
+  border: none; 
+  color: white; 
+  cursor: pointer; 
+  position: fixed; 
+  bottom: 30px; 
   background: ${props => props.disabled ? 'var(--gray-03, #D9D9D9)' : 'var(--main-01, #3AAF85)'};
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
-  display: flex; /* Flex를 사용하여 중앙 정렬 */
-  align-items: center; /* 수직 중앙 정렬 */
-  justify-content: center; /* 수평 중앙 정렬 */
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
 `;
 
 const EditIconStyled = styled(EditSvgIcon)`
   cursor: pointer;
-  margin-right: 10px; /* 아이콘 사이에 5px 간격 추가 */
+  margin-right: 10px; 
 `;
 
 const DeleteIconStyled = styled(DeleteSvgIcon)`
@@ -272,7 +276,7 @@ const DropdownContainer = styled.div`
         return '#707070';
     }
   }};
-  width: ${({ status }) => (status === 'PLANNED' ? '70px' : '65px')}; /* 지원 예정일 경우 가로 길이 5px 추가 */
+  width: ${({ status }) => (status === 'PLANNED' ? '70px' : '65px')}; 
   height: 10px;
   border-radius: 10px;
   padding: 0px 5px;
@@ -293,12 +297,12 @@ font-family: 'Light';
   -webkit-appearance: none;  /* for Chrome */
   -moz-appearance: none; /* for Firefox */
   appearance: none;
-   padding-left: ${({ value }) => (value === 'PLANNED' ? '-4px' : '10px')}; /* 지원 예정일 경우 글씨 위치 오른쪽으로 2px 이동 */
+   padding-left: ${({ value }) => (value === 'PLANNED' ? '-4px' : '10px')}; 
   margin-left: -3px;
   width: 100%; 
-  outline: none; /* 클릭 시 테두리 효과 제거 */
+  outline: none; 
    option {
-    color: black; /* 드롭다운 메뉴의 글씨 색을 검정으로 변경 */
+    color: black; 
   }
 `;
 
@@ -322,11 +326,9 @@ const ApplyDetail = () => {
   useEffect(() => {
     const fetchJobDetails = async () => {
       try {
-        console.log('Fetching job details for ID:', id); // ID 로그 추가
         const jobDetails = await getRecruitDetails(id);
-        console.log('Fetched job details:', jobDetails);
         setJob(jobDetails);
-        setStatus(jobDetails.status); // 상태 설정
+        setStatus(jobDetails.status);
       } catch (error) {
         console.error('Error fetching job details:', error);
       }
@@ -334,8 +336,7 @@ const ApplyDetail = () => {
 
     if (location.state && location.state.job) {
       setJob(location.state.job);
-      setStatus(location.state.job.status); // 상태 설정
-      console.log('Job set from location state:', location.state.job);
+      setStatus(location.state.job.status);
     } else {
       fetchJobDetails();
     }
@@ -359,11 +360,9 @@ const ApplyDetail = () => {
 
   const handleSave = async (updatedJob) => {
     try {
-      console.log('Updated job:', updatedJob);
       const response = await updateRecruit(updatedJob.id, updatedJob);
-      console.log('Update response:', response);
       setJob(updatedJob); // 성공 시 상태 업데이트
-      setIsEditModalOpen(false); // 모달 닫기
+      setIsEditModalOpen(false); 
     } catch (error) {
       console.error('Error updating job:', error);
     }
@@ -372,9 +371,7 @@ const ApplyDetail = () => {
   const handleDeleteConfirm = async () => {
     try {
       if (job && job.id) {
-        console.log('Deleting job with id:', job.id);
         await deleteRecruit(job.id);
-        console.log('Job deleted');
         setIsDeleteModalOpen(false);
         navigate('/apply');
       } else {
@@ -388,18 +385,11 @@ const ApplyDetail = () => {
   const handleStatusChange = async (event) => {
     const newStatus = event.target.value;
     setStatus(newStatus);
-  
+
     try {
       await updateRecruitStatus(id, newStatus);
-      console.log('Status updated successfully');
     } catch (error) {
       console.error('Failed to update status:', error);
-    }
-  };
-
-  const handleApplyClick = () => {
-    if (job && job.link) {
-      window.open(job.link, '_blank'); // 링크를 새 창에서 엽니다.
     }
   };
 
@@ -418,7 +408,7 @@ const ApplyDetail = () => {
   return (
     <Container>
       <Title>지원공고 관리</Title>
-      <BackLink to="/apply">&lt; 지원현황</BackLink> {/* 추가된 부분 */}
+      <BackLink to="/apply-schedule">&lt; 지원현황</BackLink>
       <Header>
         <TitleContainer>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -438,15 +428,15 @@ const ApplyDetail = () => {
           </EditDeleteContainer>
         </TitleContainer>
         <DropdownContainer status={status}>
-  <Dropdown value={status} onChange={handleStatusChange} valueLength={statusTextMap[status].length}>
-    <option value="UNAPPLIED">미지원</option>
-    <option value="PLANNED">지원 예정</option>
-    <option value="APPLYING">진행 중</option>
-    <option value="ACCEPTED">합격</option>
-    <option value="REJECTED">불합격</option>
-  </Dropdown>
-  <DropdownIcon>▼</DropdownIcon>
-</DropdownContainer>
+          <Dropdown value={status} onChange={handleStatusChange} valueLength={statusTextMap[status].length}>
+            <option value="UNAPPLIED">미지원</option>
+            <option value="PLANNED">지원 예정</option>
+            <option value="APPLYING">진행 중</option>
+            <option value="ACCEPTED">합격</option>
+            <option value="REJECTED">불합격</option>
+          </Dropdown>
+          <DropdownIcon>▼</DropdownIcon>
+        </DropdownContainer>
 
         <SubHeader>
           <InfoLabelStart>접수 시작 {job.startTime}</InfoLabelStart>
@@ -459,17 +449,18 @@ const ApplyDetail = () => {
           </TagLabel>
         </SubHeader>
       </Header>
-      <Section>
-        <SectionHeader>코딩테스트</SectionHeader>
-        <Contents>{job.contents}</Contents>
-        <DateText>{job.testDate}</DateText>
-      </Section>
-      <Section>
-        <SectionHeader>면접</SectionHeader>
-        <Contents>{job.interviewContents}</Contents>
-        <DateText>{job.interviewDate}</DateText>
-      </Section>
-      <Line />
+      <ReviewList
+    title="코딩테스트"
+    date={job.testDate || ''}
+    contents={job.contents || ''}
+    
+/>
+<ReviewList
+    title="면접"
+    date={job.interviewDate || ''}
+    contents={job.interviewContents || ''}
+   
+/>
       <ButtonContainer>
         <Button>전형 후기 추가</Button>
       </ButtonContainer>
