@@ -61,6 +61,7 @@ const AdDetails = styled.div`
 const AdTitleContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-left: 16px;
 `;
 
 const AdTitle = styled.div`
@@ -70,6 +71,7 @@ const AdTitle = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+   margin-top: 5px;
 `;
 
 const Label = styled.span`
@@ -89,9 +91,10 @@ const Label = styled.span`
 `;
 
 const TagContainer = styled.div`
-  display: flex;
+   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 13px;
+  margin-left: 15px;
   margin-bottom: 5px; /* Adjusted margin to remove excess space */
 `;
 
@@ -123,7 +126,8 @@ const StatusTitleContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  font-size: 18px;
+  font-size: 17px;
+  font-family: Regular;
 `;
 
 const groupByStatus = (data) => {
