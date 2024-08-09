@@ -317,7 +317,7 @@ const AddApplyModal = ({ onClose, onSave }) => {
           <InputWrapper>
             <Input
               type="text"
-              placeholder="활동 제목을 작성하세요"
+              placeholder="공고 제목을 작성하세요"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
