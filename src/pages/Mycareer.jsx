@@ -6,8 +6,7 @@ import CareerViewDate from '../components/Mycareer/CareerViewDate'; //시간순 
 import CareerViewCategory from '../components/Mycareer/CareerViewCategory'; //분류별 정렬 컴포넌트
 import AddJobButton from '../components/shared/AddJobButton'; //버튼추가
 import AddCareerModal from '../components/shared/AddCareerModal'; //모달 내용
-import CareerTimeline from '../components/Mycareer/CareerTimeline'; //타임라인 임포트
-
+import Timeline from '../components/Mycareer/Timeline';
 const Container = styled.div`
   max-width: 820px;
   margin: 0 auto;
@@ -38,7 +37,7 @@ export default function Mycareer() {
   return (
     <Container>
       <Title>내 커리어</Title>
-      <CareerTimeline data={careers}/>
+      <Timeline></Timeline>
 
       <CareerView view={view} onToggle={setView} />
       {view === 'date' && <CareerViewDate data={careers} />}

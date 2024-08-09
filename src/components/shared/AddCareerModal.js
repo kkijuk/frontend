@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import CategoryGroup from '../shared/CategoryGroup';
 import ReactCalendar from '../shared/CalendarSingle';
 import moment from 'moment';
-import axios from 'axios';
-import { addCareer } from '../../api/Mycareer';
+import { addCareer } from '../../api/Mycareer/Mycareer';
 
 const ModalBackdrop = styled.div`
   position: fixed;

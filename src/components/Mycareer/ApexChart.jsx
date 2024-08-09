@@ -4,7 +4,7 @@ import moment from 'moment';
 import styled from 'styled-components';
 
 const Window = styled.div`
-  width: ${props => props.width};
+  width: ${(props) => props.width};
   overflow-x: auto; /* Add horizontal scroll if needed */
 `;
 
@@ -13,9 +13,12 @@ class ApexChart extends React.Component {
     super(props);
 
     // Calculate the minimum and maximum dates from the data
-    const dates = props.data.flatMap(item => [new Date(item.startDate).getTime(), new Date(item.endDate).getTime()]);
-    let minDate = Math.min(...dates);
-    let maxDate = Math.max(...dates);
+    const allDates = props.data.flatMap(group =>
+      group.flatMap(item => [new Date(item.startDate).getTime(), new Date(item.endDate).getTime()])
+    );
+
+    let minDate = Math.min(...allDates);
+    let maxDate = Math.max(...allDates);
 
     // Adjust minDate to 1 month before and maxDate to 1 month after
     minDate = moment(minDate).subtract(1, 'months').valueOf();
@@ -24,83 +27,80 @@ class ApexChart extends React.Component {
     // Calculate the number of months between minDate and maxDate
     const monthsDiff = moment(maxDate).diff(moment(minDate), 'months') + 1;
     // Set the width of the chart (100px per month)
-    const chartWidth = monthsDiff * 100; // Now chartWidth is a number
+    const chartWidth = monthsDiff * 100;
+
+    // 각 그룹별 시리즈 생성
+    const series = props.data.map((group, i) => ({
+      name: `그룹 ${i + 1}`,
+      data: group.map(item => ({
+        x: item.careerName,
+        y: [new Date(item.startDate).getTime(), new Date(item.endDate).getTime()],
+        fillColor: getBackgroundColor(item.category),
+      })),
+    }));
 
     this.state = {
-      chartWidth, // Add chartWidth to state
-      series: [
-        {
-          data: props.data.map(item => ({
-            x: item.careerName,
-            y: [
-              new Date(item.startDate).getTime(),
-              new Date(item.endDate).getTime()
-            ],
-            fillColor: getBackgroundColor(item.category)
-          }))
-        }
-      ],
+      chartWidth,
+      series,
       options: {
         chart: {
-          height: 200,
           type: 'rangeBar',
+          height: 200,  // Each group will have its own height
           toolbar: {
-            show: false
+            show: false,
           },
           zoom: {
-            enabled: false
+            enabled: false,
           },
           animations: {
-            enabled: false
+            enabled: false,
           },
           scrollbar: {
             enabled: true,
-            autoHide: false
-          }
+            autoHide: false,
+          },
         },
         plotOptions: {
           bar: {
             horizontal: true,
             distributed: true,
-            borderRadius: 10, // Rounded corners for bars
-            barHeight: 22, // Bar height
+            borderRadius: 10,
+            barHeight: 22,
             dataLabels: {
               hideOverflowingLabels: false,
-            }
-          }
+            },
+          },
         },
         dataLabels: {
           enabled: true,
-          formatter: function(val, opts) {
-            var label = opts.w.globals.labels[opts.dataPointIndex];
-            
-            return label;
+          formatter: function (val, opts) {
+            return opts.w.globals.labels[opts.dataPointIndex];
           },
           style: {
-            colors: ['#f3f4f5', '#fff']
-          }
+            colors: ['#f3f4f5', '#fff'],
+          },
         },
         xaxis: {
           type: 'datetime',
-          min: minDate, // Set the adjusted minimum date
-          max: maxDate, // Set the adjusted maximum date
-          tickAmount: monthsDiff, // 모든 달이 보이게 함
+          min: minDate,
+          max: maxDate,
+          tickAmount: monthsDiff,
           labels: {
-            formatter: function(value) {
+            formatter: function (value) {
               return moment(value).format('YYYY.MM');
-            }
-          }
+            },
+          },
         },
         yaxis: {
-          show: false
+          show: true,
         },
         grid: {
           row: {
             colors: ['#fff'],
-            opacity: 1
-          }
-        }
-      }
+            opacity: 1,
+          },
+        },
+      },
     };
   }
 
@@ -112,8 +112,8 @@ class ApexChart extends React.Component {
             options={this.state.options}
             series={this.state.series}
             type="rangeBar"
-            height={200}
-            width={this.state.chartWidth} // Set the calculated width
+            height={200 * this.state.series.length}  // Adjust height based on the number of groups
+            width={this.state.chartWidth}
           />
         </div>
       </Window>
@@ -123,30 +123,23 @@ class ApexChart extends React.Component {
 
 export default ApexChart;
 
-// Helper function to get background color based on category
 const getBackgroundColor = (category) => {
   let color;
   switch (category) {
-    case '동아리':
+    case '1':
       color = '#FCC400';
       break;
-    case '대외활동':
+    case '2':
       color = '#77AFF2';
       break;
-    case '공모전/대회':
+    case '3':
       color = '#BB7AEF';
       break;
-    case '프로젝트':
+    case '4':
       color = '#78D333';
       break;
-    case '아르바이트/인턴':
+    case '5':
       color = '#FA7C79';
-      break;
-    case '교육':
-      color = '#F99538';
-      break;
-    case '기타 활동':
-      color = '#707070';
       break;
     default:
       color = '#707070';
