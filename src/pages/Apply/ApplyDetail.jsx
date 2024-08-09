@@ -96,7 +96,7 @@ const EditDeleteContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 30px;
-  margin-right: 0px; /* 아이콘을 오른쪽으로 이동 */
+  margin-right: 0px; 
 `;
 
 const SubHeader = styled.div`
@@ -204,25 +204,25 @@ const ButtonContainer = styled.div`
 const ApplyButtonContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Flex로 버튼과 제목 사이 공간을 확보 */
-  gap: 15px; /* 버튼 사이에 15px 간격 추가 */
+  justify-content: space-between; 
+  gap: 15px; 
 `;
 
 const ApplyButton = styled.div`
   display: flex;
-  align-items: center; /* 수직 중앙 정렬 */
-  border: 2px solid ${({ hasLink }) => (hasLink ? '#3AAF85' : '#707070')}; /* 테두리 색상 */
-  border-radius: 12px; /* 둥근 모서리 */
-  padding: 7px 18px; /* 내부 여백 */
-  color: ${props => props.hasLink ? '#3AAF85' : '#707070'}; /* 글자 색상 */
+  align-items: center; 
+  border: 2px solid ${({ hasLink }) => (hasLink ? '#3AAF85' : '#707070')}; 
+  border-radius: 12px; 
+  padding: 7px 18px; 
+  color: ${props => props.hasLink ? '#3AAF85' : '#707070'}; 
   cursor: pointer;
-  background: ${props => props.hasLink ? 'white' : 'transparent'}; /* 배경색 변경 */
+  background: ${props => props.hasLink ? 'white' : 'transparent'}; 
   margin-left: 30px;
   margin-bottom: -12px;
 `;
 
 const ApplyButtonText = styled.span`
-  margin-right: 5px; /* 텍스트를 5px 왼쪽으로 이동 */
+  margin-right: 5px;
 `;
 
 const Button = styled.div`
@@ -230,21 +230,21 @@ const Button = styled.div`
   height: 50px;
   border-radius: 10px;
   background: var(--main-01, #3AAF85);
-  border: none; /* 테두리를 없앰 */
-  color: white; /* 글자 색을 흰색으로 변경 */
-  cursor: pointer; /* 마우스 커서를 포인터로 변경 */
-  position: fixed; /* 화면에 고정 */
-  bottom: 30px; /* 화면 하단에서 30px 위로 위치 */
+  border: none; 
+  color: white; 
+  cursor: pointer; 
+  position: fixed; 
+  bottom: 30px; 
   background: ${props => props.disabled ? 'var(--gray-03, #D9D9D9)' : 'var(--main-01, #3AAF85)'};
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
-  display: flex; /* Flex를 사용하여 중앙 정렬 */
-  align-items: center; /* 수직 중앙 정렬 */
-  justify-content: center; /* 수평 중앙 정렬 */
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
 `;
 
 const EditIconStyled = styled(EditSvgIcon)`
   cursor: pointer;
-  margin-right: 10px; /* 아이콘 사이에 5px 간격 추가 */
+  margin-right: 10px; 
 `;
 
 const DeleteIconStyled = styled(DeleteSvgIcon)`
@@ -272,7 +272,7 @@ const DropdownContainer = styled.div`
         return '#707070';
     }
   }};
-  width: ${({ status }) => (status === 'PLANNED' ? '70px' : '65px')}; /* 지원 예정일 경우 가로 길이 5px 추가 */
+  width: ${({ status }) => (status === 'PLANNED' ? '70px' : '65px')}; 
   height: 10px;
   border-radius: 10px;
   padding: 0px 5px;
@@ -293,12 +293,12 @@ font-family: 'Light';
   -webkit-appearance: none;  /* for Chrome */
   -moz-appearance: none; /* for Firefox */
   appearance: none;
-   padding-left: ${({ value }) => (value === 'PLANNED' ? '-4px' : '10px')}; /* 지원 예정일 경우 글씨 위치 오른쪽으로 2px 이동 */
+   padding-left: ${({ value }) => (value === 'PLANNED' ? '-4px' : '10px')}; 
   margin-left: -3px;
   width: 100%; 
-  outline: none; /* 클릭 시 테두리 효과 제거 */
+  outline: none; 
    option {
-    color: black; /* 드롭다운 메뉴의 글씨 색을 검정으로 변경 */
+    color: black; 
   }
 `;
 
@@ -358,7 +358,7 @@ const ApplyDetail = () => {
     try {
       const response = await updateRecruit(updatedJob.id, updatedJob);
       setJob(updatedJob); // 성공 시 상태 업데이트
-      setIsEditModalOpen(false); // 모달 닫기
+      setIsEditModalOpen(false); 
     } catch (error) {
       console.error('Error updating job:', error);
     }

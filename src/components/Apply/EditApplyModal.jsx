@@ -261,7 +261,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
   }, [job]);
 
   const handleSave = async () => {
-    // 제목, 태그, 시작/마감 날짜, 링크 중 하나라도 입력된 경우 저장 가능
+
     const isAnyFieldFilled = title || tags.length > 0 || (startTime && endTime) || link;
 
     if (!isAnyFieldFilled) {

@@ -15,11 +15,10 @@ export const updateRecruit = async (recruitId, updatedJob) => {
   });
 
   if (!response.ok) {
-    const errorMessage = await response.text(); // 서버에서 반환한 에러 메시지 확인
+    const errorMessage = await response.text(); // 서버에서 반환한 에러 메시지 확인(에러 수정)
     console.error('Error message from server:', errorMessage);
     throw new Error('Failed to update job');
   }
 
   return response.json();
 };
-
