@@ -9,7 +9,7 @@ const Chart = styled.div`
   margin-right: 10px;
   position: relative;
   border: 1px solid black;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 `;
 
 const Line1 = styled.div`
@@ -40,6 +40,10 @@ const Line4 = styled.div`
   margin-left: 10px;
 `;
 
+const XBox = styled.div`
+width: 800px;
+height: 30px;
+`
 const XLine = styled.div`
   position: absolute;
   bottom: 0;
@@ -237,6 +241,7 @@ export default function Timeline() {
             </Tag>
           ))}
         </Line4>
+        <XBox>
         <XLine>
           {xLabels.map((label, index) => (
             <XLabel
@@ -248,6 +253,7 @@ export default function Timeline() {
             </XLabel>
           ))}
         </XLine>
+        </XBox>
       </Chart>
     </div>
   );
