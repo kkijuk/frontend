@@ -2,6 +2,7 @@ import React, { useState} from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import InterestBox from '../components/shared/InterestBox';
+import InterestSkipModal from '../components/User/InterestSkipModal';
 
 const ContentArea = styled.div`
 
@@ -103,6 +104,7 @@ const SaveButton = styled.button`
 const SignupInterest = ({ onSave }) => {
   const [selectedInterest, setSelectedInterest] = useState([]);
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
   
   const handleInterestSelect = (interest) => {
     setSelectedInterest((prevSelectedInterests) =>
@@ -126,6 +128,15 @@ const SignupInterest = ({ onSave }) => {
     navigate('/Home'); // 홈 페이지로 이동
   };
 
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
+  // 모달의 "확인" 버튼을 눌렀을 때 호출될 함수
+  const handleModalConfirm = () => {
+    handleClose(); // 홈 페이지로 이동
+  };
+
   return (
     <ContentArea>
       <Title>관심분야 등록</Title>
@@ -140,8 +151,14 @@ const SignupInterest = ({ onSave }) => {
           />
         ))}
       </InterestArea>
-      <CloseButton onClick={handleClose}>건너뛰기</CloseButton>
+      <CloseButton onClick={() => setShowModal(true)}>건너뛰기</CloseButton>
       <SaveButton onClick={handleSave}>완료</SaveButton>
+      {showModal && (
+        <InterestSkipModal
+          onClose={handleModalClose}
+          onConfirm={handleModalConfirm}
+        />
+      )}
     </ContentArea>
   );
 };

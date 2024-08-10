@@ -29,7 +29,7 @@ const AdDateSection = styled.div`
   margin-bottom: 30px;
 `;
 
-const AdDate = styled.div`
+const Year = styled.div`
   font-size: 14px;
   color: var(--black, #000);
   font-family: Pretendard;
@@ -54,6 +54,23 @@ const AdDetails = styled.div`
   color: #555;
 `;
 
+const AdDate = styled.div`
+  color: var(--gray-02, #707070);
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-left: 13px;
+`;
+
+const AdHeader = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  margin-left: 13px;
+`;
+
 const AdTitle = styled.div`
   color: var(--black, #000);
   font-family: Pretendard;
@@ -61,6 +78,16 @@ const AdTitle = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+`;
+
+const AdAlias = styled.div`
+  color: var(--black, #000);
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-left: 5px;
 `;
 
 const Label = styled.span`
@@ -81,6 +108,7 @@ const Label = styled.span`
 const TagContainer = styled.div`
     display: flex;
     align-items: center;
+    margin-left: 13px;
 `;
 
 const sortByDate = (data) => {
@@ -112,7 +140,7 @@ const CareerViewDate = ({ data }) => {
         <AdListStyled>
           {sortedYears.map((year, index) => (
             <AdDateSection key={index}>
-              <AdDate>{year}</AdDate>
+              <Year>{year}</Year>
               {groupedData[year].map((ad, idx) => (
                 <AdItem key={idx}>
                   <AdDetails>
@@ -120,9 +148,11 @@ const CareerViewDate = ({ data }) => {
                         <CareerCategoryCircle category={ad.category} />
                         <Label>{ad.category}</Label>
                       </TagContainer>
-                    <AdTitle>{ad.careerName}</AdTitle>
-                    <div>{ad.alias}</div>
-                    <div>{ad.startDate} - {ad.endDate}</div>
+                      <AdHeader>
+                        <AdTitle>{ad.careerName}</AdTitle>
+                        <AdAlias> / {ad.alias}</AdAlias>
+                      </AdHeader>
+                      <AdDate>{ad.startDate} - {ad.endDate}</AdDate>
                   </AdDetails>
                 </AdItem>
               ))}
