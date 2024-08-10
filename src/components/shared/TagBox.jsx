@@ -158,7 +158,7 @@ export default function TagBox() {
             
             
             if (tagList && Array.isArray(tagList)) {
-                setAllTags(tagList.map((tag) => tag.tagName));
+                setAllTags(tagList.map((tag) => ({ id: tag.id, tagName: tag.tagName })));
             } else {
                 console.error('불러온 태그 목록이 유효하지 않습니다.');
             }
@@ -214,18 +214,17 @@ export default function TagBox() {
         setTags((prevTags) => prevTags.filter((tag) => tag !== tagToRemove));
     };
 
-    const handleTagRemoveFromContainer = async (tagToRemove, event) => {
+    const handleTagRemoveFromContainer = async (tagId, event) => {
         event.stopPropagation(); // 이벤트 전파 중지
         try {
             // 삭제 API 호출
-            const tagId = allTags.find(tag => tag.tagName === tagToRemove)?.id;
             if (tagId) {
                 await TagBoxDeleteTag(tagId);
             }
     
             // TagBoxListContainer와 TagInputContainer에서 태그 삭제
-            setAllTags((prevAllTags) => prevAllTags.filter((tag) => tag.tagName !== tagToRemove));
-            setTags((prevTags) => prevTags.filter((tag) => tag !== tagToRemove));
+            setAllTags((prevAllTags) => prevAllTags.filter((tag) => tag.id !== tagId));
+            setTags((prevTags) => prevTags.filter((tag) => tag.id !== tagId));
         } catch (error) {
             console.error("태그 삭제 중 오류 발생:", error);
         }
@@ -273,10 +272,10 @@ export default function TagBox() {
                 <TagBoxList ref={tagBoxListRef}>
                     <TagBoxListContainer>
                         {allTags.map((tag, index) => (
-                            <Tag key={index} onClick={() => handleTagAddFromList(tag)}>
-                                {tag}
+                            <Tag key={index} onClick={() => handleTagAddFromList(tag.tagName)}>
+                                {tag.tagName}
                                 <CloseButton
-                                    onClick={(event) => handleTagRemoveFromContainer(tag, event)}
+                                    onClick={(event) => handleTagRemoveFromContainer(tag.id, event)}
                                     onMouseDown={(event) => event.stopPropagation()} // 이 부분 추가
                                 >
                                     x

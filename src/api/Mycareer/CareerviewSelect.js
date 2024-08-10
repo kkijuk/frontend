@@ -12,6 +12,7 @@ export const CareerViewSelect = async(status) => {
             }
         )
         console.log("통신 완료 : ", response.data);
+        return response.data;
     } catch (error) {
         console.log("Error", error.message);
         if(error.response){
