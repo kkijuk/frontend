@@ -54,18 +54,14 @@ const App = () => {
       <Header />
       <MainContent>
         <Routes>
-          <Route path="/" element={<Home />} /> {/* 메인 */}
-          <Route path="/login" element={<Login />} /> {/* 로그인 */}
-          <Route path="/signup" element={<Signup />} /> {/* 회원가입 */}
-          <Route path="/signupsuccess" element={<SignupSuccess />} /> {/* 회원가입 성공 */}
-          <Route path="/mypage" element={<MyPage />} /> {/* 마이 페이지 */}
-          <Route path="/mycareerdetail" element={<MyCareerDetail />} /> {/* 내커리어 상세 */}
-          <Route path="/mycareer" element={<MyCareer />} /> {/* 내커리어 */}
-          
-          <Route path="/SignupInterest" element={<SignupInterest />} />
-
-
-          {/* 이력관리 라우팅 */}
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/signupsuccess" element={<SignupSuccess />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mycareerdetail" element={<MyCareerDetail />} />
+          <Route path="/mycareer" element={<MyCareer />} />
+          <Route path="/signupinterest" element={<SignupInterest />} />
           <Route element={<SubNav />}>
             <Route element={<ViewOptions />}>
               <Route path="/history/master" element={<Master />} />

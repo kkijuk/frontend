@@ -5,6 +5,8 @@
   "dependencies": {
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
+    "@mobiscroll/cli": "^1.15.0",
+    "@mobiscroll/react": "npm:@mobiscroll/react-next-trial@^5.31.2",
     "@mui/icons-material": "^5.16.4",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",

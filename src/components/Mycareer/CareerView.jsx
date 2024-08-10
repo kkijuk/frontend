@@ -48,7 +48,7 @@ const CareerView = ({ view, onToggle }) => {
     </ViewTitleContainer>
     <ViewToggleStyled>
 
-        <ToggleButton active={view === 'date'} onClick={() => onToggle('date')}>
+        <ToggleButton active={view === 'year'} onClick={() => onToggle('year')}>
           시간순
         </ToggleButton>
         <ToggleButton active={view === 'category'} onClick={() => onToggle('category')}>

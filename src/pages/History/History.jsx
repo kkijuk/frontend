@@ -1,78 +1,114 @@
-import api from '../../Axios'
-import React, {useState,useEffect} from 'react'
-import styled from 'styled-components'
-import './history.css'
-import SubNav from '../../components/History/SubNav'
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import './history.css';
+import EducationItem from '../../components/History/EducationItem';
+import EditItem from '../../components/History/EditItem';
 
-const History=()=>{
+const History = () => {
 
-    //(Data)
-    const [picture, setPicture] = useState('') //프로필
-    const [address, setAddress] = useState('') //주소
-    const [updatedAt, setUpdatedAt] = useState('')//마지막 업데이트
-    const [education, setEducation] = useState([]);
-    const [career, setCareer] = useState([]);
-    const [activity, setActivity] = useState([]);
+    const profileTitles = ["이름", "생년월일", "전화번호", "이메일", "주소"];
+    const [isEdit, setIsEdit] = useState([false, true]);
 
-    //1. 이력서 조회
+    const [profile] = useState({
+        name:"박하은",
+        birth:"1999.07.17",
+        mobile:"010-1234-5678",
+        email:"kkijuk@gmail.com",
+        address:"주소를 입력하세요"
+    });
 
-    //2. 이력서 수정
+    const [educations] = useState([
+        {
+            level : "대학교",
+            schoolName : "서울여자대학교",
+            department : "언론영상학부 디지털영상전공, 소프트웨어융합학과" ,
+            startDate : "2018.03",
+            endDate : "2025.02",
+            status : "졸업예정"
+        },
+        {
+            level : "고등학교",
+            schoolName : "유엠씨고등학교",
+            startDate : "2015.03",
+            endDate : "2018.02",
+            status : "졸업"
+        }
+    ]);
 
-    return(
+    const handleCancelEdit = (index) => {
+        setIsEdit(prev => prev.map((edit, i) => i === index ? false : edit));
+    };
+
+    const handleEdit = (index) => {
+        setIsEdit(prev => prev.map((edit, i) => i === index ? true : edit));
+    };
+
+    return (
         <BackgroundDiv>
             <BaseDiv>
-                {/* 유저 정보 */}
-                <div style={{width:'150px', height:'200px'}}>
-
+                <div style={{display:'flex', alignContent:'center', gap:'40px'}}>
+                    <div style={{width:'150px', height:'200px',backgroundColor:'#707070'}}>
+                        {/* 프로필사진 */}
+                    </div>
+                    <div style={{width:'70px'}}>
+                        {profileTitles.map((profileTitle, index) => (
+                            <p key={index} style={{color:'#707070', fontSize:'18px'}}>{profileTitle}</p>
+                        ))}
+                    </div>
+                    <div style={{height:'203px'}}>
+                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profile.name}</p>
+                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profile.birth}</p>
+                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profile.mobile}</p>
+                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profile.email}</p>
+                        <p style={{color:'#707070', fontSize:'14px', textDecorationLine:'underline',margin:'15px 0px'}}>{profile.address}</p>
+                    </div>
                 </div>
-                <Linear></Linear>
 
-                {/* 학력 */}
-                {/*AddButton 개수 제한 이벤트(onClick)*/}
-                <AddButton >+</AddButton>
-                <Linear></Linear>
+                <Linear />
 
-                {/* 경력 */}
-                <AddButton >+</AddButton>
-                <Linear></Linear>
+                <h3>학력</h3>
+                {educations.map((education, index) => (
+                    isEdit[index] 
+                    ? <EditItem key={index} dummy={education} onCancel={() => handleCancelEdit(index)} /> 
+                    : <EducationItem key={index} dummy={education} onEdit={() => handleEdit(index)} />
+                ))}
+                <AddButton>+</AddButton>
+                <Linear />
 
-                {/* 활동 및 경험 */}
-                <AddButton >+</AddButton>
+                <h3>경력</h3>
+                <AddButton>+</AddButton>
+                <Linear />
+
+                <h3>활동 및 경험</h3>
+                <AddButton>+</AddButton>
             </BaseDiv>
         </BackgroundDiv>
-    )
-}
-export default History
+    );
+};
+
+export default History;
 
 const BackgroundDiv = styled.div`
     width: 100%;
     height: 100%;
     margin-top:40px;
     display:flex;
-    // align-items:center;
     justify-content:center;
-`
+`;
 
 const BaseDiv = styled.div`
     width: 820px;
-    // display:flex;
-    // margin-left:400px;
     max-width: 820px;
-    // background-color:#D9D9D9
-    position:relative
+    position:relative;
     z-index:999;
-    // & > * {
-    //     positon:relative;
-    //     z-index: 990; 
-    // }
-`
+`;
 
 const Linear = styled.div`
     width:820px;
     height:2px;
     background: #F1F1F1;
     margin: 30px 0px;
-`
+`;
 
 const AddButton = styled.button`
     width: 820px;
@@ -84,9 +120,6 @@ const AddButton = styled.button`
     background: #FFF;
     color:#D9D9D9;
     font-size: 30px;
-    cursor:pointer; 
-`
+    cursor:pointer;
+`;
 
-const Item = styled.div`
-
-`

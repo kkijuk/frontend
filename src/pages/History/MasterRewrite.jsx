@@ -2,9 +2,6 @@ import api from "../../Axios";
 import React,{useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import SubNav from '../../components/History/SubNav'
-import Toggle from '../../components/History/Toggle'
-import ButtonOptions from '../../components/History/AddButton'
 
 const MasterRewrite =()=>{
 
