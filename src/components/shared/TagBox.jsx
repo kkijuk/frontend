@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import AbilityTag from './AbilityTag'; // AbilityTag 컴포넌트 가져오기
-import { TagBoxApi } from '../../api/Share/Tagbox';
+import { TagBoxFetchList, TagBoxCreateTag, TagBoxDeleteTag } from '../../api/Mycareer/TagBoxAPI';
 
 const Box = styled.div`
     width: 720px;
@@ -154,8 +154,14 @@ export default function TagBox() {
 
         // API 호출하여 태그 목록 불러오기
         try {
-            const tagList = await TagBoxApi();
-            setAllTags(tagList.map((tag) => tag.tagName)); // tagName만 추출하여 설정
+            const tagList = await TagBoxFetchList();
+            
+            
+            if (tagList && Array.isArray(tagList)) {
+                setAllTags(tagList.map((tag) => tag.tagName));
+            } else {
+                console.error('불러온 태그 목록이 유효하지 않습니다.');
+            }
         } catch (error) {
             console.error('태그를 불러오는 중 오류 발생:', error);
         }
@@ -165,7 +171,7 @@ export default function TagBox() {
         setTagText(event.target.value);
     };
 
-    const handleTagKeyDown = (e) => {
+    const handleTagKeyDown = async (e) => {
         if (e.key === 'Enter' && tagText.trim() !== '' && e.nativeEvent.isComposing === false) {
             e.preventDefault(); // 기본 엔터키 동작 방지
             const newTag = tagText.trim();
@@ -176,8 +182,15 @@ export default function TagBox() {
             }
             // 새로운 태그 추가
             else if (!allTags.includes(newTag)) {
-                setTags((prevTags) => [...prevTags, newTag]);
-                setAllTags((prevAllTags) => [...prevAllTags, newTag]);
+                try {
+
+                    await TagBoxCreateTag(newTag);
+                    setTags((prevTags) => [...prevTags, newTag]);
+                    setAllTags((prevAllTags) => [...prevAllTags, newTag]);
+                } catch (error) {
+                    console.error('태그 추가하는 중 오류 발생:', error);
+                }
+                
             }
             setTagText('');
         }
@@ -194,19 +207,28 @@ export default function TagBox() {
         }
     };
 
-    const handleTagRemoveFromContainer = (tagToRemove, event) => {
+    const handleTagRemoveFromList = (tagToRemove, event) => {
         event.stopPropagation(); // 이벤트 전파 중지
 
         // TagInputContainer에서 태그 삭제
         setTags((prevTags) => prevTags.filter((tag) => tag !== tagToRemove));
     };
 
-    const handleTagRemoveFromList = (tagToRemove, event) => {
+    const handleTagRemoveFromContainer = async (tagToRemove, event) => {
         event.stopPropagation(); // 이벤트 전파 중지
-
-        // TagBoxListContainer와 TagInputContainer에서 태그 삭제
-        setAllTags((prevAllTags) => prevAllTags.filter((tag) => tag !== tagToRemove));
-        setTags((prevTags) => prevTags.filter((tag) => tag !== tagToRemove));
+        try {
+            // 삭제 API 호출
+            const tagId = allTags.find(tag => tag.tagName === tagToRemove)?.id;
+            if (tagId) {
+                await TagBoxDeleteTag(tagId);
+            }
+    
+            // TagBoxListContainer와 TagInputContainer에서 태그 삭제
+            setAllTags((prevAllTags) => prevAllTags.filter((tag) => tag.tagName !== tagToRemove));
+            setTags((prevTags) => prevTags.filter((tag) => tag !== tagToRemove));
+        } catch (error) {
+            console.error("태그 삭제 중 오류 발생:", error);
+        }
     };
 
     const handleTagAddFromList = (tagToAdd) => {
@@ -232,7 +254,7 @@ export default function TagBox() {
                         <WhiteTag key={index}>
                             {tag}
                             <CloseButton
-                                onClick={(event) => handleTagRemoveFromContainer(tag, event)}
+                                onClick={(event) => handleTagRemoveFromList(tag, event)}
                                 onMouseDown={(event) => event.stopPropagation()} // 이 부분 추가
                             >
                                 x
@@ -254,7 +276,7 @@ export default function TagBox() {
                             <Tag key={index} onClick={() => handleTagAddFromList(tag)}>
                                 {tag}
                                 <CloseButton
-                                    onClick={(event) => handleTagRemoveFromList(tag, event)}
+                                    onClick={(event) => handleTagRemoveFromContainer(tag, event)}
                                     onMouseDown={(event) => event.stopPropagation()} // 이 부분 추가
                                 >
                                     x
