@@ -50,6 +50,7 @@ const AdItem = styled.div`
   border-radius: 10px;
   padding: 15px;
   margin-bottom: 10px;
+   margin-bottom: 20px;
   box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
   cursor: pointer; /* Add pointer cursor for clickable items */
 `;

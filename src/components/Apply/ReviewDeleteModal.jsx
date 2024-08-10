@@ -27,8 +27,7 @@ const Modal = styled.div`
   text-align: center;
 `;
 
-/* 각자 수정하실 부분 - 모달 제목  */
-const ModalTitle = styled.div` 
+const ModalTitle = styled.div`
   color: #333;
   text-align: center;
   font-family: 'Light';
@@ -45,9 +44,8 @@ const ButtonContainer = styled.div`
   margin-top: 20px;
 `;
 
-
 const CancelButton = styled.button`
-   width: 120px;
+  width: 120px;
   height: 35px;
   border-radius: 12px;
   cursor: pointer;
@@ -60,7 +58,7 @@ const CancelButton = styled.button`
 `;
 
 const ConfirmButton = styled.button`
-   width: 120px;
+  width: 120px;
   height: 35px;
   border-radius: 12px;
   cursor: pointer;
@@ -72,21 +70,28 @@ const ConfirmButton = styled.button`
   margin-top: 45px;
 `;
 
-
-const DeleteModal = ({ onClose, onConfirm }) => ( /* 각자 수정하실 부분 함수 선언에 맞춰 이름을 변경해주세요 */
+const ReviewDeleteModal = ({ onClose, onConfirm }) => (
   <Background>
     <Modal>
       <ModalTitle>
-        공고를 삭제하면 해당 공고에<br />
-        입력한 전형 후기도 모두 삭제됩니다.<br />
+        해당 전형 후기를<br />
         정말로 삭제하시겠습니까?
       </ModalTitle>
       <ButtonContainer>
-        <CancelButton onClick={onClose} style={{ border: '1.5px solid #77AFF2', background: '#FFF', color: '#77AFF2'  }}>취소</CancelButton>
-        <ConfirmButton onClick={onConfirm} style={{ border: '1.5px solid red', background: '#FFF', color: 'red' }}>삭제</ConfirmButton>
+        <CancelButton 
+          onClick={onClose} 
+          style={{ border: '1.5px solid #77AFF2', background: '#FFF', color: '#77AFF2' }}>
+          취소
+        </CancelButton>
+        <ConfirmButton 
+          onClick={onConfirm}  // 삭제 버튼 클릭 시 onConfirm 함수 호출
+          style={{ border: '1.5px solid red', background: '#FFF', color: 'red' }}>
+          삭제
+        </ConfirmButton>
       </ButtonContainer>
     </Modal>
   </Background>
 );
 
-export default ApplyDeleteModal;
+export default ReviewDeleteModal;
+
