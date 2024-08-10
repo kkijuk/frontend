@@ -5,7 +5,8 @@ export const getRecruitDetails = async (id) => {
     const response = await fetch(`${apiUrl}/${id}`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json; charset=utf-8'
+        'Content-Type': 'application/json; charset=utf-8',
+        'accept': '*/*'
       }
     });
 
@@ -20,12 +21,18 @@ export const getRecruitDetails = async (id) => {
 
     const responseData = await response.json();
     console.log('Recruit details for ID', id, ':', responseData); // 로그 추가
-    return responseData;
+    return { ...responseData, id }; // id 필드 추가
   } catch (error) {
     console.error("Error fetching recruit details:", error.message);
     throw error;
   }
 };
+
+
+
+
+
+
 
 
 

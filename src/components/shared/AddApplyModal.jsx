@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import TagBox from '../Apply/ModalTagBox';
-import { createRecruit } from '../../api/Recruit'; 
+import { createRecruit } from '../../api/Apply/Recruit'; 
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -255,7 +255,7 @@ const AddApplyModal = ({ onClose, onSave }) => {
   const [endTime, setEndTime] = useState('');
   const [tags, setTags] = useState([]);
   const [link, setLink] = useState('');
-  const [status, setStatus] = useState('planned');
+  const [status, setStatus] = useState('unapplied');
 
   const handleSave = async () => {
     if (!title || !startTime || !endTime) {
@@ -317,7 +317,7 @@ const AddApplyModal = ({ onClose, onSave }) => {
           <InputWrapper>
             <Input
               type="text"
-              placeholder="활동 제목을 작성하세요"
+              placeholder="공고 제목을 작성하세요"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />

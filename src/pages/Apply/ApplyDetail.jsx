@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import EditApplyModal from '../components/Apply/EditApplyModal'; // EditApplyModal을 포함하는 컴포넌트
-import ApplyDeleteModal from '../components/Apply/ApplyDeleteModal'; // 삭제 모달 컴포넌트 추가
-import { deleteRecruit } from '../api/DeleteRecruit'; // DeleteRecruit API 호출 컴포넌트
-import { getRecruitDetails } from '../api/RecruitDetails'; // RecruitDetails API 호출 컴포넌트
-import { updateRecruit } from '../api/RecruitUpdate';
+import EditApplyModal from '../../components/Apply/EditApplyModal'; // EditApplyModal을 포함하는 컴포넌트
+import ApplyDeleteModal from '../../components/Apply/ApplyDeleteModal'; // 삭제 모달 컴포넌트 추가
+import { deleteRecruit } from '../../api/Apply/DeleteRecruit'; // DeleteRecruit API 호출 컴포넌트
+import { getRecruitDetails } from '../../api/Apply/RecruitDetails'; // RecruitDetails API 호출 컴포넌트
+import { updateRecruitStatus } from '../../api/Apply/RecruitStatus'; 
+import { updateRecruit } from '../../api/Apply/RecruitUpdate';
+import { Link } from 'react-router-dom';
+import ReviewList from '../../components/Apply/ReviewList';
 
-const SvgIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-    <path d="M10.834 9.16732L17.6673 2.33398" stroke="#707070" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M18.334 5.66602V1.66602H14.334" stroke="#707070" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M9.16602 1.66602H7.49935C3.33268 1.66602 1.66602 3.33268 1.66602 7.49935V12.4993C1.66602 16.666 3.33268 18.3327 7.49935 18.3327H12.4993C16.666 18.3327 18.3327 16.666 18.3327 12.4993V10.8327" stroke="#707070" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
+const SvgIcon = styled.svg`
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: ${({ hasLink }) => (hasLink ? '#3AAF85' : '#707070')}; /* 테두리 색상 */
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+`;
 
 const DeleteSvgIcon = ({ onClick }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none" onClick={onClick} style={{ cursor: 'pointer' }}>
@@ -47,6 +52,16 @@ const Container = styled.div`
   border-radius: 8px;
 `;
 
+const BackLink = styled(Link)`
+  display: inline-block;
+  color: black;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  text-decoration: none;
+  margin-left: 20px;
+`;
+
 const Title = styled.h1`
   color: var(--black, #000);
   font-family: Pretendard;
@@ -59,7 +74,7 @@ const Title = styled.h1`
 const Header = styled.div`
   display: flex;
   flex-direction: column;
-  border-bottom: 2px solid #D9D9D9;
+  border-bottom: 6px solid #D9D9D9;
   padding-bottom: 16px;
   margin-bottom: 24px;
 `;
@@ -68,38 +83,43 @@ const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: -15px;
 `;
 
 const ListTitle = styled.div`
   font-size: 24px;
   font-weight: 700;
   margin-top: 16px; 
+  margin-left: 70px;
 `;
 
 const EditDeleteContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 30px;
-  margin-right: 0px; 
+  margin-right: 40px; 
 `;
 
 const SubHeader = styled.div`
-  width: 825px;
+  width: 720px;
   height: 60px;
   flex-shrink: 0;
   border-radius: 12px;
   background: var(--gray-06, #F5F5F5);
   padding: 15px 10px;
   position:relative;
-  margin-top: 30px;
+  margin-top: 20px;
+  margin-left: 70px;
 `;
 
 const InfoLabelStart = styled.div`
   width:250px;
   display:flex;
   align-items:center;
-  gap:20px;
+  gap:50px;
   position:absolute;
+  margin-left: 5px;
+  font-family: Bold;
 `;
 
 const InfoLabelEnd = styled.div`
@@ -108,16 +128,19 @@ const InfoLabelEnd = styled.div`
   align-items:center;
   gap:20px;
   position:absolute;
-  margin-left:100px;
+  margin-left: 300px;
+  font-family: Bold;
 `;
 
 const TagLabel = styled.div`
   width:250px;
   display:flex;
   align-items:center;
-  gap:20px;
+  gap:10px;
   position:absolute;
   margin-top: 40px;
+  margin-left: 5px;
+  font-family: Bold;
 `;
 
 const Tag = styled.div`
@@ -192,18 +215,18 @@ const ApplyButtonContainer = styled.div`
 const ApplyButton = styled.div`
   display: flex;
   align-items: center; 
-  border: 2px solid #707070; 
+  border: 2px solid ${({ hasLink }) => (hasLink ? '#3AAF85' : '#707070')}; 
   border-radius: 12px; 
-  padding: 9px 18px; 
-  color: #707070; 
+  padding: 7px 18px; 
+  color: ${props => props.hasLink ? '#3AAF85' : '#707070'}; 
   cursor: pointer;
-  background: transparent; 
+  background: ${props => props.hasLink ? 'white' : 'transparent'}; 
   margin-left: 30px;
   margin-bottom: -12px;
 `;
 
 const ApplyButtonText = styled.span`
-  margin-right: 5px; 
+  margin-right: 5px;
 `;
 
 const Button = styled.div`
@@ -232,6 +255,65 @@ const DeleteIconStyled = styled(DeleteSvgIcon)`
   cursor: pointer;
 `;
 
+const DropdownContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 70px;
+  margin-top: 10px;
+  background-color: ${({ status }) => {
+    switch (status) {
+      case 'UNAPPLIED':
+        return '#D9D9D9';
+      case 'PLANNED':
+        return '#B0B0B0';
+      case 'APPLYING':
+        return '#707070';
+      case 'ACCEPTED':
+        return '#78D333';
+      case 'REJECTED':
+        return '#FA7C79';
+      default:
+        return '#707070';
+    }
+  }};
+  width: ${({ status }) => (status === 'PLANNED' ? '70px' : '65px')}; 
+  height: 10px;
+  border-radius: 10px;
+  padding: 0px 5px;
+  font-size: 12px;
+  padding: 5px 10px;
+  color: white;
+  position: relative;
+`;
+
+const Dropdown = styled.select`
+padding: 0px 5px;
+font-family: 'Light';
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 13px;
+  color: white;
+  -webkit-appearance: none;  /* for Chrome */
+  -moz-appearance: none; /* for Firefox */
+  appearance: none;
+   padding-left: ${({ value }) => (value === 'PLANNED' ? '-4px' : '10px')}; 
+  margin-left: -3px;
+  width: 100%; 
+  outline: none; 
+   option {
+    color: black; 
+  }
+`;
+
+const DropdownIcon = styled.span`
+  position: absolute;
+  right: 10px;
+  pointer-events: none;
+  transform: translateY(0px);
+`;
+
+
 const ApplyDetail = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -239,27 +321,27 @@ const ApplyDetail = () => {
   const [job, setJob] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [status, setStatus] = useState('');
 
   useEffect(() => {
     const fetchJobDetails = async () => {
       try {
-        console.log('Fetching job details for ID:', id); // ID 로그 추가
         const jobDetails = await getRecruitDetails(id);
-        console.log('Fetched job details:', jobDetails);
         setJob(jobDetails);
+        setStatus(jobDetails.status);
       } catch (error) {
         console.error('Error fetching job details:', error);
       }
     };
-  
+
     if (location.state && location.state.job) {
       setJob(location.state.job);
-      console.log('Job set from location state:', location.state.job);
+      setStatus(location.state.job.status);
     } else {
       fetchJobDetails();
     }
   }, [id, location.state]);
-  
+
   const handleEditClick = () => {
     setIsEditModalOpen(true);
   };
@@ -278,11 +360,9 @@ const ApplyDetail = () => {
 
   const handleSave = async (updatedJob) => {
     try {
-      console.log('Updated job:', updatedJob);
       const response = await updateRecruit(updatedJob.id, updatedJob);
-      console.log('Update response:', response);
       setJob(updatedJob); // 성공 시 상태 업데이트
-      setIsEditModalOpen(false); // 모달 닫기
+      setIsEditModalOpen(false); 
     } catch (error) {
       console.error('Error updating job:', error);
     }
@@ -291,16 +371,7 @@ const ApplyDetail = () => {
   const handleDeleteConfirm = async () => {
     try {
       if (job && job.id) {
-        console.log('Deleting job with id:', job.id);
         await deleteRecruit(job.id);
-        console.log('Job deleted');
-  
-        // 현재 저장된 recruitIds 목록을 가져와 삭제된 ID를 제거한 후 다시 저장
-        const storedIds = localStorage.getItem('recruitIds');
-        const recruitIds = storedIds ? JSON.parse(storedIds) : [];
-        const updatedRecruitIds = recruitIds.filter(id => id !== job.id);
-        localStorage.setItem('recruitIds', JSON.stringify(updatedRecruitIds));
-  
         setIsDeleteModalOpen(false);
         navigate('/apply');
       } else {
@@ -310,22 +381,45 @@ const ApplyDetail = () => {
       console.error('Failed to delete job:', error);
     }
   };
-  
+
+  const handleStatusChange = async (event) => {
+    const newStatus = event.target.value;
+    setStatus(newStatus);
+
+    try {
+      await updateRecruitStatus(id, newStatus);
+    } catch (error) {
+      console.error('Failed to update status:', error);
+    }
+  };
 
   if (!job) {
     return <div>Loading...</div>;
   }
 
+  const statusTextMap = {
+    UNAPPLIED: '미지원',
+    PLANNED: '지원 예정',
+    APPLYING: '진행 중',
+    ACCEPTED: '합격',
+    REJECTED: '불합격',
+  };
+
   return (
     <Container>
       <Title>지원공고 관리</Title>
+      <BackLink to="/apply-schedule">&lt; 지원현황</BackLink>
       <Header>
         <TitleContainer>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
             <ListTitle>{job.title}</ListTitle>
-            <ApplyButton>
+            <ApplyButton hasLink={Boolean(job.link)} onClick={() => job.link && window.open(job.link, '_blank')}>
               <ApplyButtonText>지원하러 가기</ApplyButtonText>
-              <SvgIcon style={{ marginLeft: '5px' }} />
+              <SvgIcon hasLink={Boolean(job.link)}>
+                <path d="M10.834 9.16732L17.6673 2.33398" />
+                <path d="M18.334 5.66602V1.66602H14.334" />
+                <path d="M9.16602 1.66602H7.49935C3.33268 1.66602 1.66602 3.33268 1.66602 7.49935V12.4993C1.66602 16.666 3.33268 18.3327 7.49935 18.3327H12.4993C16.666 18.3327 18.3327 16.666 18.3327 12.4993V10.8327" />
+              </SvgIcon>
             </ApplyButton>
           </div>
           <EditDeleteContainer>
@@ -333,9 +427,20 @@ const ApplyDetail = () => {
             <DeleteSvgIcon onClick={handleDeleteClick} />
           </EditDeleteContainer>
         </TitleContainer>
+        <DropdownContainer status={status}>
+          <Dropdown value={status} onChange={handleStatusChange} valueLength={statusTextMap[status].length}>
+            <option value="UNAPPLIED">미지원</option>
+            <option value="PLANNED">지원 예정</option>
+            <option value="APPLYING">진행 중</option>
+            <option value="ACCEPTED">합격</option>
+            <option value="REJECTED">불합격</option>
+          </Dropdown>
+          <DropdownIcon>▼</DropdownIcon>
+        </DropdownContainer>
+
         <SubHeader>
-          <InfoLabelStart>접수 시작: {job.startTime}</InfoLabelStart>
-          <InfoLabelEnd>접수 마감: {job.endTime}</InfoLabelEnd>
+          <InfoLabelStart>접수 시작 {job.startTime}</InfoLabelStart>
+          <InfoLabelEnd>접수 마감 {job.endTime}</InfoLabelEnd>
           <TagLabel>
             태그
             {job.tags.map((tag, idx) => (
@@ -344,41 +449,29 @@ const ApplyDetail = () => {
           </TagLabel>
         </SubHeader>
       </Header>
-      <Section>
-        <SectionHeader>코딩테스트</SectionHeader>
-        <Contents>{job.contents}</Contents>
-        <DateText>{job.testDate}</DateText>
-      </Section>
-      <Section>
-        <SectionHeader>면접</SectionHeader>
-        <Contents>{job.interviewContents}</Contents>
-        <DateText>{job.interviewDate}</DateText>
-      </Section>
-      <Line />
+      <ReviewList
+    title="코딩테스트"
+    date={job.testDate || ''}
+    contents={job.contents || ''}
+    
+/>
+<ReviewList
+    title="면접"
+    date={job.interviewDate || ''}
+    contents={job.interviewContents || ''}
+   
+/>
       <ButtonContainer>
         <Button>전형 후기 추가</Button>
       </ButtonContainer>
       {isEditModalOpen && (
-        <EditApplyModal
-          job={job}
-          onClose={handleCloseEditModal}
-          onSave={handleSave}
-        />
+        <EditApplyModal job={job} onClose={handleCloseEditModal} onSave={handleSave} />
       )}
       {isDeleteModalOpen && (
-        <ApplyDeleteModal
-          onClose={handleCloseDeleteModal}
-          onConfirm={handleDeleteConfirm}
-        />
+        <ApplyDeleteModal onClose={handleCloseDeleteModal} onConfirm={handleDeleteConfirm} />
       )}
     </Container>
   );
 };
 
 export default ApplyDetail;
-
-
-
-
-
-

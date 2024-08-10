@@ -13,14 +13,13 @@ const BackgroundSection = styled.div`
 `;
 
 const ContentSection = styled.div`
-  max-width: 820px;  // 변경된 너비 설정
+  max-width: 820px;
   margin: 0 auto;
-  padding: 15px;
+  padding: 20px;
   background-color: #f0f0f0;
   border-radius: 15px;
   position: relative;
 `;
-
 
 const AdListStyled = styled.div`
   padding: 20px;
@@ -30,7 +29,7 @@ const AdListStyled = styled.div`
 
 const AdDateSection = styled.div`
   margin-bottom: 30px;
- 
+  
 `;
 
 const AdDate = styled.div`
@@ -92,7 +91,7 @@ const Label = styled.span`
 `;
 
 const TagContainer = styled.div`
-  display: flex;
+   display: flex;
   flex-wrap: wrap;
   gap: 13px;
   margin-left: 15px;
@@ -121,55 +120,68 @@ const StatusCircle = styled.span`
     return '#707070';
   }};
   margin-right: 10px;
-   margin-top: 5px;
 `;
 
-const groupByDate = (data) => {
-  return data.reduce((acc, current) => {
-    if (current.endTime) {  // endTime이 정의되어 있는지 확인
-      const date = current.endTime.split(' ')[0];
-      if (!acc[date]) {
-        acc[date] = [];
-      }
-      acc[date].push(current);
-    }
-    return acc;
-  }, {});
+const StatusTitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 17px;
+  font-family: Regular;
+`;
+
+const groupByStatus = (data) => {
+  return {
+    '미지원': data.filter(job => job.status === 'UNAPPLIED'),
+    '지원 예정': data.filter(job => job.status === 'PLANNED'),
+    '진행 중': data.filter(job => job.status === 'APPLYING'),
+    '합격': data.filter(job => job.status === 'ACCEPTED'),
+    '불합격': data.filter(job => job.status === 'REJECTED'),
+  };
 };
 
-const ListView = ({ data, onJobClick }) => {
-  const groupedData = groupByDate(data);
+const getStatusColor = (status) => {
+  if (status === '미지원') return '#D9D9D9';
+  if (status === '지원 예정') return '#B0B0B0';
+  if (status === '진행 중') return '#707070';
+  if (status === '합격') return '#78D333';
+  if (status === '불합격') return '#FA7C79';
+  return '#707070';
+};
+
+const StatusListView = ({ data, onJobClick }) => {
+  const groupedData = groupByStatus(data);
 
   return (
     <BackgroundSection>
-      <ContentSection background="#f0f0f0">
+      <ContentSection>
         <AdListStyled>
-          {Object.keys(groupedData).map((date, index) => (
-            <AdDateSection key={index}>
-              <AdDate>{date}</AdDate>
-              {groupedData[date].map((ad, idx) => (
-                <AdItem 
-                  key={idx} 
-                  onClick={() => {
-                    console.log('Clicked job ID:', ad.id); // 클릭한 공고의 ID 로그 추가
-                    console.log('Clicked job:', ad); // 클릭한 공고 로그 추가
-                    onJobClick(ad);
-                  }}
-                >
-                  <TagContainer>
-                    {ad.tags.map((tag, tagIdx) => (
-                      <Tag key={tagIdx}>{tag}</Tag>
-                    ))}
-                  </TagContainer>
-                  <AdDetails>
-                    <AdTitleContainer>
-                      <StatusCircle status={ad.status} />
-                      <AdTitle>{ad.title}</AdTitle>
-                    </AdTitleContainer>
-                  </AdDetails>
-                </AdItem>
-              ))}
-            </AdDateSection>
+          {Object.keys(groupedData).map((status, index) => (
+            <div key={index}>
+              {groupedData[status].length > 0 && (
+                <>
+                  <StatusTitleContainer>
+                    <StatusCircle status={status} style={{ backgroundColor: getStatusColor(status) }} />
+                    {status} ({groupedData[status].length})
+                  </StatusTitleContainer>
+                  {groupedData[status].map((job, idx) => (
+                    <AdItem key={idx} onClick={() => onJobClick(job)}>
+                      <TagContainer>
+                        {job.tags.map((tag, tagIdx) => (
+                          <Tag key={tagIdx}>{tag}</Tag>
+                        ))}
+                      </TagContainer>
+                      <AdDetails>
+                        <AdTitleContainer>
+                          
+                          <AdTitle>{job.title}</AdTitle>
+                        </AdTitleContainer>
+                      </AdDetails>
+                    </AdItem>
+                  ))}
+                </>
+              )}
+            </div>
           ))}
         </AdListStyled>
       </ContentSection>
@@ -177,15 +189,7 @@ const ListView = ({ data, onJobClick }) => {
   );
 };
 
-export default ListView;
-
-
-
-
-
-
-
-
+export default StatusListView;
 
 
 

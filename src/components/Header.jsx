@@ -135,10 +135,10 @@ export default function Header() {
                 className={location.pathname === '/history' ? 'active' : ''}
               >
                 이력관리
-              </li>
+                </li>
               <li
-                onClick={() => navigate('/apply')}
-                className={location.pathname === '/apply' ? 'active' : ''}
+                onClick={() => navigate('/apply-schedule')} // 지원일정으로 변경
+                className={location.pathname === '/apply-schedule' ? 'active' : ''}
               >
                 지원관리
               </li>

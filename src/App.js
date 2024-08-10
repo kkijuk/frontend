@@ -1,16 +1,15 @@
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import './index.css';
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 import Home from "./pages/Home";
 import MyPage from "./pages/Mypage/Mypage";
 import MyCareer from "./pages/Mycareer";
-import Apply from "./pages/Apply";
+import ApplySchedule from "./pages/Apply/ApplySchedule";
+import ApplyStatus from "./pages/Apply/ApplyStatus";
 import Community from "./pages/Community";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import MyCareerDetail from './pages/MycareerDetail';
-import styled from 'styled-components';
 import SignupSuccess from "./pages/SignupSuccess";
 import SubNav from './components/History/SubNav';
 import ViewOptions from './pages/History/ViewOptions';
@@ -21,18 +20,17 @@ import MasterRewrite from "./pages/History/MasterRewrite"
 import OthersRewrite from "./pages/History/OthersRewrite"
 import List from "./pages/History/List"
 import Select from './pages/History/Select';
-import AddApply from "./pages/History/AddApply"
-import Portfolio from "./pages/History/Portfolio"
-import ApplyDetail from './pages/ApplyDetail';
+import AddApply from "./pages/History/AddApply";
+import Portfolio from "./pages/History/Portfolio";
+import ApplyDetail from './pages/Apply/ApplyDetail';
 import AuthenticationAccount from './pages/Mypage/AuthenticationAccount';
 import AccountMangement from './pages/Mypage/AccountManagement';
-
 import MyInformation from './pages/Mypage/Myinformation';
 import Field from './pages/Mypage/Field';
 import FieldEdit from './pages/Mypage/FieldEdit';
 import SignupInterest from './pages/SignupInterest';
-
-
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 const AppContainer = styled.div`
   display: flex;
@@ -68,11 +66,11 @@ const App = () => {
 
 
           {/* 이력관리 라우팅 */}
-          <Route element={<SubNav/>}>
-            <Route element={<ViewOptions/>}>
-              <Route path="/history/master" element={<Master/>}/>
-              <Route path="/history/others/:id" element={<Others/>}/>
-              <Route path="/history/list/:state" element={<List/>}/>
+          <Route element={<SubNav />}>
+            <Route element={<ViewOptions />}>
+              <Route path="/history/master" element={<Master />} />
+              <Route path="/history/others/:id" element={<Others />} />
+              <Route path="/history/list/:state" element={<List />} />
             </Route>
             <Route path="/history" element={<History />} />
             <Route path="/history/portfolio" element={<Portfolio />} />
@@ -81,20 +79,15 @@ const App = () => {
           <Route path="/history/others/:id/rewrite" element={<OthersRewrite/>}/>
           <Route path="/history/select" element={<Select />} />
           <Route path="/history/add_apply" element={<AddApply />} />
-          <Route path="/apply" element={<Apply />} /> {/* 지원관리 */}
+          <Route path="/apply-schedule" element={<ApplySchedule />} /> {/* 지원일정 */}
+          <Route path="/apply-status" element={<ApplyStatus />} /> {/* 지원현황 */}
           <Route path="/apply-detail/:id" element={<ApplyDetail />} />
-          <Route path="/community" element={<Community />} /> {/* 커뮤니티 */}
-
-
-          {/* 마이페이지 라우팅 */}
-          <Route path="/mypage/authentication" element={<AuthenticationAccount />} /> {/* 마이 페이지 누르면 나오는 비번 확인 페이지*/}
-          <Route path="/mypage/myinformation" element={<MyInformation />} /> {/* 마이 페이지 누르면 나오는 비번 확인 페이지*/}
-          <Route path="/mypage/accountmanagement" element={<AccountMangement />} /> {/* 마이 페이지 누르면 나오는 비번 확인 페이지*/}
-          <Route path="/mypage/field" element={<Field />} /> {/* 마이 페이지 누르면 나오는 비번 확인 페이지*/}
-          <Route path="/mypage/fieldedit" element={<FieldEdit />} /> {/* 마이 페이지 누르면 나오는 비번 확인 페이지*/}
-
-
-
+          <Route path="/community" element={<Community />} />
+          <Route path="/mypage/authentication" element={<AuthenticationAccount />} />
+          <Route path="/mypage/myinformation" element={<MyInformation />} />
+          <Route path="/mypage/accountmanagement" element={<AccountMangement />} />
+          <Route path="/mypage/field" element={<Field />} />
+          <Route path="/mypage/fieldedit" element={<FieldEdit />} />
         </Routes>
       </MainContent>
       {!hideFooter && <Footer />}
@@ -109,4 +102,3 @@ export default function AppWrapper() {
     </Router>
   );
 }
-
