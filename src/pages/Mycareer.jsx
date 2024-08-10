@@ -24,25 +24,24 @@ export default function Mycareer() {
   const [careers, setCareers] = useState([]);
 
   useEffect(() => {
-    // 비동기 함수 선언 및 실행
     const fetchData = async () => {
-      // 현재 view 상태에 따라 API에 전달할 status 값을 설정
       const status = view === 'year' ? 'year' : 'category';
+      const responseData = await CareerViewSelect(status);
   
-      // CareerViewSelect 함수를 호출하여 API 요청을 보냄
-      const data = await CareerViewSelect(status);
+      if (responseData && responseData.data) {
+        // careers 배열을 추출하여 상태에 저장
+        const careersData = responseData.data[0]?.careers || [];
+        setCareers(careersData);
   
-      // API에서 받은 데이터가 있을 경우, careers 상태를 업데이트
-      if (data) {
-        setCareers(data);
+        // 추출한 데이터를 콘솔에 출력
+        console.log('추출된 careers 데이터:', careersData);
       }
     };
   
-    // 비동기 함수를 호출하여 데이터 가져오기
     fetchData();
-  
-  // useEffect의 의존성 배열에 view를 추가하여, view가 변경될 때마다 이 useEffect가 실행되도록 함
   }, [view]);
+  
+
 
   
   const handleAddCareer = (newCareer) => {

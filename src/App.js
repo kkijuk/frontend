@@ -30,9 +30,12 @@ import AccountMangement from './pages/Mypage/AccountManagement';
 import MyInformation from './pages/Mypage/Myinformation';
 import Field from './pages/Mypage/Field';
 import FieldEdit from './pages/Mypage/FieldEdit';
+import PasswordResetEmail from './pages/Mypage/PasswordResetEmail';
+import PasswordReset from './pages/Mypage/PasswordReset';
 import SignupInterest from './pages/SignupInterest';
 import Header from './components/Header';
 import Footer from './components/Footer';
+
 
 const AppContainer = styled.div`
   display: flex;
@@ -88,6 +91,10 @@ const App = () => {
           <Route path="/mypage/accountmanagement" element={<AccountMangement />} />
           <Route path="/mypage/field" element={<Field />} />
           <Route path="/mypage/fieldedit" element={<FieldEdit />} />
+
+          <Route path="/mypage/passwordresetemail" element={<PasswordResetEmail />} />
+          <Route path="/mypage/passwordreset" element={<PasswordReset />} />
+
         </Routes>
       </MainContent>
       {!hideFooter && <Footer />}
