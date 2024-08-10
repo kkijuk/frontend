@@ -4,25 +4,25 @@ import styled from 'styled-components';
 const getBackgroundColor = (category) => {
     let color;
     switch (category) {
-      case '1':
+      case 1:
         color = '#FCC400';
         break;
-      case '2':
+      case 2:
         color = '#77AFF2';
         break;
-      case '3':
+      case 3:
         color = '#BB7AEF';
         break;
-      case '4':
+      case 4:
         color = '#78D333';
         break;
-      case '5':
+      case 5:
         color = '#FA7C79';
         break;
-      case '6':
+      case 6:
         color = '#F99538';
         break;
-      case '7':
+      case 7:
         color = '#707070';
         break;
       default:
@@ -44,10 +44,13 @@ const TagContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-export default function CareerCategoryCircle({ category }) {
-    return (
-        <TagContainer>
-          <Circle category={category} />
-        </TagContainer>
-    );
+export default function CareerCategoryCircle( {category} ) {
+  console.log('Category:', category); // category 값 확인
+  console.log('Background color:', getBackgroundColor(category)); // 해당 카테고리에 대한 색상 확인
+
+  return (
+    <TagContainer>
+      <Circle category={category} />
+    </TagContainer>
+  );
 }
