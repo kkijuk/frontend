@@ -121,11 +121,11 @@ const SignupInterest = ({ onSave }) => {
       }
 
       onSave({ interest: interestingList });
-      navigate('/Home');
+      navigate('/');
   };
 
   const handleClose = () => {
-    navigate('/Home'); // 홈 페이지로 이동
+    navigate('/'); // 홈 페이지로 이동
   };
 
   const handleModalClose = () => {

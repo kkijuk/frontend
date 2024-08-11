@@ -111,7 +111,7 @@ const FieldEdit = ({ onSave }) => {
             />
             ))}
         </InterestArea>
-        <SaveButton onClick={handleSave}>완료</SaveButton>
+        <SaveButton onClick={handleSave}>저장</SaveButton>
         </ContentArea>
     </Box>
     );

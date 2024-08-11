@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -77,6 +78,7 @@ const CountBox = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    cursor: pointer;
 `;
 
 const OKButton = styled.button`
@@ -99,6 +101,7 @@ const OKButton = styled.button`
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 
     &:hover {
     background-color: #35a576;
@@ -106,6 +109,19 @@ const OKButton = styled.button`
 `;
 
 export default function LoginProfileBox() {
+    const navigate = useNavigate();
+
+    const goCareer = () => {
+        navigate('/mycareer');
+    };
+
+    const goCareerAdd = () => {
+        navigate('/mycareer', { state: { showModal: true } });
+    };
+
+    const goApply = () =>{
+        navigate('/apply-status');
+    };
 
     return (
         <Container>
@@ -114,18 +130,18 @@ export default function LoginProfileBox() {
                 <BoldText><GreenSpan>끼적</GreenSpan>한 지 duration개월이 지났어요!</BoldText>
             </TextContainer>
             <BoxContainer>
-                <CountBox>
+                <CountBox onClick={() => goCareer()} >
                     내 활동
                     <BoldText fontSize='12px'>0</BoldText>
                 </CountBox>
 
-                <CountBox>
+                <CountBox onClick={() => goApply()}>
                     지원현황
                     <BoldText fontSize='12px'>0</BoldText>
                 </CountBox>
             </BoxContainer>
             
-            <OKButton>활동 추가하기</OKButton>
+            <OKButton onClick={() => goCareerAdd()}>활동 추가하기</OKButton>
 
         </Container>
     )
