@@ -53,7 +53,6 @@ export default function Banner() {
                 </CountPageText>
             </CountPage>
 
-
         </Container>
     )
 }
