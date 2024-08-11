@@ -45,9 +45,6 @@ const TagContainer = styled.div`
 `;
 
 export default function CareerCategoryCircle( {category} ) {
-  console.log('Category:', category); // category 값 확인
-  console.log('Background color:', getBackgroundColor(category)); // 해당 카테고리에 대한 색상 확인
-
   return (
     <TagContainer>
       <Circle category={category} />

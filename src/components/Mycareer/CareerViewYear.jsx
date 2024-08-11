@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import CareerCategoryCircle from '../shared/CareerCategoryCircle';
+import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 
 const BackgroundSection = styled.div`
   width: 100vw;
@@ -51,6 +53,8 @@ const ListBox = styled.div`
   border-radius: 8px;
   margin-bottom: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+
 `;
 
 const Category = styled.div`
@@ -93,7 +97,22 @@ const formatDate = (dateString) => {
 
 const CareerViewYear = ({ data }) => {
   console.log('CareerViewYear rendered');
-  console.log('Data:', data);
+
+  const navigate = useNavigate();
+  
+  const handleListBoxClick = async (careerId) => {
+    try {
+      const responseData = await ViewCareerDetail(careerId);
+      console.log('Received careerId:', careerId);
+      if (responseData) {
+        navigate(`/mycareer/${careerId}`, { details: responseData });
+  
+      }
+      // 여기서 tagList를 이용해 추가 작업을 할 수 있습니다.
+    } catch (error) {
+      console.error('Error fetching careerId:', error);
+    }
+  };
 
   return (
     <BackgroundSection>
@@ -104,7 +123,10 @@ const CareerViewYear = ({ data }) => {
             <YearBox key={index}>
               <Year>{item.year}</Year>
               {item.careers.map((career, careerIndex) => (
-                <ListBox key={careerIndex}>
+                <ListBox 
+                key={careerIndex}
+                onClick={() => handleListBoxClick(career.id)}  // 클릭 시 career.id 전송
+                >
                   <Category>
                     <CareerCategoryCircle category={career.categoryId} />
                     <CategoryTextBox>{career.categoryName}</CategoryTextBox>

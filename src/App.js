@@ -59,12 +59,15 @@ const App = () => {
       <Header />
       <MainContent>
         <Routes>
+          {/*Mycareer*/}
+          <Route path="/mycareer/:careerId" element={<MyCareerDetail />} />
+
+
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signupsuccess" element={<SignupSuccess />} />
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/mycareerdetail" element={<MyCareerDetail />} />
           <Route path="/mycareer" element={<MyCareer />} />
           <Route path="/signupinterest" element={<SignupInterest />} />
           <Route element={<SubNav />}>
