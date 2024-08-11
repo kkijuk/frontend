@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Title from '../components/Apply/Title';
 import CareerView from '../components/Mycareer/CareerView'; //시간순/분류별 선택
@@ -21,6 +22,7 @@ export default function Mycareer() {
   const [view, setView] = useState('year');
   const [showModal, setShowModal] = useState(false);
   const [careersData, setCareersData] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,6 +40,12 @@ export default function Mycareer() {
 
     fetchData();
   }, [view]);
+
+  useEffect(() => {
+    if (location.state?.showModal) {
+      setShowModal(true);
+    }
+  }, [location.state]); //홈화면에서 활동 추가 누르면 모달 열리도록
 
   const handleAddCareer = (newCareer) => {
     // 새로운 커리어를 추가할 때, 연도별로 데이터 구조에 맞게 추가해야 함
