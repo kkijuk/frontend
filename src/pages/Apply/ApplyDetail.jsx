@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import ApplyCalendar from '../../components/Apply/ApplyCalendar';
+import Calendar from 'react-calendar'; // React Calendar 라이브러리 가져오기
+import 'react-calendar/dist/Calendar.css'; // React Calendar 기본 스타일 가져오기
+
 import EditApplyModal from '../../components/Apply/EditApplyModal';
 import ApplyDeleteModal from '../../components/Apply/ApplyDeleteModal';
 import { deleteRecruit } from '../../api/Apply/DeleteRecruit';
@@ -13,6 +15,7 @@ import { Link } from 'react-router-dom';
 import ReviewList from '../../components/Apply/ReviewList';
 import ReviewDetailAdd from '../../components/Apply/ReviewDetailAdd';
 import ReviewDeleteModal from '../../components/Apply/ReviewDeleteModal';
+import { updateRecruitApplyDate } from '../../api/Apply/RecruitApplydate'; // API 컴포넌트 임포트
 
 const SvgIcon = styled.svg`
   width: 20px;
@@ -47,6 +50,38 @@ const EditSvgIcon = ({ onClick }) => (
   </svg>
 );
 
+const DateInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #f5f5f5; /* 배경색 설정 */
+  padding: 5px;
+  border-radius: 12px; /* 둥근 모서리 설정 */
+    margin-bottom: -9px;
+`;
+
+const DateInputField = styled.div`
+  padding: 1px 40px;
+  height: 10px;
+  border-radius: 12px;
+  background-color: #f5f5f5;
+  font-size: 13px;
+  color: #707070;
+  flex-grow: 1;
+`;
+
+const ConfirmButton = styled.button`
+  padding: 1px 10px;
+  border-radius: 12px;
+  background-color: #d9d9d9;
+  font-size: 13px;
+  color: #707070;
+  cursor: pointer;
+  border: none;
+  margin-left: 0px;
+    margin-bottom: -9px;
+`;
+
 const DateInput = styled.div`
   color: #707070;
   font-size: 16px;
@@ -77,8 +112,8 @@ const EditDateButton = styled.div`
 
 const CalendarContainer = styled.div`
   position: absolute;
-  top: 100%;
-  left: 0;
+   top: 277px;
+  left: 400px;
   z-index: 10;
 `;
 
@@ -357,14 +392,30 @@ const ApplyDetail = () => {
   };
 
   useEffect(() => {
-    if (location.state && location.state.job) {
-      setJob(location.state.job);
-      setStatus(location.state.job.status);
-      setApplyDate(location.state.job.applyDate ? new Date(location.state.job.applyDate) : null); // applyDate 설정
-    } else {
-      fetchJobDetails();
-    }
-  }, [id, location.state]);
+    const updateJobState = async () => {
+        if (location.state && location.state.job) {
+            setJob({
+                ...location.state.job,
+                startTime: location.state.job.startTime, // 접수 시작 시간을 최신 값으로 설정
+                endTime: location.state.job.endTime,     // 접수 마감 시간을 최신 값으로 설정
+            });
+            setStatus(location.state.job.status);
+            setApplyDate(location.state.job.applyDate ? new Date(location.state.job.applyDate) : null);
+        } else {
+            const jobDetails = await fetchJobDetails();
+            setJob({
+                ...jobDetails,
+                startTime: jobDetails.startTime, // 접수 시작 시간을 최신 값으로 설정
+                endTime: jobDetails.endTime,     // 접수 마감 시간을 최신 값으로 설정
+            });
+            setStatus(jobDetails.status);
+            setApplyDate(jobDetails.applyDate ? new Date(jobDetails.applyDate) : null);
+        }
+    };
+
+    updateJobState();
+}, [id, location.state]);
+
 
   const handleEditClick = () => {
     setIsEditModalOpen(true);
@@ -384,9 +435,18 @@ const ApplyDetail = () => {
 
   const handleSave = async (updatedJob) => {
     try {
-      const response = await updateRecruit(updatedJob.id, updatedJob);
-      setJob(updatedJob);
-      setIsEditModalOpen(false);
+      // 공고를 업데이트
+      await updateRecruit(updatedJob.id, updatedJob);
+  
+      // 화면에 표시되는 데이터를 수동으로 업데이트
+      setJob((prevJob) => ({
+        ...prevJob,
+        ...updatedJob,
+        startTime: updatedJob.startTime, // 업데이트된 시작 시간을 반영
+        endTime: updatedJob.endTime, // 업데이트된 마감 시간을 반영
+      }));
+  
+      setIsEditModalOpen(false); // 모달을 닫기
     } catch (error) {
       console.error('Error updating job:', error);
     }
@@ -457,10 +517,43 @@ const ApplyDetail = () => {
     setShowCalendar(!showCalendar);
   };
 
-  const handleDateChange = (date) => {
+  const handleDateChange = async (date) => {
+    // 로컬 날짜를 'YYYY-MM-DD' 형식으로 변환
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+
     setApplyDate(date);
-    setShowCalendar(false);
-  };
+    setShowCalendar(false); // 날짜 선택 후 캘린더 숨기기
+
+    // 선택한 날짜를 서버에 PATCH 요청으로 보내기
+    try {
+      await updateRecruitApplyDate(id, formattedDate);
+    } catch (error) {
+      console.error('Failed to update apply date:', error);
+    }
+};
+
+
+const formatDateTimeToLocal = (dateString) => {
+  // 서버에서 받은 UTC 시간을 Date 객체로 변환
+  const utcDate = new Date(dateString);
+
+  // 로컬 시간대에 맞게 변환
+  const localDate = new Date(utcDate.getTime() - (utcDate.getTimezoneOffset() * 60000));
+
+  // 로컬 시간대의 연도, 월, 일, 시간, 분을 추출
+  const year = localDate.getFullYear();
+  const month = String(localDate.getMonth() + 1).padStart(2, '0');
+  const day = String(localDate.getDate()).padStart(2, '0');
+  const hours = String(localDate.getHours()).padStart(2, '0');
+  const minutes = String(localDate.getMinutes()).padStart(2, '0');
+
+  // 'YYYY-MM-DD HH:MM' 형식으로 변환하여 반환
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+};
+
 
   if (!job) {
     return <div>Loading...</div>;
@@ -507,7 +600,13 @@ const ApplyDetail = () => {
             </Dropdown>
             <DropdownIcon>▼</DropdownIcon>
           </DropdownContainer>
-          {applyDate ? (
+          {showCalendar ? (
+            <>
+              <DateInputWrapper>
+                <DateInputField>지원일자</DateInputField>
+              </DateInputWrapper>
+            </>
+          ) : applyDate ? (
             <DateDisplay onClick={handleDateClick}>
               지원일자: {applyDate.toLocaleDateString()}
               <EditDateButton>수정</EditDateButton>
@@ -520,16 +619,16 @@ const ApplyDetail = () => {
         </DropdownAndDateContainer>
         {showCalendar && (
           <CalendarContainer>
-            <ApplyCalendar onChange={handleDateChange} value={applyDate} />
+            <Calendar onChange={handleDateChange} value={applyDate} />
           </CalendarContainer>
         )}
         <SubHeader>
-          <InfoLabelStart>
-            접수 시작 <DateText>{job.startTime}</DateText>
-          </InfoLabelStart>
-          <InfoLabelEnd>
-            접수 마감 <DateText isEndTime>{job.endTime}</DateText> {/* 접수 마감 시간은 빨간색 */}
-          </InfoLabelEnd>
+        <InfoLabelStart>
+          접수 시작 <DateText>{formatDateTimeToLocal(job.startTime)}</DateText>
+        </InfoLabelStart>
+        <InfoLabelEnd>
+          접수 마감 <DateText isEndTime>{formatDateTimeToLocal(job.endTime)}</DateText>
+        </InfoLabelEnd>
           <TagLabel>
             태그
             {job.tags.map((tag, idx) => (
