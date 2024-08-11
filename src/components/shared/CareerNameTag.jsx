@@ -4,32 +4,32 @@ import styled from 'styled-components';
 const getBackgroundColor = (category) => {
     let color;
     switch (category) {
-      case '동아리':
-        color = '#FCC400';
-        break;
-      case '대외활동':
-        color = '#77AFF2';
-        break;
-      case '공모전/대회':
-        color = '#BB7AEF';
-        break;
-      case '프로젝트':
-        color = '#78D333';
-        break;
-      case '아르바이트/인턴':
-        color = '#FA7C79';
-        break;
-      case '교육':
-        color = '#F99538';
-        break;
-      case '기타 활동':
-        color = '#707070';
-        break;
-      default:
-        color = '#707070';
+        case 1:
+            color = '#FCC400';
+            break;
+        case 2:
+            color = '#77AFF2';
+            break;
+        case 3:
+            color = '#BB7AEF';
+            break;
+        case 4:
+            color = '#78D333';
+            break;
+        case 5:
+            color = '#FA7C79';
+            break;
+        case 6:
+            color = '#F99538';
+            break;
+        case 7:
+            color = '#707070';
+            break;
+        default:
+            color = '#707070';
     }
     return color;
-  };
+};
 
 const Tag = styled.div`
     display: flex;
@@ -56,10 +56,13 @@ const TagContainer = styled.div`
 `;
 
 export default function CareerNameTag({careerName = [], category}) {
+    // careerName이 배열인지 확인하고 배열로 변환
+    const careerNames = Array.isArray(careerName) ? careerName : [careerName];
+
     return (
         <TagContainer>
-            {careerName.map((careerName, index) => (
-                <Tag key={index} category={category}>{careerName}</Tag>
+            {careerNames.map((name, index) => (
+                <Tag key={index} category={category}>{name}</Tag>
             ))}
         </TagContainer>
     );
