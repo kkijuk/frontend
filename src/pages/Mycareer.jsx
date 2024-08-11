@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Title from '../components/Apply/Title';
 import CareerView from '../components/Mycareer/CareerView'; //시간순/분류별 선택
-import CareerViewDate from '../components/Mycareer/CareerViewDate'; //시간순 정렬 컴포넌트
+import CareerViewYear from '../components/Mycareer/CareerViewYear'; //시간순 정렬 컴포넌트
 import CareerViewCategory from '../components/Mycareer/CareerViewCategory'; //분류별 정렬 컴포넌트
 import AddJobButton from '../components/shared/AddJobButton'; //버튼추가
 import AddCareerModal from '../components/shared/AddCareerModal'; //모달 내용
 import Timeline from '../components/Mycareer/Timeline';
-import {CareerViewSelect} from '../api/Mycareer/CareerviewSelect';
+import { CareerViewSelect } from '../api/Mycareer/CareerviewSelect';
 
 const Container = styled.div`
   max-width: 820px;
@@ -17,45 +17,58 @@ const Container = styled.div`
   border-radius: 15px;
 `;
 
-
 export default function Mycareer() {
   const [view, setView] = useState('year');
   const [showModal, setShowModal] = useState(false);
-  const [careers, setCareers] = useState([]);
+  const [careersData, setCareersData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const status = view === 'year' ? 'year' : 'category';
       const responseData = await CareerViewSelect(status);
-  
+
       if (responseData && responseData.data) {
-        // careers 배열을 추출하여 상태에 저장
-        const careersData = responseData.data[0]?.careers || [];
-        setCareers(careersData);
-  
+        // 전체 data 배열을 상태에 저장
+        setCareersData(responseData.data);
+
         // 추출한 데이터를 콘솔에 출력
-        console.log('추출된 careers 데이터:', careersData);
+        console.log('추출된 data 배열:', responseData.data);
       }
     };
-  
+
     fetchData();
   }, [view]);
-  
 
-
-  
   const handleAddCareer = (newCareer) => {
-    setCareers([...careers, newCareer]);
+    // 새로운 커리어를 추가할 때, 연도별로 데이터 구조에 맞게 추가해야 함
+    setCareersData((prevData) => {
+      const updatedData = [...prevData];
+      // 여기서 newCareer의 year에 해당하는 데이터에 추가
+      const yearIndex = updatedData.findIndex((item) => item.year === newCareer.year);
+
+      if (yearIndex >= 0) {
+        updatedData[yearIndex].careers.push(newCareer);
+      } else {
+        // 만약 해당 연도가 없으면 새로 추가
+        updatedData.push({
+          year: newCareer.year,
+          count: 1,
+          careers: [newCareer],
+        });
+      }
+
+      return updatedData;
+    });
   };
 
   return (
     <Container>
       <Title>내 커리어</Title>
-      <Timeline></Timeline>
+      <Timeline />
 
       <CareerView view={view} onToggle={setView} />
-      {view === 'year' && <CareerViewDate data={careers} />}
-      {view === 'category' && <CareerViewCategory data={careers} />}
+      {view === 'year' && <CareerViewYear data={careersData} />}
+      {view === 'category' && <CareerViewCategory data={careersData} />}
 
       <AddJobButton onClick={() => setShowModal(true)} />
       {showModal && (

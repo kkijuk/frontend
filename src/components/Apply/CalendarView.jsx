@@ -13,8 +13,8 @@ const StyledCalendar = styled(Calendar)`
   width: 100%;
   max-width: 800px;
   background: white;
-  border: none;
-  border-radius: 15px;
+  border: 0.5px solid rgba(0, 0, 0, 0.1); /* 달력 전체를 감싸는 얇은 테두리 */
+  border-radius: 15px; /* 모든 모서리를 둥글게 설정 */
   color: #000;
   text-align: center;
   font-family: Pretendard;
@@ -22,6 +22,7 @@ const StyledCalendar = styled(Calendar)`
   font-style: normal;
   font-weight: 400;
   line-height: 140%;
+  overflow: hidden; /* 둥근 모서리가 적용되도록 오버플로우를 숨김 */
 
   .react-calendar__navigation {
     display: flex;
@@ -41,10 +42,9 @@ const StyledCalendar = styled(Calendar)`
     color: #707070;
     background-color: #f5f5f5;
     height: 40px;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    padding: 5px 0; /* 요일 구분 영역 높이 조정 */
-    border-bottom: 1px solid #dcdcdc; /* 요일 구분 가로 회색선 */
+    padding: 5px 0;
+     box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15); /* 요일 구분 가로 회색선 */
+    margin-top: -15px; /* 상단의 여백을 줄여 회색 선과 상단이 맞물리게 설정 */
   }
 
   .react-calendar__month-view__weekdays__weekday abbr {
@@ -52,7 +52,11 @@ const StyledCalendar = styled(Calendar)`
   }
 
   .react-calendar__month-view__days__day {
-    box-shadow: inset 0 -0.25px 0 0 rgba(0, 0, 0, 0.3), inset -0.25px 0 0 0 rgba(0, 0, 0, 0.3); /* 날짜 구분 회색선, 더 진하게 */
+    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15),  /* 아래쪽 선 */
+                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15),   /* 위쪽 선 */
+                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15),  /* 왼쪽 선 */
+                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15);   /* 오른쪽 선 */
+    border: none; /* border 제거하여 중복되는 선 없애기 */
   }
 
   .react-calendar__tile {
@@ -64,39 +68,60 @@ const StyledCalendar = styled(Calendar)`
     justify-content: center;
     background: none;
     color: inherit;
-    box-shadow: inset 0 -0.25px 0 0 rgba(0, 0, 0, 0.3), inset -0.25px 0 0 0 rgba(0, 0, 0, 0.3); /* 날짜 타일 구분 회색선, 더 진하게 */
-    &:hover {
-      background: none;
-    }
+    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15),  /* 아래쪽 선 */
+                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15),   /* 위쪽 선 */
+                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15),  /* 왼쪽 선 */
+                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15);   /* 오른쪽 선 */
   }
 
   .react-calendar__tile--now {
     background: none !important;
     color: #3AAF85 !important; /* 오늘 날짜 글자색을 설정합니다 */
     font-weight: bold !important; /* 오늘 날짜 글자를 볼드체로 설정합니다 */
-    box-shadow: inset 0 -0.25px 0 0 rgba(0, 0, 0, 0.5), inset -0.25px 0 0 0 rgba(0, 0, 0, 0.5); /* 오늘 날짜 타일 구분 회색선, 더 진하게 */
+    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15) !important; /* 오늘 날짜 타일의 모든 테두리 얇게 설정 */
   }
 
   .react-calendar__tile--active {
     background: none !important;
     color: inherit !important;
+    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15) !important; /* active 상태에서도 동일한 테두리 적용 */
   }
 
   .react-calendar__tile--now.react-calendar__tile--active {
     color: #3AAF85 !important; /* 오늘 날짜가 활성화된 경우에도 초록색을 유지합니다 */
     font-weight: bold !important;
+    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.25), 
+                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.25), 
+                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.25), 
+                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.25) !important; /* active 상태에서도 동일한 테두리 적용 */
   }
 
   .react-calendar__tile--range {
     background: none !important;
     color: inherit !important;
+    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15); /* range 상태에서도 동일한 테두리 적용 */
   }
 
   .react-calendar__tile--hover {
     background: none !important;
     color: inherit !important;
+    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15); /* hover 상태에서도 동일한 테두리 적용 */
   }
 `;
+
+
 
 const NavigationContainer = styled.div`
   display: flex;

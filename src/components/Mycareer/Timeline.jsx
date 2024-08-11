@@ -9,7 +9,6 @@ const Chart = styled.div`
   margin-left: 10px;
   margin-right: 10px;
   position: relative;
-  border: 1px solid black;
   margin-bottom: 60px;
 `;
 
@@ -91,8 +90,12 @@ const Tag = styled.div`
 
   white-space: nowrap; /* 줄바꿈 방지 */
   overflow: hidden; /* 넘치는 텍스트 숨기기 */
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; /* 넘치는 부분을 ...로 표시 */
+
+  /* 추가 스타일 */
+  min-width: 50px; /* 최소 너비를 설정하여 텍스트가 너무 작게 보이지 않도록 설정 */
 `;
+
 
 const getBackgroundColor = (category) => {
   let color;
@@ -147,9 +150,10 @@ export default function Timeline() {
       console.log('API 호출 결과:', responseData);
   
       if (responseData && responseData.data) {
-        const careersData = responseData.data[0]?.careers || [];
-        setCareers(careersData);
-        console.log('설정된 careers 상태:', responseData.data[0].careers);
+        // 모든 연도의 careers 데이터를 병합
+        const allCareers = responseData.data.flatMap(yearData => yearData.careers);
+        setCareers(allCareers);
+        console.log('설정된 careers 상태:', allCareers);
       } else {
         console.log('데이터가 없습니다.');
       }
@@ -157,12 +161,31 @@ export default function Timeline() {
   
     fetchCareers();
   }, []);
-
-
   
 
-  // 데이터가 없을 경우 빈 배열로 설정
-  if (!careers || careers.length === 0) return null;
+  // 데이터가 없을 경우에도 빈 차트를 렌더링
+  if (!careers || careers.length === 0) {
+    return (
+      <div>
+        <Chart>
+          <XBox>
+            <XLine>
+              {/* 빈 x축 라벨을 생성하여 x축 표시 */}
+              {[...Array(12).keys()].map((index) => (
+                <XLabel
+                  key={index}
+                  style={{ left: `${(index / 11) * 100}%` }}
+                  isJuneOrDecember={false}
+                >
+                  {/* 빈 라벨을 출력하지 않음 */}
+                </XLabel>
+              ))}
+            </XLine>
+          </XBox>
+        </Chart>
+      </div>
+    );
+  }
 
   // startDate가 제일 빠른 순서대로 정렬된 새로운 배열 생성
   const sortedCareerData = [...careers].sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
