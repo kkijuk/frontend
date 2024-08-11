@@ -178,14 +178,3 @@ const ListView = ({ data, onJobClick }) => {
 };
 
 export default ListView;
-
-
-
-
-
-
-
-
-
-
-

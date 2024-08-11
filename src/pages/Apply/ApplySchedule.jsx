@@ -41,11 +41,22 @@ const StatusContainer = styled.div`
   align-items: center;
 `;
 
+const SelectedDateContainer = styled.div`
+  margin-top: 20px;
+`;
+
+const SelectedDateTitle = styled.h2`
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
+
 export default function ApplySchedule() {
   const [view, setView] = useState('calendar');
   const [date, setDate] = useState(new Date());
   const [showModal, setShowModal] = useState(false);
   const [jobs, setJobs] = useState([]);
+  const [selectedDateJobs, setSelectedDateJobs] = useState([]);
   const navigate = useNavigate();
 
   // 공고 목록을 마감일시 기준으로 오름차순 정렬하는 함수
@@ -58,7 +69,7 @@ export default function ApplySchedule() {
     const fetchJobs = async () => {
       try {
         const jobPromises = [];
-        for (let i = 1; i <= 30; i++) { // 최대 30개의 공고를 가져오도록 설정 (적절한 수로 조정)
+        for (let i = 1; i <= 100; i++) { // 최대 100개의 공고를 가져오도록 설정 (적절한 수로 조정)
           jobPromises.push(getRecruitDetails(i));
         }
         const recruitDetails = await Promise.all(jobPromises);
@@ -89,12 +100,16 @@ export default function ApplySchedule() {
 
   const handleJobClick = (job) => {
     if (job && job.id) {
-      console.log('Clicked job ID:', job.id); // 클릭한 공고의 ID 로그 추가
-      console.log('Clicked job:', job); // 클릭한 공고 로그 추가
       navigate(`/apply-detail/${job.id}`, { state: { job } });
     } else {
-      console.error('Job ID is missing or undefined');
+      
     }
+  };
+
+  const handleDateClick = (selectedDate) => {
+    const selectedDateStr = selectedDate.toISOString().split('T')[0];
+    const jobsOnSelectedDate = jobs.filter(job => job.endTime.split('T')[0] === selectedDateStr);
+    setSelectedDateJobs(jobsOnSelectedDate);
   };
 
   const waitingJobs = jobs.filter(job => job.status === 'UNAPPLIED' || job.status === 'PLANNED');
@@ -113,8 +128,8 @@ export default function ApplySchedule() {
       </TopSection>
       {view === 'calendar' && (
         <>
-          <CalendarView date={date} setDate={setDate} />
-          <ListView data={jobs} onJobClick={handleJobClick} />
+          <CalendarView date={date} setDate={setDate} onDateClick={handleDateClick} />
+         
         </>
       )}
       {view === 'list' && <ListView data={jobs} onJobClick={handleJobClick} />}
@@ -128,3 +143,4 @@ export default function ApplySchedule() {
     </Container>
   );
 }
+

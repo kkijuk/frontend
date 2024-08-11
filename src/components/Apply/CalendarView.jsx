@@ -3,11 +3,13 @@ import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
+import ListView from './ListView';  // ListView 컴포넌트를 가져옵니다.
 
 const AdCalendarStyled = styled.div`
   margin-bottom: 20px;
   display: flex;
   justify-content: center;
+   flex-direction: column;  
 `;
 
 const StyledCalendar = styled(Calendar)`
@@ -133,13 +135,13 @@ const DayIndicator = styled.div`
   height: 6px;
   background-color: ${({ color }) => color || 'transparent'};
   border-radius: 50%;
-  margin-left: 2px; /* 가로로 정렬 시 간격을 설정 */
+  margin-left: 2px;
 `;
 
 const CustomCalendar = ({ onChange, value, marks }) => {
   const renderDay = (date) => {
     const dateString = date.toISOString().split('T')[0];
-    const dayMarks = marks.filter(mark => mark.date === dateString).slice(0, 3); // 최대 3개의 동그라미만 표시
+    const dayMarks = marks.filter(mark => mark.date === dateString).slice(0, 3);
 
     return (
       <div>
@@ -223,31 +225,27 @@ const CustomNavigation = ({ date, setDate }) => {
 
 const CalendarView = ({ date, setDate }) => {
   const [marks, setMarks] = useState([]);
+  const [jobsForSelectedDate, setJobsForSelectedDate] = useState([]);
 
   useEffect(() => {
     const fetchCalendarData = async () => {
       let fetchedMarks = [];
       
       for (let i = 1; i <= 100; i++) {
-        try {
-          const jobDetails = await getRecruitDetails(i);
-          if (jobDetails && jobDetails.endTime) {
-            const endTimeDate = new Date(jobDetails.endTime);
-            const dateStr = endTimeDate.toISOString().split('T')[0];
-            let color = 'blue';
+        const jobDetails = await getRecruitDetails(i);
+        if (jobDetails && jobDetails.endTime) {
+          const endTimeDate = new Date(jobDetails.endTime);
+          const dateStr = endTimeDate.toISOString().split('T')[0];
+          let color = 'blue';
 
-            // 공고 상태에 따른 색상 지정
-            if (jobDetails.status === 'ACCEPTED') color = '#78D333';
-            else if (jobDetails.status === 'REJECTED') color = '#FA7C79';
-            else if (jobDetails.status === 'APPLYING') color = '#707070';
-            else if (jobDetails.status === 'UNAPPLIED') color = '#D9D9D9';
-            else if (jobDetails.status === 'PLANNED') color = '#B0B0B0';
+          // 공고 상태에 따른 색상 지정
+          if (jobDetails.status === 'ACCEPTED') color = '#78D333';
+          else if (jobDetails.status === 'REJECTED') color = '#FA7C79';
+          else if (jobDetails.status === 'APPLYING') color = '#707070';
+          else if (jobDetails.status === 'UNAPPLIED') color = '#D9D9D9';
+          else if (jobDetails.status === 'PLANNED') color = '#B0B0B0';
 
-
-            fetchedMarks.push({ date: dateStr, color });
-          }
-        } catch (error) {
-          console.error('Error fetching recruit details for ID:', i, error);
+          fetchedMarks.push({ date: dateStr, color });
         }
       }
 
@@ -257,18 +255,42 @@ const CalendarView = ({ date, setDate }) => {
     fetchCalendarData();
   }, [date]);
 
+  const handleDateChange = async (selectedDate) => {
+    setDate(selectedDate);
+
+    const selectedDateStr = selectedDate.toISOString().split('T')[0];
+    const jobsForDate = [];
+
+    for (let i = 1; i <= 100; i++) {
+      const jobDetails = await getRecruitDetails(i);
+      if (jobDetails && jobDetails.endTime) {
+        const endTimeDate = new Date(jobDetails.endTime);
+        const endTimeDateStr = endTimeDate.toISOString().split('T')[0];
+        if (endTimeDateStr === selectedDateStr) {
+          jobsForDate.push(jobDetails);
+        }
+      }
+    }
+
+    setJobsForSelectedDate(jobsForDate);
+  };
+
   return (
     <AdCalendarStyled>
       <div>
         <CustomNavigation date={date} setDate={setDate} />
         <CustomCalendar
-          onChange={setDate}
+          onChange={handleDateChange}
           value={date}
           marks={marks}
         />
       </div>
+      <ListView data={jobsForSelectedDate} onJobClick={() => {}} />
     </AdCalendarStyled>
   );
 };
 
 export default CalendarView;
+
+
+
