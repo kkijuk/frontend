@@ -69,7 +69,7 @@ export default function ApplySchedule() {
     const fetchJobs = async () => {
       try {
         const jobPromises = [];
-        for (let i = 1; i <= 100; i++) { // 최대 100개의 공고를 가져오도록 설정 (적절한 수로 조정)
+        for (let i = 1; i <= 100; i++) { // 최대 공고 수(얘도 나중에 수정)
           jobPromises.push(getRecruitDetails(i));
         }
         const recruitDetails = await Promise.all(jobPromises);

@@ -1,4 +1,3 @@
-// ReviewEdit.js
 export async function editReview(recruitId, reviewId, reviewData) {
     try {
         const response = await fetch(`https://api.kkijuk.com/recruit/${recruitId}/review/${reviewId}`, {

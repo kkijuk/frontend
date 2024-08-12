@@ -52,7 +52,7 @@ const AdItem = styled.div`
   margin-bottom: 10px;
    margin-bottom: 20px;
   box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
-  cursor: pointer; /* Add pointer cursor for clickable items */
+  cursor: pointer; 
 `;
 
 const AdDetails = styled.div`
@@ -96,7 +96,7 @@ const TagContainer = styled.div`
   flex-wrap: wrap;
   gap: 13px;
   margin-left: 15px;
-  margin-bottom: 5px; /* Adjusted margin to remove excess space */
+  margin-bottom: 5px; 
 `;
 
 const Tag = styled.span`

@@ -289,12 +289,12 @@ const AddApplyModal = ({ onClose, onSave }) => {
       link,
     };
 
-    console.log("Recruit Data to be sent:", recruitData); // 요청 데이터 로그 출력
+    console.log("Recruit Data to be sent:", recruitData); 
 
     try {
       const response = await createRecruit(recruitData);
       console.log("Recruit created successfully:", response);
-      onSave(response.id); // 생성된 공고의 ID 전달
+      onSave(response.id);
       onClose();
     } catch (error) {
       console.error("Error creating recruit:", error);

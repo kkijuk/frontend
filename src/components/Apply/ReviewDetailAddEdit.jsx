@@ -5,7 +5,7 @@ import ReactCalendar from './ReviewCalendar';
 import moment from 'moment';
 import { editReview } from '../../api/Apply/ReviewEdit';
 import { deleteReview } from '../../api/Apply/DeleteReview';
-import ReviewDeleteModal from './ReviewDeleteModal';  // Import ReviewDeleteModal
+import ReviewDeleteModal from './ReviewDeleteModal';  
 
 const Box = styled.div`
     height: 384px;

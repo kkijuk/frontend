@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import ReviewInputBox from './ReviewInputBox';
 import ReactCalendar from './ReviewCalendar';
 import moment from 'moment';
-import { ReviewAdd } from '../../api/Apply/ReviewAdd'; // ReviewAdd 함수를 가져옵니다.
+import { ReviewAdd } from '../../api/Apply/ReviewAdd'; 
 
 const Box = styled.div`
     height: 384px;
@@ -113,7 +113,7 @@ const Line = styled.div`
     background: var(--gray-03, #D9D9D9);
 `;
 
-export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를 prop으로 받아옵니다.
+export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를 prop으로 받아옴.
     const [showCalendar, setShowCalendar] = useState(false);
     const [selectedDate, setSelectedDate] = useState('');
     const [title, setTitle] = useState('');

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
-import ListView from './ListView';  // ListView 컴포넌트를 가져옵니다.
+import ListView from './ListView';  
 
 const AdCalendarStyled = styled.div`
   margin-bottom: 20px;
@@ -238,7 +238,7 @@ const CalendarView = ({ date, setDate }) => {
           const dateStr = endTimeDate.toISOString().split('T')[0];
           let color = 'blue';
 
-          // 공고 상태에 따른 색상 지정
+          
           if (jobDetails.status === 'ACCEPTED') color = '#78D333';
           else if (jobDetails.status === 'REJECTED') color = '#FA7C79';
           else if (jobDetails.status === 'APPLYING') color = '#707070';
