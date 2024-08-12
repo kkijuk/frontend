@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import Calendar from 'react-calendar'; // React Calendar 라이브러리 가져오기
-import 'react-calendar/dist/Calendar.css'; // React Calendar 기본 스타일 가져오기
+import Calendar from 'react-calendar'; 
+import 'react-calendar/dist/Calendar.css'; 
 
 import EditApplyModal from '../../components/Apply/EditApplyModal';
 import ApplyDeleteModal from '../../components/Apply/ApplyDeleteModal';
@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import ReviewList from '../../components/Apply/ReviewList';
 import ReviewDetailAdd from '../../components/Apply/ReviewDetailAdd';
 import ReviewDeleteModal from '../../components/Apply/ReviewDeleteModal';
-import { updateRecruitApplyDate } from '../../api/Apply/RecruitApplydate'; // API 컴포넌트 임포트
+import { updateRecruitApplyDate } from '../../api/Apply/RecruitApplydate'; 
 
 const SvgIcon = styled.svg`
   width: 20px;
@@ -54,9 +54,9 @@ const DateInputWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;
-  background-color: #f5f5f5; /* 배경색 설정 */
+  background-color: #f5f5f5; 
   padding: 5px;
-  border-radius: 12px; /* 둥근 모서리 설정 */
+  border-radius: 12px; 
     margin-bottom: -9px;
 `;
 
@@ -87,7 +87,7 @@ const DateInput = styled.div`
   font-size: 16px;
   margin-left: 20px;
   cursor: pointer;
-    flex-direction: row; /* 가로로 정렬 */
+    flex-direction: row; 
   border-bottom: ${({ hasDate }) => (hasDate ? 'none' : '1px solid #707070')};
 `;
 
@@ -237,8 +237,8 @@ const Tag = styled.div`
 `;
 
 const DateText = styled.div`
-  color: ${({ isEndTime }) => (isEndTime ? 'red' : 'black')}; /* 접수 마감 시간만 빨간색 */
-  font-family: light; /* 상속된 폰트를 사용하도록 설정 (별도의 폰트 없음) */
+  color: ${({ isEndTime }) => (isEndTime ? 'red' : 'black')}; 
+  font-family: light; 
   font-size: 15px;
 `;
 
@@ -359,10 +359,10 @@ const DropdownIcon = styled.span`
 const DropdownAndDateContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 20px; /* 상태 드롭다운과 날짜 입력/수정 사이의 간격 */
+  gap: 20px; 
  margin-left: 0px;
   margin-top: 10px;
-  flex-direction: row; /* 가로로 정렬 */
+  flex-direction: row;
 `;
 
 
@@ -446,7 +446,7 @@ const ApplyDetail = () => {
         endTime: updatedJob.endTime, // 업데이트된 마감 시간을 반영
       }));
   
-      setIsEditModalOpen(false); // 모달을 닫기
+      setIsEditModalOpen(false); // 모달 닫기
     } catch (error) {
       console.error('Error updating job:', error);
     }
@@ -647,7 +647,7 @@ const formatDateTimeToLocal = (dateString) => {
           date={review.date} 
           contents={review.content} 
           onDelete={() => openReviewDeleteModal(review.reviewId)}
-          onSave={handleReviewSave}  // 추가된 코드: 수정이후 전체 목록 갱신
+          onSave={handleReviewSave}  
         />
       ))}
 

@@ -44,7 +44,7 @@ export default function ApplyStatus() {
     const fetchJobs = async () => {
       try {
         const jobPromises = [];
-        for (let i = 1; i <= 30; i++) { // 최대 30개의 공고를 가져오도록 설정 (적절한 수로 조정)
+        for (let i = 1; i <= 30; i++) { // 최대 공고 수 나중에 수정 해야 됨..
           jobPromises.push(getRecruitDetails(i));
         }
         const recruitDetails = await Promise.all(jobPromises);

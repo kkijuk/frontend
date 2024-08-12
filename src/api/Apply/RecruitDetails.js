@@ -13,7 +13,7 @@ export const getRecruitDetails = async (id) => {
     if (!response.ok) {
       const errorData = await response.json();
       if (response.status === 404) {
-        console.log(`Recruit with ID ${id} not found. It might have been deleted.`);
+        
         return null; // 공고가 없을 때 null 반환
       }
       throw new Error(errorData.message || 'Something went wrong');

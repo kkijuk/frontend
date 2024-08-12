@@ -13,7 +13,7 @@ const BackgroundSection = styled.div`
 `;
 
 const ContentSection = styled.div`
-  max-width: 820px;  // 변경된 너비 설정
+  max-width: 820px;  // 너비 내커리어,이력관리와 통일 820으로
   margin: 0 auto;
   padding: 15px;
   background-color: #f0f0f0;
@@ -52,7 +52,7 @@ const AdItem = styled.div`
   padding: 15px;
   margin-bottom: 10px;
   box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
-  cursor: pointer; /* Add pointer cursor for clickable items */
+  cursor: pointer; 
 `;
 
 const AdDetails = styled.div`
@@ -96,7 +96,7 @@ const TagContainer = styled.div`
   flex-wrap: wrap;
   gap: 13px;
   margin-left: 15px;
-  margin-bottom: 5px; /* Adjusted margin to remove excess space */
+  margin-bottom: 5px; 
 `;
 
 const Tag = styled.span`
@@ -178,14 +178,3 @@ const ListView = ({ data, onJobClick }) => {
 };
 
 export default ListView;
-
-
-
-
-
-
-
-
-
-
-
