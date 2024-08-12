@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import MyCareerDetail from './pages/MycareerDetail';
 import SignupSuccess from "./pages/SignupSuccess";
+import ResetSuccess from "./pages/Mypage/ResetSuccess";
 import SubNav from './components/History/SubNav';
 import ViewOptions from './pages/History/ViewOptions';
 import History from "./pages/History";
@@ -67,6 +68,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signupsuccess" element={<SignupSuccess />} />
+          
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mycareer" element={<MyCareer />} />
           <Route path="/signupinterest" element={<SignupInterest />} />
@@ -97,7 +99,7 @@ const App = () => {
 
           <Route path="/mypage/passwordresetemail" element={<PasswordResetEmail />} />
           <Route path="/mypage/passwordreset" element={<PasswordReset />} />
-
+          <Route path="/mypage/resetsuccess" element={<ResetSuccess />} />
         </Routes>
       </MainContent>
       {!hideFooter && <Footer />}
