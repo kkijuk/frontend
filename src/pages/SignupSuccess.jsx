@@ -10,7 +10,7 @@ const SignupSuccessScreen = styled.div`
   text-align: center;
   margin-bottom: 90px;
   position: relative;
-  top: 180px; /* 요소를 아래로 이동시키기 위해 top 속성 사용 */
+  top: 180px; 
 
   p {
     margin-bottom: 10px;
