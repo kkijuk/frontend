@@ -1,19 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import ListView from './ListView';  
+import { getRecruitCalendar } from '../../api/Apply/RecruitCalendar';
 
 const AdCalendarStyled = styled.div`
   margin-bottom: 20px;
   display: flex;
   justify-content: center;
+  flex-direction: column;  
 `;
 
 const StyledCalendar = styled(Calendar)`
   width: 100%;
   max-width: 800px;
   background: white;
-  border: none;
+  border: 0.5px solid rgba(0, 0, 0, 0.1);
   border-radius: 15px;
   color: #000;
   text-align: center;
@@ -22,6 +25,7 @@ const StyledCalendar = styled(Calendar)`
   font-style: normal;
   font-weight: 400;
   line-height: 140%;
+  overflow: hidden;
 
   .react-calendar__navigation {
     display: flex;
@@ -37,104 +41,124 @@ const StyledCalendar = styled(Calendar)`
   .react-calendar__month-view__weekdays {
     text-align: center;
     text-transform: uppercase;
-    font-weight: bold;
+    font-family: black;
     color: #707070;
     background-color: #f5f5f5;
     height: 40px;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    padding: 5px 0; /* 요일 구분 영역 높이 조정 */
-    border-bottom: 1px solid #dcdcdc; /* 요일 구분 가로 회색선 */
+    padding: 5px 0;
+    font-size: 15px;
+    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15);
+    margin-top: -15px;
+    
   }
 
   .react-calendar__month-view__weekdays__weekday abbr {
-    text-decoration: none; /* 요일 밑줄 제거 */
-  }
+    text-decoration: none;
+    border-bottom: none; 
+    outline: none; 
+    
+}
 
   .react-calendar__month-view__days__day {
-    box-shadow: inset 0 -0.25px 0 0 rgba(0, 0, 0, 0.3), inset -0.25px 0 0 0 rgba(0, 0, 0, 0.3); /* 날짜 구분 회색선, 더 진하게 */
+    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15);
+    border: none;
+    
   }
 
   .react-calendar__tile {
-    border-radius: 0; /* 둥근 모서리를 제거하여 직선으로 만듭니다 */
-    height: 50px; /* 날짜 타일 높이 조정 */
+    border-radius: 0;
+    height: 50px;
     width: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: none;
     color: inherit;
-    box-shadow: inset 0 -0.25px 0 0 rgba(0, 0, 0, 0.3), inset -0.25px 0 0 0 rgba(0, 0, 0, 0.3); /* 날짜 타일 구분 회색선, 더 진하게 */
-    &:hover {
-      background: none;
-    }
+    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15);
   }
 
   .react-calendar__tile--now {
     background: none !important;
-    color: #3AAF85 !important; /* 오늘 날짜 글자색을 설정합니다 */
-    font-weight: bold !important; /* 오늘 날짜 글자를 볼드체로 설정합니다 */
-    box-shadow: inset 0 -0.25px 0 0 rgba(0, 0, 0, 0.5), inset -0.25px 0 0 0 rgba(0, 0, 0, 0.5); /* 오늘 날짜 타일 구분 회색선, 더 진하게 */
+    color: #3AAF85 !important;
+    font-weight: bold !important;
+    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15) !important;
   }
 
   .react-calendar__tile--active {
     background: none !important;
     color: inherit !important;
+    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15) !important;
   }
 
   .react-calendar__tile--now.react-calendar__tile--active {
-    color: #3AAF85 !important; /* 오늘 날짜가 활성화된 경우에도 초록색을 유지합니다 */
+    color: #3AAF85 !important;
     font-weight: bold !important;
+    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.25), 
+                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.25), 
+                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.25), 
+                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.25) !important;
   }
 
   .react-calendar__tile--range {
     background: none !important;
     color: inherit !important;
+    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15);
   }
 
   .react-calendar__tile--hover {
     background: none !important;
     color: inherit !important;
+    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
+                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
+                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15);
   }
 `;
 
-const NavigationContainer = styled.div`
+const DayIndicatorContainer = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
-  font-family: ExtraLight; /* 원하는 글씨체를 적용 */
+  align-items: center;
 `;
 
-const NavigationButtonleft = styled.button`
-  font-size: 16px;
-  margin-left: 330px; /* 버튼과 텍스트 사이의 간격을 줄입니다 */
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: REgular; /* 원하는 글씨체를 적용 */
+const DayIndicator = styled.div`
+  width: 6px;
+  height: 6px;
+  background-color: ${({ color }) => color || 'transparent'};
+  border-radius: 50%;
+  margin-left: 2px;
 `;
 
-const NavigationButtonright = styled.button`
-  font-size: 16px;
-  margin-right: 330px; /* 버튼과 텍스트 사이의 간격을 줄입니다 */
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: Regular; /* 원하는 글씨체를 적용 */
-`;
-
-const NavigationText = styled.span`
-  font-size: 18px;
-  font-weight: bold;
-  flex-grow: 1;
-  text-align: center;
-  font-family: ExtraLight; /* 원하는 글씨체를 적용 */
-`;
-
-const CustomCalendar = ({ onChange, value }) => {
+const CustomCalendar = ({ onChange, value, marks }) => {
   const renderDay = (date) => {
-    return <div>{date.getDate()}</div>;
+    const dateString = date.toISOString().split('T')[0];
+    const dayMarks = marks.filter(mark => mark.date === dateString).slice(0, 3);
+
+    return (
+      <div>
+        {date.getDate()}
+        <DayIndicatorContainer>
+          {dayMarks.map((mark, index) => (
+            <DayIndicator key={index} color={mark.color} />
+          ))}
+        </DayIndicatorContainer>
+      </div>
+    );
   };
 
   return (
@@ -145,6 +169,40 @@ const CustomCalendar = ({ onChange, value }) => {
     />
   );
 };
+
+const NavigationContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-family: ExtraLight;
+`;
+
+const NavigationButtonleft = styled.button`
+  font-size: 16px;
+  margin-left: 330px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: Regular;
+`;
+
+const NavigationButtonright = styled.button`
+  font-size: 16px;
+  margin-right: 330px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: Regular;
+`;
+
+const NavigationText = styled.span`
+  font-size: 18px;
+  font-weight: bold;
+  flex-grow: 1;
+  text-align: center;
+  font-family: ExtraLight;
+`;
 
 const CustomNavigation = ({ date, setDate }) => {
   const monthNames = [
@@ -172,31 +230,70 @@ const CustomNavigation = ({ date, setDate }) => {
 };
 
 const CalendarView = ({ date, setDate }) => {
+  const [marks, setMarks] = useState([]);
+  const [jobsForSelectedDate, setJobsForSelectedDate] = useState([]);
+
+  useEffect(() => {
+    const fetchCalendarData = async () => {
+      try {
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1; // month는 0부터 시작하므로 +1
+  
+        const calendarData = await getRecruitCalendar(year, month);
+        const fetchedMarks = calendarData.dates.map(day => {
+          const marksForDay = [];
+  
+          // 각 상태에 따라 색상을 추가, 최대 3개의 동그라미까지만 표시
+          let remainingSpots = 3;
+          const addMarks = (count, color) => {
+            for (let i = 0; i < count && remainingSpots > 0; i++) {
+              marksForDay.push({
+                date: `${year}-${String(month).padStart(2, '0')}-${String(day.day).padStart(2, '0')}`,
+                color
+              });
+              remainingSpots--;
+            }
+          };
+  
+          addMarks(day.unapplied, '#D9D9D9');
+          addMarks(day.planned, '#B0B0B0');
+          addMarks(day.applying, '#707070');
+          addMarks(day.accepted, '#78D333');
+          addMarks(day.rejected, '#FA7C79');
+  
+          return marksForDay;
+        }).flat();
+  
+        setMarks(fetchedMarks);
+      } catch (error) {
+        console.error('Error fetching calendar data:', error);
+      }
+    };
+  
+    fetchCalendarData();
+  }, [date]);
+  
+
+  const handleDateChange = async (selectedDate) => {
+    setDate(selectedDate);
+
+    // 여기에 선택한 날짜에 해당하는 공고를 불러오는 로직을 추가해야 합니다.
+    setJobsForSelectedDate([]); // 공고 정보를 여기에 설정하세요.
+  };
+
   return (
     <AdCalendarStyled>
       <div>
         <CustomNavigation date={date} setDate={setDate} />
         <CustomCalendar
-          onChange={setDate}
+          onChange={handleDateChange}
           value={date}
+          marks={marks}
         />
       </div>
+      <ListView data={jobsForSelectedDate} onJobClick={() => {}} />
     </AdCalendarStyled>
   );
 };
 
 export default CalendarView;
-
-
-
-
-
-
-
-
-
-
-
-
-
-

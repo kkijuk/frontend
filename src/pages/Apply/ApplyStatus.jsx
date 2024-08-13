@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import TabMenu from '../../components/Apply/TabMenu';
 import StatusListView from '../../components/Apply/StatusListView';
 import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
+import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
 import ApplyStatusButton from '../../components/Apply/ApplyStatusButton';
 
 const Container = styled.div`
@@ -39,19 +40,30 @@ export default function ApplyStatus() {
     rejected: jobs.filter(job => job.status === 'REJECTED').length,
   };
 
-  // 페이지가 로드될 때 모든 공고 목록을 가져오는 useEffect
+  // 페이지가 로드될 때 오늘 이후 마감인 모든 공고 목록을 가져오는 useEffect
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const jobPromises = [];
-        for (let i = 1; i <= 30; i++) { // 최대 30개의 공고를 가져오도록 설정 (적절한 수로 조정)
-          jobPromises.push(getRecruitDetails(i));
-        }
-        const recruitDetails = await Promise.all(jobPromises);
-        const filteredRecruitDetails = recruitDetails.filter(detail => detail && detail.endTime); // null 값과 endTime이 없는 항목 제거
+        const now = new Date();
+        const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        console.log('Fetching jobs from date:', today);
+        
+        const recruitData = await getRecruitListAfterDate(today);
 
-        setJobs(filteredRecruitDetails);
-        setFilteredJobs(filteredRecruitDetails);
+        if (recruitData && recruitData.outputs && recruitData.outputs.length > 0) {
+          const sortedJobs = recruitData.outputs.flatMap(group => 
+            group.recruits.map(recruit => ({
+              ...recruit,
+              endTime: `${group.endDate} 00:00:00`
+            }))
+          ).sort((a, b) => new Date(a.endTime) - new Date(b.endTime));
+
+          setJobs(sortedJobs);
+          setFilteredJobs(sortedJobs);
+          console.log('Sorted jobs:', sortedJobs);
+        } else {
+          console.warn('No recruits found after the specified date.');
+        }
       } catch (error) {
         console.error('Error fetching recruits:', error);
       }
@@ -77,15 +89,21 @@ export default function ApplyStatus() {
     }
   };
 
-  const handleJobClick = (job) => {
-    if (job && job.id) {
-      console.log('Clicked job ID:', job.id); // 클릭한 공고의 ID 로그 추가
-      console.log('Clicked job:', job); // 클릭한 공고 로그 추가
-      navigate(`/apply-detail/${job.id}`, { state: { job } });
+  const handleJobClick = async (job) => {
+    const jobId = job.recruitId || job.id;  
+    if (jobId) {
+      try {
+        const jobDetails = await getRecruitDetails(jobId);
+        navigate(`/apply-detail/${jobId}`, { state: { job: jobDetails } });
+      } catch (error) {
+        console.error('Failed to fetch job details:', error);
+      }
     } else {
       console.error('Job ID is missing or undefined');
     }
   };
+  
+  
 
   return (
     <Container>
@@ -96,3 +114,4 @@ export default function ApplyStatus() {
     </Container>
   );
 }
+

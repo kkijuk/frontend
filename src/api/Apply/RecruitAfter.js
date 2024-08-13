@@ -1,27 +1,33 @@
-const apiUrl = 'https://api.kkijuk.com/recruit';
+export const getRecruitListAfterDate = async (date) => {
+ 
+  const apiUrl = `https://api.kkijuk.com/recruit/list/after?time=${encodeURIComponent(date)}`;
 
-export const getRecruitAfter = async (time) => {
   try {
-    // 시간 변환: "YYYY-MM-DDTHH:mm:ss" 형식으로 변환
-    const formattedTime = new Date(time).toISOString().split('.')[0];
-    const response = await fetch(`${apiUrl}/list/after?time=${formattedTime}`, {
+    console.log('Fetching recruit list after date:', date);  // 디버깅용 로그 추가
+    const response = await fetch(apiUrl, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json; charset=utf-8'
+        'Content-Type': 'application/json; charset=utf-8',
+        'accept': '*/*'
       }
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Something went wrong');
+      throw new Error('Failed to fetch recruit list');
     }
 
-    const responseData = await response.json();
-    console.log('Recruits after time:', responseData); // 로그 추가
-    return responseData.outputs.reduce((acc, output) => acc.concat(output.recruits), []);
+    const data = await response.json();
+    console.log('Recruit list fetched:', data);  // 디버깅용 로그 추가
+
+    // recruitData의 recruits 배열이 비어있는 경우 처리
+    if (!data.recruits || data.recruits.length === 0) {
+      console.warn('No recruits found after the specified date.');
+    }
+
+    return data;
   } catch (error) {
-    console.error("Error fetching recruits after time:", error.message);
+    console.error("Error fetching recruit list:", error);
     throw error;
   }
 };
-// 테스트중인 api
+

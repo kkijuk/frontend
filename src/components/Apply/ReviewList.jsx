@@ -64,11 +64,18 @@ const EditIconStyled = styled(EditIcon)`
     cursor: pointer;
 `;
 
-export default function ReviewList({ title, date, contents = '', detailTag }) {
+export default function ReviewList({ recruitId, reviewId, title, date, contents = '', onDelete }) {
     const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
 
     const handleEditClick = () => {
+        console.log(`Editing review with ID: ${reviewId}`); // Review ID 로그 출력
         setIsDetailAddVisible(!isDetailAddVisible);
+    };
+
+    const handleDeleteClick = () => {
+        if (onDelete) {
+            onDelete(reviewId);  // 삭제 핸들러 호출
+        }
     };
 
     return (
@@ -88,13 +95,17 @@ export default function ReviewList({ title, date, contents = '', detailTag }) {
             </Box>
             {isDetailAddVisible && (
                 <ReviewDetailAddEdit
+                    recruitId={recruitId}  // recruitId 전달
+                    reviewId={reviewId}  // 리뷰 ID 전달
                     initialTitle={title}
                     initialDate={date}
                     initialContents={contents}
-                   
+                    onDelete={handleDeleteClick}  // ReviewDetailAddEdit에서 삭제가 완료되면 호출
+                    onSave={() => setIsDetailAddVisible(false)}  // 저장 후 수정 화면 닫기
                 />
             )}
             <Line></Line>
         </div>
     );
 }
+

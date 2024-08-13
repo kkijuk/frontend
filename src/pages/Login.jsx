@@ -12,7 +12,7 @@ const LoginScreen = styled.div`
 
   p {
     color: #707070;
-    font-weight: bold;
+    font-family: light;
     margin-bottom: 30px;
     text-align: center; 
   }
@@ -25,6 +25,12 @@ const LoginScreen = styled.div`
     border: none;
     border-radius: 10px;
     background-color: #F5F5F5;
+    transition: border 0.3s ease;
+
+    &:focus {
+      border: 2px solid #3AAF85;
+      outline: none;
+    }
   }
 
   .button {
@@ -43,7 +49,6 @@ const LoginScreen = styled.div`
     cursor: pointer;
     margin-top: 50px; 
   }
-
 
   a {
     color: #3AAF85; 
@@ -74,6 +79,15 @@ const LoginScreen = styled.div`
     font-weight: 400;
     line-height: normal;
     white-space: nowrap;
+  }
+
+  .links {
+    color: #3AAF85; /* 구분 기호와 링크를 포함한 텍스트 색상 설정 */
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
 `;
 
@@ -118,8 +132,8 @@ const LoginPage = () => {
         <label className="label">자동 로그인</label>
       </div>
       <button className="button" onClick={handleLogin}>로그인</button>
-      <div>
-        <a href="/signup">회원가입</a> | <a href="/forgot">비밀번호 찾기</a>
+      <div className="links">
+        <a href="/signup">회원가입</a> | <a href="/mypage/passwordreset">비밀번호 찾기</a>
       </div>
     </LoginScreen>
   );

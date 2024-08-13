@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Title from '../components/Apply/Title';
 import CareerView from '../components/Mycareer/CareerView'; //시간순/분류별 선택
-import CareerViewDate from '../components/Mycareer/CareerViewDate'; //시간순 정렬 컴포넌트
+import CareerViewYear from '../components/Mycareer/CareerViewYear'; //시간순 정렬 컴포넌트
 import CareerViewCategory from '../components/Mycareer/CareerViewCategory'; //분류별 정렬 컴포넌트
 import AddJobButton from '../components/shared/AddJobButton'; //버튼추가
 import AddCareerModal from '../components/shared/AddCareerModal'; //모달 내용
 import Timeline from '../components/Mycareer/Timeline';
-import {CareerViewSelect} from '../api/Mycareer/CareerviewSelect';
+import { CareerViewSelect } from '../api/Mycareer/CareerviewSelect';
 
 const Container = styled.div`
   max-width: 820px;
@@ -17,46 +18,65 @@ const Container = styled.div`
   border-radius: 15px;
 `;
 
-
 export default function Mycareer() {
-  const [view, setView] = useState('date');
+  const [view, setView] = useState('year');
   const [showModal, setShowModal] = useState(false);
-  const [careers, setCareers] = useState([]);
+  const [careersData, setCareersData] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
-    // 비동기 함수 선언 및 실행
     const fetchData = async () => {
-      // 현재 view 상태에 따라 API에 전달할 status 값을 설정
-      const status = view === 'date' ? 'date' : 'category';
-  
-      // CareerViewSelect 함수를 호출하여 API 요청을 보냄
-      const data = await CareerViewSelect(status);
-  
-      // API에서 받은 데이터가 있을 경우, careers 상태를 업데이트
-      if (data) {
-        setCareers(data);
+      const status = view === 'year' ? 'year' : 'category';
+      const responseData = await CareerViewSelect(status);
+
+      if (responseData && responseData.data) {
+        // 전체 data 배열을 상태에 저장
+        setCareersData(responseData.data);
+
+        // 추출한 데이터를 콘솔에 출력
+        console.log('추출된 data 배열:', responseData.data);
       }
     };
-  
-    // 비동기 함수를 호출하여 데이터 가져오기
+
     fetchData();
-  
-  // useEffect의 의존성 배열에 view를 추가하여, view가 변경될 때마다 이 useEffect가 실행되도록 함
   }, [view]);
 
-  
+  useEffect(() => {
+    if (location.state?.showModal) {
+      setShowModal(true);
+    }
+  }, [location.state]); //홈화면에서 활동 추가 누르면 모달 열리도록
+
   const handleAddCareer = (newCareer) => {
-    setCareers([...careers, newCareer]);
+    // 새로운 커리어를 추가할 때, 연도별로 데이터 구조에 맞게 추가해야 함
+    setCareersData((prevData) => {
+      const updatedData = [...prevData];
+      // 여기서 newCareer의 year에 해당하는 데이터에 추가
+      const yearIndex = updatedData.findIndex((item) => item.year === newCareer.year);
+
+      if (yearIndex >= 0) {
+        updatedData[yearIndex].careers.push(newCareer);
+      } else {
+        // 만약 해당 연도가 없으면 새로 추가
+        updatedData.push({
+          year: newCareer.year,
+          count: 1,
+          careers: [newCareer],
+        });
+      }
+
+      return updatedData;
+    });
   };
 
   return (
     <Container>
       <Title>내 커리어</Title>
-      <Timeline></Timeline>
+      <Timeline />
 
       <CareerView view={view} onToggle={setView} />
-      {view === 'date' && <CareerViewDate data={careers} />}
-      {view === 'category' && <CareerViewCategory data={careers} />}
+      {view === 'year' && <CareerViewYear data={careersData} />}
+      {view === 'category' && <CareerViewCategory data={careersData} />}
 
       <AddJobButton onClick={() => setShowModal(true)} />
       {showModal && (

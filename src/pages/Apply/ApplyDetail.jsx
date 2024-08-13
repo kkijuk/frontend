@@ -1,20 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import EditApplyModal from '../../components/Apply/EditApplyModal'; // EditApplyModal을 포함하는 컴포넌트
-import ApplyDeleteModal from '../../components/Apply/ApplyDeleteModal'; // 삭제 모달 컴포넌트 추가
-import { deleteRecruit } from '../../api/Apply/DeleteRecruit'; // DeleteRecruit API 호출 컴포넌트
-import { getRecruitDetails } from '../../api/Apply/RecruitDetails'; // RecruitDetails API 호출 컴포넌트
-import { updateRecruitStatus } from '../../api/Apply/RecruitStatus'; 
+import Calendar from 'react-calendar'; 
+import 'react-calendar/dist/Calendar.css'; 
+
+import EditApplyModal from '../../components/Apply/EditApplyModal';
+import ApplyDeleteModal from '../../components/Apply/ApplyDeleteModal';
+import { deleteRecruit } from '../../api/Apply/DeleteRecruit';
+import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
+import { updateRecruitStatus } from '../../api/Apply/RecruitStatus';
 import { updateRecruit } from '../../api/Apply/RecruitUpdate';
+import { deleteReview } from '../../api/Apply/DeleteReview';
 import { Link } from 'react-router-dom';
 import ReviewList from '../../components/Apply/ReviewList';
-
+import ReviewDetailAdd from '../../components/Apply/ReviewDetailAdd';
+import ReviewDeleteModal from '../../components/Apply/ReviewDeleteModal';
+import { updateRecruitApplyDate } from '../../api/Apply/RecruitApplydate'; 
+import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
 const SvgIcon = styled.svg`
   width: 20px;
   height: 20px;
   fill: none;
-  stroke: ${({ hasLink }) => (hasLink ? '#3AAF85' : '#707070')}; /* 테두리 색상 */
+  stroke: ${({ hasLink }) => (hasLink ? '#3AAF85' : '#707070')};
   stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -42,6 +49,73 @@ const EditSvgIcon = ({ onClick }) => (
     <path d="M0 18.209V23H4.791L18.9213 8.86974L14.1303 4.07874L0 18.209ZM22.6263 5.1647C23.1246 4.66644 23.1246 3.86155 22.6263 3.36328L19.6367 0.373698C19.1385 -0.124566 18.3336 -0.124566 17.8353 0.373698L15.4973 2.71171L20.2883 7.50271L22.6263 5.1647Z" fill="#707070" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
+
+const DateInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #f5f5f5; 
+  padding: 5px;
+  border-radius: 12px; 
+    margin-bottom: -9px;
+`;
+
+const DateInputField = styled.div`
+  padding: 1px 40px;
+  height: 10px;
+  border-radius: 12px;
+  background-color: #f5f5f5;
+  font-size: 13px;
+  color: #707070;
+  flex-grow: 1;
+`;
+
+const ConfirmButton = styled.button`
+  padding: 1px 10px;
+  border-radius: 12px;
+  background-color: #d9d9d9;
+  font-size: 13px;
+  color: #707070;
+  cursor: pointer;
+  border: none;
+  margin-left: 0px;
+    margin-bottom: -9px;
+`;
+
+const DateInput = styled.div`
+  color: #707070;
+  font-size: 16px;
+  margin-left: 20px;
+  cursor: pointer;
+    flex-direction: row; 
+  border-bottom: ${({ hasDate }) => (hasDate ? 'none' : '1px solid #707070')};
+`;
+
+const DateDisplay = styled.div`
+  display: flex;
+  align-items: center;
+  color: #707070;
+  font-size: 16px;
+  margin-left: 20px;
+  cursor: pointer;
+`;
+
+const EditDateButton = styled.div`
+  color: #707070;
+  font-size: 14px;
+  margin-left: 10px;
+  background: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 12px;
+  cursor: pointer;
+`;
+
+const CalendarContainer = styled.div`
+  position: absolute;
+   top: 277px;
+  left: 400px;
+  z-index: 10;
+`;
 
 const Container = styled.div`
   width: 100%;
@@ -163,33 +237,9 @@ const Tag = styled.div`
 `;
 
 const DateText = styled.div`
-  color: #707070;
-  font-size: 14px;
-`;
-
-const TagContainer = styled.div`
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-`;
-
-const Section = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 24px;
-`;
-
-const SectionHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 700;
-  margin-bottom: 8px;
-`;
-
-const Contents = styled.div`
-  font-size: 16px;
-  white-space: pre-line;
+  color: ${({ isEndTime }) => (isEndTime ? 'red' : 'black')}; 
+  font-family: light; 
+  font-size: 15px;
 `;
 
 const Line = styled.div`
@@ -203,13 +253,6 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
-`;
-
-const ApplyButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between; 
-  gap: 15px; 
 `;
 
 const ApplyButton = styled.div`
@@ -313,34 +356,66 @@ const DropdownIcon = styled.span`
   transform: translateY(0px);
 `;
 
+const DropdownAndDateContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px; 
+ margin-left: 0px;
+  margin-top: 10px;
+  flex-direction: row;
+`;
+
 
 const ApplyDetail = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
   const [job, setJob] = useState(null);
+  const [applyDate, setApplyDate] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [status, setStatus] = useState('');
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [showReviewAdd, setShowReviewAdd] = useState(false);
+  const [reviewToDelete, setReviewToDelete] = useState(null);
+  const [isReviewDeleteModalOpen, setIsReviewDeleteModalOpen] = useState(false);
+
+  const fetchJobDetails = async () => {
+    try {
+      const jobDetails = await getRecruitDetails(id);
+      setJob(jobDetails);
+      setStatus(jobDetails.status);
+      setApplyDate(jobDetails.applyDate ? new Date(jobDetails.applyDate) : null);
+    } catch (error) {
+      console.error('Error fetching job details:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchJobDetails = async () => {
-      try {
-        const jobDetails = await getRecruitDetails(id);
-        setJob(jobDetails);
-        setStatus(jobDetails.status);
-      } catch (error) {
-        console.error('Error fetching job details:', error);
-      }
+    const updateJobState = async () => {
+        if (location.state && location.state.job) {
+            setJob({
+                ...location.state.job,
+                startTime: location.state.job.startTime, // 접수 시작 시간을 최신 값으로 설정
+                endTime: location.state.job.endTime,     // 접수 마감 시간을 최신 값으로 설정
+            });
+            setStatus(location.state.job.status);
+            setApplyDate(location.state.job.applyDate ? new Date(location.state.job.applyDate) : null);
+        } else {
+            const jobDetails = await fetchJobDetails();
+            setJob({
+                ...jobDetails,
+                startTime: jobDetails.startTime, // 접수 시작 시간을 최신 값으로 설정
+                endTime: jobDetails.endTime,     // 접수 마감 시간을 최신 값으로 설정
+            });
+            setStatus(jobDetails.status);
+            setApplyDate(jobDetails.applyDate ? new Date(jobDetails.applyDate) : null);
+        }
     };
 
-    if (location.state && location.state.job) {
-      setJob(location.state.job);
-      setStatus(location.state.job.status);
-    } else {
-      fetchJobDetails();
-    }
-  }, [id, location.state]);
+    updateJobState();
+}, [id, location.state]);
+
 
   const handleEditClick = () => {
     setIsEditModalOpen(true);
@@ -360,9 +435,18 @@ const ApplyDetail = () => {
 
   const handleSave = async (updatedJob) => {
     try {
-      const response = await updateRecruit(updatedJob.id, updatedJob);
-      setJob(updatedJob); // 성공 시 상태 업데이트
-      setIsEditModalOpen(false); 
+      // 공고를 업데이트
+      await updateRecruit(updatedJob.id, updatedJob);
+  
+      // 화면에 표시되는 데이터를 수동으로 업데이트
+      setJob((prevJob) => ({
+        ...prevJob,
+        ...updatedJob,
+        startTime: updatedJob.startTime, // 업데이트된 시작 시간을 반영
+        endTime: updatedJob.endTime, // 업데이트된 마감 시간을 반영
+      }));
+  
+      setIsEditModalOpen(false); // 모달 닫기
     } catch (error) {
       console.error('Error updating job:', error);
     }
@@ -373,7 +457,7 @@ const ApplyDetail = () => {
       if (job && job.id) {
         await deleteRecruit(job.id);
         setIsDeleteModalOpen(false);
-        navigate('/apply');
+        navigate('/apply-schedule');
       } else {
         console.error('Job ID is missing');
       }
@@ -392,6 +476,91 @@ const ApplyDetail = () => {
       console.error('Failed to update status:', error);
     }
   };
+
+  const handleAddReviewClick = () => {
+    setShowReviewAdd(true);
+  };
+
+  const handleCancelReviewAdd = () => {
+    setShowReviewAdd(false);
+  };
+
+  const handleReviewSave = () => {
+    setShowReviewAdd(false);
+    fetchJobDetails(); // 수정 후 전체 공고 정보를 다시 가져와 화면을 업데이트
+  };
+
+  const handleReviewDelete = async (reviewId) => {
+    try {
+      console.log(`Deleting review with ID: ${reviewId} for recruit ID: ${id}`);
+      await deleteReview(id, reviewId);
+      // 리뷰 삭제 후 전체 공고 정보를 다시 가져와 화면을 업데이트
+      await fetchJobDetails();
+      setIsReviewDeleteModalOpen(false);
+      setReviewToDelete(null);
+    } catch (error) {
+      console.error('Failed to delete review:', error);
+    }
+  };
+
+  const openReviewDeleteModal = (reviewId) => {
+    setReviewToDelete(reviewId);
+    setIsReviewDeleteModalOpen(true);
+  };
+
+  const closeReviewDeleteModal = () => {
+    setIsReviewDeleteModalOpen(false);
+    setReviewToDelete(null);
+  };
+
+  const handleDateClick = () => {
+    setShowCalendar(!showCalendar);
+  };
+
+  const handleDateChange = async (date) => {
+    // 로컬 날짜를 'YYYY-MM-DD' 형식으로 변환
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+
+    setApplyDate(date);
+    setShowCalendar(false); // 날짜 선택 후 캘린더 숨기기
+
+    // 선택한 날짜를 서버에 PATCH 요청으로 보내기
+    try {
+      await updateRecruitApplyDate(id, formattedDate);
+    } catch (error) {
+      console.error('Failed to update apply date:', error);
+    }
+};
+
+
+const formatDateTimeToLocal = (dateString) => {
+  // 서버에서 받은 UTC 시간을 Date 객체로 변환
+  const utcDate = new Date(dateString);
+
+  // 로컬 시간대에 맞게 변환
+  const localDate = new Date(utcDate.getTime() - (utcDate.getTimezoneOffset() * 60000));
+
+  // 로컬 시간대의 연도, 월, 일, 시간, 분을 추출
+  const year = localDate.getFullYear();
+  const month = String(localDate.getMonth() + 1).padStart(2, '0');
+  const day = String(localDate.getDate()).padStart(2, '0');
+  const hours = String(localDate.getHours()).padStart(2, '0');
+  const minutes = String(localDate.getMinutes()).padStart(2, '0');
+
+  // 'YYYY-MM-DD HH:MM' 형식으로 변환하여 반환
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+};
+
+const handleBackClick = () => {
+  if (location.state && location.state.from === 'status') {
+    navigate('/apply-status');
+  } else {
+    navigate('/apply-schedule');
+  }
+};
 
   if (!job) {
     return <div>Loading...</div>;
@@ -427,48 +596,95 @@ const ApplyDetail = () => {
             <DeleteSvgIcon onClick={handleDeleteClick} />
           </EditDeleteContainer>
         </TitleContainer>
-        <DropdownContainer status={status}>
-          <Dropdown value={status} onChange={handleStatusChange} valueLength={statusTextMap[status].length}>
-            <option value="UNAPPLIED">미지원</option>
-            <option value="PLANNED">지원 예정</option>
-            <option value="APPLYING">진행 중</option>
-            <option value="ACCEPTED">합격</option>
-            <option value="REJECTED">불합격</option>
-          </Dropdown>
-          <DropdownIcon>▼</DropdownIcon>
-        </DropdownContainer>
-
+        <DropdownAndDateContainer>
+          <DropdownContainer status={status}>
+            <Dropdown value={status} onChange={handleStatusChange}>
+              <option value="UNAPPLIED">미지원</option>
+              <option value="PLANNED">지원 예정</option>
+              <option value="APPLYING">진행 중</option>
+              <option value="ACCEPTED">합격</option>
+              <option value="REJECTED">불합격</option>
+            </Dropdown>
+            <DropdownIcon>▼</DropdownIcon>
+          </DropdownContainer>
+          {showCalendar ? (
+            <>
+              <DateInputWrapper>
+                <DateInputField>지원일자</DateInputField>
+              </DateInputWrapper>
+            </>
+          ) : applyDate ? (
+            <DateDisplay onClick={handleDateClick}>
+              지원일자: {applyDate.toLocaleDateString()}
+              <EditDateButton>수정</EditDateButton>
+            </DateDisplay>
+          ) : (
+            <DateInput onClick={handleDateClick}>
+              지원한 날짜를 입력하세요.
+            </DateInput>
+          )}
+        </DropdownAndDateContainer>
+        {showCalendar && (
+          <CalendarContainer>
+            <Calendar onChange={handleDateChange} value={applyDate} />
+          </CalendarContainer>
+        )}
         <SubHeader>
-          <InfoLabelStart>접수 시작 {job.startTime}</InfoLabelStart>
-          <InfoLabelEnd>접수 마감 {job.endTime}</InfoLabelEnd>
-          <TagLabel>
-            태그
-            {job.tags.map((tag, idx) => (
+        <InfoLabelStart>
+          접수 시작 <DateText>{formatDateTimeToLocal(job.startTime)}</DateText>
+        </InfoLabelStart>
+        <InfoLabelEnd>
+          접수 마감 <DateText isEndTime>{formatDateTimeToLocal(job.endTime)}</DateText>
+        </InfoLabelEnd>
+        <TagLabel>
+          태그
+          {job.tags && job.tags.length > 0 && job.tags.map((tag, idx) => (
               <Tag key={idx}>{tag}</Tag>
             ))}
-          </TagLabel>
+         </TagLabel>
         </SubHeader>
       </Header>
-      <ReviewList
-    title="코딩테스트"
-    date={job.testDate || ''}
-    contents={job.contents || ''}
-    
-/>
-<ReviewList
-    title="면접"
-    date={job.interviewDate || ''}
-    contents={job.interviewContents || ''}
-   
-/>
+
+      {job.reviews && job.reviews.length > 0 && (
+   job.reviews.map((review, index) => (
+     <ReviewList 
+       key={index} 
+       recruitId={job.id} 
+       reviewId={review.reviewId} 
+       title={review.title} 
+       date={review.date} 
+       contents={review.content} 
+       onDelete={() => openReviewDeleteModal(review.reviewId)}
+       onSave={handleReviewSave}  
+     />
+   ))
+)}
+
+
+
+      {showReviewAdd && (
+        <ReviewDetailAdd
+          recruitId={job.id}
+          onSave={handleReviewSave}
+          onCancel={handleCancelReviewAdd}
+        />
+      )}
+
       <ButtonContainer>
-        <Button>전형 후기 추가</Button>
+        <Button onClick={handleAddReviewClick}>전형 후기 추가</Button>
       </ButtonContainer>
+      
       {isEditModalOpen && (
         <EditApplyModal job={job} onClose={handleCloseEditModal} onSave={handleSave} />
       )}
       {isDeleteModalOpen && (
         <ApplyDeleteModal onClose={handleCloseDeleteModal} onConfirm={handleDeleteConfirm} />
+      )}
+      {isReviewDeleteModalOpen && (
+        <ReviewDeleteModal 
+          onClose={closeReviewDeleteModal}
+          onConfirm={() => handleReviewDelete(reviewToDelete)} 
+        />
       )}
     </Container>
   );
