@@ -9,7 +9,8 @@ import AddJobButton from '../../components/shared/AddJobButton';
 import AddApplyModal from '../../components/shared/AddApplyModal';
 import WaitingList from '../../components/Apply/WaitingList';
 import ApplyList from '../../components/Apply/ApplyList';
-import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
+import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
+import { getRecruitDetails } from '../../api/Apply/RecruitDetails';  
 
 const Container = styled.div`
   width: 100%;
@@ -41,76 +42,78 @@ const StatusContainer = styled.div`
   align-items: center;
 `;
 
-const SelectedDateContainer = styled.div`
-  margin-top: 20px;
-`;
-
-const SelectedDateTitle = styled.h2`
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
-
 export default function ApplySchedule() {
-  const [view, setView] = useState('calendar');
+  const [view, setView] = useState('list'); 
   const [date, setDate] = useState(new Date());
   const [showModal, setShowModal] = useState(false);
   const [jobs, setJobs] = useState([]);
-  const [selectedDateJobs, setSelectedDateJobs] = useState([]);
   const navigate = useNavigate();
 
-  // 공고 목록을 마감일시 기준으로 오름차순 정렬하는 함수
-  const sortJobsByEndTime = (jobs) => {
-    return jobs.sort((a, b) => new Date(a.endTime) - new Date(b.endTime));
-  };
+  // 새로운 공고를 저장하고 리스트를 정렬하는 함수
+  const handleSaveRecruit = async (newRecruitId) => {
+    try {
+        const newRecruit = await getRecruitDetails(newRecruitId);
+        console.log("Fetched new recruit with tags:", newRecruit.tags); // 태그 정보가 여기에 있는지 확인
+        if (newRecruit) {
+            const updatedJobs = [...jobs, newRecruit];
+            const sortedJobs = updatedJobs.sort((a, b) => new Date(a.endTime) - new Date(b.endTime));
+            setJobs(sortedJobs);
 
-  // 페이지가 로드될 때 모든 공고 목록을 가져오는 useEffect
+            console.log("New recruit added and jobs updated:", sortedJobs);
+        } else {
+            console.error('Failed to retrieve the newly created recruit');
+        }
+    } catch (error) {
+        console.error('Error fetching new recruit:', error);
+    }
+};
+
+
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const jobPromises = [];
-        for (let i = 1; i <= 100; i++) { // 최대 공고 수(얘도 나중에 수정)
-          jobPromises.push(getRecruitDetails(i));
+        const now = new Date();
+        const testDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        console.log('Fetching jobs from date:', testDate); 
+        const recruitData = await getRecruitListAfterDate(testDate); 
+  
+        if (recruitData && recruitData.outputs && recruitData.outputs.length > 0) {
+          const sortedJobs = recruitData.outputs.sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
+          const transformedJobs = sortedJobs.flatMap(group => 
+            group.recruits.map(recruit => ({
+              ...recruit,
+              endTime: `${group.endDate} 00:00:00`
+            }))
+          );
+          setJobs(transformedJobs);
+          console.log('Transformed jobs:', transformedJobs); 
+        } else {
+          console.warn('No recruits found after the specified date.');
         }
-        const recruitDetails = await Promise.all(jobPromises);
-        const filteredRecruitDetails = recruitDetails.filter(detail => detail && detail.endTime); // null 값과 endTime이 없는 항목 제거
-
-        const sortedJobs = sortJobsByEndTime(filteredRecruitDetails);
-        setJobs(sortedJobs);
       } catch (error) {
         console.error('Error fetching recruits:', error);
       }
     };
-
+  
     fetchJobs();
-  }, []); // 컴포넌트가 마운트될 때 한 번만 실행
-
-  const handleAddJob = async (recruitId) => {
+  }, []);
+  
+  const handleJobClick = async (job) => {
+  if (job && job.recruitId) {
     try {
-      const recruitDetails = await getRecruitDetails(recruitId); // 공고 생성 후 상세 정보 가져오기
-      if (recruitDetails) {
-        const updatedJobs = [...jobs, { ...recruitDetails, id: recruitId }];
-        const sortedJobs = sortJobsByEndTime(updatedJobs); // 목록을 마감일시 기준으로 정렬
-        setJobs(sortedJobs); // 정렬된 목록을 설정
+      const jobDetails = await getRecruitDetails(job.recruitId);
+      if (jobDetails) {
+        navigate(`/apply-detail/${job.recruitId}`, { state: { job: jobDetails, from: 'list' } });  
+      } else {
+        console.error('Job details not found');
       }
     } catch (error) {
-      console.error('Error adding job:', error);
+      console.error('Error fetching job details:', error);
     }
-  };
-
-  const handleJobClick = (job) => {
-    if (job && job.id) {
-      navigate(`/apply-detail/${job.id}`, { state: { job } });
-    } else {
-      
-    }
-  };
-
-  const handleDateClick = (selectedDate) => {
-    const selectedDateStr = selectedDate.toISOString().split('T')[0];
-    const jobsOnSelectedDate = jobs.filter(job => job.endTime.split('T')[0] === selectedDateStr);
-    setSelectedDateJobs(jobsOnSelectedDate);
-  };
+  } else {
+    console.error('Job ID is missing');
+  }
+};
 
   const waitingJobs = jobs.filter(job => job.status === 'UNAPPLIED' || job.status === 'PLANNED');
   const appliedJobs = jobs.filter(job => job.status !== 'UNAPPLIED' && job.status !== 'PLANNED');
@@ -126,21 +129,18 @@ export default function ApplySchedule() {
         </StatusContainer>
         <ViewToggle view={view} onToggle={setView} />
       </TopSection>
+     
       {view === 'calendar' && (
-        <>
-          <CalendarView date={date} setDate={setDate} onDateClick={handleDateClick} />
-         
-        </>
+        <CalendarView date={date} setDate={setDate} />
       )}
       {view === 'list' && <ListView data={jobs} onJobClick={handleJobClick} />}
       <AddJobButton onClick={() => setShowModal(true)} />
       {showModal && (
         <AddApplyModal
           onClose={() => setShowModal(false)}
-          onSave={handleAddJob} // recruitId 전달
+          onSave={handleSaveRecruit}
         />
       )}
     </Container>
   );
 }
-

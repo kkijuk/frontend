@@ -3,7 +3,7 @@ export const updateRecruit = async (recruitId, updatedJob) => {
   const formatToServerTime = (dateTime) => {
     const localDate = new Date(dateTime);
     
-    // 9시간을 빼기
+  
     localDate.setHours(localDate.getHours() - 9);
 
     const year = localDate.getFullYear();

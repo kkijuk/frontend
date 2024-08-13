@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import MyCareerDetail from './pages/MycareerDetail';
 import SignupSuccess from "./pages/SignupSuccess";
+import ResetSuccess from "./pages/Mypage/ResetSuccess";
 import SubNav from './components/History/SubNav';
 import ViewOptions from './pages/History/ViewOptions';
 import History from "./pages/History";
@@ -35,6 +36,7 @@ import PasswordReset from './pages/Mypage/PasswordReset';
 import SignupInterest from './pages/SignupInterest';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import FilterPage from './components/Apply/FilterPage';
 
 
 const AppContainer = styled.div`
@@ -67,6 +69,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signupsuccess" element={<SignupSuccess />} />
+          
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mycareer" element={<MyCareer />} />
           <Route path="/signupinterest" element={<SignupInterest />} />
@@ -88,6 +91,7 @@ const App = () => {
           <Route path="/apply-schedule" element={<ApplySchedule />} /> {/* 지원일정 */}
           <Route path="/apply-status" element={<ApplyStatus />} /> {/* 지원현황 */}
           <Route path="/apply-detail/:id" element={<ApplyDetail />} />
+          <Route path="/filter" element={<FilterPage />} />
           <Route path="/community" element={<Community />} />
           <Route path="/mypage/authentication" element={<AuthenticationAccount />} />
           <Route path="/mypage/myinformation" element={<MyInformation />} />
@@ -97,7 +101,7 @@ const App = () => {
 
           <Route path="/mypage/passwordresetemail" element={<PasswordResetEmail />} />
           <Route path="/mypage/passwordreset" element={<PasswordReset />} />
-
+          <Route path="/mypage/resetsuccess" element={<ResetSuccess />} />
         </Routes>
       </MainContent>
       {!hideFooter && <Footer />}
