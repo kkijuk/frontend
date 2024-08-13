@@ -16,7 +16,7 @@ import ReviewList from '../../components/Apply/ReviewList';
 import ReviewDetailAdd from '../../components/Apply/ReviewDetailAdd';
 import ReviewDeleteModal from '../../components/Apply/ReviewDeleteModal';
 import { updateRecruitApplyDate } from '../../api/Apply/RecruitApplydate'; 
-
+import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
 const SvgIcon = styled.svg`
   width: 20px;
   height: 20px;
@@ -554,6 +554,13 @@ const formatDateTimeToLocal = (dateString) => {
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 };
 
+const handleBackClick = () => {
+  if (location.state && location.state.from === 'status') {
+    navigate('/apply-status');
+  } else {
+    navigate('/apply-schedule');
+  }
+};
 
   if (!job) {
     return <div>Loading...</div>;
@@ -629,27 +636,31 @@ const formatDateTimeToLocal = (dateString) => {
         <InfoLabelEnd>
           접수 마감 <DateText isEndTime>{formatDateTimeToLocal(job.endTime)}</DateText>
         </InfoLabelEnd>
-          <TagLabel>
-            태그
-            {job.tags.map((tag, idx) => (
+        <TagLabel>
+          태그
+          {job.tags && job.tags.length > 0 && job.tags.map((tag, idx) => (
               <Tag key={idx}>{tag}</Tag>
             ))}
-          </TagLabel>
+         </TagLabel>
         </SubHeader>
       </Header>
 
-      {job.reviews.map((review, index) => (
-        <ReviewList 
-          key={index} 
-          recruitId={job.id} 
-          reviewId={review.reviewId} 
-          title={review.title} 
-          date={review.date} 
-          contents={review.content} 
-          onDelete={() => openReviewDeleteModal(review.reviewId)}
-          onSave={handleReviewSave}  
-        />
-      ))}
+      {job.reviews && job.reviews.length > 0 && (
+   job.reviews.map((review, index) => (
+     <ReviewList 
+       key={index} 
+       recruitId={job.id} 
+       reviewId={review.reviewId} 
+       title={review.title} 
+       date={review.date} 
+       contents={review.content} 
+       onDelete={() => openReviewDeleteModal(review.reviewId)}
+       onSave={handleReviewSave}  
+     />
+   ))
+)}
+
+
 
       {showReviewAdd && (
         <ReviewDetailAdd
