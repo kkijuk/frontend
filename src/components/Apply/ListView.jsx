@@ -138,7 +138,7 @@ const groupByDate = (data) => {
 };
 
 const ListView = ({ data, onJobClick }) => {
-  const groupedData = groupByDate(data);
+  const groupedData = groupByDate(data || []);
 
   return (
     <BackgroundSection>
@@ -147,17 +147,13 @@ const ListView = ({ data, onJobClick }) => {
           {Object.keys(groupedData).map((date, index) => (
             <AdDateSection key={index}>
               <AdDate>{date}</AdDate>
-              {groupedData[date].map((ad, idx) => (
+              {(groupedData[date] || []).map((ad, idx) => (
                 <AdItem 
                   key={idx} 
-                  onClick={() => {
-                    console.log('Clicked job ID:', ad.id); // 클릭한 공고의 ID 로그 추가
-                    console.log('Clicked job:', ad); // 클릭한 공고 로그 추가
-                    onJobClick(ad);
-                  }}
+                  onClick={() => onJobClick(ad)}
                 >
                   <TagContainer>
-                    {ad.tags.map((tag, tagIdx) => (
+                  {(ad.tag || ad.tags || []).map((tag, tagIdx) => (
                       <Tag key={tagIdx}>{tag}</Tag>
                     ))}
                   </TagContainer>
@@ -176,5 +172,6 @@ const ListView = ({ data, onJobClick }) => {
     </BackgroundSection>
   );
 };
+
 
 export default ListView;
