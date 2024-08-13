@@ -36,6 +36,7 @@ import PasswordReset from './pages/Mypage/PasswordReset';
 import SignupInterest from './pages/SignupInterest';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import FilterPage from './components/Apply/FilterPage';
 
 
 const AppContainer = styled.div`
@@ -90,6 +91,7 @@ const App = () => {
           <Route path="/apply-schedule" element={<ApplySchedule />} /> {/* 지원일정 */}
           <Route path="/apply-status" element={<ApplyStatus />} /> {/* 지원현황 */}
           <Route path="/apply-detail/:id" element={<ApplyDetail />} />
+          <Route path="/filter" element={<FilterPage />} />
           <Route path="/community" element={<Community />} />
           <Route path="/mypage/authentication" element={<AuthenticationAccount />} />
           <Route path="/mypage/myinformation" element={<MyInformation />} />
