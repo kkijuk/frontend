@@ -6,6 +6,7 @@ import Banner from '../components/Home/Banner';
 import DeadlineNoti from '../components/Home/DeadlineNoti';
 import WritingNoti from '../components/Home/WritingNoti';
 import RecommendBox from '../components/Home/RecommendBox';
+import Timeline from '../components/Mycareer/Timeline';
 
 const Body = styled.div`
   width: 820px;
@@ -60,16 +61,35 @@ const ContentBox = styled.div`
     gap: 20px;
 `;
 
+const dummyData = [
+    { title: '서포터즈 3기', category: '대외활동', endDate: '2024.02.10', image: 'https://gongu.copyright.or.kr/gongu/wrt/cmmn/wrtFileImageView.do?wrtSn=9046601&filePath=L2Rpc2sxL25ld2RhdGEvMjAxNC8yMS9DTFM2L2FzYWRhbFBob3RvXzI0MTRfMjAxNDA0MTY=&thumbAt=Y&thumbSe=b_tbumb&wrtTy=10004' },
+    { title: '활동2', category: '대외활동', endDate: '2024.02.10', image: '-' },
+    { title: '아르바이트', category: '대외활동', endDate: '2024.02.10', image: '-' },
+    { title: '동아리', category: '대외활동', endDate: '2024.02.10', image: '-' },
+    { title: '채용1', category: '대외활동', endDate: '2024.02.10', image: '-' },
+    { title: 'ㅇㅇ회사', category: '대외활동', endDate: '2024.02.10', image: '-' },
+    { title: 'ㅁㅁ기업', category: '대외활동', endDate: '2024.02.10', image: '-' },
+    { title: '채용공고', category: '대외활동', endDate: '2024.02.10', image: '-' },
+];
+
+const bannerDummy = [
+    { image: 'https://gongu.copyright.or.kr/gongu/wrt/cmmn/wrtFileImageView.do?wrtSn=9046601&filePath=L2Rpc2sxL25ld2RhdGEvMjAxNC8yMS9DTFM2L2FzYWRhbFBob3RvXzI0MTRfMjAxNDA0MTY=&thumbAt=Y&thumbSe=b_tbumb&wrtTy=10004' },
+    { image: 'https://gongu.copyright.or.kr/gongu/wrt/cmmn/wrtFileImageView.do?wrtSn=13262118&filePath=L2Rpc2sxL25ld2RhdGEvMjAyMC8yMS9DTFMxMDAwNi82MmZhMWExMy03ZjRmLTQ1NWMtYTZlNy02ZTk2YjhjMjBkYTk=&thumbAt=Y&thumbSe=b_tbumb&wrtTy=10006' },
+    { image: '-' },
+    { image: '-' },
+    { image: '-' }
+];
+
+
 export default function Home() {
 
     return (
         <Body>
             <Container1>
                 <LoginProfileBox></LoginProfileBox>
-                타임라인 삽입
+                <Timeline></Timeline>
             </Container1>
-
-            <Banner></Banner>
+            <Banner banners={bannerDummy} />
 
             <Container2>
                 <Label>잠깐! 잊지 않으셨죠?</Label>
@@ -82,20 +102,18 @@ export default function Home() {
             <Container3>
                 <Label>추천 활동 공고</Label>
                 <ContentBox>
-                    <RecommendBox></RecommendBox>
-                    <RecommendBox></RecommendBox>
-                    <RecommendBox></RecommendBox>
-                    <RecommendBox></RecommendBox>
+                {dummyData.slice(0, 4).map((data, index) => (
+            <RecommendBox key={index} data={data} />
+          ))}
                 </ContentBox>
             </Container3>
 
             <Container4>
                 <Label>추천 채용 공고</Label>
                 <ContentBox>
-                    <RecommendBox></RecommendBox>
-                    <RecommendBox></RecommendBox>
-                    <RecommendBox></RecommendBox>
-                    <RecommendBox></RecommendBox>
+                {dummyData.slice(4, 8).map((data, index) => (
+            <RecommendBox key={index} data={data} />
+          ))}
                 </ContentBox>
             </Container4>
 
