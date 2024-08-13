@@ -4,6 +4,8 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import ListView from './ListView';  
 import { getRecruitCalendar } from '../../api/Apply/RecruitCalendar';
+import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
+import { useNavigate } from 'react-router-dom';
 
 const AdCalendarStyled = styled.div`
   margin-bottom: 20px;
@@ -232,6 +234,7 @@ const CustomNavigation = ({ date, setDate }) => {
 const CalendarView = ({ date, setDate }) => {
   const [marks, setMarks] = useState([]);
   const [jobsForSelectedDate, setJobsForSelectedDate] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCalendarData = async () => {
@@ -272,14 +275,45 @@ const CalendarView = ({ date, setDate }) => {
   
     fetchCalendarData();
   }, [date]);
-  
 
   const handleDateChange = async (selectedDate) => {
     setDate(selectedDate);
 
-    // 여기에 선택한 날짜에 해당하는 공고를 불러오는 로직을 추가해야 합니다.
-    setJobsForSelectedDate([]); // 공고 정보를 여기에 설정하세요.
-  };
+    const selectedDateStr = selectedDate.toISOString().split('T')[0];
+    const jobsForDate = [];
+
+    try {
+        // 특정 날짜에 해당하는 공고를 가져오는 로직
+        for (let i = 1; i <= 30; i++) {  // ID 범위 조정 필요
+            const jobDetails = await getRecruitDetails(i);
+            if (jobDetails && jobDetails.endTime) {
+                const endTimeDateStr = jobDetails.endTime.split(' ')[0];
+                if (endTimeDateStr === selectedDateStr) {
+                    jobsForDate.push(jobDetails);
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching job details:', error);
+    }
+
+    setJobsForSelectedDate(jobsForDate); // 공고 정보를 설정
+};
+
+
+const handleJobClick = async (job) => {
+  const jobId = job.recruitId || job.id;  
+  if (jobId) {
+    try {
+      const jobDetails = await getRecruitDetails(jobId);
+      navigate(`/apply-detail/${jobId}`, { state: { job: jobDetails } });
+    } catch (error) {
+      console.error('Failed to fetch job details:', error);
+    }
+  } else {
+    console.error('Job ID is missing or undefined');
+  }
+};
 
   return (
     <AdCalendarStyled>
@@ -291,7 +325,7 @@ const CalendarView = ({ date, setDate }) => {
           marks={marks}
         />
       </div>
-      <ListView data={jobsForSelectedDate} onJobClick={() => {}} />
+      <ListView data={jobsForSelectedDate} onJobClick={handleJobClick} />
     </AdCalendarStyled>
   );
 };
