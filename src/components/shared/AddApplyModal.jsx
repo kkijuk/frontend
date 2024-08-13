@@ -391,4 +391,3 @@ const AddApplyModal = ({ onClose, onSave }) => {
 };
 
 export default AddApplyModal;
-
