@@ -47,11 +47,12 @@ const Nav = styled.nav`
     cursor: pointer;
     color: #333;
     font-family: Pretendard;
-    font-size: 20px;
+    font-size: 22px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
     position: relative;
+    font-family: Bold;
 
      @media (max-width: 855px) {
       margin: 0 15px;
@@ -82,8 +83,8 @@ const Nav = styled.nav`
     content: '';
     position: absolute;
     width: 100%;
-    height: 3px;
-    background-color: #00A652;
+    height: 5px;
+    background-color: #3AAF85;
     bottom: -22px;
     left: 0;
     
