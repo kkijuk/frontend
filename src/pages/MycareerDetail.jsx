@@ -260,7 +260,7 @@ export default function MycareerDetail() {
               detailTag={detail.careerTagList.map(tag => tag.tagName)}
             />
           ))}
-          {isAdding && <DetailAdd onCancel={() => setIsAdding(false)} />} {/* 콜백 전달 */}
+          {isAdding && <DetailAdd onCancel={() => setIsAdding(false)}  careerId={careerId}/>} {/* 콜백 전달 */}
           </CareerListBox>
       </Container2>
       <Container3>
