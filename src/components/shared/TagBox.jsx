@@ -122,6 +122,7 @@ const Tag = styled.div`
     line-height: normal;
     position: relative;
     cursor: pointer; 
+
 `;
 
 const CloseButton = styled.button`
@@ -134,6 +135,7 @@ const CloseButton = styled.button`
     margin-left: 4px; /* 왼쪽 여백 추가 */
 `;
 
+
 export default function TagBox( { onTagListChange } ) {
     const [tags, setTags] = useState([]);
     const [TagBoxTags, setTagBoxTags] = useState([]); // TagBoxListContainer에 표시할 태그들
@@ -143,6 +145,7 @@ export default function TagBox( { onTagListChange } ) {
 
     const [isTagBoxListVisible, setIsTagBoxListVisible] = useState(false);
     const tagBoxRef = useRef(null);
+
 
 
     useEffect(() => {
@@ -165,6 +168,7 @@ export default function TagBox( { onTagListChange } ) {
         setInputValue(e.target.value);
     };
 
+
     //엔터 눌렀을 때 태그 추가
     const handleKeyDown = async(e) => {
         if (e.nativeEvent.isComposing) { //마지막 한글자 태그로 만들어지는거 막는 부분
@@ -180,6 +184,7 @@ export default function TagBox( { onTagListChange } ) {
                 setInputValue('');
                 return;
             }
+
 
             // TagBoxListContainer에만 있고, TagInputContainer에는 없는 태그라면
             if (TagBoxTags.some(tag => tag.tagName === newTag)) {
@@ -233,9 +238,11 @@ export default function TagBox( { onTagListChange } ) {
         }
     };
 
+
     //placeholder 내용없애기
     const handleFocus = () => {
         setIsFocused(true);
+
     };
 
     const handleBlur = () => {
@@ -264,7 +271,12 @@ export default function TagBox( { onTagListChange } ) {
                     {tags.map((tag, index) => (
                         <WhiteTag key={index}>
                             {tag}
-                            <CloseButton onClick={() => handleTagRemove(tag)}>x</CloseButton>
+                            <CloseButton
+                                onClick={(event) => handleTagRemoveFromContainer(tag, event)}
+                                onMouseDown={(event) => event.stopPropagation()} // 이 부분 추가
+                            >
+                                x
+                            </CloseButton>
                         </WhiteTag>
                     ))}
                     <TagInput
@@ -283,6 +295,7 @@ export default function TagBox( { onTagListChange } ) {
                             <Tag key={tag.id} onClick={() => handleTagClick(tag.tagName)}>
                                 {tag.tagName}
                                 <CloseButton onClick={(e) => { e.stopPropagation(); handleTagDelete(tag.id, tag.tagName); }}>x</CloseButton>
+
 
                             </Tag>
                         ))}
