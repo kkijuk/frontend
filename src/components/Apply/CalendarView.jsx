@@ -283,8 +283,8 @@ const CalendarView = ({ date, setDate }) => {
     const jobsForDate = [];
 
     try {
-        // 특정 날짜에 해당하는 공고를 가져오는 로직
-        for (let i = 1; i <= 30; i++) {  // ID 범위 조정 필요
+        
+        for (let i = 1; i <= 10; i++) {  
             const jobDetails = await getRecruitDetails(i);
             if (jobDetails && jobDetails.endTime) {
                 const endTimeDateStr = jobDetails.endTime.split(' ')[0];
