@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
 import ListView from './ListView';  
+import { getRecruitCalendar } from '../../api/Apply/RecruitCalendar';
 
 const AdCalendarStyled = styled.div`
   margin-bottom: 20px;
   display: flex;
   justify-content: center;
-   flex-direction: column;  
+  flex-direction: column;  
 `;
 
 const StyledCalendar = styled(Calendar)`
@@ -48,10 +48,6 @@ const StyledCalendar = styled(Calendar)`
     padding: 5px 0;
     box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15);
     margin-top: -15px;
-  }
-
-  .react-calendar__month-view__weekdays__weekday abbr {
-    text-decoration: none;
   }
 
   .react-calendar__month-view__days__day {
@@ -229,50 +225,50 @@ const CalendarView = ({ date, setDate }) => {
 
   useEffect(() => {
     const fetchCalendarData = async () => {
-      let fetchedMarks = [];
-      
-      for (let i = 1; i <= 100; i++) {
-        const jobDetails = await getRecruitDetails(i);
-        if (jobDetails && jobDetails.endTime) {
-          const endTimeDate = new Date(jobDetails.endTime);
-          const dateStr = endTimeDate.toISOString().split('T')[0];
-          let color = 'blue';
-
-          
-          if (jobDetails.status === 'ACCEPTED') color = '#78D333';
-          else if (jobDetails.status === 'REJECTED') color = '#FA7C79';
-          else if (jobDetails.status === 'APPLYING') color = '#707070';
-          else if (jobDetails.status === 'UNAPPLIED') color = '#D9D9D9';
-          else if (jobDetails.status === 'PLANNED') color = '#B0B0B0';
-
-          fetchedMarks.push({ date: dateStr, color });
-        }
+      try {
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1; // month는 0부터 시작하므로 +1
+  
+        const calendarData = await getRecruitCalendar(year, month);
+        const fetchedMarks = calendarData.dates.map(day => {
+          const marksForDay = [];
+  
+          // 각 상태에 따라 색상을 추가, 최대 3개의 동그라미까지만 표시
+          let remainingSpots = 3;
+          const addMarks = (count, color) => {
+            for (let i = 0; i < count && remainingSpots > 0; i++) {
+              marksForDay.push({
+                date: `${year}-${String(month).padStart(2, '0')}-${String(day.day).padStart(2, '0')}`,
+                color
+              });
+              remainingSpots--;
+            }
+          };
+  
+          addMarks(day.unapplied, '#D9D9D9');
+          addMarks(day.planned, '#B0B0B0');
+          addMarks(day.applying, '#707070');
+          addMarks(day.accepted, '#78D333');
+          addMarks(day.rejected, '#FA7C79');
+  
+          return marksForDay;
+        }).flat();
+  
+        setMarks(fetchedMarks);
+      } catch (error) {
+        console.error('Error fetching calendar data:', error);
       }
-
-      setMarks(fetchedMarks);
     };
-
+  
     fetchCalendarData();
   }, [date]);
+  
 
   const handleDateChange = async (selectedDate) => {
     setDate(selectedDate);
 
-    const selectedDateStr = selectedDate.toISOString().split('T')[0];
-    const jobsForDate = [];
-
-    for (let i = 1; i <= 100; i++) {
-      const jobDetails = await getRecruitDetails(i);
-      if (jobDetails && jobDetails.endTime) {
-        const endTimeDate = new Date(jobDetails.endTime);
-        const endTimeDateStr = endTimeDate.toISOString().split('T')[0];
-        if (endTimeDateStr === selectedDateStr) {
-          jobsForDate.push(jobDetails);
-        }
-      }
-    }
-
-    setJobsForSelectedDate(jobsForDate);
+    // 여기에 선택한 날짜에 해당하는 공고를 불러오는 로직을 추가해야 합니다.
+    setJobsForSelectedDate([]); // 공고 정보를 여기에 설정하세요.
   };
 
   return (
@@ -291,6 +287,3 @@ const CalendarView = ({ date, setDate }) => {
 };
 
 export default CalendarView;
-
-
-
