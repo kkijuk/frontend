@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import LoginProfileBox from '../components/Home/LoginProfileBox';
+import LogoutProfileBox from '../components/Home/LogoutProfileBox';
 import Banner from '../components/Home/Banner';
 import DeadlineNoti from '../components/Home/DeadlineNoti';
 import WritingNoti from '../components/Home/WritingNoti';
