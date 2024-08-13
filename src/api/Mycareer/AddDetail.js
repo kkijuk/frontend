@@ -3,6 +3,8 @@ import axios from "axios";
 export const AddDetail = async (careerId, data) => {
     try {
         console.log("저장할 데이터:",data);
+        console.log("careerId:",careerId);
+
         const response = await axios.post(
           `https://api.kkijuk.com/career/${careerId}`,
           data,

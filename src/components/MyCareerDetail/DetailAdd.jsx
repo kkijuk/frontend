@@ -145,6 +145,7 @@ export default function DetailAdd({ onCancel, careerId }) {  // careerId도 prop
     const [content, setContent] = useState('');
     const [tagList, setTagList] = useState([]); // 태그 ID 리스트를 상태로 관리
 
+    console.log("careerId:", careerId);
     const handleDateClick = () => {
         setShowCalendar(!showCalendar);
     };
