@@ -175,12 +175,21 @@ export default function MycareerDetail() {
       setCareers(data);
 
       // URL에서 받아온 careerId에 해당하는 CareerBox를 자동 선택
-      const index = data.flatMap(yearItem => yearItem.careers).findIndex(career => career.id === parseInt(careerId));
-      if (index !== -1) {
-        setSelectedIndex(index);
+      const selectedCareer = data
+        .flatMap(yearItem => yearItem.careers)
+        .find(career => career.id === parseInt(careerId));
+
+      console.log('URL로 받은 careerId:', careerId);
+      console.log('매칭된 CareerBox:', selectedCareer);
+
+      if (selectedCareer) {
+        setSelectedIndex(selectedCareer.id); // 선택된 CareerBox의 ID를 설정
+        setSelectedCareerDetail(selectedCareer); // 선택된 CareerBox의 상세 정보를 설정
 
         // 선택된 CareerBox의 상세 데이터 가져오기
         const careerDetail = await ViewCareerDetail(careerId);
+        console.log('선택된 CareerBox의 상세 데이터:', careerDetail.data);
+
         setSelectedCareerDetail(careerDetail.data);
       }
     };
@@ -188,9 +197,8 @@ export default function MycareerDetail() {
     fetchCareers();
   }, [careerId]);
 
-
   // 선택된 CareerBox의 데이터를 가져오기
-  const selectedCareer = careers[selectedIndex];
+  const selectedCareer = careers.find(career => career.id === selectedIndex);
 
   return (
     <Body>
@@ -203,7 +211,7 @@ export default function MycareerDetail() {
         </Top>
         <CareerBoxList>
           {careers.map((yearItem) => (
-            yearItem.careers.map((item, index) => (
+            yearItem.careers.map((item) => (
               <Careerbox
                 key={item.id}
                 startDate={item.startDate}
@@ -252,8 +260,8 @@ export default function MycareerDetail() {
               detailTag={detail.careerTagList.map(tag => tag.tagName)}
             />
           ))}
-          {isAdding && <DetailAdd />}
-        </CareerListBox>
+          {isAdding && <DetailAdd onCancel={() => setIsAdding(false)} />} {/* 콜백 전달 */}
+          </CareerListBox>
       </Container2>
       <Container3>
         <CareerPlus onClick={() => setIsAdding(true)} disabled={isAdding}>

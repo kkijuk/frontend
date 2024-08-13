@@ -103,7 +103,8 @@ const CareerViewYear = ({ data }) => {
   const handleListBoxClick = async (careerId) => {
     try {
       const responseData = await ViewCareerDetail(careerId);
-      console.log('Received careerId:', careerId);
+      console.log('ListBox에서 받은 careerId:', careerId);
+    
       if (responseData) {
         navigate(`/mycareer/${careerId}`, { details: responseData });
   
