@@ -41,14 +41,23 @@ const StyledCalendar = styled(Calendar)`
   .react-calendar__month-view__weekdays {
     text-align: center;
     text-transform: uppercase;
-    font-weight: bold;
+    font-family: black;
     color: #707070;
     background-color: #f5f5f5;
     height: 40px;
     padding: 5px 0;
+    font-size: 15px;
     box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15);
     margin-top: -15px;
+    
   }
+
+  .react-calendar__month-view__weekdays__weekday abbr {
+    text-decoration: none;
+    border-bottom: none; 
+    outline: none; 
+    
+}
 
   .react-calendar__month-view__days__day {
     box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
@@ -56,6 +65,7 @@ const StyledCalendar = styled(Calendar)`
                 inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
                 inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15);
     border: none;
+    
   }
 
   .react-calendar__tile {
