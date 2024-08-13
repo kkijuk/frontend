@@ -210,11 +210,12 @@ const TagLabel = styled.div`
   width:250px;
   display:flex;
   align-items:center;
-  gap:10px;
+  gap: 5px;
   position:absolute;
   margin-top: 40px;
   margin-left: 5px;
   font-family: Bold;
+  white-space: nowrap;
 `;
 
 const Tag = styled.div`
@@ -233,7 +234,7 @@ const Tag = styled.div`
   line-height: normal;
   background: white;
   color: var(--main-01, #3AAF85);
-  margin-left: 10px;
+  margin-left: 15px;
 `;
 
 const DateText = styled.div`
