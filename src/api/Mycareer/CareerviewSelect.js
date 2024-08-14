@@ -4,6 +4,7 @@ export const CareerViewSelect = async(status) => {
     try{
         console.log("Current view status:", status);
         const response = await axios.get(
+
             `https://api.kkijuk.com/career?status=${status}`,
             {
                 headers: {
