@@ -27,7 +27,7 @@ export default function Mycareer() {
     // 비동기 함수 선언 및 실행
     const fetchData = async () => {
       // 현재 view 상태에 따라 API에 전달할 status 값을 설정
-      const status = view === 'date' ? 'date' : 'category';
+      const status = view === 'year' ? 'year' : 'category';
   
       // CareerViewSelect 함수를 호출하여 API 요청을 보냄
       const data = await CareerViewSelect(status);
