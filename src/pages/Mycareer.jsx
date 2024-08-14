@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Title from '../components/Apply/Title';
 import CareerView from '../components/Mycareer/CareerView'; //시간순/분류별 선택
-import CareerViewDate from '../components/Mycareer/CareerViewDate'; //시간순 정렬 컴포넌트
+import CareerViewYear from '../components/Mycareer/CareerViewYear'; //시간순 정렬 컴포넌트
 import CareerViewCategory from '../components/Mycareer/CareerViewCategory'; //분류별 정렬 컴포넌트
 import AddJobButton from '../components/shared/AddJobButton'; //버튼추가
 import AddCareerModal from '../components/shared/AddCareerModal'; //모달 내용
@@ -55,7 +55,7 @@ export default function Mycareer() {
       <Timeline></Timeline>
 
       <CareerView view={view} onToggle={setView} />
-      {view === 'year' && <CareerViewDate data={careers} />}
+      {view === 'year' && <CareerViewYear data={careers} />}
       {view === 'category' && <CareerViewCategory data={careers} />}
 
       <AddJobButton onClick={() => setShowModal(true)} />
