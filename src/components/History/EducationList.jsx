@@ -29,8 +29,8 @@ const EducationList =()=>{
         <>
         {dummys.map((dummy, index) => (
             isEdit[index] 
-            ? <EditItem key={index} dummy={dummy} /> 
-            : <EducationItem key={index} dummy={dummy} />
+            ? <EditItem key={index} dummy={dummy} onCancel={()=>setIsEdit(!isEdit[index])}/> 
+            : <EducationItem key={index} dummy={dummy} onEdit={()=>setIsEdit(!isEdit[index])}/>
         ))}
         </>
 

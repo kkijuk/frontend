@@ -42,3 +42,28 @@ p{
     text-align: right;
     color:#707070;
 }
+
+.custom-wrapper .mbsc-ios.mbsc-textfield-wrapper-box,
+.custom-wrapper .mbsc-ios.mbsc-textfield-wrapper-outline {
+    margin: 0 !important;
+}
+
+.mbsc-ios.mbsc-textfield {
+    background: transparent;
+    display: flex;
+    height: 2.75em;
+    width:145px;
+    padding: 0 1em;
+}
+
+.mbsc-ios.mbsc-textfield-inner-box, .mbsc-ios.mbsc-textfield-inner-outline {
+    position: relative;
+    width: 145px;
+}
+
+.custom-div {
+    border-top: none;      /* 위쪽(border-top) */
+    border-right: none; /* 오른쪽(border-right) */
+    border-bottom: none; /* 아래쪽(border-bottom) */
+    border-left: 2px dashed black;  /* 왼쪽(border-left) */
+}
