@@ -216,15 +216,14 @@ const OthersRewrite=()=> {
     return (
         
         <BackgroundDiv>
-            {modalOpend && <Alert closeModal={toggleModal} deleteResume={deleteResume}></Alert>}{/* 삭제 경고문 */}
-            <Limiter show={show}>빈 질문을 먼저 채워주세요!</Limiter>{/* 질문추가 경고문 */}
-            <Limiter show={gotoShow} style={{width:"250px"}}>등록된 링크가 없습니다. <br/>공고 수정에서 링크를 등록해주세요!</Limiter>
-            {addJobModalOpened && <AddJobModal onClose={toggleAddJobModal} style={{position:'relative', zIndex:1000}}></AddJobModal>}{/* 공고추가 모달 */}
-    
             <BaseDiv>
                 <ContentTitle>
                     <h1 style={{position:'relative',display:'inline-block', marginRight:'12px'}}>{contents.recruitTitle}</h1>
                     <div style={{display:'inline-block', position:'relative'}}>
+                        {modalOpend && <Alert closeModal={toggleModal} deleteResume={deleteResume}></Alert>}{/* 삭제 경고문 */}
+                        <Limiter show={show}>빈 질문을 먼저 채워주세요!</Limiter>{/* 질문추가 경고문 */}
+                        <Limiter show={gotoShow} style={{width:"250px"}}>등록된 링크가 없습니다. <br/>공고 수정에서 링크를 등록해주세요!</Limiter>
+                        {addJobModalOpened && <AddJobModal onClose={toggleAddJobModal} style={{position:'relative', zIndex:1000}}></AddJobModal>}{/* 공고추가 모달 */}
                         <Tag onClick={toggleDropdown} style={{color:'white', width:'60px',cursor:'pointer'}}>{isCompleted ? "작성 완료" : "작성 중"} ▼</Tag>
                         {dropdownOpend&&<Dropdown>
                             <DropdownItem onClick={()=>handleDropdownClick(0)}>작성 중</DropdownItem>
@@ -234,16 +233,15 @@ const OthersRewrite=()=> {
                     {contents.tags.map(tag=>(
                         <Tag style={{background: '#F5F5F5', color:'#3AAF85'}}>{tag}</Tag>
                     ))}
-                    <div>
-                        <p className='lastUpdated' style={{display:'inline-block',color:'red', margin:'0 20px 8px 0px', textAlign:'left'}}>공고 마감 일시 : {contents.deadline}</p>               
+                    <br/>
+                    <p className='lastUpdated' style={{display:'inline-block',color:'red', margin:'0 20px 8px 0px', textAlign:'left'}}>공고 마감 일시 : {contents.deadline}</p>               
                         <button
                             onClick={clickGotoApply}
                             style={{display:'inline-block',width:'140px', height:'30px', background:'#FFF', border:'1px solid #707070', borderRadius:'10px',fontFamily:'Regular', color:'#707070',fontSize:'15px',cursor:'pointer'}}
                         >공고 보러가기</button>
-                    </div>
                     <svg
                         onClick={toggleAddJobModal}
-                        style={{width:'30px', height:'30px', position:'absolute', top:'50px', right:'5px', cursor:'pointer'}} 
+                        style={{width:'30px', height:'30px', position:'absolute', top:'50px', right:'5px', cursor:'pointer', zIndex:'900'}} 
                         xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
                         <path d="M0 23.7509V30H6.24913L24.6799 11.5692L18.4308 5.32009L0 23.7509ZM29.5126 6.73656C30.1625 6.08665 30.1625 5.0368 29.5126 4.38689L25.6131 0.487432C24.9632 -0.162477 23.9133 -0.162477 23.2634 0.487432L20.2139 3.53701L26.463 9.78614L29.5126 6.73656Z" fill="#707070"/>
                     </svg>
@@ -272,7 +270,6 @@ const OthersRewrite=()=> {
                             />
                         </div>
                     ))}
-
                 </form>
                 <AddButton onClick={handleAddClick}>+</AddButton>
                 <div style={{height:'70px'}}></div>
@@ -333,7 +330,7 @@ const SButton = styled.button`
 `
 const ContentTitle=styled.div`
     position:relative;
-    z-index:890;
+    z-index:890; 
     margin-top:10px;
     margin-bottom:33px;
 `

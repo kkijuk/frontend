@@ -99,12 +99,10 @@ const CareerViewYear = ({ data }) => {
   console.log('CareerViewYear rendered');
 
   const navigate = useNavigate();
-  
   const handleListBoxClick = async (careerId) => {
     try {
       const responseData = await ViewCareerDetail(careerId);
-      console.log('ListBox에서 받은 careerId:', careerId);
-    
+      console.log('Received careerId:', careerId);
       if (responseData) {
         navigate(`/mycareer/${careerId}`, { details: responseData });
   
@@ -115,10 +113,15 @@ const CareerViewYear = ({ data }) => {
     }
   };
 
+  if (!Array.isArray(data.data)) {
+    console.error('data is not an array:', data);
+    return null;
+  }
+
   return (
     <BackgroundSection>
       <Contianer>
-        {data.map((item, index) => {
+        {data.data.map((item, index) => {
           console.log('Item:', item);
           return (
             <YearBox key={index}>
