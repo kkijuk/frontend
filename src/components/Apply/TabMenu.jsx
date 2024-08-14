@@ -5,7 +5,7 @@ import SearchBar from './SearchBar';
 const TabMenuStyled = styled.div`
   display: flex;
   align-items: center; 
-  border-bottom: 2px solid #ddd;
+  border-bottom: 4px solid #ddd;
   margin-bottom: 20px;
 `;
 
