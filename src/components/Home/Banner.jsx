@@ -47,6 +47,7 @@ const BannerSlide = styled.div`
     console.log(props.image);
     return props.image;
   }});
+  //background-image: url(${props => props.image});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
