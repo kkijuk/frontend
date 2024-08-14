@@ -39,6 +39,7 @@ export const TagBoxCreateTag = async(tagName) => {
             }
         )
         console.log("통신 완료: ", response.data);
+        return response.data;
     } catch (error) {
         console.log("Errpr", error.message);
         if(error.response){
