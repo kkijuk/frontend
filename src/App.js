@@ -14,14 +14,12 @@ import SignupSuccess from "./pages/SignupSuccess";
 import ResetSuccess from "./pages/Mypage/ResetSuccess";
 import SubNav from './components/History/SubNav';
 import ViewOptions from './pages/History/ViewOptions';
-import History from "./pages/History";
+import History from "./pages/History/History";
 import Master from "./pages/History/Master";
-import Others from "./pages/History/Others";
-import MasterRewrite from "./pages/History/MasterRewrite";
-import OthersRewrite from "./pages/History/OthersRewrite";
-import ListHeader from "./pages/History/ListHeader";
-import List from "./pages/History/List";
-import SelectHeader from "./pages/History/SelectHeader";
+import Others from "./pages/History/Others"
+import MasterRewrite from "./pages/History/MasterRewrite"
+import OthersRewrite from "./pages/History/OthersRewrite"
+import List from "./pages/History/List"
 import Select from './pages/History/Select';
 import AddApply from "./pages/History/AddApply";
 import Portfolio from "./pages/History/Portfolio";
@@ -82,11 +80,9 @@ const App = () => {
             <Route path="/history" element={<History />} />
             <Route path="/history/portfolio" element={<Portfolio />} />
           </Route>
-          <Route path="/history/master/rewrite" element={<MasterRewrite />} />
-          <Route path="/history/others/:id/rewrite" element={<OthersRewrite />} />
-          <Route path="/history/select" element={<SelectHeader />}>
-            <Route path=":id" element={<Select />} />
-          </Route>
+          <Route path="/history/master/rewrite" element={<MasterRewrite/>}/>
+          <Route path="/history/others/:id/rewrite" element={<OthersRewrite/>}/>
+          <Route path="/history/select" element={<Select />} />
           <Route path="/history/add_apply" element={<AddApply />} />
           <Route path="/apply-schedule" element={<ApplySchedule />} /> {/* 지원일정 */}
           <Route path="/apply-status" element={<ApplyStatus />} /> {/* 지원현황 */}

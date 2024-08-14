@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 
-const Alert = ({closeModal}) => {
+const Alert = ({closeModal, deleteResume}) => {
     const navigate = useNavigate();
     const handleDelete =()=>{
         navigate('/history/list');
@@ -16,8 +16,8 @@ const Alert = ({closeModal}) => {
             <h3>자기소개서를 삭제하면 복구할 수 없습니다.</h3>
             <h3>이 자기소개서를 정말로 삭제하시겠습니까?</h3>
             <ButtonGroup>
-            <Button onClick={closeModal} style={{ background: '#707070', color: 'white' }}>취소</Button>
-            <Button onClick={handleDelete} style={{ border: '1.5px solid red', background: '#FFF', color: 'red' }}>삭제</Button>
+            <Button onClick={closeModal} style={{border:'1px solid #77AFF2', color:'#77AFF2'}}>취소</Button>
+            <Button onClick={deleteResume} style={{ border: '1px solid #FA7C79', color: 'red' }}>삭제</Button>
             </ButtonGroup>
         </Modal>
         </Background>
@@ -40,10 +40,10 @@ const Background = styled.div`
 `;
 
 const Modal = styled.div`
-  width: 500px;
-  height: 300px;
+  width: 400px;
+  height: 240px;
   background: rgba(255, 255, 255, 1);
-  border-radius: 20px;
+  border-radius: 10px;
   padding: 20px;
   display: flex;
   flex-direction: column;
