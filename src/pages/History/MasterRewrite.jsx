@@ -57,7 +57,7 @@ const MasterRewrite =()=>{
     const submitData =()=>{
         api.patch('/history/intro/master?id=1',questions)
             .then(response=>{
-                console.log(response.data);
+                console.log("마스터자소서수정완료: ",response.data);
             })
             .catch(error=>{
                 console.log("Error: ", error);

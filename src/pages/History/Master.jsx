@@ -32,7 +32,7 @@ const Master=()=> {
         api.get('/history/intro/master')
             .then(response=>{
                 const Data = response.data.data[0];
-                console.log(Data);
+                console.log("내용조회: ",Data);
                 setQuestions({
                     oneLiner:Data.oneLiner,
                     motive_title:Data.motiveTitle,
