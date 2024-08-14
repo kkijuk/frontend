@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'; 
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { getUserInfo } from '../../api/Home/getUserInfo';
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -29,6 +30,7 @@ const TextContainer = styled.div`
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
+  font-family: Pretendard;
 `;
 
 const BoldText = styled.h5`
@@ -111,6 +113,32 @@ const OKButton = styled.button`
 export default function LoginProfileBox() {
     const navigate = useNavigate();
 
+    const [userName, setUserName] = useState('');
+    const [monthDuration, setMonthDuration] = useState(0);
+    const [careerCount, setCareerCount] = useState(0);
+    const [recruitCount, setRecruitCount] = useState(0);
+
+    useEffect(() => {
+        const getUserInfo = async () => {
+            try {
+                const data = await getUserInfo();
+                if (data) {
+                    setUserName(data.userName);
+                    setMonthDuration(data.monthDuration);
+                    setCareerCount(data.careerCount);
+                    setRecruitCount(data.recruitCount);
+                } else {
+                    console.error('Failed to fetch data');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        
+
+        getUserInfo();
+    }, []);
+
     const goCareer = () => {
         navigate('/mycareer');
     };
@@ -126,18 +154,18 @@ export default function LoginProfileBox() {
     return (
         <Container>
             <TextContainer>
-                안녕하세요 user-name 님,
-                <BoldText><GreenSpan>끼적</GreenSpan>한 지 duration개월이 지났어요!</BoldText>
+                안녕하세요 {userName} 님,
+                <BoldText><GreenSpan>끼적</GreenSpan>한 지 {monthDuration}개월이 지났어요!</BoldText>
             </TextContainer>
             <BoxContainer>
                 <CountBox onClick={() => goCareer()} >
                     내 활동
-                    <BoldText fontSize='12px'>0</BoldText>
+                    <BoldText fontSize='12px'>{careerCount}</BoldText>
                 </CountBox>
 
                 <CountBox onClick={() => goApply()}>
                     지원현황
-                    <BoldText fontSize='12px'>0</BoldText>
+                    <BoldText fontSize='12px'>{recruitCount}</BoldText>
                 </CountBox>
             </BoxContainer>
             

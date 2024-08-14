@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { getRecruitRemind } from '../../api/Home/getRecruitRemind';
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -57,7 +58,7 @@ const DDayBox = styled.div`
     margin-left: auto;
     display: flex;
     justify-content: center;
-      align-items: center;
+    align-items: center;
 `;
 
 const DDayText = styled.div`
@@ -70,24 +71,41 @@ const DDayText = styled.div`
 `;
 
 export default function DeadlineNoti() {
+
+    const [recruits, setRecruits] = useState([]);
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await getRecruitRemind();
+                if (!response) {
+                    throw new Error('Failed to fetch data');
+                }
+                setRecruits(response); // API에서 가져온 데이터를 설정
+            } catch (error) {
+                console.error('에러- Failed to fetch data:', error);
+            }
+        }
+
+        fetchData();
+    }, []);
+
     return (
         <Container>
             <Label>공고 마감이 얼마 남지 않았어요</Label>
-            <Box>
-                00식품 2024 하반기 인턴
-                <DDayBox>
-                    <DDayText fontColor='#FA7C79'>D-</DDayText>
-                    <DDayText fontColor='#FA7C79'>4</DDayText>
-                </DDayBox>
-            </Box>
+            {recruits.map((recruit) => {
+                const fontColor = recruit.dday <= 7 ? '#FA7C79' : '#707070'; //현재: 7일 이하면 글자색 빨간색
 
-            <Box>
-                00서포터즈 3기
-                <DDayBox>
-                    <DDayText>D-</DDayText>
-                    <DDayText>10</DDayText>
-                </DDayBox>
-            </Box>
+                return (
+                    <Box key={recruit.id}>
+                        {recruit.title} 
+                        <DDayBox>
+                            <DDayText fontColor={fontColor}>D-</DDayText>
+                            <DDayText fontColor={fontColor}>{recruit.dday}</DDayText>
+                        </DDayBox>
+                    </Box>
+                );
+            })}
         </Container>
     )
 }

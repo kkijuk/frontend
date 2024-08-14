@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react'; 
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -23,7 +23,10 @@ const ImageContainer = styled.div`
     border-radius: 4px;
     background: var(--gray-05, #F1F1F1);
     margin: 0;
-`
+    background-image: url(${props => props.image});
+    background-size: cover;
+    background-position: center;
+`;
 
 const TextContainer = styled.div`
   width: 100%;
@@ -53,17 +56,15 @@ const Info = styled.div`
     margin: 0;
 `;
 
+export default function RecommendBox({data}) {
 
-export default function RecommendBox() {
 
     return (
         <Container>
-            <ImageContainer>
-
-            </ImageContainer>
+            <ImageContainer image={data.image} />
             <TextContainer>
-                <ContentText>00서포터즈 3기</ContentText>
-                <Info>대외활동 | 2024.00.00까지</Info>
+                <ContentText>{data.title}</ContentText>
+                <Info>{data.category} | {data.endDate}까지</Info>
             </TextContainer>
 
 

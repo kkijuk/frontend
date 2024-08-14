@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { getIntroduce } from '../../api/Home/getIntroduce';
 
 const Container = styled.div`
   flex-shrink: 0;
