@@ -95,7 +95,7 @@ const formatDate = (dateString) => {
   return dateString.replace(/-/g, '.');
 };
 
-const CareerViewYear = ({ data }) => {
+const CareerViewYear = ({data}) => {
   console.log('CareerViewYear rendered');
 
   const navigate = useNavigate();
@@ -123,6 +123,8 @@ const CareerViewYear = ({ data }) => {
       <Contianer>
         {data.data.map((item, index) => {
           console.log('Item:', item);
+          console.log('Item year:', item.year);
+
           return (
             <YearBox key={index}>
               <Year>{item.year}</Year>

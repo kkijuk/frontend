@@ -119,7 +119,7 @@ export default function LoginProfileBox() {
     const [recruitCount, setRecruitCount] = useState(0);
 
     useEffect(() => {
-        const getUserInfo = async () => {
+        const fetchUserInfo = async () => {
             try {
                 const data = await getUserInfo();
                 if (data) {
@@ -135,8 +135,7 @@ export default function LoginProfileBox() {
             }
         };
         
-
-        getUserInfo();
+        fetchUserInfo();
     }, []);
 
     const goCareer = () => {

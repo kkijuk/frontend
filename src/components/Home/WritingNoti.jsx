@@ -71,24 +71,46 @@ const DDayText = styled.div`
 `;
 
 export default function WritingNoti() {
+
+    const [introduceList, setIntroduceList] = useState([]);
+
+    useEffect(() => {
+        const fetchIntroduce = async () => {
+            try {
+                const data = await getIntroduce();
+                console.log("데이터", data);
+                if (data && data.length > 0) {
+                    setIntroduceList(data); // 데이터를 상태로 저장
+                } else {
+                    console.error('Failed to fetch data');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        
+        fetchIntroduce();
+    }, []);
+
+    const regex = /[^0-9]/g;
+
     return (
         <Container>
             <Label>자기소개서 작성 완료를 기다려요</Label>
-            <Box>
-                00식품 2024 하반기 인턴
-                <DDayBox>
-                    <DDayText fontColor='#FA7C79'>D-</DDayText>
-                    <DDayText fontColor='#FA7C79'>4</DDayText>
-                </DDayBox>
-            </Box>
+            {introduceList.map((introduce, index) => { // 상태에서 데이터 반복 처리
+                const num = parseInt(introduce.deadline.replace(regex, ""), 10);
+                const fontColor = num <= 7 ? '#FA7C79' : '#707070'; // 현재: 7일 이하면 글자색 빨간색
 
-            <Box>
-                00서포터즈 3기
-                <DDayBox>
-                    <DDayText>D-</DDayText>
-                    <DDayText>10</DDayText>
-                </DDayBox>
-            </Box>
+                return (
+                    <Box key={index}>
+                        {introduce.recruitTitle} 
+                        <DDayBox>
+                            <DDayText fontColor={fontColor}>D-</DDayText>
+                            <DDayText fontColor={fontColor}>{num}</DDayText>
+                        </DDayBox>
+                    </Box>
+                );
+            })}
         </Container>
     )
 }

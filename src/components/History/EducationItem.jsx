@@ -4,6 +4,10 @@ import styled from 'styled-components';
 const EducationItem = ({ dummy, onEdit }) => {
     return (
         <Container>
+            <TimeLine>
+                <Oval></Oval>
+                <Line></Line>
+            </TimeLine>
             <LevelTag>{dummy.level}</LevelTag>
             <SchoolInfo>
                 <SchoolName>{dummy.schoolName}</SchoolName>
@@ -20,6 +24,30 @@ const EducationItem = ({ dummy, onEdit }) => {
 export default EducationItem;
 
 // Styled Components
+
+
+const TimeLine = styled.div`
+    width: 60px;
+    margin: 15px 0px;
+`
+
+const Oval = styled.div`
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border-radius:50%;
+  background-color:black;
+`
+
+const Line = styled.div`
+  width:2px;
+  height:50px;
+  border-top: none;      /* 위쪽(border-top) */
+  border-right: none; /* 오른쪽(border-right) */
+  border-bottom: none; /* 아래쪽(border-bottom) */
+  border-left: 2px dashed black;  /* 왼쪽(border-left) */
+
+`
 
 const Container = styled.div`
   display: flex;

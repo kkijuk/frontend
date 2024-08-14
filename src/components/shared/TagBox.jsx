@@ -151,7 +151,7 @@ export default function TagBox( { onTagListChange } ) {
             setTagBoxTags(fetchedTags);
         };
         fetchTags();
-    }, []); //여기 tags를 써서 tags에 변화가 생길 때마다 해당 useEffect가 실행되게 함 -> 근데 에러가 생겨서 방법 바꿈
+    }, [tags]); //여기 tags를 써서 tags에 변화가 생길 때마다 해당 useEffect가 실행되게 함 -> 근데 에러가 생겨서 방법 바꿈
 
     useEffect(() => {
         const tagIds = tags.map(tag => {
@@ -188,16 +188,19 @@ export default function TagBox( { onTagListChange } ) {
                 return;
             }
 
-            // 위의 두 경우 다 아니고 아예! 새로운 태그 푸가TagBoxTags에 추가할 때 객체로 추가
-            const newTagObject = { tagName: newTag };
-
-            setTags([...tags, newTag]);
-            setTagBoxTags([...TagBoxTags, newTagObject]); //이게 에러나서 바꾼 방법
-            setInputValue('');
-
-            //API 호출해서 태그 전송
             try {
-                await TagBoxCreateTag(newTag);
+                // API 호출해서 태그 전송
+                const response = await TagBoxCreateTag(newTag);
+                const createdTag = response.data;
+
+                console.log('API 응답:', response);
+
+    
+                // TagInputContainer와 TagBoxListContainer에 태그 추가
+                setTags((prevTags) => [...prevTags, createdTag.tagName]);
+                setTagBoxTags((prevTagBoxTags) => [...prevTagBoxTags, createdTag]);
+    
+                setInputValue('');
                 console.log(`태그 ${newTag} 서버로 전송 성공`);
             } catch (error) {
                 console.log(`태그 ${newTag} 서버 전송 실패`, error);
@@ -262,7 +265,7 @@ export default function TagBox( { onTagListChange } ) {
                 <Text>태그</Text>
                 <TagInputContainer onClick={() => setIsTagBoxListVisible(true)}>
                     {tags.map((tag, index) => (
-                        <WhiteTag key={index}>
+                        <WhiteTag key={tag.id}>
                             {tag}
                             <CloseButton onClick={() => handleTagRemove(tag)}>x</CloseButton>
                         </WhiteTag>

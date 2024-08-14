@@ -50,6 +50,7 @@ const CareerBoxList = styled.div`
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
+  
 `;
 
 const Box = styled.div`
@@ -83,6 +84,7 @@ const ActivityDetails = styled.div`
 const Container2 = styled.div`
   width: 800px;
   height: 477px;
+  border: 1px solid black;
 `;
 
 const CareerListBox = styled.div`
