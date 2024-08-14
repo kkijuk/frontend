@@ -72,19 +72,15 @@ const DDayText = styled.div`
 
 export default function WritingNoti() {
 
-    const [recruitTitle, setRecruitTitle] = useState('');
-    const [deadline, setDeadline] = useState('');
+    const [introduceList, setIntroduceList] = useState([]);
 
     useEffect(() => {
         const fetchIntroduce = async () => {
             try {
-                const data = await getIntroduce;
+                const data = await getIntroduce();
                 console.log("데이터", data);
                 if (data && data.length > 0) {
-                    
-                    const firstItem = data[0];
-                    setRecruitTitle(firstItem.recruitTitle);
-                    setDeadline(firstItem.deadline);
+                    setIntroduceList(data); // 데이터를 상태로 저장
                 } else {
                     console.error('Failed to fetch data');
                 }
@@ -97,20 +93,20 @@ export default function WritingNoti() {
     }, []);
 
     const regex = /[^0-9]/g;
-    const num = parseInt(data.deadline.replace(regex, ""), 10);
 
     return (
         <Container>
             <Label>자기소개서 작성 완료를 기다려요</Label>
-            {getIntroduce.map((introduce) => {
-                const fontColor = num <= 7 ? '#FA7C79' : '#707070'; //현재: 7일 이하면 글자색 빨간색
+            {introduceList.map((introduce, index) => { // 상태에서 데이터 반복 처리
+                const num = parseInt(introduce.deadline.replace(regex, ""), 10);
+                const fontColor = num <= 7 ? '#FA7C79' : '#707070'; // 현재: 7일 이하면 글자색 빨간색
 
                 return (
-                    <Box>
+                    <Box key={index}>
                         {introduce.recruitTitle} 
                         <DDayBox>
                             <DDayText fontColor={fontColor}>D-</DDayText>
-                            <DDayText fontColor={fontColor}>{introduce.num}</DDayText>
+                            <DDayText fontColor={fontColor}>{num}</DDayText>
                         </DDayBox>
                     </Box>
                 );
