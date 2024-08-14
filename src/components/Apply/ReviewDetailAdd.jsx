@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import InputBox from '../shared/InputBox';
-import ReactCalendar from '../shared/Calendar';
+import ReviewInputBox from './ReviewInputBox';
+import ReactCalendar from './ReviewCalendar';
 import moment from 'moment';
-import TagBox from '../shared/TagBox';
-
+import { ReviewAdd } from '../../api/Apply/ReviewAdd'; 
 
 const Box = styled.div`
     height: 384px;
     width: 800px;
     padding: 24px 40px;
-    
 `;
 
 const Top = styled.div`
@@ -19,23 +17,19 @@ const Top = styled.div`
     height: 79px;
     width: 720px;
     margin-top: 22px;
-    
 `;
 
 const Middle = styled.div`
-    height: 1429x;
+    height: 142px;
     width: 800px;
     margin-top: 18px;
-    
 `;
 
 const Button = styled.div`
     height: 50px;
     display: flex;
-    gap: 15px; /* 버튼 사이에 15px 간격 추가 */
+    gap: 15px;
     margin-bottom: 24px;
-    
-    
 `;
 
 const Title = styled.div`
@@ -47,7 +41,7 @@ const Title = styled.div`
 const Date = styled.div`
     display: flex;
     flex-direction: column;
-    position: relative; /* 캘린더 위치를 설정하기 위해 추가 */
+    position: relative;
 `;
 
 const DateBox = styled.div`
@@ -83,12 +77,9 @@ const Cancel = styled.div`
     border-radius: 10px;
     border: 1.5px solid var(--sub-rd, #FA7C79);
     box-sizing: border-box;
-
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     color: var(--sub-rd, #FA7C79);
     text-align: center;
     font-family: Pretendard;
@@ -96,7 +87,7 @@ const Cancel = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-`
+`;
 
 const Save = styled.div`
     width: 555px;
@@ -104,11 +95,9 @@ const Save = styled.div`
     flex-shrink: 0;
     border-radius: 10px;
     background: var(--main-01, #3AAF85);
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     color: #FFF;
     text-align: center;
     font-family: Pretendard;
@@ -116,52 +105,56 @@ const Save = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-
-`
+`;
 
 const Line = styled.div`
     width : 800px;
     height: 2px;
     background: var(--gray-03, #D9D9D9);
-`
+`;
 
-
-export default function ReviewDetailAdd() {
+export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를 prop으로 받아옴.
     const [showCalendar, setShowCalendar] = useState(false);
     const [selectedDate, setSelectedDate] = useState('');
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
 
     const handleDateClick = () => {
         setShowCalendar(!showCalendar);
     };
 
     const handleDateChange = (date) => {
-        if (Array.isArray(date) && date.length === 2) {
-            const [startDate, endDate] = date;
-            const formattedStartDate = moment(startDate).format('YYYY-MM-DD');
-            const formattedEndDate = moment(endDate).format('YYYY-MM-DD');
-    
-            if (formattedStartDate === formattedEndDate) {
-                // 두 날짜가 같은 경우
-                setSelectedDate(formattedStartDate);
-            } else {
-                // 두 날짜가 다른 경우
-                setSelectedDate(`${formattedStartDate} ~ ${formattedEndDate}`);
-            }
-        } else {
-            // 배열이 아닌 경우 또는 날짜가 하나만 선택된 경우
-            const formattedDate = moment(date).format('YYYY-MM-DD');
-            setSelectedDate(formattedDate);
-        }
+        const formattedDate = moment(date).format('YYYY-MM-DD');
+        setSelectedDate(formattedDate);
         setShowCalendar(false);
     };
-    
+
+    const handleSaveClick = async () => {
+        try {
+            const reviewData = {
+                title,
+                content,
+                date: selectedDate,
+            };
+            await ReviewAdd(recruitId, reviewData);
+            onSave(); // 저장 후 콜백 실행 (예: 모달 닫기, 목록 갱신 등)
+        } catch (error) {
+            console.error('Failed to save review:', error);
+        }
+    };
 
     return (
         <Box>
             <Top>
                 <Title>
                     <Label>제목</Label>
-                    <InputBox height="50px" width="460px" placeholderText="활동 제목을 작성하세요" />
+                    <ReviewInputBox 
+                        height="50px" 
+                        width="460px" 
+                        placeholderText="활동 제목을 작성하세요" 
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
                 </Title>
                 <Date>
                     <Label>날짜</Label>
@@ -171,14 +164,21 @@ export default function ReviewDetailAdd() {
             </Top>
             <Middle>
                 <Label>내용</Label>
-                <InputBox height="100px" width="720px" placeholderText="활동 세부 내용을 작성하세요" />
+                <ReviewInputBox 
+                    height="100px" 
+                    width="720px" 
+                    placeholderText="활동 세부 내용을 작성하세요" 
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                />
             </Middle>
-            <TagBox></TagBox>
             <Button>
-                <Cancel>취소</Cancel>
-                <Save>저장</Save>
+                <Cancel onClick={() => onSave()}>취소</Cancel>
+                <Save onClick={handleSaveClick}>저장</Save>
             </Button>
             <Line></Line>
         </Box>
     );
 }
+
+

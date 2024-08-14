@@ -10,7 +10,7 @@ const SignupSuccessScreen = styled.div`
   text-align: center;
   margin-bottom: 90px;
   position: relative;
-  top: 180px; /* 요소를 아래로 이동시키기 위해 top 속성 사용 */
+  top: 180px; 
 
   p {
     margin-bottom: 10px;
@@ -67,7 +67,7 @@ const SignupSuccess = () => {
       <p>회원가입이 완료되었습니다.</p>
       <p className="Interests-text1">끼적에서의 더 나은 경험을 위해</p>
       <p className="Interests-text2">요즘 관심 있는 분야를 알려주세요!</p>
-      <button className="button" onClick={() => window.location.href='/login'}>관심분야 등록</button>
+      <button className="button" onClick={() => window.location.href='/signupinterest'}>관심분야 등록</button>
     </SignupSuccessScreen>
   );
 };

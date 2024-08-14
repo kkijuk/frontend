@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const TitleStyled = styled.h1`
   color: var(--black, #000);
-  font-family: Pretendard;
+  font-family: 'Bold';
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 20px;

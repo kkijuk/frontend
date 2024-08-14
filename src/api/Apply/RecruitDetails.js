@@ -11,11 +11,11 @@ export const getRecruitDetails = async (id) => {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
       if (response.status === 404) {
-        console.log(`Recruit with ID ${id} not found. It might have been deleted.`);
-        return null; // 공고가 없을 때 null 반환
+        console.warn(`Recruit에서 ID ${id}를 찾을 수 없습니다.`);
+        return null; // ID를 찾지 못한 경우 null 반환
       }
+      const errorData = await response.json();
       throw new Error(errorData.message || 'Something went wrong');
     }
 
@@ -24,9 +24,12 @@ export const getRecruitDetails = async (id) => {
     return { ...responseData, id }; // id 필드 추가
   } catch (error) {
     console.error("Error fetching recruit details:", error.message);
-    throw error;
+    return null; // 에러 발생 시 null 반환
   }
 };
+
+
+
 
 
 

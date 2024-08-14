@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom'; // URL에서 careerId를 가져오기 위해 사용
 import Careerbox from '../components/MyCareerDetail/CareerBox';
 import CareerList from '../components/MyCareerDetail/CareerList';
 import DetailAdd from '../components/MyCareerDetail/DetailAdd';
 import CareerNameTag from '../components/shared/CareerNameTag';
 import EditIconBig from '../components/shared/EditIconBigSIze';
+import { CareerViewSelect } from '../api/Mycareer/CareerviewSelect';
+import { ViewCareerDetail } from '../api/Mycareer/ViewCareerDetail';
 
 const Body = styled.div`
   width: 100vw;
@@ -12,8 +15,8 @@ const Body = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column; /*Top이랑 CareerBox를 세로 방향 정렬*/
-  box-sizing: border-box; /* 추가 */
+  flex-direction: column;
+  box-sizing: border-box;
   padding-bottom: 100px;
 `;
 
@@ -21,22 +24,21 @@ const Container1 = styled.div`
   width: 820px;
   height: 299px;
   display: flex;
-  flex-direction: column; /* Top과 CareerBox를 세로 방향으로 정렬 */
-  justify-content: center; /* 수직 방향으로 중앙 정렬 */
-  align-items: center; /* 수평 방향으로 중앙 정렬 */
-  box-sizing: border-box; /* 추가 */
-  border: 1px solid black;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
 `;
 
 const Top = styled.div`
   width: 820px;
   height: 108px;
   padding-bottom: 5px;
-  box-sizing: border-box; /* 추가 */
-  padding-top: 35px; /* 추가된 부분 */
-  display: flex; /* 아이콘과 텍스트를 가로로 배치하기 위해 추가 */
-  justify-content: space-between; /* 텍스트와 아이콘을 양쪽 끝으로 배치 */
-  align-items: center; /* 아이콘과 텍스트를 수직으로 중앙 정렬 */
+  box-sizing: border-box;
+  padding-top: 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const CareerBoxList = styled.div`
@@ -45,26 +47,26 @@ const CareerBoxList = styled.div`
   height: 72px;
   align-items: flex-start;
   gap: 10px;
-  overflow-x: auto; /* 가로 스크롤 추가 */
-  overflow-y: hidden; /* 세로 스크롤 숨김 */
-  white-space: nowrap; /* 줄바꿈을 하지 않음 */
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
 `;
 
-const Box = styled.div` /*Box는 다 빈칸채우기 위한 애들임!*/
+const Box = styled.div`
   width: 800px;
   height: 30px;
-  box-sizing: border-box; /* 추가 */
+  box-sizing: border-box;
 `;
 
 const CareerTitle = styled.div`
   width: 800px;
   height: auto;
-  box-sizing: border-box; 
+  box-sizing: border-box;
   display: flex;
-  justify-content: space-between; /* 왼쪽에 텍스트, 오른쪽에 아이콘 배치 */
-  align-items: flex-start; /* 텍스트와 아이콘을 수직 정렬 */
+  justify-content: space-between;
+  align-items: flex-start;
   border: 1px solid black;
-  padding-bottom: 10px; /* 추가 */
+  padding-bottom: 10px;
 `;
 
 const ActivityDetails = styled.div`
@@ -83,15 +85,10 @@ const Container2 = styled.div`
   height: 477px;
 `;
 
-const Box2 = styled.div`
-  width: 720px;
-  padding: 10px;
-`;
-
 const CareerListBox = styled.div`
   width: 800px;
   height: 475px;
-  overflow-y: auto; /* Enables vertical scrolling */
+  overflow-y: auto;
   overflow-x: hidden;
 `;
 
@@ -100,8 +97,8 @@ const Container3 = styled.div`
   height: 174px;
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* 항목을 아래쪽에 정렬 */
-  box-sizing: border-box; /* 추가 */
+  align-items: flex-end;
+  box-sizing: border-box;
 `;
 
 const CareerPlus = styled.button`
@@ -109,11 +106,11 @@ const CareerPlus = styled.button`
   height: 50px;
   border-radius: 10px;
   background: var(--main-01, #3AAF85);
-  border: none; /* 테두리를 없앰 */
-  color: white; /* 글자 색을 흰색으로 변경 */
-  cursor: pointer; /* 마우스 커서를 포인터로 변경 */
-  position: fixed; /* 화면에 고정 */
-  bottom: 30px; /* 화면 하단에서 30px 위로 위치 */
+  border: none;
+  color: white;
+  cursor: pointer;
+  position: fixed;
+  bottom: 30px;
   background: ${props => props.disabled ? 'var(--gray-03, #D9D9D9)' : 'var(--main-01, #3AAF85)'};
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
 `;
@@ -122,10 +119,10 @@ const SearchIcon = styled.svg`
   width: 25px;
   height: 25px;
   flex-shrink: 0;
-  cursor: pointer; /* 커서를 포인터로 변경 */
+  cursor: pointer;
 `;
 
-const ActivityRecordWrapper = styled.div` /*alias랑 careerNameTag가 각각 왼쪽 오른쪽에 있게 하기 위해*/
+const ActivityRecordWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
@@ -163,46 +160,45 @@ const MyCareerText = styled.div`
 `;
 
 export default function MycareerDetail() {
-  const [selectedIndex, setSelectedIndex] = useState(null);
-  const [isAdding, setIsAdding] = useState(false);
+  const [careers, setCareers] = useState([]); // CareerBox에 들어갈 데이터
+  const [selectedIndex, setSelectedIndex] = useState(null); // 선택된 CareerBox의 인덱스
+  const [selectedCareerDetail, setSelectedCareerDetail] = useState(null); // 선택된 CareerBox의 상세 정보
+  const [isAdding, setIsAdding] = useState(false); // 활동 기록 추가 상태
+  const { careerId } = useParams(); // URL에서 careerId 추출
 
-  const dummyData = [
-    { startDate: '2023.06', endDate: '2024.01', careerName: '학원 아르바이트', category: '아르바이트/인턴', alias: '학원 알바', careertext: 'dkdkdkdkddkdkdkdkdk가나다라마바사 아자차카타파하 스페이스 스페이스 스페이스 스페이ㅡ 스페이스 언제까지 써야 두줄짜리가 될까요오오오오ㅗㅇ ' },
-    { startDate: '2024.03', endDate: '2024.08', careerName: 'IT 서비스 개발 동아리', category: '동아리', alias: 'UMC', careertext: 'dkdkdkdkddkdkdkdkㄴㄴㄴㄴdk' },
-    { startDate: '2023.06', endDate: '2024.01', careerName: '데이터분석 공모전', category: '공모전/대회', alias: 'dd 공모전', careertext: 'dkdkdkdkddkdkdkdkㅁㄴㅇㄹㅁㄴㅇㄹ'},
-    { startDate: '2023.06', endDate: '2024.01', careerName: 'UXUI 소학회', category: '동아리', alias: 'SWUX', careertext: 'dkdkdkdkddkdkdkdkdk'},
-    { startDate: '2023.06', endDate: '2024.01', careerName: 'oo 서포터즈 3기', category: '대외활동', alias: 'oo 서포터즈', careertext: 'dkdkdkdkddkdkdkdkdk' },
-    { startDate: '2023.06', endDate: '2024.01', careerName: '디자인 개인 프로젝트', category: '프로젝트', alias: '디자인 프로젝트' }
-  ];
+  // 데이터 가져오기 및 careerId에 해당하는 CareerBox 선택
+  useEffect(() => {
+    const fetchCareers = async () => {
+      const response = await CareerViewSelect('year'); // 항상 'year'로 설정하여 데이터 가져오기
+      const data = response.data; // 응답 데이터에서 'data' 배열 추출
 
-  const dummyData2 = [
-    { 
-      title: '아이디어톤', 
-      date: '2024.05.26', 
-      contents: '기획한 웹/앱 서비스를 발표하고 피드백을 교환함\n투표 결과 우수상 수상', 
-      detailTag: ['Figma 활용 능력','React 활용 능력', '발표 능력' ]
-    },
-    { 
-      title: '피그마 와이어프레임 제작', 
-      date: '2024.04.24', 
-      contents: '피그마로 와이어프레임 제작\n상세 내역 상세 내역 상세 내역 ', 
-      detailTag: ['Figma 활용 능력','React 활용 능력', 'Spring 활용 능력' ]
-    },
-    { 
-      title: '기획서 작성', 
-      date: '2024.05.26', 
-      contents: '기획서 초안 작성\n어쩌구 저쩌구 어쩌구..', 
-      detailTag: ['Notion 활용 능력','Figma 활용 능력']
-    },
-    { 
-      title: '기획서 작성', 
-      date: '2024.05.26', 
-      contents: '기획서 초안 작성\n어쩌구 저쩌구 어쩌구..', 
-      detailTag: ['Notion 활용 능력','Figma 활용 능력']
-    }
-  ];
+      setCareers(data);
 
-  const selectedCareer = dummyData[selectedIndex];
+      // URL에서 받아온 careerId에 해당하는 CareerBox를 자동 선택
+      const selectedCareer = data
+        .flatMap(yearItem => yearItem.careers)
+        .find(career => career.id === parseInt(careerId));
+
+      console.log('URL로 받은 careerId:', careerId);
+      console.log('매칭된 CareerBox:', selectedCareer);
+
+      if (selectedCareer) {
+        setSelectedIndex(selectedCareer.id); // 선택된 CareerBox의 ID를 설정
+        setSelectedCareerDetail(selectedCareer); // 선택된 CareerBox의 상세 정보를 설정
+
+        // 선택된 CareerBox의 상세 데이터 가져오기
+        const careerDetail = await ViewCareerDetail(careerId);
+        console.log('선택된 CareerBox의 상세 데이터:', careerDetail.data);
+
+        setSelectedCareerDetail(careerDetail.data);
+      }
+    };
+
+    fetchCareers();
+  }, [careerId]);
+
+  // 선택된 CareerBox의 데이터를 가져오기
+  const selectedCareer = careers.find(career => career.id === selectedIndex);
 
   return (
     <Body>
@@ -210,69 +206,72 @@ export default function MycareerDetail() {
         <Top>
           <MyCareerText>내 커리어</MyCareerText>
           <SearchIcon xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
-            <path d="M22.5852 23.8578L14.6307 16.3683C13.9205 16.9033 13.1037 17.3268 12.1804 17.6389C11.2571 17.9509 10.2746 18.107 9.23295 18.107C6.65246 18.107 4.46875 17.2657 2.68182 15.5833C0.893939 13.8999 0 11.8435 0 9.41384C0 6.98422 0.893939 4.92774 2.68182 3.24439C4.46875 1.56193 6.65246 0.720703 9.23295 0.720703C11.8134 0.720703 13.9976 1.56193 15.7855 3.24439C17.5724 4.92774 18.4659 6.98422 18.4659 9.41384C18.4659 10.3946 18.3002 11.3196 17.9687 12.189C17.6373 13.0583 17.1875 13.8273 16.6193 14.496L24.6094 22.0189C24.8698 22.2641 25 22.565 25 22.9216C25 23.2783 24.858 23.5903 24.5739 23.8578C24.3134 24.103 23.982 24.2256 23.5795 24.2256C23.1771 24.2256 22.8456 24.103 22.5852 23.8578ZM9.23295 15.4322C11.0085 15.4322 12.518 14.8473 13.7614 13.6775C15.0038 12.5068 15.625 11.0856 15.625 9.41384C15.625 7.74208 15.0038 6.32087 13.7614 5.15019C12.518 3.98041 11.0085 3.39551 9.23295 3.39551C7.45739 3.39551 5.94792 3.98041 4.70454 5.15019C3.46212 6.32087 2.84091 7.74208 2.84091 9.41384C2.84091 11.0856 3.46212 12.5068 4.70454 13.6775C5.94792 14.8473 7.45739 15.4322 9.23295 15.4322Z" fill="#707070"/>
+            <path d="..." fill="#707070"/>
           </SearchIcon>
         </Top>
         <CareerBoxList>
-          {dummyData.map((item, index) => (
-            <Careerbox
-              key={index}
-
-              startDate={item.startDate}
-              endDate={item.endDate}
-              careerName={item.careerName}
-              category={item.category}
-              selected={selectedIndex === index}
-              onClick={() => setSelectedIndex(index)}
-            />
+          {careers.map((yearItem) => (
+            yearItem.careers.map((item) => (
+              <Careerbox
+                key={item.id}
+                startDate={item.startDate}
+                endDate={item.endDate}
+                careerName={item.careerName}
+                category={item.categoryId}
+                selected={selectedIndex === item.id} // ID를 기준으로 선택된 항목을 결정
+                onClick={() => {
+                  setSelectedIndex(item.id); // 클릭 시 해당 항목의 ID를 설정
+                  setSelectedCareerDetail(item); // 선택된 CareerBox의 상세 정보를 설정
+                }}
+              />
+            ))
           ))}
         </CareerBoxList>
+
         <Box></Box>
         <CareerTitle>
           <div>
-            {selectedCareer && (
+            {selectedCareerDetail && (
               <ActivityRecordWrapper>
-                <ActivityRecord>{selectedCareer.alias} 활동기록</ActivityRecord>
+                <ActivityRecord>{selectedCareerDetail.alias} 활동기록</ActivityRecord>
                 <CareerNameT>
-                  <CareerNameTag careerName={[selectedCareer.careerName]} category={selectedCareer.category} />
+                  <CareerNameTag careerName={selectedCareerDetail.careerName} category={selectedCareerDetail.categoryId} />
                 </CareerNameT>
-                
               </ActivityRecordWrapper>
             )}
-            {selectedCareer && (
+            {selectedCareerDetail && (
               <>
-                <ActivityDate>{selectedCareer.startDate} ~ {selectedCareer.endDate}</ActivityDate>
-                <ActivityDetails>{selectedCareer.careertext}</ActivityDetails> {/* 활동내역 텍스트 부분 추가 */}
+                <ActivityDate>{formatDate(selectedCareerDetail.startDate)} ~ {formatDate(selectedCareerDetail.endDate)}</ActivityDate>
+                <ActivityDetails>{selectedCareerDetail.summary}</ActivityDetails>
               </>
             )}
           </div>
           <EditIconBig />
         </CareerTitle>
-      
       </Container1>
       <Container2>
-        
         <CareerListBox>
-          {dummyData2.map((item, index) => (
+          {selectedCareerDetail?.details?.map((detail, index) => (
             <CareerList
               key={index}
-              title={item.title}
-              date={item.date}
-              contents={item.contents}
-              detailTag={item.detailTag}
+              title={detail.title}
+              date={`${formatDate(detail.startDate)} ~ ${formatDate(detail.endDate)}`}
+              contents={detail.content}
+              detailTag={detail.careerTagList.map(tag => tag.tagName)}
             />
           ))}
-          {isAdding && <DetailAdd />}
-        </CareerListBox>
+          {isAdding && <DetailAdd onCancel={() => setIsAdding(false)}  careerId={careerId}/>} {/* 콜백 전달 */}
+          </CareerListBox>
       </Container2>
       <Container3>
-        <CareerPlus
-          onClick={() => setIsAdding(true)}
-          disabled={isAdding}
-        >
+        <CareerPlus onClick={() => setIsAdding(true)} disabled={isAdding}>
           활동 기록 추가
         </CareerPlus>
       </Container3>
     </Body>
   );
 }
+
+const formatDate = (dateString) => {
+  return dateString.replace(/-/g, '.');
+};

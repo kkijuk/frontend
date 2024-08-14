@@ -4,6 +4,11 @@ import './history.css';
 import EducationItem from '../../components/History/EducationItem';
 import EditItem from '../../components/History/EditItem';
 
+//Todo
+//- +버튼 onClick 함수 정의
+//api 파일생성해서 데이터 받아오기, async/await로 불러오기
+//디자인 수정
+
 const History = () => {
 
     const profileTitles = ["이름", "생년월일", "전화번호", "이메일", "주소"];

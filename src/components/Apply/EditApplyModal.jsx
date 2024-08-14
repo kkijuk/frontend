@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import TagBox from '../Apply/ModalTagBox'; 
 
+
 const ModalBackdrop = styled.div`
   position: fixed;
   top: 0;
@@ -245,23 +246,39 @@ const LabelContainer = styled.div`
   margin-top: 10px;
 `;
 
+const formatDateTimeToLocal = (dateString) => {
+  if (!dateString) return '';
+
+  const utcDate = new Date(dateString);
+  const localDate = new Date(utcDate.getTime() - (utcDate.getTimezoneOffset() * 60000));
+
+  const year = localDate.getFullYear();
+  const month = String(localDate.getMonth() + 1).padStart(2, '0');
+  const day = String(localDate.getDate()).padStart(2, '0');
+  const hours = String(localDate.getHours()).padStart(2, '0');
+  const minutes = String(localDate.getMinutes()).padStart(2, '0');
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
+
 const EditApplyModal = ({ onClose, onSave, job }) => {
-  const [title, setTitle] = useState(job.details || '');
-  const [startTime, setStartTime] = useState(job.startDate || '');
-  const [endTime, setEndTime] = useState(job.endDate || '');
-  const [tags, setTags] = useState(job.tags || []);
-  const [link, setLink] = useState(job.link || '');
+  const [title, setTitle] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [tags, setTags] = useState([]);
+  const [link, setLink] = useState('');
 
   useEffect(() => {
-    setTitle(job.details || '');
-    setStartTime(job.startDate || '');
-    setEndTime(job.endDate || '');
-    setTags(job.tags || []);
-    setLink(job.link || '');
+    if (job) {
+      setTitle(job.title || '');
+      setStartTime(formatDateTimeToLocal(job.startTime) || '');
+      setEndTime(formatDateTimeToLocal(job.endTime) || '');
+      setTags(job.tags || []);
+      setLink(job.link || '');
+    }
   }, [job]);
 
   const handleSave = async () => {
-    // 제목, 태그, 시작/마감 날짜, 링크 중 하나라도 입력된 경우 저장 가능
     const isAnyFieldFilled = title || tags.length > 0 || (startTime && endTime) || link;
 
     if (!isAnyFieldFilled) {
@@ -271,17 +288,26 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
 
     await onSave({
       ...job,
-      title: title || job.title,  // 입력이 없으면 기존 값을 유지
-      startTime: startTime || job.startTime,  // 입력이 없으면 기존 값을 유지
-      endTime: endTime || job.endTime,  // 입력이 없으면 기존 값을 유지
-      tags: tags.length > 0 ? tags : job.tags,  // 입력이 없으면 기존 값을 유지
-      link: link || job.link,  // 입력이 없으면 기존 값을 유지
+      title: title || job.title,
+      startTime: startTime || job.startTime,
+      endTime: endTime || job.endTime,
+      tags: tags.length > 0 ? tags : job.tags,
+      link: link || job.link,
     });
     onClose();
   };
 
   const handleTagChange = (newTags) => {
     setTags(newTags);
+  };
+
+  // 캘린더에서 날짜/시간 선택 시 상태 업데이트
+  const handleStartTimeChange = (e) => {
+    setStartTime(e.target.value);
+  };
+
+  const handleEndTimeChange = (e) => {
+    setEndTime(e.target.value);
   };
 
   return (
@@ -309,7 +335,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
                 <InputDateStart
                   type="datetime-local"
                   value={startTime}
-                  onChange={(e) => setStartTime(e.target.value)}
+                  onChange={handleStartTimeChange}
                 />
               </InputWrapperStart>
             </FieldWrapper>
@@ -321,7 +347,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
                 <InputDateEnd
                   type="datetime-local"
                   value={endTime}
-                  onChange={(e) => setEndTime(e.target.value)}
+                  onChange={handleEndTimeChange}
                 />
               </InputWrapperEnd>
             </FieldWrapper>
