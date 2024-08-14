@@ -8,7 +8,7 @@ const SubNav =()=>{
     const location = useLocation();
 
     const myInformation = location.pathname === '/mypage/myinformation';
-    const Interest = location.pathname.startsWith('/mypage/interest');
+    const Field = location.pathname.startsWith('/mypage/field') || location.pathname.startsWith('/Mypage/FieldEdit');
     const myAccountMangement = location.pathname.startsWith('/mypage/accountmanagement')
 
     return(
@@ -24,7 +24,7 @@ const SubNav =()=>{
                         active={myInformation}>내정보</NavItems>
                     <NavItems 
                         onClick={()=>navigate('/mypage/field')} 
-                        active={Interest}>관심분야 설정</NavItems>
+                        active={Field}>관심분야 설정</NavItems>
                     <NavItems 
                         onClick={()=>navigate('/mypage/accountmanagement')} 
                         active={myAccountMangement}>계정관리</NavItems>

@@ -22,14 +22,18 @@ const FormContainer = styled.div`
   }
 
   .step-indicator {
-    background: #D9D9D9;
+   display: flex; 
+   align-items: center; 
+   justify-content: center; 
+    background: #F1F1F1;
     border-radius: 10px;
-    color: white;
+    color: #707070;
     margin: 10px auto; 
     font-size: 14px;
-    display: inline-block;
     width: 52px;
+    font-family: medium;
     height: 22px;
+
   }
 
   .input-group {

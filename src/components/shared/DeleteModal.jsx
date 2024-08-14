@@ -73,7 +73,7 @@ const ConfirmButton = styled.button`
 `;
 
 
-const ApplyDeleteModal = ({ onClose, onConfirm }) => ( /* 각자 수정하실 부분 함수 선언에 맞춰 이름을 변경해주세요 */
+const DeleteModal = ({ onClose, onConfirm }) => ( /* 각자 수정하실 부분 함수 선언에 맞춰 이름을 변경해주세요 */
   <Background>
     <Modal>
       <ModalTitle>

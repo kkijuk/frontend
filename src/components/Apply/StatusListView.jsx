@@ -29,7 +29,6 @@ const AdListStyled = styled.div`
 
 const AdDateSection = styled.div`
   margin-bottom: 30px;
-  
 `;
 
 const AdDate = styled.div`
@@ -49,9 +48,9 @@ const AdItem = styled.div`
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 15px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
-  cursor: pointer; /* Add pointer cursor for clickable items */
+  cursor: pointer; 
 `;
 
 const AdDetails = styled.div`
@@ -71,7 +70,7 @@ const AdTitle = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-   margin-top: 5px;
+  margin-top: 5px;
 `;
 
 const Label = styled.span`
@@ -91,11 +90,11 @@ const Label = styled.span`
 `;
 
 const TagContainer = styled.div`
-   display: flex;
+  display: flex;
   flex-wrap: wrap;
   gap: 13px;
   margin-left: 15px;
-  margin-bottom: 5px; /* Adjusted margin to remove excess space */
+  margin-bottom: 5px; 
 `;
 
 const Tag = styled.span`
@@ -149,7 +148,7 @@ const getStatusColor = (status) => {
   return '#707070';
 };
 
-const StatusListView = ({ data, onJobClick }) => {
+const StatusListView = ({ data = [], onJobClick }) => {
   const groupedData = groupByStatus(data);
 
   return (
@@ -167,13 +166,12 @@ const StatusListView = ({ data, onJobClick }) => {
                   {groupedData[status].map((job, idx) => (
                     <AdItem key={idx} onClick={() => onJobClick(job)}>
                       <TagContainer>
-                        {job.tags.map((tag, tagIdx) => (
+                        {(job.tag || job.tags || []).map((tag, tagIdx) => (
                           <Tag key={tagIdx}>{tag}</Tag>
                         ))}
                       </TagContainer>
                       <AdDetails>
                         <AdTitleContainer>
-                          
                           <AdTitle>{job.title}</AdTitle>
                         </AdTitleContainer>
                       </AdDetails>

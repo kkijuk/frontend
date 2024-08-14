@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ReviewInputBox from './ReviewInputBox';
-import ReactCalendar from '../shared/Calendar';
+import ReactCalendar from './ReviewCalendar';
 import moment from 'moment';
-import TagBox from '../shared/TagBox';
+import { editReview } from '../../api/Apply/ReviewEdit';
+import { deleteReview } from '../../api/Apply/DeleteReview';
+import ReviewDeleteModal from './ReviewDeleteModal';  
 
 const Box = styled.div`
     height: 384px;
@@ -87,6 +89,7 @@ const Cancel = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+    cursor: pointer;
 `;
 
 const Save = styled.div`
@@ -105,6 +108,7 @@ const Save = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+    cursor: pointer;
 `;
 
 const Line = styled.div`
@@ -113,38 +117,63 @@ const Line = styled.div`
     background: var(--gray-03, #D9D9D9);
 `;
 
-export default function ReviewDetailAddEdit({ initialTitle, initialDate, initialContents, initialTags }) {
+export default function ReviewDetailAddEdit({ recruitId, reviewId, initialTitle, initialDate, initialContents, onSave, onDelete }) {
     const [showCalendar, setShowCalendar] = useState(false);
     const [selectedDate, setSelectedDate] = useState(initialDate);
     const [title, setTitle] = useState(initialTitle);
     const [contents, setContents] = useState(initialContents);
-    const [tags, setTags] = useState(initialTags);
-
-    useEffect(() => {
-        console.log("initialTitle:", initialTitle);
-        console.log("initialContents:", initialContents);
-    }, []);
+    const [isModalOpen, setIsModalOpen] = useState(false);  // 모달 상태
 
     const handleDateClick = () => {
         setShowCalendar(!showCalendar);
     };
 
     const handleDateChange = (date) => {
-        if (Array.isArray(date) && date.length === 2) {
-            const [startDate, endDate] = date;
-            const formattedStartDate = moment(startDate).format('YYYY-MM-DD');
-            const formattedEndDate = moment(endDate).format('YYYY-MM-DD');
-
-            if (formattedStartDate === formattedEndDate) {
-                setSelectedDate(formattedStartDate);
-            } else {
-                setSelectedDate(`${formattedStartDate} ~ ${formattedEndDate}`);
-            }
-        } else {
-            const formattedDate = moment(date).format('YYYY-MM-DD');
-            setSelectedDate(formattedDate);
-        }
+        const formattedDate = moment(date).format('YYYY-MM-DD');
+        setSelectedDate(formattedDate);
         setShowCalendar(false);
+    };
+
+    const handleSaveClick = async () => {
+        try {
+            const reviewData = {
+                title: title || initialTitle,
+                content: contents || initialContents,
+                date: selectedDate || initialDate,
+            };
+            await editReview(recruitId, reviewId, reviewData);
+
+            if (onSave) {
+                onSave();  // 저장 후 부모 컴포넌트에서 전달된 콜백 함수 호출
+            }
+        } catch (error) {
+            console.error('Failed to save review:', error);
+        }
+    };
+
+    const handleDeleteClick = () => {
+        setIsModalOpen(true);  // 모달 열기
+    };
+
+    const handleConfirmDelete = async () => {
+        try {
+            console.log(`Deleting review with ID: ${reviewId} for recruit ID: ${recruitId}`);
+            await deleteReview(recruitId, reviewId);
+
+            if (onDelete) {
+                onDelete();  // 부모 컴포넌트에서 상태 업데이트를 위한 콜백 함수 호출
+            }
+
+            setIsModalOpen(false);
+        } catch (error) {
+            console.error('Failed to delete review:', error);
+        }
+    };
+
+    
+
+    const handleCancelDelete = () => {
+        setIsModalOpen(false);  // 모달 닫기
     };
 
     return (
@@ -164,12 +193,20 @@ export default function ReviewDetailAddEdit({ initialTitle, initialDate, initial
                 <Label>내용</Label>
                 <ReviewInputBox height="100px" width="720px" value={contents} onChange={(e) => setContents(e.target.value)} />
             </Middle>
-            <TagBox tags={tags} setTags={setTags} />
+            
             <Button>
-                <Cancel>취소</Cancel>
-                <Save>저장</Save>
+                <Cancel onClick={handleDeleteClick}>삭제</Cancel>
+                <Save onClick={handleSaveClick}>저장</Save>
             </Button>
-            <Line></Line>
+
+            {isModalOpen && (
+                <ReviewDeleteModal
+                    onClose={handleCancelDelete}  // 취소 클릭 시 모달 닫기
+                    onConfirm={handleConfirmDelete}  // 확인 클릭 시 삭제 진행
+                />
+            )}
         </Box>
     );
 }
+
+

@@ -102,7 +102,7 @@ const SaveButton = styled.button`
 `;
 
 const SignupInterest = ({ onSave }) => {
-  const [selectedInterest, setSelectedInterest] = useState([]);
+  const [interestingList, setSelectedInterest] = useState([]);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   
@@ -115,17 +115,17 @@ const SignupInterest = ({ onSave }) => {
   };
 
     const handleSave = () => {
-      if (selectedInterest.length === 0) {
+      if (interestingList.length === 0) {
         alert("관심분야를 선택해 주세요!");
         return;
       }
 
-      onSave({ interest: selectedInterest });
-      navigate('/Home');
+      onSave({ interest: interestingList });
+      navigate('/');
   };
 
   const handleClose = () => {
-    navigate('/Home'); // 홈 페이지로 이동
+    navigate('/'); // 홈 페이지로 이동
   };
 
   const handleModalClose = () => {
@@ -146,7 +146,7 @@ const SignupInterest = ({ onSave }) => {
           <InterestBox 
             key={interest} 
             content={interest} 
-            selected={selectedInterest.includes(interest)} 
+            selected={interestingList.includes(interest)} 
             onClick={() => handleInterestSelect(interest)} 
           />
         ))}

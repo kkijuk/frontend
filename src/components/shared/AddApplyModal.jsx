@@ -262,24 +262,23 @@ const AddApplyModal = ({ onClose, onSave }) => {
       alert("필수 정보를 입력하세요!");
       return;
     }
-
-    // startTime과 endTime을 "YYYY-MM-DD HH:mm" 형식으로 변환하는 함수
+  
     const formatDateTime = (dateTime) => {
       const date = new Date(dateTime);
       const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0'); 
+      const month = String(date.getMonth() + 1).padStart(2, '0');
       const day = String(date.getDate()).padStart(2, '0');
       const hours = String(date.getHours()).padStart(2, '0');
       const minutes = String(date.getMinutes()).padStart(2, '0');
       return `${year}-${month}-${day} ${hours}:${minutes}`;
     };
-
+  
     const formattedStartTime = formatDateTime(startTime);
     const formattedEndTime = formatDateTime(endTime);
-
+  
     console.log("Formatted Start Time (YYYY-MM-DD HH:mm):", formattedStartTime);
     console.log("Formatted End Time (YYYY-MM-DD HH:mm):", formattedEndTime);
-
+  
     const recruitData = {
       title,
       startTime: formattedStartTime,
@@ -288,20 +287,32 @@ const AddApplyModal = ({ onClose, onSave }) => {
       tags,
       link,
     };
-
-    console.log("Recruit Data to be sent:", recruitData); // 요청 데이터 로그 출력
+  
+    
+    console.log("Recruit Data to be sent:", recruitData);
 
     try {
       const response = await createRecruit(recruitData);
-      console.log("Recruit created successfully:", response);
-      onSave(response.id); // 생성된 공고의 ID 전달
-      onClose();
+  
+      if (response && response.id) {
+        console.log("Recruit created successfully:", response);
+        try {
+          onSave(response.id);
+          console.log("onSave function executed successfully.");
+        } catch (saveError) {
+          console.error("Error in onSave function:", saveError);
+        }
+        onClose();
+      } else {
+        console.error("Invalid response from server:", response);
+        alert("공고 생성에 실패했습니다.");
+      }
     } catch (error) {
       console.error("Error creating recruit:", error);
       alert("공고 생성에 실패했습니다.");
     }
   };
-
+  
   const handleTagChange = (newTags) => {
     setTags(newTags);
   };
@@ -380,4 +391,3 @@ const AddApplyModal = ({ onClose, onSave }) => {
 };
 
 export default AddApplyModal;
-
