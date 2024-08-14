@@ -1,28 +1,16 @@
-const apiUrl = 'https://api.kkijuk.com/dashboard/introduce';
-
-//작성 미완료
 export const getIntroduce = async () => {
   try {
-    const response = await fetch(apiUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Accept': '*/*',
-      },
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Something went wrong');
-    }
-
-    const responseData = await response.json();
-    console.log('Recruit reminders:', responseData);
-
-
-    return responseData.recruits;
+      const response = await fetch('https://api.kkijuk.com/dashboard/introduce');
+      if (response.ok) {
+          const data = await response.json();
+          console.log("목록",data);
+          return data;
+      } else {
+          console.error('Failed to fetch data:', response.status);
+          return null;
+      }
   } catch (error) {
-    console.error('Error fetching recruit reminders:', error.message);
-    return [];
+      console.error('Error fetching data:', error);
+      return null;
   }
 };

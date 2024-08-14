@@ -71,24 +71,50 @@ const DDayText = styled.div`
 `;
 
 export default function WritingNoti() {
+
+    const [recruitTitle, setRecruitTitle] = useState('');
+    const [deadline, setDeadline] = useState('');
+
+    useEffect(() => {
+        const fetchIntroduce = async () => {
+            try {
+                const data = await getIntroduce;
+                console.log("데이터", data);
+                if (data && data.length > 0) {
+                    
+                    const firstItem = data[0];
+                    setRecruitTitle(firstItem.recruitTitle);
+                    setDeadline(firstItem.deadline);
+                } else {
+                    console.error('Failed to fetch data');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        
+        fetchIntroduce();
+    }, []);
+
+    const regex = /[^0-9]/g;
+    const num = parseInt(data.deadline.replace(regex, ""), 10);
+
     return (
         <Container>
             <Label>자기소개서 작성 완료를 기다려요</Label>
-            <Box>
-                00식품 2024 하반기 인턴
-                <DDayBox>
-                    <DDayText fontColor='#FA7C79'>D-</DDayText>
-                    <DDayText fontColor='#FA7C79'>4</DDayText>
-                </DDayBox>
-            </Box>
+            {getIntroduce.map((introduce) => {
+                const fontColor = num <= 7 ? '#FA7C79' : '#707070'; //현재: 7일 이하면 글자색 빨간색
 
-            <Box>
-                00서포터즈 3기
-                <DDayBox>
-                    <DDayText>D-</DDayText>
-                    <DDayText>10</DDayText>
-                </DDayBox>
-            </Box>
+                return (
+                    <Box>
+                        {introduce.recruitTitle} 
+                        <DDayBox>
+                            <DDayText fontColor={fontColor}>D-</DDayText>
+                            <DDayText fontColor={fontColor}>{introduce.num}</DDayText>
+                        </DDayBox>
+                    </Box>
+                );
+            })}
         </Container>
     )
 }
