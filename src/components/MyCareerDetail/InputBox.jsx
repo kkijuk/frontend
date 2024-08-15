@@ -18,7 +18,6 @@ const Input = styled.input`
 `;
 
 export default function InputBox({ height, width, value, onChange }) {
-    console.log("InputBox value:", value); // 콘솔 로그 추가
 
     return (
         <Input
