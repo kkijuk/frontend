@@ -9,23 +9,26 @@ const ViewToggleStyled = styled.div`
 
 const ToggleContainer = styled.div`
   background-color: #F5F5F5;
-  border-radius: 15px;
-  padding: 7px;
+  border-radius: 10px;
+ 
   margin-right: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+   width: 150px;
+  height: 35px;
 `;
 
 const ToggleButton = styled.button`
-  padding: 7px 10px;
+  padding: 5px 8px;
   border-radius: 10px;
   background-color: ${props => (props.active ? 'white' : '#F5F5F5')};
   cursor: pointer;
   border: 2px solid ${props => (props.active ? 'white' : '#F5F5F5')};
-  width: 80px;
-  height: 28px;
+  width: 65px;
+  height: 25px;
   display: flex;
+  white-space: nowrap;
   align-items: center;
   justify-content: center;
   color: ${props => (props.active ? '#000' : '#666')};
@@ -33,7 +36,7 @@ const ToggleButton = styled.button`
   font-family:'Regular';
   font-size: 14px;
   font-style: normal;
-  font-weight: ${props => (props.active ? 'bold' : 'normal')};
+
 
   transition: all 0.2s ease; 
 `;

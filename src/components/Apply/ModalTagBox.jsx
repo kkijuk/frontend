@@ -87,7 +87,7 @@ const TagBoxListContainer = styled.div`
         background: #F5F5F5;
         color: var(--main-01, #3AAF85);
         text-align: center;
-        font-family: Pretendard;
+        font-family: 'regular';
         font-size: 12px;
         font-style: normal;
         font-weight: 400;
