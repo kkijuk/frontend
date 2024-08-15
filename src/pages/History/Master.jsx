@@ -147,6 +147,7 @@ const EditButton = styled.button`
     position: fixed;
     bottom: 20px;
     cursor: pointer;
+    z-index: 10;
 `
 
 
