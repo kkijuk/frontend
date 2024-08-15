@@ -4,6 +4,9 @@ import InputBox from '../MyCareerDetail/InputBox';
 import ReactCalendar from '../shared/Calendar';
 import moment from 'moment';
 import TagBox from '../shared/TagBox';
+import { CareerDetailEdit } from '../../api/Mycareer/CareerDetailEdit';
+import { CareerDetailDelete } from '../../api/Mycareer/CareerDetailEdit';
+
 
 const Box = styled.div`
     height: 384px;
@@ -113,17 +116,21 @@ const Line = styled.div`
     background: var(--gray-03, #D9D9D9);
 `;
 
-export default function DetailAddEdit({ initialTitle, initialDate, initialContents, initialTags }) {
+export default function DetailAddEdit({ initialTitle, initialDate, initialContents, initialTags, careerId, detailId, onClose }) {
     const [showCalendar, setShowCalendar] = useState(false);
     const [selectedDate, setSelectedDate] = useState(initialDate);
     const [title, setTitle] = useState(initialTitle);
     const [contents, setContents] = useState(initialContents);
-    const [tags, setTags] = useState(initialTags);
+    const [tagNames, setTagNames] = useState([]);
+    const [tagIds, setTagIds] = useState([]);
 
     useEffect(() => {
-        console.log("initialTitle:", initialTitle);
-        console.log("initialContents:", initialContents);
-    }, []);
+        // initialTags 배열의 tagName만 추출하여 tagNames 배열 생성
+        const extractedTagNames = initialTags.map(tag => tag.tagName);
+        setTagNames(extractedTagNames);
+        console.log("initialTags:", initialTags);
+    }, [initialTags]);
+
 
     const handleDateClick = () => {
         setShowCalendar(!showCalendar);
@@ -147,6 +154,42 @@ export default function DetailAddEdit({ initialTitle, initialDate, initialConten
         setShowCalendar(false);
     };
 
+
+    const handleSave = async () => {
+        const [startDate, endDate] = selectedDate.split(' ~ ');
+
+        const data = {
+            title,
+            content: contents,
+            startDate: startDate || selectedDate,
+            endDate: endDate || startDate || selectedDate,
+            tagList: tagIds // 태그의 id 리스트를 전송
+        };
+
+        try {
+            await CareerDetailEdit(careerId, detailId, data); // API 호출
+            alert('저장되었습니다.');
+            onClose();
+        } catch (error) {
+            console.error('저장 실패:', error);
+            alert('저장에 실패했습니다.');
+        }
+    };
+
+    const handleCancel = async () => {
+        if (window.confirm("정말로 삭제하시겠습니까?")) {
+            try {
+                await CareerDetailDelete(careerId, detailId); // 삭제 API 호출
+                alert('삭제되었습니다.');
+                onClose();  // 삭제 후 창 닫기
+            } catch (error) {
+                console.error('삭제 실패:', error);
+                alert('삭제에 실패했습니다.');
+            }
+        }
+    };
+
+
     return (
         <Box>
             <Top>
@@ -164,10 +207,14 @@ export default function DetailAddEdit({ initialTitle, initialDate, initialConten
                 <Label>내용</Label>
                 <InputBox height="100px" width="720px" value={contents} onChange={(e) => setContents(e.target.value)} />
             </Middle>
-            <TagBox tags={tags} setTags={setTags} />
+            <TagBox 
+                externalTags={tagNames} 
+                externalSetTags={setTagNames} 
+                onTagListChange={(ids) => setTagIds(ids)} // 태그 ID 리스트를 업데이트하는 콜백 함수
+            />
             <Button>
-                <Cancel>취소</Cancel>
-                <Save>저장</Save>
+                <Cancel onClick={handleCancel}>삭제</Cancel>
+                <Save onClick={handleSave}>저장</Save>
             </Button>
             <Line></Line>
         </Box>

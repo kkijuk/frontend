@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom'; // URL에서 careerId를 가져오기 위해 사용
+import { useParams, useNavigate } from 'react-router-dom'; // URL에서 careerId를 가져오기 위해 사용
 import Careerbox from '../components/MyCareerDetail/CareerBox';
 import CareerList from '../components/MyCareerDetail/CareerList';
 import DetailAdd from '../components/MyCareerDetail/DetailAdd';
@@ -50,7 +50,6 @@ const CareerBoxList = styled.div`
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
-  
 `;
 
 const Box = styled.div`
@@ -163,44 +162,43 @@ const MyCareerText = styled.div`
 
 export default function MycareerDetail() {
   const [careers, setCareers] = useState([]); // CareerBox에 들어갈 데이터
-  const [selectedIndex, setSelectedIndex] = useState(null); // 선택된 CareerBox의 인덱스
   const [selectedCareerDetail, setSelectedCareerDetail] = useState(null); // 선택된 CareerBox의 상세 정보
   const [isAdding, setIsAdding] = useState(false); // 활동 기록 추가 상태
   const { careerId } = useParams(); // URL에서 careerId 추출
+  const navigate = useNavigate(); // useNavigate 훅 추가
 
   // 데이터 가져오기 및 careerId에 해당하는 CareerBox 선택
   useEffect(() => {
     const fetchCareers = async () => {
       const response = await CareerViewSelect('year'); // 항상 'year'로 설정하여 데이터 가져오기
       const data = response.data; // 응답 데이터에서 'data' 배열 추출
-
+      console.log("박스 안의 data값:", data);
       setCareers(data);
 
       // URL에서 받아온 careerId에 해당하는 CareerBox를 자동 선택
-      const selectedCareer = data
-        .flatMap(yearItem => yearItem.careers)
-        .find(career => career.id === parseInt(careerId));
-
-      console.log('URL로 받은 careerId:', careerId);
-      console.log('매칭된 CareerBox:', selectedCareer);
-
-      if (selectedCareer) {
-        setSelectedIndex(selectedCareer.id); // 선택된 CareerBox의 ID를 설정
-        setSelectedCareerDetail(selectedCareer); // 선택된 CareerBox의 상세 정보를 설정
-
-        // 선택된 CareerBox의 상세 데이터 가져오기
-        const careerDetail = await ViewCareerDetail(careerId);
-        console.log('선택된 CareerBox의 상세 데이터:', careerDetail.data);
-
-        setSelectedCareerDetail(careerDetail.data);
+      if (careerId) {
+        loadCareerDetail(careerId);
       }
     };
 
     fetchCareers();
   }, [careerId]);
 
-  // 선택된 CareerBox의 데이터를 가져오기
-  const selectedCareer = careers.find(career => career.id === selectedIndex);
+  // 특정 careerId의 상세 데이터를 로드하는 함수
+  const loadCareerDetail = async (careerId) => {
+    const careerDetail = await ViewCareerDetail(careerId);
+    console.log('선택된 CareerBox의 상세 데이터:', careerDetail);
+    setSelectedCareerDetail(careerDetail);
+    setIsAdding(false); // 새로운 Careerbox를 클릭하면 활동 기록 추가를 닫음
+
+    console.log("selectCareerDetail:", selectedCareerDetail);
+    if (careerDetail) {
+      navigate(`/mycareer/${careerId}`, { state: { details: careerDetail.data } });
+    }
+  };
+
+
+
 
   return (
     <Body>
@@ -220,11 +218,8 @@ export default function MycareerDetail() {
                 endDate={item.endDate}
                 careerName={item.careerName}
                 category={item.categoryId}
-                selected={selectedIndex === item.id} // ID를 기준으로 선택된 항목을 결정
-                onClick={() => {
-                  setSelectedIndex(item.id); // 클릭 시 해당 항목의 ID를 설정
-                  setSelectedCareerDetail(item); // 선택된 CareerBox의 상세 정보를 설정
-                }}
+                selected={selectedCareerDetail?.data?.id === item.id} // ID를 기준으로 선택된 항목을 결정
+                onClick={() => loadCareerDetail(item.id)} // 클릭 시 해당 항목의 상세 데이터를 로드
               />
             ))
           ))}
@@ -235,16 +230,16 @@ export default function MycareerDetail() {
           <div>
             {selectedCareerDetail && (
               <ActivityRecordWrapper>
-                <ActivityRecord>{selectedCareerDetail.alias} 활동기록</ActivityRecord>
+                <ActivityRecord>{selectedCareerDetail.data.alias} 활동기록</ActivityRecord>
                 <CareerNameT>
-                  <CareerNameTag careerName={selectedCareerDetail.careerName} category={selectedCareerDetail.categoryId} />
+                  <CareerNameTag careerName={selectedCareerDetail.data.careerName} category={selectedCareerDetail.data.categoryId} />
                 </CareerNameT>
               </ActivityRecordWrapper>
             )}
             {selectedCareerDetail && (
               <>
-                <ActivityDate>{formatDate(selectedCareerDetail.startDate)} ~ {formatDate(selectedCareerDetail.endDate)}</ActivityDate>
-                <ActivityDetails>{selectedCareerDetail.summary}</ActivityDetails>
+                <ActivityDate>{formatDate(selectedCareerDetail.data.startDate)} ~ {formatDate(selectedCareerDetail.data.endDate)}</ActivityDate>
+                <ActivityDetails>{selectedCareerDetail.data.summary}</ActivityDetails>
               </>
             )}
           </div>
@@ -253,17 +248,21 @@ export default function MycareerDetail() {
       </Container1>
       <Container2>
         <CareerListBox>
-          {selectedCareerDetail?.details?.map((detail, index) => (
+          {selectedCareerDetail?.data?.details?.map((detail, index) => (
             <CareerList
               key={index}
               title={detail.title}
               date={`${formatDate(detail.startDate)} ~ ${formatDate(detail.endDate)}`}
               contents={detail.content}
               detailTag={detail.careerTagList.map(tag => tag.tagName)}
+              careerId={careerId} // careerId 전달
+              detailId={detail.id} // detailId 전달
+              onUpdate={() => loadCareerDetail(careerId)} // 데이터 갱신 콜백 전달
+
             />
           ))}
           {isAdding && <DetailAdd onCancel={() => setIsAdding(false)}  careerId={careerId}/>} {/* 콜백 전달 */}
-          </CareerListBox>
+        </CareerListBox>
       </Container2>
       <Container3>
         <CareerPlus onClick={() => setIsAdding(true)} disabled={isAdding}>
@@ -275,5 +274,6 @@ export default function MycareerDetail() {
 }
 
 const formatDate = (dateString) => {
+  if (!dateString) return ''; // dateString이 undefined, null 또는 빈 문자열일 경우 빈 문자열 반환
   return dateString.replace(/-/g, '.');
 };

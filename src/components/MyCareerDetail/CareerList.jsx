@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import AbilityTag from '../shared/AbilityTag';
 import EditIcon from '@mui/icons-material/Edit';
 import DetailAddEdit from './DetailAddEdit';
+import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 
 const Box = styled.div`
     display: flex;
@@ -65,11 +66,26 @@ const EditIconStyled = styled(EditIcon)`
     cursor: pointer;
 `;
 
-export default function CareerList({ title, date, contents, detailTag }) {
+export default function CareerList({ title, date, contents, detailTag, careerId, detailId, onClose, onUpdate }) {
     const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
+    const [detailData, setDetailData] = useState(null);
 
-    const handleEditClick = () => {
-        setIsDetailAddVisible(!isDetailAddVisible);
+    const handleEditClick = async () => {
+        try {
+            const data = await ViewCareerDetail(careerId); // careerId로 데이터 불러오기
+            const selectedDetail = data.data.details.find(detail => detail.id === detailId); // detailId로 해당 데이터를 찾기
+            setDetailData(selectedDetail); // 찾은 데이터를 상태로 저장
+            console.log("찾은 데이터: ", selectedDetail)
+            setIsDetailAddVisible(true); // DetailAddEdit 보이기
+        } catch (error) {
+            console.error("Error fetching career details:", error);
+        }
+    };
+
+    const handleCloseDetailEdit = () => {
+        setIsDetailAddVisible(false); // DetailAddEdit 창 닫기
+        onUpdate(); // 부모 컴포넌트에서 데이터를 다시 로드하도록 콜백 실행 -> 바로 적용 안되는 에러
+
     };
 
     return (
@@ -87,12 +103,15 @@ export default function CareerList({ title, date, contents, detailTag }) {
                 <AbilityTag tags={detailTag} />
                 <EditIconStyled titleAccess="Edit" onClick={handleEditClick} />
             </Box>
-            {isDetailAddVisible && (
+            {isDetailAddVisible && detailData && (
                 <DetailAddEdit
-                    initialTitle={title}
-                    initialDate={date}
-                    initialContents={contents}
-                    initialTags={detailTag}
+                    initialTitle={detailData.title}
+                    initialDate={detailData.startDate}
+                    initialContents={detailData.content}
+                    initialTags={detailData.careerTagList}
+                    careerId={careerId}
+                    detailId={detailId}
+                    onClose={handleCloseDetailEdit}  /* 창을 닫는 콜백 함수 전달 */
                 />
             )}
             <Line></Line>

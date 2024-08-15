@@ -138,7 +138,7 @@ const Input = styled.input`
 `;
 
 
-export default function DetailAdd({ onCancel, careerId }) {  // careerId도 prop으로 받음
+export default function DetailAdd({ onCancel, onSave, careerId }) {  // careerId도 prop으로 받음
     const [showCalendar, setShowCalendar] = useState(false);
     const [selectedDate, setSelectedDate] = useState('');
     const [title, setTitle] = useState('');
@@ -186,6 +186,7 @@ export default function DetailAdd({ onCancel, careerId }) {  // careerId도 prop
         await AddDetail(careerId, data);
         onCancel(); // 부모 컴포넌트의 상태를 변경하여 창을 닫습니다.
     };
+    
 
     const saveTitle = event => {
         setTitle(event.target.value);
