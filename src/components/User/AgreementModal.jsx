@@ -12,6 +12,7 @@ const StyledModal = styled.div`
   overflow: auto;
   background-color: rgb(0,0,0);
   background-color: rgba(0,0,0,0.4);
+  z-index: 2;
 
   .modal-content {
     background-color: #fefefe;

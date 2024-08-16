@@ -13,6 +13,7 @@ const Button = styled.button`
   height: 56px;
   font-size: 36px;
   cursor: pointer;
+  z-index: 10;
 
   &:hover {
     background-color: #3AAF85;
