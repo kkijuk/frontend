@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Agreement from './Agreement';
+import { confirmEmail } from '../../api/Signup/ConfirmEmail';
+import { requestEmailVerification } from '../../api/Signup/requestEmailVerification'; 
+
 
 const FormContainer = styled.div`
   align-items: center;
@@ -21,9 +24,9 @@ const FormContainer = styled.div`
   }
 
   .step-indicator {
-   display: flex; 
-   align-items: center; 
-   justify-content: center; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
     background: #F1F1F1;
     border-radius: 10px;
     color: #707070;
@@ -42,8 +45,9 @@ const FormContainer = styled.div`
 
   .error-message {
     color: red;
-    font-size: 12px;
-    margin-top: 5px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: center;
   }
 
   .email-verification {
@@ -53,7 +57,7 @@ const FormContainer = styled.div`
     margin-top: 10px;
   }
 
-  .email-input {
+  .email-input, input[type="password"] {
     flex: 1;
     padding: 10px;
     border: 1px solid #e0e0e0;
@@ -66,6 +70,12 @@ const FormContainer = styled.div`
     background: #F5F5F5;
     color: #707070;
   }
+
+  .email-input:focus, input[type="password"]:focus {
+    border-color: #3AAF85; 
+    outline: none;
+  }
+
 
   .check-button {
     width: 110px;
@@ -171,45 +181,66 @@ const InitialSignupForm = ({
   agreements1, setAgreements1, agreements2, setAgreements2, agreements3, setAgreements3,
   handleNextStep, handleModal
 }) => {
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [emailChecked, setEmailChecked] = useState(false);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      setEmailError('올바른 이메일을 입력하세요.');
-    } else {
-      setEmailError('');
+      setErrorMessage('올바른 이메일을 입력하세요.');
+      return false;
+    }
+    return true;
+  };
+
+  const handleEmailCheck = async () => {
+    if (!validateEmail(email)) return;
+
+    try {
+      const isAvailable = await confirmEmail(email);
+      if (isAvailable) {
+        setEmailChecked(true);
+        setErrorMessage('사용 가능한 이메일입니다.');
+      } else {
+        setErrorMessage('이미 사용 중인 이메일입니다.');
+      }
+    } catch (error) {
+      setErrorMessage(error.message);
     }
   };
 
   const validatePassword = (password) => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})/;
     if (!passwordRegex.test(password)) {
-      setPasswordError('대문자, 특수문자를 포함하여 8자리 이상 입력하세요.');
-    } else {
-      setPasswordError('');
+      setErrorMessage('대문자, 특수문자를 포함하여 8자리 이상 입력하세요.');
+      return false;
     }
+    return true;
   };
 
   const validateConfirmPassword = (password, confirmPassword) => {
     if (password !== confirmPassword) {
-      setConfirmPasswordError('비밀번호가 일치하지 않습니다.');
-    } else {
-      setConfirmPasswordError('');
+      setErrorMessage('비밀번호가 일치하지 않습니다.');
+      return false;
     }
+    return true;
   };
 
-  useEffect(() => {
-    validateEmail(email);
-    validatePassword(password);
-    validateConfirmPassword(password, confirmPassword);
-  }, [email, password, confirmPassword]);
+  const handleSubmit = async () => {
+    if (!validateEmail(email) || !emailChecked) {
+      setErrorMessage('이메일 중복 확인을 완료해주세요.');
+      return;
+    }
+    if (!validatePassword(password)) return;
+    if (!validateConfirmPassword(password, confirmPassword)) return;
 
-  const handleSubmit = () => {
-    if (!emailError && !passwordError && !confirmPasswordError) {
-      handleNextStep();
+    setErrorMessage(''); 
+
+    try {
+      await requestEmailVerification(email); // 이메일 인증번호 요청
+      handleNextStep(); 
+    } catch (error) {
+      setErrorMessage('이메일 인증번호 요청 중 오류가 발생했습니다.');
     }
   };
 
@@ -226,11 +257,15 @@ const InitialSignupForm = ({
             type="email"
             placeholder="이메일을 입력하세요"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setEmailChecked(false); // 이메일 변경 시 중복확인 리셋
+            }}
           />
-          <button className="check-button">중복확인</button>
+          <button type="button" className="check-button" onClick={handleEmailCheck}>
+            중복확인
+          </button>
         </div>
-        {emailError && <div className="error-message">{emailError}</div>}
       </div>
       <div className="input-group">
         <label htmlFor="password">비밀번호</label>
@@ -241,7 +276,6 @@ const InitialSignupForm = ({
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {passwordError && <div className="error-message">{passwordError}</div>}
       </div>
       <div className="input-group">
         <label htmlFor="confirmPassword">비밀번호 확인</label>
@@ -252,19 +286,14 @@ const InitialSignupForm = ({
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        {confirmPasswordError && <div className="error-message">{confirmPasswordError}</div>}
       </div>
       <Agreement checked={agreements1} setChecked={setAgreements1} label="이용약관 동의(필수)" handleModal={handleModal} />
       <Agreement checked={agreements2} setChecked={setAgreements2} label="개인정보 수집 및 이용동의(필수)" handleModal={handleModal} />
       <Agreement checked={agreements3} setChecked={setAgreements3} label="마케팅 활용동의(선택)" handleModal={handleModal} />
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
       <button onClick={handleSubmit}>다음</button>
     </FormContainer>
   );
 };
 
 export default InitialSignupForm;
-
-
-
-
-

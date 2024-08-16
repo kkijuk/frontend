@@ -99,7 +99,7 @@ const UserProfileButton = styled.button`
   flex-shrink: 0;
   border: none;
   border-radius: 10px;
-  background-color: #bce3d5;
+  background-color: #88D1B6;
   cursor: pointer;
   margin-left: 100px;
   display: flex;
