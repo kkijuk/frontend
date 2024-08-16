@@ -21,7 +21,7 @@ const CalendarContentSection = styled.div`
   position: relative;
   margin-left: 505px;
    @media (max-width: 1024px) {
-    margin-left: 0; /* 화면이 작아질 때는 margin-left 제거 */
+    margin-left: 0; 
   }
 `;
 
@@ -44,7 +44,7 @@ const CalendarAdDate = styled.div`
   font-weight: 500;
   line-height: normal;
   margin-bottom: 5px;
-  margin-left: 20px;
+  margin-left: 27px;
 `;
 
 const CalendarAdItem = styled.div`
