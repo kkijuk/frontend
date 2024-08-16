@@ -661,8 +661,6 @@ const handleBackClick = () => {
    ))
 )}
 
-
-
       {showReviewAdd && (
         <ReviewDetailAdd
           recruitId={job.id}

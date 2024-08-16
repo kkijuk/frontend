@@ -21,9 +21,9 @@ const FormContainer = styled.div`
   }
 
   .step-indicator {
-   display: flex; 
-   align-items: center; 
-   justify-content: center; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
     background: #F1F1F1;
     border-radius: 10px;
     color: #707070;
@@ -42,8 +42,9 @@ const FormContainer = styled.div`
 
   .error-message {
     color: red;
-    font-size: 12px;
-    margin-top: 5px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: center;
   }
 
   .email-verification {
@@ -53,7 +54,7 @@ const FormContainer = styled.div`
     margin-top: 10px;
   }
 
-  .email-input {
+  .email-input, input[type="password"] {
     flex: 1;
     padding: 10px;
     border: 1px solid #e0e0e0;
@@ -63,9 +64,15 @@ const FormContainer = styled.div`
     width: 280px;
     height: 50px;
     box-sizing: border-box;
-    background: #F5F5F5;
+    background: #F5F5F5; /* 이메일 입력 후에도 하얀색 배경 유지 */
     color: #707070;
   }
+
+  .email-input:focus, input[type="password"]:focus {
+    border-color: #3AAF85; /* 입력칸 클릭 시 테두리 색 변경 */
+    outline: none;
+  }
+
 
   .check-button {
     width: 110px;
@@ -171,46 +178,41 @@ const InitialSignupForm = ({
   agreements1, setAgreements1, agreements2, setAgreements2, agreements3, setAgreements3,
   handleNextStep, handleModal
 }) => {
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      setEmailError('올바른 이메일을 입력하세요.');
-    } else {
-      setEmailError('');
+      setErrorMessage('올바른 이메일을 입력하세요.');
+      return false;
     }
+    return true;
   };
 
   const validatePassword = (password) => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})/;
     if (!passwordRegex.test(password)) {
-      setPasswordError('대문자, 특수문자를 포함하여 8자리 이상 입력하세요.');
-    } else {
-      setPasswordError('');
+      setErrorMessage('대문자, 특수문자를 포함하여 8자리 이상 입력하세요.');
+      return false;
     }
+    return true;
   };
 
   const validateConfirmPassword = (password, confirmPassword) => {
     if (password !== confirmPassword) {
-      setConfirmPasswordError('비밀번호가 일치하지 않습니다.');
-    } else {
-      setConfirmPasswordError('');
+      setErrorMessage('비밀번호가 일치하지 않습니다.');
+      return false;
     }
+    return true;
   };
 
-  useEffect(() => {
-    validateEmail(email);
-    validatePassword(password);
-    validateConfirmPassword(password, confirmPassword);
-  }, [email, password, confirmPassword]);
-
   const handleSubmit = () => {
-    if (!emailError && !passwordError && !confirmPasswordError) {
-      handleNextStep();
-    }
+   /* if (!validateEmail(email)) return;
+    if (!validatePassword(password)) return;
+    if (!validateConfirmPassword(password, confirmPassword)) return;
+
+    setErrorMessage(''); */
+    handleNextStep();
   };
 
   return (
@@ -230,7 +232,6 @@ const InitialSignupForm = ({
           />
           <button className="check-button">중복확인</button>
         </div>
-        {emailError && <div className="error-message">{emailError}</div>}
       </div>
       <div className="input-group">
         <label htmlFor="password">비밀번호</label>
@@ -241,7 +242,6 @@ const InitialSignupForm = ({
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {passwordError && <div className="error-message">{passwordError}</div>}
       </div>
       <div className="input-group">
         <label htmlFor="confirmPassword">비밀번호 확인</label>
@@ -252,19 +252,14 @@ const InitialSignupForm = ({
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        {confirmPasswordError && <div className="error-message">{confirmPasswordError}</div>}
       </div>
       <Agreement checked={agreements1} setChecked={setAgreements1} label="이용약관 동의(필수)" handleModal={handleModal} />
       <Agreement checked={agreements2} setChecked={setAgreements2} label="개인정보 수집 및 이용동의(필수)" handleModal={handleModal} />
       <Agreement checked={agreements3} setChecked={setAgreements3} label="마케팅 활용동의(선택)" handleModal={handleModal} />
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
       <button onClick={handleSubmit}>다음</button>
     </FormContainer>
   );
 };
 
 export default InitialSignupForm;
-
-
-
-
-

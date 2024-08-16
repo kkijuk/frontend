@@ -4,7 +4,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import ListView from './ListView';  
 import { getRecruitCalendar } from '../../api/Apply/RecruitCalendar';
-import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
+import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter'; // 새로운 API로 대체
 import { useNavigate } from 'react-router-dom';
 
 const AdCalendarStyled = styled.div`
@@ -51,15 +51,13 @@ const StyledCalendar = styled(Calendar)`
     font-size: 15px;
     box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15);
     margin-top: -15px;
-    
   }
 
   .react-calendar__month-view__weekdays__weekday abbr {
     text-decoration: none;
     border-bottom: none; 
     outline: none; 
-    
-}
+  }
 
   .react-calendar__month-view__days__day {
     box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
@@ -67,7 +65,6 @@ const StyledCalendar = styled(Calendar)`
                 inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
                 inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15);
     border: none;
-    
   }
 
   .react-calendar__tile {
@@ -279,41 +276,40 @@ const CalendarView = ({ date, setDate }) => {
   const handleDateChange = async (selectedDate) => {
     setDate(selectedDate);
 
-    const selectedDateStr = selectedDate.toISOString().split('T')[0];
-    const jobsForDate = [];
+    const selectedDateStr = `${selectedDate.toISOString().split('T')[0]} 00:00:00`;
 
     try {
-        
-        for (let i = 1; i <= 10; i++) {  
-            const jobDetails = await getRecruitDetails(i);
-            if (jobDetails && jobDetails.endTime) {
-                const endTimeDateStr = jobDetails.endTime.split(' ')[0];
-                if (endTimeDateStr === selectedDateStr) {
-                    jobsForDate.push(jobDetails);
-                }
-            }
+        // API를 통해 해당 날짜 이후의 공고 목록을 가져옴
+        const responseData = await getRecruitListAfterDate(selectedDateStr);
+
+        if (responseData && responseData.outputs && responseData.outputs.length > 0) {
+            // 받은 데이터 중에서 클릭한 날짜와 일치하는 공고만 필터링
+            const filteredJobs = responseData.outputs.flatMap(group => 
+                group.recruits.filter(recruit => {
+                    const jobDateStr = group.endDate;
+                    return jobDateStr === selectedDateStr.split(' ')[0];
+                }).map(recruit => ({
+                    ...recruit,
+                    endTime: `${group.endDate} 00:00:00`
+                }))
+            );
+
+            setJobsForSelectedDate(filteredJobs);
+        } else {
+            console.warn('No recruits found after the specified date.');
+            setJobsForSelectedDate([]);
         }
     } catch (error) {
         console.error('Error fetching job details:', error);
+        setJobsForSelectedDate([]);
     }
-
-    setJobsForSelectedDate(jobsForDate); // 공고 정보를 설정
 };
 
 
-const handleJobClick = async (job) => {
-  const jobId = job.recruitId || job.id;  
-  if (jobId) {
-    try {
-      const jobDetails = await getRecruitDetails(jobId);
-      navigate(`/apply-detail/${jobId}`, { state: { job: jobDetails } });
-    } catch (error) {
-      console.error('Failed to fetch job details:', error);
-    }
-  } else {
-    console.error('Job ID is missing or undefined');
-  }
-};
+
+  const handleJobClick = (job) => {
+    navigate(`/apply-detail/${job.id}`, { state: { job } });
+  };
 
   return (
     <AdCalendarStyled>
