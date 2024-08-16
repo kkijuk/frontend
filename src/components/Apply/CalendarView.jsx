@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import ListView from './ListView';  
+import CalendarListView from './CalendarListView';
 import { getRecruitCalendar } from '../../api/Apply/RecruitCalendar';
-import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter'; // 새로운 API로 대체
+import { getRecruitListEndDate } from '../../api/Apply/RecruitEndDate'; 
 import { useNavigate } from 'react-router-dom';
 
 const AdCalendarStyled = styled.div`
@@ -237,13 +237,12 @@ const CalendarView = ({ date, setDate }) => {
     const fetchCalendarData = async () => {
       try {
         const year = date.getFullYear();
-        const month = date.getMonth() + 1; // month는 0부터 시작하므로 +1
+        const month = date.getMonth() + 1; 
   
         const calendarData = await getRecruitCalendar(year, month);
         const fetchedMarks = calendarData.dates.map(day => {
           const marksForDay = [];
   
-          // 각 상태에 따라 색상을 추가, 최대 3개의 동그라미까지만 표시
           let remainingSpots = 3;
           const addMarks = (count, color) => {
             for (let i = 0; i < count && remainingSpots > 0; i++) {
@@ -276,39 +275,21 @@ const CalendarView = ({ date, setDate }) => {
   const handleDateChange = async (selectedDate) => {
     setDate(selectedDate);
 
-    const selectedDateStr = `${selectedDate.toISOString().split('T')[0]} 00:00:00`;
+    const selectedDateStr = selectedDate.toISOString().split('T')[0];
 
     try {
-        // API를 통해 해당 날짜 이후의 공고 목록을 가져옴
-        const responseData = await getRecruitListAfterDate(selectedDateStr);
+        
+        const jobs = await getRecruitListEndDate(selectedDateStr);
 
-        if (responseData && responseData.outputs && responseData.outputs.length > 0) {
-            // 받은 데이터 중에서 클릭한 날짜와 일치하는 공고만 필터링
-            const filteredJobs = responseData.outputs.flatMap(group => 
-                group.recruits.filter(recruit => {
-                    const jobDateStr = group.endDate;
-                    return jobDateStr === selectedDateStr.split(' ')[0];
-                }).map(recruit => ({
-                    ...recruit,
-                    endTime: `${group.endDate} 00:00:00`
-                }))
-            );
-
-            setJobsForSelectedDate(filteredJobs);
-        } else {
-            console.warn('No recruits found after the specified date.');
-            setJobsForSelectedDate([]);
-        }
+        setJobsForSelectedDate(jobs);
     } catch (error) {
         console.error('Error fetching job details:', error);
         setJobsForSelectedDate([]);
     }
-};
-
-
+  };
 
   const handleJobClick = (job) => {
-    navigate(`/apply-detail/${job.id}`, { state: { job } });
+    navigate(`/apply-detail/${job.recruitId}`, { state: { job } });
   };
 
   return (
@@ -321,8 +302,13 @@ const CalendarView = ({ date, setDate }) => {
           marks={marks}
         />
       </div>
-      <ListView data={jobsForSelectedDate} onJobClick={handleJobClick} />
-    </AdCalendarStyled>
+      <CalendarListView 
+      date={date.toISOString().split('T')[0]} 
+      data={jobsForSelectedDate} 
+      count={jobsForSelectedDate.length}  // count 전달
+      onJobClick={handleJobClick} 
+    />
+  </AdCalendarStyled>
   );
 };
 
