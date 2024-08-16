@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { registerUser } from '../../api/Signup/registerUser';
 
 const FormContainer = styled.div`
   align-items: center;
@@ -24,7 +25,7 @@ const FormContainer = styled.div`
     background: #D9D9D9;
     border-radius: 10px;
     color: white;
-     margin: 10px auto; 
+    margin: 10px auto; 
     font-size: 14px;
     width: 52px;
     height: 22px;
@@ -60,6 +61,11 @@ const FormContainer = styled.div`
     box-sizing: border-box;
   }
 
+  input[type="text"]:focus, input[type="date"]:focus {
+    border-color: #3AAF85;  
+    outline: none;  
+  }
+
   label {
     color: #3AAF85;
   }
@@ -76,6 +82,12 @@ const FormContainer = styled.div`
   }
 `;
 
+const ErrorMessage = styled.div`
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px; 
+`;
+
 const Instructions = styled.p`
   color: #333;
   margin: 9px 0;
@@ -86,50 +98,106 @@ const Instructions = styled.p`
   white-space: nowrap; 
 `;
 
-const PersonalInfoForm = ({ name, setName, contact, setContact, birthdate, setBirthdate, handleSignup, handlePrevStep }) => (
-  <FormContainer>
-    <div className="prev-button" onClick={handlePrevStep}>{"<"}</div>
-    <h2>회원가입</h2>
-    <div className="step-indicator">3/3</div>
-    <Instructions>
-      기본 인적사항을 정확히 입력해주세요.<br />
-      이 정보는 끼적의 이력서 등에 자동으로 기입됩니다.
-    </Instructions>
-    <div className="input-group">
-      <label htmlFor="name">이름</label>
-      <input
-        id="name"
-        type="text"
-        placeholder="실명을 입력하세요"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-    </div>
-    <div className="input-group">
-      <label htmlFor="contact">연락처</label>
-      <input
-        id="contact"
-        type="text"
-        placeholder="000-0000-0000"
-        value={contact}
-        onChange={(e) => setContact(e.target.value)}
-      />
-    </div>
-    <div className="input-group">
-      <label htmlFor="birthdate">생년월일</label>
-      <input
-        id="birthdate"
-        type="date"
-        placeholder="0000-00-00"
-        value={birthdate}
-        onChange={(e) => setBirthdate(e.target.value)}
-      />
-    </div>
-    <button onClick={handleSignup}>완료</button>
-  </FormContainer>
-);
+const PersonalInfoForm = ({ name, setName, contact, setContact, birthdate, setBirthdate, handleSignup, handlePrevStep, email, password, confirmPassword }) => {
+  const [errorMessage, setErrorMessage] = useState('');
 
-export default PersonalInfoForm;
+  const validateName = (name) => {
+    const nameRegex = /^[가-힣]{1,20}$/;
+    if (!nameRegex.test(name)) {
+      setErrorMessage("올바른 이름을 입력하세요.");
+      return false;
+    }
+    return true;
+  };
 
+  const handleContactChange = (e) => {
+    const formattedContact = e.target.value
+      .replace(/[^0-9]/g, '')  
+      .replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3') 
+      .slice(0, 13); //엔하이픈 포함 13자리이
 
+    setContact(formattedContact);
+  };
 
+  const handleSubmit = async () => {
+    if (!validateName(name)) {
+      return;
+    }
+   
+    if (!name || !contact || !birthdate) {
+      setErrorMessage("모든 필드를 채워주세요.");
+      return;
+    }
+   
+    try {
+      setErrorMessage(''); // 오류 메시지 초기화
+   
+      const requestData = {
+        email,
+        name,
+        phoneNumber: contact,
+        birthDate: birthdate,
+        password,
+        passwordConfirm: confirmPassword,
+      };
+   
+      console.log("Sending request data:", requestData);  
+   
+      const result = await registerUser(requestData);
+   
+      console.log(result); 
+      handleSignup(); 
+    } catch (error) {
+      setErrorMessage(error.message); 
+    }
+   };
+   
+
+  return (
+    <FormContainer>
+      <div className="prev-button" onClick={handlePrevStep}>{"<"}</div>
+      <h2>회원가입</h2>
+      <div className="step-indicator">3/3</div>
+      <Instructions>
+        기본 인적사항을 정확히 입력해주세요.<br />
+        이 정보는 끼적의 이력서 등에 자동으로 기입됩니다.
+      </Instructions>
+      <div className="input-group">
+        <label htmlFor="name">이름</label>
+        <input
+          id="name"
+          type="text"
+          placeholder="실명을 입력하세요"
+          value={name}
+          maxLength={20}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="contact">연락처</label>
+        <input
+          id="contact"
+          type="text"
+          placeholder="000-0000-0000"
+          value={contact}
+          maxLength={13}  
+          onChange={handleContactChange}
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="birthdate">생년월일</label>
+        <input
+          id="birthdate"
+          type="date"
+          placeholder="0000-00-00"
+          value={birthdate}
+          onChange={(e) => setBirthdate(e.target.value)}
+        />
+      </div>
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      <button onClick={handleSubmit}>완료</button>
+    </FormContainer>
+  );
+};
+
+export default PersonalInfoForm; 

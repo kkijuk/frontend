@@ -36,8 +36,8 @@ const SignupPage = () => {
 
   const handleSignup = () => {
     console.log('회원가입 시도:', email, name, contact, verificationCode, birthdate, password, agreements1, agreements2, agreements3);
-    // 회원가입 로직을 추가하고 성공 시 다음 코드 실행
-    navigate('/signup-success');
+   
+    navigate('/signupsuccess');
   };
 
   const handleModal = () => {
@@ -76,6 +76,9 @@ const SignupPage = () => {
       )}
       {step === 3 && (
         <PersonalInfoForm
+          email={email}  
+          password={password}
+          confirmPassword={confirmPassword}
           name={name}
           setName={setName}
           contact={contact}
@@ -92,8 +95,3 @@ const SignupPage = () => {
 };
 
 export default SignupPage;
-
-
-
-
-
