@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Agreement from './Agreement';
+import { confirmEmail } from '../../api/Signup/ConfirmEmail';
+import { requestEmailVerification } from '../../api/Signup/requestEmailVerification'; 
+
 
 const FormContainer = styled.div`
   align-items: center;
@@ -64,12 +67,12 @@ const FormContainer = styled.div`
     width: 280px;
     height: 50px;
     box-sizing: border-box;
-    background: #F5F5F5; /* 이메일 입력 후에도 하얀색 배경 유지 */
+    background: #F5F5F5;
     color: #707070;
   }
 
   .email-input:focus, input[type="password"]:focus {
-    border-color: #3AAF85; /* 입력칸 클릭 시 테두리 색 변경 */
+    border-color: #3AAF85; 
     outline: none;
   }
 
@@ -179,6 +182,7 @@ const InitialSignupForm = ({
   handleNextStep, handleModal
 }) => {
   const [errorMessage, setErrorMessage] = useState('');
+  const [emailChecked, setEmailChecked] = useState(false);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -187,6 +191,22 @@ const InitialSignupForm = ({
       return false;
     }
     return true;
+  };
+
+  const handleEmailCheck = async () => {
+    if (!validateEmail(email)) return;
+
+    try {
+      const isAvailable = await confirmEmail(email);
+      if (isAvailable) {
+        setEmailChecked(true);
+        setErrorMessage('사용 가능한 이메일입니다.');
+      } else {
+        setErrorMessage('이미 사용 중인 이메일입니다.');
+      }
+    } catch (error) {
+      setErrorMessage(error.message);
+    }
   };
 
   const validatePassword = (password) => {
@@ -206,13 +226,22 @@ const InitialSignupForm = ({
     return true;
   };
 
-  const handleSubmit = () => {
-   /* if (!validateEmail(email)) return;
+  const handleSubmit = async () => {
+    if (!validateEmail(email) || !emailChecked) {
+      setErrorMessage('이메일 중복 확인을 완료해주세요.');
+      return;
+    }
     if (!validatePassword(password)) return;
     if (!validateConfirmPassword(password, confirmPassword)) return;
 
-    setErrorMessage(''); */
-    handleNextStep();
+    setErrorMessage(''); 
+
+    try {
+      await requestEmailVerification(email); // 이메일 인증번호 요청
+      handleNextStep(); 
+    } catch (error) {
+      setErrorMessage('이메일 인증번호 요청 중 오류가 발생했습니다.');
+    }
   };
 
   return (
@@ -228,9 +257,14 @@ const InitialSignupForm = ({
             type="email"
             placeholder="이메일을 입력하세요"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setEmailChecked(false); // 이메일 변경 시 중복확인 리셋
+            }}
           />
-          <button className="check-button">중복확인</button>
+          <button type="button" className="check-button" onClick={handleEmailCheck}>
+            중복확인
+          </button>
         </div>
       </div>
       <div className="input-group">
