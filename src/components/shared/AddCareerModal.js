@@ -15,6 +15,7 @@ const ModalBackdrop = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
 `;
 
 const ModalContent = styled.div`
@@ -369,6 +370,7 @@ const AddCareerModal = ({ onClose, onSave }) => {
                 category={category} 
                 selected={selectedCategory === category} 
                 onClick={() => handleCategorySelect(category)} 
+                categoryValue={categoryMap[category]}
               />
             ))}
           </CategoryArea>

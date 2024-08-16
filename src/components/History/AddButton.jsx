@@ -42,6 +42,7 @@ const EditButton=styled.button`
     bottom: 20px;
 
     cursor:pointer;
+    z-index: 10;
 `
 
 const Button=styled.button`
@@ -56,4 +57,5 @@ const Button=styled.button`
     bottom: 20px;
 
     cursor:pointer;
+    z-index: 10;
 `

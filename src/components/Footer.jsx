@@ -5,8 +5,9 @@ import instagramLogo from '../assets/instagramLogo.png';
 import paperplaneicon from '../assets/paperplaneicon.png';
 
 const FooterStyle = styled.div`
+  width: 100%;
   height: 300px;
-  background-color: #e1f4ed;
+  background-color: #edf2f1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,6 +15,9 @@ const FooterStyle = styled.div`
   flex-direction: column;
   font-family: Pretendard;
   color: #424242;
+  position: absolute;
+  padding-top: 30px;
+  z-index: 1;
 `;
 
 const SmallText = styled.div`
@@ -33,15 +37,9 @@ const BoldText = styled.span`
   font-weight: 700;
 `;
 
-const nameBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  word-spacing:10px;
-`;
-
-const div1 = styled.div`
+const div = styled.div`
+  position: relative;
+  width: 100%
   font-size: 20px;
 `;
 
@@ -61,6 +59,7 @@ export default function Footer() {
 
 
   return (
+    <div>
     <FooterStyle>
       <img
               style={{ width: '70px', height: '30px' }}
@@ -90,5 +89,6 @@ export default function Footer() {
         </logoBox>
       </SmallText>
     </FooterStyle>
+    </div>
   );
 }

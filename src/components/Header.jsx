@@ -99,7 +99,7 @@ const UserProfileButton = styled.button`
   flex-shrink: 0;
   border: none;
   border-radius: 10px;
-  background-color: #88D1B6;
+  background-color: #bce3d5;
   cursor: pointer;
   margin-left: 100px;
   display: flex;
@@ -156,7 +156,7 @@ export default function Header() {
         <NavContainer>
           <span className="logo" onClick={() => navigate('/')}>
             <img
-              style={{ width: '80px', height: '40px' }}
+              style={{ width: '80px', height: '40px', cursor: 'pointer' }}
               src={logo}
               alt="로고"
             />
