@@ -1,17 +1,19 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import '../../pages/History/history.css'
+import '../../../pages/History/history.css'
 import Edu from './Edu'
 import Date from './Date'
 
-const EditItem=({ dummy, onCancel })=>{
+const EditItem=({ dummy, onCancel, isLastItem })=>{
 
     return(
         <div style={{display:'flex'}}>
             <TimeLine>
-                뷁
+                <Oval category={dummy.category}></Oval>
+                <Line category={dummy.category} isLastItem={isLastItem}></Line>
             </TimeLine>
             <Container>
+
                 <form style={{position:'relative'}}>
                     <div style={{display:'flex', justifyContent:'space-between', height:'45px', width:'610px'}}>
                         <Edu isLevel="학력구분"/>
@@ -39,9 +41,6 @@ const EditItem=({ dummy, onCancel })=>{
                         </Button>
                         <Button style={{color:'#FFF', borderColor:'#3AAF85',backgroundColor:'#3AAF85'}}>저장</Button>
                     </div>
-
-
-
                 </form>
             </Container>
         </div>
@@ -49,15 +48,11 @@ const EditItem=({ dummy, onCancel })=>{
 }
 export default EditItem
 
-const TimeLine = styled.div`
-    width: 60px;
-    margin: 15px 0px;
-`
 
 const Container = styled.div`
     width:610px;
     padding: 30px 0px;
-    margin: 15px 0px;
+    margin: 15px 0px 50px 0px;
     display:flex;
     justify-content:space-between;
     background-color:#F5F5F5;
@@ -81,5 +76,32 @@ const Button = styled.div`
     justify-content:center;
     align-items:center;
     cursor:pointer;
+
+`
+
+const TimeLine = styled.div`
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    margin: 0px 70px 0px 30px;
+`;
+
+const Oval = styled.div`
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border-radius:50%;
+  background-color: #3AAF85;
+`
+
+const Line = styled.div`
+    width:2px;
+    height:270px;
+    border-top: none;     
+    border-right: none; 
+    border-bottom: none;
+    border-left:${props => props.isLastItem ? "none" : "2px solid black"};
+    margin-left:10px; 
+    border-color: #3AAF85;
 
 `

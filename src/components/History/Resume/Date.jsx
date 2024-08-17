@@ -1,8 +1,6 @@
 import '@mobiscroll/react/dist/css/mobiscroll.min.css';
 import { Button, Datepicker, Page, setOptions } from '@mobiscroll/react';
 import { useCallback, useMemo, useState } from 'react';
-import styled from 'styled-components';
-import History from '../../pages/History/history.css';
 
 setOptions({
   theme: 'ios',

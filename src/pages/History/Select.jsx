@@ -76,8 +76,6 @@ const Select =()=>{
             })
     },[currentApply])
 
-
-
     //3. 해당 공고 자소서 생성하기 
     const handleNextClick =()=>{
         const postData = {

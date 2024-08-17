@@ -1,8 +1,10 @@
+import api from '../../Axios';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import './history.css';
-import EducationItem from '../../components/History/EducationItem';
-import EditItem from '../../components/History/EditItem';
+import EducationItem from '../../components/History/Resume/EducationItem';
+import EditItem from '../../components/History/Resume/EditItem';
+import CareerItem from '../../components/History/Resume/CareerItem';
 
 //Todo
 //- +버튼 onClick 함수 정의
@@ -12,9 +14,9 @@ import EditItem from '../../components/History/EditItem';
 const History = () => {
 
     const profileTitles = ["이름", "생년월일", "전화번호", "이메일", "주소"];
-    const [isEdit, setIsEdit] = useState([false, true]);
 
-    const [profile] = useState({
+    //(Data) - dummy
+    const [profiles, setProfiles] = useState({
         name:"박하은",
         birth:"1999.07.17",
         mobile:"010-1234-5678",
@@ -22,7 +24,8 @@ const History = () => {
         address:"주소를 입력하세요"
     });
 
-    const [educations] = useState([
+    const [isEdit, setIsEdit] = useState([false, true]);
+    const [educations, setEducations] = useState([
         {
             level : "대학교",
             schoolName : "서울여자대학교",
@@ -39,7 +42,47 @@ const History = () => {
             status : "졸업"
         }
     ]);
+    
+    const [careers,setCareers] = useState([
+        {
+            category:"아르바이트",
+            title:"하늘학원",
+            startDate:"2023.06",
+            endDate:"2024.01",
+            period:8,
+            task:"중학생 수업 지도"
+        }
+    ])
 
+    const [activities, setActivities] = useState([
+        {
+            category:"동아리",
+            title:"IT 서비스 개발 동아리 / UMC",
+            startDate:"2024.03",
+            endDate:"2024.08",
+            period:8,
+            task:"스터디, 웹서비스 기획(팀 프로젝트)"
+        },
+        {
+            category:"대외활동",
+            title:"하나은행 대학생 서포터즈 1기",
+            startDate:"2023.12",
+            endDate:"2024.02",
+            period:8,
+            task:"SNS 콘텐츠 제작, 오프라인 캠페인 기획"
+        },
+        {
+            category:"공모전",
+            title:"서울시 공공데이터 공모전",
+            startDate:"2023.09",
+            endDate:"2023.10",
+            period:8,
+            task:"공공데이터 활용 웹 서비스 기획 및 개발"
+        },
+        
+    ])
+
+    //(Actions)
     const handleCancelEdit = (index) => {
         setIsEdit(prev => prev.map((edit, i) => i === index ? false : edit));
     };
@@ -51,6 +94,7 @@ const History = () => {
     return (
         <BackgroundDiv>
             <BaseDiv>
+                {/* 1. Profiles */}
                 <div style={{display:'flex', alignContent:'center', gap:'40px'}}>
                     <div style={{width:'150px', height:'200px',backgroundColor:'#707070'}}>
                         {/* 프로필사진 */}
@@ -61,30 +105,41 @@ const History = () => {
                         ))}
                     </div>
                     <div style={{height:'203px'}}>
-                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profile.name}</p>
-                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profile.birth}</p>
-                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profile.mobile}</p>
-                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profile.email}</p>
-                        <p style={{color:'#707070', fontSize:'14px', textDecorationLine:'underline',margin:'15px 0px'}}>{profile.address}</p>
+                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profiles.name}</p>
+                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profiles.birth}</p>
+                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profiles.mobile}</p>
+                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profiles.email}</p>
+                        <p style={{color:'#707070', fontSize:'14px', textDecorationLine:'underline',margin:'15px 0px'}}>{profiles.address}</p>
                     </div>
                 </div>
 
                 <Linear />
-
+                {/* (2) Educations */}
                 <h3>학력</h3>
                 {educations.map((education, index) => (
                     isEdit[index] 
-                    ? <EditItem key={index} dummy={education} onCancel={() => handleCancelEdit(index)} /> 
-                    : <EducationItem key={index} dummy={education} onEdit={() => handleEdit(index)} />
+                    ? <EditItem key={index} dummy={education} onCancel={() => handleCancelEdit(index)} 
+                        isLastItem={index === educations.length - 1}/> 
+                    : <EducationItem key={index} dummy={education} onEdit={() => handleEdit(index)}
+                        isLastItem={index === educations.length - 1} />
                 ))}
                 <AddButton>+</AddButton>
-                <Linear />
 
-                <h3>경력</h3>
+                
+                <Linear />
+                {/* (3) Careers */}
+                <h3 style={{marginBottom:'30px'}}>경력</h3>
+                {careers.map((career, index)=>(
+                    <CareerItem key={index} dummy={career} isLastItem={index === careers.length - 1}/>
+                ))}
                 <AddButton>+</AddButton>
-                <Linear />
 
-                <h3>활동 및 경험</h3>
+                <Linear />
+                {/* (4) Activities */}
+                <h3 style={{marginBottom:'30px'}}>활동 및 경험</h3>
+                {activities.map((activity, index)=>(
+                    <CareerItem key={index} dummy={activity} isLastItem={index === activities.length - 1}/>
+                ))}
                 <AddButton>+</AddButton>
             </BaseDiv>
         </BackgroundDiv>
