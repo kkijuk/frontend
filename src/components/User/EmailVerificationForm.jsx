@@ -253,7 +253,7 @@ const EmailVerificationForm = ({
       <HelpText>
         이메일이 확인되지 않는다면 스팸 메일함을 확인해주시고,<br />
         여전히 문제가 발생한다면 끼적에게 문의해주세요.<br />
-        kkjjjk@gmail.com
+        kkijuk30@gmail.com
       </HelpText>
     </FormContainer>
   );

@@ -131,7 +131,7 @@ export default function PasswordResetEmail() {
                     <Button>보내기</Button>
                     <Email>
                         이메일을 찾을 수 없다면 끼적에게 문의해주세요.<br /><br />
-                        kkijuk@gmail.com
+                        kkijuk30@gmail.com
                         </Email>
                 </Bottom>
             </Container>

@@ -4,7 +4,6 @@ import Agreement from './Agreement';
 import { confirmEmail } from '../../api/Signup/ConfirmEmail';
 import { requestEmailVerification } from '../../api/Signup/requestEmailVerification'; 
 
-
 const FormContainer = styled.div`
   align-items: center;
   justify-content: center; 
