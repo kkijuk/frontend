@@ -30,6 +30,7 @@ import MyInformation from './pages/Mypage/Myinformation';
 import Field from './pages/Mypage/Field';
 import FieldEdit from './pages/Mypage/FieldEdit';
 import PasswordResetEmail from './pages/Mypage/PasswordResetEmail';
+import PasswordResetEmailConfirm from './pages/Mypage/PasswordResetEmailConfirm';
 import PasswordReset from './pages/Mypage/PasswordReset';
 import SignupInterest from './pages/SignupInterest';
 import Header from './components/Header';
@@ -96,6 +97,7 @@ const App = () => {
           <Route path="/mypage/fieldedit" element={<FieldEdit />} />
 
           <Route path="/mypage/passwordresetemail" element={<PasswordResetEmail />} />
+          <Route path="/mypage/passwordresetemailconfirm" element={<PasswordResetEmailConfirm />} />
           <Route path="/mypage/passwordreset" element={<PasswordReset />} />
           <Route path="/mypage/resetsuccess" element={<ResetSuccess />} />
         </Routes>
