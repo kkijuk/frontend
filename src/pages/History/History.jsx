@@ -91,6 +91,11 @@ const History = () => {
         setIsEdit(prev => prev.map((edit, i) => i === index ? true : edit));
     };
 
+    const editEducation =(index, updatedData)=>{
+        setEducations(prev => prev.map((education, i) => i === index ? {...education, ...updatedData}: education));
+        handleCancelEdit(index);
+    }
+
     return (
         <BackgroundDiv>
             <BaseDiv>
@@ -118,8 +123,12 @@ const History = () => {
                 <h3>학력</h3>
                 {educations.map((education, index) => (
                     isEdit[index] 
-                    ? <EditItem key={index} dummy={education} onCancel={() => handleCancelEdit(index)} 
-                        isLastItem={index === educations.length - 1}/> 
+                    ? <EditItem key={index} 
+                        dummy={education}  
+                        isLastItem={index === educations.length - 1}
+                        onCancel={() => handleCancelEdit(index)}
+                        onEdit={(updatedData)=>editEducation(index, updatedData)}
+                        /> 
                     : <EducationItem key={index} dummy={education} onEdit={() => handleEdit(index)}
                         isLastItem={index === educations.length - 1} />
                 ))}

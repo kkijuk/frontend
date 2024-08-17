@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import '../../../pages/History/history.css'
 
 // api에서 받는 구분(state)으로 만료 여부도 표현
-const Edu = ({ isLevel }) => {
+const Edu = ({ isLevel, onChange, value }) => {
     const [dropdownOpend, setDropdownOpend] = useState(false);
     const level = ["고등학교", "전문대학교", "대학교", "대학원(석사)", "대학원(박사)"];
     const status = ["재학", "휴학", "졸업예정", "졸업", "중퇴", "편입"];
@@ -16,15 +16,18 @@ const Edu = ({ isLevel }) => {
   
     const handleItemClick = (item) => {
       setSelectedItem(item);
-      setDropdownOpend(false); // 선택 후 드롭다운 닫기
+      setDropdownOpend(false);
+      if(onChange){
+        onChange(item); //item을 부모 컴포넌트로 전달
+      }
     };
   
     return (
       <>
         <EditContainer>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0', width: '135px' }}>
-            <DropdownBox onClick={handleToggleClick} selected={selectedItem}>
-              {selectedItem}
+            <DropdownBox onClick={handleToggleClick} value={value}>
+              {value ? value : selectedItem}
             </DropdownBox>
             {dropdownOpend && (
               <Dropdown>
@@ -60,7 +63,7 @@ const DropdownBox = styled.div`
     display:flex;
     justify-content:center;
     align-items:center;
-    color: ${props => (props.selected !="학력구분" && props.selected !="학력상태") ? 'black' : '#D9D9D9'};
+    color: ${props => (props.value ? 'black' : '#D9D9D9')};
     // color:#D9D9D9;
     cursor:pointer;
 
