@@ -219,7 +219,7 @@ export default function Header() {
     </svg>
     {isDropdownOpen && (
       <DropdownMenu>
-        <a onClick={() => navigate('/mypage/myinformation')}>내 정보</a>
+        <a onClick={() => navigate('/mypage/authentication')}>내 정보</a>
         <a onClick={() => navigate('/mypage/field')}>관심분야 설정</a>
         <a onClick={() => navigate('/mypage/accountmanagement')}>계정 관리</a>
         <a onClick={() => {
