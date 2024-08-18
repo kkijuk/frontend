@@ -20,6 +20,7 @@ const History = () => {
     const profileTitles = ["이름", "생년월일", "전화번호", "이메일", "주소"];
 
     //(Data) - dummy
+    const [lastUpdated, setLastUpdated] = useState('2024-02-02');
     const [profiles, setProfiles] = useState({
         name:"박하은",
         birth:"1999.07.17",
@@ -165,10 +166,12 @@ const History = () => {
 
     return (
         <BackgroundDiv>
-
             <BaseDiv>
             {isAddActModalOpen && <AddCareerModal onClose={toggleAddActModalOpen}/>}
             {isEditActModalOpen && <AddCareerModalEdit onClose={toggleEditActModalOpen}/>}
+            <p style={{fontFamily:'Regular', fontSize:'14px', color:'#707070', position:'absolute', top:'-30px', right:'0px'}}>
+                마지막 수정 일시: {lastUpdated}
+            </p>
                 {/* 1. Profiles */}
                 <div style={{display:'flex', alignContent:'center', gap:'40px'}}>
                     <div style={{width:'150px', height:'200px',backgroundColor:'#707070'}}>
