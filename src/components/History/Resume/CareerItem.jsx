@@ -3,11 +3,15 @@ import styled from 'styled-components';
 
 const CareerItem = ({ dummy, isLastItem }) => {
 
+    const today = new Date();
+    const formattedToday = today.toISOString().slice(0,7).replace('-','.');
+    const isPastDue = dummy.endDate < formattedToday; //true: 기한 경과, false: 기한 내
+
     return (
         <div style={{display:'flex'}}>
         <TimeLine>
-                <Oval category={dummy.category}></Oval>
-                <Line category={dummy.category} isLastItem={isLastItem}></Line>
+                <Oval category={dummy.category} isPastDue = {isPastDue}></Oval>
+                <Line category={dummy.category} isLastItem={isLastItem} isPastDue = {isPastDue}></Line>
             </TimeLine>
         <Container>
             <div>
@@ -40,15 +44,24 @@ const TimeLine = styled.div`
 `;
 
 const Oval = styled.div`
-  width: 22px;
-  height: 22px;
+  width: 19px;
+  height: 19px;
   flex-shrink: 0;
   border-radius:50%;
-    background-color: ${props => props.category==="동아리" ? "#FCC400" 
-                                : props.category==="아르바이트" ? "#FA7C79"
-                                : props.category==="대외활동" ? "#77AFF2"
-                                : props.category==="공모전" ? "#C48DEF"
-                                : "#000000"};
+    background-color: ${props => 
+                        !props.isPastDue
+                        ?'#FFFFFF'
+                        :props.category==="동아리" ? "#FCC400" 
+                        : props.category==="아르바이트" ? "#FA7C79"
+                        : props.category==="대외활동" ? "#77AFF2"
+                        : props.category==="공모전" ? "#C48DEF"
+                        : "#000000"};
+    border: ${props=>props.category==="동아리" ? "3px solid #FCC400" 
+        : props.category==="아르바이트" ? "3px solid #FA7C79"
+        : props.category==="대외활동" ? "3px solid #77AFF2"
+        : props.category==="공모전" ? "3px solid #C48DEF"
+        : "#000000"};
+    }
 `
 
 const Line = styled.div`
@@ -57,14 +70,17 @@ const Line = styled.div`
     border-top: none;     
     border-right: none; 
     border-bottom: none;
-    border-left:${props => props.isLastItem ? "none" : "2px solid black"};
-    margin-left:10px; 
-    border-color: ${props => props.category==="동아리" ? "#FCC400" 
-                            : props.category==="아르바이트" ? "#FA7C79"
-                            : props.category==="대외활동" ? "#77AFF2"
-                            : props.category==="공모전" ? "#C48DEF"
-                            : "#000000"};
-
+    margin-left:11px; 
+    border-left:${props=>props.isLastItem ? 'none'
+            : props.category==="아르바이트" && props.isPastDue ? "2px solid #FA7C79"
+            : props.category==="동아리" && props.isPastDue ? "2px solid ##FCC400"
+            : props.category==="대외활동" && props.isPastDue ? "2px solid #77AFF2"
+            : props.category==="공모전" && props.isPastDue ? "2px solid #C48DEF"
+            : props.category==="아르바이트" && !props.isPastDue ? "2px dashed #FA7C79"
+            : props.category==="동아리" && !props.isPastDue ? "2px dashed #FCC400"
+            : props.category==="대외활동" && !props.isPastDue ? "2px dashed #77AFF2"
+            : props.category==="공모전" && !props.isPastDue ? "2px dashed #C48DEF"
+            : "#000000"};
 `
 
 const EditButton = styled.button`

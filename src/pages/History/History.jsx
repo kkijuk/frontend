@@ -5,6 +5,7 @@ import './history.css';
 import EducationItem from '../../components/History/Resume/EducationItem';
 import EditItem from '../../components/History/Resume/EditItem';
 import CareerItem from '../../components/History/Resume/CareerItem';
+import AddItem from '../../components/History/Resume/AddItem';
 
 //Todo
 //- +버튼 onClick 함수 정의
@@ -24,7 +25,6 @@ const History = () => {
         address:"주소를 입력하세요"
     });
 
-    const [isEdit, setIsEdit] = useState([false, true]);
     const [educations, setEducations] = useState([
         {
             level : "대학교",
@@ -82,6 +82,11 @@ const History = () => {
         
     ])
 
+    //state
+    const [isEdit, setIsEdit] = useState([false, false]);
+    const [isAddItemOpen, setIsAddItemOpen] = useState(false);
+    const [show, setShow] = useState(false);//추가 불가 알람창
+
     //(Actions)
     const handleCancelEdit = (index) => {
         setIsEdit(prev => prev.map((edit, i) => i === index ? false : edit));
@@ -91,8 +96,42 @@ const History = () => {
         setIsEdit(prev => prev.map((edit, i) => i === index ? true : edit));
     };
 
+    const handleCancleAdd=()=>{
+        setIsAddItemOpen(false);
+    }
+
+    const showLimiter =()=>{
+        setShow(true);
+        setTimeout(()=>{
+            setShow(false);
+        },3000);
+    }
+
+    const handleAdd = ()=>{
+        isAddItemOpen 
+        ? showLimiter()
+        : setIsAddItemOpen(true);
+    }
+
     const editEducation =(index, updatedData)=>{
         setEducations(prev => prev.map((education, i) => i === index ? {...education, ...updatedData}: education));
+        handleCancelEdit(index);
+        console.log(updatedData);
+    }
+
+    const addEducation =(updatedData)=>{
+        console.log(updatedData);
+        if(!updatedData){
+            console.log('내용이 없음');
+        }
+        else{
+            setEducations(prev=>[...prev, updatedData]);
+            setIsAddItemOpen(false);
+        }
+    }
+
+    const deleteEducation =(index)=>{
+        setEducations(prev => prev.filter((_,i) => i !== index));
         handleCancelEdit(index);
     }
 
@@ -126,13 +165,19 @@ const History = () => {
                     ? <EditItem key={index} 
                         dummy={education}  
                         isLastItem={index === educations.length - 1}
-                        onCancel={() => handleCancelEdit(index)}
+                        onCancel={() => deleteEducation(index)}
                         onEdit={(updatedData)=>editEducation(index, updatedData)}
                         /> 
                     : <EducationItem key={index} dummy={education} onEdit={() => handleEdit(index)}
                         isLastItem={index === educations.length - 1} />
                 ))}
-                <AddButton>+</AddButton>
+                <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+                    {isAddItemOpen &&
+                        <AddItem onCancel={handleCancleAdd} onAdd={(updatedData)=>addEducation(updatedData)}></AddItem>}
+                    <AddButton onClick={handleAdd}>+</AddButton>
+                    <Limiter show={show}>현재 학력을 먼저 채워주세요!</Limiter>
+                </div>
+
 
                 
                 <Linear />
@@ -190,5 +235,26 @@ const AddButton = styled.button`
     color:#D9D9D9;
     font-size: 30px;
     cursor:pointer;
+
+    &:hover{
+        border:1px solid #707070;
+        color:#707070;
+    }
 `;
 
+const Limiter = styled.div`
+    width:200px;
+    height: 80px;
+    background-color: RGBA(0,0,0,0.7);
+    color:white;
+    font-family:Regular;
+    font-size:16px;
+    border-radius:10px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:fixed;
+    top:550px;
+    opacity: ${props => props.show ? 1 : 0};
+    transition: opacity 1s;
+`

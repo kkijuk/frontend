@@ -3,11 +3,15 @@ import styled from 'styled-components';
 
 const EducationItem = ({ dummy, onEdit, isLastItem }) => {
 
+    const today = new Date();
+    const formattedToday = today.toISOString().slice(0,7).replace('-','.');
+    const isPastDue = dummy.endDate < formattedToday; //true: 기한 경과, false: 기한 내
+
     return (
       <div style={{display:'flex'}}>
         <TimeLine>
-            <Oval></Oval>
-            <Line isLastItem={isLastItem}></Line>
+            <Oval status={dummy.status}></Oval>
+            <Line isLastItem={isLastItem} status={dummy.status}></Line>
         </TimeLine>
         <Container>
             <div>
@@ -40,11 +44,16 @@ const TimeLine = styled.div`
 `;
 
 const Oval = styled.div`
-  width: 22px;
-  height: 22px;
+  width: 19px;
+  height: 19px;
   flex-shrink: 0;
   border-radius:50%;
-  background-color: #3AAF85;
+  border:${props=>props.status ==="중퇴"||props.status ==="편입"
+            ? '3px solid #707070'
+            : '3px solid #3AAF85'};
+  background-color:${props=>props.status ==="졸업"||props.status ==="중퇴"||props.status ==="편입"
+                              ? '#3AAF85'
+                              : '#FFF'};
 `
 
 const Line = styled.div`
@@ -53,9 +62,15 @@ const Line = styled.div`
     border-top: none;     
     border-right: none; 
     border-bottom: none;
-    border-left:${props => props.isLastItem ? "none" : "2px solid black"};
-    margin-left:10px; 
-    border-color: #3AAF85;
+    border-left:${props=>
+                  props.isLastItem
+                  ? 'none'
+                  : props.status ==="중퇴"||props.status ==="편입"
+                  ? '2px solid #707070'
+                  :props.status === "졸업"
+                  ? '2px solid #3AAF85'
+                  : '2px dashed #3AAF85'};
+    margin-left:11px; 
 
 `
 
