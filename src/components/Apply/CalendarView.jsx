@@ -305,7 +305,7 @@ const CalendarView = ({ date, setDate }) => {
       <CalendarListView 
       date={date.toISOString().split('T')[0]} 
       data={jobsForSelectedDate} 
-      count={jobsForSelectedDate.length}  // count 전달
+      count={jobsForSelectedDate.length}  
       onJobClick={handleJobClick} 
     />
   </AdCalendarStyled>

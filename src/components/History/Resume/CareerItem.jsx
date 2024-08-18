@@ -85,7 +85,7 @@ const Line = styled.div`
 `
 
 const EditButton = styled.button`
-  width:65px;q
+  width:65px;
   margin-left: auto;
   background-color: #F5F5F5;
   color: #707070;
@@ -93,7 +93,7 @@ const EditButton = styled.button`
   border-radius: 10px;
   padding: 5px 10px;
   opacity:0;
-  transition: opacity 0.5 ease-in-out;
+  transition: opacity 0.2s ease-in-out;
   position:absolute;
   right:20px;
 `;
