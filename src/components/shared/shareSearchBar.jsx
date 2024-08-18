@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import FilterPage from './FilterPage';
 import { useNavigate } from 'react-router-dom';
 
 const SearchBarContainer = styled.div`
