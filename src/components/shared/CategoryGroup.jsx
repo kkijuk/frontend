@@ -60,6 +60,7 @@ const Nickname = styled.div`
   font-size: 14px;
   font-style: normal;
   line-height: normal;
+  margin: 0px;
 `;
 
 

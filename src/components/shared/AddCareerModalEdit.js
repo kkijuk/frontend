@@ -93,7 +93,7 @@ const Label = styled.label`
 
 const Info = styled.label`
   color: var(--main-01, #3AAF85);
-  font-family: Pretendard;
+  font-family: Regular;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -108,7 +108,7 @@ const Input = styled.input`
   margin-bottom: 25px;
   border: 1px solid #F5F5F5;
   font-size: 1em;
-  font-family: Pretendard;
+  font-family: Regular;
   border-radius: 10px;
   background: #F5F5F5;
 `;
@@ -119,7 +119,7 @@ const InputLong = styled.textarea`
   padding: 12px;
   margin-bottom: 25px;
   border: 1px solid #F5F5F5;
-  font-family: Pretendard;
+  font-family: Regular;
   font-size: 1em;
   border-radius: 10px;
   background: #F5F5F5;
@@ -128,7 +128,7 @@ const InputLong = styled.textarea`
 `;
 
 const InputDate = styled.input`
-  font-family: Pretendard;
+  font-family: Regular;
   font-size: 1em;
   width: 93%;
   height: 100%;
@@ -162,7 +162,7 @@ const CalendarWrapper = styled.div`
 `;
 
 const SaveButton = styled.button`
-  width: 100%;
+  flex: 3;
   background-color: #3AAF85;
   color: white;
   padding: 15px 20px;
@@ -170,7 +170,7 @@ const SaveButton = styled.button`
   border-radius: 10px;
   cursor: pointer;
   font-size: 18px;
-  font-family: Pretendard;
+  font-family: Regular;
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
@@ -232,6 +232,31 @@ const RadioWrapper = styled.div`
   cursor: pointer;
 `;
 
+const ButtonBox = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 15px;
+`;
+
+const DelButton = styled.div`
+    flex: 1;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    border: 1.5px solid var(--sub-rd, #FA7C79);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--sub-rd, #FA7C79);
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+`;
+
 //다현 추가
 const categoryMap = {
   "동아리": 1,
@@ -243,7 +268,7 @@ const categoryMap = {
   "기타활동": 7
 };
 
-const AddCareerModal = ({ onClose, onSave }) => {
+const AddCareerModalEdit = ({ onClose, onSave }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   
   const [category, setCategory] = useState('');
@@ -293,7 +318,12 @@ const AddCareerModal = ({ onClose, onSave }) => {
 
   const hasError = !category || !careerName || !alias || (!isUnknown && (!startDate || !endDate)) || (isUnknown && !startDate);
 
- 
+  const handleDel = async () => {
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
+      alert('삭제되었습니다.');
+      onClose();
+    }
+  };
 
     const handleSave = async() => {
       if (hasError) {
@@ -361,7 +391,7 @@ const AddCareerModal = ({ onClose, onSave }) => {
       <ModalContent>
         <CloseButton onClick={onClose}>×</CloseButton>
         <ContentArea>
-          <ModalTitle>활동 추가</ModalTitle>
+          <ModalTitle>활동 수정</ModalTitle>
           <Label>분류</Label>
           <CategoryArea>
             {["동아리", "대외활동", "공모전/대회", "프로젝트", "아르바이트/인턴", "교육", "기타활동"].map((category) => (
@@ -442,7 +472,11 @@ const AddCareerModal = ({ onClose, onSave }) => {
             value={summary}
             onChange={(e) => setSummary(e.target.value)}
           />
-          <SaveButton onClick={handleSave}>저장</SaveButton>
+          <ButtonBox>
+            <DelButton onClick={handleDel}>삭제</DelButton>
+            <SaveButton onClick={handleSave}>저장</SaveButton>
+          </ButtonBox>
+          
           <ErrorMessage isError={hasError}>필수 정보를 입력하세요!</ErrorMessage>
           <br></br>
         </ContentArea>
@@ -451,7 +485,7 @@ const AddCareerModal = ({ onClose, onSave }) => {
   );
 };
 
-export default AddCareerModal;
+export default AddCareerModalEdit;
 
 
 
