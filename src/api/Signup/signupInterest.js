@@ -1,11 +1,12 @@
-export const saveInterests = async (interestList) => {
+export const saveInterests = async (interestingList) => {
     try {
+      console.log('Sending data to server:', { field: interestingList });
       const response = await fetch('https://api.kkijuk.com/member/field', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ field: interestList }),
+        body: JSON.stringify({ field: interestingList }),
       });
   
       if (!response.ok) {
@@ -16,6 +17,8 @@ export const saveInterests = async (interestList) => {
       return await response.json();
     } catch (error) {
       console.error('Error saving interests:', error);
+      console.log('Interest list being sent:', interestingList);
+
       throw error;
     }
   };

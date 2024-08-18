@@ -8,7 +8,6 @@ import AddJobButton from '../components/shared/AddJobButton'; //버튼추가
 import AddCareerModal from '../components/shared/AddCareerModal'; //모달 내용
 import Timeline from '../components/Mycareer/Timeline';
 import {CareerViewSelect} from '../api/Mycareer/CareerviewSelect';
-import AddCareerModalEdit from '../components/shared/AddCareerModalEdit';
 
 const Container = styled.div`
   max-width: 820px;
@@ -61,7 +60,7 @@ export default function Mycareer() {
 
       <AddJobButton onClick={() => setShowModal(true)} />
       {showModal && (
-        <AddCareerModalEdit
+        <AddCareerModal
           onClose={() => setShowModal(false)}
           onSave={handleAddCareer}
         />
