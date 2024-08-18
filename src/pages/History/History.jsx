@@ -6,6 +6,7 @@ import EducationItem from '../../components/History/Resume/EducationItem';
 import EditItem from '../../components/History/Resume/EditItem';
 import CareerItem from '../../components/History/Resume/CareerItem';
 import AddItem from '../../components/History/Resume/AddItem';
+import AddCareerModal from '../../components/shared/AddCareerModal';
 
 //Todo
 //- +버튼 onClick 함수 정의
@@ -86,39 +87,42 @@ const History = () => {
     const [isEdit, setIsEdit] = useState([false, false]);
     const [isAddItemOpen, setIsAddItemOpen] = useState(false);
     const [show, setShow] = useState(false);//추가 불가 알람창
+    const [isEditActModalOpen, setIsEditActModalOpen] = useState(false);
+    const [isAddActModalOpen, setIsAddActModalOpen] = useState(false);
 
     //(Actions)
+    //학력 편집모드->읽기모드 전환
     const handleCancelEdit = (index) => {
         setIsEdit(prev => prev.map((edit, i) => i === index ? false : edit));
     };
-
+    //학력 읽기모드->편집모드 전환
     const handleEdit = (index) => {
         setIsEdit(prev => prev.map((edit, i) => i === index ? true : edit));
     };
-
+    //학력 추가 취소
     const handleCancleAdd=()=>{
         setIsAddItemOpen(false);
     }
-
+    //학력 추가 제한
     const showLimiter =()=>{
         setShow(true);
         setTimeout(()=>{
             setShow(false);
         },3000);
     }
-
+    //학력 추가 제한
     const handleAdd = ()=>{
         isAddItemOpen 
         ? showLimiter()
         : setIsAddItemOpen(true);
     }
-
+    //학력 수정
     const editEducation =(index, updatedData)=>{
         setEducations(prev => prev.map((education, i) => i === index ? {...education, ...updatedData}: education));
         handleCancelEdit(index);
         console.log(updatedData);
     }
-
+    //학력 추가
     const addEducation =(updatedData)=>{
         console.log(updatedData);
         if(!updatedData){
@@ -129,15 +133,28 @@ const History = () => {
             setIsAddItemOpen(false);
         }
     }
-
+    //학력 삭제
     const deleteEducation =(index)=>{
         setEducations(prev => prev.filter((_,i) => i !== index));
         handleCancelEdit(index);
     }
+    //활동 추가 모달 토글
+    const toggleAddActModalOpen =()=>{
+        setIsAddActModalOpen(!isAddActModalOpen);
+    }
+    //활동 수정 모달 토글
+    const toggleEditActModalOpen =()=>{
+        setIsEditActModalOpen(!isEditActModalOpen);
+    }
+    //활동수정
+    //추가 예정
 
     return (
         <BackgroundDiv>
+
             <BaseDiv>
+            {isAddActModalOpen && <AddCareerModal onClose={toggleAddActModalOpen}/>}
+            {/* {isEditActModalOpen && <AddCareerModal onClose={toggleEditActModalOpen}/>} */}
                 {/* 1. Profiles */}
                 <div style={{display:'flex', alignContent:'center', gap:'40px'}}>
                     <div style={{width:'150px', height:'200px',backgroundColor:'#707070'}}>
@@ -184,17 +201,25 @@ const History = () => {
                 {/* (3) Careers */}
                 <h3 style={{marginBottom:'30px'}}>경력</h3>
                 {careers.map((career, index)=>(
-                    <CareerItem key={index} dummy={career} isLastItem={index === careers.length - 1}/>
+                    <CareerItem 
+                        key={index} 
+                        dummy={career} 
+                        isLastItem={index === careers.length - 1}
+                        onEdit={toggleEditActModalOpen}/>
                 ))}
-                <AddButton>+</AddButton>
+                <AddButton onClick={toggleAddActModalOpen}>+</AddButton>
 
                 <Linear />
                 {/* (4) Activities */}
                 <h3 style={{marginBottom:'30px'}}>활동 및 경험</h3>
                 {activities.map((activity, index)=>(
-                    <CareerItem key={index} dummy={activity} isLastItem={index === activities.length - 1}/>
+                    <CareerItem 
+                        key={index} 
+                        dummy={activity} 
+                        isLastItem={index === activities.length - 1}
+                        onEdit={toggleEditActModalOpen}/>
                 ))}
-                <AddButton>+</AddButton>
+                <AddButton onClick={toggleAddActModalOpen}>+</AddButton>
             </BaseDiv>
         </BackgroundDiv>
     );

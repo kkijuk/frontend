@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const CareerItem = ({ dummy, isLastItem }) => {
+const CareerItem = ({ dummy, isLastItem, onEdit }) => {
 
     const today = new Date();
     const formattedToday = today.toISOString().slice(0,7).replace('-','.');
@@ -25,6 +25,7 @@ const CareerItem = ({ dummy, isLastItem }) => {
 
                 </SchoolInfo>
             </div>
+            <EditButton id='edit' onClick={onEdit}>수정</EditButton>
         </Container>
         </div>
 
@@ -93,13 +94,21 @@ const EditButton = styled.button`
   padding: 5px 10px;
   opacity:0;
   transition: opacity 0.5 ease-in-out;
+  position:absolute;
+  right:20px;
 `;
 
 const Container = styled.div`
+  width:820px;
   display: flex;
   align-items: flex-start;
   margin-bottom: 45px;
   font-family:'Regular';
+    &:hover ${EditButton} {
+    opacity:1;
+    cursor:pointer;
+    positon:relative;
+}
 `;
 
 const LevelTag = styled.div`
