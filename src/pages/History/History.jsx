@@ -1,8 +1,11 @@
+import api from '../../Axios';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import './history.css';
-import EducationItem from '../../components/History/EducationItem';
-import EditItem from '../../components/History/EditItem';
+import EducationItem from '../../components/History/Resume/EducationItem';
+import EditItem from '../../components/History/Resume/EditItem';
+import CareerItem from '../../components/History/Resume/CareerItem';
+import AddItem from '../../components/History/Resume/AddItem';
 
 //Todo
 //- +버튼 onClick 함수 정의
@@ -12,9 +15,9 @@ import EditItem from '../../components/History/EditItem';
 const History = () => {
 
     const profileTitles = ["이름", "생년월일", "전화번호", "이메일", "주소"];
-    const [isEdit, setIsEdit] = useState([false, true]);
 
-    const [profile] = useState({
+    //(Data) - dummy
+    const [profiles, setProfiles] = useState({
         name:"박하은",
         birth:"1999.07.17",
         mobile:"010-1234-5678",
@@ -22,7 +25,7 @@ const History = () => {
         address:"주소를 입력하세요"
     });
 
-    const [educations] = useState([
+    const [educations, setEducations] = useState([
         {
             level : "대학교",
             schoolName : "서울여자대학교",
@@ -39,7 +42,52 @@ const History = () => {
             status : "졸업"
         }
     ]);
+    
+    const [careers,setCareers] = useState([
+        {
+            category:"아르바이트",
+            title:"하늘학원",
+            startDate:"2023.06",
+            endDate:"2024.01",
+            period:8,
+            task:"중학생 수업 지도"
+        }
+    ])
 
+    const [activities, setActivities] = useState([
+        {
+            category:"동아리",
+            title:"IT 서비스 개발 동아리 / UMC",
+            startDate:"2024.03",
+            endDate:"2024.08",
+            period:8,
+            task:"스터디, 웹서비스 기획(팀 프로젝트)"
+        },
+        {
+            category:"대외활동",
+            title:"하나은행 대학생 서포터즈 1기",
+            startDate:"2023.12",
+            endDate:"2024.02",
+            period:8,
+            task:"SNS 콘텐츠 제작, 오프라인 캠페인 기획"
+        },
+        {
+            category:"공모전",
+            title:"서울시 공공데이터 공모전",
+            startDate:"2023.09",
+            endDate:"2023.10",
+            period:8,
+            task:"공공데이터 활용 웹 서비스 기획 및 개발"
+        },
+        
+    ])
+
+    //state
+    const [isEdit, setIsEdit] = useState([false, false]);
+    const [isAddItemOpen, setIsAddItemOpen] = useState(false);
+    const [show, setShow] = useState(false);//추가 불가 알람창
+
+    //(Actions)
     const handleCancelEdit = (index) => {
         setIsEdit(prev => prev.map((edit, i) => i === index ? false : edit));
     };
@@ -48,9 +96,49 @@ const History = () => {
         setIsEdit(prev => prev.map((edit, i) => i === index ? true : edit));
     };
 
+    const handleCancleAdd=()=>{
+        setIsAddItemOpen(false);
+    }
+
+    const showLimiter =()=>{
+        setShow(true);
+        setTimeout(()=>{
+            setShow(false);
+        },3000);
+    }
+
+    const handleAdd = ()=>{
+        isAddItemOpen 
+        ? showLimiter()
+        : setIsAddItemOpen(true);
+    }
+
+    const editEducation =(index, updatedData)=>{
+        setEducations(prev => prev.map((education, i) => i === index ? {...education, ...updatedData}: education));
+        handleCancelEdit(index);
+        console.log(updatedData);
+    }
+
+    const addEducation =(updatedData)=>{
+        console.log(updatedData);
+        if(!updatedData){
+            console.log('내용이 없음');
+        }
+        else{
+            setEducations(prev=>[...prev, updatedData]);
+            setIsAddItemOpen(false);
+        }
+    }
+
+    const deleteEducation =(index)=>{
+        setEducations(prev => prev.filter((_,i) => i !== index));
+        handleCancelEdit(index);
+    }
+
     return (
         <BackgroundDiv>
             <BaseDiv>
+                {/* 1. Profiles */}
                 <div style={{display:'flex', alignContent:'center', gap:'40px'}}>
                     <div style={{width:'150px', height:'200px',backgroundColor:'#707070'}}>
                         {/* 프로필사진 */}
@@ -61,30 +149,51 @@ const History = () => {
                         ))}
                     </div>
                     <div style={{height:'203px'}}>
-                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profile.name}</p>
-                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profile.birth}</p>
-                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profile.mobile}</p>
-                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profile.email}</p>
-                        <p style={{color:'#707070', fontSize:'14px', textDecorationLine:'underline',margin:'15px 0px'}}>{profile.address}</p>
+                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profiles.name}</p>
+                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profiles.birth}</p>
+                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profiles.mobile}</p>
+                        <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profiles.email}</p>
+                        <p style={{color:'#707070', fontSize:'14px', textDecorationLine:'underline',margin:'15px 0px'}}>{profiles.address}</p>
                     </div>
                 </div>
 
                 <Linear />
-
+                {/* (2) Educations */}
                 <h3>학력</h3>
                 {educations.map((education, index) => (
                     isEdit[index] 
-                    ? <EditItem key={index} dummy={education} onCancel={() => handleCancelEdit(index)} /> 
-                    : <EducationItem key={index} dummy={education} onEdit={() => handleEdit(index)} />
+                    ? <EditItem key={index} 
+                        dummy={education}  
+                        isLastItem={index === educations.length - 1}
+                        onCancel={() => deleteEducation(index)}
+                        onEdit={(updatedData)=>editEducation(index, updatedData)}
+                        /> 
+                    : <EducationItem key={index} dummy={education} onEdit={() => handleEdit(index)}
+                        isLastItem={index === educations.length - 1} />
+                ))}
+                <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+                    {isAddItemOpen &&
+                        <AddItem onCancel={handleCancleAdd} onAdd={(updatedData)=>addEducation(updatedData)}></AddItem>}
+                    <AddButton onClick={handleAdd}>+</AddButton>
+                    <Limiter show={show}>현재 학력을 먼저 채워주세요!</Limiter>
+                </div>
+
+
+                
+                <Linear />
+                {/* (3) Careers */}
+                <h3 style={{marginBottom:'30px'}}>경력</h3>
+                {careers.map((career, index)=>(
+                    <CareerItem key={index} dummy={career} isLastItem={index === careers.length - 1}/>
                 ))}
                 <AddButton>+</AddButton>
-                <Linear />
 
-                <h3>경력</h3>
-                <AddButton>+</AddButton>
                 <Linear />
-
-                <h3>활동 및 경험</h3>
+                {/* (4) Activities */}
+                <h3 style={{marginBottom:'30px'}}>활동 및 경험</h3>
+                {activities.map((activity, index)=>(
+                    <CareerItem key={index} dummy={activity} isLastItem={index === activities.length - 1}/>
+                ))}
                 <AddButton>+</AddButton>
             </BaseDiv>
         </BackgroundDiv>
@@ -126,5 +235,26 @@ const AddButton = styled.button`
     color:#D9D9D9;
     font-size: 30px;
     cursor:pointer;
+
+    &:hover{
+        border:1px solid #707070;
+        color:#707070;
+    }
 `;
 
+const Limiter = styled.div`
+    width:200px;
+    height: 80px;
+    background-color: RGBA(0,0,0,0.7);
+    color:white;
+    font-family:Regular;
+    font-size:16px;
+    border-radius:10px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:fixed;
+    top:550px;
+    opacity: ${props => props.show ? 1 : 0};
+    transition: opacity 1s;
+`

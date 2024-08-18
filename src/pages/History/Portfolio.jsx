@@ -3,9 +3,9 @@ import styled from 'styled-components'
 import './history.css'
 import SubNav from '../../components/History/SubNav'
 import Alert from '../../components/History/Alert'
-import Date from '../../components/History/Date'
-import Edu from '../../components/History/Edu'
-import EducationList from '../../components/History/EducationList'
+import Date from '../../components/History/Resume/Date'
+import Edu from '../../components/History/Resume/Edu'
+import EducationList from '../../components/History/Resume/EducationList'
 
 const Portfolio=()=>{
     const [modalOpend, setModalOpend] = useState(false);

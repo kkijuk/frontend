@@ -1,16 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 
-const Convert =()=>{
-
-    return(
+const Convert = () => {
+    return (
         <Button>문서로 내보내기</Button>
-    )
+    );
 }
 
 export default Convert
 
-const Button=styled.div`
+const Button = styled.button`
     width: 150px;
     height: 35px;
     flex-shrink: 0;
@@ -23,5 +22,7 @@ const Button=styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: 35px;
-    cursor:pointer;
-`
+    cursor: pointer;
+    border: none;
+    outline: none;
+`;
