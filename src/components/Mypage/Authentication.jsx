@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { fetchEmail, verifyPassword } from "../../api/Mypage/Myinformation";
 
 const Container = styled.div`
     display: flex;
@@ -97,32 +98,31 @@ export default function Authentication() {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        // 백엔드 API 호출
-        axios.get('/member/myPage/email')
-            .then(response => {
-                setEmail(response.data.email);
-            })
-            .catch(error => {
-                console.error("There was an error fetching the email!", error);
-            });
+        const loadEmail = async () => {
+            try {
+                const fetchedEmail = await fetchEmail();
+                setEmail(fetchedEmail);
+            } catch (error) {
+                setError('이메일을 불러오는 중 오류가 발생했습니다.');
+            }
+        };
+        loadEmail();
     }, []);
 
-    const handleConfirm = () => {
-        // 비밀번호 확인을 위한 백엔드 API 호출
-        axios.post('/member/myPage/verifyPassword', { email, password })
-            .then(response => {
-                if (response.data.valid) {
-                    setError('');
-                    // 비밀번호가 일치하는 경우 처리 로직 추가
-                } else {
-                    setError('비밀번호가 일치하지 않습니다.');
-                }
-            })
-            .catch(error => {
-                setError('서버와 통신 중 오류가 발생했습니다.');
-                console.error("There was an error verifying the password!", error);
-            });
+    const handleConfirm = async () => {
+        try {
+            const isValid = await verifyPassword(email, password);
+            if (isValid) {
+                setError('');
+                // 비밀번호가 일치하는 경우 처리 로직 추가
+            } else {
+                setError('비밀번호가 일치하지 않습니다.');
+            }
+        } catch (error) {
+            setError('서버와 통신 중 오류가 발생했습니다.');
+        }
     };
+
 
     return (
         <Container>
@@ -143,7 +143,10 @@ export default function Authentication() {
                         비밀번호
                     </Text1>
                     <PasswordInput
+                        type="password"
                         placeholder="특수문자 포함, 8자리 이상 입력하세요"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
                 </Password>
             </Box2>

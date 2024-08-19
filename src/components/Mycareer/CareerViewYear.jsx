@@ -114,7 +114,7 @@ const CareerViewYear = ({data}) => {
   };
 
   if (!Array.isArray(data.data)) {
-    console.error('data is not an array:', data);
+    console.log("data값:", data);
     return null;
   }
 

@@ -3,10 +3,6 @@ import styled from 'styled-components';
 
 const EducationItem = ({ dummy, onEdit, isLastItem }) => {
 
-    const today = new Date();
-    const formattedToday = today.toISOString().slice(0,7).replace('-','.');
-    const isPastDue = dummy.endDate < formattedToday; //true: 기한 경과, false: 기한 내
-
     return (
       <div style={{display:'flex'}}>
         <TimeLine>
@@ -83,7 +79,7 @@ const EditButton = styled.button`
   border-radius: 10px;
   padding: 5px 10px;
   opacity:0;
-  transition: opacity 0.5 ease-in-out;
+  transition: opacity 0.2s ease-in-out;
   position:absolute;
   right:20px;
 `;

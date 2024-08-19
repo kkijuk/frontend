@@ -1,5 +1,5 @@
 import api from '../../Axios.js'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import './history.css'
@@ -70,6 +70,12 @@ const OthersRewrite=()=> {
     const [addJobModalOpened, setAddJobModalOpened] = useState(false); //공고 추가 모달
     const [show, setShow] = useState(false);//추가 불가 알람창
     const [gotoShow, setGotoShow] = useState(false);//공고 보러가기 불가 알람창
+    const [charCounts, setCharCounts] = useState([]);
+    
+    useEffect(()=>{
+        setCharCounts(questions.map((question) => question.content.length));
+    },[questions]);
+    
 
     //(API) 자기소개서 개별 조회
     useState(()=>{
@@ -128,7 +134,9 @@ const OthersRewrite=()=> {
         const newQuestions = questions.map((question=>
             question.number === number ? {...question, [field]:event.target.value} : question
         ));
-        setQuestions(newQuestions);     
+        setQuestions(newQuestions); 
+        setCharCounts(prev=>prev.map((count, i)=>i===number ? event.target.value.length : count));   
+        console.log(charCounts); 
     }
     const submitData=()=>{
         const Data = {
@@ -268,6 +276,10 @@ const OthersRewrite=()=> {
                                 value={question.content || ''}
                                 onChange={(e)=>handleInputChange(question.number,'content',e)}
                             />
+                            <p style={{fontFamily:'Regular', fontSize:'16px', color:'#707070', position:'absolute', right:'20px', top:`${index+165}px` }}>
+                                {charCounts[index]} (공백포함)
+                            </p>
+
                         </div>
                     ))}
                 </form>

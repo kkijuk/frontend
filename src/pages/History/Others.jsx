@@ -67,7 +67,7 @@ const Others=()=> {
                     ))}
 
                     <div style={{display:'inline-block',position:'absolute',right:0}}>
-                        <p className='lastUpdated' style={{color:'red', marginBottom:'8px'}}>공고 마감 일시 : {ContentCopySharp.deadline}</p>
+                        <p className='lastUpdated' style={{color:'red', marginBottom:'8px'}}>공고 마감 일시 : {contents.deadline}</p>
                         <p className='lastUpdated' style={{marginTop:0}}>마지막 수정일시: {contents.updatedAt}</p>                  
                     </div>
                 </ContentTitle>
