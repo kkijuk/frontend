@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 
@@ -43,15 +43,11 @@ const CountPageText = styled.h6`
 const BannerSlide = styled.div`
   width: 100%;
   height: 100%;
-    background-image: url(${props => {
-    console.log(props.image);
-    return props.image;
-  }});
-  //background-image: url(${props => props.image});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 `;
+
 
 
 const settings = {
@@ -68,6 +64,16 @@ const settings = {
 export default function Banner({ banners }) {
     const [currentSlide, setCurrentSlide] = useState(0);
 
+    useEffect(()=>{
+      console.log(banners);
+    },[]);
+
+    const handleClick = () => {
+      if (banners.url) {
+          window.open(banners.url, '_blank');
+      }
+  };
+
     const handleAfterChange = (current) => {
         setCurrentSlide(current);
       };
@@ -76,7 +82,14 @@ export default function Banner({ banners }) {
         <Container>
             <Slider {...settings} afterChange={handleAfterChange}>
                 {banners.map((banner, index) => (
-                    <BannerSlide key={index} image={banner.image} />
+                    <BannerSlide 
+                    key={index} 
+                    // style={{ backgroundImage: `url(${banner.image})` }} 
+
+                    onClick={() => handleClick(banner.url)}
+                >
+                  <img src='banner.image'/>
+                </BannerSlide>
             ))}
             </Slider>
             <CountPage>
