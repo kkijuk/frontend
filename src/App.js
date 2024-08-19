@@ -16,10 +16,10 @@ import SubNav from './components/History/SubNav';
 import ViewOptions from './pages/History/ViewOptions';
 import History from "./pages/History/History";
 import Master from "./pages/History/Master";
-import Others from "./pages/History/Others"
-import MasterRewrite from "./pages/History/MasterRewrite"
-import OthersRewrite from "./pages/History/OthersRewrite"
-import List from "./pages/History/List"
+import Others from "./pages/History/Others";
+import MasterRewrite from "./pages/History/MasterRewrite";
+import OthersRewrite from "./pages/History/OthersRewrite";
+import List from "./pages/History/List";
 import Select from './pages/History/Select';
 import AddApply from "./pages/History/AddApply";
 import Portfolio from "./pages/History/Portfolio";
@@ -36,7 +36,7 @@ import SignupInterest from './pages/SignupInterest';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FilterPage from './components/Apply/FilterPage';
-
+import { AuthProvider } from './components/AuthContext'; // AuthContext import
 
 const AppContainer = styled.div`
   display: flex;
@@ -60,15 +60,12 @@ const App = () => {
       <Header />
       <MainContent>
         <Routes>
-          {/*Mycareer*/}
+          {/* Mycareer */}
           <Route path="/mycareer/:careerId" element={<MyCareerDetail />} />
-
-
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signupsuccess" element={<SignupSuccess />} />
-          
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mycareer" element={<MyCareer />} />
           <Route path="/signupinterest" element={<SignupInterest />} />
@@ -81,8 +78,8 @@ const App = () => {
             <Route path="/history" element={<History />} />
             <Route path="/history/portfolio" element={<Portfolio />} />
           </Route>
-          <Route path="/history/master/rewrite" element={<MasterRewrite/>}/>
-          <Route path="/history/others/:id/rewrite" element={<OthersRewrite/>}/>
+          <Route path="/history/master/rewrite" element={<MasterRewrite />} />
+          <Route path="/history/others/:id/rewrite" element={<OthersRewrite />} />
           <Route path="/history/select" element={<Select />} />
           <Route path="/history/add_apply" element={<AddApply />} />
           <Route path="/apply-schedule" element={<ApplySchedule />} /> {/* 지원일정 */}
@@ -95,7 +92,6 @@ const App = () => {
           <Route path="/mypage/accountmanagement" element={<AccountMangement />} />
           <Route path="/mypage/field" element={<Field />} />
           <Route path="/mypage/fieldedit" element={<FieldEdit />} />
-
           <Route path="/mypage/passwordresetemail" element={<PasswordResetEmail />} />
           <Route path="/mypage/passwordresetemailconfirm" element={<PasswordResetEmailConfirm />} />
           <Route path="/mypage/passwordreset" element={<PasswordReset />} />
@@ -110,7 +106,9 @@ const App = () => {
 export default function AppWrapper() {
   return (
     <Router>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </Router>
   );
 }
