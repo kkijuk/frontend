@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../assets/logo.png';
+import { useAuth } from '../components/AuthContext';
+import { logout } from '../api/Login/Logout';
 
 const HeaderWrapper = styled.div`
   width: 100%;
@@ -20,7 +22,7 @@ const HeaderStyle = styled.div`
   margin: 0 auto;
   padding: 0 20px;
 
-   @media (max-width: 855px) {
+  @media (max-width: 855px) {
     padding: 0 15px;
   }
 `;
@@ -54,7 +56,7 @@ const Nav = styled.nav`
     position: relative;
     font-family: Bold;
 
-     @media (max-width: 855px) {
+    @media (max-width: 855px) {
       margin: 0 15px;
       font-size: 18px;
     }
@@ -71,7 +73,7 @@ const Nav = styled.nav`
     margin-top: 3px;
     margin-right: 7px;
 
-      @media (max-width: 855px) {
+    @media (max-width: 855px) {
       margin-top: 0;
       font-size: 16px;
     }
@@ -87,9 +89,10 @@ const Nav = styled.nav`
     background-color: #3AAF85;
     bottom: -22px;
     left: 0;
-    
-     @media (max-width: 855px) {
-     bottom: -24px;
+
+    @media (max-width: 855px) {
+      bottom: -24px;
+    }
   }
 `;
 
@@ -140,14 +143,23 @@ const DropdownMenu = styled.div`
   }
 `;
 
-export default function Header() {
+export default function Header() { 
   const navigate = useNavigate();
   const location = useLocation();
-  const [isLoggedin, setIsLoggedin] = useState(false);
+  const { isLoggedIn, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleUserProfileButtonClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login'); 
+    } catch (error) {
+      console.error('로그아웃 실패:', error.message);
+    }
   };
 
   return (
@@ -174,7 +186,7 @@ export default function Header() {
                 className={location.pathname === '/history' ? 'active' : ''}
               >
                 이력관리
-                </li>
+              </li>
               <li
                 onClick={() => navigate('/apply-schedule')} 
                 className={location.pathname === '/apply-schedule' ? 'active' : ''}
@@ -187,7 +199,7 @@ export default function Header() {
               >
                 커뮤니티
               </li>
-              {!isLoggedin ? (
+              {!isLoggedIn ? (
                 <>
                   <li
                     onClick={() => navigate('/login')}
@@ -204,40 +216,32 @@ export default function Header() {
                 </>
               ) : null}
             </ul>
-            {isLoggedin && (
-  <UserProfileButton onClick={handleUserProfileButtonClick}>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="30"
-      height="30"
-      viewBox="0 0 30 30"
-      fill="none"
-      style={{ width: '30px', height: '30px', borderRadius: '10px' }}
-    >
-      <path d="M15 15C18.4518 15 21.25 12.2018 21.25 8.75C21.25 5.29822 18.4518 2.5 15 2.5C11.5482 2.5 8.75 5.29822 8.75 8.75C8.75 12.2018 11.5482 15 15 15Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M25.7377 27.5C25.7377 22.6625 20.9252 18.75 15.0002 18.75C9.07519 18.75 4.2627 22.6625 4.2627 27.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-    {isDropdownOpen && (
-      <DropdownMenu>
-        <a onClick={() => navigate('/mypage/authentication')}>내 정보</a>
-        <a onClick={() => navigate('/mypage/field')}>관심분야 설정</a>
-        <a onClick={() => navigate('/mypage/accountmanagement')}>계정 관리</a>
-        <a onClick={() => {
-          setIsLoggedin(false); 
-          navigate('/logout');
-        }}>로그아웃</a>
-      </DropdownMenu>
-    )}
-  </UserProfileButton>
-)}
-
+            {isLoggedIn && (
+              <UserProfileButton onClick={handleUserProfileButtonClick}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="30"
+                  height="30"
+                  viewBox="0 0 30 30"
+                  fill="none"
+                  style={{ width: '30px', height: '30px', borderRadius: '10px' }}
+                >
+                  <path d="M15 15C18.4518 15 21.25 12.2018 21.25 8.75C21.25 5.29822 18.4518 2.5 15 2.5C11.5482 2.5 8.75 5.29822 8.75 8.75C8.75 12.2018 11.5482 15 15 15Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M25.7377 27.5C25.7377 22.6625 20.9252 18.75 15.0002 18.75C9.07519 18.75 4.2627 22.6625 4.2627 27.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                {isDropdownOpen && (
+                  <DropdownMenu>
+                    <a onClick={() => navigate('/mypage/authentication')}>내 정보</a>
+                    <a onClick={() => navigate('/mypage/field')}>관심분야 설정</a>
+                    <a onClick={() => navigate('/mypage/accountmanagement')}>계정 관리</a>
+                    <a onClick={handleLogout}>로그아웃</a>
+                  </DropdownMenu>
+                )}
+              </UserProfileButton>
+            )}
           </Nav>
         </NavContainer>
       </HeaderStyle>
     </HeaderWrapper>
   );
 }
-
-
-
-
