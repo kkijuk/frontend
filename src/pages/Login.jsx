@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import logo from '../assets/logo.png';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../api/Login/Login'; 
+import { useAuth } from '../components/AuthContext';
 
 const LoginScreen = styled.div`
   max-width: 400px;
@@ -99,14 +100,15 @@ const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
   
   const navigate = useNavigate(); 
+  const { login: setLoginState } = useAuth(); 
 
   const handleLogin = async () => {
     try {
       const result = await login({ email, password });
       console.log('로그인 성공:', result);
 
-      
       if (result.message === "login success") {
+        setLoginState(true); // 로그인 상태 업데이트
         navigate('/'); 
       } else {
         setErrorMessage(result.message || "로그인 실패");
