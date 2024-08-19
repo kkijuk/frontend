@@ -36,7 +36,7 @@ import SignupInterest from './pages/SignupInterest';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FilterPage from './components/Apply/FilterPage';
-import { AuthProvider } from './components/AuthContext'; // AuthContext import
+import { AuthProvider } from './components/AuthContext'; // AuthContext 임포트
 
 const AppContainer = styled.div`
   display: flex;
@@ -60,7 +60,6 @@ const App = () => {
       <Header />
       <MainContent>
         <Routes>
-          {/* Mycareer */}
           <Route path="/mycareer/:careerId" element={<MyCareerDetail />} />
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -82,8 +81,8 @@ const App = () => {
           <Route path="/history/others/:id/rewrite" element={<OthersRewrite />} />
           <Route path="/history/select" element={<Select />} />
           <Route path="/history/add_apply" element={<AddApply />} />
-          <Route path="/apply-schedule" element={<ApplySchedule />} /> {/* 지원일정 */}
-          <Route path="/apply-status" element={<ApplyStatus />} /> {/* 지원현황 */}
+          <Route path="/apply-schedule" element={<ApplySchedule />} /> 
+          <Route path="/apply-status" element={<ApplyStatus />} /> 
           <Route path="/apply-detail/:id" element={<ApplyDetail />} />
           <Route path="/filter" element={<FilterPage />} />
           <Route path="/community" element={<Community />} />
@@ -106,9 +105,9 @@ const App = () => {
 export default function AppWrapper() {
   return (
     <Router>
-      <AuthProvider>
+      <AuthProvider> {/*이부분*/}
         <App />
-      </AuthProvider>
+      </AuthProvider>  {/*이부분*/}
     </Router>
   );
 }
