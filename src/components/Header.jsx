@@ -143,7 +143,7 @@ const DropdownMenu = styled.div`
 export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isLoggedin, setIsLoggedin] = useState(true);
+  const [isLoggedin, setIsLoggedin] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleUserProfileButtonClick = () => {
