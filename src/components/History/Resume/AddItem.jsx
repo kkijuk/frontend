@@ -6,12 +6,12 @@ import Date from './Date'
 
 const AddItem=({ onCancel, onAdd })=>{
     const [formData, setFormData] = useState({
-        level : '',
+        category : '',
         schoolName :'',
-        department :  '',
-        startDate :  '',
-        endDate :  '',
-        status :  ''
+        major :  '',
+        admissionDate :  '',
+        graduationDate :  '',
+        state :  ''
 
     })
 
