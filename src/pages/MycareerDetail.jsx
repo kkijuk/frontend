@@ -3,9 +3,11 @@ import styled from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom'; // URL에서 careerId를 가져오기 위해 사용
 import Careerbox from '../components/MyCareerDetail/CareerBox';
 import CareerList from '../components/MyCareerDetail/CareerList';
+import EditIcon from '@mui/icons-material/Edit';
+
 import DetailAdd from '../components/MyCareerDetail/DetailAdd';
 import CareerNameTag from '../components/shared/CareerNameTag';
-import EditIconBig from '../components/shared/EditIconBigSIze';
+import AddCareerModalEdit from '../components/shared/AddCareerModalEdit';
 import { CareerViewSelect } from '../api/Mycareer/CareerviewSelect';
 import { ViewCareerDetail } from '../api/Mycareer/ViewCareerDetail';
 
@@ -67,6 +69,9 @@ const CareerTitle = styled.div`
   align-items: flex-start;
   border: 1px solid black;
   padding-bottom: 10px;
+
+    position: relative; /* Add this line */
+
 `;
 
 const ActivityDetails = styled.div`
@@ -159,12 +164,25 @@ const MyCareerText = styled.div`
   font-weight: 700;
   line-height: normal;
 `;
+const EditIconStyled = styled(EditIcon)`
+   width: 30px !important;  /* !important를 사용하여 우선순위를 높임 */
+  height: 30px !important; /* !important를 사용하여 우선순위를 높임 */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #707070 !important; /* color 속성을 사용하여 색상 변경 */
+`;
+
 
 export default function MycareerDetail() {
   const [careers, setCareers] = useState([]); // CareerBox에 들어갈 데이터
   const [selectedCareerDetail, setSelectedCareerDetail] = useState(null); // 선택된 CareerBox의 상세 정보
   const [isAdding, setIsAdding] = useState(false); // 활동 기록 추가 상태
   const { careerId } = useParams(); // URL에서 careerId 추출
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // 모달 상태 추가
+  const [modalData, setModalData] = useState(null); // 모달에 표시할 데이터 상태
+
   const navigate = useNavigate(); // useNavigate 훅 추가
 
   // 데이터 가져오기 및 careerId에 해당하는 CareerBox 선택
@@ -197,7 +215,33 @@ export default function MycareerDetail() {
     }
   };
 
+ // 모달 열기 핸들러
+ const handleEditClick = async () => {
+  console.log('Edit icon clicked');
 
+  if (careerId) {
+    try {
+      const careerDetailData = await ViewCareerDetail(careerId);
+      console.log('모달에 보낼 데이터:', careerDetailData);
+      
+      setIsEditModalOpen(true);
+      setModalData(careerDetailData);
+    } catch (error) {
+      console.log('Error fetching career details:', error);
+    }
+  }
+};
+
+// 모달 닫기 핸들러
+const handleModalClose = () => {
+  setIsEditModalOpen(false);
+};
+
+// 모달 저장 핸들러 (여기에 실제 저장 로직 추가)
+const handleModalSave = (data) => {
+  console.log('저장된 데이터:', data);
+  // 여기서 데이터를 저장하거나 상태를 업데이트할 수 있습니다.
+};
 
 
   return (
@@ -243,7 +287,9 @@ export default function MycareerDetail() {
               </>
             )}
           </div>
-          <EditIconBig />
+          <EditIconStyled  onClick={handleEditClick} />
+
+                
         </CareerTitle>
       </Container1>
       <Container2>
@@ -269,6 +315,15 @@ export default function MycareerDetail() {
           활동 기록 추가
         </CareerPlus>
       </Container3>
+
+      {isEditModalOpen && (
+        <AddCareerModalEdit
+        
+          onClose={handleModalClose}
+          onSave={handleModalSave}
+          data={modalData}
+        />
+      )}
     </Body>
   );
 }

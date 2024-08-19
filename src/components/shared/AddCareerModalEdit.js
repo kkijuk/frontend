@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CategoryGroup from './CategoryGroup';
 import ReactCalendar from './CalendarSingle';
 import moment from 'moment';
+import CareerDeleteModal from './DeleteModalCareer'
 import { addCareer } from '../../api/Mycareer/Mycareer';
 
 const ModalBackdrop = styled.div`
@@ -268,7 +269,7 @@ const categoryMap = {
   "기타활동": 7
 };
 
-const AddCareerModalEdit = ({ onClose, onSave }) => {
+const AddCareerModalEdit = ({ onClose, onSave, data }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   
   const [category, setCategory] = useState('');
@@ -283,6 +284,22 @@ const AddCareerModalEdit = ({ onClose, onSave }) => {
   const endCalendarRef = useRef(null);
   const [showStartCalendar, setShowStartCalendar] = useState(false);
   const [showEndCalendar, setShowEndCalendar] = useState(false);
+
+    // data prop을 이용해 상태 초기화
+    useEffect(() => {
+      console.log("Received data:", data);
+
+      if (data) {
+        setSelectedCategory(data.data.categoryName);
+        setCategory(data.data.categoryId);
+        setCareerName(data.data.careerName);
+        setAlias(data.data.alias);
+        setStartDate(data.data.startDate);
+        setEndDate(data.data.endDate);
+        setIsUnknown(data.data.isUnknown);
+        setSummary(data.data.summary);
+      }
+    }, [data]);
 
   const handleStartDateChange = (date) => {
     setStartDate(moment(date).format('YYYY-MM-DD'));

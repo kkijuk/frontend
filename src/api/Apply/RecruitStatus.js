@@ -4,6 +4,8 @@ export const updateRecruitStatus = async (recruitId, status) => {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        credentials: "include", // 쿠키와 인증 정보를 함께 보냄
+
         'accept': '*/*'
       },
       body: JSON.stringify({ status })

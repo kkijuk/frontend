@@ -7,11 +7,13 @@ export const AddDetail = async (careerId, data) => {
 
         const response = await axios.post(
           `https://api.kkijuk.com/career/${careerId}`,
+          
           data,
           {
             headers: {
               'Content-Type': 'application/json; charset=utf-8'
-            }
+            },        
+            withCredentials: true
           }
         );
         console.log("통신 완료 : ", response.data);

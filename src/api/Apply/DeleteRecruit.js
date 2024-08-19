@@ -4,7 +4,10 @@ export const deleteRecruit = async (id) => {
   try {
     const response = await fetch(`${apiUrl}/${id}`, {
       method: 'DELETE',
+      credentials: "include", // 쿠키와 인증 정보를 함께 보냄
+
       headers: {
+
         'Content-Type': 'application/json; charset=utf-8'
       }
     });
