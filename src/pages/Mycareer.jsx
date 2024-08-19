@@ -9,7 +9,6 @@ import AddCareerModal from '../components/shared/AddCareerModal'; //모달 내�
 import Timeline from '../components/Mycareer/Timeline';
 import SearchBar from '../components/shared/shareSearchBar';
 import {CareerViewSelect} from '../api/Mycareer/CareerviewSelect';
-import AddCareerModalEdit from '../components/shared/AddCareerModalEdit';
 
 
 const SearchBox = styled.div`
@@ -73,7 +72,7 @@ export default function Mycareer() {
 
       <AddJobButton onClick={() => setShowModal(true)} />
       {showModal && (
-        <AddCareerModalEdit
+        <AddCareerModal
           onClose={() => setShowModal(false)}
           onSave={handleAddCareer}
         />

@@ -124,6 +124,8 @@ const SignupInterest = ({ onSave }) => {
     try {
       const result = await saveInterests(interestingList);
       console.log('Response:', result);
+      console.log('Interest list being sent:', interestingList);
+
       onSave(result); // API 응답 데이터를 처리할 필요가 있으면 사용
       navigate('/');
     } catch (error) {
