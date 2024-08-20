@@ -4,6 +4,8 @@ export const updateRecruitApplyDate = async (recruitId, applyDate) => {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
+          credentials: "include", // 쿠키와 인증 정보를 함께 보냄
+
         },
         body: JSON.stringify({ applyDate }),
       });

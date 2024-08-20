@@ -3,8 +3,11 @@ const apiUrl = 'https://api.kkijuk.com/recruit';
 export const createRecruit = async (data) => {
   try {
     const response = await fetch(apiUrl, { 
+      credentials: "include", // 쿠키와 인증 정보를 함께 보냄
+
       method: 'POST',
       headers: {
+
         'Content-Type': 'application/json; charset=utf-8'
       },
       body: JSON.stringify(data)

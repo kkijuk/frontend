@@ -9,8 +9,11 @@ export const ViewCareerDetail = async(careerId) => {
             `https://api.kkijuk.com/career/${careerId}`,
             {
                 headers: {
+
                     'Content-Type': 'application/json; charset=utf-8'
-                }
+                },
+                withCredentials: true, // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
+
             }
         )
         console.log("통신 완료: ", response.data);

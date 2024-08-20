@@ -2,8 +2,11 @@ export async function login({ email, password }) {
     try {
       const response = await fetch('https://api.kkijuk.com/login', {
         method: 'POST',
+        credentials: "include", // 쿠키와 인증 정보를 함께 보냄
+
         headers: {
           'Content-Type': 'application/json',
+
           'accept': '*/*'
         },
         body: JSON.stringify({
