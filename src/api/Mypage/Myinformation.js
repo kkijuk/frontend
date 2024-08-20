@@ -31,6 +31,7 @@ export const verifyPassword = async (email, password) => {
     try {
         const response = await fetch('/member/myPage/verifyPassword', {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8'
             },
