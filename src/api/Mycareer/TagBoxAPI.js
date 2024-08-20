@@ -8,11 +8,12 @@ export const TagBoxFetchList = async() => {
         const response = await axios.get(
             "https://api.kkijuk.com/career/tag",
             {
+                withCredentials: true, 
+
                 headers: {
 
                     'Content-Type': 'application/json; charset=utf-8'
                 },
-                withCredentials: true, // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
 
             }
         )
@@ -35,7 +36,10 @@ export const TagBoxCreateTag = async(tagName) => {
         const response = await axios.post(
             "https://api.kkijuk.com/career/tag",
             { tagName }, //POST할 때 보내는 데이터에 tagName을 포함하기 때문에
+            
             {
+                withCredentials: true, 
+
                 headers: {
                     'Content-Type': 'application/json; charset=utf-8'
                 }
@@ -59,6 +63,8 @@ export const TagBoxDeleteTag = async(tagId) => {
         const response = await axios.delete(
             `https://api.kkijuk.com/career/tag/${tagId}`,
             {
+                withCredentials: true, 
+
                 headers: {
                     'Content-Type': 'application/json; charset=utf-8'
                 }
