@@ -18,7 +18,7 @@ const LoginScreen = styled.div`
     font-family: light;
     margin-bottom: 30px;
     text-align: center; 
-  }
+      }
 
   .textInput {
     width: 350px;
@@ -50,7 +50,7 @@ const LoginScreen = styled.div`
     font-style: normal;
     font-weight: 500;
     cursor: pointer;
-    margin-top: 50px; 
+    margin-top: 0px; 
   }
 
   a {
@@ -136,7 +136,7 @@ const LoginPage = () => {
         onChange={(e) => setPassword(e.target.value)}
         className="textInput"
       />
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+      {errorMessage && <p style={{ color: 'red', marginTop: '20px' }}>{errorMessage}</p>}
       <button className="button" onClick={handleLogin}>로그인</button>
       <div className="links">
         <a href="/signup">회원가입</a> | <a href="/mypage/passwordreset">비밀번호 찾기</a>

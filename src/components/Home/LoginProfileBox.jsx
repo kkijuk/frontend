@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { getUserInfo } from '../../api/Home/getUserInfo';
+import { useAuth } from '../AuthContext';  
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -112,31 +113,38 @@ const OKButton = styled.button`
 
 export default function LoginProfileBox() {
     const navigate = useNavigate();
-
+    const { isLoggedIn } = useAuth(); 
     const [userName, setUserName] = useState('');
     const [monthDuration, setMonthDuration] = useState(0);
     const [careerCount, setCareerCount] = useState(0);
     const [recruitCount, setRecruitCount] = useState(0);
 
     useEffect(() => {
-        const fetchUserInfo = async () => {
-            try {
-                const data = await getUserInfo();
-                if (data) {
-                    setUserName(data.userName);
-                    setMonthDuration(data.monthDuration);
-                    setCareerCount(data.careerCount);
-                    setRecruitCount(data.recruitCount);
-                } else {
-                    console.error('Failed to fetch data');
+        if (isLoggedIn) {
+            const fetchUserInfo = async () => {
+                try {
+                    const data = await getUserInfo();
+                    if (data) {
+                        setUserName(data.userName);
+                        setMonthDuration(data.monthDuration);
+                        setCareerCount(data.careerCount);
+                        setRecruitCount(data.recruitCount);
+                    } else {
+                        console.error('Failed to fetch data');
+                    }
+                } catch (error) {
+                    console.error('Error fetching data:', error);
                 }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-        
-        fetchUserInfo();
-    }, []);
+            };
+            fetchUserInfo();
+        } else {
+           
+            setUserName('');
+            setMonthDuration(0);
+            setCareerCount(0);
+            setRecruitCount(0);
+        }
+    }, [isLoggedIn]);
 
     const goCareer = () => {
         navigate('/mycareer');
@@ -153,23 +161,32 @@ export default function LoginProfileBox() {
     return (
         <Container>
             <TextContainer>
-                안녕하세요 {userName} 님,
-                <BoldText><GreenSpan>끼적</GreenSpan>한 지 {monthDuration}개월이 지났어요!</BoldText>
+                {isLoggedIn ? (
+                    <>
+                        안녕하세요 {userName} 님,
+                        <BoldText><GreenSpan>끼적</GreenSpan>한 지 {monthDuration}개월이 지났어요!</BoldText>
+                    </>
+                ) : (
+                    <BoldText>로그인 해주세요</BoldText>
+                )}
             </TextContainer>
-            <BoxContainer>
-                <CountBox onClick={() => goCareer()} >
-                    내 활동
-                    <BoldText fontSize='12px'>{careerCount}</BoldText>
-                </CountBox>
+            {isLoggedIn && (
+                <>
+                    <BoxContainer>
+                        <CountBox onClick={() => goCareer()} >
+                            내 활동
+                            <BoldText fontSize='12px'>{careerCount}</BoldText>
+                        </CountBox>
 
-                <CountBox onClick={() => goApply()}>
-                    지원현황
-                    <BoldText fontSize='12px'>{recruitCount}</BoldText>
-                </CountBox>
-            </BoxContainer>
-            
-            <OKButton onClick={() => goCareerAdd()}>활동 추가하기</OKButton>
-
+                        <CountBox onClick={() => goApply()}>
+                            지원현황
+                            <BoldText fontSize='12px'>{recruitCount}</BoldText>
+                        </CountBox>
+                    </BoxContainer>
+                    
+                    <OKButton onClick={() => goCareerAdd()}>활동 추가하기</OKButton>
+                </>
+            )}
         </Container>
-    )
+    );
 }
