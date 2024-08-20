@@ -27,15 +27,16 @@ export const fetchEmail = async () => {
 };
 
 
-export const verifyPassword = async (email, password) => {
+export const verifyPassword = async (currentPassword) => {
     try {
-        const response = await fetch('/member/myPage/verifyPassword', {
+        const response = await fetch('https://api.kkijuk.com/member/myPage', {
             method: 'POST',
-            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8'
             },
-            body: JSON.stringify({ email, password })
+            credentials: 'include',
+
+            body: JSON.stringify({currentPassword})
         });
 
         // fetch는 HTTP 응답 코드를 직접 처리해야 함
@@ -44,7 +45,8 @@ export const verifyPassword = async (email, password) => {
         }
 
         const data = await response.json();
-        return data.valid;
+        console.log("T/F:", data);
+        return data;
     } catch (error) {
         console.error("비밀번호 확인 실패:", error.message);
         throw error;
