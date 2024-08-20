@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { fetchEmail, verifyPassword } from "../../api/Mypage/Myinformation";
 
 const Container = styled.div`
@@ -89,6 +89,7 @@ const ConfirmBtn = styled.button`
     border: none;
     color: white;
     margin-top: ${(props) => (props.hasError ? '10px' : '54px')};
+    cursor: pointer; 
 
 `;
 
@@ -96,6 +97,7 @@ export default function Authentication() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();  // useNavigate 훅을 사용합니다.
 
     useEffect(() => {
         const loadEmail = async () => {
@@ -114,7 +116,7 @@ export default function Authentication() {
             const isValid = await verifyPassword(email, password);
             if (isValid) {
                 setError('');
-                // 비밀번호가 일치하는 경우 처리 로직 추가
+                navigate('/mypage/myinformation')
             } else {
                 setError('비밀번호가 일치하지 않습니다.');
             }

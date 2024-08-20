@@ -179,7 +179,7 @@ export default function MycareerDetail() {
   const [careers, setCareers] = useState([]); // CareerBox에 들어갈 데이터
   const [selectedCareerDetail, setSelectedCareerDetail] = useState(null); // 선택된 CareerBox의 상세 정보
   const [isAdding, setIsAdding] = useState(false); // 활동 기록 추가 상태
-  const { careerId } = useParams(); // URL에서 careerId 추출
+  const { careerId } = useParams(); // URL에서 careerId 가져오기
   const [isEditModalOpen, setIsEditModalOpen] = useState(false); // 모달 상태 추가
   const [modalData, setModalData] = useState(null); // 모달에 표시할 데이터 상태
 

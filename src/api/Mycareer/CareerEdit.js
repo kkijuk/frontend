@@ -7,6 +7,8 @@ export const CareerEdit = async (careerId, data) => {
           data,
           
           {
+            withCredentials: true,
+
             headers: {
 
               'Content-Type': 'application/json; charset=utf-8'
