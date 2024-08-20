@@ -5,7 +5,7 @@ import { useAuth } from '../AuthContext';
 
 // Chart와 Line 스타일 컴포넌트 정의
 const Chart = styled.div`
-  width: 820px;
+  width: 560px;
   height: 130px;
   margin-left: 10px;
   margin-right: 10px;
@@ -14,35 +14,35 @@ const Chart = styled.div`
 `;
 
 const Line1 = styled.div`
-  width: 800px;
+  width: 540px;
   height: 30px;
   position: relative;
   margin-left: 10px;
 `;
 
 const Line2 = styled.div`
-  width: 800px;
+  width: 540px;
   height: 30px;
   position: relative;
   margin-left: 10px;
 `;
 
 const Line3 = styled.div`
-  width: 800px;
+  width: 540px;
   height: 30px;
   position: relative;
   margin-left: 10px;
 `;
 
 const Line4 = styled.div`
-  width: 800px;
+  width: 540px;
   height: 30px;
   position: relative;
   margin-left: 10px;
 `;
 
 const XBox = styled.div`
-  width: 800px;
+  width: 540px;
   height: 30px;
 `;
 
@@ -50,7 +50,7 @@ const XLine = styled.div`
   position: absolute;
   bottom: 0;
   left: 10px;
-  width: 800px;
+  width: 540px;
   height: 2px;
   background-color: black;
   display: flex;
@@ -140,7 +140,7 @@ const calculateWidth = (startDate, endDate, oneMonthInPixels) => {
   return months * oneMonthInPixels;
 };
 
-export default function Timeline({ triggerEffect }) {
+export default function TimelineHome({ triggerEffect }) {
   const { isLoggedIn } = useAuth(); // 로그인 상태를 가져옴
   const [careers, setCareers] = useState([]);
 
@@ -165,6 +165,32 @@ export default function Timeline({ triggerEffect }) {
     }
   }, [triggerEffect, isLoggedIn]);
 
+  
+
+  // 데이터가 없을 경우에도 빈 차트를 렌더링
+  if (!careers || careers.length === 0) {
+    return (
+      <div>
+        <Chart>
+          <XBox>
+            <XLine>
+              {/* 빈 x축 라벨을 생성하여 x축 표시 */}
+              {[...Array(12).keys()].map((index) => (
+                <XLabel
+                  key={index}
+                  style={{ left: `${(index / 11) * 100}%` }}
+                  isJuneOrDecember={false}
+                >
+                  {/* 빈 라벨을 출력하지 않음 */}
+                </XLabel>
+              ))}
+            </XLine>
+          </XBox>
+        </Chart>
+      </div>
+    );
+  }
+
   // startDate가 제일 빠른 순서대로 정렬된 새로운 배열 생성
   const sortedCareerData = [...careers].sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
   
@@ -172,16 +198,15 @@ export default function Timeline({ triggerEffect }) {
   const sortedCareerDataByEnd = [...careers].sort((a, b) => new Date(b.endDate) - new Date(a.endDate));
 
   // 제일 빠른 시작 날짜와 제일 늦은 종료 날짜
-  const earliestDate = sortedCareerData.length > 0 ? new Date(sortedCareerData[0].startDate) : null;
-  const latestDate = sortedCareerDataByEnd.length > 0 ? new Date(sortedCareerDataByEnd[0].endDate) : null;
+  const earliestDate = new Date(sortedCareerData[0].startDate);
+  const latestDate = new Date(sortedCareerDataByEnd[0].endDate);
 
   // 전체 기간 개월 수 계산
-  const totalMonths = earliestDate && latestDate ? 
-    (latestDate.getFullYear() - earliestDate.getFullYear()) * 12 + 
-    (latestDate.getMonth() - earliestDate.getMonth()) + 1 : 0;
+  const totalMonths = (latestDate.getFullYear() - earliestDate.getFullYear()) * 12
+                    + (latestDate.getMonth() - earliestDate.getMonth()) + 1; // 마지막 달 포함
 
   // 1개월당 픽셀 수 계산
-  const oneMonthInPixels = totalMonths > 0 ? 800 / totalMonths : 0; // 전체 넓이를 개월 수로 나눔
+  const oneMonthInPixels = 540 / totalMonths; // 전체 넓이를 개월 수로 나눔
 
   const groups = [[], [], [], []];
 
@@ -213,19 +238,16 @@ export default function Timeline({ triggerEffect }) {
 
   // x축 라벨을 모든 달을 포함하도록 생성
   const xLabels = [];
-  if (earliestDate && latestDate) {
-    let startYear = earliestDate.getFullYear();
-    let startMonth = earliestDate.getMonth() + 1; // getMonth()는 0부터 시작하므로 +1
+  let startYear = earliestDate.getFullYear();
+  let startMonth = earliestDate.getMonth() + 1; // getMonth()는 0부터 시작하므로 +1
 
-    while (startYear < latestDate.getFullYear() || 
-           (startYear === latestDate.getFullYear() && startMonth <= latestDate.getMonth() + 1)) {
-      xLabels.push(`${startYear}.${startMonth.toString().padStart(2, '0')}`);
-      if (startMonth === 12) {
-        startYear += 1;
-        startMonth = 1;
-      } else {
-        startMonth += 1;
-      }
+  while (startYear < latestDate.getFullYear() || (startYear === latestDate.getFullYear() && startMonth <= latestDate.getMonth() + 1)) {
+    xLabels.push(`${startYear}.${startMonth.toString().padStart(2, '0')}`);
+    if (startMonth === 12) {
+      startYear += 1;
+      startMonth = 1;
+    } else {
+      startMonth += 1;
     }
   }
 

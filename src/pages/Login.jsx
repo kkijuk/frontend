@@ -16,7 +16,7 @@ const LoginScreen = styled.div`
   p {
     color: #707070;
     font-family: light;
-    margin-bottom: 30px;
+    margin-bottom: 50px;
     text-align: center; 
       }
 
@@ -50,12 +50,14 @@ const LoginScreen = styled.div`
     font-style: normal;
     font-weight: 500;
     cursor: pointer;
-    margin-top: 0px; 
+    margin-top: 20px; 
+     margin-bottom: 20px;
   }
 
   a {
     color: #3AAF85; 
     text-decoration: none;
+   
   }
 
   a:hover {
@@ -93,6 +95,15 @@ const LoginScreen = styled.div`
     line-height: normal;
   }
 `;
+
+const ErrorMessage = styled.div`
+  color: #FC5555;
+  margin-top: 50px; 
+  margin-bottom: 0px; 
+  font-family: Regular;
+  font-size: 16px;
+`;
+
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -136,8 +147,9 @@ const LoginPage = () => {
         onChange={(e) => setPassword(e.target.value)}
         className="textInput"
       />
-      {errorMessage && <p style={{ color: 'red', marginTop: '20px' }}>{errorMessage}</p>}
-      <button className="button" onClick={handleLogin}>로그인</button>
+{errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+<button className="button" onClick={handleLogin}>로그인</button>
+
       <div className="links">
         <a href="/signup">회원가입</a> | <a href="/mypage/passwordreset">비밀번호 찾기</a>
       </div>

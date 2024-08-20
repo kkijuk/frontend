@@ -34,7 +34,7 @@ const AdDateSection = styled.div`
 const AdDate = styled.div`
   font-size: 14px;
   color: var(--black, #000);
-  font-family: Pretendard;
+   font-family: Regular;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;

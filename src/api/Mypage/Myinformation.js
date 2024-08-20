@@ -1,6 +1,6 @@
 export const fetchEmail = async () => {
     try {
-        const response = await fetch(`https://api.kkijuk.com/member/mypage`, {
+        const response = await fetch(`https://api.kkijuk.com/member/myPage`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8'
@@ -15,7 +15,7 @@ export const fetchEmail = async () => {
 
         const data = await response.json();
         console.log("이메일 가져오기 완료 : ", data);
-        return data;
+        return data.email;
     } catch (error) {
         console.log("Error", error.message);
         if (error.response) {
@@ -31,6 +31,7 @@ export const verifyPassword = async (email, password) => {
     try {
         const response = await fetch('/member/myPage/verifyPassword', {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8'
             },
