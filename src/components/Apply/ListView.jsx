@@ -126,7 +126,7 @@ const ListView = ({ data, onJobClick }) => {
     return (
       <BackgroundSection>
         <ContentSection background="#f0f0f0">
-          <p>No jobs available for the selected date.</p>
+         
         </ContentSection>
       </BackgroundSection>
     );
