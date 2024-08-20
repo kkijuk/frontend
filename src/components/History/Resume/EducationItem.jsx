@@ -1,22 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const EducationItem = ({ dummy, onEdit, isLastItem }) => {
+const EducationItem = ({ data, onEdit, isLastItem }) => {
 
     return (
       <div style={{display:'flex'}}>
         <TimeLine>
-            <Oval status={dummy.status}></Oval>
-            <Line isLastItem={isLastItem} status={dummy.status}></Line>
+            <Oval status={data.state}></Oval>
+            <Line isLastItem={isLastItem} status={data.state}></Line>
         </TimeLine>
         <Container>
             <div>
-              <LevelTag>{dummy.level}</LevelTag>
+              <LevelTag>{data.category}</LevelTag>
               <SchoolInfo>
-                  <SchoolName>{dummy.schoolName}</SchoolName>
-                  {dummy.department && <Department>{dummy.department}</Department>}
+                  <SchoolName>{data.schoolName}</SchoolName>
+                  {data.major && <Department>{data.major}</Department>}
                   <Dates>
-                      {dummy.startDate} ~ {dummy.endDate} <Status>({dummy.status})</Status>
+                      {data.admissionDate} ~ {data.graduationDate} <Status>({data.state})</Status>
                   </Dates>
               </SchoolInfo>
             </div>

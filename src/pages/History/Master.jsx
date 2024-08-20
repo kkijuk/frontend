@@ -67,7 +67,7 @@ const Master=()=> {
                 <ContentBox>{questions.motive ? questions.motive : "아직 지원동기를 작성하지 않았어요."}</ContentBox>  
 
                 <h3>{questions.prosAndCons_title ? questions.prosAndCons_title : "2. 장단점 [소제목]"}</h3>
-                <ContentBox>{questions.prosAndCons ? questions.prosAndCons : "아직 장단점을 작성하지 않았어요."}</ContentBox>  
+                <ContentBox>{questions.prosAndCons ? questions.prosAndCons : "아직 장단점을 작성하지 않았어요.."}</ContentBox>  
 
                 <h3>{questions.job_fit_title ? questions.job_fit_title : "3. 직무적합성 [소제목]"}</h3>
                 <ContentBox>{questions.job_fit ? questions.job_fit : "아직 직무적합성을 작성하지 않았어요."}</ContentBox>  
