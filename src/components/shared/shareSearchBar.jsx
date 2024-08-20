@@ -39,7 +39,7 @@ const SearchBar = () => { // 컴포넌트 이름 수정
     const navigate = useNavigate();
   
     const handleSearchClick = () => {
-      navigate('/filter'); 
+      // navigate('/filter'); 
     };
   
     return (
