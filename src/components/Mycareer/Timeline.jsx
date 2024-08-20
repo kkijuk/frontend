@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect'; // API 함수 가져오기
+import { useAuth } from '../AuthContext';
 
 // Chart와 Line 스타일 컴포넌트 정의
 const Chart = styled.div`
@@ -140,52 +141,29 @@ const calculateWidth = (startDate, endDate, oneMonthInPixels) => {
 };
 
 export default function Timeline({ triggerEffect }) {
+  const { isLoggedIn } = useAuth(); // 로그인 상태를 가져옴
   const [careers, setCareers] = useState([]);
 
   useEffect(() => {
-    const fetchCareers = async () => {
-      const status = 'year';  // 항상 'year'로 설정
-      const responseData = await CareerViewSelect(status);
-      
-      console.log('API 호출 결과:', responseData);
+    if (isLoggedIn) { // 로그인된 상태일 때만 데이터 가져오기
+      const fetchCareers = async () => {
+        const status = 'year';
+        const responseData = await CareerViewSelect(status);
+        
+        console.log('API 호출 결과:', responseData);
+    
+        if (responseData && responseData.data) {
+          const allCareers = responseData.data.flatMap(yearData => yearData.careers);
+          setCareers(allCareers);
+          console.log('설정된 careers 상태:', allCareers);
+        } else {
+          console.log('데이터가 없습니다.');
+        }
+      };
   
-      if (responseData && responseData.data) {
-        // 모든 연도의 careers 데이터를 병합
-        const allCareers = responseData.data.flatMap(yearData => yearData.careers);
-        setCareers(allCareers);
-        console.log('설정된 careers 상태:', allCareers);
-      } else {
-        console.log('데이터가 없습니다.');
-      }
-    };
-  
-    fetchCareers();
-  }, [triggerEffect]);
-  
-
-  // 데이터가 없을 경우에도 빈 차트를 렌더링
-  if (!careers || careers.length === 0) {
-    return (
-      <div>
-        <Chart>
-          <XBox>
-            <XLine>
-              {/* 빈 x축 라벨을 생성하여 x축 표시 */}
-              {[...Array(12).keys()].map((index) => (
-                <XLabel
-                  key={index}
-                  style={{ left: `${(index / 11) * 100}%` }}
-                  isJuneOrDecember={false}
-                >
-                  {/* 빈 라벨을 출력하지 않음 */}
-                </XLabel>
-              ))}
-            </XLine>
-          </XBox>
-        </Chart>
-      </div>
-    );
-  }
+      fetchCareers();
+    }
+  }, [triggerEffect, isLoggedIn]);
 
   // startDate가 제일 빠른 순서대로 정렬된 새로운 배열 생성
   const sortedCareerData = [...careers].sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
@@ -194,15 +172,16 @@ export default function Timeline({ triggerEffect }) {
   const sortedCareerDataByEnd = [...careers].sort((a, b) => new Date(b.endDate) - new Date(a.endDate));
 
   // 제일 빠른 시작 날짜와 제일 늦은 종료 날짜
-  const earliestDate = new Date(sortedCareerData[0].startDate);
-  const latestDate = new Date(sortedCareerDataByEnd[0].endDate);
+  const earliestDate = sortedCareerData.length > 0 ? new Date(sortedCareerData[0].startDate) : null;
+  const latestDate = sortedCareerDataByEnd.length > 0 ? new Date(sortedCareerDataByEnd[0].endDate) : null;
 
   // 전체 기간 개월 수 계산
-  const totalMonths = (latestDate.getFullYear() - earliestDate.getFullYear()) * 12
-                    + (latestDate.getMonth() - earliestDate.getMonth()) + 1; // 마지막 달 포함
+  const totalMonths = earliestDate && latestDate ? 
+    (latestDate.getFullYear() - earliestDate.getFullYear()) * 12 + 
+    (latestDate.getMonth() - earliestDate.getMonth()) + 1 : 0;
 
   // 1개월당 픽셀 수 계산
-  const oneMonthInPixels = 800 / totalMonths; // 전체 넓이를 개월 수로 나눔
+  const oneMonthInPixels = totalMonths > 0 ? 800 / totalMonths : 0; // 전체 넓이를 개월 수로 나눔
 
   const groups = [[], [], [], []];
 
@@ -234,73 +213,82 @@ export default function Timeline({ triggerEffect }) {
 
   // x축 라벨을 모든 달을 포함하도록 생성
   const xLabels = [];
-  let startYear = earliestDate.getFullYear();
-  let startMonth = earliestDate.getMonth() + 1; // getMonth()는 0부터 시작하므로 +1
+  if (earliestDate && latestDate) {
+    let startYear = earliestDate.getFullYear();
+    let startMonth = earliestDate.getMonth() + 1; // getMonth()는 0부터 시작하므로 +1
 
-  while (startYear < latestDate.getFullYear() || (startYear === latestDate.getFullYear() && startMonth <= latestDate.getMonth() + 1)) {
-    xLabels.push(`${startYear}.${startMonth.toString().padStart(2, '0')}`);
-    if (startMonth === 12) {
-      startYear += 1;
-      startMonth = 1;
-    } else {
-      startMonth += 1;
+    while (startYear < latestDate.getFullYear() || 
+           (startYear === latestDate.getFullYear() && startMonth <= latestDate.getMonth() + 1)) {
+      xLabels.push(`${startYear}.${startMonth.toString().padStart(2, '0')}`);
+      if (startMonth === 12) {
+        startYear += 1;
+        startMonth = 1;
+      } else {
+        startMonth += 1;
+      }
     }
   }
 
   return (
     <div>
       <Chart>
-        <Line1>
-          {groups[0].map((data, idx) => (
-            data && (
-              <Tag
-                key={idx}
-                category={data.categoryId}  // categoryId 사용
-                left={calculateLeft(data.startDate, earliestDate, oneMonthInPixels)}
-                width={calculateWidth(data.startDate, data.endDate, oneMonthInPixels)}
-              >
-                {data.careerName}
-              </Tag>
-            )
-          ))}
-        </Line1>
+        {isLoggedIn && careers.length > 0 && (
+          <>
+            <Line1>
+              {groups[0].map((data, idx) => (
+                data && (
+                  <Tag
+                    key={idx}
+                    category={data.categoryId}
+                    left={calculateLeft(data.startDate, earliestDate, oneMonthInPixels)}
+                    width={calculateWidth(data.startDate, data.endDate, oneMonthInPixels)}
+                  >
+                    {data.careerName}
+                  </Tag>
+                )
+              ))}
+            </Line1>
 
-        <Line2>
-          {groups[1].map((data, idx) => (
-            <Tag
-              key={idx}
-              category={data.categoryId}  // categoryId 사용
-              left={calculateLeft(data.startDate, earliestDate, oneMonthInPixels)}
-              width={calculateWidth(data.startDate, data.endDate, oneMonthInPixels)}
-            >
-              {data.careerName}
-            </Tag>
-          ))}
-        </Line2>
-        <Line3>
-          {groups[2].map((data, idx) => (
-            <Tag
-              key={idx}
-              category={data.categoryId}  // categoryId 사용
-              left={calculateLeft(data.startDate, earliestDate, oneMonthInPixels)}
-              width={calculateWidth(data.startDate, data.endDate, oneMonthInPixels)}
-            >
-              {data.careerName}
-            </Tag>
-          ))}
-        </Line3>
-        <Line4>
-          {groups[3].map((data, idx) => (
-            <Tag
-              key={idx}
-              category={data.categoryId}  // categoryId 사용
-              left={calculateLeft(data.startDate, earliestDate, oneMonthInPixels)}
-              width={calculateWidth(data.startDate, data.endDate, oneMonthInPixels)}
-            >
-              {data.careerName}
-            </Tag>
-          ))}
-        </Line4>
+            <Line2>
+              {groups[1].map((data, idx) => (
+                <Tag
+                  key={idx}
+                  category={data.categoryId}
+                  left={calculateLeft(data.startDate, earliestDate, oneMonthInPixels)}
+                  width={calculateWidth(data.startDate, data.endDate, oneMonthInPixels)}
+                >
+                  {data.careerName}
+                </Tag>
+              ))}
+            </Line2>
+
+            <Line3>
+              {groups[2].map((data, idx) => (
+                <Tag
+                  key={idx}
+                  category={data.categoryId}
+                  left={calculateLeft(data.startDate, earliestDate, oneMonthInPixels)}
+                  width={calculateWidth(data.startDate, data.endDate, oneMonthInPixels)}
+                >
+                  {data.careerName}
+                </Tag>
+              ))}
+            </Line3>
+
+            <Line4>
+              {groups[3].map((data, idx) => (
+                <Tag
+                  key={idx}
+                  category={data.categoryId}
+                  left={calculateLeft(data.startDate, earliestDate, oneMonthInPixels)}
+                  width={calculateWidth(data.startDate, data.endDate, oneMonthInPixels)}
+                >
+                  {data.careerName}
+                </Tag>
+              ))}
+            </Line4>
+          </>
+        )}
         <XBox>
           <XLine>
             {xLabels.map((label, index) => (

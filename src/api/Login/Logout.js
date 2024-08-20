@@ -2,11 +2,11 @@ export async function logout() {
     try {
       const response = await fetch('https://api.kkijuk.com/logout', {
         method: 'POST',
-        headers: {
-          credentials: "include", 
+        headers: { 
  
           'accept': '*/*',
-        }
+        },
+        credentials: "include",
       });
   
        
