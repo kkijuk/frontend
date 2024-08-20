@@ -31,6 +31,8 @@ export default function Mycareer() {
   const [view, setView] = useState('year');
   const [showModal, setShowModal] = useState(false);
   const [careers, setCareers] = useState([]);
+  const [triggerEffect, setTriggerEffect] = useState(false); // 타임라인의 useEffect를 트리거할 상태
+
 
   const fetchData = async () => {
     // 현재 view 상태에 따라 API에 전달할 status 값을 설정
@@ -56,6 +58,8 @@ export default function Mycareer() {
   
   const handleAddCareer = () => {
         fetchData();
+        setTriggerEffect(prev => !prev); // 타임라인의 useEffect를 트리거
+
   };
 
   return (
@@ -64,8 +68,7 @@ export default function Mycareer() {
         <Title>내 커리어</Title>
         <SearchBar/>
       </SearchBox>
-      <Timeline></Timeline>
-
+      <Timeline triggerEffect={triggerEffect} /> {/* 타임라인에 상태 전달 */}
       <CareerView view={view} onToggle={setView} />
       {view === 'year' && <CareerViewYear data={careers} />}
       {view === 'category' && <CareerViewCategory data={careers} />}
