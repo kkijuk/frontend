@@ -95,7 +95,7 @@ const ConfirmBtn = styled.button`
 
 export default function Authentication() {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [currentPassword, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();  // useNavigate 훅을 사용합니다.
 
@@ -113,7 +113,7 @@ export default function Authentication() {
 
     const handleConfirm = async () => {
         try {
-            const isValid = await verifyPassword(email, password);
+            const isValid = await verifyPassword(currentPassword);
             if (isValid) {
                 setError('');
                 navigate('/mypage/myinformation')
@@ -147,7 +147,7 @@ export default function Authentication() {
                     <PasswordInput
                         type="password"
                         placeholder="특수문자 포함, 8자리 이상 입력하세요"
-                        value={password}
+                        value={currentPassword}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </Password>
