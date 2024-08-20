@@ -29,15 +29,3 @@ export const getRecruitDetails = async (id) => {
     return null; // 에러 발생 시 null 반환
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-
