@@ -184,6 +184,7 @@ export default function DetailAdd({ onCancel, onSave, careerId }) {  // careerId
         };
 
         await AddDetail(careerId, data);
+        onSave();
         onCancel(); // 부모 컴포넌트의 상태를 변경하여 창을 닫습니다.
     };
     
