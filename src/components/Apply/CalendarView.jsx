@@ -120,7 +120,7 @@ const StyledCalendar = styled(Calendar)`
 
   .react-calendar__tile--now.react-calendar__tile--active {
     color: #3AAF85 !important;
-    font-weight: bold !important;
+  
     box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.25), 
                 inset 0 0.5px 0 0 rgba(0, 0, 0, 0.25), 
                 inset -0.5px 0 0 0 rgba(0, 0, 0, 0.25), 
@@ -148,7 +148,7 @@ const DayIndicatorContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 4px;
+  margin-top: 3px;
   gap: 8px;
 `;
 
