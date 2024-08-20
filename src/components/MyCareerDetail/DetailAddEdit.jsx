@@ -116,7 +116,7 @@ const Line = styled.div`
     background: var(--gray-03, #D9D9D9);
 `;
 
-export default function DetailAddEdit({ initialTitle, initialDate, initialContents, initialTags, careerId, detailId, onClose }) {
+export default function DetailAddEdit({ initialTitle, initialDate, initialContents, initialTags, careerId, detailId, onClose, onUpdate }) {
     const [showCalendar, setShowCalendar] = useState(false);
     const [selectedDate, setSelectedDate] = useState(initialDate);
     const [title, setTitle] = useState(initialTitle);
@@ -170,9 +170,9 @@ export default function DetailAddEdit({ initialTitle, initialDate, initialConten
             await CareerDetailEdit(careerId, detailId, data); // API 호출
             alert('저장되었습니다.');
             onClose();
+            onUpdate();
         } catch (error) {
             console.error('저장 실패:', error);
-            alert('저장에 실패했습니다.');
         }
     };
 
@@ -182,9 +182,9 @@ export default function DetailAddEdit({ initialTitle, initialDate, initialConten
                 await CareerDetailDelete(careerId, detailId); // 삭제 API 호출
                 alert('삭제되었습니다.');
                 onClose();  // 삭제 후 창 닫기
+                onUpdate();
             } catch (error) {
                 console.error('삭제 실패:', error);
-                alert('삭제에 실패했습니다.');
             }
         }
     };

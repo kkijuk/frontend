@@ -67,7 +67,6 @@ const CareerTitle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  border: 1px solid black;
   padding-bottom: 10px;
 
     position: relative; /* Add this line */
@@ -88,7 +87,6 @@ const ActivityDetails = styled.div`
 const Container2 = styled.div`
   width: 800px;
   height: 477px;
-  border: 1px solid black;
 `;
 
 const CareerListBox = styled.div`
@@ -214,7 +212,17 @@ export default function MycareerDetail() {
     if (careerId) {
       loadCareerDetail(careerId);
     }
-  }, [careerId, isEditModalOpen, modalData, navigate]); 
+  }, [careerId, isEditModalOpen, modalData,  navigate]); 
+
+  // 활동 기록 추가 후 갱신하는 함수
+  const handleAddComplete = async () => {
+    setIsAdding(false);
+    console.log("활동 기록 추가 후 갱신 중");
+    if (careerId) {
+      const careerDetail = await ViewCareerDetail(careerId);
+      setSelectedCareerDetail(careerDetail);
+    }
+  };
 
  // 모달 열기 핸들러
  const handleEditClick = async () => {
@@ -304,11 +312,11 @@ const handleModalSave = (data) => {
               detailTag={detail.careerTagList.map(tag => tag.tagName)}
               careerId={careerId} // careerId 전달
               detailId={detail.id} // detailId 전달
-              onUpdate={() => navigate(`/mycareer/${careerId}`)} // 데이터 갱신 콜백 전달
+              onUpdate={handleAddComplete} // 이 부분에서 onUpdate로 handleAddComplete 함수 전달
 
             />
           ))}
-          {isAdding && <DetailAdd onCancel={() => setIsAdding(false)}  careerId={careerId}/>} {/* 콜백 전달 */}
+          {isAdding && <DetailAdd onCancel={() => setIsAdding(false)} onSave={handleAddComplete} careerId={careerId}/>} {/* 콜백 전달 */}
         </CareerListBox>
       </Container2>
       <Container3>
