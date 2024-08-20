@@ -106,7 +106,7 @@ const StyledCalendar = styled(Calendar)`
   height: 26px;
   background-color: #3AAF85;
   border-radius: 50%;
-  top: 45%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
@@ -148,13 +148,13 @@ const DayIndicatorContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 3px;
+  margin-top: 0px;
   gap: 8px;
 `;
 
 const DayIndicator = styled.div`
-  width: 9px;
-  height: 9px;
+  width: 7px;
+  height: 7px;
   background-color: ${({ color }) => color || 'transparent'};
   border-radius: 50%;
   margin-left: 0px;

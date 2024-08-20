@@ -23,7 +23,7 @@ const Container = styled.div`
 
 const Title = styled.h1`
   color: var(--black, #000);
-  font-family: bold;
+  font-family: 'Bold';
   font-size: 30px;
   font-weight: 700;
   margin-bottom: 20px;
@@ -43,7 +43,7 @@ const StatusContainer = styled.div`
 `;
 
 export default function ApplySchedule() {
-  const [view, setView] = useState('list'); 
+  const [view, setView] = useState('calendar'); 
   const [date, setDate] = useState(new Date());
   const [showModal, setShowModal] = useState(false);
   const [jobs, setJobs] = useState([]);

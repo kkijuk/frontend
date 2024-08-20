@@ -3,10 +3,10 @@ export const ReviewAdd = async (recruitId, reviewData) => {
       const response = await fetch(`https://api.kkijuk.com/recruit/${recruitId}/review`, {
         method: 'POST',
         headers: {
-          credentials: "include", // 쿠키와 인증 정보를 함께 보냄
 
           'Content-Type': 'application/json',
         },
+        credentials: "include", 
         body: JSON.stringify(reviewData),
       });
   
