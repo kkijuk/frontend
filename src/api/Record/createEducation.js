@@ -2,10 +2,11 @@ import api from "../../Axios";
 
 const createEducation = async (recordId, data) => {
     try {
+        console.log(data);
         const response = await api.post(`/history/resume/education?recordId=${recordId}`, data);
         console.log(response.data);
 
-        return response.data;
+        return response.data.data;
         
     } catch (error) {
         console.error('Error creating education:', error);

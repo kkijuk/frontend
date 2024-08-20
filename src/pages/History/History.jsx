@@ -15,7 +15,6 @@ import readRecord from '../../api/Record/readRecord';
 import createEducation from '../../api/Record/createEducation';
 import deleteEducation from '../../api/Record/deleteEducation';
 
-
 const History = () => {
 
     const profileTitles = ["이름", "생년월일", "전화번호", "이메일", "주소"];
@@ -32,16 +31,7 @@ const History = () => {
         address:""
     });
 
-    const [educations, setEducations] = useState([
-        {
-            level : "",
-            schoolName : "",
-            department : "" ,
-            startDate : "",
-            endDate : "",
-            status : ""
-        }
-    ]);
+    const [educations, setEducations] = useState([]);
     
     const [careers,setCareers] = useState([]);
 
@@ -53,8 +43,8 @@ const History = () => {
     const [show, setShow] = useState(false);//추가 불가 알람창
     const [isEditActModalOpen, setIsEditActModalOpen] = useState(false);
     const [isAddActModalOpen, setIsAddActModalOpen] = useState(false);
-    const [isAddressNull, setIsAddressNull] = useState(true);
-    const [addressStatus, setAddressStatus] = useState(0);
+    const [addressStatus, setAddressStatus] = useState(null);
+
 
     useEffect(()=>{
         const fetchData = async ()=>{
@@ -69,16 +59,22 @@ const History = () => {
                     mobile:data.phone,
                     email:data.email,
                     address:data.address
-                })
+                });
                 setEducations(data.educationList);
                 setCareers(data.jobs);
                 setActivities(data.activitiesAndExperiences);
+                // 주소가 있으면 addressStatus를 0으로 설정, 없으면 1로 설정
+                if (data.address) {
+                    setAddressStatus(0);
+                } else {
+                    setAddressStatus(null); // null로 설정하여 '주소를 입력하세요'가 표시되도록 함
+                }
             }catch(err){
                 console.log('Failed to load records');
             }
         }
         fetchData();
-    },[])
+    },[]);
 
     //(Actions)
     //########################################################################
@@ -91,47 +87,48 @@ const History = () => {
         }catch(err){
             console.error('Failed to add education: ', err);
         }
-    }
+    };
     //학력 수정
     const handleUpdateEducation = async (index, updatedData)=>{
         try{
-            // const updatedEducation = await updateRecord(educations[index].id, updatedData);
-            // setEducations(educations.map((edu, i)=>(i===index ? updatedEducation : edu)));
             setEducations(educations.map((edu, i)=>(i===index ? updatedData : edu)));
             setIsEdit(prev => prev.map((edit, i)=>i===index ? false : edit));
             handleCancelEdit(index);
         }catch(err){
             console.error('Failed to update education: ', err);
         }
-    }
+    };
 
     //학력 삭제
     const handleDeleteEducation = async (index, educationId)=>{
         try{
             await deleteEducation(educationId);
             setEducations(educations.filter((_,i)=>i !== index));
-            // handleCancelEdit(index);
         }catch(err){
             console.error('Failed to delete education: ', err);
         }
-    }
+    };
     //########################################################################
     //주소 상태
-    const handleNullAddressClick=()=>{
-        setIsAddressNull(false);
-        setAddressStatus(1);
-    }
+    const handleNullAddressClick = () => {
+        setAddressStatus(1); // 주소를 입력할 수 있는 상태로 전환
+    };
+
     //주소 변경
-    const handleSaveAddress= async (data)=>{
-        try{
-            await updateRecord(profiles.id, {address:data});
-            setProfiles(prev=>({...prev, address:data}));
-            setAddressStatus(0);
-            if(!data) setIsAddressNull(true);
-        }catch(err){
+    const handleSaveAddress = async (newAddress) => {
+        try {
+            const updatedRecord = await updateRecord(recordId, { address: newAddress, prifileImageUrl: profiles.img });
+            if (updatedRecord) {
+                setProfiles(prev => ({
+                    ...prev,
+                    address: updatedRecord.data.address,  // 응답 데이터를 이용해 상태 업데이트
+                }));
+                setAddressStatus(0);
+            }
+        } catch (err) {
             console.error('Failed to update address: ', err);
         }
-    }
+    };
 
     //etc about showing
     //학력 편집모드->읽기모드 전환
@@ -145,31 +142,29 @@ const History = () => {
     //학력 추가 취소
     const handleCancleAdd=()=>{
         setIsAddItemOpen(false);
-    }
+    };
     //학력 추가 제한
     const showLimiter =()=>{
         setShow(true);
         setTimeout(()=>{
             setShow(false);
         },3000);
-    }
+    };
     //학력 추가 제한
     const handleAdd = ()=>{
         isAddItemOpen 
         ? showLimiter()
         : setIsAddItemOpen(true);
-    }
+    };
 
     //활동 추가 모달 토글
     const toggleAddActModalOpen =()=>{
         setIsAddActModalOpen(!isAddActModalOpen);
-    }
+    };
     //활동 수정 모달 토글
     const toggleEditActModalOpen =()=>{
         setIsEditActModalOpen(!isEditActModalOpen);
-    }
-    //활동수정
-    //추가 예정
+    };
 
     return (
         <BackgroundDiv>
@@ -194,26 +189,39 @@ const History = () => {
                         <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profiles.birth}</p>
                         <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profiles.mobile}</p>
                         <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profiles.email}</p>
-                        {isAddressNull
-                        ?(
-                            <p 
-                                style={{color:'#707070', fontSize:'14px', textDecorationLine:'underline',margin:'15px 0px', cursor:'pointer'}}
-                                onClick={handleNullAddressClick}>
-                            주소를 입력하세요</p>
-                        )
-                        :(
-                            <Address
-                            data={profiles.address}
-                            status={addressStatus}
-                            isEdit={()=>{setAddressStatus(!addressStatus)}}
-                            onSave={(data)=>{handleSaveAddress(data)}}/>)}     
+                        {
+                            addressStatus === 1 ? (
+                                <Address
+                                    data={profiles.address}
+                                    status={addressStatus}
+                                    isEdit={() => setAddressStatus(1)}
+                                    onSave={(curData) => handleSaveAddress(curData)}
+                                />
+                            ) : !profiles.address || addressStatus === null ? (
+                                <p
+                                    style={{ color: '#707070', fontSize: '14px', textDecorationLine: 'underline', margin: '15px 0px', cursor: 'pointer' }}
+                                    onClick={handleNullAddressClick}
+                                >
+                                    주소를 입력하세요
+                                </p>
+                            ) : (
+                                <Address
+                                    data={profiles.address}
+                                    status={addressStatus}
+                                    isEdit={() => setAddressStatus(1)}
+                                    onSave={(curData) => handleSaveAddress(curData)}
+                                />
+                        )}
+
+
+
                     </div>
                 </div>
 
                 <Linear />
                 {/* (2) Educations */}
                 <h3>학력</h3>
-                {educations.map((education, index) => (
+                {educations.slice().reverse().map((education, index) => (
                     isEdit[index] 
                     ? <EditItem key={index} 
                         data={education}  
@@ -321,4 +329,4 @@ const Limiter = styled.div`
     top:550px;
     opacity: ${props => props.show ? 1 : 0};
     transition: opacity 1s;
-`
+`;

@@ -1,18 +1,19 @@
-import axios from "axios";
+import api from "../../Axios";
 
 const readRecord = async () => {
     try {
-        const response = await axios.get('https://api.kkijuk.com/history/resume', {
+        const response = await api.get('/history/resume/', {
             headers: {
                 'Content-Type': 'application/json'
             },
-            withCredentials: true  // 쿠키와 자격 증명을 포함시키기 위한 설정
+            withCredentials: true
         });
-        console.log('Response Data:', response.data);  // 응답 데이터 출력
-    } catch (error) {
-        console.error('Error fetching record:', error);  // 기본 에러 메시지 출력
+        console.log('Response Data:', response.data);  
 
-        // 에러 객체 전체를 출력하여 더 자세한 정보를 확인
+        return response.data.data;
+    } catch (error) {
+        console.error('Error fetching record:', error); 
+
         console.error('Full Error Object:', error);
 
         if (error.response) {

@@ -6,13 +6,12 @@ import Date from './Date'
 
 const AddItem=({ onCancel, onAdd })=>{
     const [formData, setFormData] = useState({
-        category : '',
+        category : '', // level -> category로 변경
         schoolName :'',
-        major :  '',
+        major :  '',  // department -> major로 변경
         admissionDate :  '',
         graduationDate :  '',
-        state :  ''
-
+        state :  ''  // status -> state로 변경
     })
 
     const handleChange =(e)=>{
@@ -20,32 +19,28 @@ const AddItem=({ onCancel, onAdd })=>{
         setFormData(prev => ({...prev, [name]:value}));
     }
 
-    const handleLevelChange =(level)=>{
-        setFormData(prev=>({...prev, level}));
+    const handleLevelChange =(category)=>{  // level을 category로 맞춤
+        setFormData(prev=>({...prev, category}));
     }
 
-    const handleStatusChange =(status)=>{
-        setFormData(prev=>({...prev, status}));
+    const handleStatusChange =(state)=>{  // status를 state로 맞춤
+        setFormData(prev=>({...prev, state}));
     }
 
-    const handleStartDateChange =(startDate)=>{
-        const isoString = startDate.toISOString().slice(0,7);
-        const formattedDate = isoString.replace("-",".");
-        setFormData(prev=>({...prev, startDate: formattedDate }));
-    }
-
-    const handleEndDateChange =(endDate)=>{
-        const isoString = endDate.toISOString().slice(0,7);
-        const formattedDate = isoString.replace("-",".");
-        setFormData(prev=>({...prev, endDate: formattedDate }));
-    }
+    const handleStartDateChange = (admissionDate) => {  // startDate -> admissionDate
+        setFormData(prev => ({ ...prev, admissionDate }));
+    };
+    
+    const handleEndDateChange = (graduationDate) => {  // endDate -> graduationDate
+        setFormData(prev => ({ ...prev, graduationDate }));
+    };
 
     return(
         <div style={{display:'flex'}}>
             <Container>
                 <form style={{position:'relative'}}>
                     <div style={{display:'flex', justifyContent:'space-between', height:'45px', width:'610px'}}>
-                        <Edu isLevel="학력구분" onChange={handleLevelChange} value={formData.level}/>
+                        <Edu isLevel="학력구분" onChange={handleLevelChange} value={formData.category}/>
                         <Input 
                             name="schoolName"
                             placeholder='학교명(ex.00대학교)' 
@@ -57,20 +52,20 @@ const AddItem=({ onCancel, onAdd })=>{
                     <br/>
                     <div style={{display:'flex', justifyContent:'space-between', height:'45px', width:'610px'}}>
                         <Input 
-                            name="department"
+                            name="major"  // department를 major로 변경
                             placeholder='전공 및 계열(ex. 00학과 또는 인문계열)' 
                             style={{width:'610px'}}
-                            value={formData.department}
+                            value={formData.major}
                             onChange={handleChange}>
                         </Input>    
                     </div>
                     <br/>
                     <div style={{display:'flex', justifyContent:'space-between', height:'45px', width:'610px'}}>
-                        <Edu isLevel="학력상태" onChange={handleStatusChange} value={formData.status}/>
+                        <Edu isLevel="학력상태" onChange={handleStatusChange} value={formData.state}/>
                         <div style={{width:'150px'}}>
                             <Date 
                                 place_holder={"입학연월"} 
-                                value={formData.startDate}
+                                value={formData.admissionDate}
                                 onChange={handleStartDateChange}></Date>  
                         </div>
                         
@@ -78,7 +73,7 @@ const AddItem=({ onCancel, onAdd })=>{
                         <div style={{width:'150px'}}>
                             <Date 
                                 place_holder={"졸업연월"}
-                                value={formData.endDate}
+                                value={formData.graduationDate}
                                 onChange={handleEndDateChange}></Date>  
                         </div>
 
@@ -97,7 +92,6 @@ const AddItem=({ onCancel, onAdd })=>{
     )
 }
 export default AddItem
-
 
 const Container = styled.div`
     width:610px;
@@ -126,5 +120,4 @@ const Button = styled.div`
     justify-content:center;
     align-items:center;
     cursor:pointer;
-
 `

@@ -29,10 +29,12 @@ const EditItem = ({ data, onCancel, isLastItem, onEdit }) => {
 
     const handleAdmissionDateChange = (admissionDate) => {
         setFormData((prev) => ({ ...prev, admissionDate }));
+        console.log("Admission Date:", admissionDate);
     };
 
     const handleGraduationDateChange = (graduationDate) => {
         setFormData((prev) => ({ ...prev, graduationDate }));
+        console.log("Graduation Date:", graduationDate);
     };
 
     return (

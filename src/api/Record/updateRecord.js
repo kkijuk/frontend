@@ -4,6 +4,8 @@ const updateRecord = async (id, data) => {
     try {
         const response = await api.patch(`/history/resume/?recordId=${id}`, data);
         console.log(response.data);
+
+        return response.data;
     } catch (error) {
         console.error('Error updating record:', error);
         if (error.response) {
