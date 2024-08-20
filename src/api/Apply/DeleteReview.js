@@ -3,10 +3,10 @@ export const deleteReview = async (recruitId, reviewId) => {
         const response = await fetch(`https://api.kkijuk.com/recruit/${recruitId}/review/${reviewId}`, {
             method: 'DELETE',
             headers: {
-                credentials: "include", // 쿠키와 인증 정보를 함께 보냄
 
                 'accept': '*/*',
             },
+            credentials: "include",
         });
 
         if (!response.ok) {
