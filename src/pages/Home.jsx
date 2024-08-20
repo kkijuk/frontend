@@ -6,7 +6,7 @@ import Banner from '../components/Home/Banner';
 import DeadlineNoti from '../components/Home/DeadlineNoti';
 import WritingNoti from '../components/Home/WritingNoti';
 import RecommendBox from '../components/Home/RecommendBox';
-import Timeline from '../components/Mycareer/Timeline';
+import TimelineHome from '../components/Home/TimelineHome';
 
 const Body = styled.div`
   width: 820px;
@@ -85,7 +85,7 @@ export default function Home() {
         <Body>
             <Container1>
                 <LoginProfileBox></LoginProfileBox>
-                <Timeline></Timeline>
+                <TimelineHome></TimelineHome>
             </Container1>
             <Banner banners={bannerDummy} />
 
