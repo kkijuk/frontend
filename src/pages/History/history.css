@@ -1,0 +1,69 @@
+body {
+    font-family: 'CustomFont', sans-serif;
+}
+  
+h1 {
+    font-family:'Bold';
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 33.41px;
+    text-align: left;
+}
+
+h2{
+    font-family: 'Bold';
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 28.64px;
+    text-align: left;
+}
+
+h3{
+    font-family: 'Bold';
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 23.87px;
+    text-align: left;
+}
+
+p{
+    font-family: 'Medium';
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.09px;
+    text-align: left;
+}
+
+.lastUpdated{
+    font-family: 'Medium';
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16.71px;
+    text-align: right;
+    color:#707070;
+}
+
+.custom-wrapper .mbsc-ios.mbsc-textfield-wrapper-box,
+.custom-wrapper .mbsc-ios.mbsc-textfield-wrapper-outline {
+    margin: 0 !important;
+}
+
+.mbsc-ios.mbsc-textfield {
+    background: transparent;
+    display: flex;
+    height: 2.75em;
+    width:145px;
+    padding: 0 1em;
+}
+
+.mbsc-ios.mbsc-textfield-inner-box, .mbsc-ios.mbsc-textfield-inner-outline {
+    position: relative;
+    width: 145px;
+}
+
+.custom-div {
+    border-top: none;      /* 위쪽(border-top) */
+    border-right: none; /* 오른쪽(border-right) */
+    border-bottom: none; /* 아래쪽(border-bottom) */
+    border-left: 2px dashed black;  /* 왼쪽(border-left) */
+}
