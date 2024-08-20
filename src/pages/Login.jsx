@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import logo from '../assets/logo.png';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../api/Login/Login'; 
+import { useAuth } from '../components/AuthContext';
 
 const LoginScreen = styled.div`
   max-width: 400px;
@@ -82,7 +85,7 @@ const LoginScreen = styled.div`
   }
 
   .links {
-    color: #3AAF85; /* 구분 기호와 링크를 포함한 텍스트 색상 설정 */
+    color: #3AAF85; 
     font-family: Pretendard;
     font-size: 14px;
     font-style: normal;
@@ -94,14 +97,25 @@ const LoginScreen = styled.div`
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [agreements, setAgreements] = useState({
-    terms: false,
-    privacy: false,
-    marketing: false
-  });
+  const [errorMessage, setErrorMessage] = useState('');
+  
+  const navigate = useNavigate(); 
+  const { login: setLoginState } = useAuth(); 
 
-  const handleLogin = () => {
-    console.log('로그인 시도:', email, password);
+  const handleLogin = async () => {
+    try {
+      const result = await login({ email, password });
+      console.log('로그인 성공:', result);
+
+      if (result.message === "login success") {
+        setLoginState(true); // 로그인 상태 업데이트
+        navigate('/'); 
+      } else {
+        setErrorMessage(result.message || "로그인 실패");
+      }
+    } catch (error) {
+      setErrorMessage(error.message);
+    }
   };
 
   return (
@@ -122,15 +136,7 @@ const LoginPage = () => {
         onChange={(e) => setPassword(e.target.value)}
         className="textInput"
       />
-      <div className="checkbox-container">
-        <input
-          type="checkbox"
-          checked={agreements.terms}
-          onChange={(e) => setAgreements({ ...agreements, terms: e.target.checked })}
-          className="checkbox"
-        />
-        <label className="label">자동 로그인</label>
-      </div>
+      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       <button className="button" onClick={handleLogin}>로그인</button>
       <div className="links">
         <a href="/signup">회원가입</a> | <a href="/mypage/passwordreset">비밀번호 찾기</a>

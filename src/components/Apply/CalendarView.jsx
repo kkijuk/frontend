@@ -23,7 +23,7 @@ const StyledCalendar = styled(Calendar)`
   color: #000;
   text-align: center;
   font-family: Pretendard;
-  font-size: 18px;
+  font-size: 17px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%;
@@ -92,14 +92,31 @@ const StyledCalendar = styled(Calendar)`
                 inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15) !important;
   }
 
-  .react-calendar__tile--active {
-    background: none !important;
-    color: inherit !important;
-    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
-                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
-                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
-                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15) !important;
-  }
+.react-calendar__tile--active {
+  position: relative;
+  background: none !important;
+  color: #fff !important; 
+  
+}
+
+.react-calendar__tile--active::before {
+  content: '';
+  position: absolute;
+  width: 26px; 
+  height: 26px;
+  background-color: #3AAF85;
+  border-radius: 50%;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+.react-calendar__tile--active > * {
+  position: relative;
+  z-index: 1; 
+  color: white; 
+}
 
   .react-calendar__tile--now.react-calendar__tile--active {
     color: #3AAF85 !important;
@@ -120,27 +137,28 @@ const StyledCalendar = styled(Calendar)`
   }
 
   .react-calendar__tile--hover {
-    background: none !important;
+    background-color: transparent !important;
     color: inherit !important;
-    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
-                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
-                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
-                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15);
+    box-shadow: none !important;
   }
+
 `;
 
 const DayIndicatorContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 4px;
+  gap: 8px;
 `;
 
 const DayIndicator = styled.div`
-  width: 6px;
-  height: 6px;
+  width: 9px;
+  height: 9px;
   background-color: ${({ color }) => color || 'transparent'};
   border-radius: 50%;
-  margin-left: 2px;
+  margin-left: 0px;
+  margin-top: 0px;
 `;
 
 const CustomCalendar = ({ onChange, value, marks }) => {
@@ -313,3 +331,4 @@ const CalendarView = ({ date, setDate }) => {
 };
 
 export default CalendarView;
+

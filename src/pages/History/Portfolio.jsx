@@ -18,7 +18,8 @@ const Portfolio=()=>{
 
     return(
         <>  
-            {modalOpend && <Alert closeModal={toggle}></Alert>}
+            <p>서비스 준비 중입니다.</p>
+            {/* {modalOpend && <Alert closeModal={toggle}></Alert>}
             <p>포트폴리오</p>
             <button onClick={toggle}>삭제</button>
             <Date
@@ -29,7 +30,7 @@ const Portfolio=()=>{
                 touchUi={true}
             />
             <Edu/>
-            <EducationList/>
+            <EducationList/> */}
 
         </>
     )
