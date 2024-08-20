@@ -3,7 +3,7 @@ body {
 }
   
 h1 {
-    font-family:'Black';
+    font-family:'Bold';
     font-size: 28px;
     font-weight: 700;
     line-height: 33.41px;
@@ -11,7 +11,7 @@ h1 {
 }
 
 h2{
-    font-family: 'Black';
+    font-family: 'Bold';
     font-size: 24px;
     font-weight: 700;
     line-height: 28.64px;
@@ -19,7 +19,7 @@ h2{
 }
 
 h3{
-    font-family: 'SemiBold';
+    font-family: 'Bold';
     font-size: 20px;
     font-weight: 500;
     line-height: 23.87px;

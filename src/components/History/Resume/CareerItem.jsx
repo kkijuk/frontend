@@ -10,18 +10,18 @@ const CareerItem = ({ dummy, isLastItem, onEdit }) => {
     return (
         <div style={{display:'flex'}}>
         <TimeLine>
-                <Oval category={dummy.category} isPastDue = {isPastDue}></Oval>
-                <Line category={dummy.category} isLastItem={isLastItem} isPastDue = {isPastDue}></Line>
+                <Oval category={dummy.alias} isPastDue = {isPastDue}></Oval>
+                <Line category={dummy.alias} isLastItem={isLastItem} isPastDue = {isPastDue}></Line>
             </TimeLine>
         <Container>
             <div>
-                <LevelTag category={dummy.category}>{dummy.category}</LevelTag>
+                <LevelTag category={dummy.alias}>{dummy.alias}</LevelTag>
                 <SchoolInfo>
-                    <SchoolName>{dummy.title}</SchoolName>
+                    <SchoolName>{dummy.careerName}</SchoolName>
                     <Dates>
                         {dummy.startDate} ~ {dummy.endDate} <Status>({dummy.period}개월)</Status>
                     </Dates>
-                        <p><span style={{fontWeight:'600', marginRight:'30px'}}>활동내역</span>{dummy.task}</p>
+                        <p><span style={{fontWeight:'600', marginRight:'30px'}}>활동내역</span>{dummy.summay}</p>
 
                 </SchoolInfo>
             </div>
