@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import LoginProfileBox from '../components/Home/LoginProfileBox';
 import LogoutProfileBox from '../components/Home/LogoutProfileBox';
@@ -7,6 +7,7 @@ import DeadlineNoti from '../components/Home/DeadlineNoti';
 import WritingNoti from '../components/Home/WritingNoti';
 import RecommendBox from '../components/Home/RecommendBox';
 import TimelineHome from '../components/Home/TimelineHome';
+import { useAuth } from '../components/AuthContext';  
 
 const Body = styled.div`
   width: 820px;
@@ -30,17 +31,14 @@ const Container1 = styled.div`
 
 const Container2 = styled.div`
     width: 100%;
-
 `;
 
 const Container3 = styled.div`
     width: 100%;
-
 `;
 
 const Container4 = styled.div`
     width: 100%;
-
 `;
 
 const Label = styled.div`
@@ -80,11 +78,12 @@ const bannerDummy = [
 
 
 export default function Home() {
+    const { isLoggedIn } = useAuth();  
 
     return (
         <Body>
             <Container1>
-                <LoginProfileBox></LoginProfileBox>
+                {isLoggedIn ? <LoginProfileBox /> : <LogoutProfileBox />}
                 <TimelineHome></TimelineHome>
             </Container1>
             <Banner banners={bannerDummy} />
@@ -92,29 +91,28 @@ export default function Home() {
             <Container2>
                 <Label>잠깐! 잊지 않으셨죠?</Label>
                 <ContentBox>
-                    <DeadlineNoti></DeadlineNoti>
-                    <WritingNoti></WritingNoti>
+                    <DeadlineNoti />
+                    <WritingNoti />
                 </ContentBox>
             </Container2>
 
             <Container3>
                 <Label>추천 활동 공고</Label>
                 <ContentBox>
-                {dummyData.slice(0, 4).map((data, index) => (
-            <RecommendBox key={index} data={data} url={data.url}/>
-          ))}
+                    {dummyData.slice(0, 4).map((data, index) => (
+                        <RecommendBox key={index} data={data} url={data.url} />
+                    ))}
                 </ContentBox>
             </Container3>
 
             <Container4>
                 <Label>추천 채용 공고</Label>
                 <ContentBox>
-                {dummyData.slice(4, 8).map((data, index) => (
-            <RecommendBox key={index} data={data} url={data.url}/>
-          ))}
+                    {dummyData.slice(4, 8).map((data, index) => (
+                        <RecommendBox key={index} data={data} url={data.url} />
+                    ))}
                 </ContentBox>
             </Container4>
-
         </Body>
-    )
+    );
 }
