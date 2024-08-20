@@ -47,7 +47,7 @@ const GreenSpan = styled.span`
     color: #3AAF85;
 `;
 
-const BoxContainer= styled.div`
+const BoxContainer = styled.div`
     flex-shrink: 0;
     width: 100%;
     height: 50px;
@@ -111,6 +111,48 @@ const OKButton = styled.button`
   }
 `;
 
+const LoginButton = styled.button`
+    width: 220px;
+    height: 30px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 10px;
+    background: var(--main-01, #3AAF85);
+    margin-bottom: 8px;
+    margin-top: 20px;
+
+    color: var(--white, #FFF);
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover {
+    background-color: #35a576;
+  }
+`;
+
+const SignupButton = styled.button`
+    color: var(--gray-02, #707070);
+    text-align: center;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    font-family: Pretendard;
+    border: none;
+    background: none;
+    cursor: pointer;
+`;
+
 export default function LoginProfileBox() {
     const navigate = useNavigate();
     const { isLoggedIn } = useAuth(); 
@@ -138,7 +180,6 @@ export default function LoginProfileBox() {
             };
             fetchUserInfo();
         } else {
-           
             setUserName('');
             setMonthDuration(0);
             setCareerCount(0);
@@ -154,8 +195,16 @@ export default function LoginProfileBox() {
         navigate('/mycareer', { state: { showModal: true } });
     };
 
-    const goApply = () =>{
+    const goApply = () => {
         navigate('/apply-status');
+    };
+
+    const goLogin = () => {
+        navigate('/login');
+    };
+
+    const goSignup = () => {
+        navigate('/signup');
     };
 
     return (
@@ -167,26 +216,31 @@ export default function LoginProfileBox() {
                         <BoldText><GreenSpan>끼적</GreenSpan>한 지 {monthDuration}개월이 지났어요!</BoldText>
                     </>
                 ) : (
-                    <BoldText>로그인 해주세요</BoldText>
+                    <>
+                        <BoldText>지금 로그인하고<br />당신의 끼를 적어두세요.</BoldText>
+                        <LoginButton onClick={goLogin}>로그인</LoginButton>
+                        <SignupButton onClick={goSignup}>회원가입</SignupButton>
+                    </>
                 )}
             </TextContainer>
             {isLoggedIn && (
                 <>
                     <BoxContainer>
-                        <CountBox onClick={() => goCareer()} >
+                        <CountBox onClick={goCareer}>
                             내 활동
                             <BoldText fontSize='12px'>{careerCount}</BoldText>
                         </CountBox>
 
-                        <CountBox onClick={() => goApply()}>
+                        <CountBox onClick={goApply}>
                             지원현황
                             <BoldText fontSize='12px'>{recruitCount}</BoldText>
                         </CountBox>
                     </BoxContainer>
-                    
-                    <OKButton onClick={() => goCareerAdd()}>활동 추가하기</OKButton>
+
+                    <OKButton onClick={goCareerAdd}>활동 추가하기</OKButton>
                 </>
             )}
         </Container>
     );
 }
+
