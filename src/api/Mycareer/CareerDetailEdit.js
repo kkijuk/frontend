@@ -36,6 +36,7 @@ export const CareerDetailDelete = async (careerId, detailId) => {
         `https://api.kkijuk.com/career/${careerId}/${detailId}`,
         
         {
+          withCredentials: true,
           headers: {
             'Content-Type': 'application/json; charset=utf-8'
           }

@@ -7,11 +7,13 @@ export const CareerEdit = async (careerId, data) => {
           data,
           
           {
+            withCredentials: true,
+
             headers: {
 
               'Content-Type': 'application/json; charset=utf-8'
             },
-            withCredentials: true, // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
+             // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
 
           }
         );
@@ -30,18 +32,19 @@ export const CareerEdit = async (careerId, data) => {
 };
 
 
-export const CareerDetailDelete = async (careerId, detailId) => {
+export const CareerDelete = async (careerId) => {
   try {
       const response = await axios.delete(
-        `https://api.kkijuk.com/career/${careerId}/${detailId}`,
+        `https://api.kkijuk.com/career/${careerId}`,
         
         {
+          withCredentials: true,
           headers: {
             'Content-Type': 'application/json; charset=utf-8'
           }
         }
       );
-      console.log("CareerDetailEdit.js 원래 데이터 출력 : ", response.data);
+      console.log("CareerEdit.js 원래 데이터 출력 : ", response.data);
       return response.data;
     } catch (error) {
       console.log("Error", error.message);

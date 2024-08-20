@@ -4,7 +4,7 @@ import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect'; // API �
 
 // Chart와 Line 스타일 컴포넌트 정의
 const Chart = styled.div`
-  width: 820px;
+  width: 560px;
   height: 130px;
   margin-left: 10px;
   margin-right: 10px;
@@ -13,35 +13,35 @@ const Chart = styled.div`
 `;
 
 const Line1 = styled.div`
-  width: 800px;
+  width: 540px;
   height: 30px;
   position: relative;
   margin-left: 10px;
 `;
 
 const Line2 = styled.div`
-  width: 800px;
+  width: 540px;
   height: 30px;
   position: relative;
   margin-left: 10px;
 `;
 
 const Line3 = styled.div`
-  width: 800px;
+  width: 540px;
   height: 30px;
   position: relative;
   margin-left: 10px;
 `;
 
 const Line4 = styled.div`
-  width: 800px;
+  width: 540px;
   height: 30px;
   position: relative;
   margin-left: 10px;
 `;
 
 const XBox = styled.div`
-  width: 800px;
+  width: 540px;
   height: 30px;
 `;
 
@@ -49,7 +49,7 @@ const XLine = styled.div`
   position: absolute;
   bottom: 0;
   left: 10px;
-  width: 800px;
+  width: 540px;
   height: 2px;
   background-color: black;
   display: flex;
@@ -139,7 +139,7 @@ const calculateWidth = (startDate, endDate, oneMonthInPixels) => {
   return months * oneMonthInPixels;
 };
 
-export default function Timeline({ triggerEffect }) {
+export default function TimelineHome({ triggerEffect }) {
   const [careers, setCareers] = useState([]);
 
   useEffect(() => {
@@ -202,7 +202,7 @@ export default function Timeline({ triggerEffect }) {
                     + (latestDate.getMonth() - earliestDate.getMonth()) + 1; // 마지막 달 포함
 
   // 1개월당 픽셀 수 계산
-  const oneMonthInPixels = 800 / totalMonths; // 전체 넓이를 개월 수로 나눔
+  const oneMonthInPixels = 540 / totalMonths; // 전체 넓이를 개월 수로 나눔
 
   const groups = [[], [], [], []];
 
