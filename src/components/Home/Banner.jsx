@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import Slider from 'react-slick';
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -13,6 +14,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
+  overflow: hidden;
 `;
 
 const CountPage = styled.div`
@@ -38,18 +40,65 @@ const CountPageText = styled.h6`
     font-weight: 400;
 `;
 
+const BannerSlide = styled.div`
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+`;
 
-export default function Banner() {
+
+
+const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+  };
+
+
+export default function Banner({ banners }) {
+    const [currentSlide, setCurrentSlide] = useState(0);
+
+    useEffect(()=>{
+      console.log(banners);
+    },[]);
+
+    const handleClick = () => {
+      if (banners.url) {
+          window.open(banners.url, '_blank');
+      }
+  };
+
+    const handleAfterChange = (current) => {
+        setCurrentSlide(current);
+      };
 
     return (
         <Container>
+            <Slider {...settings} afterChange={handleAfterChange}>
+                {banners.map((banner, index) => (
+                    <BannerSlide 
+                    key={index} 
+                    // style={{ backgroundImage: `url(${banner.image})` }} 
+
+                    onClick={() => handleClick(banner.url)}
+                >
+                  <img src='banner.image'/>
+                </BannerSlide>
+            ))}
+            </Slider>
             <CountPage>
                 <CountPageText fontColor='white'>
-                    1
+                    {currentSlide + 1}
                 </CountPageText>
                 <CountPageText>/</CountPageText>
                 <CountPageText>
-                    5
+                    {banners.length}
                 </CountPageText>
             </CountPage>
 

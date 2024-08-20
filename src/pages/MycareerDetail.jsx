@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom'; // URL에서 careerId를 가져오기 위해 사용
+import { useParams, useNavigate } from 'react-router-dom'; // URL에서 careerId를 가져오기 위해 사용
 import Careerbox from '../components/MyCareerDetail/CareerBox';
 import CareerList from '../components/MyCareerDetail/CareerList';
+import EditIcon from '@mui/icons-material/Edit';
+
 import DetailAdd from '../components/MyCareerDetail/DetailAdd';
 import CareerNameTag from '../components/shared/CareerNameTag';
-import EditIconBig from '../components/shared/EditIconBigSIze';
+import AddCareerModalEdit from '../components/shared/AddCareerModalEdit';
 import { CareerViewSelect } from '../api/Mycareer/CareerviewSelect';
 import { ViewCareerDetail } from '../api/Mycareer/ViewCareerDetail';
 
@@ -67,6 +69,9 @@ const CareerTitle = styled.div`
   align-items: flex-start;
   border: 1px solid black;
   padding-bottom: 10px;
+
+    position: relative; /* Add this line */
+
 `;
 
 const ActivityDetails = styled.div`
@@ -83,6 +88,7 @@ const ActivityDetails = styled.div`
 const Container2 = styled.div`
   width: 800px;
   height: 477px;
+  border: 1px solid black;
 `;
 
 const CareerListBox = styled.div`
@@ -158,47 +164,85 @@ const MyCareerText = styled.div`
   font-weight: 700;
   line-height: normal;
 `;
+const EditIconStyled = styled(EditIcon)`
+   width: 30px !important;  /* !important를 사용하여 우선순위를 높임 */
+  height: 30px !important; /* !important를 사용하여 우선순위를 높임 */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #707070 !important; /* color 속성을 사용하여 색상 변경 */
+`;
+
 
 export default function MycareerDetail() {
   const [careers, setCareers] = useState([]); // CareerBox에 들어갈 데이터
-  const [selectedIndex, setSelectedIndex] = useState(null); // 선택된 CareerBox의 인덱스
   const [selectedCareerDetail, setSelectedCareerDetail] = useState(null); // 선택된 CareerBox의 상세 정보
   const [isAdding, setIsAdding] = useState(false); // 활동 기록 추가 상태
   const { careerId } = useParams(); // URL에서 careerId 추출
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // 모달 상태 추가
+  const [modalData, setModalData] = useState(null); // 모달에 표시할 데이터 상태
+
+  const navigate = useNavigate(); // useNavigate 훅 추가
 
   // 데이터 가져오기 및 careerId에 해당하는 CareerBox 선택
   useEffect(() => {
     const fetchCareers = async () => {
       const response = await CareerViewSelect('year'); // 항상 'year'로 설정하여 데이터 가져오기
       const data = response.data; // 응답 데이터에서 'data' 배열 추출
-
+      console.log("박스 안의 data값:", data);
       setCareers(data);
 
       // URL에서 받아온 careerId에 해당하는 CareerBox를 자동 선택
-      const selectedCareer = data
-        .flatMap(yearItem => yearItem.careers)
-        .find(career => career.id === parseInt(careerId));
-
-      console.log('URL로 받은 careerId:', careerId);
-      console.log('매칭된 CareerBox:', selectedCareer);
-
-      if (selectedCareer) {
-        setSelectedIndex(selectedCareer.id); // 선택된 CareerBox의 ID를 설정
-        setSelectedCareerDetail(selectedCareer); // 선택된 CareerBox의 상세 정보를 설정
-
-        // 선택된 CareerBox의 상세 데이터 가져오기
-        const careerDetail = await ViewCareerDetail(careerId);
-        console.log('선택된 CareerBox의 상세 데이터:', careerDetail.data);
-
-        setSelectedCareerDetail(careerDetail.data);
+      if (careerId) {
+        loadCareerDetail(careerId);
       }
     };
 
     fetchCareers();
   }, [careerId]);
 
-  // 선택된 CareerBox의 데이터를 가져오기
-  const selectedCareer = careers.find(career => career.id === selectedIndex);
+  // 특정 careerId의 상세 데이터를 로드하는 함수
+  const loadCareerDetail = async (careerId) => {
+    const careerDetail = await ViewCareerDetail(careerId);
+    console.log('선택된 CareerBox의 상세 데이터:', careerDetail);
+    setSelectedCareerDetail(careerDetail);
+    setIsAdding(false); // 새로운 Careerbox를 클릭하면 활동 기록 추가를 닫음
+
+    console.log("selectCareerDetail:", selectedCareerDetail);
+    if (careerDetail) {
+      navigate(`/mycareer/${careerId}`, { state: { details: careerDetail.data } });
+    }
+  };
+
+ // 모달 열기 핸들러
+ const handleEditClick = async () => {
+  console.log('Edit icon clicked');
+
+  if (careerId) {
+    try {
+      const careerDetailData = await ViewCareerDetail(careerId);
+      console.log('모달에 보낼 데이터:', careerDetailData);
+      
+      setIsEditModalOpen(true);
+      setModalData(careerDetailData);
+    } catch (error) {
+      console.log('Error fetching career details:', error);
+    }
+  }
+};
+
+// 모달 닫기 핸들러
+const handleModalClose = () => {
+  setIsEditModalOpen(false);
+};
+
+// 모달 저장 핸들러 (여기에 실제 저장 로직 추가)
+const handleModalSave = (data) => {
+  console.log('저장된 데이터:', data);
+  // 여기서 데이터를 저장하거나 상태를 업데이트할 수 있습니다.
+};
+
 
   return (
     <Body>
@@ -218,11 +262,8 @@ export default function MycareerDetail() {
                 endDate={item.endDate}
                 careerName={item.careerName}
                 category={item.categoryId}
-                selected={selectedIndex === item.id} // ID를 기준으로 선택된 항목을 결정
-                onClick={() => {
-                  setSelectedIndex(item.id); // 클릭 시 해당 항목의 ID를 설정
-                  setSelectedCareerDetail(item); // 선택된 CareerBox의 상세 정보를 설정
-                }}
+                selected={selectedCareerDetail?.data?.id === item.id} // ID를 기준으로 선택된 항목을 결정
+                onClick={() => loadCareerDetail(item.id)} // 클릭 시 해당 항목의 상세 데이터를 로드
               />
             ))
           ))}
@@ -233,45 +274,61 @@ export default function MycareerDetail() {
           <div>
             {selectedCareerDetail && (
               <ActivityRecordWrapper>
-                <ActivityRecord>{selectedCareerDetail.alias} 활동기록</ActivityRecord>
+                <ActivityRecord>{selectedCareerDetail.data.alias} 활동기록</ActivityRecord>
                 <CareerNameT>
-                  <CareerNameTag careerName={selectedCareerDetail.careerName} category={selectedCareerDetail.categoryId} />
+                  <CareerNameTag careerName={selectedCareerDetail.data.careerName} category={selectedCareerDetail.data.categoryId} />
                 </CareerNameT>
               </ActivityRecordWrapper>
             )}
             {selectedCareerDetail && (
               <>
-                <ActivityDate>{formatDate(selectedCareerDetail.startDate)} ~ {formatDate(selectedCareerDetail.endDate)}</ActivityDate>
-                <ActivityDetails>{selectedCareerDetail.summary}</ActivityDetails>
+                <ActivityDate>{formatDate(selectedCareerDetail.data.startDate)} ~ {formatDate(selectedCareerDetail.data.endDate)}</ActivityDate>
+                <ActivityDetails>{selectedCareerDetail.data.summary}</ActivityDetails>
               </>
             )}
           </div>
-          <EditIconBig />
+          <EditIconStyled  onClick={handleEditClick} />
+
+                
         </CareerTitle>
       </Container1>
       <Container2>
         <CareerListBox>
-          {selectedCareerDetail?.details?.map((detail, index) => (
+          {selectedCareerDetail?.data?.details?.map((detail, index) => (
             <CareerList
               key={index}
               title={detail.title}
               date={`${formatDate(detail.startDate)} ~ ${formatDate(detail.endDate)}`}
               contents={detail.content}
               detailTag={detail.careerTagList.map(tag => tag.tagName)}
+              careerId={careerId} // careerId 전달
+              detailId={detail.id} // detailId 전달
+              onUpdate={() => loadCareerDetail(careerId)} // 데이터 갱신 콜백 전달
+
             />
           ))}
           {isAdding && <DetailAdd onCancel={() => setIsAdding(false)}  careerId={careerId}/>} {/* 콜백 전달 */}
-          </CareerListBox>
+        </CareerListBox>
       </Container2>
       <Container3>
         <CareerPlus onClick={() => setIsAdding(true)} disabled={isAdding}>
           활동 기록 추가
         </CareerPlus>
       </Container3>
+
+      {isEditModalOpen && (
+        <AddCareerModalEdit
+        
+          onClose={handleModalClose}
+          onSave={handleModalSave}
+          data={modalData}
+        />
+      )}
     </Body>
   );
 }
 
 const formatDate = (dateString) => {
+  if (!dateString) return ''; // dateString이 undefined, null 또는 빈 문자열일 경우 빈 문자열 반환
   return dateString.replace(/-/g, '.');
 };

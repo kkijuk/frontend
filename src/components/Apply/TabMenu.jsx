@@ -5,7 +5,7 @@ import SearchBar from './SearchBar';
 const TabMenuStyled = styled.div`
   display: flex;
   align-items: center; 
-  border-bottom: 2px solid #ddd;
+  border-bottom: 4px solid #ddd;   
   margin-bottom: 20px;
 `;
 
@@ -15,13 +15,13 @@ const TabButton = styled.button`
   background: none;
   cursor: pointer;
   color: var(--black, #000);
-  font-family: Regular;
+  font-family: 'Bold';
   font-size: 26px;
   font-weight: 700;
   color: ${props => (props.active ? 'black' : '#E0E0E0')};
 `;
 
-const TabMenu = ({ activeTab, onTabClick, searchValue, onSearchChange, onSearch }) => {
+const TabMenu = ({ activeTab, onTabClick, searchValue, onSearchChange, onSearch, showSearchBar = true }) => {
   return (
     <TabMenuStyled>
       <TabButton active={activeTab === 'schedule'} onClick={() => onTabClick('schedule')}>
@@ -30,11 +30,13 @@ const TabMenu = ({ activeTab, onTabClick, searchValue, onSearchChange, onSearch 
       <TabButton active={activeTab === 'status'} onClick={() => onTabClick('status')}>
         지원현황
       </TabButton>
-      <SearchBar 
-        value={searchValue} 
-        onChange={onSearchChange} 
-        onSearch={onSearch} 
-      />
+      {showSearchBar && (
+        <SearchBar 
+          value={searchValue} 
+          onChange={onSearchChange} 
+          onSearch={onSearch} 
+        />
+      )}
     </TabMenuStyled>
   );
 };

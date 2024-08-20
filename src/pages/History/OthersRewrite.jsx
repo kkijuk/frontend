@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import api from '../../Axios.js'
+import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import './history.css'
@@ -8,6 +9,7 @@ import Toggle from '../../components/History/Toggle'
 import ButtonOptions from '../../components/History/AddButton.jsx'
 import Alert from '../../components/History/Alert'
 import AddJobModal from '../../components/shared/AddJobModal.jsx'
+import { click } from '@testing-library/user-event/dist/click.js'
 
 
 const OthersRewrite=()=> {
@@ -48,13 +50,145 @@ const OthersRewrite=()=> {
     const navigate = useNavigate();
     const { id } = useParams();
 
-    const [questions, setQuestions] = useState(resume.questions);
-    const [modalOpend, setModalOpend] = useState(false);
+    // (Data) questions: 질문 목록, contents: 질문 외 정보
+    const [questions, setQuestions] = useState([]);
+    const [contents, setContents] = useState({
+        id:0,
+        recruitId:0,
+        memberId:0,
+        recruitTitle:"",
+        deadline:"",
+        link:"",
+        tags:[],
+        timeSinceUpdate:"",
+        updatedAt:"",
+        
+    })
+    const [modalOpend, setModalOpend] = useState(false); //삭제 경고문 알람 모달
     const [dropdownOpend, setDropdownOpend] = useState(false);
-    const [isCompleted, setIsCompleted] = useState(resume.complete);
-    const [addJobModalOpened, setAddJobModalOpened] = useState(false);
-    const [show, setShow] = useState(false);
+    const [isCompleted, setIsCompleted] = useState(0);//작성중or작성완료
+    const [addJobModalOpened, setAddJobModalOpened] = useState(false); //공고 추가 모달
+    const [show, setShow] = useState(false);//추가 불가 알람창
+    const [gotoShow, setGotoShow] = useState(false);//공고 보러가기 불가 알람창
+    const [charCounts, setCharCounts] = useState([]);
+    
+    useEffect(()=>{
+        setCharCounts(questions.map((question) => question.content.length));
+    },[questions]);
+    
 
+    //(API) 자기소개서 개별 조회
+    useState(()=>{
+        api.get(`/history/intro/detail/${id}`)
+            .then(response=>{
+                console.log(response.data);
+                const Data = response.data.data;
+                setQuestions(Data.questionList);
+                setContents({
+                    id:Data.id,
+                    recruitId:Data.recruitId,
+                    memberId:Data.memberId,
+                    recruitTitle:Data.recruitTitle,
+                    deadline:Data.deadline,
+                    link:Data.link,
+                    tags:Data.tags,
+                    timeSinceUpdate:Data.timeSinceUpdate,
+                    updatedAt:Data.updatedAt,
+                })
+                setIsCompleted(Data.state);
+            })
+            .catch(error=>{
+                console.log(error);
+            })
+    },[])
+
+    //(API) 자기소개서 삭제
+    const deleteResume=()=>{
+        api.delete(`/history/intro/${id}`)
+            .then(response=>{
+                console.log(response.data);
+                changeState();
+                navigate('/history/list/3')
+            })
+            .catch(error=>{
+                console.log(error);
+            })
+    }
+
+    //(API) 자기소개서 삭제 후 공고상태 변경
+    const changeState=()=>{
+        api.patch(`/recruit/${contents.recruitId}`,{"status":"unapplied"})
+        .then(response=>{
+            console.log('상태 변경 결과: ', response.data);
+        })
+        .catch(error=>{
+            console.log(error);
+        })
+    }
+
+
+
+
+    //Others 변경 내용 수정
+    const handleInputChange = (number, field, event)=>{
+        const newQuestions = questions.map((question=>
+            question.number === number ? {...question, [field]:event.target.value} : question
+        ));
+        setQuestions(newQuestions); 
+        setCharCounts(prev=>prev.map((count, i)=>i===number ? event.target.value.length : count));   
+        console.log(charCounts); 
+    }
+    const submitData=()=>{
+        const Data = {
+            questionList: questions,
+            state: isCompleted
+          }
+          //(API) 내용 수정
+        api.patch(`history/intro/${contents.id}`,Data)
+            .then(response=>{
+                console.log(response.data);
+            })
+            .catch(error=>{
+                console.log(error);
+            })
+    }
+
+    setInterval(submitData,60000);
+
+    const handleSubmit = (event)=>{
+        event.preventDefault();
+        submitData();
+        navigate(`/history/others/${id}`);
+    }
+
+    //-----Clicks-----------------------------------------------------------
+    //공고추가 모달 오픈
+    const toggleAddJobModal=()=>{
+        setAddJobModalOpened(!addJobModalOpened);
+    }
+    //삭제 모달 오픈
+    const toggleModal=()=>{
+        setModalOpend(!modalOpend);
+    }
+    //드롭다운클릭
+    const handleDropdownClick=(isCompleted)=>{
+        setIsCompleted(isCompleted);
+        const status = isCompleted ? "applying" : "planned";
+        //(API) 자소서 상태 변경
+        api.patch(`/recruit/${contents.recruitId}`,{status:status})
+        .then(response=>{
+            console.log('상태 변경 결과: ', response.data);
+        })
+        .catch(error=>{
+            console.log(error);
+        })
+
+        toggleDropdown();
+    }
+    const toggleDropdown=()=>{
+        setDropdownOpend(!dropdownOpend);
+    }
+    //질문 추가 버튼 클릭
     const handleAddClick =()=>{
         let count = 0;
         questions.map(question=>{
@@ -64,102 +198,77 @@ const OthersRewrite=()=> {
         else showLimiter();
     }
 
-    const handleInputChange = (number, field, event)=>{
-        const newQuestions = questions.map((question=>
-            question.number === number ? {...question, [field]:event.target.value} : question
-        ));
-        setQuestions(newQuestions);     
-    }
-
-    //저장 로직
-    //1. handleSubmit
-    //2. autoSubmit: setTimeout(handleSubmit, 30000)
-    //3. handleSaveClick: handleSubmit + navigate
-    const autoSubmit=()=>{
-
-    }
-
-    const handleSubmit = (event)=>{
-        event.preventDefault();
-        navigate(`/history/others/${id}`);
-        //수정 요청
-        console.log('폼 제출', questions);
-    }
-
-
-
-    const toggleModal=()=>{
-        setModalOpend(!modalOpend);
-    }
-
-    const toggleDropdown=()=>{
-        setDropdownOpend(!dropdownOpend);
-    }
-    const handleDropdownClick=(isCompleted)=>{
-        setIsCompleted(isCompleted);
-        toggleDropdown();
-    }
-
-    const toggleAddJobModal=()=>{
-        setAddJobModalOpened(!addJobModalOpened);
-    }
-
     const showLimiter=()=>{
         setShow(true);
         setTimeout(()=>{
             setShow(false);
         },3000);
     }
-
+    //질문 삭제 버튼 클릭
     const deleteItem=(number)=>{
         const deletedQuestions = questions.filter(question=>question.number!==number);
         setQuestions(deletedQuestions);
     }
-
+    //공고 보러가기 클릭
+    const clickGotoApply=()=>{
+        if(contents.link){
+            window.open(contents.link);
+        }
+        else{
+            setGotoShow(true);
+            setTimeout(()=>{
+                setGotoShow(false);
+            },3000);
+        }  
+    }
     return (
+        
         <BackgroundDiv>
-            <Limiter show={show}>빈 질문을 먼저 채워주세요!</Limiter>
-            {modalOpend && <Alert closeModal={toggleModal}></Alert>}
-            {addJobModalOpened && <AddJobModal onClose={toggleAddJobModal} style={{position:'relative', zIndex:1000}}></AddJobModal>}
             <BaseDiv>
                 <ContentTitle>
-                    <h1 style={{position:'relative',display:'inline-block', marginRight:'12px'}}>{resume.oneLiner}</h1>
+                    <h1 style={{position:'relative',display:'inline-block', marginRight:'12px'}}>{contents.recruitTitle}</h1>
                     <div style={{display:'inline-block', position:'relative'}}>
+                        {modalOpend && <Alert closeModal={toggleModal} deleteResume={deleteResume}></Alert>}{/* 삭제 경고문 */}
+                        <Limiter show={show}>빈 질문을 먼저 채워주세요!</Limiter>{/* 질문추가 경고문 */}
+                        <Limiter show={gotoShow} style={{width:"250px"}}>등록된 링크가 없습니다. <br/>공고 수정에서 링크를 등록해주세요!</Limiter>
+                        {addJobModalOpened && <AddJobModal onClose={toggleAddJobModal} style={{position:'relative', zIndex:1000}}></AddJobModal>}{/* 공고추가 모달 */}
                         <Tag onClick={toggleDropdown} style={{color:'white', width:'60px',cursor:'pointer'}}>{isCompleted ? "작성 완료" : "작성 중"} ▼</Tag>
                         {dropdownOpend&&<Dropdown>
                             <DropdownItem onClick={()=>handleDropdownClick(0)}>작성 중</DropdownItem>
                             <DropdownItem onClick={()=>handleDropdownClick(1)}>작성 완료</DropdownItem>
                         </Dropdown>}
                     </div>
-                    {resume.career_tag.map(tag=>(
+                    {contents.tags.map(tag=>(
                         <Tag style={{background: '#F5F5F5', color:'#3AAF85'}}>{tag}</Tag>
                     ))}
-                    <div>
-                        <p className='lastUpdated' style={{display:'inline-block',color:'red', margin:'0 20px 8px 0px', textAlign:'left'}}>공고 마감 일시 : {resume.deadline}</p>               
+                    <br/>
+                    <p className='lastUpdated' style={{display:'inline-block',color:'red', margin:'0 20px 8px 0px', textAlign:'left'}}>공고 마감 일시 : {contents.deadline}</p>               
                         <button
-                            //onClick={}
+                            onClick={clickGotoApply}
                             style={{display:'inline-block',width:'140px', height:'30px', background:'#FFF', border:'1px solid #707070', borderRadius:'10px',fontFamily:'Regular', color:'#707070',fontSize:'15px',cursor:'pointer'}}
                         >공고 보러가기</button>
-                    </div>
                     <svg
                         onClick={toggleAddJobModal}
-                        style={{width:'30px', height:'30px', position:'absolute', top:'50px', right:'5px', cursor:'pointer'}} 
+                        style={{width:'30px', height:'30px', position:'absolute', top:'50px', right:'5px', cursor:'pointer', zIndex:'900'}} 
                         xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
                         <path d="M0 23.7509V30H6.24913L24.6799 11.5692L18.4308 5.32009L0 23.7509ZM29.5126 6.73656C30.1625 6.08665 30.1625 5.0368 29.5126 4.38689L25.6131 0.487432C24.9632 -0.162477 23.9133 -0.162477 23.2634 0.487432L20.2139 3.53701L26.463 9.78614L29.5126 6.73656Z" fill="#707070"/>
                     </svg>
                 </ContentTitle>
                 
                 <Linear style={{width:'820px'}}/>
-                <p className='lastUpdated' style={{marginTop:0}}>마지막 수정일시: {resume.updated_at}</p>                  
+                <p className='lastUpdated' style={{marginTop:0}}>마지막 수정일시: {contents.updatedAt}</p>                  
                 <form>
-                    {questions.map((question)=>(
+                    {questions.map((question, index)=>(
                         <div style={{position:'relative'}}>
+                            <Delete style={{left:'10px', top:'10px', color:'#707070', fontSize:'24px',lineHeight:'normal',cursor:'default'}}>
+                                {index+1}
+                            </Delete>
                             <Delete onClick={()=>deleteItem(question.number)}>삭제</Delete>
                             <InputTitle
-                                placeholder={`${question.number+1} 질문을 작성하세요`}
-                                style={{height:'50px', marginBottom:'12px'}}
-                                value={question.subTitle || ''}
-                                onChange={(e)=>handleInputChange(question.number,'subTitle',e)}
+                                placeholder={'질문을 작성하세요'}
+                                style={{height:'50px', marginBottom:'12px', paddingLeft:'50px', width:'770px'}}
+                                value={question.title || ''}
+                                onChange={(e)=>handleInputChange(question.number,'title',e)}
                             />
                             <InputTitle
                                 placeholder={'답변을 작성하세요'}
@@ -167,9 +276,12 @@ const OthersRewrite=()=> {
                                 value={question.content || ''}
                                 onChange={(e)=>handleInputChange(question.number,'content',e)}
                             />
+                            <p style={{fontFamily:'Regular', fontSize:'16px', color:'#707070', position:'absolute', right:'20px', top:`${index+165}px` }}>
+                                {charCounts[index]} (공백포함)
+                            </p>
+
                         </div>
                     ))}
-
                 </form>
                 <AddButton onClick={handleAddClick}>+</AddButton>
                 <div style={{height:'70px'}}></div>
@@ -230,7 +342,7 @@ const SButton = styled.button`
 `
 const ContentTitle=styled.div`
     position:relative;
-    z-index:890;
+    z-index:890; 
     margin-top:10px;
     margin-bottom:33px;
 `

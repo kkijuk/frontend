@@ -1,72 +1,133 @@
-import React from "react";
+import api from "../../Axios";
+import React,{useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import SubNav from '../../components/History/SubNav'
-import Toggle from '../../components/History/Toggle'
-import ButtonOptions from '../../components/History/AddButton'
 
 const MasterRewrite =()=>{
 
-    const dummyData = [
-        {
-            "id": 1,
-            "oneLiner": "한줄소개",
-            "introduce": "자기소개입니다.",
-            "reason_for_applying":"지원동기입니다.",
-            "strengths_and_weaknesses":"장단점입니다.",
-            "job_fit":"직무적합성입니다.",
-            "created_at": "2024-07-23T15:47:38.011066",
-            "updated_at": "2024-07-23 15:47"
-        }
-    ]
-    const content = dummyData[0];
-
     const navigate = useNavigate();
+
+    //(Data) 한줄소개, 지원동기및포부 제목 및 내용, 장단점 제목 및 내용, 직무적합성 제목 및 내용
+    const [questions, setQuestions] = useState({
+        memberId:0,
+        oneLiner:"",
+        motiveTitle:"",
+        motive:"",
+        prosAndConsTitle:"",
+        prosAndCons:"",
+        jobSuitabilityTitle:"",
+        jobSuitability:"",
+        updatedAt:""
+    })
+
+    //1. 마스터 저장 내용 불러오기
+    //(API) 마스터 조회
+    useEffect(()=>{
+        api.get('/history/intro/master')
+            .then(response=>{
+                console.log(response.data);
+                const Data = response.data.data[0];
+                console.log(Data.id);
+                setQuestions({
+                    memberId:Data.memberId,
+                    oneLiner:Data.oneLiner,
+                    motiveTitle:Data.motiveTitle,
+                    motive:Data.motive,
+                    prosAndConsTitle:Data.prosAndConsTitle,
+                    prosAndCons:Data.prosAndCons,
+                    jobSuitabilityTitle:Data.jobSuitabilityTitle,
+                    jobSuitability:Data.jobSuitability,
+                    updatedAt:Data.updatedAt
+                })
+
+            })
+            .catch(error=>{
+                console.log("Error:", error);
+            })
+    },[])
+
+    //2. 마스터 변경 내용 수정(저장 버튼 + 정기 호출)
+    const handleOnChange =(id, value)=>{
+        const updatedQuestions = {...questions, [id]:value};
+        setQuestions(updatedQuestions);
+    };
+
+
+    //(API) 마스터 수정
+    const submitData =()=>{
+        api.patch('/history/intro/master?id=1',questions)
+            .then(response=>{
+                console.log("마스터자소서수정완료: ",response.data);
+            })
+            .catch(error=>{
+                console.log("Error: ", error);
+            })
+    }
+
+    setInterval(submitData,60000);
 
     const handleSubmit = (event)=>{
         event.preventDefault();
-        navigate(-1);
-        //수정 요청
+        submitData();
+        navigate('/history/master');
     }
+
 
     return(
         <BackgroundDiv>
             <BaseDiv>
-                <h1 style={{display:'inline-block'}}>Master</h1>
-                <Linear style={{width:'820px'}}/>
-                <p className='lastUpdated' style={{marginTop:0}}>마지막 수정일시: {content.updated_at}</p>           
                 <InputTitle
+                    id="oneLiner"
                     placeholder="한줄소개를 작성하세요"
                     style={{height:'50px', marginBottom:'12px'}}
-                    value={content.oneLiner||''}
-                    //onChange
+                    value={questions.oneLiner||''}
+                    onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
+                />
+                <Linear style={{width:'820px'}}/>
+                {/* <p className='lastUpdated' style={{marginTop:0}}>마지막 수정일시: {content.updated_at}</p>            */}
+                <InputTitle
+                    id="motiveTitle"
+                    placeholder="지원동기 제목을 작성하세요"
+                    style={{height:'50px', marginBottom:'12px'}}
+                    value={questions.motiveTitle||''}
+                    onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
                 <InputTitle
-                    placeholder="자기소개를 작성하세요"
-                    style={{height:'150px', marginBottom:'12px'}}
-                    value={content.introduce||''}
-                    //onChange
-                />
-                <h2>지원동기</h2>
-                <InputTitle
+                    id="motive"
                     placeholder="지원동기를 작성하세요"
                     style={{height:'150px', marginBottom:'12px'}}
-                    value={content.reason_for_applying||''}
-                    //onChange
+                    value={questions.motive||''}
+                    onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
-                <h2>장단점</h2>
+                <div style={{height:'30px'}}/>
                 <InputTitle
+                    id="prosAndConsTitle"
+                    placeholder="장단점 제목을 작성하세요"
+                    style={{height:'50px', marginBottom:'12px'}}
+                    value={questions.prosAndConsTitle||''}
+                    onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
+                />
+                <InputTitle
+                    id="prosAndCons"
                     placeholder="장단점을 작성하세요"
                     style={{height:'150px', marginBottom:'12px'}}
-                    value={content.strengths_and_weaknesses||''}
-                    //onChange
+                    value={questions.prosAndCons||''}
+                    onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
-                <h2>직무적합성</h2>
+                <div style={{height:'30px'}}/>
                 <InputTitle
+                    id="jobSuitabilityTitle"
+                    placeholder="직무적합성 제목을 작성하세요"
+                    style={{height:'50px', marginBottom:'12px'}}
+                    value={questions.jobSuitabilityTitle||''}
+                    onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
+                />
+                <InputTitle
+                    id="jobSuitability"
                     placeholder="직무적합성을 작성하세요"
                     style={{height:'150px', marginBottom:'12px'}}
-                    value={content.job_fit||''}
-                    //onChange
+                    value={questions.jobSuitability||''}
+                    onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
                 <div style={{height:'70px'}}></div>
                 <Button 
@@ -100,12 +161,12 @@ const BaseDiv = styled.div`
 `
 
 const InputTitle = styled.input`
-    width: 820px;
+    width: 780px;
     flex-shrink: 0;
     border:none;
     border-radius: 10px;
     background: var(--gray-06, #F5F5F5);    
-    padding-left: 20px;
+    padding: 0px 20px;
     color: var(--gray-02, #707070);
     font-family:Regular;
     font-size:16px;

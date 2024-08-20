@@ -23,7 +23,7 @@ const Container = styled.div`
 
 const Title = styled.h1`
   color: var(--black, #000);
-  font-family: Regular;
+  font-family: bold;
   font-size: 30px;
   font-weight: 700;
   margin-bottom: 20px;
@@ -120,7 +120,7 @@ export default function ApplySchedule() {
 
   return (
     <Container>
-      <Title>지원일정</Title>
+      <Title>지원관리</Title>
       <TabMenu activeTab="schedule" onTabClick={() => navigate('/apply-status')} />
       <TopSection>
         <StatusContainer>

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import ListView from './ListView';  
+import CalendarListView from './CalendarListView';
 import { getRecruitCalendar } from '../../api/Apply/RecruitCalendar';
-import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
+import { getRecruitListEndDate } from '../../api/Apply/RecruitEndDate'; 
 import { useNavigate } from 'react-router-dom';
 
 const AdCalendarStyled = styled.div`
@@ -23,7 +23,7 @@ const StyledCalendar = styled(Calendar)`
   color: #000;
   text-align: center;
   font-family: Pretendard;
-  font-size: 18px;
+  font-size: 17px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%;
@@ -51,15 +51,13 @@ const StyledCalendar = styled(Calendar)`
     font-size: 15px;
     box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15);
     margin-top: -15px;
-    
   }
 
   .react-calendar__month-view__weekdays__weekday abbr {
     text-decoration: none;
     border-bottom: none; 
     outline: none; 
-    
-}
+  }
 
   .react-calendar__month-view__days__day {
     box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
@@ -67,7 +65,6 @@ const StyledCalendar = styled(Calendar)`
                 inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
                 inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15);
     border: none;
-    
   }
 
   .react-calendar__tile {
@@ -95,18 +92,35 @@ const StyledCalendar = styled(Calendar)`
                 inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15) !important;
   }
 
-  .react-calendar__tile--active {
-    background: none !important;
-    color: inherit !important;
-    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
-                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
-                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
-                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15) !important;
-  }
+.react-calendar__tile--active {
+  position: relative;
+  background: none !important;
+  color: #fff !important; 
+  
+}
+
+.react-calendar__tile--active::before {
+  content: '';
+  position: absolute;
+  width: 26px; 
+  height: 26px;
+  background-color: #3AAF85;
+  border-radius: 50%;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+.react-calendar__tile--active > * {
+  position: relative;
+  z-index: 1; 
+  color: white; 
+}
 
   .react-calendar__tile--now.react-calendar__tile--active {
     color: #3AAF85 !important;
-    font-weight: bold !important;
+  
     box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.25), 
                 inset 0 0.5px 0 0 rgba(0, 0, 0, 0.25), 
                 inset -0.5px 0 0 0 rgba(0, 0, 0, 0.25), 
@@ -123,27 +137,28 @@ const StyledCalendar = styled(Calendar)`
   }
 
   .react-calendar__tile--hover {
-    background: none !important;
+    background-color: transparent !important;
     color: inherit !important;
-    box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
-                inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
-                inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
-                inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15);
+    box-shadow: none !important;
   }
+
 `;
 
 const DayIndicatorContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 3px;
+  gap: 8px;
 `;
 
 const DayIndicator = styled.div`
-  width: 6px;
-  height: 6px;
+  width: 9px;
+  height: 9px;
   background-color: ${({ color }) => color || 'transparent'};
   border-radius: 50%;
-  margin-left: 2px;
+  margin-left: 0px;
+  margin-top: 0px;
 `;
 
 const CustomCalendar = ({ onChange, value, marks }) => {
@@ -240,13 +255,12 @@ const CalendarView = ({ date, setDate }) => {
     const fetchCalendarData = async () => {
       try {
         const year = date.getFullYear();
-        const month = date.getMonth() + 1; // month는 0부터 시작하므로 +1
+        const month = date.getMonth() + 1; 
   
         const calendarData = await getRecruitCalendar(year, month);
         const fetchedMarks = calendarData.dates.map(day => {
           const marksForDay = [];
   
-          // 각 상태에 따라 색상을 추가, 최대 3개의 동그라미까지만 표시
           let remainingSpots = 3;
           const addMarks = (count, color) => {
             for (let i = 0; i < count && remainingSpots > 0; i++) {
@@ -280,40 +294,21 @@ const CalendarView = ({ date, setDate }) => {
     setDate(selectedDate);
 
     const selectedDateStr = selectedDate.toISOString().split('T')[0];
-    const jobsForDate = [];
 
     try {
         
-        for (let i = 1; i <= 10; i++) {  
-            const jobDetails = await getRecruitDetails(i);
-            if (jobDetails && jobDetails.endTime) {
-                const endTimeDateStr = jobDetails.endTime.split(' ')[0];
-                if (endTimeDateStr === selectedDateStr) {
-                    jobsForDate.push(jobDetails);
-                }
-            }
-        }
+        const jobs = await getRecruitListEndDate(selectedDateStr);
+
+        setJobsForSelectedDate(jobs);
     } catch (error) {
         console.error('Error fetching job details:', error);
+        setJobsForSelectedDate([]);
     }
+  };
 
-    setJobsForSelectedDate(jobsForDate); // 공고 정보를 설정
-};
-
-
-const handleJobClick = async (job) => {
-  const jobId = job.recruitId || job.id;  
-  if (jobId) {
-    try {
-      const jobDetails = await getRecruitDetails(jobId);
-      navigate(`/apply-detail/${jobId}`, { state: { job: jobDetails } });
-    } catch (error) {
-      console.error('Failed to fetch job details:', error);
-    }
-  } else {
-    console.error('Job ID is missing or undefined');
-  }
-};
+  const handleJobClick = (job) => {
+    navigate(`/apply-detail/${job.recruitId}`, { state: { job } });
+  };
 
   return (
     <AdCalendarStyled>
@@ -325,9 +320,15 @@ const handleJobClick = async (job) => {
           marks={marks}
         />
       </div>
-      <ListView data={jobsForSelectedDate} onJobClick={handleJobClick} />
-    </AdCalendarStyled>
+      <CalendarListView 
+      date={date.toISOString().split('T')[0]} 
+      data={jobsForSelectedDate} 
+      count={jobsForSelectedDate.length}  
+      onJobClick={handleJobClick} 
+    />
+  </AdCalendarStyled>
   );
 };
 
 export default CalendarView;
+

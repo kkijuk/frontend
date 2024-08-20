@@ -14,14 +14,12 @@ import SignupSuccess from "./pages/SignupSuccess";
 import ResetSuccess from "./pages/Mypage/ResetSuccess";
 import SubNav from './components/History/SubNav';
 import ViewOptions from './pages/History/ViewOptions';
-import History from "./pages/History";
+import History from "./pages/History/History";
 import Master from "./pages/History/Master";
 import Others from "./pages/History/Others";
 import MasterRewrite from "./pages/History/MasterRewrite";
 import OthersRewrite from "./pages/History/OthersRewrite";
-import ListHeader from "./pages/History/ListHeader";
 import List from "./pages/History/List";
-import SelectHeader from "./pages/History/SelectHeader";
 import Select from './pages/History/Select';
 import AddApply from "./pages/History/AddApply";
 import Portfolio from "./pages/History/Portfolio";
@@ -32,12 +30,13 @@ import MyInformation from './pages/Mypage/Myinformation';
 import Field from './pages/Mypage/Field';
 import FieldEdit from './pages/Mypage/FieldEdit';
 import PasswordResetEmail from './pages/Mypage/PasswordResetEmail';
+import PasswordResetEmailConfirm from './pages/Mypage/PasswordResetEmailConfirm';
 import PasswordReset from './pages/Mypage/PasswordReset';
 import SignupInterest from './pages/SignupInterest';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FilterPage from './components/Apply/FilterPage';
-
+import { AuthProvider } from './components/AuthContext'; // AuthContext 임포트
 
 const AppContainer = styled.div`
   display: flex;
@@ -61,15 +60,11 @@ const App = () => {
       <Header />
       <MainContent>
         <Routes>
-          {/*Mycareer*/}
           <Route path="/mycareer/:careerId" element={<MyCareerDetail />} />
-
-
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signupsuccess" element={<SignupSuccess />} />
-          
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mycareer" element={<MyCareer />} />
           <Route path="/signupinterest" element={<SignupInterest />} />
@@ -84,12 +79,10 @@ const App = () => {
           </Route>
           <Route path="/history/master/rewrite" element={<MasterRewrite />} />
           <Route path="/history/others/:id/rewrite" element={<OthersRewrite />} />
-          <Route path="/history/select" element={<SelectHeader />}>
-            <Route path=":id" element={<Select />} />
-          </Route>
+          <Route path="/history/select" element={<Select />} />
           <Route path="/history/add_apply" element={<AddApply />} />
-          <Route path="/apply-schedule" element={<ApplySchedule />} /> {/* 지원일정 */}
-          <Route path="/apply-status" element={<ApplyStatus />} /> {/* 지원현황 */}
+          <Route path="/apply-schedule" element={<ApplySchedule />} /> 
+          <Route path="/apply-status" element={<ApplyStatus />} /> 
           <Route path="/apply-detail/:id" element={<ApplyDetail />} />
           <Route path="/filter" element={<FilterPage />} />
           <Route path="/community" element={<Community />} />
@@ -98,8 +91,8 @@ const App = () => {
           <Route path="/mypage/accountmanagement" element={<AccountMangement />} />
           <Route path="/mypage/field" element={<Field />} />
           <Route path="/mypage/fieldedit" element={<FieldEdit />} />
-
           <Route path="/mypage/passwordresetemail" element={<PasswordResetEmail />} />
+          <Route path="/mypage/passwordresetemailconfirm" element={<PasswordResetEmailConfirm />} />
           <Route path="/mypage/passwordreset" element={<PasswordReset />} />
           <Route path="/mypage/resetsuccess" element={<ResetSuccess />} />
         </Routes>
@@ -112,7 +105,9 @@ const App = () => {
 export default function AppWrapper() {
   return (
     <Router>
-      <App />
+      <AuthProvider> {/*이부분*/}
+        <App />
+      </AuthProvider>  {/*이부분*/}
     </Router>
   );
 }

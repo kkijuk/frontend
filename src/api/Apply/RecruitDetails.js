@@ -6,6 +6,8 @@ export const getRecruitDetails = async (id) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
+        credentials: "include", // 쿠키와 인증 정보를 함께 보냄
+
         'accept': '*/*'
       }
     });
@@ -27,15 +29,3 @@ export const getRecruitDetails = async (id) => {
     return null; // 에러 발생 시 null 반환
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-

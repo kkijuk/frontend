@@ -1,34 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const getBackgroundColor = (category, selected) => {
-  let color;
-  switch (category) {
-    case '1':
-      color = '#FCC400';
-      break;
-    case '2':
-      color = '#77AFF2';
-      break;
-    case '3':
-      color = '#BB7AEF';
-      break;
-    case '4':
-      color = '#78D333';
-      break;
-    case '5':
-      color = '#FA7C79';
-      break;
-    case '6':
-      color = '#F99538';
-      break;
-    case '7':
-      color = '#707070';
-      break;
-    default:
-      color = '#707070';
+const getBackgroundColor = (selected, categoryValue) => {
+if (selected) {
+    switch (categoryValue) {
+      case 1:
+        return '#FCC400';
+      case 2:
+        return '#77AFF2';
+      case 3:
+        return '#BB7AEF';
+      case 4:
+        return '#78D333';
+      case 5:
+        return '#FA7C79';
+      case 6:
+        return '#F99538';
+      case 7:
+        return '#707070';
+      default:
+        return '#707070';
+    }
   }
-  return selected ? color = color : '#F5F5F5';
+  return '#F5F5F5';
 };
 
 const CareerBox = styled.div`
@@ -41,8 +35,8 @@ const CareerBox = styled.div`
 
   width: 70px;
   border-radius: 10px;
-  background-color: ${(props) => getBackgroundColor(props.category, props.selected)};
-  border: 2px solid ${(props) => getBackgroundColor(props.category, props.selected)};
+  background-color: ${(props) => getBackgroundColor(props.selected, props.categoryValue)};
+  border: 2px solid ${(props) => getBackgroundColor(props.category, props.categoryValue)};
   position: relative;
   cursor: pointer;
   margin-right: 10px;
@@ -66,13 +60,14 @@ const Nickname = styled.div`
   font-size: 14px;
   font-style: normal;
   line-height: normal;
+  margin: 0px;
 `;
 
 
 
-export default function CategoryGroup({category, selected, onClick }) {
+export default function CategoryGroup({category, selected, onClick, categoryValue }) {
   return (
-    <CareerBox category={category} selected={selected} onClick={onClick}>
+    <CareerBox categoryValue={categoryValue} selected={selected} onClick={onClick}>
       <Nickname selected={selected}>{category}</Nickname>
     </CareerBox>
   );

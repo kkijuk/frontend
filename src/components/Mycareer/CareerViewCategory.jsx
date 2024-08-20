@@ -133,7 +133,7 @@ const CareerViewCategory = ({ data }) => {
   return (
     <BackgroundSection>
       <CategoryBox>
-        {data.map((item, index) => (
+        {data.data.map((item, index) => (
           <React.Fragment key={index}>
             <Category>
               <CareerCategoryCircle category={getColor(item.categoryName)} />

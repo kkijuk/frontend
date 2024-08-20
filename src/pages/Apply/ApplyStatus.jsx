@@ -18,7 +18,7 @@ const Container = styled.div`
 
 const Title = styled.h1`
   color: var(--black, #000);
-  font-family: Regular;
+  font-family: 'Bold';
   font-size: 30px;
   font-weight: 700;
   margin-bottom: 20px;
@@ -107,11 +107,10 @@ export default function ApplyStatus() {
 
   return (
     <Container>
-      <Title>지원현황</Title>
+      <Title>지원관리</Title>
       <TabMenu activeTab="status" onTabClick={() => navigate('/apply-schedule')} />
       <ApplyStatusButton activeStatus={activeStatus} onStatusClick={handleStatusClick} statusCounts={statusCounts} />
       <StatusListView data={filteredJobs} onJobClick={handleJobClick} />
     </Container>
   );
 }
-

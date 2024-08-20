@@ -19,6 +19,8 @@ export const updateRecruit = async (recruitId, updatedJob) => {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
+      credentials: "include", // 쿠키와 인증 정보를 함께 보냄
+
     },
     body: JSON.stringify({
       title: updatedJob.title || null,

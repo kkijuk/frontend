@@ -21,7 +21,6 @@ const ContentSection = styled.div`
   position: relative;
 `;
 
-
 const AdListStyled = styled.div`
   padding: 20px;
   border-radius: 10px;
@@ -30,7 +29,6 @@ const AdListStyled = styled.div`
 
 const AdDateSection = styled.div`
   margin-bottom: 30px;
- 
 `;
 
 const AdDate = styled.div`
@@ -72,23 +70,7 @@ const AdTitle = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-   margin-top: 5px;
-`;
-
-const Label = styled.span`
-  border-radius: 11px;
-  background: #F5F5F5;
-  color: var(--gray-02, #707070);
-  text-align: center;
-  font-family: Pretendard;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  padding: 4px 16px;
-  margin-right: 10px;
-  display: inline-block;
-  margin-bottom: 10px; 
+  margin-top: 5px;
 `;
 
 const TagContainer = styled.div`
@@ -121,7 +103,7 @@ const StatusCircle = styled.span`
     return '#707070';
   }};
   margin-right: 10px;
-   margin-top: 5px;
+  margin-top: 5px;
 `;
 
 const groupByDate = (data) => {
@@ -138,7 +120,19 @@ const groupByDate = (data) => {
 };
 
 const ListView = ({ data, onJobClick }) => {
-  const groupedData = groupByDate(data || []);
+  console.log('ListView data:', data); // 디버깅용 로그 추가
+
+  if (!data || data.length === 0) {
+    return (
+      <BackgroundSection>
+        <ContentSection background="#f0f0f0">
+         
+        </ContentSection>
+      </BackgroundSection>
+    );
+  }
+
+  const groupedData = groupByDate(data);
 
   return (
     <BackgroundSection>
@@ -172,6 +166,5 @@ const ListView = ({ data, onJobClick }) => {
     </BackgroundSection>
   );
 };
-
 
 export default ListView;

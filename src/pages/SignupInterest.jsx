@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import InterestBox from '../components/shared/InterestBox';
 import InterestSkipModal from '../components/User/InterestSkipModal';
+import { saveInterests } from '../api/Signup/signupInterest';
 
 const ContentArea = styled.div`
 
@@ -114,14 +115,22 @@ const SignupInterest = ({ onSave }) => {
     );
   };
 
-    const handleSave = () => {
-      if (interestingList.length === 0) {
-        alert("관심분야를 선택해 주세요!");
-        return;
-      }
+  const handleSave = async () => {
+    if (interestingList.length === 0) {
+      alert("관심분야를 선택해 주세요!");
+      return;
+    }
 
-      onSave({ interest: interestingList });
+    try {
+      const result = await saveInterests(interestingList);
+      console.log('Response:', result);
+      console.log('Interest list being sent:', interestingList);
+
+      onSave(result); // API 응답 데이터를 처리할 필요가 있으면 사용
       navigate('/');
+    } catch (error) {
+      alert('서버에 문제가 발생했습니다. 다시 시도해 주세요.');
+    }
   };
 
   const handleClose = () => {

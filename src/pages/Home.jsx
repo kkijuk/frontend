@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import LoginProfileBox from '../components/Home/LoginProfileBox';
+import LogoutProfileBox from '../components/Home/LogoutProfileBox';
 import Banner from '../components/Home/Banner';
 import DeadlineNoti from '../components/Home/DeadlineNoti';
 import WritingNoti from '../components/Home/WritingNoti';
 import RecommendBox from '../components/Home/RecommendBox';
+import Timeline from '../components/Mycareer/Timeline';
 
 const Body = styled.div`
   width: 820px;
@@ -59,16 +61,33 @@ const ContentBox = styled.div`
     gap: 20px;
 `;
 
+const dummyData = [
+    { title: 'IT 연합 사이드 프로젝트 동아리 UMC 7기 부원 모집', category: '동아리', endDate: '2024.09.15까지', image: 'https://i.ibb.co/R43nbpp/image.png', url: 'https://www.makeus.in/umc' },
+    { title: '2024 NH투자증권 빅데이터 경진대회 (~10/11)', category: '공모전/대회', endDate: '2024.10.11까지', image: 'https://i.ibb.co/6FRvK0F/415409-2.png', url: 'https://link.mynamuhbegin.com/dgoe33' },
+    { title: '[매일경제] 대학생 서포터즈 14기 모집', category: '대외활동', endDate: '2024.09.18까지', image: 'https://i.ibb.co/N9tkFXz/413647-2-1.png', url: 'https://www.mk.co.kr/'},
+    { title: '게임프로그래머 실무자양성과정 직업훈련', category: '교육', endDate: '2024.09.30까지', image: 'https://i.ibb.co/pvvzFTs/image-2238.png', url: 'https://futureyou.modoo.at/?link=b99wuqf9' },
+    { title: '[끼적] iOS개발 채용전환형 인턴 모집(이면 좋겠다)', category: '인턴', endDate: '2024.08.23까지', image: 'https://i.ibb.co/qgsgtdP/Frame-236.png', url: 'https://www.instagram.com/kki.juk/' },
+    { title: '[캐시워크] 서비스기획 채용전환형 인턴', category: '인턴', endDate: '2024.09.02까지', image: 'https://i.ibb.co/h9BKzSR/Frame-236-1.png', url: 'https://cashwalk.com/' },
+    { title: '[애플코리아] Data Analyst Internship - Korea Finance', category: '인턴', endDate: '채용 시 마감', image: 'https://i.ibb.co/K2L6HJ8/Frame-237.png', url: 'https://www.apple.com/kr/' },
+    { title: '[펄어비스] QA Beginner 인턴 모집', category: '인턴', endDate: '2024.08.26까지', image: 'https://i.ibb.co/94ttcmT/Frame-238.png', url: 'https://www.pearlabyss.com/ko-KR/Company/Careers/NoticeDetail?_masterNo=32' },
+];
+
+const bannerDummy = [
+    { image: 'https://i.ibb.co/hXPctnH/Frame-241.png', url: 'https://www.instagram.com/kki.juk/' },
+    { image: 'https://i.ibb.co/BgYmmv7/Frame-242.png', url: 'https://forms.gle/y3VPjQaWBbVyegwk7' },
+    { image: 'https://i.ibb.co/Y8HdHQH/Frame-243.png', url: '' },
+];
+
+
 export default function Home() {
 
     return (
         <Body>
             <Container1>
                 <LoginProfileBox></LoginProfileBox>
-                타임라인 삽입
+                <Timeline></Timeline>
             </Container1>
-
-            <Banner></Banner>
+            <Banner banners={bannerDummy} />
 
             <Container2>
                 <Label>잠깐! 잊지 않으셨죠?</Label>
@@ -81,20 +100,18 @@ export default function Home() {
             <Container3>
                 <Label>추천 활동 공고</Label>
                 <ContentBox>
-                    <RecommendBox></RecommendBox>
-                    <RecommendBox></RecommendBox>
-                    <RecommendBox></RecommendBox>
-                    <RecommendBox></RecommendBox>
+                {dummyData.slice(0, 4).map((data, index) => (
+            <RecommendBox key={index} data={data} url={data.url}/>
+          ))}
                 </ContentBox>
             </Container3>
 
             <Container4>
                 <Label>추천 채용 공고</Label>
                 <ContentBox>
-                    <RecommendBox></RecommendBox>
-                    <RecommendBox></RecommendBox>
-                    <RecommendBox></RecommendBox>
-                    <RecommendBox></RecommendBox>
+                {dummyData.slice(4, 8).map((data, index) => (
+            <RecommendBox key={index} data={data} url={data.url}/>
+          ))}
                 </ContentBox>
             </Container4>
 

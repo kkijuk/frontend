@@ -134,8 +134,13 @@ const CloseButton = styled.button`
     margin-left: 4px; /* 왼쪽 여백 추가 */
 `;
 
-export default function TagBox( { onTagListChange } ) {
+export default function TagBox( { externalTags, externalSetTags, onTagListChange } ) {
     const [tags, setTags] = useState([]);
+
+    useEffect(() => {
+        setTags(externalTags || []);  // null 또는 undefined가 아닌 배열로 설정
+    }, [externalTags]);
+
     const [TagBoxTags, setTagBoxTags] = useState([]); // TagBoxListContainer에 표시할 태그들
 
     const [inputValue, setInputValue] = useState('');
@@ -145,21 +150,29 @@ export default function TagBox( { onTagListChange } ) {
     const tagBoxRef = useRef(null);
 
 
+    
     useEffect(() => {
         const fetchTags = async () => {
             const fetchedTags = await TagBoxFetchList();
             setTagBoxTags(fetchedTags);
         };
         fetchTags();
-    }, []); //여기 tags를 써서 tags에 변화가 생길 때마다 해당 useEffect가 실행되게 함 -> 근데 에러가 생겨서 방법 바꿈
+        console.log("활동기록 생성 tags:", tags);
+
+    }, []); //여기 tags를 써서 tags에 변화가 생길 때마다 해당 useEffect가 실행되게 함 (Warning메시지 떠서 삭제함...)
 
     useEffect(() => {
-        const tagIds = tags.map(tag => {
-            const tagObject = TagBoxTags.find(t => t.tagName === tag);
-            return tagObject ? tagObject.id : null;
-        }).filter(id => id !== null);
-        onTagListChange(tagIds);
-    }, [tags, TagBoxTags, onTagListChange]);
+        if (typeof onTagListChange === 'function') {
+            const tagIds = tags.map(tag => {
+                const tagObject = TagBoxTags.find(t => t.tagName === tag);
+                return tagObject ? tagObject.id : null;
+            }).filter(id => id !== null);
+            onTagListChange(tagIds);
+        } else {
+            console.error('onTagListChange prop is not a function');
+        }
+    }, [tags, TagBoxTags]); //여기도 원래 tags, TagBoxTags, onTagListChange
+    
 
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
@@ -188,16 +201,19 @@ export default function TagBox( { onTagListChange } ) {
                 return;
             }
 
-            // 위의 두 경우 다 아니고 아예! 새로운 태그 푸가TagBoxTags에 추가할 때 객체로 추가
-            const newTagObject = { tagName: newTag };
-
-            setTags([...tags, newTag]);
-            setTagBoxTags([...TagBoxTags, newTagObject]); //이게 에러나서 바꾼 방법
-            setInputValue('');
-
-            //API 호출해서 태그 전송
             try {
-                await TagBoxCreateTag(newTag);
+                // API 호출해서 태그 전송
+                const response = await TagBoxCreateTag(newTag);
+                const createdTag = response.data;
+
+                console.log('API 응답:', response);
+
+    
+                // TagInputContainer와 TagBoxListContainer에 태그 추가
+                setTags((prevTags) => [...prevTags, createdTag.tagName]);
+                setTagBoxTags((prevTagBoxTags) => [...prevTagBoxTags, createdTag]);
+    
+                setInputValue('');
                 console.log(`태그 ${newTag} 서버로 전송 성공`);
             } catch (error) {
                 console.log(`태그 ${newTag} 서버 전송 실패`, error);
@@ -261,8 +277,8 @@ export default function TagBox( { onTagListChange } ) {
             <Row>
                 <Text>태그</Text>
                 <TagInputContainer onClick={() => setIsTagBoxListVisible(true)}>
-                    {tags.map((tag, index) => (
-                        <WhiteTag key={index}>
+                    {tags.map((tag) => (
+                        <WhiteTag key={tag.id}>
                             {tag}
                             <CloseButton onClick={() => handleTagRemove(tag)}>x</CloseButton>
                         </WhiteTag>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SubNav from "../../components/Mypage/SubNav";
 import styled from "styled-components";
+import { deleteUserAccount } from "../../api/Login/Inactive";
 
 const Box = styled.div`
     display: flex;
@@ -123,6 +124,7 @@ const DeleteButton = styled.button`
     border-radius: 10px;
     margin-left: 26px;
     border: 1px solid #000;
+    margin-top: 50px;
 
     background: var(--white, #FFF);
 
@@ -134,7 +136,7 @@ const DeleteButton = styled.button`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-`
+`;
 
 export default function AccountMangement() {
     const [currentPassword, setCurrentPassword] = useState("");
@@ -162,6 +164,18 @@ export default function AccountMangement() {
     const handleSubmit = () => {
         const error = validatePassword();
         setErrorMessage(error);
+    };
+
+    const handleDelete = async () => {
+        const token = localStorage.getItem('token'); // 로컬 스토리지에서 토큰을 가져옵니다.
+        const result = await deleteUserAccount(token);
+
+        if (result.success) {
+            alert("회원 탈퇴가 정상적으로 처리되었습니다.");
+
+        } else {
+            console.error(`회원 탈퇴 중 오류가 발생했습니다: ${result.message}`);
+        }
     };
 
     return (
@@ -202,7 +216,7 @@ export default function AccountMangement() {
                     <br />
                     <RegularText>7일 이내에 다시 로그인하면 탈퇴 처리가 취소됩니다.</RegularText>
                 </DeleteText>
-                <DeleteButton>탈퇴하기</DeleteButton>
+                <DeleteButton onClick={handleDelete}>탈퇴하기</DeleteButton>
             </Container2>
         </Box>
     );

@@ -13,6 +13,7 @@ const ModalBackdrop = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
 `;
 
 const ModalContent = styled.div`
@@ -391,4 +392,3 @@ const AddApplyModal = ({ onClose, onSave }) => {
 };
 
 export default AddApplyModal;
-
