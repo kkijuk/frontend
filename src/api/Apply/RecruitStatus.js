@@ -4,8 +4,11 @@ export const updateRecruitStatus = async (recruitId, status) => {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+
         'accept': '*/*'
       },
+      credentials: "include", 
+
       body: JSON.stringify({ status })
     });
 

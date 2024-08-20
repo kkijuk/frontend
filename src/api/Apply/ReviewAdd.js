@@ -3,8 +3,10 @@ export const ReviewAdd = async (recruitId, reviewData) => {
       const response = await fetch(`https://api.kkijuk.com/recruit/${recruitId}/review`, {
         method: 'POST',
         headers: {
+
           'Content-Type': 'application/json',
         },
+        credentials: "include", 
         body: JSON.stringify(reviewData),
       });
   

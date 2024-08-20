@@ -4,7 +4,9 @@ export const updateRecruitApplyDate = async (recruitId, applyDate) => {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
+
         },
+        credentials: "include",
         body: JSON.stringify({ applyDate }),
       });
   

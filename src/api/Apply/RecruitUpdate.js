@@ -19,7 +19,9 @@ export const updateRecruit = async (recruitId, updatedJob) => {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
+
     },
+    credentials: "include", 
     body: JSON.stringify({
       title: updatedJob.title || null,
       startTime: updatedJob.startTime ? formatToServerTime(updatedJob.startTime) : null,

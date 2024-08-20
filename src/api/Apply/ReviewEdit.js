@@ -3,8 +3,10 @@ export async function editReview(recruitId, reviewId, reviewData) {
         const response = await fetch(`https://api.kkijuk.com/recruit/${recruitId}/review/${reviewId}`, {
             method: 'PUT',
             headers: {
+
                 'Content-Type': 'application/json',
             },
+            credentials: "include", 
             body: JSON.stringify(reviewData),
         });
 

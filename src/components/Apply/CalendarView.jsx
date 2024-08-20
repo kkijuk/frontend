@@ -106,7 +106,7 @@ const StyledCalendar = styled(Calendar)`
   height: 26px;
   background-color: #3AAF85;
   border-radius: 50%;
-  top: 45%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
@@ -120,7 +120,7 @@ const StyledCalendar = styled(Calendar)`
 
   .react-calendar__tile--now.react-calendar__tile--active {
     color: #3AAF85 !important;
-    font-weight: bold !important;
+  
     box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.25), 
                 inset 0 0.5px 0 0 rgba(0, 0, 0, 0.25), 
                 inset -0.5px 0 0 0 rgba(0, 0, 0, 0.25), 
@@ -148,13 +148,13 @@ const DayIndicatorContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 4px;
+  margin-top: 0px;
   gap: 8px;
 `;
 
 const DayIndicator = styled.div`
-  width: 9px;
-  height: 9px;
+  width: 7px;
+  height: 7px;
   background-color: ${({ color }) => color || 'transparent'};
   border-radius: 50%;
   margin-left: 0px;

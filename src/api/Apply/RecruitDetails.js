@@ -6,8 +6,10 @@ export const getRecruitDetails = async (id) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
+
         'accept': '*/*'
-      }
+      },
+      credentials: "include",
     });
 
     if (!response.ok) {
@@ -27,15 +29,3 @@ export const getRecruitDetails = async (id) => {
     return null; // 에러 발생 시 null 반환
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-

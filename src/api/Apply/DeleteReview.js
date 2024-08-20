@@ -3,8 +3,10 @@ export const deleteReview = async (recruitId, reviewId) => {
         const response = await fetch(`https://api.kkijuk.com/recruit/${recruitId}/review/${reviewId}`, {
             method: 'DELETE',
             headers: {
+
                 'accept': '*/*',
             },
+            credentials: "include",
         });
 
         if (!response.ok) {

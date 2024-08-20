@@ -7,9 +7,11 @@ export const getRecruitListAfterDate = async (date) => {
     const response = await fetch(apiUrl, {
       method: 'GET',
       headers: {
+
         'Content-Type': 'application/json; charset=utf-8',
         'accept': '*/*'
-      }
+      },
+      credentials: "include",
     });
 
     if (!response.ok) {

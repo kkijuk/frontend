@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import CategoryGroup from './CategoryGroup';
 import ReactCalendar from './CalendarSingle';
 import moment from 'moment';
-import { addCareer } from '../../api/Mycareer/Mycareer';
+import CareerDeleteModal from './DeleteModalCareer';
+import { CareerEdit, CareerDelete } from '../../api/Mycareer/CareerEdit';
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -268,7 +269,7 @@ const categoryMap = {
   "기타활동": 7
 };
 
-const AddCareerModalEdit = ({ onClose, onSave }) => {
+const AddCareerModalEdit = ({ onClose, onSave, data }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   
   const [category, setCategory] = useState('');
@@ -278,11 +279,29 @@ const AddCareerModalEdit = ({ onClose, onSave }) => {
   const [endDate, setEndDate] = useState('');
   const [isUnknown, setIsUnknown] = useState(false);
   const [summary, setSummary] = useState('');
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // 삭제 모달 상태 추가
+
 
   const startCalendarRef = useRef(null);
   const endCalendarRef = useRef(null);
   const [showStartCalendar, setShowStartCalendar] = useState(false);
   const [showEndCalendar, setShowEndCalendar] = useState(false);
+
+    // data prop을 이용해 상태 초기화
+    useEffect(() => {
+      console.log("Received data:", data);
+
+      if (data) {
+        setSelectedCategory(data.data.categoryName);
+        setCategory(data.data.categoryId);
+        setCareerName(data.data.careerName);
+        setAlias(data.data.alias);
+        setStartDate(data.data.startDate);
+        setEndDate(data.data.endDate);
+        setIsUnknown(data.data.isUnknown);
+        setSummary(data.data.summary);
+      }
+    }, [data]);
 
   const handleStartDateChange = (date) => {
     setStartDate(moment(date).format('YYYY-MM-DD'));
@@ -318,72 +337,64 @@ const AddCareerModalEdit = ({ onClose, onSave }) => {
 
   const hasError = !category || !careerName || !alias || (!isUnknown && (!startDate || !endDate)) || (isUnknown && !startDate);
 
-  const handleDel = async () => {
-    if (window.confirm("정말로 삭제하시겠습니까?")) {
-      alert('삭제되었습니다.');
-      onClose();
+
+
+  const handleSave = async() => {
+    if (hasError) {
+      alert("필수 정보를 입력하세요!");
+      return;
+    } else if (!isUnknown && moment(startDate).isAfter(moment(endDate))) {
+      alert("시작일과 종료일을 다시 확인해 주세요!");
+      return;
     }
-  };
-
-    const handleSave = async() => {
-      if (hasError) {
-        alert("필수 정보를 입력하세요!");
-        return;
-      }
-      else if(!isUnknown &&(moment(startDate).isAfter(moment(endDate)))){
-        alert("시작일과 종료일을 다시 확인해 주세요!");
-        return;
-      }
-
-      const addCareerData = {
-        category,
-        careerName,
-        alias,
-        startDate,
-        endDate,
-        isUnknown,
-        summary,
-      };
-
-      if(isUnknown){
-        onSave({
-          category,
-          careerName,
-          alias,
-          startDate,
-          isUnknown,
-          summary,
-        });
-        onClose();
-      }
-      else{
-        onSave({
-          category,
-          careerName,
-          alias,
-          startDate,
-          endDate,
-          isUnknown,
-          summary,
-        });
-        onClose();
-      }
-
-      try {
-        console.log(addCareerData);
-        await addCareer(addCareerData);
-        onSave(addCareerData);
-        onClose();
-      } catch (error) {
-        console.log("Error", error.message);
-        if (error.response) {
-          console.log("서버 오류 응답 데이터:", error.response.data);
-          console.log("서버 오류 상태 코드:", error.response.status);
-          console.log("서버 오류 헤더:", error.response.headers);
-        }
-      }
+  
+    const updatedData = {};
+  
+    if (category !== data.data.categoryId) updatedData.category = category;
+    if (careerName !== data.data.careerName) updatedData.careerName = careerName;
+    if (alias !== data.data.alias) updatedData.alias = alias;
+    if (startDate !== data.data.startDate) updatedData.startDate = startDate;
+    if (!isUnknown && endDate !== data.data.endDate) updatedData.endDate = endDate;
+    if (isUnknown !== data.data.isUnknown) updatedData.isUnknown = isUnknown;
+    if (summary !== data.data.summary) updatedData.summary = summary;
+  
+    if (Object.keys(updatedData).length === 0) {
+      alert("변경된 내용이 없습니다.");
+      return;
+    }
+  
+    try {
+      const response = await CareerEdit(data.data.id, updatedData);
+      onSave(response.data);
+      onClose();
+    } catch (error) {
+      console.log("Error", error.message);
+    }
 
   
+};
+
+ // 삭제 버튼 클릭 시 삭제 모달 열기
+ const handleDel = () => {
+  setShowDeleteModal(true);
+};
+
+// 삭제 모달에서 취소 버튼 클릭 시 삭제 모달 닫기
+const handleDeleteModalClose = () => {
+  setShowDeleteModal(false);
+};
+
+// 삭제 모달에서 삭제 버튼 클릭 시 삭제 처리
+const handleDeleteConfirm = async () => {
+try {
+  await CareerDelete(data.data.id); // CareerDelete API 호출
+  alert('삭제되었습니다.');
+  onClose();
+} catch (error) {
+  console.log("Error", error.message);
+} finally {
+  setShowDeleteModal(false); // 삭제 모달 닫기
+}
 };
 
   return (
@@ -481,6 +492,12 @@ const AddCareerModalEdit = ({ onClose, onSave }) => {
           <br></br>
         </ContentArea>
       </ModalContent>
+      {showDeleteModal && (
+        <CareerDeleteModal 
+          onClose={handleDeleteModalClose} 
+          onConfirm={handleDeleteConfirm} 
+        />
+      )}
     </ModalBackdrop>
   );
 };

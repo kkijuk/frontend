@@ -12,8 +12,10 @@ export const getRecruitListEndDate = async (date) => {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json; charset=utf-8',
+
               'accept': '*/*'
-          }
+          },
+          credentials: "include",
       });
 
       if (!response.ok) {

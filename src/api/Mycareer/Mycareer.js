@@ -8,9 +8,13 @@ export const addCareer = async (addCareerData) => {
           "https://api.kkijuk.com/career",
           JSON.stringify(addCareerData),
           {
+            withCredentials: true,
+
             headers: {
+
               'Content-Type': 'application/json; charset=utf-8'
-            }
+            },
+
           }
         );
         console.log("통신 완료 : ", response.data);
