@@ -7,11 +7,11 @@ export const getRecruitListAfterDate = async (date) => {
     const response = await fetch(apiUrl, {
       method: 'GET',
       headers: {
-        credentials: "include", // 쿠키와 인증 정보를 함께 보냄
 
         'Content-Type': 'application/json; charset=utf-8',
         'accept': '*/*'
-      }
+      },
+      credentials: "include",
     });
 
     if (!response.ok) {
