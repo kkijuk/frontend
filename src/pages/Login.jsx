@@ -29,6 +29,8 @@ const LoginScreen = styled.div`
     border-radius: 10px;
     background-color: #F5F5F5;
     transition: border 0.3s ease;
+    font-family: Regular;
+    font-size: 16px;
 
     &:focus {
       border: 2px solid #3AAF85;
@@ -45,8 +47,8 @@ const LoginScreen = styled.div`
     border-radius: 10px;
     background-color: #3AAF85; 
     color: white;
-    font-family: Pretendard;
-    font-size: 17px;
+    font-family: Regular;
+    font-size: 19px;
     font-style: normal;
     font-weight: 500;
     cursor: pointer;
@@ -57,7 +59,7 @@ const LoginScreen = styled.div`
   a {
     color: #3AAF85; 
     text-decoration: none;
-   
+    font-family: Regular;
   }
 
   a:hover {
@@ -78,7 +80,7 @@ const LoginScreen = styled.div`
 
   .label {
     color: #707070;
-    font-family: Pretendard;
+     font-family: Regular;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -88,8 +90,8 @@ const LoginScreen = styled.div`
 
   .links {
     color: #3AAF85; 
-    font-family: Pretendard;
-    font-size: 14px;
+     font-family: Regular;
+    font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;

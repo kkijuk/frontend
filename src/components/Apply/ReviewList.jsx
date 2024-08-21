@@ -64,7 +64,7 @@ const EditIconStyled = styled(EditIcon)`
     cursor: pointer;
 `;
 
-export default function ReviewList({ recruitId, reviewId, title, date, contents = '', onDelete }) {
+export default function ReviewList({ recruitId, reviewId, title, date, contents = '', onDelete, fetchData }) {
     const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
 
     const handleEditClick = () => {
@@ -101,11 +101,16 @@ export default function ReviewList({ recruitId, reviewId, title, date, contents 
                     initialDate={date}
                     initialContents={contents}
                     onDelete={handleDeleteClick}  // ReviewDetailAddEdit에서 삭제가 완료되면 호출
-                    onSave={() => setIsDetailAddVisible(false)}  // 저장 후 수정 화면 닫기
+                    onSave={() => {
+                        setIsDetailAddVisible(false);
+                        fetchData();  // 저장 후 최신 데이터를 다시 불러옴
+                    }}  
+                    fetchData={fetchData}  // fetchData 전달
                 />
             )}
             <Line></Line>
         </div>
     );
 }
+
 

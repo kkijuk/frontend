@@ -61,7 +61,7 @@ const Nav = styled.ul`
 `
 
 const NavItems = styled.li`
-    font-family: Black;
+    font-family: Bold;
     font-size: 24px;
     font-weight: 700;
     line-height: 28.64px;
