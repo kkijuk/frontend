@@ -10,7 +10,6 @@ const Box = styled.div`
     height: 384px;
     width: 800px;
     padding: 24px 40px;
-    border: 1px solid black;
 `;
 
 const Top = styled.div`
