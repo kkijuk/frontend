@@ -89,7 +89,7 @@ const SearchList = ({ data }) => {
     return (
       <BackgroundSection>
         <ContentSection>
-          <p>No jobs available for the selected criteria.</p>
+          
         </ContentSection>
       </BackgroundSection>
     );

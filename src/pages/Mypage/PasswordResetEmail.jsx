@@ -1,5 +1,9 @@
 import React from "react"
 import styled from "styled-components";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { sendPasswordResetEmail } from '../../api/Login/passwordreset';
+
 
 const PageWrapper = styled.div`
     display: flex;
@@ -7,6 +11,7 @@ const PageWrapper = styled.div`
     align-items: flex-start;
     height: 100vh; /* 화면 전체 높이를 차지하도록 설정 */
     background-color: #fff; /* 배경색은 필요에 따라 조정 */
+    border: 1px black solid;
 `;
 
 const Container = styled.div`
@@ -105,7 +110,7 @@ const BoldText = styled.span`
     font-weight: 700; /* 특정 부분의 텍스트만 굵게 설정 */
 `;
 
-const Email = styled.div`
+const EmailText = styled.div`
     color: var(--gray-02, #707070);
     text-align: center;
     font-family: Pretendard;
@@ -117,6 +122,22 @@ const Email = styled.div`
 `;
 
 export default function PasswordResetEmail() {
+    const [email, setEmail] = useState(""); // 이메일 상태 추가
+    const navigate = useNavigate(); // useNavigate 훅 사용
+
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+    };
+
+    const handleSubmit = async () => {
+        try {
+            await sendPasswordResetEmail({ email });
+            navigate("/mypage/passwordresetemailconfirm", {state: {email}}); // API 호출이 성공하면 페이지 이동
+        } catch (error) {
+            console.error("비밀번호 재설정 이메일 전송 중 오류 발생:", error);
+            alert("이메일 전송에 실패했습니다. 다시 시도해주세요.");
+        }
+    };
     return (
         <PageWrapper>
             <Container>
@@ -127,12 +148,16 @@ export default function PasswordResetEmail() {
                         비밀번호 재설정을 위한 링크를 보내드립니다.
                         
                     </Text1>
-                    <Input placeholder="이메일을 입력하세요"></Input>
-                    <Button>보내기</Button>
-                    <Email>
+                    <Input
+                        placeholder="이메일을 입력하세요"
+                        value={email} // 이메일 입력 값을 상태와 연결
+                        onChange={handleEmailChange} // 입력 변화 핸들러 연결
+                    />
+                    <Button onClick={handleSubmit}>보내기</Button> {/* 버튼 클릭 시 handleSubmit 호출 */}
+                    <EmailText>
                         이메일을 찾을 수 없다면 끼적에게 문의해주세요.<br /><br />
                         kkijuk30@gmail.com
-                        </Email>
+                    </EmailText>
                 </Bottom>
             </Container>
         </PageWrapper>

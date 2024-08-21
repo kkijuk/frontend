@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import SubNav from "../../components/Mypage/SubNav";
 import styled from "styled-components";
 import { deleteUserAccount } from "../../api/Login/Inactive";
+import { ChangePassword } from "../../api/Mypage/AccountManagement";
+import { verifyPassword } from "../../api/Mypage/MyinformationVerify";
 
 const Box = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    
+    
 `;
 
 const Container1 = styled.div`
@@ -33,8 +36,8 @@ const Line = styled.div`
 
 const Text1 = styled.div`
     color: var(--black, #000);
-    font-family: Pretendard;
-    font-size: 20px;
+     font-family: Regular;
+    font-size: 21px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
@@ -48,7 +51,7 @@ const Input = styled.input`
     background: #F5F5F5;
     border: none;
     color: #707070;
-    font-family: Pretendard;
+     font-family: Regular;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -67,7 +70,7 @@ const Button = styled.button`
     border: none;
     color: #FFF;
     text-align: center;
-    font-family: Pretendard;
+    font-family: Regular;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
@@ -83,38 +86,41 @@ const ErrorMessage = styled.p`
     padding: 0;
     color: #FF7979;
     text-align: center;
-    font-family: Inter;
-    font-size: 14px;
+    font-family: Regular;
+    font-size: 15px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 `;
 
 const Container2 = styled.div`
-    width: 464px;
+    width: 470px;
     height: 308px;
-    margin-top: 32px;
+    margin-top: 27px;
 `;
 
 const DeleteText = styled.div`
-    width: 430px;
+    width: 470px;
     height: 76px;
     color: #000;
-    font-family: Pretendard;
+     font-family: Regular;
     font-size: 16px;
     font-style: normal;
     line-height: normal;
-    margin-left: 18px;
+    margin-left: 0px;
     margin-bottom: 28px;
     margin-top: 28px;
+     text-align: center;
 `;
 
 const BoldText = styled.span`
     font-weight: 700;
+     font-family: Bold;
 `;
 
 const RegularText = styled.span`
     font-weight: 400;
+     font-family: Regular;
 `;
 
 const DeleteButton = styled.button`
@@ -124,14 +130,13 @@ const DeleteButton = styled.button`
     border-radius: 10px;
     margin-left: 26px;
     border: 1px solid #000;
-    margin-top: 50px;
 
     background: var(--white, #FFF);
 
     color: #000;
 
     text-align: center;
-    font-family: Pretendard;
+    font-family: Regular;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
@@ -144,28 +149,67 @@ export default function AccountMangement() {
     const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
-    const validatePassword = () => {
-        if (currentPassword !== "비밀번호") { // 현재 비밀번호 검사 로직 수정 필요
-            return "비밀번호가 일치하지 않습니다.";
-        }
+    const validatePassword = async () => {
+        try {
+            const isPasswordCorrect = await verifyPassword(currentPassword);
+            if (!isPasswordCorrect) {
+                return "비밀번호가 일치하지 않습니다.";
+            }
 
-        const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
-        if (!passwordRegex.test(newPassword)) {
-            return "대문자, 특수문자를 포함하여 8자리 이상 입력하세요";
-        }
+            const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+            if (!passwordRegex.test(newPassword)) {
+                return "대문자, 특수문자를 포함하여 8자리 이상 입력하세요";
+            }
 
-        if (newPassword !== newPasswordConfirm) {
-            return "새 비밀번호가 일치하지 않습니다.";
-        }
+            if (newPassword !== newPasswordConfirm) {
+                return "새 비밀번호가 일치하지 않습니다.";
+            }
 
-        return "";
+            return "";
+        } catch (error) {
+            console.error("비밀번호 확인 중 오류 발생:", error);
+            return "비밀번호 확인 중 오류가 발생했습니다.";
+        }
     };
 
-    const handleSubmit = () => {
-        const error = validatePassword();
-        setErrorMessage(error);
-    };
+    const handleSubmit = async () => {
+        try {
+            // 비밀번호 검증 수행
+            const error = await validatePassword();
+    
+            if (error) {
+                setErrorMessage(error);  // 에러 메시지가 있을 경우, 이를 상태로 설정
+                return;
+            }
+    
+            // 비밀번호 변경 요청
+            const passwordData = {
+                currentPassword: currentPassword,
+                newPassword: newPassword,
+                newPasswordConfirm: newPasswordConfirm,
+            };
 
+            const response = await ChangePassword(passwordData);
+
+    
+            if (response === "true") {
+                console.log("응답:비밀번호 변경 성공", response)
+                alert("비밀번호가 성공적으로 변경되었습니다.");
+                setCurrentPassword("");
+                setNewPassword("");
+                setNewPasswordConfirm("");
+                setErrorMessage("");
+            } else {
+                console.log("응답: 비밀번호 변경 실패", response)
+
+                setErrorMessage("비밀번호 변경 중 오류가 발생했습니다.");
+            }
+        } catch (error) {
+            console.error("비밀번호 변경 중 오류 발생:", error);
+            setErrorMessage("비밀번호 변경 중 오류가 발생했습니다.");
+        }
+    };
+    
     const handleDelete = async () => {
         const token = localStorage.getItem('token'); // 로컬 스토리지에서 토큰을 가져옵니다.
         const result = await deleteUserAccount(token);
@@ -180,7 +224,7 @@ export default function AccountMangement() {
 
     return (
         <Box>
-            <SubNav />
+            <SubNav></SubNav>
             <Container1>
                 <Text1>비밀번호 변경</Text1>
                 <InputBox>

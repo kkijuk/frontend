@@ -4,10 +4,11 @@ export const saveInterests = async (interestingList) => {
       const response = await fetch('https://api.kkijuk.com/member/field', {
         method: 'POST',
         headers: {
-          credentials: "include", // 쿠키와 인증 정보를 함께 보냄
+         
 
           'Content-Type': 'application/json',
         },
+        credentials: "include", // 쿠키와 인증 정보를 함께 보냄
         body: JSON.stringify({ field: interestingList }),
       });
   

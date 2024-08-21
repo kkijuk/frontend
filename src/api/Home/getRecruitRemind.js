@@ -5,11 +5,11 @@ export const getRecruitRemind = async () => {
     const response = await fetch(apiUrl, {
       method: 'GET',
       headers: {
-        credentials: "include", // 쿠키와 인증 정보를 함께 보냄
 
         'Content-Type': 'application/json; charset=utf-8',
         'Accept': '*/*',
       },
+      credentials: "include", // 쿠키와 인증 정보를 함께 보냄
     });
 
     if (!response.ok) {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { getRecruitRemind } from '../../api/Home/getRecruitRemind';
+import { useAuth } from '../AuthContext';  // AuthContext 가져오기
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -71,30 +72,32 @@ const DDayText = styled.div`
 `;
 
 export default function DeadlineNoti() {
-
+    const { isLoggedIn } = useAuth();  // 로그인 상태 가져오기
     const [recruits, setRecruits] = useState([]);
 
     useEffect(() => {
-        async function fetchData() {
-            try {
-                const response = await getRecruitRemind();
-                if (!response) {
-                    throw new Error('Failed to fetch data');
+        if (isLoggedIn) {  // 로그인 상태일 때만 데이터 가져오기
+            async function fetchData() {
+                try {
+                    const response = await getRecruitRemind();
+                    if (!response) {
+                        throw new Error('Failed to fetch data');
+                    }
+                    setRecruits(response); // API에서 가져온 데이터를 설정
+                } catch (error) {
+                    console.error('에러- Failed to fetch data:', error);
                 }
-                setRecruits(response); // API에서 가져온 데이터를 설정
-            } catch (error) {
-                console.error('에러- Failed to fetch data:', error);
             }
-        }
 
-        fetchData();
-    }, []);
+            fetchData();
+        }
+    }, [isLoggedIn]);
 
     return (
         <Container>
             <Label>공고 마감이 얼마 남지 않았어요</Label>
-            {recruits.map((recruit) => {
-                const fontColor = recruit.dday <= 7 ? '#FA7C79' : '#707070'; //현재: 7일 이하면 글자색 빨간색
+            {isLoggedIn && recruits.map((recruit) => {  // 로그인 상태일 때만 데이터 표시
+                const fontColor = recruit.dday <= 7 ? '#FA7C79' : '#707070'; // 현재: 7일 이하면 글자색 빨간색
 
                 return (
                     <Box key={recruit.id}>
@@ -107,5 +110,5 @@ export default function DeadlineNoti() {
                 );
             })}
         </Container>
-    )
+    );
 }

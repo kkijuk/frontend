@@ -1,18 +1,10 @@
 import api from "../../Axios";
 
-const createEducation = async (recordId, data) => {
+const updateEducation = async (educationId, data) => {
     try {
-        const transformedData = {
-            category: data.level,           // level -> category
-            schoolName: data.schoolName,   
-            major: data.department,             
-            state: data.status,             // status -> state
-            admissionDate: data.admissionDate, 
-            graduationDate: data.graduationDate
-        };
-        console.log(data);
-        const response = await api.post(`/history/resume/education?recordId=${recordId}`, transformedData);
-        console.log("추가된 학력 내용: ",response.data.data);
+        console.log("전송할 데이터: ", data);
+        const response = await api.patch(`/history/resume/education?educationId=${educationId}`, data);
+        console.log("응답:",response.data);
 
         return response.data.data;
         
@@ -31,4 +23,4 @@ const createEducation = async (recordId, data) => {
     }
 };
 
-export default createEducation;
+export default updateEducation;

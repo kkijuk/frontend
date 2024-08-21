@@ -1,27 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const CareerItem = ({ dummy, isLastItem, onEdit }) => {
+const CareerItem = ({ data, isLastItem, onEdit }) => {
 
-    const today = new Date();
-    const formattedToday = today.toISOString().slice(0,7).replace('-','.');
-    const isPastDue = dummy.endDate < formattedToday; //true: 기한 경과, false: 기한 내
+    // const today = new Date();
+    // const formattedToday = today.toISOString().slice(0,7).replace('-','.');
+    // const isPastDue = data.endDate < formattedToday; //true: 기한 경과, false: 기한 내
 
     return (
         <div style={{display:'flex'}}>
         <TimeLine>
-                <Oval category={dummy.alias} isPastDue = {isPastDue}></Oval>
-                <Line category={dummy.alias} isLastItem={isLastItem} isPastDue = {isPastDue}></Line>
+                <Oval category={data.category} isPastDue = {data.isCurrent}></Oval>
+                <Line category={data.category} isLastItem={isLastItem} isPastDue = {data.isCurrent}></Line>
             </TimeLine>
         <Container>
             <div>
-                <LevelTag category={dummy.alias}>{dummy.alias}</LevelTag>
+                <LevelTag category={data.category}>{data.category}</LevelTag>
                 <SchoolInfo>
-                    <SchoolName>{dummy.careerName}</SchoolName>
+                    <SchoolName>{data.careerName}</SchoolName>
                     <Dates>
-                        {dummy.startDate} ~ {dummy.endDate} <Status>({dummy.period}개월)</Status>
+                        {data.startDate} ~ {data.endDate} <Status>({data.period}개월)</Status>
                     </Dates>
-                        <p><span style={{fontWeight:'600', marginRight:'30px'}}>활동내역</span>{dummy.summay}</p>
+                        <p><span style={{fontWeight:'600', marginRight:'30px'}}>활동내역</span>{data.summary}</p>
 
                 </SchoolInfo>
             </div>
@@ -52,16 +52,27 @@ const Oval = styled.div`
     background-color: ${props => 
                         !props.isPastDue
                         ?'#FFFFFF'
-                        :props.category==="동아리" ? "#FCC400" 
-                        : props.category==="아르바이트" ? "#FA7C79"
+                        : props.category==="동아리" ? "#FCC400" 
                         : props.category==="대외활동" ? "#77AFF2"
-                        : props.category==="공모전" ? "#C48DEF"
-                        : "#000000"};
-    border: ${props=>props.category==="동아리" ? "3px solid #FCC400" 
-        : props.category==="아르바이트" ? "3px solid #FA7C79"
+                        : props.category==="공모전/대회" ? "#C48DEF"
+                        : props.category==="프로젝트" ? "#78D333"
+                        : props.category==="아르바이트/인턴" ? "#FA7C79"
+                        : props.category==="교육" ? "#F99538"
+                        : props.category==="기타활동" ? "#707070"
+                        : "#000000"
+                        
+                    };
+    border: ${props=>
+        props.category==="동아리" ? "3px solid #FCC400" 
         : props.category==="대외활동" ? "3px solid #77AFF2"
-        : props.category==="공모전" ? "3px solid #C48DEF"
-        : "#000000"};
+        : props.category==="공모전/대회" ? "3px solid #C48DEF"
+        : props.category==="프로젝트" ? "3px solid #78D333"
+        : props.category==="아르바이트/인턴" ? "3px solid #FA7C79"
+        : props.category==="교육" ? "3px solid #F99538"
+        : props.category==="기타활동" ? "3px solid #707070"
+        : "#000000"
+        
+        };
     }
 `
 
@@ -73,15 +84,23 @@ const Line = styled.div`
     border-bottom: none;
     margin-left:11px; 
     border-left:${props=>props.isLastItem ? 'none'
-            : props.category==="아르바이트" && props.isPastDue ? "2px solid #FA7C79"
-            : props.category==="동아리" && props.isPastDue ? "2px solid ##FCC400"
+            : props.category==="동아리" && props.isPastDue ? "2px solid #FCC400"
             : props.category==="대외활동" && props.isPastDue ? "2px solid #77AFF2"
-            : props.category==="공모전" && props.isPastDue ? "2px solid #C48DEF"
-            : props.category==="아르바이트" && !props.isPastDue ? "2px dashed #FA7C79"
+            : props.category==="공모전/대회" && props.isPastDue ? "2px solid #C48DEF"
+            : props.category==="프로젝트" && props.isPastDue ? "2px solid #78D333"
+            : props.category==="아르바이트/인턴" && props.isPastDue ? "2px solid #FA7C79"
+            : props.category==="교육" && props.isPastDue ? "2px solid #F99538"
+            : props.category==="기타활동" && props.isPastDue ? "2px solid #707070"
+
             : props.category==="동아리" && !props.isPastDue ? "2px dashed #FCC400"
             : props.category==="대외활동" && !props.isPastDue ? "2px dashed #77AFF2"
-            : props.category==="공모전" && !props.isPastDue ? "2px dashed #C48DEF"
-            : "#000000"};
+            : props.category==="공모전/대회" && !props.isPastDue ? "2px dashed #C48DEF"
+            : props.category==="프로젝트" && !props.isPastDue ? "2px dashed #78D333"
+            : props.category==="아르바이트/인턴" && !props.isPastDue ? "2px dashed #FA7C79"
+            : props.category==="교육" && !props.isPastDue ? "2px dashed #F99538"
+            : props.category==="기타활동" && !props.isPastDue ? "2px dashed #707070"
+            :"#000000"
+        };
 `
 
 const EditButton = styled.button`
@@ -114,10 +133,12 @@ const Container = styled.div`
 const LevelTag = styled.div`
     height:22px;
     background-color: ${props => props.category==="동아리" ? "#FCC400" 
-                                : props.category==="아르바이트" ? "#FA7C79"
                                 : props.category==="대외활동" ? "#77AFF2"
-                                : props.category==="공모전" ? "#C48DEF"
-                                : "#000000"};
+                                : props.category==="공모전/대회" ? "#C48DEF"
+                                : props.category==="프로젝트" ? "#78D333"
+                                : props.category==="아르바이트/인턴" ? "#FA7C79"
+                                : props.category==="교육" ? "#F99538"
+                                : "#707070"};
     color: white;
     padding: 5px 10px;
     border-radius: 5px;

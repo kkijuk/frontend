@@ -1,5 +1,8 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
+
+import { resetPassword } from "../../api/Login/passwordreset";
 
 const PageWrapper = styled.div`
     display: flex;
@@ -108,24 +111,67 @@ const Button = styled.button`
 `;
 
 
+const ErrorMessage = styled.div`
+  color: red;
+  margin-top: 10px;
+  font-size: 14px;
+`;
 
 
 export default function PasswordReset() {
+    const location = useLocation();
+    const email = location.state?.email || ''; // 이전 페이지에서 전달된 email 값
+    const [newPassword, setNewPassword] = useState('');
+    const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
+    const [errorMessage, setErrorMessage] = useState(''); 
+
+    const handlePasswordChange = async () => {
+        if (newPassword !== newPasswordConfirm) {
+            setErrorMessage("비밀번호가 일치하지 않습니다.");
+            return;
+        }
+
+        try {
+            const responseData = await resetPassword(email, newPassword, newPasswordConfirm);
+            if (responseData) {
+                alert("비밀번호가 성공적으로 재설정되었습니다.");
+                // 비밀번호 재설정 성공 시 필요한 후속 처리 (예: 로그인 페이지로 이동)
+            } else {
+                alert("비밀번호 재설정에 실패했습니다. 다시 시도해주세요.");
+            }
+        } catch (error) {
+            alert("비밀번호 재설정 중 오류가 발생했습니다. 다시 시도해주세요.");
+            console.error("Error:", error);
+        }
+    };
+
     return (
         <PageWrapper>
             <Container>
                 <Top>비밀번호 재설정</Top>
                 <Bottom>
                    <Box>
-                        <Text1>새 비밀번호</Text1>
-                        <Input placeholder="대문자, 특수문자를 포함하여 8자리 이상 입력하세요"></Input>
+                   <Text1>새 비밀번호</Text1>
+                        <Input
+                            placeholder="대문자, 특수문자를 포함하여 8자리 이상 입력하세요"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            type="password"
+                        />
                    </Box>
                    <Box>
                         <Text1>새 비밀번호 확인</Text1>
-                        <Input placeholder="비밀번호를 한 번 더 입력하세요"></Input>
+                        <Input
+                            placeholder="비밀번호를 한 번 더 입력하세요"
+                            value={newPasswordConfirm}
+                            onChange={(e) => setNewPasswordConfirm(e.target.value)}
+                            type="password"
+                        />
                    </Box>
-                    
-                    <Button>확인</Button>
+                   {errorMessage && (
+                        <ErrorMessage>{errorMessage}</ErrorMessage>
+                    )}
+                    <Button onClick={handlePasswordChange}>확인</Button>
                     
                 </Bottom>
             </Container>
