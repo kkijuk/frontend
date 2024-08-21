@@ -13,40 +13,6 @@ import { click } from '@testing-library/user-event/dist/click.js'
 
 
 const OthersRewrite=()=> {
-    const dummyData = [
-        {
-            "id": 100,
-            "oneLiner": "UMC 7기 지원",
-            "questions":[
-                {
-                    "number": 0,
-                    "subTitle": "첫 번째 질문",
-                    "content": ""
-                },
-                {
-                    "number":1,
-                    "subTitle": "",
-                    "content": "아직 지원동기 및 포부를 작성하지 않았어요."
-                },
-                {
-                    "number":2,
-                    "subTitle": "세 번째 질문",
-                    "content": "세 번째 질문의 답변입니다."
-                },
-                {
-                    "number":3,
-                    "subTitle":"",
-                    "content": ""
-                }
-            ],
-            "complete":0,//state로 변경하기
-            "career_tag":["동아리","서비스 기획"],
-            "deadline": "2024-07-23T15:47:38.011066",
-            "updated_at": "2024-07-23 15:47"
-        }
-    ]
-
-    const resume = dummyData[0];
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -62,6 +28,7 @@ const OthersRewrite=()=> {
         tags:[],
         timeSinceUpdate:"",
         updatedAt:"",
+        state:0
         
     })
     const [modalOpend, setModalOpend] = useState(false); //삭제 경고문 알람 모달
@@ -138,6 +105,7 @@ const OthersRewrite=()=> {
         setCharCounts(prev=>prev.map((count, i)=>i===number ? event.target.value.length : count));   
         console.log(charCounts); 
     }
+
     const submitData=()=>{
         const Data = {
             questionList: questions,

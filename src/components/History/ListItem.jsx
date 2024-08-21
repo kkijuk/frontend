@@ -2,13 +2,14 @@ import React from 'react'
 import styled from 'styled-components'
 import '../../pages/History/history.css'
 
-const ListItem =({title,updated_at,deadline,state,onClick})=>{
+const ListItem =({title,updated_at,deadline,state,timeSinceUpdate, onClick})=>{
 
     return(
         <ListBox onClick={onClick}>
             <h3 style={{fontWeight:800,margin:'10px 0px',color:title==="MASTER"?'#3AAF85':'black'}}>{title}</h3>
             <p className='lastupdated' style={{color:'#707070',margin:'5px 0px',fontSize:'15px'}}>마지막 수정 일시: {updated_at}</p>
-            {title!=="MASTER"&&<p className='lastupdated' style={{color:'#FA7C79',margin:'0px 0px',fontSize:'15px'}}>공고 마감 일시: {deadline}</p>}
+            {title!=="MASTER"&&<p className='lastupdated' style={{color:'#FA7C79',margin:'0px 0px',fontSize:'15px'}}>공고 마감 일시: {deadline}  <span style={{fontWeight:'Bold'}}>({timeSinceUpdate})</span></p>}
+
             <Tag state={state}>
                 {state===0 ? "작성중" 
                 :state===1 ? "작성완료"
