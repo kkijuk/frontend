@@ -132,7 +132,7 @@ export default function PasswordResetEmail() {
     const handleSubmit = async () => {
         try {
             await sendPasswordResetEmail({ email });
-            navigate("/mypage/passwordresetemailconfirm"); // API 호출이 성공하면 페이지 이동
+            navigate("/mypage/passwordresetemailconfirm", {state: {email}}); // API 호출이 성공하면 페이지 이동
         } catch (error) {
             console.error("비밀번호 재설정 이메일 전송 중 오류 발생:", error);
             alert("이메일 전송에 실패했습니다. 다시 시도해주세요.");

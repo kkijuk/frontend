@@ -56,4 +56,30 @@ export const sendAuthNumber = async (authNumber, email) => {
     }
 };
 
+export const resetPassword = async (email, newPassword, newPasswordConfirm) => {
+    try {
+        const response = await axios.post(
+            "https://api.kkijuk.com/password/reset", {
+            newPassword: newPassword,
+            newPasswordConfirm: newPasswordConfirm,
+            email: email,
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        console.log("응답 데이터:", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("인증 번호 전송 중 오류 발생:", error);
+        if (error.response) {
+            console.error("서버 오류 응답 데이터:", error.response.data);
+            console.error("서버 오류 상태 코드:", error.response.status);
+            console.error("서버 오류 헤더:", error.response.headers);
+        }
+        throw error;
+    }
+};
+
 
