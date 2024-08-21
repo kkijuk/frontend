@@ -151,7 +151,7 @@ const LoginPage = () => {
 <button className="button" onClick={handleLogin}>로그인</button>
 
       <div className="links">
-        <a href="/signup">회원가입</a> | <a href="/mypage/passwordreset">비밀번호 찾기</a>
+        <a href="/signup">회원가입</a> | <a href="/mypage/passwordresetemail">비밀번호 찾기</a>
       </div>
     </LoginScreen>
   );
