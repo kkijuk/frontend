@@ -7,7 +7,7 @@ import EditItem from '../../components/History/Resume/EditItem';
 import CareerItem from '../../components/History/Resume/CareerItem';
 import AddItem from '../../components/History/Resume/AddItem';
 import AddCareerModal from '../../components/shared/AddCareerModal';
-import AddCareerModalEdit from '../../components/shared/AddCareerModalEdit';
+import AddCareerModalEdit from '../../components/History/Resume/AddCareerModalEdit';
 import Address from '../../components/History/Address';
 import createRecord from '../../api/Record/createRecord';
 import updateRecord from '../../api/Record/updateRecord';
@@ -175,27 +175,26 @@ const History = () => {
     const toggleAddActModalOpen =()=>{
         setIsAddActModalOpen(!isAddActModalOpen);
     };
-    //활동 수정 모달 토글
-    const toggleEditActModalOpen =(careerId)=>{
-        const career = [...careers, ...activities].find(item=>item.careerId === careerId);
-        if(career){
-            setSelectedCareer({
-                data:{
-                    categoryName:career.category,
-                    categoryId:null,
-                    careerName:career.careerName,
-                    alias:career.alias,
-                    startDate:career.startDate,
-                    endDate:career.endDate,
-                    isUnknown: null,
-                    summary:career.summary
-                }
+    // 활동 수정 모달 토글
+    const toggleEditActModalOpen = (careerId) => {
+        const career = [...careers, ...activities].find(item => item.careerId === careerId);
+        if (career) {
+            const careerData = {
+                id: careerId,
+                categoryName: career.category,
+                categoryId: null, // 실제 값으로 채워야 함
+                careerName: career.careerName,
+                alias: career.alias,
+                startDate: career.startDate,
+                endDate: career.endDate,
+                isUnknown: null, // 적절한 값으로 채워야 함
+                summary: career.summary
+            };
 
-            });
+            setSelectedCareer({ data: careerData });
         }
         setIsEditActModalOpen(prev => !prev);
     };
-
     //추가한 활동 업데이트
     const handleAddCareer = (newCareer) => {
     setCareers([...careers, newCareer]);

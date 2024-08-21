@@ -2,6 +2,8 @@ import axios from "axios";
 
 export const CareerEdit = async (careerId, data) => {
     try {
+      //무원추가
+        console.log("Received data: ", data);
         const response = await axios.patch(
           `https://api.kkijuk.com/career/${careerId}`,
           data,
