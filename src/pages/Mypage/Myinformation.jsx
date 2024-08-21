@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react"
 import SubNav from "../../components/Mypage/SubNav"
 import styled from "styled-components"
 import axios from "axios"
+import { fetchMyinfo } from "../../api/Mypage/Myinformation"
 
 const Container = styled.div`
     display: flex;
@@ -164,19 +165,23 @@ export default function MyInformation() {
 
 
 
-    useEffect(() => {
-        // 백엔드 API 호출
-        axios.get('/member/myPage/info')
-            .then(response => {
-                setEmail(response.data.email);
-                setName(response.data.name);
-                setPhoneNumber(response.data.phoneNumber);
-                setBirthDate(response.data.birthDate);
-            })
-            .catch(error => {
-                console.error("There was an error fetching the email and name!", error);
-            });
-    }, []);
+      useEffect(() => {
+        // API 호출을 통해 사용자 정보 가져오기
+        const fetchUserInfo = async () => {
+          try {
+            const data = await fetchMyinfo();
+            setEmail(data.email);
+            setName(data.name);
+            setPhoneNumber(data.phoneNumber);
+            setBirthDate(data.birthDate);
+            console.log("정보 가져오기 완료: ", data);
+          } catch (error) {
+            console.error("사용자 정보를 가져오는 중 오류 발생:", error);
+          }
+        };
+    
+        fetchUserInfo();
+      }, []);
 
     const handleBirthDateChange = (e) => {
         const input = e.target.value.replace(/-/g, "");
@@ -217,10 +222,10 @@ export default function MyInformation() {
             </Top>
             <Middle>
                 <Text2 marginBottom="6px">연락처</Text2>
-                <Input width="280px" placeholder={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}
+                <Input width="280px" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}
                 ></Input>
                 <Text2 marginBottom="6px">생년월일</Text2>
-                <Input width="280px" placeholder={birthDate} onChange={handleBirthDateChange}></Input>
+                <Input width="280px" value={birthDate} onChange={handleBirthDateChange}></Input>
 
             </Middle>
             <Bottom>
