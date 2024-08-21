@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const EducationItem = ({ data, onEdit, isLastItem }) => {
+const EducationItem = ({ data, onEdit, isLastItem, onSave }) => {
+  console.log("EducationItem: ", data);
 
     return (
       <div style={{display:'flex'}}>
@@ -11,7 +12,7 @@ const EducationItem = ({ data, onEdit, isLastItem }) => {
         </TimeLine>
         <Container>
             <div>
-              <LevelTag>{data.category}</LevelTag>
+              <LevelTag status={data.state}>{data.category}</LevelTag>
               <SchoolInfo>
                   <SchoolName>{data.schoolName}</SchoolName>
                   {data.major && <Department>{data.major}</Department>}
@@ -47,7 +48,9 @@ const Oval = styled.div`
   border:${props=>props.status ==="중퇴"||props.status ==="편입"
             ? '3px solid #707070'
             : '3px solid #3AAF85'};
-  background-color:${props=>props.status ==="졸업"||props.status ==="중퇴"||props.status ==="편입"
+  background-color:${props=>props.status ==="중퇴"||props.status ==="편입"
+                              ? '#707070'
+                              :props.status==="졸업"
                               ? '#3AAF85'
                               : '#FFF'};
 `
@@ -100,7 +103,10 @@ const Container = styled.div`
 `;
 
 const LevelTag = styled.div`
-    background-color: #4EC495;
+    background-color: ${props=>
+                        props.status ==="중퇴"||props.status ==="편입"
+                          ? '#707070'
+                          : '#3AAF85'};
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
