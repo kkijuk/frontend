@@ -96,7 +96,7 @@ const App = () => {
           <Route path="/mypage/passwordresetemailconfirm" element={<PasswordResetEmailConfirm />} />
           <Route path="/mypage/passwordreset" element={<PasswordReset />} />
           <Route path="/mypage/resetsuccess" element={<ResetSuccess />} />
-          <Route path="/login-required" element={<LoginRequired />} />
+                    <Route path="/login-required" element={<LoginRequired />} />
         </Routes>
       </MainContent>
       {!hideFooter && <Footer />}
