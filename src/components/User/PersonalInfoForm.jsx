@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { registerUser } from '../../api/Signup/registerUser';
+import { login } from '../../api/Login/Login'; // 로그인 API 임포트
+import { useAuth } from '../AuthContext';
 
 const FormContainer = styled.div`
   align-items: center;
@@ -103,6 +105,7 @@ const Instructions = styled.p`
 
 const PersonalInfoForm = ({ name, setName, contact, setContact, birthdate, setBirthdate, handleSignup, handlePrevStep, email, password, confirmPassword }) => {
   const [errorMessage, setErrorMessage] = useState('');
+  const { login: authLogin } = useAuth()
 
   const validateName = (name) => {
     const nameRegex = /^[가-힣]{1,20}$/;
@@ -117,7 +120,7 @@ const PersonalInfoForm = ({ name, setName, contact, setContact, birthdate, setBi
     const formattedContact = e.target.value
       .replace(/[^0-9]/g, '')  
       .replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3') 
-      .slice(0, 13); //엔하이픈 포함 13자리이
+      .slice(0, 13);
 
     setContact(formattedContact);
   };
@@ -146,15 +149,24 @@ const PersonalInfoForm = ({ name, setName, contact, setContact, birthdate, setBi
    
       console.log("Sending request data:", requestData);  
    
-      const result = await registerUser(requestData);
-   
-      console.log(result); 
-      handleSignup(); 
+      await registerUser(requestData); // registerResult는 사용하지 않으므로 삭제
+      
+      // 회원가입 성공 후 로그인 시도
+      try {
+        const loginResult = await login({ email, password });
+        console.log(loginResult);
+        if (loginResult.message === "login success") {
+          authLogin(); // 로그인 상태로 전환
+          handleSignup(); // 회원가입 완료 후 처리
+        }
+      } catch (loginError) {
+        console.error('로그인 실패:', loginError);
+        setErrorMessage('회원가입은 성공했으나 로그인에 실패했습니다. 다시 시도해주세요.');
+      }
     } catch (error) {
       setErrorMessage(error.message); 
     }
-   };
-   
+  };
 
   return (
     <FormContainer>
@@ -203,4 +215,4 @@ const PersonalInfoForm = ({ name, setName, contact, setContact, birthdate, setBi
   );
 };
 
-export default PersonalInfoForm; 
+export default PersonalInfoForm;
