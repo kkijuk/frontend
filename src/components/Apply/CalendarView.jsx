@@ -158,7 +158,8 @@ const DayIndicator = styled.div`
   background-color: ${({ color }) => color || 'transparent'};
   border-radius: 50%;
   margin-left: 0px;
-  margin-top: 0px;
+  margin-top: 2px;
+  margin-bottom: -12px;
 `;
 
 const CustomCalendar = ({ onChange, value, marks }) => {

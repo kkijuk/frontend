@@ -117,7 +117,7 @@ const Line = styled.div`
     background: var(--gray-03, #D9D9D9);
 `;
 
-export default function ReviewDetailAddEdit({ recruitId, reviewId, initialTitle, initialDate, initialContents, onSave, onDelete }) {
+export default function ReviewDetailAddEdit({ recruitId, reviewId, initialTitle, initialDate, initialContents, onSave, onDelete, fetchData }) {
     const [showCalendar, setShowCalendar] = useState(false);
     const [selectedDate, setSelectedDate] = useState(initialDate);
     const [title, setTitle] = useState(initialTitle);
@@ -142,14 +142,20 @@ export default function ReviewDetailAddEdit({ recruitId, reviewId, initialTitle,
                 date: selectedDate || initialDate,
             };
             await editReview(recruitId, reviewId, reviewData);
-
+    
             if (onSave) {
                 onSave();  // 저장 후 부모 컴포넌트에서 전달된 콜백 함수 호출
+            }
+    
+            // 수정 후 최신 데이터를 가져옵니다.
+            if (fetchData) {
+                fetchData(); // 추가
             }
         } catch (error) {
             console.error('Failed to save review:', error);
         }
     };
+    
 
     const handleDeleteClick = () => {
         setIsModalOpen(true);  // 모달 열기
@@ -159,17 +165,22 @@ export default function ReviewDetailAddEdit({ recruitId, reviewId, initialTitle,
         try {
             console.log(`Deleting review with ID: ${reviewId} for recruit ID: ${recruitId}`);
             await deleteReview(recruitId, reviewId);
-
+    
             if (onDelete) {
                 onDelete();  // 부모 컴포넌트에서 상태 업데이트를 위한 콜백 함수 호출
             }
-
+    
+            // 삭제 후 최신 데이터를 가져옵니다.
+            if (fetchData) {
+                fetchData(); // 추가
+            }
+    
             setIsModalOpen(false);
         } catch (error) {
             console.error('Failed to delete review:', error);
         }
     };
-
+    
     
 
     const handleCancelDelete = () => {
@@ -208,5 +219,6 @@ export default function ReviewDetailAddEdit({ recruitId, reviewId, initialTitle,
         </Box>
     );
 }
+
 
 

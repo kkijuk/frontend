@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { sendAuthNumber } from '../../api/Login/passwordreset';
 
 const FormContainer = styled.div`
   display: flex;
@@ -148,10 +149,15 @@ const PasswordResetEmailConfirm = ({
   
     const handleInputChange = (e, index) => {
       const val = e.target.value;
+      console.log("Input value:", val); // 추가된 로그
+
       if (/^[0-9]$/.test(val)) {
         const newVerificationCode = [...verificationCode];
         newVerificationCode[index] = val;
         setVerificationCode(newVerificationCode);
+        console.log("Updated verificationCode array:", newVerificationCode);
+        console.log(verificationCode); // 입력된 인증번호 배열을 확인
+
   
         if (val !== '') {
           const nextInput = document.getElementById(`code-input-${index + 1}`);
@@ -161,6 +167,8 @@ const PasswordResetEmailConfirm = ({
         }
       }
     };
+
+    
   
     const handleKeyDown = (e, index) => {
       if (e.key === 'Backspace') {
@@ -176,15 +184,25 @@ const PasswordResetEmailConfirm = ({
       }
     };
   
-    const handleConfirmClick = () => {
+    const handleConfirmClick = async () => {
       if (timeExpired) {
         setErrorMessage("인증번호가 만료되었습니다. 다시 시도해 주세요.");
       } else if (verificationCode.includes('')) {
         setErrorMessage("인증 번호를 입력하세요.");
       } else {
+        try{
+          const authNumber = verificationCode.join('');
+          await sendAuthNumber(email, authNumber);
+          handleNextStep();
+        } catch (error) {
         setErrorMessage("인증 번호가 올바르지 않습니다.");
+        }
       }
     };
+
+
+
+   
   
     const handleResend = () => {
       setTimeLeft(300); 
@@ -202,6 +220,7 @@ const PasswordResetEmailConfirm = ({
         </Instructions>
         <EmailDisplay>{email}</EmailDisplay>
         <CodeInputContainer>
+          
           {[...Array(6)].map((_, i) => (
             <CodeInput
               key={i}

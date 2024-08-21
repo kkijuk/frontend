@@ -3,7 +3,7 @@ export async function verifyAuthCode(email, authNumber) {
       const response = await fetch('https://api.kkijuk.com/auth/confirm', {
         method: 'POST',
         headers: {
-          credentials: "include", // 쿠키와 인증 정보를 함께 보냄
+         
 
           'Content-Type': 'application/json',
           'accept': '*/*'

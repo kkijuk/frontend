@@ -36,7 +36,7 @@ const FilterTitle = styled.div`
 `;
 
 const FilterOptions = styled.div`
-  margin-right: 503px;
+  margin-right: 580px;
   margin-bottom: 9px;
   display: flex;
   gap: 20px;
@@ -59,6 +59,7 @@ const SortSection = styled.div`
   display: flex;
   align-items: center;
   margin-top: 20px;
+  
 `;
 
 const SortOptionButton = styled.button`
@@ -69,6 +70,7 @@ const SortOptionButton = styled.button`
   cursor: pointer;
   font-family: medium;
   margin-bottom: 9px;
+
 `;
 
 const ResultsContainer = styled.div`
@@ -243,17 +245,20 @@ const FilterPage = () => {
         <SortSection>
           <FilterTitle>정렬</FilterTitle>
           <SortOptionButton
-            active={sortOrder === 'latest'}
-            onClick={() => handleSortOrderClick('latest')}
-          >
-            최신순
-          </SortOptionButton>
-          <SortOptionButton
-            active={sortOrder === 'oldest'}
-            onClick={() => handleSortOrderClick('oldest')}
-          >
-            오래된순
-          </SortOptionButton>
+  active={sortOrder === 'latest'}
+  onClick={() => handleSortOrderClick('latest')}
+  style={{ marginLeft: '30px' }}  // 최신순 버튼에 적용
+>
+  최신순
+</SortOptionButton>
+<SortOptionButton
+  active={sortOrder === 'oldest'}
+  onClick={() => handleSortOrderClick('oldest')}
+  style={{ marginLeft: '5px' }}  // 오래된순 버튼에 적용
+>
+  오래된순
+</SortOptionButton>
+
         </SortSection>
       </FilterSection>
 

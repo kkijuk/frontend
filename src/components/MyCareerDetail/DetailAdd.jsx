@@ -10,7 +10,6 @@ const Box = styled.div`
     height: 384px;
     width: 800px;
     padding: 24px 40px;
-    border: 1px solid black;
 `;
 
 const Top = styled.div`
@@ -184,6 +183,7 @@ export default function DetailAdd({ onCancel, onSave, careerId }) {  // careerId
         };
 
         await AddDetail(careerId, data);
+        onSave();
         onCancel(); // 부모 컴포넌트의 상태를 변경하여 창을 닫습니다.
     };
     

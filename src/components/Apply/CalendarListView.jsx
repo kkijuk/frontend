@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const CalendarBackgroundSection = styled.div`
   width: 100vw;
@@ -111,46 +112,51 @@ const CalendarStatusCircle = styled.span`
 `;
 
 const CalendarListView = ({ date, data, count, onJobClick }) => {
-    console.log('CalendarListView data:', data); // 디버깅용 로그 추가
-    console.log('CalendarListView count:', count); // 디버깅용 로그 추가
-  
-    if (count === 0) {
-      return (
-        <CalendarBackgroundSection>
-          <CalendarContentSection background="#f0f0f0">
-            
-          </CalendarContentSection>
-        </CalendarBackgroundSection>
-      );
-    }
-  
+  const navigate = useNavigate();
+
+  if (count === 0) {
     return (
       <CalendarBackgroundSection>
         <CalendarContentSection background="#f0f0f0">
-          <CalendarAdDate>{date}</CalendarAdDate> 
-          <CalendarAdListStyled>
-            {data.map((ad, idx) => (
-              <CalendarAdItem 
-                key={idx} 
-                onClick={() => onJobClick(ad)}
-              >
-                <CalendarTagContainer>
-                  {(ad.tag || ad.tags || []).map((tag, tagIdx) => (
-                    <CalendarTag key={tagIdx}>{tag}</CalendarTag>
-                  ))}
-                </CalendarTagContainer>
-                <CalendarAdDetails>
-                  <CalendarAdTitleContainer>
-                    <CalendarStatusCircle status={ad.status} />
-                    <CalendarAdTitle>{ad.title}</CalendarAdTitle>
-                  </CalendarAdTitleContainer>
-                </CalendarAdDetails>
-              </CalendarAdItem>
-            ))}
-          </CalendarAdListStyled>
+          {/* 날짜에 공고가 없을 때의 처리 */}
         </CalendarContentSection>
       </CalendarBackgroundSection>
     );
+  }
+
+  const handleJobClick = (ad) => {
+    console.log('Selected ad:', ad); // 여기서 ad 객체에 startTime, endTime이 있는지 확인
+    navigate(`/apply-detail/${ad.id}`, { state: { job: ad } });
   };
   
-  export default CalendarListView;
+
+  return (
+    <CalendarBackgroundSection>
+      <CalendarContentSection background="#f0f0f0">
+        <CalendarAdDate>{date}</CalendarAdDate> 
+        <CalendarAdListStyled>
+          {data.map((ad, idx) => (
+            <CalendarAdItem 
+              key={idx} 
+              onClick={() => handleJobClick(ad)} // 클릭 시 상세 페이지로 이동
+            >
+              <CalendarTagContainer>
+                {(ad.tag || ad.tags || []).map((tag, tagIdx) => (
+                  <CalendarTag key={tagIdx}>{tag}</CalendarTag>
+                ))}
+              </CalendarTagContainer>
+              <CalendarAdDetails>
+                <CalendarAdTitleContainer>
+                  <CalendarStatusCircle status={ad.status} />
+                  <CalendarAdTitle>{ad.title}</CalendarAdTitle>
+                </CalendarAdTitleContainer>
+              </CalendarAdDetails>
+            </CalendarAdItem>
+          ))}
+        </CalendarAdListStyled>
+      </CalendarContentSection>
+    </CalendarBackgroundSection>
+  );
+};
+
+export default CalendarListView;

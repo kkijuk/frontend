@@ -20,7 +20,7 @@ const FormContainer = styled.div`
     color: #3AAF85;
     text-align: center;
     font-size: 24px;
-    font-family: 'Light';
+     font-family: Regular;
     margin-top: -25px;
   }
 
@@ -44,6 +44,7 @@ const FormContainer = styled.div`
     font-size: 24px;
     color: black;
     cursor: pointer;
+    font-family: Regular;
   }
 `;
 
@@ -51,7 +52,7 @@ const Instructions = styled.p`
   color: #333;
   margin: 9px 0;
   line-height: 1.2;
-  font-family: 'Normal';
+   font-family: Regular;
   font-size: 18px;
   text-align: center;
   white-space: nowrap; 

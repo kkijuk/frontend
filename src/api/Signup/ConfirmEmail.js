@@ -3,7 +3,6 @@ export async function confirmEmail(email) {
       const response = await fetch('https://api.kkijuk.com/member/confirmEmail', {
         method: 'POST',
         headers: {
-          credentials: "include", // 쿠키와 인증 정보를 함께 보냄
 
           'Content-Type': 'application/json',
           'accept': '*/*'
