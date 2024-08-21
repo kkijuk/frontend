@@ -9,6 +9,7 @@ const readRecord = async () => {
             withCredentials: true
         });
         console.log('Response Data:', response.data);  
+        // console.log('Target', response.data.data);
 
         return response.data.data;
     } catch (error) {

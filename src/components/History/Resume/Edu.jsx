@@ -5,9 +5,9 @@ import '../../../pages/History/history.css'
 // api에서 받는 구분(state)으로 만료 여부도 표현
 const Edu = ({ isLevel, onChange, value }) => {
     const [dropdownOpend, setDropdownOpend] = useState(false);
-    const level = ["고등학교", "전문대학교", "대학교", "대학원(석사)", "대학원(박사)"];
-    const status = ["재학", "휴학", "졸업예정", "졸업", "중퇴", "편입"];
-    const [education, setEducation] = useState(isLevel === "학력구분" ? level : status);
+    const category = ["고등학교", "전문대학교", "대학교", "대학원(석사)", "대학원(박사)"];
+    const state = ["재학", "휴학", "졸업예정", "졸업", "중퇴", "편입"];
+    const [education, setEducation] = useState(isLevel === "학력구분" ? category : state);
     const [selectedItem, setSelectedItem] = useState(isLevel === "학력구분" ? "학력구분" : "학력상태");
 
     const handleToggleClick = () => {
