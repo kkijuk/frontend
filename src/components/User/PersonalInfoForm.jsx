@@ -17,7 +17,7 @@ const FormContainer = styled.div`
     color: #3AAF85;
     text-align: center;
     font-size: 24px;
-    font-family: 'Light';
+     font-family: Regular;
     margin-top: -25px;
   }
 
@@ -41,6 +41,7 @@ const FormContainer = styled.div`
     font-size: 24px;
     color: black;
     cursor: pointer;
+     font-family: Regular;
   }
 
   .input-group {
@@ -56,9 +57,10 @@ const FormContainer = styled.div`
     border: 1px solid #e0e0e0;
     border-radius: 10px;
     background-color: #F5F5F5;
-    font-size: 14px;
+    font-size: 16px;
     height: 50px;
     box-sizing: border-box;
+     font-family: Regular;
   }
 
   input[type="text"]:focus, input[type="date"]:focus {
@@ -79,6 +81,7 @@ const FormContainer = styled.div`
     width: 100%;
     border: none;
     border-radius: 10px;
+     font-family: Regular;
   }
 `;
 
@@ -92,7 +95,7 @@ const Instructions = styled.p`
   color: #333;
   margin: 9px 0;
   line-height: 1.2;
-  font-family: 'Normal';
+  font-family: Regular;
   font-size: 16px;
   text-align: center;
   white-space: nowrap; 

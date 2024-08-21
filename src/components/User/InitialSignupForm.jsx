@@ -18,7 +18,7 @@ const FormContainer = styled.div`
     color: #3AAF85;
     text-align: center;
     font-size: 24px;
-    font-family: 'Light';
+     font-family: Regular;
     margin-top: -25px;
   }
 
@@ -62,12 +62,13 @@ const FormContainer = styled.div`
     border: 1px solid #e0e0e0;
     border-radius: 10px;
     margin-right: 10px;
-    font-size: 14px;
+    font-size: 16px;
     width: 280px;
     height: 50px;
     box-sizing: border-box;
     background: #F5F5F5;
     color: #707070;
+     font-family: Regular;
   }
 
   .email-input:focus, input[type="password"]:focus {
@@ -86,7 +87,8 @@ const FormContainer = styled.div`
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
+     font-family: Regular;
     box-sizing: border-box;
   }
 
@@ -100,13 +102,16 @@ const FormContainer = styled.div`
     padding: 10px;
     border: 1px solid #e0e0e0;
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 16px;
     height: 50px;
     box-sizing: border-box;
+     font-family: Regular;
   }
 
   label {
     color: #3AAF85;
+     font-family: Regular;
+     font-size: 16px;
   }
 
   button {
@@ -121,6 +126,8 @@ const FormContainer = styled.div`
     height: 45px;
     width: 400px;
     height: 50px;
+     font-family: Regular;
+     font-size: 17px;
   }
 
   .agreement {

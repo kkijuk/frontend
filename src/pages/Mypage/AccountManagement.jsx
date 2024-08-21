@@ -33,8 +33,8 @@ const Line = styled.div`
 
 const Text1 = styled.div`
     color: var(--black, #000);
-    font-family: Pretendard;
-    font-size: 20px;
+     font-family: Regular;
+    font-size: 21px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
@@ -48,7 +48,7 @@ const Input = styled.input`
     background: #F5F5F5;
     border: none;
     color: #707070;
-    font-family: Pretendard;
+     font-family: Regular;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -67,7 +67,7 @@ const Button = styled.button`
     border: none;
     color: #FFF;
     text-align: center;
-    font-family: Pretendard;
+    font-family: Regular;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
@@ -83,38 +83,41 @@ const ErrorMessage = styled.p`
     padding: 0;
     color: #FF7979;
     text-align: center;
-    font-family: Inter;
-    font-size: 14px;
+    font-family: Regular;
+    font-size: 15px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 `;
 
 const Container2 = styled.div`
-    width: 464px;
+    width: 470px;
     height: 308px;
     margin-top: 32px;
 `;
 
 const DeleteText = styled.div`
-    width: 430px;
+    width: 470px;
     height: 76px;
     color: #000;
-    font-family: Pretendard;
+     font-family: Regular;
     font-size: 16px;
     font-style: normal;
     line-height: normal;
-    margin-left: 18px;
+    margin-left: 0px;
     margin-bottom: 28px;
     margin-top: 28px;
+     text-align: center;
 `;
 
 const BoldText = styled.span`
     font-weight: 700;
+     font-family: Bold;
 `;
 
 const RegularText = styled.span`
     font-weight: 400;
+     font-family: Regular;
 `;
 
 const DeleteButton = styled.button`
@@ -124,14 +127,13 @@ const DeleteButton = styled.button`
     border-radius: 10px;
     margin-left: 26px;
     border: 1px solid #000;
-    margin-top: 50px;
 
     background: var(--white, #FFF);
 
     color: #000;
 
     text-align: center;
-    font-family: Pretendard;
+    font-family: Regular;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
