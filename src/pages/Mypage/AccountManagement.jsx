@@ -93,7 +93,7 @@ const ErrorMessage = styled.p`
 const Container2 = styled.div`
     width: 470px;
     height: 308px;
-    margin-top: 32px;
+    margin-top: 27px;
 `;
 
 const DeleteText = styled.div`
