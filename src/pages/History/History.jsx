@@ -45,6 +45,7 @@ const History = () => {
     const [isEditActModalOpen, setIsEditActModalOpen] = useState(false);
     const [isAddActModalOpen, setIsAddActModalOpen] = useState(false);
     const [addressStatus, setAddressStatus] = useState(null);
+    const [selectedCareer, setSelectedCareer] = useState(null);
 
 
     useEffect(()=>{
@@ -175,20 +176,50 @@ const History = () => {
         setIsAddActModalOpen(!isAddActModalOpen);
     };
     //활동 수정 모달 토글
-    const toggleEditActModalOpen =()=>{
-        setIsEditActModalOpen(!isEditActModalOpen);
+    const toggleEditActModalOpen =(careerId)=>{
+        const career = [...careers, ...activities].find(item=>item.careerId === careerId);
+        if(career){
+            setSelectedCareer({
+                data:{
+                    categoryName:career.category,
+                    categoryId:null,
+                    careerName:career.careerName,
+                    alias:career.alias,
+                    startDate:career.startDate,
+                    endDate:career.endDate,
+                    isUnknown: null,
+                    summary:career.summary
+                }
+
+            });
+        }
+        setIsEditActModalOpen(prev => !prev);
     };
 
     //추가한 활동 업데이트
     const handleAddCareer = (newCareer) => {
     setCareers([...careers, newCareer]);
-};
+    };
+
+    //수정한 활동 업데이트
+    const handleSaveCareerEdit = (updatedData)=>{
+        setCareers(prevCareers => 
+            prevCareers.map(career =>
+                career.careerId === updatedData.careerId ? updatedData : career
+            )
+        )
+        setIsEditActModalOpen(false);
+    }
 
     return (
         <BackgroundDiv>
             <BaseDiv>
             {isAddActModalOpen && <AddCareerModal onClose={toggleAddActModalOpen} onSave={handleAddCareer}/>}
-            {isEditActModalOpen && <AddCareerModalEdit onClose={toggleEditActModalOpen}/>}
+            {isEditActModalOpen && 
+                <AddCareerModalEdit 
+                    onClose={toggleEditActModalOpen}
+                    data={selectedCareer}
+                    onSave={handleSaveCareerEdit}/>}
             <p style={{fontFamily:'Regular', fontSize:'14px', color:'#707070', position:'absolute', top:'-30px', right:'0px'}}>
                 마지막 수정 일시: {lastUpdated}
             </p>
@@ -268,7 +299,7 @@ const History = () => {
                         key={index} 
                         data={career} 
                         isLastItem={index === careers.length - 1}
-                        onEdit={toggleEditActModalOpen}
+                        onEdit={() => toggleEditActModalOpen(career.careerId)}
                     />
                 ))}
                 <AddButton onClick={toggleAddActModalOpen}>+</AddButton>
@@ -281,7 +312,7 @@ const History = () => {
                         key={index} 
                         data={activity} 
                         isLastItem={index === activities.length - 1}
-                        onEdit={toggleEditActModalOpen}/>
+                        onEdit={() => toggleEditActModalOpen(activity.careerId)}/>
                         //api onSubmit 추가해야함
                 ))}
                 <AddButton onClick={toggleAddActModalOpen}>+</AddButton>
