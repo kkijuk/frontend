@@ -657,6 +657,7 @@ const handleBackClick = () => {
        contents={review.content} 
        onDelete={() => openReviewDeleteModal(review.reviewId)}
        onSave={handleReviewSave}  
+       fetchData={fetchJobDetails}  // fetchData 전달
      />
    ))
 )}
@@ -666,6 +667,7 @@ const handleBackClick = () => {
           recruitId={job.id}
           onSave={handleReviewSave}
           onCancel={handleCancelReviewAdd}
+          fetchData={fetchJobDetails}  // fetchData 전달
         />
       )}
 
