@@ -3,8 +3,6 @@ export const updateRecruit = async (recruitId, updatedJob) => {
   const formatToServerTime = (dateTime) => {
     const localDate = new Date(dateTime);
     
-  
-    localDate.setHours(localDate.getHours() - 9);
 
     const year = localDate.getFullYear();
     const month = String(localDate.getMonth() + 1).padStart(2, '0');
