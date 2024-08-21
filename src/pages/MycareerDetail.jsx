@@ -67,7 +67,6 @@ const CareerTitle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  border: 1px solid black;
   padding-bottom: 10px;
 
     position: relative; /* Add this line */
@@ -88,7 +87,6 @@ const ActivityDetails = styled.div`
 const Container2 = styled.div`
   width: 800px;
   height: 477px;
-  border: 1px solid black;
 `;
 
 const CareerListBox = styled.div`
@@ -192,26 +190,37 @@ export default function MycareerDetail() {
       const data = response.data; // 응답 데이터에서 'data' 배열 추출
       console.log("박스 안의 data값:", data);
       setCareers(data);
+      
+    };
+   
+    fetchCareers();
+  }, [careerId, navigate]);
 
-      // URL에서 받아온 careerId에 해당하는 CareerBox를 자동 선택
-      if (careerId) {
-        loadCareerDetail(careerId);
+  useEffect(() => {
+    const loadCareerDetail = async (careerId) => {
+      const careerDetail = await ViewCareerDetail(careerId);
+      console.log('선택된 CareerBox의 상세 데이터:', careerDetail);
+      setSelectedCareerDetail(careerDetail);
+      setIsAdding(false); // 새로운 Careerbox를 클릭하면 활동 기록 추가를 닫음
+
+      console.log("selectCareerDetail:", selectedCareerDetail);
+      if (careerDetail) {
+        navigate(`/mycareer/${careerId}`, { state: { details: careerDetail.data } });
       }
     };
 
-    fetchCareers();
-  }, [careerId]);
+    if (careerId) {
+      loadCareerDetail(careerId);
+    }
+  }, [careerId, isEditModalOpen, modalData,  navigate]); 
 
-  // 특정 careerId의 상세 데이터를 로드하는 함수
-  const loadCareerDetail = async (careerId) => {
-    const careerDetail = await ViewCareerDetail(careerId);
-    console.log('선택된 CareerBox의 상세 데이터:', careerDetail);
-    setSelectedCareerDetail(careerDetail);
-    setIsAdding(false); // 새로운 Careerbox를 클릭하면 활동 기록 추가를 닫음
-
-    console.log("selectCareerDetail:", selectedCareerDetail);
-    if (careerDetail) {
-      navigate(`/mycareer/${careerId}`, { state: { details: careerDetail.data } });
+  // 활동 기록 추가 후 갱신하는 함수
+  const handleAddComplete = async () => {
+    setIsAdding(false);
+    console.log("활동 기록 추가 후 갱신 중");
+    if (careerId) {
+      const careerDetail = await ViewCareerDetail(careerId);
+      setSelectedCareerDetail(careerDetail);
     }
   };
 
@@ -263,7 +272,7 @@ const handleModalSave = (data) => {
                 careerName={item.careerName}
                 category={item.categoryId}
                 selected={selectedCareerDetail?.data?.id === item.id} // ID를 기준으로 선택된 항목을 결정
-                onClick={() => loadCareerDetail(item.id)} // 클릭 시 해당 항목의 상세 데이터를 로드
+                onClick={() => navigate(`/mycareer/${item.id}`)} // 클릭 시 해당 항목의 상세 데이터를 로드
               />
             ))
           ))}
@@ -303,11 +312,11 @@ const handleModalSave = (data) => {
               detailTag={detail.careerTagList.map(tag => tag.tagName)}
               careerId={careerId} // careerId 전달
               detailId={detail.id} // detailId 전달
-              onUpdate={() => loadCareerDetail(careerId)} // 데이터 갱신 콜백 전달
+              onUpdate={handleAddComplete} // 이 부분에서 onUpdate로 handleAddComplete 함수 전달
 
             />
           ))}
-          {isAdding && <DetailAdd onCancel={() => setIsAdding(false)}  careerId={careerId}/>} {/* 콜백 전달 */}
+          {isAdding && <DetailAdd onCancel={() => setIsAdding(false)} onSave={handleAddComplete} careerId={careerId}/>} {/* 콜백 전달 */}
         </CareerListBox>
       </Container2>
       <Container3>

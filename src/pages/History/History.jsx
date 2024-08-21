@@ -1,5 +1,5 @@
 import api from '../../Axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import './history.css';
 import EducationItem from '../../components/History/Resume/EducationItem';
@@ -9,103 +9,128 @@ import AddItem from '../../components/History/Resume/AddItem';
 import AddCareerModal from '../../components/shared/AddCareerModal';
 import AddCareerModalEdit from '../../components/shared/AddCareerModalEdit';
 import Address from '../../components/History/Address';
-
-//Todo
-//- +버튼 onClick 함수 정의
-//api 파일생성해서 데이터 받아오기, async/await로 불러오기
-//디자인 수정
+import createRecord from '../../api/Record/createRecord';
+import updateRecord from '../../api/Record/updateRecord';
+import readRecord from '../../api/Record/readRecord';
+import createEducation from '../../api/Record/createEducation';
+import deleteEducation from '../../api/Record/deleteEducation';
 
 const History = () => {
 
     const profileTitles = ["이름", "생년월일", "전화번호", "이메일", "주소"];
 
-    //(Data) - dummy
-    const [lastUpdated, setLastUpdated] = useState('2024-02-02');
+    //(Data)
+    const [recordId, setRecordId] = useState(0);
+    const [lastUpdated, setLastUpdated] = useState('');
     const [profiles, setProfiles] = useState({
-        name:"박하은",
-        birth:"1999.07.17",
-        mobile:"010-1234-5678",
-        email:"kkijuk@gmail.com",
+        img:"",
+        name:"",
+        birth:"",
+        mobile:"",
+        email:"",
         address:""
     });
 
-    const [educations, setEducations] = useState([
-        {
-            level : "대학교",
-            schoolName : "서울여자대학교",
-            department : "언론영상학부 디지털영상전공, 소프트웨어융합학과" ,
-            startDate : "2018.03",
-            endDate : "2025.02",
-            status : "졸업예정"
-        },
-        {
-            level : "고등학교",
-            schoolName : "유엠씨고등학교",
-            startDate : "2015.03",
-            endDate : "2018.02",
-            status : "졸업"
-        }
-    ]);
+    const [educations, setEducations] = useState([]);
     
-    const [careers,setCareers] = useState([
-        {
-            category:"아르바이트",
-            title:"하늘학원",
-            startDate:"2023.06",
-            endDate:"2024.01",
-            period:8,
-            task:"중학생 수업 지도"
-        }
-    ])
+    const [careers,setCareers] = useState([]);
 
-    const [activities, setActivities] = useState([
-        {
-            category:"동아리",
-            title:"IT 서비스 개발 동아리 / UMC",
-            startDate:"2024.03",
-            endDate:"2024.08",
-            period:8,
-            task:"스터디, 웹서비스 기획(팀 프로젝트)"
-        },
-        {
-            category:"대외활동",
-            title:"하나은행 대학생 서포터즈 1기",
-            startDate:"2023.12",
-            endDate:"2024.02",
-            period:8,
-            task:"SNS 콘텐츠 제작, 오프라인 캠페인 기획"
-        },
-        {
-            category:"공모전",
-            title:"서울시 공공데이터 공모전",
-            startDate:"2023.09",
-            endDate:"2023.10",
-            period:8,
-            task:"공공데이터 활용 웹 서비스 기획 및 개발"
-        },
-        
-    ])
+    const [activities, setActivities] = useState([]);
 
     //state
-    const [isEdit, setIsEdit] = useState([false, false]);
+    const [isEdit, setIsEdit] = useState([]);
     const [isAddItemOpen, setIsAddItemOpen] = useState(false);
     const [show, setShow] = useState(false);//추가 불가 알람창
     const [isEditActModalOpen, setIsEditActModalOpen] = useState(false);
     const [isAddActModalOpen, setIsAddActModalOpen] = useState(false);
-    const [isAddressNull, setIsAddressNull] = useState(true);
-    const [addressStatus, setAddressStatus] = useState(0);
+    const [addressStatus, setAddressStatus] = useState(null);
+
+
+    useEffect(()=>{
+        const fetchData = async ()=>{
+            try{
+                const data = await readRecord();
+                setRecordId(data.record_id);
+                setLastUpdated(data.updatedAt);
+                setProfiles({
+                    img:data.profileImageUrl,
+                    name:data.name,
+                    birth:data.birthday,
+                    mobile:data.phone,
+                    email:data.email,
+                    address:data.address
+                });
+                setEducations(data.educationList);
+                setCareers(data.jobs);
+                setActivities(data.activitiesAndExperiences);
+                // 주소가 있으면 addressStatus를 0으로 설정, 없으면 1로 설정
+                if (data.address) {
+                    setAddressStatus(0);
+                } else {
+                    setAddressStatus(null); // null로 설정하여 '주소를 입력하세요'가 표시되도록 함
+                }
+            }catch(err){
+                console.log('Failed to load records');
+            }
+        }
+        fetchData();
+    },[]);
 
     //(Actions)
-    const handleNullAddressClick=()=>{
-        setIsAddressNull(false);
-        setAddressStatus(1);
-    }
-    const handleSaveAddress=(data)=>{
-        setProfiles(prev=>({...prev, address:data}));
-        setAddressStatus(0);
-        if(!data){setIsAddressNull(true)}
-    }
+    //########################################################################
+    //학력 추가
+    const handleAddEducation = async (newEducation)=>{
+        try{
+            const addedEducation = await createEducation(recordId, newEducation);
+            setEducations([...educations, addedEducation]);
+            setIsAddItemOpen(false);
+        }catch(err){
+            console.error('Failed to add education: ', err);
+        }
+    };
+    //학력 수정
+    const handleUpdateEducation = async (index, updatedData)=>{
+        try{
+            setEducations(educations.map((edu, i)=>(i===index ? updatedData : edu)));
+            setIsEdit(prev => prev.map((edit, i)=>i===index ? false : edit));
+            handleCancelEdit(index);
+        }catch(err){
+            console.error('Failed to update education: ', err);
+        }
+    };
 
+    //학력 삭제
+    const handleDeleteEducation = async (index, educationId)=>{
+        try{
+            await deleteEducation(educationId);
+            setEducations(educations.filter((_,i)=>i !== index));
+        }catch(err){
+            console.error('Failed to delete education: ', err);
+        }
+    };
+    //########################################################################
+    //주소 상태
+    const handleNullAddressClick = () => {
+        setAddressStatus(1); // 주소를 입력할 수 있는 상태로 전환
+    };
+
+    //주소 변경
+    const handleSaveAddress = async (newAddress) => {
+        try {
+            const updatedRecord = await updateRecord(recordId, { address: newAddress, prifileImageUrl: profiles.img });
+            if (updatedRecord) {
+                setProfiles(prev => ({
+                    ...prev,
+                    address: updatedRecord.data.address,  // 응답 데이터를 이용해 상태 업데이트
+                }));
+                setAddressStatus(0);
+            }
+        } catch (err) {
+            console.error('Failed to update address: ', err);
+        }
+    };
+
+    //etc about showing
     //학력 편집모드->읽기모드 전환
     const handleCancelEdit = (index) => {
         setIsEdit(prev => prev.map((edit, i) => i === index ? false : edit));
@@ -117,52 +142,29 @@ const History = () => {
     //학력 추가 취소
     const handleCancleAdd=()=>{
         setIsAddItemOpen(false);
-    }
+    };
     //학력 추가 제한
     const showLimiter =()=>{
         setShow(true);
         setTimeout(()=>{
             setShow(false);
         },3000);
-    }
+    };
     //학력 추가 제한
     const handleAdd = ()=>{
         isAddItemOpen 
         ? showLimiter()
         : setIsAddItemOpen(true);
-    }
-    //학력 수정
-    const editEducation =(index, updatedData)=>{
-        setEducations(prev => prev.map((education, i) => i === index ? {...education, ...updatedData}: education));
-        handleCancelEdit(index);
-        console.log(updatedData);
-    }
-    //학력 추가
-    const addEducation =(updatedData)=>{
-        console.log(updatedData);
-        if(!updatedData){
-            console.log('내용이 없음');
-        }
-        else{
-            setEducations(prev=>[...prev, updatedData]);
-            setIsAddItemOpen(false);
-        }
-    }
-    //학력 삭제
-    const deleteEducation =(index)=>{
-        setEducations(prev => prev.filter((_,i) => i !== index));
-        handleCancelEdit(index);
-    }
+    };
+
     //활동 추가 모달 토글
     const toggleAddActModalOpen =()=>{
         setIsAddActModalOpen(!isAddActModalOpen);
-    }
+    };
     //활동 수정 모달 토글
     const toggleEditActModalOpen =()=>{
         setIsEditActModalOpen(!isEditActModalOpen);
-    }
-    //활동수정
-    //추가 예정
+    };
 
     return (
         <BackgroundDiv>
@@ -187,40 +189,53 @@ const History = () => {
                         <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profiles.birth}</p>
                         <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profiles.mobile}</p>
                         <p style={{color:'#707070', fontSize:'14px',margin:'15px 0px 19px 0px'}}>{profiles.email}</p>
-                        {/* <p style={{color:'#707070', fontSize:'14px', textDecorationLine:'underline',margin:'15px 0px'}}>{profiles.address}</p> */}
-                        {isAddressNull
-                        ?(
-                            <p 
-                                style={{color:'#707070', fontSize:'14px', textDecorationLine:'underline',margin:'15px 0px', cursor:'pointer'}}
-                                onClick={handleNullAddressClick}>
-                            주소를 입력하세요</p>
-                        )
-                        :(
-                            <Address
-                            data={profiles.address}
-                            status={addressStatus}
-                            isEdit={()=>{setAddressStatus(!addressStatus)}}
-                            onSave={(data)=>{handleSaveAddress(data)}}/>)}     
+                        {
+                            addressStatus === 1 ? (
+                                <Address
+                                    data={profiles.address}
+                                    status={addressStatus}
+                                    isEdit={() => setAddressStatus(1)}
+                                    onSave={(curData) => handleSaveAddress(curData)}
+                                />
+                            ) : !profiles.address || addressStatus === null ? (
+                                <p
+                                    style={{ color: '#707070', fontSize: '14px', textDecorationLine: 'underline', margin: '15px 0px', cursor: 'pointer' }}
+                                    onClick={handleNullAddressClick}
+                                >
+                                    주소를 입력하세요
+                                </p>
+                            ) : (
+                                <Address
+                                    data={profiles.address}
+                                    status={addressStatus}
+                                    isEdit={() => setAddressStatus(1)}
+                                    onSave={(curData) => handleSaveAddress(curData)}
+                                />
+                        )}
+
+
+
                     </div>
                 </div>
 
                 <Linear />
                 {/* (2) Educations */}
                 <h3>학력</h3>
-                {educations.map((education, index) => (
+                {educations.slice().reverse().map((education, index) => (
                     isEdit[index] 
                     ? <EditItem key={index} 
-                        dummy={education}  
+                        data={education}  
                         isLastItem={index === educations.length - 1}
-                        onCancel={() => deleteEducation(index)}
-                        onEdit={(updatedData)=>editEducation(index, updatedData)}
+                        onCancel={() => handleDeleteEducation(index, education.educationId)}//api
+                        onEdit={(updatedData)=>handleUpdateEducation(updatedData)}//api - 수정 필요
                         /> 
-                    : <EducationItem key={index} dummy={education} onEdit={() => handleEdit(index)}
+                    : <EducationItem key={index} data={education} onEdit={() => handleEdit(index)}
                         isLastItem={index === educations.length - 1} />
                 ))}
                 <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+                    {/* //api */}
                     {isAddItemOpen &&
-                        <AddItem onCancel={handleCancleAdd} onAdd={(updatedData)=>addEducation(updatedData)}></AddItem>}
+                        <AddItem onCancel={handleCancleAdd} onAdd={(updatedData)=>handleAddEducation(updatedData)}></AddItem>}
                     <AddButton onClick={handleAdd}>+</AddButton>
                     <Limiter show={show}>현재 학력을 먼저 채워주세요!</Limiter>
                 </div>
@@ -236,6 +251,7 @@ const History = () => {
                         dummy={career} 
                         isLastItem={index === careers.length - 1}
                         onEdit={toggleEditActModalOpen}/>
+                        //api onSubmit 추가해야함
                 ))}
                 <AddButton onClick={toggleAddActModalOpen}>+</AddButton>
 
@@ -248,6 +264,7 @@ const History = () => {
                         dummy={activity} 
                         isLastItem={index === activities.length - 1}
                         onEdit={toggleEditActModalOpen}/>
+                        //api onSubmit 추가해야함
                 ))}
                 <AddButton onClick={toggleAddActModalOpen}>+</AddButton>
             </BaseDiv>
@@ -312,4 +329,4 @@ const Limiter = styled.div`
     top:550px;
     opacity: ${props => props.show ? 1 : 0};
     transition: opacity 1s;
-`
+`;

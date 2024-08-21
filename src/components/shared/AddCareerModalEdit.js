@@ -5,6 +5,7 @@ import ReactCalendar from './CalendarSingle';
 import moment from 'moment';
 import CareerDeleteModal from './DeleteModalCareer';
 import { CareerEdit, CareerDelete } from '../../api/Mycareer/CareerEdit';
+import { useNavigate } from 'react-router-dom';
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -287,6 +288,8 @@ const AddCareerModalEdit = ({ onClose, onSave, data }) => {
   const [showStartCalendar, setShowStartCalendar] = useState(false);
   const [showEndCalendar, setShowEndCalendar] = useState(false);
 
+  const navigate = useNavigate(); // useNavigate 훅 추가
+
     // data prop을 이용해 상태 초기화
     useEffect(() => {
       console.log("Received data:", data);
@@ -390,6 +393,8 @@ try {
   await CareerDelete(data.data.id); // CareerDelete API 호출
   alert('삭제되었습니다.');
   onClose();
+  navigate('/mycareer'); // 삭제 후 mycareer 페이지로 이동
+
 } catch (error) {
   console.log("Error", error.message);
 } finally {
