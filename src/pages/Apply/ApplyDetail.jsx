@@ -376,7 +376,7 @@ const CalendarWrapper = styled.div`
     border: 1px solid var(--gray-03, #D9D9D9);
     background: var(--white, #FFF);
     position: absolute;
-    z-index: 10;
+    z-index: 10000;
     margin-left: 150px;
   }
 
@@ -417,6 +417,7 @@ const CalendarWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 10000;
   }
 
   .react-calendar__tile--now {

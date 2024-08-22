@@ -17,7 +17,7 @@ const FooterStyle = styled.div`
   color: #424242;
   position: absolute;
   padding-top: 30px;
-  z-index: 1;
+  z-index: 10;
 `;
 
 const SmallText = styled.div`

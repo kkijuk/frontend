@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import AbilityTag from '../shared/AbilityTag';
 import EditIcon from '@mui/icons-material/Edit';
@@ -69,6 +69,7 @@ const EditIconStyled = styled(EditIcon)`
 export default function CareerList({ title, date, contents, detailTag, careerId, detailId, onClose, onUpdate }) {
     const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
     const [detailData, setDetailData] = useState(null);
+    const [currentCareerId, setCurrentCareerId] = useState(careerId); // 현재 careerId를 상태로 저장
 
     const handleEditClick = async () => {
         try {
@@ -88,8 +89,17 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
 
     };
 
+    // careerId가 변경되었을 때 DetailAddEdit을 숨기도록 하는 useEffect
+    useEffect(() => {
+        if (currentCareerId !== careerId) {
+            setIsDetailAddVisible(false); // DetailAddEdit 창 닫기
+            setCurrentCareerId(careerId); // 현재 careerId 업데이트
+        }
+    }, [careerId]);
+
     return (
         <div>
+            <Line></Line>
             <Box>
                 <TitleDateContainer>
                     <Title>{title}</Title>
@@ -114,7 +124,6 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
                     onClose={handleCloseDetailEdit}  /* 창을 닫는 콜백 함수 전달 */
                 />
             )}
-            <Line></Line>
         </div>
     );
 }

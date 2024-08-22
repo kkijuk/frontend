@@ -13,7 +13,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: left;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 20px 25px 20px 25px;
   box-sizing: border-box;
 `;
@@ -39,7 +39,7 @@ const Box = styled.div`
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     margin-top: 6px;
     align-items: center;
 
@@ -71,6 +71,16 @@ const DDayText = styled.div`
     font-weight: 500;
 `;
 
+const PlaceholderText = styled.div`
+    color: var(--gray-03, #D9D9D9);  // 회색 글씨
+    font-family: Regular;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-align: left;
+`;
+
 export default function DeadlineNoti() {
     const { isLoggedIn } = useAuth();  // 로그인 상태 가져오기
     const [recruits, setRecruits] = useState([]);
@@ -83,29 +93,44 @@ export default function DeadlineNoti() {
                     if (!response) {
                         throw new Error('Failed to fetch data');
                     }
-                    setRecruits(response); // API에서 가져온 데이터를 설정
+                    const filledRecruits = [...response.slice(0, 2)];  // 최대 2개의 데이터만 사용
+                    // 데이터가 2개 미만일 경우 빈 박스를 추가
+                    while (filledRecruits.length < 2) {
+                        filledRecruits.push({});
+                    }
+                    setRecruits(filledRecruits);
                 } catch (error) {
                     console.error('에러- Failed to fetch data:', error);
+                    setRecruits([{}, {}]);  // 에러 발생 시 빈 박스 유지
                 }
             }
 
             fetchData();
+        } else {
+            setRecruits([{}, {}]);  // 로그아웃 상태일 때도 빈 박스 유지
         }
     }, [isLoggedIn]);
 
     return (
         <Container>
             <Label>공고 마감이 얼마 남지 않았어요</Label>
-            {isLoggedIn && recruits.map((recruit) => {  // 로그인 상태일 때만 데이터 표시
+            {recruits.map((recruit) => {
+                const isEmpty = !recruit.title;
                 const fontColor = recruit.dday <= 7 ? '#FA7C79' : '#707070'; // 현재: 7일 이하면 글자색 빨간색
 
                 return (
                     <Box key={recruit.id}>
-                        {recruit.title} 
-                        <DDayBox>
-                            <DDayText fontColor={fontColor}>D-</DDayText>
-                            <DDayText fontColor={fontColor}>{recruit.dday}</DDayText>
-                        </DDayBox>
+                        {isEmpty ? (
+                            <PlaceholderText>공고를 추가해 주세요</PlaceholderText>
+                        ) : (
+                            <>
+                                {recruit.title}
+                                <DDayBox>
+                                    <DDayText fontColor={fontColor}>D-</DDayText>
+                                    <DDayText fontColor={fontColor}>{recruit.dday}</DDayText>
+                                </DDayBox>
+                            </>
+                        )}
                     </Box>
                 );
             })}

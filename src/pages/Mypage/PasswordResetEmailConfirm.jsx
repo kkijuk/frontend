@@ -196,7 +196,7 @@ const EmailVerificationForm = ({
         console.log("응답 데이터:", responseData);
 
         if (responseData === true) {  // API 응답이 true인 경우
-          navigate("/mypage/passwordreset", {state: {email}});  // /mypage/passwordreset 페이지로 이동
+          navigate("/passwordreset", {state: {email}});  // /mypage/passwordreset 페이지로 이동
       } else {
           setErrorMessage("인증 번호가 올바르지 않습니다.");
       }

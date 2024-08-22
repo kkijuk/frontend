@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import InputBox from '../MyCareerDetail/InputBox';
 import ReactCalendar from '../shared/Calendar';
 import moment from 'moment';
 import TagBox from '../shared/TagBox';
 import { CareerDetailEdit } from '../../api/Mycareer/CareerDetailEdit';
 import { CareerDetailDelete } from '../../api/Mycareer/CareerDetailEdit';
-
 
 const Box = styled.div`
     height: 384px;
@@ -20,6 +18,7 @@ const Top = styled.div`
     height: 79px;
     width: 720px;
     margin-top: 22px;
+
 `;
 
 const Middle = styled.div`
@@ -90,6 +89,7 @@ const Cancel = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+    cursor: pointer;
 `;
 
 const Save = styled.div`
@@ -108,13 +108,53 @@ const Save = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+    cursor: pointer;
 `;
 
 const Line = styled.div`
     width: 800px;
     height: 2px;
     background: var(--gray-03, #D9D9D9);
+    position: relative; /* z-index를 적용하기 위해 position을 relative로 설정 */
+    z-index: 1; /* z-index 설정, 필요에 따라 값을 조정 */
 `;
+
+
+const Input = styled.input`
+    border-radius: 10px;
+    background: #F5F5F5;
+    flex-shrink: 0;
+    height: ${props => props.height || 'auto'};
+    width: ${props => props.width || 'auto'};
+    border: none; /* 테두리를 없앰 */
+    font-family: Pretendard;
+    font-size: 16px;
+    color: var(--black, #000);
+    padding: 15px 20px; /* 위아래 15px, 양옆 20px */
+    box-sizing: border-box; /* padding을 포함한 요소의 전체 크기를 설정된 width와 height에 맞춤 */
+    z-index: 1; /* z-index 추가 */
+    position: relative; /* z-index가 적용되도록 position 속성 추가 */
+`;
+
+const TextArea = styled.textarea`
+    border-radius: 10px;
+    background: #F5F5F5;
+    flex-shrink: 0;
+    height: ${props => props.height || 'auto'};
+    width: ${props => props.width || 'auto'};
+    border: none; /* 테두리를 없앰 */
+    font-family: Pretendard;
+    font-size: 16px;
+    color: var(--black, #000);
+    padding: 15px 20px; /* 위아래 15px, 양옆 20px */
+    box-sizing: border-box; /* padding을 포함한 요소의 전체 크기를 설정된 width와 height에 맞춤 */
+    z-index: 1; /* z-index 추가 */
+    position: relative; /* z-index가 적용되도록 position 속성 추가 */
+    resize: none; /* 사용자가 텍스트 영역 크기 조절 못하도록 함 */
+    overflow-y: auto; /* 텍스트가 넘칠 경우 스크롤 생성 */
+`;
+
+
 
 export default function DetailAddEdit({ initialTitle, initialDate, initialContents, initialTags, careerId, detailId, onClose, onUpdate }) {
     const [showCalendar, setShowCalendar] = useState(false);
@@ -130,7 +170,6 @@ export default function DetailAddEdit({ initialTitle, initialDate, initialConten
         setTagNames(extractedTagNames);
         console.log("initialTags:", initialTags);
     }, [initialTags]);
-
 
     const handleDateClick = () => {
         setShowCalendar(!showCalendar);
@@ -153,7 +192,6 @@ export default function DetailAddEdit({ initialTitle, initialDate, initialConten
         }
         setShowCalendar(false);
     };
-
 
     const handleSave = async () => {
         const [startDate, endDate] = selectedDate.split(' ~ ');
@@ -189,13 +227,15 @@ export default function DetailAddEdit({ initialTitle, initialDate, initialConten
         }
     };
 
-
     return (
+        <div>
+        <Line></Line>
+
         <Box>
             <Top>
                 <Title>
                     <Label>제목</Label>
-                    <InputBox height="50px" width="460px" value={title} onChange={(e) => setTitle(e.target.value)} />
+                    <Input height="50px" width="460px" value={title} onChange={(e) => setTitle(e.target.value)} />
                 </Title>
                 <Date>
                     <Label>날짜</Label>
@@ -205,7 +245,7 @@ export default function DetailAddEdit({ initialTitle, initialDate, initialConten
             </Top>
             <Middle>
                 <Label>내용</Label>
-                <InputBox height="100px" width="720px" value={contents} onChange={(e) => setContents(e.target.value)} />
+                <TextArea height="100px" width="720px" value={contents} onChange={(e) => setContents(e.target.value)} />
             </Middle>
             <TagBox 
                 externalTags={tagNames} 
@@ -216,7 +256,8 @@ export default function DetailAddEdit({ initialTitle, initialDate, initialConten
                 <Cancel onClick={handleCancel}>삭제</Cancel>
                 <Save onClick={handleSave}>저장</Save>
             </Button>
-            <Line></Line>
         </Box>
+        <Line></Line>
+        </div>
     );
 }
