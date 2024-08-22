@@ -62,7 +62,7 @@ const DateBox = styled.div`
 
 const Label = styled.div`
     color: var(--black, #000);
-    font-family: Pretendard;
+    font-family: semibold;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
@@ -82,7 +82,7 @@ const Cancel = styled.div`
     justify-content: center;
     color: var(--sub-rd, #FA7C79);
     text-align: center;
-    font-family: Pretendard;
+    font-family: regular;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
@@ -100,7 +100,7 @@ const Save = styled.div`
     justify-content: center;
     color: #FFF;
     text-align: center;
-    font-family: Pretendard;
+    font-family: regular;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
