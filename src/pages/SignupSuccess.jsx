@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import  createMaster  from '../api/Signup/createMaster';
 
 const SignupSuccessScreen = styled.div`
   max-width: flex;
@@ -62,6 +63,10 @@ const SignupSuccessScreen = styled.div`
 `;
 
 const SignupSuccess = () => {
+  useEffect(()=>{
+    createMaster();
+  },[])
+
   return (
     <SignupSuccessScreen>
       <p>회원가입이 완료되었습니다.</p>

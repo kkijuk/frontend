@@ -7,6 +7,18 @@ const MasterRewrite =()=>{
 
     const navigate = useNavigate();
 
+    // 글자 수
+    const [charCounts, setCharCounts] = useState({
+        oneLiner: 0,
+        motiveTitle: 0,
+        motive: 0,
+        prosAndConsTitle: 0,
+        prosAndCons: 0,
+        jobSuitabilityTitle: 0,
+        jobSuitability: 0
+    });
+
+
     //(Data) 한줄소개, 지원동기및포부 제목 및 내용, 장단점 제목 및 내용, 직무적합성 제목 및 내용
     const [questions, setQuestions] = useState({
         memberId:0,
@@ -20,13 +32,27 @@ const MasterRewrite =()=>{
         updatedAt:""
     })
 
+    // 글자 수 계산
+    useEffect(() => {
+        setCharCounts({
+            oneLiner: questions.oneLiner.length,
+            motiveTitle: questions.motiveTitle.length,
+            motive: questions.motive.length,
+            prosAndConsTitle: questions.prosAndConsTitle.length,
+            prosAndCons: questions.prosAndCons.length,
+            jobSuitabilityTitle: questions.jobSuitabilityTitle.length,
+            jobSuitability: questions.jobSuitability.length
+        });
+    }, [questions]);
+    
+
     //1. 마스터 저장 내용 불러오기
     //(API) 마스터 조회
     useEffect(()=>{
         api.get('/history/intro/master')
             .then(response=>{
                 console.log(response.data);
-                const Data = response.data.data[0];
+                const Data = response.data.data;
                 console.log(Data.id);
                 setQuestions({
                     memberId:Data.memberId,
@@ -76,6 +102,7 @@ const MasterRewrite =()=>{
     return(
         <BackgroundDiv>
             <BaseDiv>
+            <div style={{position:'relative'}}>
                 <InputTitle
                     id="oneLiner"
                     placeholder="한줄소개를 작성하세요"
@@ -83,6 +110,8 @@ const MasterRewrite =()=>{
                     value={questions.oneLiner||''}
                     onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
+
+                
                 <Linear style={{width:'820px'}}/>
                 {/* <p className='lastUpdated' style={{marginTop:0}}>마지막 수정일시: {content.updated_at}</p>            */}
                 <InputTitle
@@ -92,6 +121,7 @@ const MasterRewrite =()=>{
                     value={questions.motiveTitle||''}
                     onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
+
                 <InputTitle
                     id="motive"
                     placeholder="지원동기를 작성하세요"
@@ -100,6 +130,9 @@ const MasterRewrite =()=>{
                     onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
                 <div style={{height:'30px'}}/>
+                <p style={{ fontFamily: 'Regular', fontSize: '16px', color: '#707070', textAlign: 'right', marginRight: '20px', position:'absolute', top:260, right:0 }}>
+                    {charCounts.motive} (공백 포함)
+                </p>
                 <InputTitle
                     id="prosAndConsTitle"
                     placeholder="장단점 제목을 작성하세요"
@@ -107,6 +140,7 @@ const MasterRewrite =()=>{
                     value={questions.prosAndConsTitle||''}
                     onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
+                
                 <InputTitle
                     id="prosAndCons"
                     placeholder="장단점을 작성하세요"
@@ -115,6 +149,9 @@ const MasterRewrite =()=>{
                     onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
                 <div style={{height:'30px'}}/>
+                <p style={{ fontFamily: 'Regular', fontSize: '16px', color: '#707070', textAlign: 'right', marginRight: '20px',position:'absolute', top:510, right:0  }}>
+                    {charCounts.prosAndCons} (공백 포함)
+                </p>
                 <InputTitle
                     id="jobSuitabilityTitle"
                     placeholder="직무적합성 제목을 작성하세요"
@@ -130,6 +167,11 @@ const MasterRewrite =()=>{
                     onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
                 <div style={{height:'70px'}}></div>
+                <p style={{ fontFamily: 'Regular', fontSize: '16px', color: '#707070', textAlign: 'right', marginRight: '20px',position:'absolute', top:770, right:0   }}>
+                    {charCounts.jobSuitability} (공백 포함)
+                </p>
+            </div>
+                
                 <Button 
                         onClick={handleSubmit}
                         style={{width:'820px',borderRadius:'10px', background:'#3AAF85', color:'#FFF'}}>
