@@ -8,16 +8,16 @@ import styled from 'styled-components';
     background: white;
     border-radius: 10px;
     text-align: center;
-    margin-bottom: 70px;
+    margin-bottom: 90px;
     position: relative;
-    top: 100px; 
+    top: 220px; 
   
     p {
       margin-top: 10px;
-      color: var(--main-01, #3AAF85);
+      color: black;
       text-align: center;
-      font-family: REgular;
-      font-size: 27px;
+      font-family: Light;
+      font-size: 20px;
       font-style: normal;
       font-weight: 700;
       line-height: normal;
@@ -27,7 +27,7 @@ import styled from 'styled-components';
   const  Community = () => {
     return (
       <Communitycontainer>
-        <p>준비중입니다</p>
+        <p>이 페이지는 준비중입니다</p>
         <p>업데이트 될 끼적을 기대해주세요!</p>
       </Communitycontainer>
     );
