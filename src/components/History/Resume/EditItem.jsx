@@ -40,6 +40,7 @@ const EditItem = ({ data={}, onCancel, isLastItem, onEdit }) => {
     const handleSave = () => {
         if (onEdit) {
             onEdit(formData);  
+            window.location.reload();
         }
     };
 
