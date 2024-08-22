@@ -17,21 +17,19 @@ const Box = styled.div`
 
 const Title = styled.div`
     color: var(--black, #000);
-    font-family: Pretendard;
+    font-family: bold;
     font-size: 18px;
     font-style: normal;
-    font-weight: 700;
     line-height: normal;
 `;
 
 const Contents = styled.div`
     color: var(--black, #000);
-    font-family: Pretendard;
     font-size: 16px;
     font-style: normal;
-    font-weight: 400;
     line-height: normal;
     p {
+        font-family: regular;
         margin: 0;
     }
 `;
@@ -39,7 +37,7 @@ const Contents = styled.div`
 const Date = styled.div`
     color: var(--gray-02, #707070);
     text-align: right;
-    font-family: Pretendard;
+    font-family: regular;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;

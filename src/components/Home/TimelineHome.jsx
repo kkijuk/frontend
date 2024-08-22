@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React,{ useEffect, useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect'; // API 함수 가져오기
 import { useAuth } from '../AuthContext';
 
@@ -11,6 +12,7 @@ const Chart = styled.div`
   margin-right: 10px;
   position: relative;
   margin-bottom: 60px;
+  cursor: pointer; /* 커서가 포인터로 변경되어 클릭 가능한 영역임을 표시 */
 `;
 
 const Line1 = styled.div`
@@ -143,6 +145,7 @@ const calculateWidth = (startDate, endDate, oneMonthInPixels) => {
 export default function TimelineHome({ triggerEffect }) {
   const { isLoggedIn } = useAuth(); // 로그인 상태를 가져옴
   const [careers, setCareers] = useState([]);
+  const navigate = useNavigate(); // useNavigate 훅을 가져옴
 
   useEffect(() => {
     if (isLoggedIn) { // 로그인된 상태일 때만 데이터 가져오기
@@ -165,13 +168,15 @@ export default function TimelineHome({ triggerEffect }) {
     }
   }, [triggerEffect, isLoggedIn]);
 
-  
+  const handleClick = () => {
+    navigate('/mycareer'); // "/mycareer" 경로로 이동
+  };
 
   // 데이터가 없을 경우에도 빈 차트를 렌더링
   if (!careers || careers.length === 0) {
     return (
       <div>
-        <Chart>
+        <Chart onClick={handleClick}>
           <XBox>
             <XLine>
               {/* 빈 x축 라벨을 생성하여 x축 표시 */}
@@ -253,7 +258,7 @@ export default function TimelineHome({ triggerEffect }) {
 
   return (
     <div>
-      <Chart>
+      <Chart onClick={handleClick}>
         {isLoggedIn && careers.length > 0 && (
           <>
             <Line1>
