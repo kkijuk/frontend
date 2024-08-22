@@ -11,13 +11,11 @@ const PageWrapper = styled.div`
     align-items: flex-start;
     height: 100vh; /* 화면 전체 높이를 차지하도록 설정 */
     background-color: #fff; /* 배경색은 필요에 따라 조정 */
-    border: 1px black solid;
 `;
 
 const Container = styled.div`
     width: 820px;
     height: 494px;
-    border: 1px solid black;
     display: flex;
     flex-direction: column;
     margin-top: 30px;
@@ -31,7 +29,6 @@ const Top = styled.div`
     justify-content: center;
     align-items: center;
     gap: 30px;
-    border-bottom: 1px solid black;
     color: var(--main-01, #3AAF85);
     text-align: center;
     font-family: Pretendard;
@@ -44,7 +41,6 @@ const Top = styled.div`
 const Bottom = styled.div`
     width: 100%;
     height: 340px;
-    border-top: 1px solid black;
     display: flex;
     flex-direction: column;
     justify-content: center; /* 텍스트를 가로 방향으로 중앙에 정렬 */
