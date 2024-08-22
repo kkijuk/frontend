@@ -171,7 +171,3 @@ const SignupInterest = ({ onSave }) => {
 };
 
 export default SignupInterest;
-
-
-
-
