@@ -274,7 +274,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
       setTitle(job.title || '');
       setStartTime(formatDateTimeToLocal(job.startTime) || '');
       setEndTime(formatDateTimeToLocal(job.endTime) || '');
-      setTags(job.tags || []);
+      setTags(job.tags || []);  // 태그를 초기화할 때 job.tags 값을 사용
       setLink(job.link || '');
     }
   }, [job]);
@@ -311,15 +311,16 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
     setEndTime(e.target.value);
   };
 
-  return (
+   return (
     <ModalBackdrop>
       <ModalContent>
         <CloseButton onClick={onClose}>×</CloseButton>
         <ModalTitle>공고 수정</ModalTitle>
-        <Divider /> 
+        <Divider />
+        {/* 공고 제목 필드 */}
         <FieldWrapper>
           <Label>공고 제목</Label>
-          <InputWrapper> 
+          <InputWrapper>
             <Input
               type="text"
               placeholder="공고 제목을 수정하세요"
@@ -328,8 +329,9 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
             />
           </InputWrapper>
         </FieldWrapper>
+        {/* 접수 시작/마감 일시 필드 */}
         <Row>
-          <InputWrapper> 
+          <InputWrapper>
             <FieldWrapper>
               <LabelStart>접수 시작 일시</LabelStart>
               <InputWrapperStart>
@@ -340,8 +342,8 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
                 />
               </InputWrapperStart>
             </FieldWrapper>
-          </InputWrapper> 
-          <InputWrapper> 
+          </InputWrapper>
+          <InputWrapper>
             <FieldWrapper>
               <LabelEnd>접수 마감 일시</LabelEnd>
               <InputWrapperEnd>
@@ -354,6 +356,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
             </FieldWrapper>
           </InputWrapper>
         </Row>
+        {/* 태그 필드 */}
         <FieldWrapper>
           <LabelTag>태그</LabelTag>
           <InputWrapperTag>
@@ -362,11 +365,12 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
             </TagBoxWrapper>
           </InputWrapperTag>
         </FieldWrapper>
+        {/* 링크 필드 */}
         <FieldWrapper>
           <LabelContainer>
             <LabelLink>링크</LabelLink>
           </LabelContainer>
-          <InputWrapperLink>
+          <InputWrapperLink>zz
             <Input
               type="text"
               placeholder="공고 혹은 접수 페이지 링크를 입력하세요"
@@ -376,7 +380,8 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
           </InputWrapperLink>
         </FieldWrapper>
         <ErrorMessage>*최소 하나의 필드를 입력하세요!</ErrorMessage>
-        <ButtonWrapper> 
+        {/* 저장 버튼 */}
+        <ButtonWrapper>
           <SaveButton onClick={handleSave}>저장</SaveButton>
         </ButtonWrapper>
       </ModalContent>
