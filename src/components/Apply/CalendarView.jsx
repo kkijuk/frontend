@@ -80,6 +80,8 @@ const StyledCalendar = styled(Calendar)`
     height: 50px;
     width: 40px;
     display: flex;
+    font-family: Light;
+    font-size: 14px;
     align-items: flex-start;
     justify-content: center;
     background: none;
@@ -88,7 +90,7 @@ const StyledCalendar = styled(Calendar)`
                 inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
                 inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
                 inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15);
-    padding-top: 4px;
+    padding-top: 5px;
   }
 
   .react-calendar__tile--now {
