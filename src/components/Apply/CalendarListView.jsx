@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { getRecruitDetails } from '../../api/Apply/RecruitDetails'; // API 호출을 위해 import
 
 const CalendarBackgroundSection = styled.div`
   width: 100vw;
@@ -124,16 +125,28 @@ const CalendarListView = ({ date, data, count, onJobClick }) => {
     );
   }
 
-  const handleJobClick = (ad) => {
-    console.log('Selected ad:', ad); // 여기서 ad 객체에 startTime, endTime이 있는지 확인
-    navigate(`/apply-detail/${ad.id}`, { state: { job: ad } });
+  const handleJobClick = async (ad) => {
+    console.log('Selected ad:', ad); // ad 객체를 로그로 출력하여 확인
+    try {
+      // API를 호출하여 전체 데이터를 가져옵니다.
+      const fullAdDetails = await getRecruitDetails(ad.recruitId);
+      console.log('Full ad details:', fullAdDetails); // 가져온 데이터 로그 출력
+      // 상세 페이지로 이동하면서, 가져온 전체 데이터를 전달합니다.
+      navigate(`/apply-detail/${ad.recruitId}`, { state: { job: fullAdDetails } });
+    } catch (error) {
+      console.error("Failed to fetch recruit details:", error);
+    }
   };
-  
+
+  // 날짜를 하루 뒤로 조정하여 표시
+  const adjustedDate = new Date(date);
+  adjustedDate.setDate(adjustedDate.getDate() + 1);
 
   return (
     <CalendarBackgroundSection>
       <CalendarContentSection background="#f0f0f0">
-        <CalendarAdDate>{date}</CalendarAdDate> 
+        {/* 조정된 날짜를 화면에 표시 */}
+        <CalendarAdDate>{adjustedDate.toISOString().split('T')[0]}</CalendarAdDate> 
         <CalendarAdListStyled>
           {data.map((ad, idx) => (
             <CalendarAdItem 
@@ -160,3 +173,4 @@ const CalendarListView = ({ date, data, count, onJobClick }) => {
 };
 
 export default CalendarListView;
+

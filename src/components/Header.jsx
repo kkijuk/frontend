@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../assets/logo.png';
@@ -44,8 +44,8 @@ const Nav = styled.nav`
     margin: 0;
   }
   li {
-    margin-left: 30px;
-    margin-right: 30px;
+    margin-left: 40px;
+    margin-right: 20px;
     cursor: pointer;
     color: #333;
     font-family: Pretendard;
@@ -119,8 +119,8 @@ const DropdownMenu = styled.div`
   border: 1px solid #ccc;
   border-radius: 10px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  width: 135px;
-  height: 140px;
+  width: 110px;
+  height: 70px;
   padding: 10px;
   z-index: 100;
 
@@ -148,9 +148,10 @@ export default function Header() {
   const location = useLocation();
   const { isLoggedIn, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const handleUserProfileButtonClick = () => {
-      setIsDropdownOpen(!isDropdownOpen);
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   const handleLogout = async () => {
@@ -162,47 +163,66 @@ export default function Header() {
       console.error('로그아웃 실패:', error.message);
     }
   };
-  
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // 이 부분을 추가하여 로그인 상태에 따른 리다이렉트 처리
+  const handleNavigation = (path) => {
+    if (!isLoggedIn && path !== '/' && path !== '/login' && path !== '/signup') {
+      navigate('/login-required');
+    } else {
+      navigate(path);
+    }
+  };
 
   return (
-      <HeaderWrapper>
-          <HeaderStyle>
-              <NavContainer>
-                  <span className="logo" onClick={() => navigate('/')}>
-                      <img style={{ width: '80px', height: '40px', cursor: 'pointer' }} src={logo} alt="로고" />
-                  </span>
-                  <Nav>
-                      <ul>
-                          <li onClick={() => navigate('/mycareer')} className={location.pathname === '/mycareer' ? 'active' : ''}>내커리어</li>
-                          <li onClick={() => navigate('/history')} className={location.pathname === '/history' ? 'active' : ''}>이력관리</li>
-                          <li onClick={() => navigate('/apply-schedule')} className={location.pathname === '/apply-schedule' ? 'active' : ''}>지원관리</li>
-                          <li onClick={() => navigate('/community')} className={location.pathname === '/community' ? 'active' : ''}>커뮤니티</li>
-                          {!isLoggedIn ? (
-                              <>
-                                  <li onClick={() => navigate('/login')} className={`login-signup ${location.pathname === '/login' ? 'active' : ''}`}>로그인</li>
-                                  <li onClick={() => navigate('/signup')} className={`login-signup ${location.pathname === '/signup' ? 'active' : ''}`}>회원가입</li>
-                              </>
-                          ) : null}
-                      </ul>
-                      {isLoggedIn && (
-                          <UserProfileButton onClick={handleUserProfileButtonClick}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none" style={{ width: '30px', height: '30px', borderRadius: '10px' }}>
-                                  <path d="M15 15C18.4518 15 21.25 12.2018 21.25 8.75C21.25 5.29822 18.4518 2.5 15 2.5C11.5482 2.5 8.75 5.29822 8.75 8.75C8.75 12.2018 11.5482 15 15 15Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                  <path d="M25.7377 27.5C25.7377 22.6625 20.9252 18.75 15.0002 18.75C9.07519 18.75 4.2627 22.6625 4.2627 27.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                              </svg>
-                              {isDropdownOpen && (
-                                  <DropdownMenu>
-                                      <a onClick={() => navigate('/mypage/authentication')}>내 정보</a>
-                                      <a onClick={() => navigate('/mypage/field')}>관심분야 설정</a>
-                                      <a onClick={() => navigate('/mypage/accountmanagement')}>계정 관리</a>
-                                      <a onClick={handleLogout}>로그아웃</a>
-                                  </DropdownMenu>
-                              )}
-                          </UserProfileButton>
-                      )}
-                  </Nav>
-              </NavContainer>
-          </HeaderStyle>
-      </HeaderWrapper>
+    <HeaderWrapper>
+      <HeaderStyle>
+        <NavContainer>
+          <span className="logo" onClick={() => handleNavigation('/')}>
+            <img style={{ width: '80px', height: '40px', cursor: 'pointer' }} src={logo} alt="로고" />
+          </span>
+          <Nav>
+            <ul>
+              <li onClick={() => handleNavigation('/mycareer')} className={location.pathname === '/mycareer' ? 'active' : ''}>내커리어</li>
+              <li onClick={() => handleNavigation('/history')} className={location.pathname === '/history' ? 'active' : ''}>이력관리</li>
+              <li onClick={() => handleNavigation('/apply-schedule')} className={location.pathname === '/apply-schedule' ? 'active' : ''}>지원관리</li>
+              <li onClick={() => handleNavigation('/community')} className={location.pathname === '/community' ? 'active' : ''}>커뮤니티</li>
+              {!isLoggedIn ? (
+                <>
+                  <li onClick={() => handleNavigation('/login')} className={`login-signup ${location.pathname === '/login' ? 'active' : ''}`}>로그인</li>
+                  <li onClick={() => handleNavigation('/signup')} className={`login-signup ${location.pathname === '/signup' ? 'active' : ''}`}>회원가입</li>
+                </>
+              ) : null}
+            </ul>
+            {isLoggedIn && (
+              <UserProfileButton onClick={handleUserProfileButtonClick}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none" style={{ width: '30px', height: '30px', borderRadius: '10px' }}>
+                  <path d="M15 15C18.4518 15 21.25 12.2018 21.25 8.75C21.25 5.29822 18.4518 2.5 15 2.5C11.5482 2.5 8.75 5.29822 8.75 8.75C8.75 12.2018 11.5482 15 15 15Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M25.7377 27.5C25.7377 22.6625 20.9252 18.75 15.0002 18.75C9.07519 18.75 4.2627 22.6625 4.2627 27.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                {isDropdownOpen && (
+                  <DropdownMenu ref={dropdownRef}>
+                    <a onClick={() => handleNavigation('/mypage/authentication')}>마이페이지</a>
+                    <a onClick={handleLogout}>로그아웃</a>
+                  </DropdownMenu>
+                )}
+              </UserProfileButton>
+            )}
+          </Nav>
+        </NavContainer>
+      </HeaderStyle>
+    </HeaderWrapper>
   );
 }

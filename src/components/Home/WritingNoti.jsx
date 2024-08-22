@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { getIntroduce } from '../../api/Home/getIntroduce';
+import { useAuth } from '../AuthContext';  // AuthContext 가져오기
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -58,7 +59,7 @@ const DDayBox = styled.div`
     margin-left: auto;
     display: flex;
     justify-content: center;
-      align-items: center;
+    align-items: center;
 `;
 
 const DDayText = styled.div`
@@ -71,33 +72,35 @@ const DDayText = styled.div`
 `;
 
 export default function WritingNoti() {
-
+    const { isLoggedIn } = useAuth();  // 로그인 상태 가져오기
     const [introduceList, setIntroduceList] = useState([]);
 
     useEffect(() => {
-        const fetchIntroduce = async () => {
-            try {
-                const data = await getIntroduce();
-                console.log("데이터", data);
-                if (data && data.length > 0) {
-                    setIntroduceList(data); // 데이터를 상태로 저장
-                } else {
-                    console.error('Failed to fetch data');
+        if (isLoggedIn) {  // 로그인 상태일 때만 데이터 가져오기
+            const fetchIntroduce = async () => {
+                try {
+                    const data = await getIntroduce();
+                    console.log("데이터", data);
+                    if (data && data.length > 0) {
+                        setIntroduceList(data); // 데이터를 상태로 저장
+                    } else {
+                        console.error('Failed to fetch data');
+                    }
+                } catch (error) {
+                    console.error('Error fetching data:', error);
                 }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-        
-        fetchIntroduce();
-    }, []);
+            };
+            
+            fetchIntroduce();
+        }
+    }, [isLoggedIn]);
 
     const regex = /[^0-9]/g;
 
     return (
         <Container>
             <Label>자기소개서 작성 완료를 기다려요</Label>
-            {introduceList.map((introduce, index) => { // 상태에서 데이터 반복 처리
+            {isLoggedIn && introduceList.map((introduce, index) => {  // 로그인 상태일 때만 데이터 표시
                 const num = parseInt(introduce.deadline.replace(regex, ""), 10);
                 const fontColor = num <= 7 ? '#FA7C79' : '#707070'; // 현재: 7일 이하면 글자색 빨간색
 

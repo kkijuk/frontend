@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SubNav from '../../components/Mypage/SubNav'
 import InterestBox from '../../components/shared/InterestBox';
+import { mypageInterest } from '../../api/Mypage/mypageInterest';
 
 const Box = styled.div`
     display: flex;
@@ -78,16 +79,27 @@ const EditButton = styled.button`
 
 
 const Field = ({ }) => {
-  const [interestingList, setSelectedInterest] = useState([]);
+  const [interestingList, setInterestingList] = useState([]);
   const navigate = useNavigate();
 
-  const handleInterestSelect = (interest) => {
-    setSelectedInterest((prevSelectedInterests) =>
-      prevSelectedInterests.includes(interest)
-        ? prevSelectedInterests.filter((i) => i !== interest)
-        : [...prevSelectedInterests, interest]
-    );
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const interests = await mypageInterest();
+        if (Array.isArray(interests)) {
+          setInterestingList(interests); // 배열인 경우 상태 업데이트
+        } else {
+          setInterestingList([]); // 배열이 아닌 경우 빈 배열로 설정
+        }
+      } catch (error) {
+        // 에러 처리
+        console.error('Failed to load interests:', error);
+        setInterestingList([]); // 에러 발생 시 빈 배열로 설정
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleEdit = () => {
     navigate('/Mypage/FieldEdit');
@@ -102,7 +114,7 @@ const Field = ({ }) => {
         </Top>
         <ContentArea>
         <InterestArea>
-            {["광고/마케팅", "디자인", "기획/아이디어", "영상/콘텐츠", "IT/SW", "무역/유통", "창업/스타트업", "금융/경제", "봉사활동", "뷰티/패션", "스포츠/레저", "해외탐방", "바이오/생명", "법률/법무", "교육", "데이터분석"].map((interest) => (
+        {interestingList.map((interest) => (
             <InterestBox 
                 key={interest} 
                 content={interest} 

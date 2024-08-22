@@ -1,8 +1,10 @@
 import styled from 'styled-components';
-import React, { useState} from 'react';
+import React, { useState , useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SubNav from '../../components/Mypage/SubNav'
 import InterestBox from '../../components/shared/InterestBox';
+import { mypageInterestEdit } from '../../api/Mypage/mypageInterestEdit';
+import { mypageInterest } from '../../api/Mypage/mypageInterest';
 
 const Box = styled.div`
     display: flex;
@@ -81,6 +83,25 @@ const FieldEdit = ({ onSave }) => {
     const [interestingList, setSelectedInterest] = useState([]);
     const navigate = useNavigate();
 
+    useEffect(() => {
+      const fetchData = async () => {
+          try {
+              const fetchedInterests = await mypageInterest();
+              if (Array.isArray(fetchedInterests)) {
+                setSelectedInterest(fetchedInterests); // 배열인 경우 상태 업데이트
+              } else {
+                setSelectedInterest([]); // 배열이 아닌 경우 빈 배열로 설정
+              }
+            } catch (error) {
+              // 에러 처리
+              console.error('Failed to load interests:', error);
+              setSelectedInterest([]); // 에러 발생 시 빈 배열로 설정
+            }
+          };
+
+      fetchData();
+  }, []);
+
     const handleInterestSelect = (interest) => {
       setSelectedInterest((prevSelectedInterests) =>
         prevSelectedInterests.includes(interest)
@@ -89,9 +110,13 @@ const FieldEdit = ({ onSave }) => {
       );
     };
   
-      const handleSave = () => {
-        onSave({ interest: interestingList });
+    const handleSave = async () => {
+      try {
+        await mypageInterestEdit({ field: interestingList });
         navigate('/Mypage/Field');
+      } catch (error) {
+        console.error('저장 중 오류 발생:', error);
+      }
     };
   
     return (

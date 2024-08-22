@@ -110,6 +110,18 @@ const SearchIcon = styled.div`
   }
 `;
 
+const TabButton = styled.button`
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--black, #000);
+  font-family: 'Bold';
+  font-size: 26px;
+  font-weight: 700;
+  color: ${props => (props.active ? 'black' : '#E0E0E0')};
+`;
+
 const FilterPage = () => {
   const navigate = useNavigate();
   const [activeOptions, setActiveOptions] = useState(['공고명']); 
@@ -190,7 +202,6 @@ const FilterPage = () => {
             fontFamily: 'Bold',
             fontSize: '26px',
             fontWeight: '700',
-            color: activeOptions.includes('schedule') ? 'black' : '#E0E0E0',
           }}
           onClick={() => handleOptionClick('schedule')}
         >
@@ -205,7 +216,7 @@ const FilterPage = () => {
             fontFamily: 'Bold',
             fontSize: '26px',
             fontWeight: '700',
-            color: activeOptions.includes('status') ? 'black' : '#E0E0E0',
+           
           }}
           onClick={() => handleOptionClick('status')}
         >

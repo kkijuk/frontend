@@ -4,11 +4,12 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
   useEffect(() => {
-    // 이펙트에서 로그인 상태 확인 
     const loggedInStatus = localStorage.getItem('isLoggedIn');
     setIsLoggedIn(loggedInStatus === 'true');
+    setLoading(false); // 로딩 완료
   }, []);
 
   const login = () => {
@@ -19,20 +20,15 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem('isLoggedIn');
-  
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-
 export const useAuth = () => {
   return useContext(AuthContext);
 };
-
-
-// 전역관리를 위한 컴포넌트 추가 App.js를 감싸줘야 합니다....

@@ -96,7 +96,7 @@ const ErrorMessage = styled.p`
 const Container2 = styled.div`
     width: 470px;
     height: 308px;
-    margin-top: 32px;
+    margin-top: 27px;
 `;
 
 const DeleteText = styled.div`
@@ -192,7 +192,7 @@ export default function AccountMangement() {
             const response = await ChangePassword(passwordData);
 
     
-            if (response == "true") {
+            if (response === "true") {
                 console.log("응답:비밀번호 변경 성공", response)
                 alert("비밀번호가 성공적으로 변경되었습니다.");
                 setCurrentPassword("");
