@@ -26,7 +26,7 @@ const ToggleButton = styled.button`
   text-align: center;
   font-family: Pretendard;
   font-size: 14px;
-  font-style: normal;
+  font-style: regular;
   font-weight: 500;
   line-height: normal;
   color: ${props => (props.active ? '#3AAF85' : '#707070')}; /* 활성화 상태에 따라 글자 색 변경 */
@@ -36,8 +36,8 @@ const ViewTitle = styled.div`
   color: var(--black, #000);
   font-family: Pretendard;
   font-size: 22px;
-  font-style: normal;
-  font-weight: 600;
+  font-style: bold;
+  font-weight: 700;
   line-height: normal;
   margin-bottom:
 `;
