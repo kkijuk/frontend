@@ -27,9 +27,9 @@ const Title = styled.h1`
   font-family: 'Bold';
   font-size: 30px;
   font-weight: 700;
-  margin-top: 15px;
+  margin-top: 11px;
   width: 820px;
-  margin-left: 20px;
+  margin-left: 18px;
 `;
 
 const TopSection = styled.div`

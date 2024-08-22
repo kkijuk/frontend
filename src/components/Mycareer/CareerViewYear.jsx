@@ -34,9 +34,10 @@ const YearBox = styled.div`
 
 const Year = styled.div`
   color: var(--black, #000);
-  font-family: Pretendard;
+
+  font-family: regular;
   font-size: 23px;
-  font-style: regular;
+  font-style: normal;
   font-weight: 400;
   line-height: normal;
   margin-top: 22px;

@@ -11,7 +11,7 @@ const HeaderWrapper = styled.div`
 `;
 
 const HeaderStyle = styled.div`
-  max-width: 1420px;
+  max-width: 820px;
   height: 70px;
   flex-shrink: 0;
   background-color: #FFFFFF;
@@ -30,6 +30,7 @@ const HeaderStyle = styled.div`
 const NavContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-left: ${({ isLoggedIn }) => (isLoggedIn ? '20px' : '0')}; /* 로그인 시 오른쪽으로 살짝 이동 */
 `;
 
 const Nav = styled.nav`
@@ -44,8 +45,8 @@ const Nav = styled.nav`
     margin: 0;
   }
   li {
-    margin-left: 40px;
-    margin-right: 20px;
+    margin-left: ${({ isLoggedIn }) => (isLoggedIn ? '55px' : '40px')}; 
+    margin-right: 25px;
     cursor: pointer;
     color: #333;
     font-family: Pretendard;
@@ -55,6 +56,7 @@ const Nav = styled.nav`
     line-height: normal;
     position: relative;
     font-family: Bold;
+     white-space: nowrap;
 
     @media (max-width: 855px) {
       margin: 0 15px;
@@ -104,7 +106,7 @@ const UserProfileButton = styled.button`
   border-radius: 10px;
   background-color: #88D1B6;
   cursor: pointer;
-  margin-left: 100px;
+  margin-left: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -141,6 +143,13 @@ const DropdownMenu = styled.div`
   a:hover {
     background-color: #f5f5f5;
   }
+`;
+
+const LogoContainer = styled.span`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: ${({ isLoggedIn }) => (isLoggedIn ? '30px' : '0')}; /* 로그인 시 로고를 왼쪽으로 이동 */
 `;
 
 export default function Header() { 
@@ -189,10 +198,10 @@ export default function Header() {
   return (
     <HeaderWrapper>
       <HeaderStyle>
-        <NavContainer>
-          <span className="logo" onClick={() => handleNavigation('/')}>
-            <img style={{ width: '80px', height: '40px', cursor: 'pointer' }} src={logo} alt="로고" />
-          </span>
+      <NavContainer isLoggedIn={isLoggedIn}>
+          <LogoContainer isLoggedIn={isLoggedIn} onClick={() => handleNavigation('/')}>
+            <img style={{ width: '80px', height: '40px' }} src={logo} alt="로고" />
+          </LogoContainer>
           <Nav>
             <ul>
               <li onClick={() => handleNavigation('/mycareer')} className={location.pathname === '/mycareer' ? 'active' : ''}>내커리어</li>

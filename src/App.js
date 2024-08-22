@@ -36,7 +36,7 @@ import SignupInterest from './pages/SignupInterest';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FilterPage from './components/Apply/FilterPage';
-import { AuthProvider } from './components/AuthContext'; // AuthContext 임포트
+import { AuthProvider } from './components/AuthContext'; 
 import LoginRequired from './pages/LoginRequired';
 
 const AppContainer = styled.div`
