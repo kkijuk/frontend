@@ -453,6 +453,32 @@ const CalendarWrapper = styled.div`
   }
 `;
 
+const Limiter = styled.div`
+    width: 300px;
+    height: 100px;
+    background-color: RGBA(0, 0, 0, 0.7);
+    color: white;
+    font-family: Regular;
+    font-size: 16px;
+    border-radius: 10px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+    position: fixed;
+    
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    
+    opacity: ${props => props.show ? 1 : 0};
+    transition: opacity 1s;
+    z-index: 1000; 
+`;
+
+
+
 const ChevronDownIcon = ({ className }) => (
   <svg className={className} xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
     <path d="M8 15L13 10L8 5" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -479,6 +505,7 @@ const ApplyDetail = () => {
   const [showReviewAdd, setShowReviewAdd] = useState(false);
   const [reviewToDelete, setReviewToDelete] = useState(null);
   const [isReviewDeleteModalOpen, setIsReviewDeleteModalOpen] = useState(false);
+  const [gotoShow, setGotoShow] = useState(false); 
 
   const fetchJobDetails = async () => {
     try {
@@ -601,6 +628,16 @@ const ApplyDetail = () => {
     }
 };
 
+const clickGotoApply = () => {
+  if (job?.link) { // link 값이 존재하면
+    window.open(job.link);
+  } else {
+    setGotoShow(true);
+    setTimeout(() => {
+      setGotoShow(false);
+    }, 3000);
+  }
+};
 
   const openReviewDeleteModal = (reviewId) => {
     setReviewToDelete(reviewId);
@@ -682,10 +719,10 @@ const handleBackClick = () => {
       <Header>
         <TitleContainer>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-            <ListTitle>{job.title}</ListTitle>
-            <ApplyButton hasLink={Boolean(job.link)} onClick={() => job.link && window.open(job.link, '_blank')}>
+            <ListTitle>{job?.title}</ListTitle>
+            <ApplyButton hasLink={Boolean(job?.link)} onClick={clickGotoApply}>
               <ApplyButtonText>지원하러 가기</ApplyButtonText>
-              <SvgIcon hasLink={Boolean(job.link)}>
+              <SvgIcon hasLink={Boolean(job?.link)}>
                 <path d="M10.834 9.16732L17.6673 2.33398" />
                 <path d="M18.334 5.66602V1.66602H14.334" />
                 <path d="M9.16602 1.66602H7.49935C3.33268 1.66602 1.66602 3.33268 1.66602 7.49935V12.4993C1.66602 16.666 3.33268 18.3327 7.49935 18.3327H12.4993C16.666 18.3327 18.3327 16.666 18.3327 12.4993V10.8327" />
@@ -749,40 +786,40 @@ const handleBackClick = () => {
         </CalendarWrapper>
         )}
         <SubHeader>
-        <InfoLabelStart>
-          접수 시작 <DateText>{formatDateTimeToLocal(job.startTime)}</DateText>
-        </InfoLabelStart>
-        <InfoLabelEnd>
-          접수 마감 <DateText isEndTime>{formatDateTimeToLocal(job.endTime)}</DateText>
-        </InfoLabelEnd>
-        <TagLabel>
-          태그
-          {job.tags && job.tags.length > 0 && job.tags.map((tag, idx) => (
-              <Tag key={idx}>{tag}</Tag>
-            ))}
-         </TagLabel>
+          <InfoLabelStart>
+            접수 시작 <DateText>{formatDateTimeToLocal(job?.startTime)}</DateText>
+          </InfoLabelStart>
+          <InfoLabelEnd>
+            접수 마감 <DateText isEndTime>{formatDateTimeToLocal(job?.endTime)}</DateText>
+          </InfoLabelEnd>
+          <TagLabel>
+            태그
+            {job?.tags && job.tags.length > 0 && job.tags.map((tag, idx) => (
+                <Tag key={idx}>{tag}</Tag>
+              ))}
+          </TagLabel>
         </SubHeader>
       </Header>
 
-      {job.reviews && job.reviews.length > 0 && (
-   job.reviews.map((review, index) => (
-     <ReviewList 
-       key={index} 
-       recruitId={job.id} 
-       reviewId={review.reviewId} 
-       title={review.title} 
-       date={review.date} 
-       contents={review.content} 
-       onDelete={() => openReviewDeleteModal(review.reviewId)}
-       onSave={handleReviewSave}  
-       fetchData={fetchJobDetails}  // fetchData 전달
-     />
-   ))
-)}
+      {job?.reviews && job.reviews.length > 0 && (
+        job.reviews.map((review, index) => (
+          <ReviewList 
+            key={index} 
+            recruitId={job.id} 
+            reviewId={review.reviewId} 
+            title={review.title} 
+            date={review.date} 
+            contents={review.content} 
+            onDelete={() => openReviewDeleteModal(review.reviewId)}
+            onSave={handleReviewSave}  
+            fetchData={fetchJobDetails}  // fetchData 전달
+          />
+        ))
+      )}
 
       {showReviewAdd && (
         <ReviewDetailAdd
-          recruitId={job.id}
+          recruitId={job?.id}
           onSave={handleReviewSave}
           onCancel={handleCancelReviewAdd}
           fetchData={fetchJobDetails}  // fetchData 전달
@@ -805,6 +842,8 @@ const handleBackClick = () => {
           onConfirm={() => handleReviewDelete(reviewToDelete)} 
         />
       )}
+
+      <Limiter show={gotoShow}>등록된 링크가 없습니다. <br/>공고 수정에서 링크를 등록해주세요!</Limiter>
     </Container>
   );
 };
