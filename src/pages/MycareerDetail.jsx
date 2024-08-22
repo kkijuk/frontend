@@ -94,7 +94,6 @@ const CareerListBox = styled.div`
   height: 595px;
   overflow-y: auto;
   overflow-x: hidden;
-  border: 1px solid #D9D9D9;
 
 `;
 

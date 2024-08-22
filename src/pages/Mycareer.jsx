@@ -11,20 +11,29 @@ import SearchBar from '../components/shared/shareSearchBar';
 import { CareerViewSelect } from '../api/Mycareer/CareerviewSelect';
 import { useAuth } from '../components/AuthContext';
 
+const Container = styled.div`
+  width: 820px;
+  margin: auto;
+  background-color: white;
+  border-radius: 15px;
+  border: 1px solid black;
+  box-sizing: border-box;
+`;
+
 const SearchBox = styled.div`
+  width: 820px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
+  border: 1px solid black;
+  margin-top: 35px;
+  box-sizing: border-box;
+
 `;
 
-const Container = styled.div`
-  max-width: 820px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: white;
-  border-radius: 15px;
-`;
+
 
 export default function Mycareer() {
   const [view, setView] = useState('year');
