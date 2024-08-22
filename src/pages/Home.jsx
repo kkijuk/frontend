@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import LoginProfileBox from '../components/Home/LoginProfileBox';
 import LogoutProfileBox from '../components/Home/LogoutProfileBox';
-import Banner from '../components/Home/Banner';
+import BannerTemp from '../components/Home/BannerTemp';
 import DeadlineNoti from '../components/Home/DeadlineNoti';
 import WritingNoti from '../components/Home/WritingNoti';
 import RecommendBox from '../components/Home/RecommendBox';
@@ -86,7 +86,8 @@ export default function Home() {
                 {isLoggedIn ? <LoginProfileBox /> : <LogoutProfileBox />}
                 <TimelineHome></TimelineHome>
             </Container1>
-            <Banner banners={bannerDummy} />
+            {/* <Banner banners={bannerDummy} /> */}
+            <BannerTemp></BannerTemp>
 
             <Container2>
                 <Label>잠깐! 잊지 않으셨죠?</Label>
