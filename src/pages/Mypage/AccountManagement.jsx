@@ -36,7 +36,7 @@ const Line = styled.div`
 
 const Text1 = styled.div`
     color: var(--black, #000);
-     font-family: Regular;
+    font-family: semibold;
     font-size: 21px;
     font-style: normal;
     font-weight: 700;
@@ -51,7 +51,7 @@ const Input = styled.input`
     background: #F5F5F5;
     border: none;
     color: #707070;
-     font-family: Regular;
+    font-family: Regular;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;

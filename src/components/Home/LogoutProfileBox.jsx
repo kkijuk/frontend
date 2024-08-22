@@ -25,11 +25,9 @@ const TextContainer = styled.div`
 
   color: var(--black, #000);
   text-align: center;
-  font-family: Inter;
+  font-family: Regular;
   font-size: 14px;
   font-style: normal;
-  font-weight: 400;
-  font-family: Pretendard;
 `;
 
 const LoginButton = styled.button`
@@ -44,10 +42,9 @@ const LoginButton = styled.button`
 
     color: var(--white, #FFF);
     text-align: center;
-    font-family: Pretendard;
+    font-family: Bold;
     font-size: 12px;
     font-style: normal;
-    font-weight: 700;
     line-height: normal;
 
     display: flex;
@@ -63,12 +60,11 @@ const LoginButton = styled.button`
 const SignupButton = styled.button`
     color: var(--gray-02, #707070);
     text-align: center;
-    font-family: Inter;
+    font-family: Regular;
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    font-family: Pretendard;
     border: none;
     background: none;
     cursor: pointer;

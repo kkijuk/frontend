@@ -65,6 +65,7 @@ const CloseButton = styled.button`
   font-size: 3em;
   color: #999;
   cursor: pointer;
+  font-family: Regular;
 `;
 
 const ModalTitle = styled.h2`
@@ -74,9 +75,8 @@ const ModalTitle = styled.h2`
 
   color: var(--main-01, #3AAF85);
   text-align: center;
-  font-family: Pretendard;
+  font-family: Bold;
   font-style: normal;
-  font-weight: 700;
   line-height: normal;
 `;
 
@@ -84,19 +84,17 @@ const Label = styled.label`
   display: inline-block;
   margin-bottom: 5px;
   color: var(--black, #000);
-  font-family: Pretendard;
+  font-family: SemiBold;
   font-size: 18px;
   font-style: normal;
-  font-weight: 500;
   line-height: normal;
 `;
 
 const Info = styled.label`
   color: var(--main-01, #3AAF85);
-  font-family: Pretendard;
+  font-family: Regular;
   font-size: 14px;
   font-style: normal;
-  font-weight: 400;
   line-height: normal;
   margin-left: 15px;
 `
@@ -108,7 +106,7 @@ const Input = styled.input`
   margin-bottom: 25px;
   border: 1px solid #F5F5F5;
   font-size: 1em;
-  font-family: Pretendard;
+  font-family: Regular;
   border-radius: 10px;
   background: #F5F5F5;
 `;
@@ -119,7 +117,7 @@ const InputLong = styled.textarea`
   padding: 12px;
   margin-bottom: 25px;
   border: 1px solid #F5F5F5;
-  font-family: Pretendard;
+  font-family: Regular;
   font-size: 1em;
   border-radius: 10px;
   background: #F5F5F5;
@@ -128,7 +126,7 @@ const InputLong = styled.textarea`
 `;
 
 const InputDate = styled.input`
-  font-family: Pretendard;
+  font-family: Regular;
   font-size: 1em;
   width: 93%;
   height: 100%;
@@ -170,10 +168,9 @@ const SaveButton = styled.button`
   border-radius: 10px;
   cursor: pointer;
   font-size: 18px;
-  font-family: Pretendard;
+  font-family: SemiBold;
   font-size: 18px;
   font-style: normal;
-  font-weight: 500;
   line-height: normal;
 
   display: flex;
@@ -189,6 +186,7 @@ const ErrorMessage = styled.p`
   color: ${(props) => (props.isError ? 'red' : 'white')};
   font-size: 0.9em;
   margin-top: 10px;
+  font-family: Regular;
 `;
 
 const RadioContainer = styled.div`

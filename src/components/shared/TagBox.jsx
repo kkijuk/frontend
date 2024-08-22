@@ -26,12 +26,13 @@ const Text = styled.div`
     display: flex;
     align-items: center; /* 세로 중앙 정렬 */
     color: var(--black, #000);
-    font-family: Pretendard;
+    font-family: semibold;
     font-size: 18px;
-    font-style: normal;
-    font-weight: 500;
+    font-style: light;
     line-height: normal;
+    margin-bottom: 5px;
 `;
+
 
 const TagInputContainer = styled.div`
     width: 650px;
@@ -102,8 +103,7 @@ const WhiteTag = styled.div`
     text-align: center;
     font-family: Pretendard;
     font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
+    font-style: light;
     line-height: normal;
 `;
 
@@ -126,6 +126,7 @@ const Tag = styled.div`
     position: relative;
     cursor: pointer; 
 `;
+
 
 const CloseButton = styled.button`
     background: none;

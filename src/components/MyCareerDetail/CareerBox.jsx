@@ -54,10 +54,9 @@ const Date = styled.div`
   flex-shrink: 0;
   color: ${(props) => (props.selected ? '#000' : '#FFF')};
   text-align: center;
-  font-family: Inter;
+  font-family: light;
   font-size: 11px;
   font-style: normal;
-  font-weight: 400;
   line-height: normal;
   margin-top: 6px;
 `;
@@ -71,10 +70,9 @@ const Nickname = styled.div`
   flex-shrink: 0;
   color: ${(props) => (props.selected ? '#000' : '#FFF')};
   text-align: center;
-  font-family: Inter;
+  font-family: semibold;
   font-size: 14px;
-  font-style: normal;
-  font-weight: 700;
+  font-style: bold;
   line-height: normal;
   margin-bottom: 10px;
 `;

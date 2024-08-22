@@ -64,12 +64,28 @@ const ListBox = styled.div`
 
 const Name = styled.div``;
 
-const CareerName = styled.div`
+
+const AliasName = styled.div`
   color: var(--black, #000);
   font-family: Pretendard;
   font-size: 18px;
-  font-style: normal;
+  font-style: regular;
   font-weight: 400;
+  line-height: normal;
+  margin-bottom: 9px;
+  margin-top: 5px;
+`;
+
+const CareerContainer = styled.div`
+  display: flex; /* Flexbox로 가로 정렬 */
+  align-items: center; /* 세로 가운데 정렬 (선택 사항) */
+`;
+
+const CareerName = styled.div`
+  color: var(--black, #000);
+  font-family: bold;
+  font-size: 18px;
+  font-style: regular;
   line-height: normal;
   margin-bottom: 9px;
   margin-top: 5px;
@@ -146,8 +162,11 @@ const CareerViewCategory = ({ data }) => {
                 onClick={() => handleListBoxClick(career.id)}  // 클릭 시 career.id 전송
               >
                 <Name>
-                  <CareerName>{career.careerName} / {career.alias}</CareerName>
-                </Name>
+                  <CareerContainer>
+                    <CareerName>{career.careerName}</CareerName>
+                    <AliasName>&nbsp;/ {career.alias}</AliasName>
+                  </CareerContainer>                  
+                  </Name>
                 <Date>{formatDate(career.startDate)} ~ {formatDate(career.endDate)}</Date>
               </ListBox>
             ))}

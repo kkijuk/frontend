@@ -44,7 +44,7 @@ const ContentText = styled.div`
     font-family: Regular;
     font-size: 14px;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 600;
     line-height: normal;
     word-wrap: break-word;  // 단어 단위로 줄 바꿈
     word-break: break-word; // 줄 바꿈이 불가능한 긴 단어를 분할

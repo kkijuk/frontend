@@ -80,6 +80,8 @@ const StyledCalendar = styled(Calendar)`
     height: 50px;
     width: 40px;
     display: flex;
+    font-family: Light;
+    font-size: 14px;
     align-items: flex-start;
     justify-content: center;
     background: none;
@@ -88,7 +90,7 @@ const StyledCalendar = styled(Calendar)`
                 inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
                 inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
                 inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15);
-    padding-top: 4px;
+    padding-top: 5px;
   }
 
   .react-calendar__tile--now {
@@ -215,6 +217,12 @@ const NavigationButtonleft = styled.button`
   border: none;
   cursor: pointer;
   font-family: Regular;
+  margin-top: 2px;
+
+  svg {
+    width: 24px;
+    height: 25px;
+  }
 `;
 
 const NavigationButtonright = styled.button`
@@ -224,6 +232,12 @@ const NavigationButtonright = styled.button`
   border: none;
   cursor: pointer;
   font-family: Regular;
+  margin-top: 2px;
+
+  svg {
+    width: 24px;
+    height: 25px;
+  }
 `;
 
 const NavigationText = styled.span`
@@ -252,9 +266,17 @@ const CustomNavigation = ({ date, setDate }) => {
 
   return (
     <NavigationContainer>
-      <NavigationButtonleft onClick={handlePrevMonth}>{'<'}</NavigationButtonleft>
+      <NavigationButtonleft onClick={handlePrevMonth}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+          <path d="M15 6.5L9 12.5L15 18.5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </NavigationButtonleft>
       <NavigationText>{`${date.getFullYear()} ${monthNames[date.getMonth()]}`}</NavigationText>
-      <NavigationButtonright onClick={handleNextMonth}>{'>'}</NavigationButtonright>
+      <NavigationButtonright onClick={handleNextMonth}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+          <path d="M9 18.5L15 12.5L9 6.5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </NavigationButtonright>
     </NavigationContainer>
   );
 };
@@ -350,4 +372,3 @@ const CalendarView = ({ date, setDate }) => {
 };
 
 export default CalendarView;
-
