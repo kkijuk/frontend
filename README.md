@@ -5,18 +5,30 @@
 
 ## 서비스 개요
 
-![끼적 포스터2.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/09c3215e-b52a-48da-a5c1-fd9eb36fa6aa/d2696ba9-3ae3-4968-af66-06d70a80432b/%EB%81%BC%EC%A0%81_%ED%8F%AC%EC%8A%A4%ED%84%B02.png)
+![끼적 포스터2](https://github.com/user-attachments/assets/e11e45c0-6d91-4a5b-9a93-a2970b7bb9c6)
+![끼적 포스터3](https://github.com/user-attachments/assets/dcda6c2f-4632-4477-ba74-9c76b4e939d5)
 
-### `npm start`
+## 주요기능
+![Group 10000119792](https://github.com/user-attachments/assets/316264ec-cf94-4c44-a6f3-53f44e950095)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Stacks 
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+<img src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E"/>
+<img src="https://img.shields.io/badge/react-black?style=for-the-badge&logo=react&logoColor=61DAFB"/>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Frontend Developers
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+|                                              임세연/카이트                                              |                                               장연주/연두                                               |
+| :----------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------: |
+| <img src="https://avatars.githubusercontent.com/u/143693285?v=4" alt="profile" width="180" height="180"> | <img src="https://avatars.githubusercontent.com/u/114345405?v=4" alt="profile" width="180" height="180">|
+|                              [@cinsy26]([https://github.com/a-honey](https://github.com/cinsy26))                              |                             [@yeondub](https://github.com/yeondub1121)                             |
+
+|                                              황무원/모니                                            |                                               김나은/퍼지                                               |
+| :----------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------: |
+| <img src="https://avatars.githubusercontent.com/u/160315926?v=4" alt="profile" width="180" height="180"> | <img src="https://avatars.githubusercontent.com/u/165622596?v=4" alt="profile" width="180" height="180"> |
+|                              [@codmoni]([https://github.com/a-honey](https://github.com/codmoni))                              |                             [@fuzzyter]([https://github.com/Sohyunnnn](https://github.com/fuzzyter))                             |
+### 더 자세한 끼적이 궁금하다면?
+Figma: 
 
