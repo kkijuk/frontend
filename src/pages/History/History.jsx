@@ -16,6 +16,7 @@ import createEducation from '../../api/Record/createEducation';
 import updateEducation from '../../api/Record/updateEducation';
 import deleteEducation from '../../api/Record/deleteEducation';
 
+
 const History = () => {
 
     const profileTitles = ["이름", "생년월일", "전화번호", "이메일", "주소"];
@@ -284,8 +285,10 @@ const History = () => {
             </p>
                 {/* 1. Profiles */}
                 <div style={{display:'flex', alignContent:'center', gap:'40px'}}>
-                    <div style={{width:'150px', height:'200px',backgroundColor:'#707070'}}>
+                    <div style={{width:'150px', height:'200px',backgroundColor:'#FFF', display:'flex', justifyContent:'center'}}>
                         {/* 프로필사진 */}
+                        <img src='/images/emoji.jpg' alt='Profile' 
+                            style={{width:'200px'}}/>
                     </div>
                     <div style={{width:'70px'}}>
                         {profileTitles.map((profileTitle, index) => (

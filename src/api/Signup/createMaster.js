@@ -3,13 +3,13 @@ import api from "../../Axios";
 const createMaster =async()=>{
     try{
         const newData = {
-            "oneLiner": "string",
-            "motiveTitle": "string",
-            "motive": "string",
-            "prosAndConsTitle": "string",
-            "prosAndCons": "string",
-            "jobSuitabilityTitle": "string",
-            "jobSuitability": "string"
+            "oneLiner": "마스터 자기소개서",
+            "motiveTitle": "지원동기",
+            "motive": "내용을 작성해주세요!",
+            "prosAndConsTitle": "장단점",
+            "prosAndCons": "내용을 작성해주세요!",
+            "jobSuitabilityTitle": "직무적합성",
+            "jobSuitability": "내용을 작성해주세요!"
           }
         const response = await api.post('/history/intro/master', newData);
         console.log("Master 자소서 생성: ", response.data);
