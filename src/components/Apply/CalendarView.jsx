@@ -59,6 +59,14 @@ const StyledCalendar = styled(Calendar)`
     outline: none; 
   }
 
+    .react-calendar__month-view__weekdays__weekday:nth-child(7) abbr {
+    color: #FA7C79; 
+  }
+
+  .react-calendar__month-view__weekdays__weekday:nth-child(6) abbr {
+    color: #77AFF2; 
+  }
+
   .react-calendar__month-view__days__day {
     box-shadow: inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15), 
                 inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
@@ -72,7 +80,7 @@ const StyledCalendar = styled(Calendar)`
     height: 50px;
     width: 40px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     background: none;
     color: inherit;
@@ -80,6 +88,7 @@ const StyledCalendar = styled(Calendar)`
                 inset 0 0.5px 0 0 rgba(0, 0, 0, 0.15), 
                 inset -0.5px 0 0 0 rgba(0, 0, 0, 0.15), 
                 inset 0.5px 0 0 0 rgba(0, 0, 0, 0.15);
+    padding-top: 4px;
   }
 
   .react-calendar__tile--now {
@@ -106,7 +115,7 @@ const StyledCalendar = styled(Calendar)`
   height: 26px;
   background-color: #3AAF85;
   border-radius: 50%;
-  top: 50%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
@@ -153,13 +162,13 @@ const DayIndicatorContainer = styled.div`
 `;
 
 const DayIndicator = styled.div`
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   background-color: ${({ color }) => color || 'transparent'};
   border-radius: 50%;
   margin-left: 0px;
   margin-top: 2px;
-  margin-bottom: -12px;
+  margin-bottom: -19px;
 `;
 
 const CustomCalendar = ({ onChange, value, marks }) => {
@@ -293,7 +302,7 @@ const CalendarView = ({ date, setDate }) => {
   
     fetchCalendarData();
   }, [date]);
-  
+
   const handleDateChange = async (selectedDate) => {
     setDate(selectedDate);
   
