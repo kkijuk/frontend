@@ -15,7 +15,6 @@ const PageWrapper = styled.div`
 const Container = styled.div`
     width: 820px;
     height: 494px;
-    border: 1px solid black;
     display: flex;
     flex-direction: column;
     margin-top: 30px;
@@ -29,7 +28,6 @@ const Top = styled.div`
     justify-content: center;
     align-items: center;
     gap: 30px;
-    border-bottom: 1px solid black;
     color: var(--main-01, #3AAF85);
     text-align: center;
     font-family: Pretendard;
@@ -44,7 +42,6 @@ const Top = styled.div`
 const Bottom = styled.div`
     width: 100%;
     height: 292px;
-    border-top: 1px solid black;
     display: flex;
     flex-direction: column;
     justify-content: center; /* 텍스트를 가로 방향으로 중앙에 정렬 */
@@ -66,7 +63,6 @@ const Box = styled.div`
     height: 77px;
     width: 400px;
     margin-bottom: 15px;
-    border: 1px solid black;
 `
 
 const Input = styled.input`
