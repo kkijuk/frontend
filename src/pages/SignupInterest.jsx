@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import InterestBox from '../components/shared/InterestBox';
 import InterestSkipModal from '../components/User/InterestSkipModal';
 import { saveInterests } from '../api/Signup/signupInterest';
-import { useAuth } from '../components/AuthContext'; // AuthContext 임포트
+import { useAuth } from '../components/AuthContext'; 
 
 const ContentArea = styled.div`
   margin: 0 auto;
@@ -94,7 +94,7 @@ const SaveButton = styled.button`
   }
 `;
 
-const SignupInterest = ({ onSave }) => {
+const SignupInterest = ({ onSave = () => {} }) => {
   const [interestingList, setSelectedInterest] = useState([]);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
@@ -102,7 +102,7 @@ const SignupInterest = ({ onSave }) => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      navigate('/login'); // 로그인 상태가 아니면 로그인 페이지로 이동
+      navigate('/login'); // 로그인 상태가 아니면 로그인 페이지로 이동 아마 이럴일은 없을 것입니다
     }
   }, [isLoggedIn, navigate]);
 
@@ -126,14 +126,17 @@ const SignupInterest = ({ onSave }) => {
       console.log('Interest list being sent:', interestingList);
 
       onSave(result); // API 응답 데이터를 처리할 필요가 있으면 사용
-      navigate('/'); // 완료 후 홈 페이지로 이동
+      navigate('/'); 
     } catch (error) {
-      alert('서버에 문제가 발생했습니다. 다시 시도해 주세요.');
+      console.error('Error occurred while saving interests:', error.message);
+      console.error('Stack Trace:', error.stack); // 스택 추적도 출력
+     
     }
   };
 
+
   const handleClose = () => {
-    navigate('/'); // 홈 페이지로 이동
+    navigate('/'); 
   };
 
   const handleModalClose = () => {
@@ -141,7 +144,7 @@ const SignupInterest = ({ onSave }) => {
   };
 
   const handleModalConfirm = () => {
-    handleClose(); // 홈 페이지로 이동
+    handleClose(); 
   };
 
   return (

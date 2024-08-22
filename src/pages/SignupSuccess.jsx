@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom'; // 네비게이션을 위한 import
+import { useNavigate } from 'react-router-dom'; 
 import createMaster from '../api/Signup/createMaster';
-import { useAuth } from '../components/AuthContext'; // AuthContext import
+import { useAuth } from '../components/AuthContext'; 
 
 const SignupSuccessScreen = styled.div`
   max-width: flex;
@@ -65,8 +65,8 @@ const SignupSuccessScreen = styled.div`
 `;
 
 const SignupSuccess = () => {
-  const navigate = useNavigate(); // navigate 훅 사용
-  const { login } = useAuth(); // 로그인 함수 가져오기
+  const navigate = useNavigate(); 
+  const { login } = useAuth(); 
 
   useEffect(() => {
     createMaster();
