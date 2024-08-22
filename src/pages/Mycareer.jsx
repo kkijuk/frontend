@@ -16,7 +16,6 @@ const Container = styled.div`
   margin: auto;
   background-color: white;
   border-radius: 15px;
-  border: 1px solid black;
   box-sizing: border-box;
 `;
 
@@ -27,7 +26,6 @@ const SearchBox = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
-  border: 1px solid black;
   margin-top: 35px;
   box-sizing: border-box;
 
