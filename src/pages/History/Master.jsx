@@ -31,7 +31,7 @@ const Master=()=> {
     useEffect(()=>{
         api.get('/history/intro/master')
             .then(response=>{
-                const Data = response.data.data[0];
+                const Data = response.data.data;
                 console.log("내용조회: ",Data);
                 setQuestions({
                     oneLiner:Data.oneLiner,
@@ -65,6 +65,7 @@ const Master=()=> {
 
                 <h3>{questions.motive_title ? questions.motive_title : "1. 지원동기 및 포부 [소제목]"}</h3>
                 <ContentBox>{questions.motive ? questions.motive : "아직 지원동기를 작성하지 않았어요."}</ContentBox>  
+                
 
                 <h3>{questions.prosAndCons_title ? questions.prosAndCons_title : "2. 장단점 [소제목]"}</h3>
                 <ContentBox>{questions.prosAndCons ? questions.prosAndCons : "아직 장단점을 작성하지 않았어요.."}</ContentBox>  

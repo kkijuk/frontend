@@ -4,14 +4,14 @@ import '../../../pages/History/history.css';
 import Edu from './Edu';
 import Date from './Date';
 
-const EditItem = ({ data, onCancel, isLastItem, onEdit }) => {
+const EditItem = ({ data={}, onCancel, isLastItem, onEdit }) => {
     const [formData, setFormData] = useState({
-        category: data.category || '',
-        schoolName: data.schoolName || '',
-        major: data.major || '',
-        admissionDate: data.admissionDate || '',
-        graduationDate: data.graduationDate || '',
-        state: data.state || ''
+        category: data.category ?? '',
+        schoolName: data.schoolName ?? '',
+        major: data.major ?? '',
+        admissionDate: data.admissionDate ?? '',
+        graduationDate: data.graduationDate ?? '',
+        state: data.state ?? ''
     });
 
     const handleChange = (e) => {
@@ -39,13 +39,26 @@ const EditItem = ({ data, onCancel, isLastItem, onEdit }) => {
 
     const handleSave = () => {
         if (onEdit) {
-            onEdit(formData);  // 최신 formData를 전달
+            onEdit(formData);  
         }
     };
 
     useEffect(() => {
         console.log("FormData: ", formData);
     }, [formData]);
+
+    useEffect(() => {
+        if (data) {
+            setFormData({
+                category: data.category || '',
+                schoolName: data.schoolName || '',
+                major: data.major || '',
+                admissionDate: data.admissionDate || '',
+                graduationDate: data.graduationDate || '',
+                state: data.state || ''
+            });
+        }
+    }, [data]);
 
     return (
         <div style={{ display: 'flex' }}>
