@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import EmailVerificationForm from '../components/User/EmailVerificationForm';
 import PersonalInfoForm from '../components/User/PersonalInfoForm';
-import AgreementModal from '../components/User/AgreementModal';
+import AgreementModal1 from '../components/User/AgreementModal1'; // 이용약관 모달
+import AgreementModal2 from '../components/User/AgreementModal2'; // 개인정보 모달
+import AgreementModal3 from '../components/User/AgreementModal3'; // 마케팅 모달
 import InitialSignupForm from '../components/User/InitialSignupForm';
 
 const SignupPage = () => {
@@ -22,7 +23,7 @@ const SignupPage = () => {
   const [agreements2, setAgreements2] = useState(false);
   const [agreements3, setAgreements3] = useState(false);
 
-  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState(null); // 어떤 모달을 열지 결정
 
   const navigate = useNavigate();
 
@@ -36,12 +37,15 @@ const SignupPage = () => {
 
   const handleSignup = () => {
     console.log('회원가입 시도:', email, name, contact, verificationCode, birthdate, password, agreements1, agreements2, agreements3);
-   
     navigate('/signupsuccess');
   };
 
-  const handleModal = () => {
-    setShowModal(!showModal);
+  const handleModal = (type) => {
+    setModalType(type); // 모달 타입 설정
+  };
+
+  const closeModal = () => {
+    setModalType(null); // 모달 닫기
   };
 
   return (
@@ -89,7 +93,9 @@ const SignupPage = () => {
           handlePrevStep={handlePrevStep}
         />
       )}
-      <AgreementModal show={showModal} handleModal={handleModal} />
+      {modalType === 1 && <AgreementModal1 show={true} handleModal={closeModal} />}
+      {modalType === 2 && <AgreementModal2 show={true} handleModal={closeModal} />}
+      {modalType === 3 && <AgreementModal3 show={true} handleModal={closeModal} />}
     </>
   );
 };
