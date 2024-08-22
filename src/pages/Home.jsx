@@ -8,6 +8,7 @@ import WritingNoti from '../components/Home/WritingNoti';
 import RecommendBox from '../components/Home/RecommendBox';
 import TimelineHome from '../components/Home/TimelineHome';
 import { useAuth } from '../components/AuthContext'; 
+import { useNavigate } from 'react-router-dom';
 
 const Body = styled.div`
   width: 820px;
@@ -79,12 +80,22 @@ const bannerDummy = [
 
 export default function Home() {
     const { isLoggedIn } = useAuth(); 
+    const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
+
+    const handleTimelineClick = () => {
+        if (!isLoggedIn) {
+            navigate('/login-required'); // 로그아웃 상태일 시 로그인 페이지로 이동합니다.
+        }
+    };
+
 
     return (
         <Body>
             <Container1>
-                {isLoggedIn ? <LoginProfileBox /> : <LogoutProfileBox />}
-                <TimelineHome></TimelineHome>
+            {isLoggedIn ? <LoginProfileBox /> : <LogoutProfileBox />}
+                <div onClick={handleTimelineClick}>
+                    <TimelineHome />
+                </div>
             </Container1>
             {/* <Banner banners={bannerDummy} /> */}
             <BannerTemp></BannerTemp>
