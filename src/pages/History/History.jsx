@@ -6,7 +6,7 @@ import EducationItem from '../../components/History/Resume/EducationItem';
 import EditItem from '../../components/History/Resume/EditItem';
 import CareerItem from '../../components/History/Resume/CareerItem';
 import AddItem from '../../components/History/Resume/AddItem';
-import AddCareerModal from '../../components/shared/AddCareerModal';
+import AddCareerModal from '../../components/History/Resume/AddCareerModal';
 import AddCareerModalEdit from '../../components/History/Resume/AddCareerModalEdit';
 import Address from '../../components/History/Address';
 import createRecord from '../../api/Record/createRecord';
@@ -46,7 +46,15 @@ const History = () => {
     const [isAddActModalOpen, setIsAddActModalOpen] = useState(false);
     const [addressStatus, setAddressStatus] = useState(null);
     const [selectedCareer, setSelectedCareer] = useState(null);
-
+    const categoryMap = {
+        1: '동아리',
+        2: '대외활동',
+        3: '공모전/대회',
+        4: '프로젝트',
+        5: '아르바이트/인턴',
+        6: '교육',
+        7: '기타활동'
+    };
 
     useEffect(()=>{
         const fetchData = async ()=>{
@@ -86,6 +94,12 @@ const History = () => {
     //학력 추가
     const handleAddEducation = async (newEducation)=>{
         try{
+            const { category, schoolName, major, admissionDate, graduationDate, state } = newEducation;
+
+            if (!category || !schoolName || !major || !admissionDate || !graduationDate || !state) {
+                alert('모든 필드를 입력해주세요!');
+                return;
+            }
             const addedEducation = await createEducation(recordId, newEducation);
             setEducations([...educations, addedEducation]);
             setIsAddItemOpen(false);
@@ -96,6 +110,11 @@ const History = () => {
     //학력 수정
     const handleUpdateEducation = async (educationId, updatedData)=>{
         try{
+            if (!updatedData || Object.keys(updatedData).length === 0) {
+                alert('입력된 값이 없습니다!');
+                return;
+            }
+    
             console.log("Updated Data:", updatedData);
             const updatedEducation = await updateEducation(educationId, updatedData);
             console.log("Updated Education from API:", updatedEducation);
@@ -118,6 +137,7 @@ const History = () => {
             await deleteEducation(educationId);
             handleCancelEdit(index);
             setEducations(educations.filter((_,i)=>i !== index));
+            window.location.reload();
         }catch(err){
             console.error('Failed to delete education: ', err);
         }
@@ -172,8 +192,8 @@ const History = () => {
     };
 
     //활동 추가 모달 토글
-    const toggleAddActModalOpen =()=>{
-        setIsAddActModalOpen(!isAddActModalOpen);
+    const toggleAddActModalOpen = () => {
+        setIsAddActModalOpen(prev => !prev);
     };
     // 활동 수정 모달 토글
     const toggleEditActModalOpen = (careerId) => {
@@ -193,20 +213,60 @@ const History = () => {
 
             setSelectedCareer({ data: careerData });
         }
-        setIsEditActModalOpen(prev => !prev);
+        setIsEditActModalOpen(true);
     };
+
+    // 추가한 활동 기간 계산
+    const calculateDuration = (startDate, endDate) => {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        const yearDiff = end.getFullYear() - start.getFullYear();
+        const monthDiff = end.getMonth() - start.getMonth();
+
+        return yearDiff * 12 + monthDiff + 1; // +1 to count the starting month
+    };
+
     //추가한 활동 업데이트
     const handleAddCareer = (newCareer) => {
-    setCareers([...careers, newCareer]);
+        console.log("추가된 활동: ", newCareer);
+        const categoryText = categoryMap[newCareer.category] || '기타활동';
+
+        // Calculate the duration in months
+        let duration = null;
+        if (newCareer.startDate && newCareer.endDate) {
+        duration = calculateDuration(newCareer.startDate, newCareer.endDate);
+        }
+        const updatedCareer = {
+            ...newCareer,
+            category: categoryText,
+            duration: duration ? `${duration}개월` : '기간 정보 없음' // 기간 정보가 없으면 '기간 정보 없음'으로 처리
+        };
+        
+        setCareers([...careers, updatedCareer]);
+        setIsAddActModalOpen(false);
     };
 
     //수정한 활동 업데이트
     const handleSaveCareerEdit = (updatedData)=>{
+        const categoryText = categoryMap[updatedData.category] || '기타활동';
+
+        let duration = null;
+        if (updatedData.startDate && updatedData.endDate) {
+            duration = calculateDuration(updatedData.startDate, updatedData.endDate);
+        }
+
+        const updatedCareer = {
+            ...updatedData,
+            category: categoryText,
+            duration: duration ? `${duration}개월` : '기간 정보 없음' // 기간 정보가 없으면 '기간 정보 없음'으로 처리
+        };
+        
         setCareers(prevCareers => 
             prevCareers.map(career =>
-                career.careerId === updatedData.careerId ? updatedData : career
+                career.careerId === updatedCareer.careerId ? updatedCareer : career
             )
-        )
+        );
         setIsEditActModalOpen(false);
     }
 
@@ -218,7 +278,7 @@ const History = () => {
                 <AddCareerModalEdit 
                     onClose={toggleEditActModalOpen}
                     data={selectedCareer}
-                    onSave={handleSaveCareerEdit}/>}
+                    onSave={(data)=>handleSaveCareerEdit(data)}/>}
             <p style={{fontFamily:'Regular', fontSize:'14px', color:'#707070', position:'absolute', top:'-30px', right:'0px'}}>
                 마지막 수정 일시: {lastUpdated}
             </p>
