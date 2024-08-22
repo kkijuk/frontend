@@ -99,7 +99,6 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
 
     return (
         <div>
-            <Line></Line>
             <Box>
                 <TitleDateContainer>
                     <Title>{title}</Title>
@@ -113,6 +112,8 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
                 <AbilityTag tags={detailTag} />
                 <EditIconStyled titleAccess="Edit" onClick={handleEditClick} />
             </Box>
+            <Line></Line>
+
             {isDetailAddVisible && detailData && (
                 <DetailAddEdit
                     initialTitle={detailData.title}
