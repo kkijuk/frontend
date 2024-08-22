@@ -44,8 +44,8 @@ const Nav = styled.nav`
     margin: 0;
   }
   li {
-    margin-left: 30px;
-    margin-right: 30px;
+    margin-left: 40px;
+    margin-right: 20px;
     cursor: pointer;
     color: #333;
     font-family: Pretendard;
@@ -119,8 +119,8 @@ const DropdownMenu = styled.div`
   border: 1px solid #ccc;
   border-radius: 10px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  width: 135px;
-  height: 140px;
+  width: 110px;
+  height: 70px;
   padding: 10px;
   z-index: 100;
 
@@ -148,7 +148,7 @@ export default function Header() {
   const location = useLocation();
   const { isLoggedIn, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null); // 드롭다운 메뉴를 참조하기 위한 ref
+  const dropdownRef = useRef(null);
 
   const handleUserProfileButtonClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -167,7 +167,7 @@ export default function Header() {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false); // 드롭다운 외부를 클릭하면 닫기
+        setIsDropdownOpen(false);
       }
     };
 
@@ -177,29 +177,32 @@ export default function Header() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!isLoggedIn && location.pathname !== '/' && location.pathname !== '/login' && location.pathname !== '/signup') {
+  // 이 부분을 추가하여 로그인 상태에 따른 리다이렉트 처리
+  const handleNavigation = (path) => {
+    if (!isLoggedIn && path !== '/' && path !== '/login' && path !== '/signup') {
       navigate('/login-required');
+    } else {
+      navigate(path);
     }
-  }, [isLoggedIn, location.pathname, navigate]);
+  };
 
   return (
     <HeaderWrapper>
       <HeaderStyle>
         <NavContainer>
-          <span className="logo" onClick={() => navigate('/')}>
+          <span className="logo" onClick={() => handleNavigation('/')}>
             <img style={{ width: '80px', height: '40px', cursor: 'pointer' }} src={logo} alt="로고" />
           </span>
           <Nav>
             <ul>
-              <li onClick={() => navigate('/mycareer')} className={location.pathname === '/mycareer' ? 'active' : ''}>내커리어</li>
-              <li onClick={() => navigate('/history')} className={location.pathname === '/history' ? 'active' : ''}>이력관리</li>
-              <li onClick={() => navigate('/apply-schedule')} className={location.pathname === '/apply-schedule' ? 'active' : ''}>지원관리</li>
-              <li onClick={() => navigate('/community')} className={location.pathname === '/community' ? 'active' : ''}>커뮤니티</li>
+              <li onClick={() => handleNavigation('/mycareer')} className={location.pathname === '/mycareer' ? 'active' : ''}>내커리어</li>
+              <li onClick={() => handleNavigation('/history')} className={location.pathname === '/history' ? 'active' : ''}>이력관리</li>
+              <li onClick={() => handleNavigation('/apply-schedule')} className={location.pathname === '/apply-schedule' ? 'active' : ''}>지원관리</li>
+              <li onClick={() => handleNavigation('/community')} className={location.pathname === '/community' ? 'active' : ''}>커뮤니티</li>
               {!isLoggedIn ? (
                 <>
-                  <li onClick={() => navigate('/login')} className={`login-signup ${location.pathname === '/login' ? 'active' : ''}`}>로그인</li>
-                  <li onClick={() => navigate('/signup')} className={`login-signup ${location.pathname === '/signup' ? 'active' : ''}`}>회원가입</li>
+                  <li onClick={() => handleNavigation('/login')} className={`login-signup ${location.pathname === '/login' ? 'active' : ''}`}>로그인</li>
+                  <li onClick={() => handleNavigation('/signup')} className={`login-signup ${location.pathname === '/signup' ? 'active' : ''}`}>회원가입</li>
                 </>
               ) : null}
             </ul>
@@ -211,9 +214,7 @@ export default function Header() {
                 </svg>
                 {isDropdownOpen && (
                   <DropdownMenu ref={dropdownRef}>
-                    <a onClick={() => navigate('/mypage/authentication')}>내 정보</a>
-                    <a onClick={() => navigate('/mypage/field')}>관심분야 설정</a>
-                    <a onClick={() => navigate('/mypage/accountmanagement')}>계정 관리</a>
+                    <a onClick={() => handleNavigation('/mypage/authentication')}>마이페이지</a>
                     <a onClick={handleLogout}>로그아웃</a>
                   </DropdownMenu>
                 )}
