@@ -24,7 +24,7 @@ const Text = styled.div`
     display: flex;
     align-items: center;
     color: var(--black, #000);
-    font-family: Pretendard;
+    font-family: Light;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
@@ -40,13 +40,14 @@ const TagInputContainer = styled.div`
     background: #F5F5F5;
     padding: 5px 10px;
     gap: 5px;
+    font-family: Light;
 `;
 
 const TagInput = styled.input`
     flex: 1;
     border: none;
     background: #F5F5F5;
-    font-family: Pretendard;
+    font-family: Light;
     font-size: 16px;
     color: #999;
     &:focus {
@@ -70,6 +71,7 @@ const TagBoxList = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
+    font-family: Light;
 `;
 
 const TagBoxListContainer = styled.div`
@@ -108,7 +110,7 @@ const WhiteTag = styled.div`
     background: #FFF; 
     color: var(--main-01, #3AAF85);
     text-align: center;
-    font-family: Pretendard;
+    font-family: Light;
     font-size: 12px;
     font-style: normal;
     font-weight: 400;

@@ -14,7 +14,7 @@ import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
 
 const Container = styled.div`
   width: 100%;
-  max-width: 850px;
+  max-width: 820px;
   margin: 0 auto;
   padding: 24px 40px;
   background-color: white;
@@ -27,7 +27,7 @@ const Title = styled.h1`
   font-size: 30px;
   font-weight: 700;
   margin-bottom: 20px;
-  margin-left: 18px;
+ 
 `;
 
 const TopSection = styled.div`

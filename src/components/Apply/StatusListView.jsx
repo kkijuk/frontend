@@ -101,8 +101,9 @@ const Tag = styled.span`
   background: #F5F5F5;
   border-radius: 10px;
   padding: 4px 8px;
-  font-size: 12px;
+ font-size: 13px;
   color: #707070;
+  font-family: Light;
 `;
 
 const StatusCircle = styled.span`

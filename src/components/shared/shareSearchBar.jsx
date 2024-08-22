@@ -17,8 +17,9 @@ const SearchInput = styled.input`
   background: none;
   outline: none;
   flex-grow: 1;
-  font-size: 16px;
+  font-size: 17px;
   color: #707070;
+  font-family: Light;
 `;
 
 const SearchIcon = styled.div`
