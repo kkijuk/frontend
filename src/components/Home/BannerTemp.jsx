@@ -35,7 +35,7 @@ const CountPage = styled.div`
 
 const CountPageText = styled.h6`
     color: ${props => props.fontColor || '#707070'};
-    font-family: Pretendard;
+    font-family: Regular;
     font-size: 12px;
     font-style: normal;
     font-weight: 400;

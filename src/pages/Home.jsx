@@ -7,7 +7,7 @@ import DeadlineNoti from '../components/Home/DeadlineNoti';
 import WritingNoti from '../components/Home/WritingNoti';
 import RecommendBox from '../components/Home/RecommendBox';
 import TimelineHome from '../components/Home/TimelineHome';
-import { useAuth } from '../components/AuthContext';  
+import { useAuth } from '../components/AuthContext'; 
 
 const Body = styled.div`
   width: 820px;
@@ -43,7 +43,7 @@ const Container4 = styled.div`
 
 const Label = styled.div`
     color: var(--black, #000);
-    font-family: Pretendard;
+    font-family: Bold;
     font-size: 20px;
     font-style: normal;
     font-weight: 700;
@@ -78,7 +78,7 @@ const bannerDummy = [
 
 
 export default function Home() {
-    const { isLoggedIn } = useAuth();  
+    const { isLoggedIn } = useAuth(); 
 
     return (
         <Body>
