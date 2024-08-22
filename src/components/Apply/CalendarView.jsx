@@ -164,12 +164,14 @@ const DayIndicator = styled.div`
 
 const CustomCalendar = ({ onChange, value, marks }) => {
   const renderDay = (date) => {
-    const dateString = date.toISOString().split('T')[0];
+    // 이 부분에서 UTC로 변환
+    const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const dateString = utcDate.toISOString().split('T')[0];
     const dayMarks = marks.filter(mark => mark.date === dateString).slice(0, 3);
 
     return (
       <div>
-        {date.getDate()}
+        {utcDate.getUTCDate()}
         <DayIndicatorContainer>
           {dayMarks.map((mark, index) => (
             <DayIndicator key={index} color={mark.color} />
@@ -187,6 +189,7 @@ const CustomCalendar = ({ onChange, value, marks }) => {
     />
   );
 };
+
 
 const NavigationContainer = styled.div`
   display: flex;
@@ -290,22 +293,28 @@ const CalendarView = ({ date, setDate }) => {
   
     fetchCalendarData();
   }, [date]);
-
+  
   const handleDateChange = async (selectedDate) => {
     setDate(selectedDate);
-
-    const selectedDateStr = selectedDate.toISOString().split('T')[0];
-
+  
+    // 날짜를 ISO 형식으로 변환하면서, 로컬 시간대로 날짜를 맞추기 위해 UTC 오프셋을 조정합니다.
+    const selectedDateStr = new Date(selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000)
+      .toISOString()
+      .split('T')[0];
+  
+    console.log(`Fetching recruit list for end date: ${selectedDateStr}`);
+  
     try {
-        
         const jobs = await getRecruitListEndDate(selectedDateStr);
-
+        console.log('Recruit list fetched:', jobs);
         setJobsForSelectedDate(jobs);
     } catch (error) {
         console.error('Error fetching job details:', error);
         setJobsForSelectedDate([]);
     }
   };
+  
+  
 
   const handleJobClick = (job) => {
     navigate(`/apply-detail/${job.recruitId}`, { state: { job } });
