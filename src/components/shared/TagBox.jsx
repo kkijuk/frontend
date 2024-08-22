@@ -28,8 +28,7 @@ const Text = styled.div`
     color: var(--black, #000);
     font-family: Pretendard;
     font-size: 18px;
-    font-style: normal;
-    font-weight: 500;
+    font-style: light;
     line-height: normal;
 `;
 
@@ -102,8 +101,7 @@ const WhiteTag = styled.div`
     text-align: center;
     font-family: Pretendard;
     font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
+    font-style: light;
     line-height: normal;
 `;
 

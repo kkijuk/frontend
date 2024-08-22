@@ -37,8 +37,8 @@ const Category = styled.div`
 const CategoryText = styled.div`
   color: var(--black, #000);
   font-family: Pretendard;
-  font-size: 20px;
-  font-style: normal;
+  font-size: 21px;
+  font-style: regular;
   font-weight: 400;
   line-height: normal;
   margin-top: 22px;
@@ -69,13 +69,30 @@ const CareerName = styled.div`
   font-family: Pretendard;
   font-size: 18px;
   font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 9px;
+  margin-top: 5px;
+`;
+
+const AliasName = styled.div`
+  color: var(--black, #000);
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
   font-weight: 400;
   line-height: normal;
   margin-bottom: 9px;
   margin-top: 5px;
 `;
 
+const CareerContainer = styled.div`
+  display: flex; /* Flexbox로 가로 정렬 */
+  align-items: center; /* 세로 가운데 정렬 (선택 사항) */
+`;
+
 const Date = styled.div`
+  font-style: light;
   font-size: 14px;
   color: #555;
   margin-bottom: 20px;
@@ -146,7 +163,10 @@ const CareerViewCategory = ({ data }) => {
                 onClick={() => handleListBoxClick(career.id)}  // 클릭 시 career.id 전송
               >
                 <Name>
-                  <CareerName>{career.careerName} / {career.alias}</CareerName>
+                <CareerContainer>
+                  <CareerName>{career.careerName}</CareerName>
+                  <AliasName>&nbsp;/ {career.alias}</AliasName>
+                </CareerContainer>               
                 </Name>
                 <Date>{formatDate(career.startDate)} ~ {formatDate(career.endDate)}</Date>
               </ListBox>

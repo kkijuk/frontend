@@ -35,8 +35,8 @@ const YearBox = styled.div`
 const Year = styled.div`
   color: var(--black, #000);
   font-family: Pretendard;
-  font-size: 25px;
-  font-style: normal;
+  font-size: 23px;
+  font-style: regular;
   font-weight: 400;
   line-height: normal;
   margin-top: 22px;
@@ -70,6 +70,7 @@ const CategoryTextBox = styled.div`
   align-items: center;
   margin-bottom: 8px;
   margin-top: 4px;
+  font-style: regular;
 `;
 
 const Name = styled.div``;
@@ -78,15 +79,31 @@ const CareerName = styled.div`
   color: var(--black, #000);
   font-family: Pretendard;
   font-size: 18px;
-  font-style: normal;
+  font-style: regular;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 9px;
+  margin-top: 5px;
+`;
+
+const AliasName = styled.div`
+  color: var(--black, #000);
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: regular;
   font-weight: 400;
   line-height: normal;
   margin-bottom: 9px;
+  margin-top: 5px;
 `;
 
-const Alias = styled.div``;
+const CareerContainer = styled.div`
+  display: flex; /* Flexbox로 가로 정렬 */
+  align-items: center; /* 세로 가운데 정렬 (선택 사항) */
+`;
 
 const Date = styled.div`
+  font-style: light;
   font-size: 14px;
   color: #555;
 `;
@@ -138,7 +155,10 @@ const CareerViewYear = ({data}) => {
                     <CategoryTextBox>{career.categoryName}</CategoryTextBox>
                   </Category>
                   <Name>
-                    <CareerName>{career.careerName} / {career.alias}</CareerName>
+                  <CareerContainer>
+                    <CareerName>{career.careerName}</CareerName>
+                    <AliasName>&nbsp;/ {career.alias}</AliasName>
+                  </CareerContainer>  
                   </Name>
                   <Date>{career.startDate} ~ {career.endDate}</Date>
                 </ListBox>

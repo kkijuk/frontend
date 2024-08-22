@@ -65,7 +65,7 @@ export default function Mycareer() {
   return (
     <Container>
       <SearchBox>
-        <Title>내 커리어</Title>
+        <Title>내커리어</Title>
         <SearchBar />
       </SearchBox>
       {isLoggedIn && (
