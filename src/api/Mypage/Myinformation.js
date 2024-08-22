@@ -29,14 +29,20 @@ export const fetchMyinfo = async () => {
 
 
 //수정된 내 정보 보내기
-export const changeMyinfo = async () => {
+export const changeMyinfo = async (name, phoneNumber, birthDate, marketingAgree) => {
     try {
         const response = await fetch(`https://api.kkijuk.com/member/myPage/info`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8'
             },
-            credentials: 'include' // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
+            credentials: 'include', // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
+            body: JSON.stringify({
+                name,
+                phoneNumber,
+                birthDate,
+                marketingAgree
+            })
         });
 
         // fetch는 HTTP 응답 코드를 직접 처리해야 함

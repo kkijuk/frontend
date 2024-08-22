@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react"
 import SubNav from "../../components/Mypage/SubNav"
 import styled from "styled-components"
 import axios from "axios"
-import { fetchMyinfo } from "../../api/Mypage/Myinformation"
+import { fetchMyinfo, changeMyinfo } from "../../api/Mypage/Myinformation"
 
 const Container = styled.div`
     display: flex;
@@ -198,6 +198,31 @@ export default function MyInformation() {
         setBirthDate(formattedInput);
       };
 
+      const handleSave = async () => {
+        // Determine the marketing agreement value based on the checkboxes
+        let marketingAgree;
+        if (agreements.snsAgreed && agreements.emailAgreed) {
+            marketingAgree = "BOTH";
+        } else if (agreements.snsAgreed) {
+            marketingAgree = "SMS";
+        } else if (agreements.emailAgreed) {
+            marketingAgree = "EMAIL";
+        } else {
+            marketingAgree = "NONE";
+        }
+
+        try {
+            const response = await changeMyinfo(name, phoneNumber, birthDate, marketingAgree);
+            console.log("Response from server:", response);
+            alert("수정이 완료되었습니다.");  // Alert message for success
+
+        } catch (error) {
+            console.error("Failed to save information:", error);
+            alert("수정에 실패했습니다. 다시 시도해주세요.");  // Alert message for failure
+
+        }
+    };
+
     return (
         <Container>
             <SubNav></SubNav>
@@ -261,8 +286,8 @@ export default function MyInformation() {
         </CheckBoxContainer3>
         </CheckBoxContainer>
         
-        <Button>저장</Button>
-            </Bottom>
+        <Button onClick={handleSave}>저장</Button> {/* 저장 버튼 클릭 시 handleSave 호출 */}
+        </Bottom>
         
         </Container>
         
