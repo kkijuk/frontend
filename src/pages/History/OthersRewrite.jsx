@@ -17,7 +17,7 @@ const OthersRewrite=()=> {
     const { id } = useParams();
 
     // (Data) questions: 질문 목록, contents: 질문 외 정보
-    const [questions, setQuestions] = useState([]);
+    const [questions, setQuestions] = useState([]);//{title, content, number}
     const [contents, setContents] = useState({
         id:0,
         recruitId:0,
@@ -111,6 +111,7 @@ const OthersRewrite=()=> {
             questionList: questions,
             state: isCompleted
           }
+          console.log("자소서 수정 데이터: ", Data);
           //(API) 내용 수정
         api.patch(`history/intro/${contents.id}`,Data)
             .then(response=>{
@@ -142,7 +143,7 @@ const OthersRewrite=()=> {
     const handleDropdownClick=(isCompleted)=>{
         setIsCompleted(isCompleted);
         const status = isCompleted ? "applying" : "planned";
-        //(API) 자소서 상태 변경
+        //(API) 자소서 상태 변
         api.patch(`/recruit/${contents.recruitId}`,{status:status})
         .then(response=>{
             console.log('상태 변경 결과: ', response.data);
