@@ -78,57 +78,68 @@ const ViewOptions = () => {
 
     return (
         <>
-            {isChecked && <SButton type="button"
-                onClick={() => handleApplyClick('master')}
-                style={{ backgroundColor: currentApply === 'master' ? '#E1FAED' : '#F5F5F5' }}
-            >Master</SButton>}
-            {isChecked && recruits.map(resume => (
-                <SButton type="button"
-                    key={resume.id}
-                    onClick={() => handleApplyClick(resume.id)}
-                    style={{ backgroundColor: currentApply === String(resume.id) ? '#E1FAED' : '#F5F5F5' }}
-                >{resume.recruitTitle}
-                </SButton>
-            ))}
-            {!isChecked &&
-                <>
+            <SButtonContainer>
+                {isChecked && <SButton type="button"
+                    onClick={() => handleApplyClick('master')}
+                    style={{ backgroundColor: currentApply === 'master' ? '#E1FAED' : '#F5F5F5' }}
+                >Master</SButton>}
+                {isChecked && recruits.map(resume => (
                     <SButton type="button"
-                        onClick={() => handleStateClick(3)}
-                        style={{ backgroundColor: state === 3 ? '#E1FAED' : '#F5F5F5' }}
-                    >전체</SButton>
-                    <SButton type="button"
-                        onClick={() => handleStateClick(0)}
-                        style={{ backgroundColor: state === 0 ? '#E1FAED' : '#F5F5F5' }}
-                    >작성중</SButton>
-                    <SButton type="button"
-                        onClick={() => handleStateClick(1)}
-                        style={{ backgroundColor: state === 1 ? '#E1FAED' : '#F5F5F5' }}
-                    >작성완료</SButton>
-                    <SButton type="button"
-                        onClick={() => handleStateClick(2)}
-                        style={{ backgroundColor: state === 2 ? '#E1FAED' : '#F5F5F5' }}
-                    >보관</SButton>
-                </>}
-            <div style={{ position: 'absolute', right: 0, display: 'inline-block' }}>
+                        key={resume.id}
+                        onClick={() => handleApplyClick(resume.id)}
+                        style={{ backgroundColor: currentApply === String(resume.id) ? '#E1FAED' : '#F5F5F5' }}
+                    >{resume.recruitTitle}
+                    </SButton>
+                ))}
+                {!isChecked &&
+                    <>
+                        <SButton type="button"
+                            onClick={() => handleStateClick(3)}
+                            style={{ backgroundColor: state === 3 ? '#E1FAED' : '#F5F5F5' }}
+                        >전체</SButton>
+                        <SButton type="button"
+                            onClick={() => handleStateClick(0)}
+                            style={{ backgroundColor: state === 0 ? '#E1FAED' : '#F5F5F5' }}
+                        >작성중</SButton>
+                        <SButton type="button"
+                            onClick={() => handleStateClick(1)}
+                            style={{ backgroundColor: state === 1 ? '#E1FAED' : '#F5F5F5' }}
+                        >작성완료</SButton>
+                        <SButton type="button"
+                            onClick={() => handleStateClick(2)}
+                            style={{ backgroundColor: state === 2 ? '#E1FAED' : '#F5F5F5' }}
+                        >보관</SButton>
+                    </>}
+            </SButtonContainer>
+            <div style={{ position: 'absolute', right: 0,top:134, display: 'inline-block' }}>
                 <Toggle
                     checked={isChecked}
                     onChange={handleToggleClick}
                 />
             </div>
             <AddButton/>
-            {/* {!isHistoryListState
-                &&
-                (<EditButton onClick={handleEditClick} style={{ right: '100px' }}>
-                    <svg width="60" height="60" viewBox="2-2 80 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path id="Vector" d="M20 39.7509V46H26.2491L44.6799 27.5692L38.4308 21.3201L20 39.7509ZM49.5126 22.7366C50.1625 22.0867 50.1625 21.0368 49.5126 20.3869L45.6131 16.4874C44.9632 15.8375 43.9133 15.8375 43.2634 16.4874L40.2139 19.537L46.463 25.7861L49.5126 22.7366Z" fill="white" />
-                    </svg>
-                </EditButton>)}
-            <AddButton onClick={handleAddClick} style={{ right: '20px', fontSize: '36px', fontWeight: 700 }}>+</AddButton> */}
             <Outlet key={location.pathname} />
         </>
     )
 }
 export default ViewOptions;
+
+const SButtonContainer = styled.div`
+    width:650px;
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 10px;
+
+    /* Hide scrollbar for all browsers */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+
+    &::-webkit-scrollbar {
+        display: none; /* Safari and Chrome */
+    }
+`;
+
 
 const SButton = styled.button`
     height: 35px;
@@ -147,27 +158,3 @@ const SButton = styled.button`
         color: #000000;
     }
 `;
-
-// const EditButton = styled.button`
-//     width: 60px;
-//     height: 60px;
-//     border: none;
-//     border-radius: 50%;
-//     background-color: #B0B0B0;
-//     color: white;
-//     position: fixed;
-//     bottom: 20px;
-//     cursor: pointer;
-// `;
-
-// const AddButton = styled.button`
-//     width: 60px;
-//     height: 60px;
-//     border: none;
-//     border-radius: 50%;
-//     background-color: #3AAF85;
-//     color: white;
-//     position: fixed;
-//     bottom: 20px;
-//     cursor: pointer;
-// `;
