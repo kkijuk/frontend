@@ -87,11 +87,17 @@ const FieldEdit = ({ onSave }) => {
       const fetchData = async () => {
           try {
               const fetchedInterests = await mypageInterest();
-              setSelectedInterest(fetchedInterests);
-          } catch (error) {
-              console.error('관심 분야 데이터를 불러오는데 실패했습니다:', error);
-          }
-      };
+              if (Array.isArray(fetchedInterests)) {
+                setSelectedInterest(fetchedInterests); // 배열인 경우 상태 업데이트
+              } else {
+                setSelectedInterest([]); // 배열이 아닌 경우 빈 배열로 설정
+              }
+            } catch (error) {
+              // 에러 처리
+              console.error('Failed to load interests:', error);
+              setSelectedInterest([]); // 에러 발생 시 빈 배열로 설정
+            }
+          };
 
       fetchData();
   }, []);
