@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import TempBanner from '../../assets/TempBanner.gif';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -42,11 +43,17 @@ const CountPageText = styled.h6`
 
 export default function BannerTemp({}) {
     const [currentSlide, setCurrentSlide] = useState(1);
+    const navigate = useNavigate();
 
     const handleClick = () => {
-        window.open('https://www.instagram.com/kki.juk/', '_blank');
+        if (currentSlide === 1) {
+            window.open('https://www.instagram.com/kki.juk/', '_blank');
+        } else if (currentSlide === 2) {
+            window.open('https://forms.gle/y3VPjQaWBbVyegwk7', '_blank');
+        } else if (currentSlide === 3) {
+            navigate('/signup');
+        }
     };
-
 
 /*     useEffect(() => {
         const interval = setInterval(() => {
