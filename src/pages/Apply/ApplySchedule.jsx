@@ -45,7 +45,7 @@ const StatusContainer = styled.div`
 `;
 
 export default function ApplySchedule() {
-  const [view, setView] = useState('calendar'); 
+  const [view, setView] = useState('list'); 
   const [date, setDate] = useState(new Date());
   const [showModal, setShowModal] = useState(false);
   const [jobs, setJobs] = useState([]);
