@@ -5,7 +5,6 @@ import ReactCalendar from './ReviewCalendar';
 import moment from 'moment';
 import { editReview } from '../../api/Apply/ReviewEdit';
 import { deleteReview } from '../../api/Apply/DeleteReview';
-import ReviewDeleteModal from './ReviewDeleteModal';
 
 const Box = styled.div`
   height: 384px;
@@ -131,7 +130,6 @@ export default function ReviewDetailAddEdit({
   const [selectedDate, setSelectedDate] = useState(initialDate);
   const [title, setTitle] = useState(initialTitle);
   const [contents, setContents] = useState(initialContents);
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [isEditing, setIsEditing] = useState(true); // 수정란 상태
 
   const handleDateClick = () => {
@@ -168,32 +166,27 @@ export default function ReviewDetailAddEdit({
     }
   };
 
-  const handleDeleteClick = () => {
-    setIsModalOpen(true); // 모달 열기
-  };
+  const handleDeleteClick = async () => {
+    const confirmed = window.confirm("정말로 삭제하시겠습니까?");
+    if (confirmed) {
+      try {
+        await deleteReview(recruitId, reviewId);
 
-  const handleConfirmDelete = async () => {
-    try {
-      await deleteReview(recruitId, reviewId);
+        if (onDelete) {
+          onDelete(); // 부모 컴포넌트에서 상태 업데이트를 위한 콜백 함수 호출
+        }
 
-      if (onDelete) {
-        onDelete(); // 부모 컴포넌트에서 상태 업데이트를 위한 콜백 함수 호출
+        // 삭제 후 최신 데이터를 가져옵니다.
+        if (fetchData) {
+          await fetchData(); // 추가
+        }
+
+        setIsEditing(false); // 수정란 닫기
+        alert('삭제되었습니다.');
+      } catch (error) {
+        console.error('Failed to delete review:', error);
       }
-
-      // 삭제 후 최신 데이터를 가져옵니다.
-      if (fetchData) {
-        await fetchData(); // 추가
-      }
-
-      setIsModalOpen(false); // 모달 닫기
-      setIsEditing(false); // 수정란 닫기
-    } catch (error) {
-      console.error('Failed to delete review:', error);
     }
-  };
-
-  const handleCancelDelete = () => {
-    setIsModalOpen(false); // 모달 닫기
   };
 
   if (!isEditing) {
@@ -222,13 +215,6 @@ export default function ReviewDetailAddEdit({
         <Cancel onClick={handleDeleteClick}>삭제</Cancel>
         <Save onClick={handleSaveClick}>저장</Save>
       </Button>
-
-      {isModalOpen && (
-        <ReviewDeleteModal
-          onClose={handleCancelDelete} // 취소 클릭 시 모달 닫기
-          onConfirm={handleConfirmDelete} // 확인 클릭 시 삭제 진행
-        />
-      )}
     </Box>
   );
 }

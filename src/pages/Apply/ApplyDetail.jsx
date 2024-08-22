@@ -504,8 +504,6 @@ const ApplyDetail = () => {
   const [status, setStatus] = useState('');
   const [showCalendar, setShowCalendar] = useState(false);
   const [showReviewAdd, setShowReviewAdd] = useState(false);
-  const [reviewToDelete, setReviewToDelete] = useState(null);
-  const [isReviewDeleteModalOpen, setIsReviewDeleteModalOpen] = useState(false);
   const [gotoShow, setGotoShow] = useState(false); 
 
   const fetchJobDetails = async () => {
@@ -521,29 +519,28 @@ const ApplyDetail = () => {
 
   useEffect(() => {
     const updateJobState = async () => {
-        if (location.state && location.state.job) {
-            setJob({
-                ...location.state.job,
-                startTime: location.state.job.startTime, // 접수 시작 시간을 최신 값으로 설정
-                endTime: location.state.job.endTime,     // 접수 마감 시간을 최신 값으로 설정
-            });
-            setStatus(location.state.job.status);
-            setApplyDate(location.state.job.applyDate ? new Date(location.state.job.applyDate) : null);
-        } else {
-            const jobDetails = await fetchJobDetails();
-            setJob({
-                ...jobDetails,
-                startTime: jobDetails.startTime, // 접수 시작 시간을 최신 값으로 설정
-                endTime: jobDetails.endTime,     // 접수 마감 시간을 최신 값으로 설정
-            });
-            setStatus(jobDetails.status);
-            setApplyDate(jobDetails.applyDate ? new Date(jobDetails.applyDate) : null);
-        }
+      if (location.state && location.state.job) {
+        setJob({
+          ...location.state.job,
+          startTime: location.state.job.startTime, // 접수 시작 시간을 최신 값으로 설정
+          endTime: location.state.job.endTime,     // 접수 마감 시간을 최신 값으로 설정
+        });
+        setStatus(location.state.job.status);
+        setApplyDate(location.state.job.applyDate ? new Date(location.state.job.applyDate) : null);
+      } else {
+        const jobDetails = await fetchJobDetails();
+        setJob({
+          ...jobDetails,
+          startTime: jobDetails.startTime, // 접수 시작 시간을 최신 값으로 설정
+          endTime: jobDetails.endTime,     // 접수 마감 시간을 최신 값으로 설정
+        });
+        setStatus(jobDetails.status);
+        setApplyDate(jobDetails.applyDate ? new Date(jobDetails.applyDate) : null);
+      }
     };
 
     updateJobState();
-}, [id, location.state]);
-
+  }, [id, location.state]);
 
   const handleEditClick = () => {
     setIsEditModalOpen(true);
@@ -620,34 +617,22 @@ const ApplyDetail = () => {
 
   const handleReviewDelete = async (reviewId) => {
     try {
-        await deleteReview(id, reviewId); // 리뷰 삭제를 먼저 처리
-        setReviewToDelete(null); // 삭제된 리뷰 ID 초기화
-        setIsReviewDeleteModalOpen(false); // 모달 닫기
-        await fetchJobDetails(); // 이후에 데이터를 다시 가져옵니다.
+      await deleteReview(id, reviewId); // 리뷰 삭제를 처리
+      await fetchJobDetails(); // 이후에 데이터를 다시 가져옵니다.
     } catch (error) {
-        console.error('Failed to delete review:', error);
+      console.error('Failed to delete review:', error);
     }
-};
-
-const clickGotoApply = () => {
-  if (job?.link) { // link 값이 존재하면
-    window.open(job.link);
-  } else {
-    setGotoShow(true);
-    setTimeout(() => {
-      setGotoShow(false);
-    }, 3000);
-  }
-};
-
-  const openReviewDeleteModal = (reviewId) => {
-    setReviewToDelete(reviewId);
-    setIsReviewDeleteModalOpen(true);
   };
 
-  const closeReviewDeleteModal = () => {
-    setIsReviewDeleteModalOpen(false);
-    setReviewToDelete(null);
+  const clickGotoApply = () => {
+    if (job?.link) { // link 값이 존재하면
+      window.open(job.link);
+    } else {
+      setGotoShow(true);
+      setTimeout(() => {
+        setGotoShow(false);
+      }, 3000);
+    }
   };
 
   const handleDateClick = () => {
@@ -670,36 +655,33 @@ const clickGotoApply = () => {
     } catch (error) {
       console.error('Failed to update apply date:', error);
     }
-};
+  };
 
+  const formatDateTimeToLocal = (dateString) => {
+    // 서버에서 받은 UTC 시간을 Date 객체로 변환
+    const kstDate = new Date(dateString);
 
-const formatDateTimeToLocal = (dateString) => {
-  // 서버에서 받은 UTC 시간을 Date 객체로 변환
-  const kstDate = new Date(dateString);
+    // UTC 시간에 9시간을 더해서 한국 시간(KST)으로 변환
+    const localDate = new Date(kstDate.getTime()); // 9시간 더하기
 
-  // UTC 시간에 9시간을 더해서 한국 시간(KST)으로 변환
-  const localDate = new Date(kstDate.getTime() ); // 9시간 더하기
+    // 로컬 시간대의 연도, 월, 일, 시간, 분을 추출
+    const year = localDate.getFullYear();
+    const month = String(localDate.getMonth() + 1).padStart(2, '0');
+    const day = String(localDate.getDate()).padStart(2, '0');
+    const hours = String(localDate.getHours()).padStart(2, '0');
+    const minutes = String(localDate.getMinutes()).padStart(2, '0');
 
-  // 로컬 시간대의 연도, 월, 일, 시간, 분을 추출
-  const year = localDate.getFullYear();
-  const month = String(localDate.getMonth() + 1).padStart(2, '0');
-  const day = String(localDate.getDate()).padStart(2, '0');
-  const hours = String(localDate.getHours()).padStart(2, '0');
-  const minutes = String(localDate.getMinutes()).padStart(2, '0');
+    // 'YYYY-MM-DD HH:MM' 형식으로 변환하여 반환
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  };
 
-  // 'YYYY-MM-DD HH:MM' 형식으로 변환하여 반환
-  return `${year}-${month}-${day} ${hours}:${minutes}`;
-};
-
-
-
-const handleBackClick = () => {
-  if (location.state && location.state.from === 'status') {
-    navigate('/apply-status');
-  } else {
-    navigate('/apply-schedule');
-  }
-};
+  const handleBackClick = () => {
+    if (location.state && location.state.from === 'status') {
+      navigate('/apply-status');
+    } else {
+      navigate('/apply-schedule');
+    }
+  };
 
   if (!job) {
     return <div>Loading...</div>;
@@ -811,7 +793,7 @@ const handleBackClick = () => {
             title={review.title} 
             date={review.date} 
             contents={review.content} 
-            onDelete={() => openReviewDeleteModal(review.reviewId)}
+            onDelete={() => handleReviewDelete(review.reviewId)}
             onSave={handleReviewSave}  
             fetchData={fetchJobDetails}  // fetchData 전달
           />
@@ -836,12 +818,6 @@ const handleBackClick = () => {
       )}
       {isDeleteModalOpen && (
         <ApplyDeleteModal onClose={handleCloseDeleteModal} onConfirm={handleDeleteConfirm} />
-      )}
-      {isReviewDeleteModalOpen && (
-        <ReviewDeleteModal 
-          onClose={closeReviewDeleteModal}
-          onConfirm={() => handleReviewDelete(reviewToDelete)} 
-        />
       )}
 
       <Limiter show={gotoShow}>등록된 링크가 없습니다. <br/>공고 수정에서 링크를 등록해주세요!</Limiter>
