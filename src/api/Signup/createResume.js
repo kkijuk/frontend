@@ -1,8 +1,8 @@
 import api from "../../Axios";
 
-const createResume =()=>{
+const createResume =async ()=>{
     try{
-        const response = api.post('/history/resume');
+        const response = await api.post('/history/resume');
         console.log('이력서 생성: ', response.data);
 
     }catch(error){

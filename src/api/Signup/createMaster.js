@@ -1,6 +1,6 @@
 import api from "../../Axios";
 
-const createMaster =()=>{
+const createMaster =async()=>{
     try{
         const newData = {
             "oneLiner": "string",
@@ -11,7 +11,7 @@ const createMaster =()=>{
             "jobSuitabilityTitle": "string",
             "jobSuitability": "string"
           }
-        const response = api.post('/history/intro/master', newData);
+        const response = await api.post('/history/intro/master', newData);
         console.log("Master 자소서 생성: ", response.data);
     }catch(error){
         console.error('Error creating education:', error);
