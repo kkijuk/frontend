@@ -4,11 +4,15 @@ import { useNavigate } from 'react-router-dom';
 
 const SearchBarContainer = styled.div`
   display: flex;
+  height: 36px;
   align-items: center;
   background-color: #f5f5f5;
   padding: 10px 20px;
   border-radius: 12px;
   margin-left: 5px;
+  box-sizing: border-box;
+
+
 `;
 
 const SearchInput = styled.input`
