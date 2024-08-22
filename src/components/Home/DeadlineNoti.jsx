@@ -39,7 +39,7 @@ const Box = styled.div`
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     margin-top: 6px;
     align-items: center;
 
@@ -78,6 +78,7 @@ const PlaceholderText = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    text-align: left;
 `;
 
 export default function DeadlineNoti() {
