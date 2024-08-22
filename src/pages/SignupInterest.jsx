@@ -1,12 +1,12 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import InterestBox from '../components/shared/InterestBox';
 import InterestSkipModal from '../components/User/InterestSkipModal';
 import { saveInterests } from '../api/Signup/signupInterest';
+import { useAuth } from '../components/AuthContext'; // AuthContext 임포트
 
 const ContentArea = styled.div`
-
   margin: 0 auto;
   padding: 20px;
   background-color: white;
@@ -15,7 +15,6 @@ const ContentArea = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-
   flex-direction: column;
   overflow-y: auto;
 `;
@@ -28,24 +27,21 @@ const InterestArea = styled.div`
   box-sizing: border-box;
   gap: 10px;
   justify-content: center;
-
 `;
 
 const CloseButton = styled.button`
-    color: #707070;
-    text-align: center;
-    font-family: Pretendard;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    text-decoration-line: underline;
-
+  color: #707070;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-decoration-line: underline;
   display: flex;
   background: transparent;
   border: none;
   cursor: pointer;
-
   margin-top: 34px;
   margin-bottom: 18px;
 `;
@@ -53,7 +49,6 @@ const CloseButton = styled.button`
 const Title = styled.h2`
   margin-bottom: 10px;
   font-size: 32px;
-
   color: var(--main-01, #3AAF85);
   text-align: center;
   font-family: Pretendard;
@@ -63,14 +58,13 @@ const Title = styled.h2`
 `;
 
 const Label = styled.label`
-    color: #707070;
-    text-align: center;
-    font-family: Pretendard;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-
+  color: #707070;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
   display: inline-block;
   margin-bottom: 32px;
 `;
@@ -86,16 +80,14 @@ const SaveButton = styled.button`
   border-radius: 10px;
   cursor: pointer;
   font-size: 18px;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
-    text-align: center;
-    font-family: Pretendard;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
+  text-align: center;
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 
   &:hover {
     background-color: #35a576;
@@ -106,7 +98,14 @@ const SignupInterest = ({ onSave }) => {
   const [interestingList, setSelectedInterest] = useState([]);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  
+  const { isLoggedIn } = useAuth(); // 로그인 상태 확인
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/login'); // 로그인 상태가 아니면 로그인 페이지로 이동
+    }
+  }, [isLoggedIn, navigate]);
+
   const handleInterestSelect = (interest) => {
     setSelectedInterest((prevSelectedInterests) =>
       prevSelectedInterests.includes(interest)
@@ -127,7 +126,7 @@ const SignupInterest = ({ onSave }) => {
       console.log('Interest list being sent:', interestingList);
 
       onSave(result); // API 응답 데이터를 처리할 필요가 있으면 사용
-      navigate('/');
+      navigate('/'); // 완료 후 홈 페이지로 이동
     } catch (error) {
       alert('서버에 문제가 발생했습니다. 다시 시도해 주세요.');
     }
@@ -141,7 +140,6 @@ const SignupInterest = ({ onSave }) => {
     setShowModal(false);
   };
 
-  // 모달의 "확인" 버튼을 눌렀을 때 호출될 함수
   const handleModalConfirm = () => {
     handleClose(); // 홈 페이지로 이동
   };
@@ -173,6 +171,3 @@ const SignupInterest = ({ onSave }) => {
 };
 
 export default SignupInterest;
-
-
-
