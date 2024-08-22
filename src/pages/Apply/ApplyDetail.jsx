@@ -377,6 +377,7 @@ const CalendarWrapper = styled.div`
     background: var(--white, #FFF);
     position: absolute;
     z-index: 10;
+    margin-left: 150px;
   }
 
   .react-calendar__navigation {
@@ -675,7 +676,7 @@ const handleBackClick = () => {
   return (
     <Container>
       <Title>지원공고 관리</Title>
-      <BackLink to="/apply-schedule">&lt; 지원현황</BackLink>
+      <BackLink to="/apply-status">&lt; 지원현황</BackLink>
       <Header>
         <TitleContainer>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -708,7 +709,7 @@ const handleBackClick = () => {
           {showCalendar ? (
             <>
               <DateInputWrapper>
-                <DateInputField>지원일자</DateInputField>
+                <DateInputField>지원 일자를 입력하세요</DateInputField>
               </DateInputWrapper>
             </>
           ) : applyDate ? (
