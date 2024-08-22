@@ -36,12 +36,12 @@ const Category = styled.div`
 
 const CategoryText = styled.div`
   color: var(--black, #000);
-  font-family: Pretendard;
+  font-family: regular;
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  margin-top: 22px;
+  margin-top: 14px;
   margin-bottom: 20px;
   margin-left: 10px; /* 카테고리 아이콘과 텍스트 사이의 간격 추가 */
 `;
