@@ -1,8 +1,10 @@
 import styled from 'styled-components';
-import React, { useState} from 'react';
+import React, { useState , useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SubNav from '../../components/Mypage/SubNav'
 import InterestBox from '../../components/shared/InterestBox';
+import { mypageInterestEdit } from '../../api/Mypage/mypageInterestEdit';
+import { mypageInterest } from '../../api/Mypage/mypageInterest';
 
 const Box = styled.div`
     display: flex;
@@ -81,6 +83,19 @@ const FieldEdit = ({ onSave }) => {
     const [interestingList, setSelectedInterest] = useState([]);
     const navigate = useNavigate();
 
+    useEffect(() => {
+      const fetchData = async () => {
+          try {
+              const fetchedInterests = await mypageInterest();
+              setSelectedInterest(fetchedInterests);
+          } catch (error) {
+              console.error('관심 분야 데이터를 불러오는데 실패했습니다:', error);
+          }
+      };
+
+      fetchData();
+  }, []);
+
     const handleInterestSelect = (interest) => {
       setSelectedInterest((prevSelectedInterests) =>
         prevSelectedInterests.includes(interest)
@@ -89,9 +104,13 @@ const FieldEdit = ({ onSave }) => {
       );
     };
   
-      const handleSave = () => {
-        onSave({ interest: interestingList });
+    const handleSave = async () => {
+      try {
+        await mypageInterestEdit({ field: interestingList });
         navigate('/Mypage/Field');
+      } catch (error) {
+        console.error('저장 중 오류 발생:', error);
+      }
     };
   
     return (

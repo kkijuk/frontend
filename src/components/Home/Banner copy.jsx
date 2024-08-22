@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 
-
 const Container = styled.div`
   flex-shrink: 0;
-  width: 820px;
+  width: 100%;
   height: 188px;
   border-radius: 10px;
   border: none;
@@ -16,7 +15,6 @@ const Container = styled.div`
   justify-content: center;
   position: relative;
   overflow: hidden;
-  border: 1px solid red;
 `;
 
 const CountPage = styled.div`
@@ -48,62 +46,52 @@ const BannerSlide = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background: #000000;
 `;
 
 
 
 const settings = {
-  /*
-  dots: false,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  autoplay: true,
-  autoplaySpeed: 3000,*/
-
-      dots: true,
-      infinite: true,
-      arrows: false, //TODO issues with previous arrow on carousel
-      speed: 1000,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      swipeToSlide: true,
-      autoplay: true,
-      autoplaySpeed: 5000
-      // ,
-      // adaptiveHeight: true
-
-};
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+  };
 
 
-export default function Banner({}) {
+export default function Banner({ banners }) {
     const [currentSlide, setCurrentSlide] = useState(0);
 
-    const handleClick = (url) => {
-      if (url) {
-          window.open(url, '_blank');
+    useEffect(()=>{
+      console.log(banners);
+    },[]);
+
+    const handleClick = () => {
+      if (banners.url) {
+          window.open(banners.url, '_blank');
       }
   };
 
-  const handleAfterChange = (current) => {
-    console.log("Current slide:", current);
-    setCurrentSlide(current);
-  };
+    const handleAfterChange = (current) => {
+        setCurrentSlide(current);
+      };
 
     return (
         <Container>
             <Slider {...settings} afterChange={handleAfterChange}>
-                <BannerSlide onClick={() => handleClick('https://www.instagram.com/kki.juk/')}>
-                    <img src="https://i.ibb.co/hXPctnH/Frame-241.png" alt="My Image"></img>
-                </BannerSlide>
-                <BannerSlide onClick={() => handleClick('https://forms.gle/y3VPjQaWBbVyegwk7')}>
-                    <img src="https://i.ibb.co/BgYmmv7/Frame-242.png" alt="My Image"></img>
-                </BannerSlide>
-                <BannerSlide>
-                    <img src="https://i.ibb.co/Y8HdHQH/Frame-243.png" alt="My Image"></img>
-                </BannerSlide>
+                {banners.map((banner, index) => (
+                <p>hi</p>
+                //   <BannerSlide 
+                //     key={index} 
+                //     // style={{ backgroundImage: `url(${banner.image})` }} 
+
+                //     onClick={() => handleClick(banner.url)}
+                // >
+                //   <img src='${banner.image}'/>
+                // </BannerSlide>
+            ))}
             </Slider>
             <CountPage>
                 <CountPageText fontColor='white'>
@@ -111,7 +99,7 @@ export default function Banner({}) {
                 </CountPageText>
                 <CountPageText>/</CountPageText>
                 <CountPageText>
-                    {3}
+                    {banners.length}
                 </CountPageText>
             </CountPage>
 
