@@ -49,6 +49,7 @@ const List = () => {
                 // 전체 공고 목록 설정
                 setRecruits(Data);
                 console.log("경과한 공고 목록:", expiredItems);
+                setExpiredRecruits(expiredItems);
             })
             .catch(error => {
                 console.log(error);
@@ -67,17 +68,20 @@ const List = () => {
                 state={masterData.state}
                 onClick={() => navigate('/history/master')}
             />
-            {filterdData.map(item => (
-                <ListItem
-                    key={item.id}
-                    title={item.recruitTitle}
-                    updated_at={item.updatedAt}
-                    deadline={item.deadline}
-                    state={item.state}
-                    timeSinceUpdate={item.timeSinceUpdate}
-                    onClick={() => navigate(`/history/others/${item.id}`)}
-                />
+            {filterdData
+                .filter(item => item.state !== 2)  // state가 2가 아닌 항목만 필터링
+                .map(item => (
+                    <ListItem
+                        key={item.id}
+                        title={item.recruitTitle}
+                        updated_at={item.updatedAt}
+                        deadline={item.deadline}
+                        state={item.state}
+                        timeSinceUpdate={item.timeSinceUpdate}
+                        onClick={() => navigate(`/history/others/${item.id}`)}
+                    />
             ))}
+
             <br></br>
             {expiredRecruits.length > 0 && (
                 <div>
