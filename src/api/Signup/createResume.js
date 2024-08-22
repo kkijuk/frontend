@@ -1,12 +1,15 @@
 import api from "../../Axios";
 
-const createResume =async ()=>{
-    try{
-        const response = await api.post('/history/resume');
+const createResume = async (address, profileImageUrl) => {
+    try {
+        const response = await api.post('/history/resume/', {
+            address: address,
+            profileImageUrl: profileImageUrl
+        });
         console.log('이력서 생성: ', response.data);
 
-    }catch(error){
-        console.error('Erraor creating education:', error);
+    } catch (error) {
+        console.error('Error creating resume:', error);
         if (error.response) {
             // 서버 응답이 있는 경우
             console.error('Server responded with:', error.response.data);

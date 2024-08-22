@@ -8,7 +8,7 @@ import Convert from '../../components/History/Convert'
 import Toggle from '../../components/History/Toggle'
 import ButtonOptions from '../../components/History/AddButton.jsx'
 import Alert from '../../components/History/Alert'
-import EditApplyModal from '../../components/Apply/EditApplyModal.jsx'
+import EditApplyModal from '../../components/History/EditApplyModal.jsx'
 import { updateRecruit } from '../../api/Apply/RecruitUpdate.js'
 
 const OthersRewrite = () => {
@@ -231,6 +231,7 @@ const OthersRewrite = () => {
                                 <EditApplyModal 
                                     onClose={toggleEditApplyModal} 
                                     onSave={(data)=>handleEditApply(data)}
+                                    contents={contents}
                                     style={{ position: 'relative', zIndex: 1000 }}></EditApplyModal>}
                         </div>
                         <Tag onClick={toggleDropdown} style={{ color: 'white', width: '60px', cursor: 'pointer' }}>{isCompleted ? "작성 완료" : "작성 중"} ▼</Tag>
