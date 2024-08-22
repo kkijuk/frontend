@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import './history.css'
 import styled from "styled-components";
+import AddApplyModal from "../../components/shared/AddApplyModal";
+import { createRecruit } from "../../api/Apply/Recruit";
 
 // Todo
 // - 미지원 공고 api 연결
@@ -14,6 +16,8 @@ import styled from "styled-components";
 
 const Select =()=>{
     const navigate = useNavigate();
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const formattedDate =(date)=>{
         const year = date.getFullYear();
@@ -42,18 +46,25 @@ const Select =()=>{
         const now = new Date();
         const formattedTime = formattedDate(now);
         const encodedTime = encodeURIComponent(formattedTime);
+        console.log(encodedTime);
 
         api.get(`/recruit/list/valid?time=${encodedTime}`)
             .then(response=>{
                 console.log(response.data);
                 const recruitsData = response.data.unapplied.recruits;
                 setRecruits(recruitsData);
-                setCurrentApply(recruits[0].id)
+                if (recruitsData.length > 0) {
+                    setCurrentApply(recruitsData[0].id);
+                }
             })
             .catch(error=>{
                 console.log("Error: ", error);
             })
     },[])
+
+    useEffect(()=>{
+        console.log("Recruits 목록: ", recruits);
+    },[recruits])
 
     //2. 선택된 미지원 공고 세부정보 불러오기
     const handleClickItem=(id)=>{
@@ -114,10 +125,34 @@ const Select =()=>{
         if(newId) navigate(`/history/others/${newId}/rewrite`);
     },[newId])
 
+    const handleSave = (id) => {
+        // 공고 데이터를 추가하고 recruits 목록을 업데이트
+        const now = new Date();
+        const formattedTime = formattedDate(now);
+        const encodedTime = encodeURIComponent(formattedTime);
+
+        api.get(`/recruit/list/valid?time=${encodedTime}`)
+            .then(response => {
+                const recruitsData = response.data.unapplied.recruits;
+                setRecruits(recruitsData); // 전체 목록을 새로 가져와 업데이트
+                setCurrentApply(id); // 추가한 공고를 선택 상태로 설정
+            })
+            .catch(error => {
+                console.log("Error: ", error);
+            });
+    };
 
     return( 
         <BackgroundDiv>
             <BaseDiv>
+                <div style={{position:'absolute', zIndex:1000}}>
+                    {isModalOpen && 
+                        <AddApplyModal
+                            onClose={()=>setIsModalOpen(false)}
+                            onSave={handleSave}
+                        />}
+                        {/* //id 리스트에 추가해서 id가 변하면 공고 목록도 새로 불러옴 */}
+                </div>
                 <div style={{height:'140px'}}></div>
                 <h1>자기소개서를 작성할 공고를 선택해주세요.</h1>
                 <div style={{height:'50px'}}></div>
@@ -127,15 +162,15 @@ const Select =()=>{
                             recruits.map(recruit=>(
                                 <ListItem 
                                     onClick={()=>{handleClickItem(recruit.id)}}  
-                                    style={{backgroundColor: currentApply===recruit.recruitId ? '#E1FAED' :'#F5F5F5',
-                                            color: currentApply===recruit.recruitId ? 'black' :'#707070',
-                                            border: currentApply===recruit.recruitId ? '2px solid var(--main-01, #3AAF85)' :'none'}}>
+                                    style={{backgroundColor: currentApply===recruit.id ? '#E1FAED' :'#F5F5F5',
+                                            color: currentApply===recruit.id ? 'black' :'#707070',
+                                            border: currentApply===recruit.id ? '2px solid var(--main-01, #3AAF85)' :'none'}}>
                                 {recruit.title}
                                 </ListItem>
                             ))
                         }
                     </ItemsDiv>
-                    <AddButton>공고 추가</AddButton>
+                    <AddButton onClick={()=>setIsModalOpen(true)}>공고 추가</AddButton>
                 </ListDiv>
                 <div style={{height:'30px'}}></div>
                 <InfoDiv>
@@ -236,6 +271,7 @@ const InfoDiv = styled.div`
     background: var(--gray-06, #F5F5F5);
     padding: 15px 10px;
     position:relative;
+    z-index:0;
 `
 
 const Button = styled.div`
