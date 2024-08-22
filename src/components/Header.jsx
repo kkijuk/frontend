@@ -44,8 +44,8 @@ const Nav = styled.nav`
     margin: 0;
   }
   li {
-    margin-left: 30px;
-    margin-right: 30px;
+    margin-left: 40px;
+    margin-right: 20px;
     cursor: pointer;
     color: #333;
     font-family: Pretendard;
@@ -119,8 +119,8 @@ const DropdownMenu = styled.div`
   border: 1px solid #ccc;
   border-radius: 10px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  width: 135px;
-  height: 140px;
+  width: 110px;
+  height: 70px;
   padding: 10px;
   z-index: 100;
 
@@ -211,9 +211,7 @@ export default function Header() {
                 </svg>
                 {isDropdownOpen && (
                   <DropdownMenu ref={dropdownRef}>
-                    <a onClick={() => navigate('/mypage/authentication')}>내 정보</a>
-                    <a onClick={() => navigate('/mypage/field')}>관심분야 설정</a>
-                    <a onClick={() => navigate('/mypage/accountmanagement')}>계정 관리</a>
+                    <a onClick={() => navigate('/mypage/authentication')}>마이페이지</a>
                     <a onClick={handleLogout}>로그아웃</a>
                   </DropdownMenu>
                 )}
