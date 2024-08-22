@@ -278,6 +278,8 @@ const Button = styled.div`
   width: 720px;
   height: 50px;
   border-radius: 10px;
+  font-family: regular;
+  font-size: 18px;
   background: var(--main-01, #3AAF85);
   border: none; 
   color: white; 
