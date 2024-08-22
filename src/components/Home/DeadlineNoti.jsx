@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { getRecruitRemind } from '../../api/Home/getRecruitRemind';
 import { useAuth } from '../AuthContext';  // AuthContext 가져오기
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   flex-shrink: 0;
@@ -20,7 +21,7 @@ const Container = styled.div`
 
 const Label = styled.div`
     color: var(--black, #000);
-    font-family: Pretendard;
+    font-family: SemiBold;
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
@@ -44,11 +45,12 @@ const Box = styled.div`
     align-items: center;
 
     color: var(--black, #000);
-    font-family: Pretendard;
+    font-family: medium;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    cursor: pointer;
 `;
 
 const DDayBox = styled.div`
@@ -65,7 +67,7 @@ const DDayBox = styled.div`
 const DDayText = styled.div`
     flex-shrink: 0;
     color: ${props => props.fontColor || '#707070'};
-    font-family: Pretendard;
+    font-family: ${props => props.font || 'Medium'};
     font-size: 14px;
     font-style: normal;
     font-weight: 500;
@@ -73,7 +75,7 @@ const DDayText = styled.div`
 
 const PlaceholderText = styled.div`
     color: var(--gray-03, #D9D9D9);  // 회색 글씨
-    font-family: Regular;
+    font-family: medium;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -83,6 +85,7 @@ const PlaceholderText = styled.div`
 
 export default function DeadlineNoti() {
     const { isLoggedIn } = useAuth();  // 로그인 상태 가져오기
+    const navigate = useNavigate();
     const [recruits, setRecruits] = useState([]);
 
     useEffect(() => {
@@ -111,23 +114,32 @@ export default function DeadlineNoti() {
         }
     }, [isLoggedIn]);
 
+    const handleClick = (isEmpty, id) => {
+        if (isEmpty) {
+            navigate('/apply-schedule');
+        } else {
+            navigate(`/apply-detail/${id}`);
+        }
+    };
+
     return (
         <Container>
             <Label>공고 마감이 얼마 남지 않았어요</Label>
             {recruits.map((recruit) => {
                 const isEmpty = !recruit.title;
                 const fontColor = recruit.dday <= 7 ? '#FA7C79' : '#707070'; // 현재: 7일 이하면 글자색 빨간색
+                const fontB = recruit.dday <= 7 ? 'SemiBold' : 'Medium';
 
                 return (
-                    <Box key={recruit.id}>
+                    <Box key={recruit.id} onClick={() => handleClick(isEmpty, recruit.id)}>
                         {isEmpty ? (
                             <PlaceholderText>공고를 추가해 주세요</PlaceholderText>
                         ) : (
                             <>
                                 {recruit.title}
                                 <DDayBox>
-                                    <DDayText fontColor={fontColor}>D-</DDayText>
-                                    <DDayText fontColor={fontColor}>{recruit.dday}</DDayText>
+                                    <DDayText fontColor={fontColor} font={fontB}>D-</DDayText>
+                                    <DDayText fontColor={fontColor} font={fontB}>{recruit.dday}</DDayText>
                                 </DDayBox>
                             </>
                         )}
