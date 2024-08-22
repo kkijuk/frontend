@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom'; 
 import createMaster from '../api/Signup/createMaster';
@@ -68,11 +68,15 @@ const SignupSuccessScreen = styled.div`
 const SignupSuccess = () => {
   const navigate = useNavigate(); 
   const { login } = useAuth(); 
+  const [hasCalled, setHasCalled] = useState(false);  // 호출 여부 상태 관리
 
   useEffect(() => {
-    createMaster();
-    createResume();
-  }, []);
+    if (!hasCalled) {
+      createMaster();
+      createResume();
+      setHasCalled(true);  // 호출 후 true로 설정
+    }
+  }, [hasCalled]);
 
   const handleButtonClick = () => {
     login(); // 회원가입이 완료된 후 자동 로그인

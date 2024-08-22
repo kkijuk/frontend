@@ -65,12 +65,14 @@ export default function RecommendBox({data, url}) {
 
     const handleClick = () => {
         if (url) {
+            
             window.open(url);
         }
     };
 
     return (
         <Container onClick={handleClick}>
+            
             <ImageContainer image={data.image} />
             <TextContainer>
                 <ContentText>{data.title}</ContentText>

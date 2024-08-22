@@ -8,7 +8,7 @@ import Convert from '../../components/History/Convert'
 import Toggle from '../../components/History/Toggle'
 import ButtonOptions from '../../components/History/AddButton.jsx'
 import Alert from '../../components/History/Alert'
-import EditApplyModal from '../../components/Apply/EditApplyModal.jsx'
+import EditApplyModal from '../../components/History/EditApplyModal.jsx'
 import { updateRecruit } from '../../api/Apply/RecruitUpdate.js'
 
 const OthersRewrite = () => {
@@ -97,7 +97,11 @@ const OthersRewrite = () => {
             question.number === number ? { ...question, [field]: event.target.value } : question
         ));
         setQuestions(newQuestions);
-        setCharCounts(prev => prev.map((count, i) => i === number ? event.target.value.length : count));
+        console.log("InputChange Result: ", questions);
+        // Corrected charCounts update logic
+        setCharCounts(prev => prev.map((count, i) =>
+            questions[i].number === number ? event.target.value.length : count
+        ));
     }
 
     const submitData = () => {
@@ -106,6 +110,7 @@ const OthersRewrite = () => {
             state: isCompleted
         };
         console.log("자소서 수정 데이터: ", Data);
+        console.log("이력서 ID: ", contents.id);
         api.patch(`history/intro/${contents.id}`, Data)
             .then(response => {
                 console.log(response.data);
@@ -115,7 +120,7 @@ const OthersRewrite = () => {
             });
     }
 
-    setInterval(submitData, 60000);
+    // setInterval(submitData, 60000);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -154,8 +159,10 @@ const OthersRewrite = () => {
         questions.map(question => {
             if (!(question.subTitle) && !question.content) { count++; console.log(question.number); }
         });
-        if (count < 3) setQuestions([...questions, { number: nextQuestionId, subTitle: '', content: '' }]);
-        else showLimiter();
+        if (count < 3) {
+            setQuestions([...questions, { number: nextQuestionId, subTitle: '', content: '' }]);
+            setNextQuestionId(prevId => prevId + 1);
+        }else showLimiter();
     }
 
     const handleEditApply = async (data)=>{
@@ -218,12 +225,13 @@ const OthersRewrite = () => {
                     <div style={{ display: 'inline-block', position: 'relative' }}>
                         {modalOpend && <Alert closeModal={toggleModal} deleteResume={deleteResume}></Alert>}
                         <Limiter show={show}>빈 질문을 먼저 채워주세요!</Limiter>
-                        <Limiter show={gotoShow} style={{ width: "250px" }}>등록된 링크가 없습니다. <br />공고 수정에서 링크를 등록해주세요!</Limiter>
+                        <Limiter show={gotoShow} style={{ width: "250px",position:'absolute',left:20, top:400 }}>등록된 링크가 없습니다. <br />공고 수정에서 링크를 등록해주세요!</Limiter>
                         <div style={{ position: 'relative', zIndex: 1000 }}>
                             {isEditApplyModalOpend && 
                                 <EditApplyModal 
                                     onClose={toggleEditApplyModal} 
                                     onSave={(data)=>handleEditApply(data)}
+                                    contents={contents}
                                     style={{ position: 'relative', zIndex: 1000 }}></EditApplyModal>}
                         </div>
                         <Tag onClick={toggleDropdown} style={{ color: 'white', width: '60px', cursor: 'pointer' }}>{isCompleted ? "작성 완료" : "작성 중"} ▼</Tag>
@@ -264,7 +272,7 @@ const OthersRewrite = () => {
                 <p className='lastUpdated' style={{ marginTop: 0 }}>마지막 수정일시: {contents.updatedAt}</p>
                 <form>
                     {questions.map((question, index) => (
-                        <div key={question.number} style={{ position: 'relative' }}>
+                        <div key={question.number + "_" + index} style={{ position: 'relative' }}>
                             <Delete style={{ left: '10px', top: '10px', color: '#707070', fontSize: '24px', lineHeight: 'normal', cursor: 'default' }}>
                                 {index + 1}
                             </Delete>

@@ -3,10 +3,10 @@ import api from "../../Axios";
 const createEducation = async (recordId, data) => {
     try {
         const transformedData = {
-            category: data.level || '',           // level -> category
+            category: data.category || '',           // level -> category
             schoolName: data.schoolName || '',   
             major: data.department || '',             
-            state: data.status || '',             // status -> state
+            state: data.state || '',             // status -> state
             admissionDate: data.admissionDate || '', 
             graduationDate: data.graduationDate || ''
         };

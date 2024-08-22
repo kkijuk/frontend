@@ -10,12 +10,11 @@ const ViewToggleStyled = styled.div`
 const ToggleContainer = styled.div`
   background-color: #F5F5F5;
   border-radius: 10px;
- 
   margin-right: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-   width: 150px;
+  width: 150px;
   height: 35px;
 `;
 
@@ -33,22 +32,26 @@ const ToggleButton = styled.button`
   justify-content: center;
   color: ${props => (props.active ? '#000' : '#666')};
   text-align: center;
-  font-family:'Regular';
+  font-family: 'Regular';
   font-size: 14px;
   font-style: normal;
-
-
-  transition: all 0.2s ease; 
+  transition: all 0.2s ease;
 `;
 
 const ViewToggle = ({ view, onToggle }) => {
+  
+  const handleToggle = (newView) => {
+    window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
+    onToggle(newView);
+  };
+
   return (
     <ViewToggleStyled>
       <ToggleContainer>
-        <ToggleButton active={view === 'calendar'} onClick={() => onToggle('calendar')}>
+        <ToggleButton active={view === 'calendar'} onClick={() => handleToggle('calendar')}>
           달력보기
         </ToggleButton>
-        <ToggleButton active={view === 'list'} onClick={() => onToggle('list')}>
+        <ToggleButton active={view === 'list'} onClick={() => handleToggle('list')}>
           목록보기
         </ToggleButton>
       </ToggleContainer>
@@ -57,23 +60,3 @@ const ViewToggle = ({ view, onToggle }) => {
 };
 
 export default ViewToggle;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

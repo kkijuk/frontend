@@ -74,10 +74,14 @@ export default function LoginProfileBox() {
     const navigate = useNavigate();
 
     const goLogin = () =>{
+        window.scrollTo(0, 0); 
+
         navigate('/login');
     };
 
     const goSignup = () =>{
+        window.scrollTo(0, 0); 
+
         navigate('/signup');
     };
 

@@ -6,23 +6,21 @@ import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 
 const BackgroundSection = styled.div`
   width: 100vw;
-  left: 50%;
   height: 600px;
+  left: 50%;
   transform: translateX(-50%);
   background-color: #f0f0f0;
   position: relative;
   box-sizing: border-box;
-  border: 1px solid #f0f0f0;
+  overflow-y: auto; /* 스크롤 가능하게 설정 */
   display: flex;
-  justify-content: center;  /* 가로로 중앙 정렬 */
-  align-items: center;       /* 세로로 중앙 정렬 */
-  flex-direction: column;    /* 세로로 쌓이도록 설정 */
+  justify-content: center; /* CategoryBox를 가운데로 정렬 */
+  align-items: flex-start; /* CategoryBox를 세로 축에서 상단에 정렬 */
 `;
 
 const Contianer = styled.div`
   width: 820px;
   height: 600px;
-  overflow-y: auto;  /* 세로 스크롤 활성화 */
   box-sizing: border-box;  /* padding과 border를 포함한 전체 크기를 계산 */
 `;
 
@@ -122,6 +120,8 @@ const CareerViewYear = ({data}) => {
       const responseData = await ViewCareerDetail(careerId);
       console.log('Received careerId:', careerId);
       if (responseData) {
+        window.scrollTo(0, 0);
+
         navigate(`/mycareer/${careerId}`, { details: responseData });
   
       }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect'; // API 함수 가져오기
+import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
 import { useAuth } from '../AuthContext';
 import { useNavigate } from "react-router-dom";
 
@@ -99,7 +99,6 @@ const Tag = styled.div`
   min-width: 50px; /* 최소 너비를 설정하여 텍스트가 너무 작게 보이지 않도록 설정 */
 `;
 
-
 const getBackgroundColor = (category) => {
   let color;
   switch (category) {
@@ -145,10 +144,10 @@ const calculateWidth = (startDate, endDate, oneMonthInPixels) => {
 export default function Timeline({ triggerEffect }) {
   const { isLoggedIn } = useAuth(); // 로그인 상태를 가져옴
   const [careers, setCareers] = useState([]);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (isLoggedIn) { // 로그인된 상태일 때만 데이터 가져오기
+    if (isLoggedIn) {
       const fetchCareers = async () => {
         const status = 'year';
         const responseData = await CareerViewSelect(status);
@@ -198,19 +197,20 @@ export default function Timeline({ triggerEffect }) {
   // 남은 데이터를 그룹에 배치, 겹치지 않게
   for (let i = 4; i < sortedCareerData.length; i++) {
     const currentData = sortedCareerData[i];
+    let placed = false; // 현재 데이터를 어느 그룹에 배치했는지 여부 확인
     
-    if (!currentData) continue; // currentData가 undefined일 경우 건너뜀
-
     for (let j = 0; j < 4; j++) {
       const lastInGroup = groups[j][groups[j].length - 1];
       
-      if (!lastInGroup) continue; // lastInGroup이 undefined일 경우 건너뜀
-
-      // 겹치지 않는 기간인지 확인 후 배치
-      if (new Date(currentData.startDate) > new Date(lastInGroup.endDate)) {
+      if (!lastInGroup || calculateLeft(currentData.startDate, earliestDate, oneMonthInPixels) > calculateLeft(lastInGroup.endDate, earliestDate, oneMonthInPixels) + calculateWidth(lastInGroup.startDate, lastInGroup.endDate, oneMonthInPixels)) {
         groups[j].push(currentData);
+        placed = true; // 그룹에 배치 완료
         break;
       }
+    }
+
+    if (!placed) {
+      console.log(`데이터 ${currentData.careerName}는 배치할 수 없습니다.`);
     }
   }
 
@@ -218,7 +218,7 @@ export default function Timeline({ triggerEffect }) {
   const xLabels = [];
   if (earliestDate && latestDate) {
     let startYear = earliestDate.getFullYear();
-    let startMonth = earliestDate.getMonth() + 1; // getMonth()는 0부터 시작하므로 +1
+    let startMonth = earliestDate.getMonth() + 1;
 
     while (startYear < latestDate.getFullYear() || 
            (startYear === latestDate.getFullYear() && startMonth <= latestDate.getMonth() + 1)) {
@@ -233,6 +233,7 @@ export default function Timeline({ triggerEffect }) {
   }
 
   const handleClick = () => {
+    window.scrollTo(0, 0); 
     navigate('/mycareer'); // "/mycareer" 경로로 이동
   };
 

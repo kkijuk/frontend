@@ -391,7 +391,6 @@ const handleDeleteModalClose = () => {
 const handleDeleteConfirm = async () => {
 try {
   await CareerDelete(data.data.id); // CareerDelete API 호출
-  alert('삭제되었습니다.');
   onClose();
   navigate('/mycareer'); // 삭제 후 mycareer 페이지로 이동
 

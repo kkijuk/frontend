@@ -115,13 +115,17 @@ export default function DeadlineNoti() {
     }, [isLoggedIn]);
 
     const handleClick = (isEmpty, id) => {
+        window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
+
         if (isEmpty) {
+            
             navigate('/apply-schedule');
         } else {
             navigate(`/apply-detail/${id}`);
         }
     };
 
+ 
     return (
         <Container>
             <Label>공고 마감이 얼마 남지 않았어요</Label>
