@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import Agreement from './Agreement';
 import { confirmEmail } from '../../api/Signup/ConfirmEmail';
 import { requestEmailVerification } from '../../api/Signup/requestEmailVerification'; 
+import AgreementModal1 from './AgreementModal1'; // 이용약관 모달
+import AgreementModal2 from './AgreementModal2'; // 개인정보 모달
+import AgreementModal3 from './AgreementModal3';
 
 const FormContainer = styled.div`
   align-items: center;
@@ -182,13 +185,15 @@ const FormContainer = styled.div`
   }
 `;
 
+
 const InitialSignupForm = ({
   email, setEmail, password, setPassword, confirmPassword, setConfirmPassword,
   agreements1, setAgreements1, agreements2, setAgreements2, agreements3, setAgreements3,
-  handleNextStep, handleModal
+  handleNextStep
 }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [emailChecked, setEmailChecked] = useState(false);
+  const [modalType, setModalType] = useState(null);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -250,6 +255,14 @@ const InitialSignupForm = ({
     }
   };
 
+  const handleModal = (type) => {
+    setModalType(type); // 모달 타입 설정
+  };
+
+  const closeModal = () => {
+    setModalType(null); // 모달 닫기
+  };
+
   return (
     <FormContainer>
       <h2>회원가입</h2>
@@ -293,11 +306,16 @@ const InitialSignupForm = ({
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
       </div>
-      <Agreement checked={agreements1} setChecked={setAgreements1} label="이용약관 동의(필수)" handleModal={handleModal} />
-      <Agreement checked={agreements2} setChecked={setAgreements2} label="개인정보 수집 및 이용동의(필수)" handleModal={handleModal} />
-      <Agreement checked={agreements3} setChecked={setAgreements3} label="마케팅 활용동의(선택)" handleModal={handleModal} />
+      <Agreement checked={agreements1} setChecked={setAgreements1} label="이용약관 동의(필수)" handleModal={() => handleModal(1)} />
+      <Agreement checked={agreements2} setChecked={setAgreements2} label="개인정보 수집 및 이용동의(필수)" handleModal={() => handleModal(2)} />
+      <Agreement checked={agreements3} setChecked={setAgreements3} label="마케팅 활용동의(선택)" handleModal={() => handleModal(3)} />
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <button onClick={handleSubmit}>다음</button>
+
+      {/* 모달들 */}
+      {modalType === 1 && <AgreementModal1 show={true} handleModal={closeModal} />}
+      {modalType === 2 && <AgreementModal2 show={true} handleModal={closeModal} />}
+      {modalType === 3 && <AgreementModal3 show={true} handleModal={closeModal} />}
     </FormContainer>
   );
 };
