@@ -126,16 +126,29 @@ const Input = styled.input`
     font-family: Pretendard;
     font-size: 16px;
     color: var(--black, #000);
-
     padding: 15px 20px; /* 위아래 15px, 양옆 20px */
     box-sizing: border-box; /* padding을 포함한 요소의 전체 크기를 설정된 width와 height에 맞춤 */
-
     z-index: 1; /* z-index 추가 */
     position: relative; /* z-index가 적용되도록 position 속성 추가 */
-
-
 `;
 
+const TextArea = styled.textarea`
+    border-radius: 10px;
+    background: #F5F5F5;
+    flex-shrink: 0;
+    height: ${props => props.height || 'auto'};
+    width: ${props => props.width || 'auto'};
+    border: none; /* 테두리를 없앰 */
+    font-family: Pretendard;
+    font-size: 16px;
+    color: var(--black, #000);
+    padding: 15px 20px; /* 위아래 15px, 양옆 20px */
+    box-sizing: border-box; /* padding을 포함한 요소의 전체 크기를 설정된 width와 height에 맞춤 */
+    z-index: 1; /* z-index 추가 */
+    position: relative; /* z-index가 적용되도록 position 속성 추가 */
+    resize: none; /* 사용자가 텍스트 영역 크기 조절 못하도록 함 */
+    overflow-y: auto; /* 텍스트가 넘칠 경우 스크롤 생성 */
+`;
 
 export default function DetailAdd({ onCancel, onSave, careerId }) {  // careerId도 prop으로 받음
     const [showCalendar, setShowCalendar] = useState(false);
@@ -201,10 +214,12 @@ export default function DetailAdd({ onCancel, onSave, careerId }) {  // careerId
 
     return (
         <Box>
+             <Line></Line>
+
             <Top>
                 <Title>
                     <Label>제목</Label>
-                    <Input height="50px" width="460px" placeholderText="활동 제목을 작성하세요" value={title} onChange={saveTitle} />
+                    <Input height="50px" width="460px" placeholder="활동 제목을 작성하세요" value={title} onChange={saveTitle} />
                 </Title>
                 <Date>
                     <Label>날짜</Label>
@@ -214,7 +229,7 @@ export default function DetailAdd({ onCancel, onSave, careerId }) {  // careerId
             </Top>
             <Middle>
                 <Label>내용</Label>
-                <Input height="100px" width="720px" placeholderText="활동 세부 내용을 작성하세요" value={content} onChange={saveContent} />
+                <TextArea height="100px" width="720px" placeholder="활동 세부 내용을 작성하세요" value={content} onChange={saveContent} />
             </Middle>
             <TagBox onTagListChange={setTagList} /> {/* 태그 박스에서 선택한 태그 관리 */}
             <Button>

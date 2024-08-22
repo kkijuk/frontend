@@ -34,8 +34,7 @@ const Text = styled.div`
 `;
 
 const TagInputContainer = styled.div`
-    width: 660px;
-    height: 34px;
+    width: 650px;
     flex-shrink: 0;
     border-radius: 10px;
     background: #F5F5F5;
@@ -43,12 +42,16 @@ const TagInputContainer = styled.div`
     align-items: center;
     flex-wrap: wrap;
     gap: 5px;
-        padding-left: 5px; /* 전체 컨테이너의 좌측에 패딩 추가 */
+    padding-left: 5px; /* 전체 컨테이너의 좌측에 패딩 추가 */
+    padding-top: 5px;
+    padding-bottom: 5px;
 
 `;
 
 const TagInput = styled.input`
     flex: 1;
+        border: 1px solid black;
+
     border: none; /* 테두리 제거 */
     padding-left: 5px;
     background: #F5F5F5;

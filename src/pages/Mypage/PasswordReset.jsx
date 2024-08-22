@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { resetPassword } from "../../api/Login/passwordreset";
 
@@ -116,6 +116,8 @@ const ErrorMessage = styled.div`
 
 export default function PasswordReset() {
     const location = useLocation();
+    const navigate = useNavigate(); // useNavigate 훅 사용
+
     const email = location.state?.email || ''; // 이전 페이지에서 전달된 email 값
     const [newPassword, setNewPassword] = useState('');
     const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
@@ -130,7 +132,7 @@ export default function PasswordReset() {
         try {
             const responseData = await resetPassword(email, newPassword, newPasswordConfirm);
             if (responseData) {
-                alert("비밀번호가 성공적으로 재설정되었습니다.");
+                navigate('/resetsuccess'); // 비밀번호 재설정 성공 시 ResetSuccess 페이지로 이동
                 // 비밀번호 재설정 성공 시 필요한 후속 처리 (예: 로그인 페이지로 이동)
             } else {
                 alert("비밀번호 재설정에 실패했습니다. 다시 시도해주세요.");

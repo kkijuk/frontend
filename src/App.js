@@ -92,10 +92,10 @@ const App = () => {
           <Route path="/mypage/accountmanagement" element={<AccountMangement />} />
           <Route path="/mypage/field" element={<Field />} />
           <Route path="/mypage/fieldedit" element={<FieldEdit />} />
-          <Route path="/mypage/passwordresetemail" element={<PasswordResetEmail />} />
-          <Route path="/mypage/passwordresetemailconfirm" element={<PasswordResetEmailConfirm />} />
-          <Route path="/mypage/passwordreset" element={<PasswordReset />} />
-          <Route path="/mypage/resetsuccess" element={<ResetSuccess />} />
+          <Route path="/passwordresetemail" element={<PasswordResetEmail />} />
+          <Route path="/passwordresetemailconfirm" element={<PasswordResetEmailConfirm />} />
+          <Route path="/passwordreset" element={<PasswordReset />} />
+          <Route path="/resetsuccess" element={<ResetSuccess />} />
                     <Route path="/login-required" element={<LoginRequired />} />
 
         </Routes>
