@@ -196,10 +196,23 @@ const History = () => {
     const toggleAddActModalOpen = () => {
         setIsAddActModalOpen(prev => !prev);
     };
+    //활동 수정 모달 닫기
+    const closeEditActModal =()=>{
+        setIsEditActModalOpen(false);
+    }
     // 활동 수정 모달 토글
     const toggleEditActModalOpen = (careerId) => {
         const career = [...careers, ...activities].find(item => item.careerId === careerId);
         if (career) {
+            const categoryMap = {
+                '동아리': 1,
+                '대외활동': 2,
+                '공모전/대회': 3,
+                '프로젝트': 4,
+                '아르바이트/인턴': 5,
+                '교육': 6,
+                '기타활동': 7
+            };
             const careerData = {
                 id: careerId,
                 categoryName: career.category,
@@ -213,6 +226,7 @@ const History = () => {
             };
 
             setSelectedCareer({ data: careerData });
+            console.log("선택된 정보:", selectedCareer);
         }
         setIsEditActModalOpen(true);
     };
@@ -277,7 +291,7 @@ const History = () => {
             {isAddActModalOpen && <AddCareerModal onClose={toggleAddActModalOpen} onSave={handleAddCareer}/>}
             {isEditActModalOpen && 
                 <AddCareerModalEdit 
-                    onClose={toggleEditActModalOpen}
+                    onClose={closeEditActModal}
                     data={selectedCareer}
                     onSave={(data)=>handleSaveCareerEdit(data)}/>}
             <p style={{fontFamily:'Regular', fontSize:'14px', color:'#707070', position:'absolute', top:'-30px', right:'0px'}}>
