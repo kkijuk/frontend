@@ -62,6 +62,8 @@ const ViewOptions = () => {
             : navigate(`/history/others/${id}`);
     };
 
+    
+
     const handleStateClick = (state) => {
         navigate(`/history/list/${state}`);
         setState(state);
@@ -116,7 +118,7 @@ const ViewOptions = () => {
                     </svg>
                 </EditButton>)}
             <AddButton onClick={handleAddClick} style={{ right: '20px', fontSize: '36px', fontWeight: 700 }}>+</AddButton> */}
-            <Outlet />
+            <Outlet key={location.pathname} />
         </>
     )
 }

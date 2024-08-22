@@ -245,11 +245,10 @@ const ItemsDiv=styled.div`
     }
 `
 
-const ListItem=styled.div`
-    display: flex;
-    max-width:100px;
+const ListItem = styled.div`
+    display: inline-flex;
     height: 60px;
-    padding: 0px 36px;
+    padding: 0px 20px;  /* 패딩을 줄여서 글자수에 따라 아이템 크기가 조절되도록 합니다. */
     justify-content: center;
     align-items: center;
     gap: 10px;
@@ -260,8 +259,9 @@ const ListItem=styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    cursor:pointer;
-`
+    cursor: pointer;
+    white-space: nowrap; /* 줄바꿈 방지 */
+`;
 
 const InfoDiv = styled.div`
     width: 720px;

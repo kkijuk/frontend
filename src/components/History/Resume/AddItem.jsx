@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import styled from 'styled-components'
 import '../../../pages/History/history.css'
 import Edu from './Edu'
@@ -15,17 +15,21 @@ const AddItem=({ onCancel, onAdd })=>{
 
     })
 
+    useEffect(()=>{
+        console.log("formDataChanged: ", formData);
+    },[formData])
+
     const handleChange =(e)=>{
         const {name, value} = e.target;
         setFormData(prev => ({...prev, [name]:value}));
     }
 
-    const handleLevelChange =(level)=>{
-        setFormData(prev=>({...prev, level}));
+    const handleLevelChange =(category)=>{
+        setFormData(prev=>({...prev, category}));
     }
 
-    const handleStatusChange =(status)=>{
-        setFormData(prev=>({...prev, status}));
+    const handleStatusChange =(state)=>{
+        setFormData(prev=>({...prev, state}));
     }
 
 const handleStartDateChange = (startDate) => {
