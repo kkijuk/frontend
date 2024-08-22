@@ -17,6 +17,7 @@ const TabButton = styled.button`
   color: var(--black, #000);
   font-family: 'Bold';
   font-size: 25px;
+  white-space: nowrap;
   font-weight: 700;
   color: ${props => (props.active ? 'black' : '#E0E0E0')};
 `;
