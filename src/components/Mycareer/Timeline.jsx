@@ -185,31 +185,26 @@ export default function Timeline({ triggerEffect }) {
 
   const groups = [[], [], [], []];
 
-  // 초기 4개의 데이터를 각각 그룹에 하나씩 배치
-  for (let i = 0; i < Math.min(4, sortedCareerData.length); i++) {
-    if (sortedCareerData[i]) {
-      groups[i].push(sortedCareerData[i]);
-    }
-  }
-
-  // 남은 데이터를 그룹에 배치, 겹치지 않게
-  for (let i = 4; i < sortedCareerData.length; i++) {
-    const currentData = sortedCareerData[i];
+  // 모든 데이터를 그룹에 배치, 겹치지 않도록
+  sortedCareerData.forEach((currentData) => {
+    let placed = false;
     
-    if (!currentData) continue; // currentData가 undefined일 경우 건너뜀
-
     for (let j = 0; j < 4; j++) {
       const lastInGroup = groups[j][groups[j].length - 1];
       
-      if (!lastInGroup) continue; // lastInGroup이 undefined일 경우 건너뜀
-
-      // 겹치지 않는 기간인지 확인 후 배치
-      if (new Date(currentData.startDate) > new Date(lastInGroup.endDate)) {
+      // 그룹이 비어있거나, 현재 데이터가 마지막 데이터와 겹치지 않으면 배치
+      if (!lastInGroup || new Date(currentData.startDate) > new Date(lastInGroup.endDate)) {
         groups[j].push(currentData);
+        placed = true;
         break;
       }
     }
-  }
+
+    // 모든 그룹에 겹치는 경우 해당 데이터를 배치하지 않음 (placed가 false로 남음)
+    if (!placed) {
+      console.log(`활동 '${currentData.careerName}'은 겹침으로 인해 배치되지 않았습니다.`);
+    }
+  });
 
   // x축 라벨을 모든 달을 포함하도록 생성
   const xLabels = [];
