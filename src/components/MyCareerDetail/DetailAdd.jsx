@@ -203,7 +203,6 @@ export default function DetailAdd({ onCancel, onSave, careerId }) {  // careerId
 
     const saveTitle = event => {
         setTitle(event.target.value);
-        console.log(event.target.value);
       };
     
       const saveContent = event => {
