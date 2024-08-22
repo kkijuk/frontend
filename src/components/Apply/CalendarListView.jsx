@@ -132,6 +132,8 @@ const CalendarListView = ({ date, data, count, onJobClick }) => {
       // API를 호출하여 전체 데이터를 가져옵니다.
       const fullAdDetails = await getRecruitDetails(ad.recruitId);
       console.log('Full ad details:', fullAdDetails); // 가져온 데이터 로그 출력
+      window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
+
       // 상세 페이지로 이동하면서, 가져온 전체 데이터를 전달합니다.
       navigate(`/apply-detail/${ad.recruitId}`, { state: { job: fullAdDetails } });
     } catch (error) {

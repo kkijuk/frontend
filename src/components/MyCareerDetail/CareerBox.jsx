@@ -78,8 +78,13 @@ const Nickname = styled.div`
 `;
 
 export default function Careerbox({ startDate, endDate, careerName, category, selected, onClick }) {
+  const handleClick = () => {
+    window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
+    if (onClick) onClick(); // onClick이 정의되어 있다면 호출
+  };
+  
   return (
-    <CareerBox category={category} selected={selected} onClick={onClick}>
+    <CareerBox category={category} selected={selected} onClick={handleClick} >
       <Date selected={selected}>{formatDate(startDate)} ~ {formatDate(endDate)}</Date>
       <Nickname selected={selected}>{careerName}</Nickname>
       {selected && (

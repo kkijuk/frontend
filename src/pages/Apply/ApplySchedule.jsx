@@ -50,6 +50,7 @@ export default function ApplySchedule() {
   const [showModal, setShowModal] = useState(false);
   const [jobs, setJobs] = useState([]);
   const navigate = useNavigate();
+  
 
   // 새로운 공고를 저장하고 리스트를 정렬하는 함수
   const handleSaveRecruit = async (newRecruitId) => {

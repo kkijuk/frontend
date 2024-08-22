@@ -199,34 +199,15 @@ export default function Timeline({ triggerEffect }) {
     for (let j = 0; j < 4; j++) {
       const lastInGroup = groups[j][groups[j].length - 1];
       
-      if (!lastInGroup || new Date(currentData.startDate) > new Date(lastInGroup.endDate)) {
+      if (!lastInGroup || calculateLeft(currentData.startDate, earliestDate, oneMonthInPixels) > calculateLeft(lastInGroup.startDate, earliestDate, oneMonthInPixels) + calculateWidth(lastInGroup.startDate, lastInGroup.endDate, oneMonthInPixels)) {
         groups[j].push(currentData);
         placed = true; // 그룹에 배치 완료
         break;
       }
     }
 
-    // 현재 데이터를 그룹에 배치하지 못한 경우 다음 데이터를 확인
     if (!placed) {
-      for (let k = i + 1; k < sortedCareerData.length; k++) {
-        const nextData = sortedCareerData[k];
-        let nextPlaced = false;
-
-        for (let j = 0; j < 4; j++) {
-          const lastInGroup = groups[j][groups[j].length - 1];
-          
-          if (!lastInGroup || new Date(nextData.startDate) > new Date(lastInGroup.endDate)) {
-            groups[j].push(nextData);
-            nextPlaced = true;
-            break;
-          }
-        }
-
-        if (nextPlaced) {
-          i = k; // 현재 인덱스를 업데이트하여 다음 데이터부터 검사하도록 함
-          break;
-        }
-      }
+      console.log(`데이터 ${currentData.careerName}는 배치할 수 없습니다.`);
     }
   }
 

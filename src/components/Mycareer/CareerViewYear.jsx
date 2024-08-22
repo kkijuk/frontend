@@ -120,6 +120,8 @@ const CareerViewYear = ({data}) => {
       const responseData = await ViewCareerDetail(careerId);
       console.log('Received careerId:', careerId);
       if (responseData) {
+        window.scrollTo(0, 0);
+
         navigate(`/mycareer/${careerId}`, { details: responseData });
   
       }

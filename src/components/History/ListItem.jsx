@@ -4,6 +4,7 @@ import '../../pages/History/history.css'
 
 const ListItem =({title,updated_at,deadline,state,timeSinceUpdate, onClick})=>{
 
+    
     return(
         <ListBox onClick={onClick}>
             <h3 style={{fontWeight:800,margin:'10px 0px',color:title==="MASTER"?'#3AAF85':'black'}}>{title}</h3>

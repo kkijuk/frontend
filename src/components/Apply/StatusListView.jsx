@@ -101,7 +101,7 @@ const Tag = styled.span`
   background: #F5F5F5;
   border-radius: 10px;
   padding: 4px 8px;
- font-size: 13px;
+  font-size: 13px;
   color: #707070;
   font-family: Light;
 `;
@@ -165,7 +165,13 @@ const StatusListView = ({ data = [], onJobClick }) => {
                     {status} ({groupedData[status].length})
                   </StatusTitleContainer>
                   {groupedData[status].map((job, idx) => (
-                    <AdItem key={idx} onClick={() => onJobClick(job)}>
+                    <AdItem 
+                      key={idx} 
+                      onClick={() => {
+                        window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
+                        onJobClick(job);
+                      }}
+                    >
                       <TagContainer>
                         {(job.tag || job.tags || []).map((tag, tagIdx) => (
                           <Tag key={tagIdx}>{tag}</Tag>
@@ -189,6 +195,3 @@ const StatusListView = ({ data = [], onJobClick }) => {
 };
 
 export default StatusListView;
-
-
-
