@@ -70,28 +70,37 @@ const ConfirmButton = styled.button`
   margin-top: 45px;
 `;
 
+
+
+
 const ReviewDeleteModal = ({ onClose, onConfirm }) => (
   <Background>
-    <Modal>
-      <ModalTitle>
-        해당 전형 후기를<br />
-        정말로 삭제하시겠습니까?
-      </ModalTitle>
-      <ButtonContainer>
-        <CancelButton 
-          onClick={onClose} 
-          style={{ border: '1.5px solid #77AFF2', background: '#FFF', color: '#77AFF2' }}>
-          취소
-        </CancelButton>
-        <ConfirmButton 
-          onClick={onConfirm}  // 삭제 버튼 클릭 시 onConfirm 함수 호출
-          style={{ border: '1.5px solid red', background: '#FFF', color: 'red' }}>
-          삭제
-        </ConfirmButton>
-      </ButtonContainer>
-    </Modal>
+      <Modal>
+          <ModalTitle>
+              해당 전형 후기를<br />
+              정말로 삭제하시겠습니까?
+          </ModalTitle>
+          <ButtonContainer>
+              <CancelButton 
+                  onClick={onClose} 
+                  style={{ border: '1.5px solid #77AFF2', background: '#FFF', color: '#77AFF2' }}>
+                  취소
+              </CancelButton>
+              <ConfirmButton 
+                  onClick={async () => {
+                      await onConfirm(); // 삭제 작업이 완료된 후
+                      onClose(); // 모달 닫기
+                  }}  
+                  style={{ border: '1.5px solid red', background: '#FFF', color: 'red' }}>
+                  삭제
+              </ConfirmButton>
+          </ButtonContainer>
+      </Modal>
   </Background>
 );
 
 export default ReviewDeleteModal;
+
+
+
 

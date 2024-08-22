@@ -7,12 +7,13 @@ import EditItem from '../../components/History/Resume/EditItem';
 import CareerItem from '../../components/History/Resume/CareerItem';
 import AddItem from '../../components/History/Resume/AddItem';
 import AddCareerModal from '../../components/shared/AddCareerModal';
-import AddCareerModalEdit from '../../components/shared/AddCareerModalEdit';
+import AddCareerModalEdit from '../../components/History/Resume/AddCareerModalEdit';
 import Address from '../../components/History/Address';
 import createRecord from '../../api/Record/createRecord';
 import updateRecord from '../../api/Record/updateRecord';
 import readRecord from '../../api/Record/readRecord';
 import createEducation from '../../api/Record/createEducation';
+import updateEducation from '../../api/Record/updateEducation';
 import deleteEducation from '../../api/Record/deleteEducation';
 
 const History = () => {
@@ -44,12 +45,14 @@ const History = () => {
     const [isEditActModalOpen, setIsEditActModalOpen] = useState(false);
     const [isAddActModalOpen, setIsAddActModalOpen] = useState(false);
     const [addressStatus, setAddressStatus] = useState(null);
+    const [selectedCareer, setSelectedCareer] = useState(null);
 
 
     useEffect(()=>{
         const fetchData = async ()=>{
             try{
                 const data = await readRecord();
+                
                 setRecordId(data.record_id);
                 setLastUpdated(data.updatedAt);
                 setProfiles({
@@ -60,15 +63,17 @@ const History = () => {
                     email:data.email,
                     address:data.address
                 });
-                setEducations(data.educationList);
+                setEducations(data.educationList || []);
+                setIsEdit(Array((data.educationList || []).length).fill(false));
                 setCareers(data.jobs);
-                setActivities(data.activitiesAndExperiences);
+                setActivities(data.activitiesAndExperiences|| []);
                 // 주소가 있으면 addressStatus를 0으로 설정, 없으면 1로 설정
                 if (data.address) {
                     setAddressStatus(0);
                 } else {
                     setAddressStatus(null); // null로 설정하여 '주소를 입력하세요'가 표시되도록 함
                 }
+
             }catch(err){
                 console.log('Failed to load records');
             }
@@ -89,11 +94,19 @@ const History = () => {
         }
     };
     //학력 수정
-    const handleUpdateEducation = async (index, updatedData)=>{
+    const handleUpdateEducation = async (educationId, updatedData)=>{
         try{
-            setEducations(educations.map((edu, i)=>(i===index ? updatedData : edu)));
-            setIsEdit(prev => prev.map((edit, i)=>i===index ? false : edit));
-            handleCancelEdit(index);
+            console.log("Updated Data:", updatedData);
+            const updatedEducation = await updateEducation(educationId, updatedData);
+            console.log("Updated Education from API:", updatedEducation);
+
+        setEducations(prevEducations =>
+            prevEducations.map(edu => edu.educationId === educationId ? updatedEducation : edu)
+        ); 
+
+        const educationIndex = educations.findIndex(edu => edu.educationId === educationId);
+        setIsEdit(prev => prev.map((edit, i) => (i === educationIndex ? false : edit)));
+        handleCancelEdit(educationIndex); 
         }catch(err){
             console.error('Failed to update education: ', err);
         }
@@ -103,6 +116,7 @@ const History = () => {
     const handleDeleteEducation = async (index, educationId)=>{
         try{
             await deleteEducation(educationId);
+            handleCancelEdit(index);
             setEducations(educations.filter((_,i)=>i !== index));
         }catch(err){
             console.error('Failed to delete education: ', err);
@@ -161,16 +175,50 @@ const History = () => {
     const toggleAddActModalOpen =()=>{
         setIsAddActModalOpen(!isAddActModalOpen);
     };
-    //활동 수정 모달 토글
-    const toggleEditActModalOpen =()=>{
-        setIsEditActModalOpen(!isEditActModalOpen);
+    // 활동 수정 모달 토글
+    const toggleEditActModalOpen = (careerId) => {
+        const career = [...careers, ...activities].find(item => item.careerId === careerId);
+        if (career) {
+            const careerData = {
+                id: careerId,
+                categoryName: career.category,
+                categoryId: null, // 실제 값으로 채워야 함
+                careerName: career.careerName,
+                alias: career.alias,
+                startDate: career.startDate,
+                endDate: career.endDate,
+                isUnknown: null, // 적절한 값으로 채워야 함
+                summary: career.summary
+            };
+
+            setSelectedCareer({ data: careerData });
+        }
+        setIsEditActModalOpen(prev => !prev);
     };
+    //추가한 활동 업데이트
+    const handleAddCareer = (newCareer) => {
+    setCareers([...careers, newCareer]);
+    };
+
+    //수정한 활동 업데이트
+    const handleSaveCareerEdit = (updatedData)=>{
+        setCareers(prevCareers => 
+            prevCareers.map(career =>
+                career.careerId === updatedData.careerId ? updatedData : career
+            )
+        )
+        setIsEditActModalOpen(false);
+    }
 
     return (
         <BackgroundDiv>
             <BaseDiv>
-            {isAddActModalOpen && <AddCareerModal onClose={toggleAddActModalOpen}/>}
-            {isEditActModalOpen && <AddCareerModalEdit onClose={toggleEditActModalOpen}/>}
+            {isAddActModalOpen && <AddCareerModal onClose={toggleAddActModalOpen} onSave={handleAddCareer}/>}
+            {isEditActModalOpen && 
+                <AddCareerModalEdit 
+                    onClose={toggleEditActModalOpen}
+                    data={selectedCareer}
+                    onSave={handleSaveCareerEdit}/>}
             <p style={{fontFamily:'Regular', fontSize:'14px', color:'#707070', position:'absolute', top:'-30px', right:'0px'}}>
                 마지막 수정 일시: {lastUpdated}
             </p>
@@ -226,10 +274,10 @@ const History = () => {
                     ? <EditItem key={index} 
                         data={education}  
                         isLastItem={index === educations.length - 1}
-                        onCancel={() => handleDeleteEducation(index, education.educationId)}//api
-                        onEdit={(updatedData)=>handleUpdateEducation(updatedData)}//api - 수정 필요
+                        onCancel={() => handleDeleteEducation(index, education.educationId)}
+                        onEdit={(updatedData)=>handleUpdateEducation(education.educationId, updatedData)}
                         /> 
-                    : <EducationItem key={index} data={education} onEdit={() => handleEdit(index)}
+                    : <EducationItem key={index} data={education} onEdit={() => handleEdit(index, education.educationId)}
                         isLastItem={index === educations.length - 1} />
                 ))}
                 <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
@@ -245,25 +293,25 @@ const History = () => {
                 <Linear />
                 {/* (3) Careers */}
                 <h3 style={{marginBottom:'30px'}}>경력</h3>
-                {careers.map((career, index)=>(
-                    <CareerItem 
+                {careers.slice().reverse().map((career, index)=>(
+                    <CareerItem
                         key={index} 
-                        dummy={career} 
+                        data={career} 
                         isLastItem={index === careers.length - 1}
-                        onEdit={toggleEditActModalOpen}/>
-                        //api onSubmit 추가해야함
+                        onEdit={() => toggleEditActModalOpen(career.careerId)}
+                    />
                 ))}
                 <AddButton onClick={toggleAddActModalOpen}>+</AddButton>
 
                 <Linear />
                 {/* (4) Activities */}
                 <h3 style={{marginBottom:'30px'}}>활동 및 경험</h3>
-                {activities.map((activity, index)=>(
+                {activities.slice().reverse().map((activity, index)=>(
                     <CareerItem 
                         key={index} 
-                        dummy={activity} 
+                        data={activity} 
                         isLastItem={index === activities.length - 1}
-                        onEdit={toggleEditActModalOpen}/>
+                        onEdit={() => toggleEditActModalOpen(activity.careerId)}/>
                         //api onSubmit 추가해야함
                 ))}
                 <AddButton onClick={toggleAddActModalOpen}>+</AddButton>

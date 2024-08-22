@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import '../../../pages/History/history.css';
 import Edu from './Edu';
 import Date from './Date';
 
-const EditItem = ({ data, onCancel, isLastItem, onEdit }) => {
+const EditItem = ({ data={}, onCancel, isLastItem, onEdit }) => {
     const [formData, setFormData] = useState({
-        category: data.category || '',
-        schoolName: data.schoolName || '',
-        major: data.major || '',
-        admissionDate: data.admissionDate || '',
-        graduationDate: data.graduationDate || '',
-        state: data.state || ''
+        category: data.category ?? '',
+        schoolName: data.schoolName ?? '',
+        major: data.major ?? '',
+        admissionDate: data.admissionDate ?? '',
+        graduationDate: data.graduationDate ?? '',
+        state: data.state ?? ''
     });
 
     const handleChange = (e) => {
@@ -37,6 +37,29 @@ const EditItem = ({ data, onCancel, isLastItem, onEdit }) => {
         console.log("Graduation Date:", graduationDate);
     };
 
+    const handleSave = () => {
+        if (onEdit) {
+            onEdit(formData);  
+        }
+    };
+
+    useEffect(() => {
+        console.log("FormData: ", formData);
+    }, [formData]);
+
+    useEffect(() => {
+        if (data) {
+            setFormData({
+                category: data.category || '',
+                schoolName: data.schoolName || '',
+                major: data.major || '',
+                admissionDate: data.admissionDate || '',
+                graduationDate: data.graduationDate || '',
+                state: data.state || ''
+            });
+        }
+    }, [data]);
+
     return (
         <div style={{ display: 'flex' }}>
             <TimeLine>
@@ -46,12 +69,12 @@ const EditItem = ({ data, onCancel, isLastItem, onEdit }) => {
             <Container>
                 <form style={{ position: 'relative' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', height: '45px', width: '610px' }}>
-                        <Edu isLevel="학력구분" onChange={handleCategoryChange} value={formData.category} />
+                        <Edu name = "category" isLevel="학력구분" onChange={handleCategoryChange} value={formData.category || ''} />
                         <Input
                             name="schoolName"
                             placeholder="학교명(ex.00대학교)"
                             style={{ width: '455px' }}
-                            value={formData.schoolName}
+                            value={formData.schoolName || ''}
                             onChange={handleChange}
                         ></Input>
                     </div>
@@ -61,17 +84,17 @@ const EditItem = ({ data, onCancel, isLastItem, onEdit }) => {
                             name="major"
                             placeholder="전공 및 계열(ex. 00학과 또는 인문계열)"
                             style={{ width: '610px' }}
-                            value={formData.major}
+                            value={formData.major || ''}
                             onChange={handleChange}
                         ></Input>
                     </div>
                     <br />
                     <div style={{ display: 'flex', justifyContent: 'space-between', height: '45px', width: '610px' }}>
-                        <Edu isLevel="학력상태" onChange={handleStateChange} value={formData.state} />
+                        <Edu name="state" isLevel="학력상태" onChange={handleStateChange} value={formData.state || ''} />
                         <div style={{ width: '150px' }}>
                             <Date
                                 place_holder={"입학연월"}
-                                value={formData.admissionDate}
+                                value={formData.admissionDate || ''}
                                 onChange={handleAdmissionDateChange}
                             ></Date>
                         </div>
@@ -80,7 +103,7 @@ const EditItem = ({ data, onCancel, isLastItem, onEdit }) => {
                         <div style={{ width: '150px' }}>
                             <Date
                                 place_holder={"졸업연월"}
-                                value={formData.graduationDate}
+                                value={formData.graduationDate || ''}
                                 onChange={handleGraduationDateChange}
                             ></Date>
                         </div>
@@ -93,7 +116,7 @@ const EditItem = ({ data, onCancel, isLastItem, onEdit }) => {
                         </Button>
                         <Button
                             style={{ color: '#FFF', borderColor: '#3AAF85', backgroundColor: '#3AAF85' }}
-                            onClick={() => { if (onEdit) onEdit(formData); }}
+                            onClick={handleSave}
                         >
                             저장
                         </Button>

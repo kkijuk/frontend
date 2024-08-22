@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import CategoryGroup from './CategoryGroup';
-import ReactCalendar from './CalendarSingle';
+import CategoryGroup from '../../shared/CategoryGroup';
+import ReactCalendar from '../../shared/CalendarSingle';
 import moment from 'moment';
-import CareerDeleteModal from './DeleteModalCareer';
-import { CareerEdit, CareerDelete } from '../../api/Mycareer/CareerEdit';
+import CareerDeleteModal from '../../shared/DeleteModalCareer';
+import { CareerEdit } from '../../../api/Mycareer/CareerEdit';
+import { CareerDelete } from '../../../api/Mycareer/CareerEdit';
 import { useNavigate } from 'react-router-dom';
 
 const ModalBackdrop = styled.div`
@@ -273,6 +274,7 @@ const categoryMap = {
 const AddCareerModalEdit = ({ onClose, onSave, data }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   
+  const [id, setId] = useState(0);
   const [category, setCategory] = useState('');
   const [careerName, setCareerName] = useState('');
   const [alias, setAlias] = useState('');
@@ -295,6 +297,7 @@ const AddCareerModalEdit = ({ onClose, onSave, data }) => {
       console.log("Received data:", data);
 
       if (data) {
+        setId(data.data.id);
         setSelectedCategory(data.data.categoryName);
         setCategory(data.data.categoryId);
         setCareerName(data.data.careerName);
@@ -362,7 +365,8 @@ const AddCareerModalEdit = ({ onClose, onSave, data }) => {
     if (summary !== data.data.summary) updatedData.summary = summary;
 
     //무원 추가
-    console.log(updatedData);
+    console.log("Updated Data: ", updatedData);
+    console.log("커리어ID: ", data.data.id);
   
     if (Object.keys(updatedData).length === 0) {
       alert("변경된 내용이 없습니다.");

@@ -6,12 +6,13 @@ import Date from './Date'
 
 const AddItem=({ onCancel, onAdd })=>{
     const [formData, setFormData] = useState({
-        category : '', // level -> category로 변경
+        category : '',
         schoolName :'',
-        major :  '',  // department -> major로 변경
+        major :  '',
         admissionDate :  '',
         graduationDate :  '',
-        state :  ''  // status -> state로 변경
+        state :  ''
+
     })
 
     const handleChange =(e)=>{
@@ -19,28 +20,28 @@ const AddItem=({ onCancel, onAdd })=>{
         setFormData(prev => ({...prev, [name]:value}));
     }
 
-    const handleLevelChange =(category)=>{  // level을 category로 맞춤
-        setFormData(prev=>({...prev, category}));
+    const handleLevelChange =(level)=>{
+        setFormData(prev=>({...prev, level}));
     }
 
-    const handleStatusChange =(state)=>{  // status를 state로 맞춤
-        setFormData(prev=>({...prev, state}));
+    const handleStatusChange =(status)=>{
+        setFormData(prev=>({...prev, status}));
     }
 
-    const handleStartDateChange = (admissionDate) => {  // startDate -> admissionDate
-        setFormData(prev => ({ ...prev, admissionDate }));
-    };
-    
-    const handleEndDateChange = (graduationDate) => {  // endDate -> graduationDate
-        setFormData(prev => ({ ...prev, graduationDate }));
-    };
+const handleStartDateChange = (startDate) => {
+    setFormData(prev => ({ ...prev, admissionDate: startDate }));
+};
+
+const handleEndDateChange = (endDate) => {
+    setFormData(prev => ({ ...prev, graduationDate: endDate }));
+};
 
     return(
         <div style={{display:'flex'}}>
             <Container>
                 <form style={{position:'relative'}}>
                     <div style={{display:'flex', justifyContent:'space-between', height:'45px', width:'610px'}}>
-                        <Edu isLevel="학력구분" onChange={handleLevelChange} value={formData.category}/>
+                        <Edu isLevel="학력구분" onChange={handleLevelChange} value={formData.level}/>
                         <Input 
                             name="schoolName"
                             placeholder='학교명(ex.00대학교)' 
@@ -52,7 +53,7 @@ const AddItem=({ onCancel, onAdd })=>{
                     <br/>
                     <div style={{display:'flex', justifyContent:'space-between', height:'45px', width:'610px'}}>
                         <Input 
-                            name="major"  // department를 major로 변경
+                            name="major"
                             placeholder='전공 및 계열(ex. 00학과 또는 인문계열)' 
                             style={{width:'610px'}}
                             value={formData.major}
@@ -65,7 +66,7 @@ const AddItem=({ onCancel, onAdd })=>{
                         <div style={{width:'150px'}}>
                             <Date 
                                 place_holder={"입학연월"} 
-                                value={formData.admissionDate}
+                                value={formData.startDate}
                                 onChange={handleStartDateChange}></Date>  
                         </div>
                         
@@ -73,7 +74,7 @@ const AddItem=({ onCancel, onAdd })=>{
                         <div style={{width:'150px'}}>
                             <Date 
                                 place_holder={"졸업연월"}
-                                value={formData.graduationDate}
+                                value={formData.endDate}
                                 onChange={handleEndDateChange}></Date>  
                         </div>
 
@@ -92,6 +93,7 @@ const AddItem=({ onCancel, onAdd })=>{
     )
 }
 export default AddItem
+
 
 const Container = styled.div`
     width:610px;
@@ -120,4 +122,5 @@ const Button = styled.div`
     justify-content:center;
     align-items:center;
     cursor:pointer;
+
 `

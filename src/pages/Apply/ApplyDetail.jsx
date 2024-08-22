@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Calendar from 'react-calendar'; 
+import moment from 'moment';
 import 'react-calendar/dist/Calendar.css'; 
 
 import EditApplyModal from '../../components/Apply/EditApplyModal';
@@ -366,6 +367,104 @@ const DropdownAndDateContainer = styled.div`
   flex-direction: row;
 `;
 
+const CalendarWrapper = styled.div`
+  .react-calendar {
+    width: 281px;
+    height: 263px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    border: 1px solid var(--gray-03, #D9D9D9);
+    background: var(--white, #FFF);
+    position: absolute;
+    z-index: 10;
+    margin-left: 150px;
+  }
+
+  .react-calendar__navigation {
+    justify-content: center;
+    gap: 15px;
+    height: 20px;
+    margin-top: 15px;
+  }
+
+  .react-calendar__navigation__button {
+    width: 20px;
+    height: 20px;
+  }
+
+  .react-calendar__month-view__weekdays abbr {
+    text-decoration: none;
+  }
+
+  .react-calendar__navigation button .prev-icon {
+    transform: rotate(180deg);
+  }
+
+  .react-calendar__month-view__weekdays__weekday:nth-child(1) {
+    color: var(--sub-rd, #FA7C79);
+  }
+
+  .react-calendar__month-view__weekdays__weekday:nth-child(7) {
+    color: var(--sub-bu, #77AFF2);
+  }
+
+  .react-calendar__tile {
+    background: #fff;
+    color: #000;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .react-calendar__tile--now {
+    background: none;
+  }
+
+  .react-calendar__tile:enabled:hover,
+  .react-calendar__tile:enabled:focus {
+    width: 35px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background: var(--main-01, #3AAF85) !important;
+    color: var(--white, #FFF) !important;
+  }
+
+  .react-calendar__tile--active {
+    width: 35px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background: var(--main-01, #3AAF85) !important;
+    color: var(--white, #FFF) !important;
+  }
+
+  .react-calendar__month-view__days__day--neighboringMonth {
+    color: rgba(66, 66, 66, 0.30);
+    font-size: 14px;
+    font-weight: 400;
+  }
+`;
+
+const ChevronDownIcon = ({ className }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+    <path d="M8 15L13 10L8 5" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const StyledCalendarContainer = styled.div`
+  position: absolute;
+  top: 277px;
+  left: 400px;
+  z-index: 10;
+`;
 
 const ApplyDetail = () => {
   const location = useLocation();
@@ -493,16 +592,15 @@ const ApplyDetail = () => {
 
   const handleReviewDelete = async (reviewId) => {
     try {
-      console.log(`Deleting review with ID: ${reviewId} for recruit ID: ${id}`);
-      await deleteReview(id, reviewId);
-      // 리뷰 삭제 후 전체 공고 정보를 다시 가져와 화면을 업데이트
-      await fetchJobDetails();
-      setIsReviewDeleteModalOpen(false);
-      setReviewToDelete(null);
+        await deleteReview(id, reviewId); // 리뷰 삭제를 먼저 처리
+        setReviewToDelete(null); // 삭제된 리뷰 ID 초기화
+        setIsReviewDeleteModalOpen(false); // 모달 닫기
+        await fetchJobDetails(); // 이후에 데이터를 다시 가져옵니다.
     } catch (error) {
-      console.error('Failed to delete review:', error);
+        console.error('Failed to delete review:', error);
     }
-  };
+};
+
 
   const openReviewDeleteModal = (reviewId) => {
     setReviewToDelete(reviewId);
@@ -539,10 +637,10 @@ const ApplyDetail = () => {
 
 const formatDateTimeToLocal = (dateString) => {
   // 서버에서 받은 UTC 시간을 Date 객체로 변환
-  const utcDate = new Date(dateString);
+  const kstDate = new Date(dateString);
 
-  // 로컬 시간대에 맞게 변환
-  const localDate = new Date(utcDate.getTime() - (utcDate.getTimezoneOffset() * 60000));
+  // UTC 시간에 9시간을 더해서 한국 시간(KST)으로 변환
+  const localDate = new Date(kstDate.getTime() ); // 9시간 더하기
 
   // 로컬 시간대의 연도, 월, 일, 시간, 분을 추출
   const year = localDate.getFullYear();
@@ -554,6 +652,8 @@ const formatDateTimeToLocal = (dateString) => {
   // 'YYYY-MM-DD HH:MM' 형식으로 변환하여 반환
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 };
+
+
 
 const handleBackClick = () => {
   if (location.state && location.state.from === 'status') {
@@ -578,7 +678,7 @@ const handleBackClick = () => {
   return (
     <Container>
       <Title>지원공고 관리</Title>
-      <BackLink to="/apply-schedule">&lt; 지원현황</BackLink>
+      <BackLink to="/apply-status">&lt; 지원현황</BackLink>
       <Header>
         <TitleContainer>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -611,7 +711,7 @@ const handleBackClick = () => {
           {showCalendar ? (
             <>
               <DateInputWrapper>
-                <DateInputField>지원일자</DateInputField>
+                <DateInputField>지원 일자를 입력하세요</DateInputField>
               </DateInputWrapper>
             </>
           ) : applyDate ? (
@@ -626,9 +726,27 @@ const handleBackClick = () => {
           )}
         </DropdownAndDateContainer>
         {showCalendar && (
-          <CalendarContainer>
-            <Calendar onChange={handleDateChange} value={applyDate} />
-          </CalendarContainer>
+        <CalendarWrapper>
+          <Calendar
+            onChange={handleDateChange}
+            value={applyDate}
+            selectRange={false}
+            formatDay={(locale, date) => moment(date).format('D')}
+            calendarType="gregory"
+            next2Label={null}
+            prev2Label={null}
+            nextLabel={<ChevronDownIcon className="next-icon" />}
+            prevLabel={<ChevronDownIcon className="prev-icon" />}
+            navigationLabel={({ date }) => moment(date).format('YYYY M월')}
+            tileClassName={({ date, view }) => {
+              if (moment(date).isSame(new Date(), 'day')) {
+                return 'react-calendar__tile--now';
+              }
+              return '';
+            }}
+            showFixedNumberOfWeeks={true}
+          />
+        </CalendarWrapper>
         )}
         <SubHeader>
         <InfoLabelStart>

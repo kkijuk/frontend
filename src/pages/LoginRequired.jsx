@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import  createMaster  from '../api/Signup/createMaster';
 
-const SignupSuccessScreen = styled.div`
+const LoginRequiredPage = styled.div`
   max-width: flex;
   margin: 50px auto;
   padding: 20px;
@@ -62,21 +61,13 @@ const SignupSuccessScreen = styled.div`
   }
 `;
 
-const SignupSuccess = () => {
-  useEffect(()=>{
-    createMaster();
-  },[])
-
+const LoginRequired = () => {
   return (
-    <SignupSuccessScreen>
-      <p>회원가입이 완료되었습니다.</p>
-      <p className="Interests-text1">끼적에서의 더 나은 경험을 위해</p>
-      <p className="Interests-text2">요즘 관심 있는 분야를 알려주세요!</p>
-      <button className="button" onClick={() => window.location.href='/signupinterest'}>관심분야 등록</button>
-    </SignupSuccessScreen>
+    <LoginRequiredPage>
+      <p className="Interests-text1">지금 로그인하고 끼적의 모든 기능을 이용하세요!💚</p>
+      <button className="button" onClick={() => window.location.href='/login'}>로그인 하러 가기</button>
+    </LoginRequiredPage>
   );
 };
 
-export default SignupSuccess;
-
-
+export default LoginRequired;

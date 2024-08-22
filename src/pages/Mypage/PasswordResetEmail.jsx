@@ -11,13 +11,11 @@ const PageWrapper = styled.div`
     align-items: flex-start;
     height: 100vh; /* 화면 전체 높이를 차지하도록 설정 */
     background-color: #fff; /* 배경색은 필요에 따라 조정 */
-    border: 1px black solid;
 `;
 
 const Container = styled.div`
     width: 820px;
     height: 494px;
-    border: 1px solid black;
     display: flex;
     flex-direction: column;
     margin-top: 30px;
@@ -31,7 +29,6 @@ const Top = styled.div`
     justify-content: center;
     align-items: center;
     gap: 30px;
-    border-bottom: 1px solid black;
     color: var(--main-01, #3AAF85);
     text-align: center;
     font-family: Pretendard;
@@ -44,7 +41,6 @@ const Top = styled.div`
 const Bottom = styled.div`
     width: 100%;
     height: 340px;
-    border-top: 1px solid black;
     display: flex;
     flex-direction: column;
     justify-content: center; /* 텍스트를 가로 방향으로 중앙에 정렬 */
@@ -132,7 +128,7 @@ export default function PasswordResetEmail() {
     const handleSubmit = async () => {
         try {
             await sendPasswordResetEmail({ email });
-            navigate("/mypage/passwordresetemailconfirm"); // API 호출이 성공하면 페이지 이동
+            navigate("/passwordresetemailconfirm", {state: {email}}); // API 호출이 성공하면 페이지 이동
         } catch (error) {
             console.error("비밀번호 재설정 이메일 전송 중 오류 발생:", error);
             alert("이메일 전송에 실패했습니다. 다시 시도해주세요.");
