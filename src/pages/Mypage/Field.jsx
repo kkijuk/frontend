@@ -85,11 +85,16 @@ const Field = ({ }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const interests = await mypageInterest(); // API 호출
-        setInterestingList(interests);
+        const interests = await mypageInterest();
+        if (Array.isArray(interests)) {
+          setInterestingList(interests); // 배열인 경우 상태 업데이트
+        } else {
+          setInterestingList([]); // 배열이 아닌 경우 빈 배열로 설정
+        }
       } catch (error) {
         // 에러 처리
         console.error('Failed to load interests:', error);
+        setInterestingList([]); // 에러 발생 시 빈 배열로 설정
       }
     };
 
