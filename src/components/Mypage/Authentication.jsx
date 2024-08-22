@@ -18,10 +18,9 @@ const Box1 = styled.div`
 const InformText = styled.div`
     color: var(--black, #000);
     text-align: center;
-    font-family: Inter;
+    font-family: regular;
     font-size: 16px;
     font-style: normal;
-    font-weight: 400;
     line-height: normal;
 `;
 
@@ -34,12 +33,13 @@ const Email = styled.div`
     width: 253px;
     height: 62px;
     margin-bottom: 38px;
+    font-family: regular;
 `;
 
 const Text1 = styled.div`
     margin-bottom: ${(props) => props.marginBottom};
     color: var(--main-01, #3AAF85);
-    font-family: Pretendard;
+    font-family: regular;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;

@@ -78,7 +78,7 @@ const Name = styled.div``;
 
 const CareerName = styled.div`
   color: var(--black, #000);
-  font-family: Pretendard;
+  font-family: bold;
   font-size: 18px;
   font-style: regular;
   font-weight: 700;

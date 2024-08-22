@@ -146,8 +146,8 @@ const ActivityRecord = styled.div`
 
 const ActivityDate = styled.div`
   color: #707070;
-  font-family: Pretendard;
-  font-size: 12px;
+  font-family: regular;
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;

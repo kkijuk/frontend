@@ -63,7 +63,7 @@ const DateBox = styled.div`
 
 const Label = styled.div`
     color: var(--black, #000);
-    font-family: Pretendard;
+    font-family: semibold;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
@@ -214,7 +214,6 @@ export default function DetailAdd({ onCancel, onSave, careerId }) {  // careerId
 
     return (
         <Box>
-             <Line></Line>
 
             <Top>
                 <Title>

@@ -48,7 +48,7 @@ const Text1 = styled.div`
 const Text2 = styled.div`
     margin-bottom: ${(props) => props.marginBottom};
     color: var(--main-01, #3AAF85);
-    font-family: Pretendard;
+    font-family: regular;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
@@ -65,7 +65,8 @@ const Input = styled.input`
     border: ${(props) => props.border || 'none'};
     border-color: ${(props) => props.borderColor || 'black'};
 
-
+    fint-family: regular;
+    font-size: 15px;
     padding-left: 20px; /* padding-left 속성 추가 */
     box-sizing: border-box;
 `

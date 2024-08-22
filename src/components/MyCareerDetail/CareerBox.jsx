@@ -70,7 +70,7 @@ const Nickname = styled.div`
   flex-shrink: 0;
   color: ${(props) => (props.selected ? '#000' : '#FFF')};
   text-align: center;
-  font-family: medium;
+  font-family: semibold;
   font-size: 14px;
   font-style: bold;
   line-height: normal;

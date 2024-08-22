@@ -37,8 +37,8 @@ const Category = styled.div`
 const CategoryText = styled.div`
   color: var(--black, #000);
   font-family: Pretendard;
-  font-size: 21px;
-  font-style: regular;
+  font-size: 20px;
+  font-style: normal;
   font-weight: 400;
   line-height: normal;
   margin-top: 22px;
@@ -64,22 +64,12 @@ const ListBox = styled.div`
 
 const Name = styled.div``;
 
-const CareerName = styled.div`
-  color: var(--black, #000);
-  font-family: Pretendard;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  margin-bottom: 9px;
-  margin-top: 5px;
-`;
 
 const AliasName = styled.div`
   color: var(--black, #000);
   font-family: Pretendard;
   font-size: 18px;
-  font-style: normal;
+  font-style: regular;
   font-weight: 400;
   line-height: normal;
   margin-bottom: 9px;
@@ -91,8 +81,17 @@ const CareerContainer = styled.div`
   align-items: center; /* 세로 가운데 정렬 (선택 사항) */
 `;
 
+const CareerName = styled.div`
+  color: var(--black, #000);
+  font-family: bold;
+  font-size: 18px;
+  font-style: regular;
+  line-height: normal;
+  margin-bottom: 9px;
+  margin-top: 5px;
+`;
+
 const Date = styled.div`
-  font-style: light;
   font-size: 14px;
   color: #555;
   margin-bottom: 20px;
@@ -163,11 +162,11 @@ const CareerViewCategory = ({ data }) => {
                 onClick={() => handleListBoxClick(career.id)}  // 클릭 시 career.id 전송
               >
                 <Name>
-                <CareerContainer>
-                  <CareerName>{career.careerName}</CareerName>
-                  <AliasName>&nbsp;/ {career.alias}</AliasName>
-                </CareerContainer>               
-                </Name>
+                  <CareerContainer>
+                    <CareerName>{career.careerName}</CareerName>
+                    <AliasName>&nbsp;/ {career.alias}</AliasName>
+                  </CareerContainer>                  
+                  </Name>
                 <Date>{formatDate(career.startDate)} ~ {formatDate(career.endDate)}</Date>
               </ListBox>
             ))}
