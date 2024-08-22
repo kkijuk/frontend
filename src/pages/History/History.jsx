@@ -95,8 +95,8 @@ const History = () => {
     const handleAddEducation = async (newEducation)=>{
         try{
             const { category, schoolName, major, admissionDate, graduationDate, state } = newEducation;
-
-            if (!category || !schoolName || !major || !admissionDate || !graduationDate || !state) {
+            console.log("handled info: ", newEducation)
+            if (!category || !schoolName || !admissionDate || !graduationDate || !state) {
                 alert('모든 필드를 입력해주세요!');
                 return;
             }
@@ -337,7 +337,7 @@ const History = () => {
                         onCancel={() => handleDeleteEducation(index, education.educationId)}
                         onEdit={(updatedData)=>handleUpdateEducation(education.educationId, updatedData)}
                         /> 
-                    : <EducationItem key={index} data={education} onEdit={() => handleEdit(index, education.educationId)}
+                    : <EducationItem key={index} data={education} onEdit={() => handleEdit(index)}
                         isLastItem={index === educations.length - 1} />
                 ))}
                 <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>

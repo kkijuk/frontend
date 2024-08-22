@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate, useLocation, Outlet } from 'react-router-dom'
 import styled from 'styled-components'
 import Convert from './Convert'
+import Title from '../Apply/Title'
 
 const SubNav =()=>{
     const navigate = useNavigate();
@@ -14,8 +15,14 @@ const SubNav =()=>{
     return(
         <BackgroundDiv>
             <BaseDiv>
-                <div style={{width:'820px', display:'flex', alignItems:'center',justifyContent:'space-between' }}>
-                    <h1 style={{marginBottom:'36px', display:'inline-block'}}>이력관리</h1>
+                <div 
+                    style={{width:'820px', 
+                            height:'36px',
+                            display:'flex', 
+                            alignItems:'center',
+                            justifyContent:'space-between',
+                            margin:'-5px 0px 30px 0px' }}>
+                    <Title>이력관리</Title>
                     {!shouldHideConvert&&<Convert></Convert>}
                 </div>
 
