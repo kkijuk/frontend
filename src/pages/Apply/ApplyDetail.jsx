@@ -637,10 +637,10 @@ const ApplyDetail = () => {
 
 const formatDateTimeToLocal = (dateString) => {
   // 서버에서 받은 UTC 시간을 Date 객체로 변환
-  const utcDate = new Date(dateString);
+  const kstDate = new Date(dateString);
 
-  // 로컬 시간대에 맞게 변환
-  const localDate = new Date(utcDate.getTime() - (utcDate.getTimezoneOffset() * 60000));
+  // UTC 시간에 9시간을 더해서 한국 시간(KST)으로 변환
+  const localDate = new Date(kstDate.getTime() ); // 9시간 더하기
 
   // 로컬 시간대의 연도, 월, 일, 시간, 분을 추출
   const year = localDate.getFullYear();
@@ -652,6 +652,7 @@ const formatDateTimeToLocal = (dateString) => {
   // 'YYYY-MM-DD HH:MM' 형식으로 변환하여 반환
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 };
+
 
 const handleBackClick = () => {
   if (location.state && location.state.from === 'status') {
