@@ -84,6 +84,7 @@ export default function Home() {
 
     const handleTimelineClick = () => {
         if (!isLoggedIn) {
+            window.scrollTo(0, 0); 
             navigate('/login-required'); // 로그아웃 상태일 시 로그인 페이지로 이동합니다.
         }
     };

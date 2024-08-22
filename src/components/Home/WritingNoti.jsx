@@ -118,6 +118,8 @@ export default function WritingNoti() {
     const regex = /[^0-9]/g;
 
     const handleClick = (isEmpty, id) => {
+        window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
+
         if (isEmpty) {
             navigate('/history/master');
         } else {

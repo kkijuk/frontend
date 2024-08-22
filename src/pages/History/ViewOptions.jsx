@@ -37,6 +37,8 @@ const ViewOptions = () => {
     const handleToggleClick = () => {
         isChecked ? navigate('/history/list/3') : navigate('/history/master');
         setIsChecked(!isChecked);
+        window.scrollTo(0, 0); // 스크롤을 최상단으로 이동
+
     };
 
     useEffect(() => {
@@ -60,6 +62,8 @@ const ViewOptions = () => {
         id === 'master'
             ? navigate('/history/master')
             : navigate(`/history/others/${id}`);
+            window.scrollTo(0, 0); // 스크롤을 최상단으로 이동
+
     };
 
     
@@ -67,6 +71,8 @@ const ViewOptions = () => {
     const handleStateClick = (state) => {
         navigate(`/history/list/${state}`);
         setState(state);
+        window.scrollTo(0, 0); // 스크롤을 최상단으로 이동
+
     };
 
 

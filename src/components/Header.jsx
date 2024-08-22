@@ -188,6 +188,8 @@ export default function Header() {
 
   // 이 부분을 추가하여 로그인 상태에 따른 리다이렉트 처리
   const handleNavigation = (path) => {
+    window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
+
     if (!isLoggedIn && path !== '/' && path !== '/login' && path !== '/signup') {
       navigate('/login-required');
     } else {

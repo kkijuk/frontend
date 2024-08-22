@@ -23,12 +23,18 @@ const TabButton = styled.button`
 `;
 
 const TabMenu = ({ activeTab, onTabClick, searchValue, onSearchChange, onSearch, showSearchBar = true }) => {
+  
+  const handleTabClick = (tab) => {
+    window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
+    onTabClick(tab);
+  };
+
   return (
     <TabMenuStyled>
-      <TabButton active={activeTab === 'schedule'} onClick={() => onTabClick('schedule')}>
+      <TabButton active={activeTab === 'schedule'} onClick={() => handleTabClick('schedule')}>
         지원일정
       </TabButton>
-      <TabButton active={activeTab === 'status'} onClick={() => onTabClick('status')}>
+      <TabButton active={activeTab === 'status'} onClick={() => handleTabClick('status')}>
         지원현황
       </TabButton>
       {showSearchBar && (

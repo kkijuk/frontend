@@ -181,22 +181,27 @@ export default function LoginProfileBox() {
     }, [isLoggedIn]);
 
     const goCareer = () => {
+        window.scrollTo(0, 0);
         navigate('/mycareer');
     };
 
     const goCareerAdd = () => {
+        window.scrollTo(0, 0);
         navigate('/mycareer', { state: { showModal: true } });
     };
 
     const goApply = () => {
+        window.scrollTo(0, 0);
         navigate('/apply-status');
     };
 
     const goLogin = () => {
+        window.scrollTo(0, 0);
         navigate('/login');
     };
 
     const goSignup = () => {
+        window.scrollTo(0, 0);
         navigate('/signup');
     };
 

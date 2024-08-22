@@ -145,8 +145,10 @@ const ListView = ({ data, onJobClick }) => {
               {(groupedData[date] || []).map((ad, idx) => (
                 <AdItem 
                   key={idx} 
-                  onClick={() => onJobClick(ad)}
-                >
+                  onClick={() => {
+                    window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
+                    onJobClick(ad);
+                  }}                >
                   <TagContainer>
                   {(ad.tag || ad.tags || []).map((tag, tagIdx) => (
                       <Tag key={tagIdx}>{tag}</Tag>

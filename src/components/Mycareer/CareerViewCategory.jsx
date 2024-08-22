@@ -131,14 +131,17 @@ const formatDate = (dateString) => {
 
 
 const CareerViewCategory = ({ data }) => {
+
   const navigate = useNavigate();
   const handleListBoxClick = async (careerId) => {
     try {
       const responseData = await ViewCareerDetail(careerId);
       console.log('Received careerId:', careerId);
       if (responseData) {
+        window.scrollTo(0, 0);
+
         navigate(`/mycareer/${careerId}`, { details: responseData });
-  
+       
       }
       // 여기서 tagList를 이용해 추가 작업을 할 수 있습니다.
     } catch (error) {
