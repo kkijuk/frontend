@@ -18,7 +18,7 @@ const FormContainer = styled.div`
     color: #3AAF85;
     text-align: center;
     font-size: 24px;
-     font-family: Regular;
+    font-family: bold;
     margin-top: -25px;
   }
 

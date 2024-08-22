@@ -20,21 +20,22 @@ const FormContainer = styled.div`
     color: #3AAF85;
     text-align: center;
     font-size: 24px;
-     font-family: Regular;
+     font-family: Bold;
     margin-top: -25px;
   }
 
   .step-indicator {
-    background: #D9D9D9;
-    border-radius: 10px;
-    color: white;
-    margin: 10px auto; 
-    font-size: 14px;
-    width: 52px;
-    height: 22px;
     display: flex; 
     align-items: center; 
     justify-content: center; 
+    background: #F1F1F1;
+    border-radius: 10px;
+    color: #707070;
+    margin: 10px auto; 
+    font-size: 14px;
+    width: 52px;
+    font-family: medium;
+    height: 22px;
   }
 
   .prev-button {

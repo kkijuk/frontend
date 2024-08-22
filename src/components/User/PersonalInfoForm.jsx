@@ -19,21 +19,22 @@ const FormContainer = styled.div`
     color: #3AAF85;
     text-align: center;
     font-size: 24px;
-     font-family: Regular;
+     font-family: bold;
     margin-top: -25px;
   }
 
   .step-indicator {
-    background: #D9D9D9;
-    border-radius: 10px;
-    color: white;
-    margin: 10px auto; 
-    font-size: 14px;
-    width: 52px;
-    height: 22px;
     display: flex; 
     align-items: center; 
     justify-content: center; 
+    background: #F1F1F1;
+    border-radius: 10px;
+    color: #707070;
+    margin: 10px auto; 
+    font-size: 14px;
+    width: 52px;
+    font-family: medium;
+    height: 22px;
   }
 
   .prev-button {
@@ -50,6 +51,8 @@ const FormContainer = styled.div`
     margin-bottom: 20px;
     width: 100%;
     text-align: left;
+    font-family: Regular;
+    font-size: 17px;
   }
 
   input[type="text"], input[type="date"], button {
