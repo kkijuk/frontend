@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom'; 
 import createMaster from '../api/Signup/createMaster';
+import createResume from '../api/Signup/createResume';
 import { useAuth } from '../components/AuthContext'; 
 
 const SignupSuccessScreen = styled.div`
@@ -70,6 +71,7 @@ const SignupSuccess = () => {
 
   useEffect(() => {
     createMaster();
+    createResume();
   }, []);
 
   const handleButtonClick = () => {

@@ -24,7 +24,7 @@ const Body = styled.div`
 
 const Container1 = styled.div`
   width: 820px;
-  height: 299px;
+  height: 320px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -62,7 +62,7 @@ const Box = styled.div`
 
 const CareerTitle = styled.div`
   width: 800px;
-  height: auto;
+  height: 108px;
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -86,14 +86,16 @@ const ActivityDetails = styled.div`
 
 const Container2 = styled.div`
   width: 800px;
-  height: 477px;
+  height: 600px;
 `;
 
 const CareerListBox = styled.div`
   width: 800px;
-  height: 475px;
+  height: 595px;
   overflow-y: auto;
   overflow-x: hidden;
+  border: 1px solid #D9D9D9;
+
 `;
 
 const Container3 = styled.div`
@@ -114,6 +116,8 @@ const CareerPlus = styled.button`
   color: white;
   cursor: pointer;
   position: fixed;
+  z-index: 1;
+
   bottom: 30px;
   background: ${props => props.disabled ? 'var(--gray-03, #D9D9D9)' : 'var(--main-01, #3AAF85)'};
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
@@ -172,6 +176,12 @@ const EditIconStyled = styled(EditIcon)`
   color: #707070 !important; /* color 속성을 사용하여 색상 변경 */
 `;
 
+const Line = styled.div`
+  width: 800px;
+  height: 2px;
+  background: var(--gray-03, #D9D9D9);
+`;
+
 
 export default function MycareerDetail() {
   const [careers, setCareers] = useState([]); // CareerBox에 들어갈 데이터
@@ -198,6 +208,11 @@ export default function MycareerDetail() {
 
   useEffect(() => {
     const loadCareerDetail = async (careerId) => {
+    // 새로운 CareerBoxList 항목을 클릭할 때, DetailAdd 창을 닫음(qa관련)
+    if (isAdding) {
+      setIsAdding(false);
+    }
+
       const careerDetail = await ViewCareerDetail(careerId);
       console.log('선택된 CareerBox의 상세 데이터:', careerDetail);
       setSelectedCareerDetail(careerDetail);
@@ -302,8 +317,12 @@ const handleModalSave = (data) => {
         </CareerTitle>
       </Container1>
       <Container2>
+
         <CareerListBox>
+          <Line></Line>
+
           {selectedCareerDetail?.data?.details?.map((detail, index) => (
+            
             <CareerList
               key={index}
               title={detail.title}

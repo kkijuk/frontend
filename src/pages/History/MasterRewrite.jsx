@@ -21,6 +21,7 @@ const MasterRewrite =()=>{
 
     //(Data) 한줄소개, 지원동기및포부 제목 및 내용, 장단점 제목 및 내용, 직무적합성 제목 및 내용
     const [questions, setQuestions] = useState({
+        id:0,
         memberId:0,
         oneLiner:"",
         motiveTitle:"",
@@ -55,6 +56,7 @@ const MasterRewrite =()=>{
                 const Data = response.data.data;
                 console.log(Data.id);
                 setQuestions({
+                    id:Data.id,
                     memberId:Data.memberId,
                     oneLiner:Data.oneLiner,
                     motiveTitle:Data.motiveTitle,
@@ -81,7 +83,7 @@ const MasterRewrite =()=>{
 
     //(API) 마스터 수정
     const submitData =()=>{
-        api.patch('/history/intro/master?id=1',questions)
+        api.patch(`/history/intro/master?id=${questions.id}`,questions)
             .then(response=>{
                 console.log("마스터자소서수정완료: ",response.data);
             })
