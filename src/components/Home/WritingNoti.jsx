@@ -13,7 +13,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: left;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 20px 25px 20px 25px;
   box-sizing: border-box;
 `;
@@ -71,27 +71,43 @@ const DDayText = styled.div`
     font-weight: 500;
 `;
 
+const PlaceholderText = styled.div`
+    color: var(--gray-03, #D9D9D9);  // 회색 글씨
+    font-family: Regular;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+`;
+
 export default function WritingNoti() {
     const { isLoggedIn } = useAuth();  // 로그인 상태 가져오기
     const [introduceList, setIntroduceList] = useState([]);
 
     useEffect(() => {
-        if (isLoggedIn) {  // 로그인 상태일 때만 데이터 가져오기
+        if (isLoggedIn) {
             const fetchIntroduce = async () => {
                 try {
                     const data = await getIntroduce();
-                    console.log("데이터", data);
                     if (data && data.length > 0) {
-                        setIntroduceList(data); // 데이터를 상태로 저장
+                        const filledIntroduceList = [...data.slice(0, 2)]; // 최대 2개의 데이터만 사용
+                        // 빈 박스가 있어야 하므로 데이터가 2개 미만일 경우 빈 박스를 추가
+                        while (filledIntroduceList.length < 2) {
+                            filledIntroduceList.push({});
+                        }
+                        setIntroduceList(filledIntroduceList);
                     } else {
-                        console.error('Failed to fetch data');
+                        setIntroduceList([{}, {}]); // 데이터가 없을 경우 빈 박스 유지
                     }
                 } catch (error) {
                     console.error('Error fetching data:', error);
+                    setIntroduceList([{}, {}]); // 에러 발생 시에도 빈 박스 유지
                 }
             };
             
             fetchIntroduce();
+        } else {
+            setIntroduceList([{}, {}]); // 로그아웃 상태에서도 빈 박스 유지
         }
     }, [isLoggedIn]);
 
@@ -100,17 +116,24 @@ export default function WritingNoti() {
     return (
         <Container>
             <Label>자기소개서 작성 완료를 기다려요</Label>
-            {isLoggedIn && introduceList.map((introduce, index) => {  // 로그인 상태일 때만 데이터 표시
-                const num = parseInt(introduce.deadline.replace(regex, ""), 10);
+            {introduceList.map((introduce, index) => {
+                const isEmpty = !introduce.recruitTitle;  // 로그인 상태일 때만 데이터 표시 -> 취소
+                const num = introduce.deadline ? parseInt(introduce.deadline.replace(regex, ""), 10) : null;
                 const fontColor = num <= 7 ? '#FA7C79' : '#707070'; // 현재: 7일 이하면 글자색 빨간색
 
                 return (
                     <Box key={index}>
-                        {introduce.recruitTitle} 
-                        <DDayBox>
-                            <DDayText fontColor={fontColor}>D-</DDayText>
-                            <DDayText fontColor={fontColor}>{num}</DDayText>
-                        </DDayBox>
+                        {isEmpty ? (
+                            <PlaceholderText>자기소개서를 작성해 주세요</PlaceholderText>
+                        ) : (
+                            <>
+                                {introduce.recruitTitle}
+                                <DDayBox>
+                                    <DDayText fontColor={fontColor}>D-</DDayText>
+                                    <DDayText fontColor={fontColor}>{num}</DDayText>
+                                </DDayBox>
+                            </>
+                        )}
                     </Box>
                 );
             })}

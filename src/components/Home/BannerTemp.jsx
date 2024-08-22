@@ -72,10 +72,10 @@ export default function BannerTemp({}) {
         };
 
         const cycleSlides = async () => {
-            await updateSlide(2, 4000); // 4초 후에 2로 변경
+            await updateSlide(2, 3500); // 3.5초 후에 2로 변경
             await updateSlide(3, 6000); // 6초 후에 3으로 변경
             await updateSlide(1, 6000); // 6초 후에 1로 변경
-            await updateSlide(1, 2000); // 2초 후에 1로 변경
+            await updateSlide(1, 2500); // 2.5초 후에 1로 변경
 
             // 이후 무한 반복
             setTimeout(cycleSlides, 0); // 사이클 반복
