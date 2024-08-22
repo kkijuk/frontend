@@ -114,6 +114,8 @@ const CareerPlus = styled.button`
   color: white;
   cursor: pointer;
   position: fixed;
+  z-index: 5;
+
   bottom: 30px;
   background: ${props => props.disabled ? 'var(--gray-03, #D9D9D9)' : 'var(--main-01, #3AAF85)'};
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
@@ -198,6 +200,11 @@ export default function MycareerDetail() {
 
   useEffect(() => {
     const loadCareerDetail = async (careerId) => {
+    // 새로운 CareerBoxList 항목을 클릭할 때, DetailAdd 창을 닫음(qa관련)
+    if (isAdding) {
+      setIsAdding(false);
+    }
+
       const careerDetail = await ViewCareerDetail(careerId);
       console.log('선택된 CareerBox의 상세 데이터:', careerDetail);
       setSelectedCareerDetail(careerDetail);
