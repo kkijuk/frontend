@@ -640,7 +640,7 @@ const formatDateTimeToLocal = (dateString) => {
   const utcDate = new Date(dateString);
 
   // UTC 시간에 9시간을 더해서 한국 시간(KST)으로 변환
-  const localDate = new Date(utcDate.getTime() + (9 * 60 * 60 * 1000)); // 9시간 더하기
+  const localDate = new Date(utcDate.getTime() ); // 9시간 더하기
 
   // 로컬 시간대의 연도, 월, 일, 시간, 분을 추출
   const year = localDate.getFullYear();
