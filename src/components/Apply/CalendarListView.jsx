@@ -31,6 +31,7 @@ const CalendarAdListStyled = styled.div`
   padding: 20px;
   border-radius: 10px;
   margin-top: -10px;
+  margin-left: 160px;
 `;
 
 const CalendarAdDateSection = styled.div`
@@ -46,7 +47,7 @@ const CalendarAdDate = styled.div`
   font-weight: 500;
   line-height: normal;
   margin-bottom: 5px;
-  margin-left: 27px;
+  margin-left: 190px;
 `;
 
 const CalendarAdItem = styled.div`
