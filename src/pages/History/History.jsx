@@ -16,6 +16,7 @@ import createEducation from '../../api/Record/createEducation';
 import updateEducation from '../../api/Record/updateEducation';
 import deleteEducation from '../../api/Record/deleteEducation';
 
+
 const History = () => {
 
     const profileTitles = ["이름", "생년월일", "전화번호", "이메일", "주소"];
@@ -195,10 +196,23 @@ const History = () => {
     const toggleAddActModalOpen = () => {
         setIsAddActModalOpen(prev => !prev);
     };
+    //활동 수정 모달 닫기
+    const closeEditActModal =()=>{
+        setIsEditActModalOpen(false);
+    }
     // 활동 수정 모달 토글
     const toggleEditActModalOpen = (careerId) => {
         const career = [...careers, ...activities].find(item => item.careerId === careerId);
         if (career) {
+            const categoryMap = {
+                '동아리': 1,
+                '대외활동': 2,
+                '공모전/대회': 3,
+                '프로젝트': 4,
+                '아르바이트/인턴': 5,
+                '교육': 6,
+                '기타활동': 7
+            };
             const careerData = {
                 id: careerId,
                 categoryName: career.category,
@@ -212,6 +226,7 @@ const History = () => {
             };
 
             setSelectedCareer({ data: careerData });
+            console.log("선택된 정보:", selectedCareer);
         }
         setIsEditActModalOpen(true);
     };
@@ -276,7 +291,7 @@ const History = () => {
             {isAddActModalOpen && <AddCareerModal onClose={toggleAddActModalOpen} onSave={handleAddCareer}/>}
             {isEditActModalOpen && 
                 <AddCareerModalEdit 
-                    onClose={toggleEditActModalOpen}
+                    onClose={closeEditActModal}
                     data={selectedCareer}
                     onSave={(data)=>handleSaveCareerEdit(data)}/>}
             <p style={{fontFamily:'Regular', fontSize:'14px', color:'#707070', position:'absolute', top:'-30px', right:'0px'}}>
@@ -284,8 +299,10 @@ const History = () => {
             </p>
                 {/* 1. Profiles */}
                 <div style={{display:'flex', alignContent:'center', gap:'40px'}}>
-                    <div style={{width:'150px', height:'200px',backgroundColor:'#707070'}}>
+                    <div style={{width:'150px', height:'200px',backgroundColor:'#FFF', display:'flex', justifyContent:'center'}}>
                         {/* 프로필사진 */}
+                        <img src='/images/emoji.jpg' alt='Profile' 
+                            style={{width:'200px'}}/>
                     </div>
                     <div style={{width:'70px'}}>
                         {profileTitles.map((profileTitle, index) => (

@@ -70,10 +70,13 @@ const SignupSuccess = () => {
   const { login } = useAuth(); 
   const [hasCalled, setHasCalled] = useState(false);  // 호출 여부 상태 관리
 
+  const address = "string";
+  const profileImageUrl = "string";
+
   useEffect(() => {
     if (!hasCalled) {
       createMaster();
-      createResume();
+      createResume(address, profileImageUrl);
       setHasCalled(true);  // 호출 후 true로 설정
     }
   }, [hasCalled]);
