@@ -31,7 +31,6 @@ const CalendarAdListStyled = styled.div`
   padding: 20px;
   border-radius: 10px;
   margin-top: -10px;
-  margin-left: 160px;
 `;
 
 const CalendarAdDateSection = styled.div`
@@ -47,7 +46,7 @@ const CalendarAdDate = styled.div`
   font-weight: 500;
   line-height: normal;
   margin-bottom: 5px;
-  margin-left: 190px;
+  margin-left: 68px;
 `;
 
 const CalendarAdItem = styled.div`
@@ -58,6 +57,7 @@ const CalendarAdItem = styled.div`
   margin-bottom: 10px;
   box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
   cursor: pointer; 
+  margin-left: 38px;
 `;
 
 const CalendarAdDetails = styled.div`
@@ -133,8 +133,6 @@ const CalendarListView = ({ date, data, count, onJobClick }) => {
       // API를 호출하여 전체 데이터를 가져옵니다.
       const fullAdDetails = await getRecruitDetails(ad.recruitId);
       console.log('Full ad details:', fullAdDetails); // 가져온 데이터 로그 출력
-      window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
-
       // 상세 페이지로 이동하면서, 가져온 전체 데이터를 전달합니다.
       navigate(`/apply-detail/${ad.recruitId}`, { state: { job: fullAdDetails } });
     } catch (error) {
@@ -177,4 +175,3 @@ const CalendarListView = ({ date, data, count, onJobClick }) => {
 };
 
 export default CalendarListView;
-
