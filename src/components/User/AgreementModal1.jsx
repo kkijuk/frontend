@@ -40,7 +40,7 @@ const StyledModal = styled.div`
   h2 {
     color: black; 
     margin-top: 20px; 
-    text-align: center; 
+    text-align: center;
   }
 `;
 
