@@ -38,9 +38,9 @@ const StyledModal = styled.div`
   }
 
   h2 {
-    color: #000; /* 검정색 글씨 */
-    margin-top: 20px; /* 위치를 아래로 내리기 위한 마진 */
-    text-align: center; /* 텍스트 중앙 정렬 */
+    color: black; 
+    margin-top: 20px; 
+    text-align: center; 
   }
 `;
 
