@@ -1,4 +1,3 @@
-
 import axios from "axios";
 
 //활동 내역 클릭하면 CareerId를 넘겨주고 그 CareerId에 맞는 정보들 불러오기
