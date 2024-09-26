@@ -8,22 +8,24 @@ import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
 import ApplyStatusButton from '../../components/Apply/ApplyStatusButton';
 
 const Container = styled.div`
-  width: 100%;
-  max-width: 850px;
+   width: 820px;
+   margin-top: 40px;
+  max-width: 820px;
   margin: 0 auto;
   padding: 24px 40px;
   background-color: white;
   border-radius: 15px;
 `;
-
 const Title = styled.h1`
   color: var(--black, #000);
   font-family: 'Bold';
   font-size: 30px;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-top: 11px;
+  width: 820px;
   margin-left: 18px;
 `;
+
 
 export default function ApplyStatus() {
   const [jobs, setJobs] = useState([]);
