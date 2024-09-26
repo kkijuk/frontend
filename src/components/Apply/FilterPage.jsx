@@ -33,14 +33,16 @@ const FilterTitle = styled.div`
   font-family: bold;
   color: #333;
   margin-bottom: 10px;
+  white-space: nowrap;  // 줄바꿈 방지
 `;
 
 const FilterOptions = styled.div`
-  margin-right: 580px;
   margin-bottom: 9px;
   display: flex;
-  gap: 20px;
+  gap: 0px;  // 버튼 간의 간격 설정
+  padding-right: 475px;  // 버튼들을 오른쪽으로 이동
 `;
+
 
 const OptionButton = styled.button`
   display: flex;
@@ -53,6 +55,10 @@ const OptionButton = styled.button`
   border-radius: 10px;
   cursor: pointer;
   height: 25px;
+  margin-left: 25px;
+  white-space: nowrap;  // 줄바꿈 방지
+  overflow: hidden;  // 넘친 텍스트 숨김
+  text-overflow: ellipsis;  // 넘친 텍스트 말줄임표 처리
 `;
 
 const SortSection = styled.div`
@@ -246,6 +252,12 @@ const FilterPage = () => {
               공고명
             </OptionButton>
             <OptionButton
+            active={activeOptions.includes('공고후기')}
+            onClick={() => handleOptionClick('공고후기')}
+            >
+            공고후기
+            </OptionButton>
+            <OptionButton
               active={activeOptions.includes('태그')}
               onClick={() => handleOptionClick('태그')}
             >
@@ -256,11 +268,11 @@ const FilterPage = () => {
         <SortSection>
           <FilterTitle>정렬</FilterTitle>
           <SortOptionButton
-  active={sortOrder === 'latest'}
+  active={sortOrder === 'latest'} // 최신순이 기본으로  적용되어 있음
   onClick={() => handleSortOrderClick('latest')}
   style={{ marginLeft: '30px' }}  // 최신순 버튼에 적용
 >
-  최신순
+  최신순 
 </SortOptionButton>
 <SortOptionButton
   active={sortOrder === 'oldest'}
