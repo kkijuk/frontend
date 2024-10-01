@@ -1,3 +1,5 @@
+//components/MyCareerDetail/DetailAdd, DetailAddEdit
+
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { TagBoxFetchList, TagBoxCreateTag, TagBoxDeleteTag } from '../../api/Mycareer/TagBoxAPI';
@@ -137,22 +139,22 @@ const CloseButton = styled.button`
     margin-left: 4px; /* 왼쪽 여백 추가 */
 `;
 
-export default function TagBox( { externalTags, externalSetTags, onTagListChange } ) {
-    const [tags, setTags] = useState([]);
+export default function TagBox( { /*externalTags,*/ onTagListChange } ) {
+    const [tags, setTags] = useState([]); //TagInputContainer에 표시할 태그
+    const [TagBoxTags, setTagBoxTags] = useState([]); // TagBoxListContainer에 표시할 태그
 
+    const [inputValue, setInputValue] = useState(''); //TagInputContainer 안에 값 
+    const [isFocused, setIsFocused] = useState(false);
+
+    const [isTagBoxListVisible, setIsTagBoxListVisible] = useState(false); //TagBoxListContainer 상태 나타내기
+    const tagBoxRef = useRef(null);
+
+    //아래 주석처리 날릴 예정 + 위에 externalTags도....
+    /*
     useEffect(() => {
         setTags(externalTags || []);  // null 또는 undefined가 아닌 배열로 설정
     }, [externalTags]);
-
-    const [TagBoxTags, setTagBoxTags] = useState([]); // TagBoxListContainer에 표시할 태그들
-
-    const [inputValue, setInputValue] = useState('');
-    const [isFocused, setIsFocused] = useState(false);
-
-    const [isTagBoxListVisible, setIsTagBoxListVisible] = useState(false);
-    const tagBoxRef = useRef(null);
-
-
+    */
     
     useEffect(() => {
         const fetchTags = async () => {
@@ -162,21 +164,23 @@ export default function TagBox( { externalTags, externalSetTags, onTagListChange
         fetchTags();
     }, []); //여기 tags를 써서 tags에 변화가 생길 때마다 해당 useEffect가 실행되게 함 (Warning메시지 떠서 삭제함...)
 
+    //tags, TagBoxTags의 상태가 변경될 때마다 실행된다. onTagListChange라는 콜백 함수 호출해서
+    //태그리스트의 ID값을 전달하는 역할
     useEffect(() => {
-        if (typeof onTagListChange === 'function') {
-            const tagIds = tags.map(tag => {
-                const tagObject = TagBoxTags.find(t => t.tagName === tag);
-                return tagObject ? tagObject.id : null;
-            }).filter(id => id !== null);
+        if (typeof onTagListChange === 'function') { //onTagListChange가 함수인지 확인
+            const tagIds = tags.map(tag => { //tags 배열에 저장된 태그들의 이름을 사용, TagBoxTags에서 해당 이름에 해당하는 태그 객체 찾고 id값 추출
+                const tagObject = TagBoxTags.find(t => t.tagName === tag); //TagBoxTags에서 tagName이 일치하는 객체 찾아서 반환
+                return tagObject ? tagObject.id : null; //태그 객체 찾았다면 id 반환, dkslaus null 반환
+            }).filter(id => id !== null); //null값 제외하고 유효한 ID들만 tagIds 배열에 저장
             onTagListChange(tagIds);
         } else {
             console.error('onTagListChange prop is not a function');
         }
-    }, [tags, TagBoxTags]); //여기도 원래 tags, TagBoxTags, onTagListChange
+    }, [tags, TagBoxTags]); //여기도 원래 tags, TagBoxTags, onTagListChange 였었음
     
-
+    //사용자가 태그 입력 필드에 값 입력 때마다 InputValue 상태 업데이트 해주기
     const handleInputChange = (e) => {
-        setInputValue(e.target.value);
+        setInputValue(e.target.value); //여기서 e.target.value는 사용자가 입력한 텍스트
     };
 
     //엔터 눌렀을 때 태그 추가
@@ -186,25 +190,26 @@ export default function TagBox( { externalTags, externalSetTags, onTagListChange
             return;
         }
 
-        if (e.key === 'Enter' && inputValue.trim() !== ''){
-            const newTag = inputValue.trim();
+        if (e.key === 'Enter' && inputValue.trim() !== ''){ //엔터키 눌렸음 + 입력된 값 공백 아닐때만 실행한다
+            const newTag = inputValue.trim(); //입력된 태그 값의 앞뒤 공백 제거 후 newTag에 저장
 
             // 이미 TagInputContainer에 있는 태그라면 추가하지 않음
-            if (tags.includes(newTag)) {
-                setInputValue('');
+            if (tags.includes(newTag)) { //여기서 tags가 TagInputContainer에 있는 태그들인데 만약 newTag가 이미 tags에 있는 태그면 
+                setInputValue(''); //입력 필드 비워주고 함수 종료
                 return;
             }
 
             // TagBoxListContainer에만 있고, TagInputContainer에는 없는 태그라면
-            if (TagBoxTags.some(tag => tag.tagName === newTag)) {
-                setTags([...tags, newTag]);
+            //여기서 some은 자바스크립트 배열 메서드 : 배열 내에서 조건을 만족하는 요소 하나라도 있는지 확인하는 역할로 불리언 값 반환
+            if (TagBoxTags.some(tag => tag.tagName === newTag)) { //TagBoxTags배열 순회하며 tag.tagName이 newTag와 같은지 확인 -> 같으면 true 반환
+                setTags([...tags, newTag]); //true 반환하면 tags에만 newTag 저장 -> TagBoxListContainer에는 저장하지 않음. 왜냐 이미 있으니까!
                 setInputValue('');
                 return;
             }
-
             try {
-                // API 호출해서 태그 전송
+                // API 호출해서 태그 전송, await: 비동기, 이 작업 완료 때까지 기다리기
                 const response = await TagBoxCreateTag(newTag);
+                //서버에서 받은 데이터 중 실제 생성된 태그 추출하기
                 const createdTag = response.data;
 
                 console.log('API 응답:', response);
@@ -223,18 +228,23 @@ export default function TagBox( { externalTags, externalSetTags, onTagListChange
             
     };
 
+
     // TagBoxListContainer에서 태그 클릭 시 TagInputContainer에 추가
-    const handleTagClick = (tagName) => {
-        if (!tags.includes(tagName)) {
-            setTags([...tags, tagName]);
+    const handleTagClick = (tagName) => { //현재 클릭한 태그의 tagName이 
+        if (!tags.includes(tagName)) { //tags에 포함되어 있지 않다면 
+            setTags([...tags, tagName]); //tags에 추가해주기
         }
     };
     
+
+
     // TagInputContainer에서 태그 삭제
-    const handleTagRemove = (tagName) => {
-        setTags(tags.filter(tag => tag !== tagName));
+    //filter는 자바스크립트의 배열 메서드. 배열 순회하며 주어진 조건 만족하는 요소들만 추출해 새로운 배열 만드는 함수
+    const handleTagRemove = (tagName) => { //삭제 버튼 누른 태그를
+        setTags(tags.filter(tag => tag !== tagName)); //tags배열에서 필터링 해서 새로운 배열 만들기
     };
 
+    //TagBoxListContainer에서 태그 삭제하기
     const handleTagDelete = async (tagId, tagName) => {
         try {
             await TagBoxDeleteTag(tagId);
@@ -250,7 +260,8 @@ export default function TagBox( { externalTags, externalSetTags, onTagListChange
         }
     };
 
-    //placeholder 내용없애기
+    /*
+    //(placeholder 내용없애기) 였었던 것. 필요 없음이제 날릴 예정
     const handleFocus = () => {
         setIsFocused(true);
     };
@@ -258,6 +269,9 @@ export default function TagBox( { externalTags, externalSetTags, onTagListChange
     const handleBlur = () => {
         setIsFocused(false);
     };
+    */
+
+        //-------------------------------------------------------------------여기까지 주석처리 완------------------------------------------------------
 
     const handleClickOutside = (e) => {
         if (tagBoxRef.current && !tagBoxRef.current.contains(e.target)) {
@@ -288,7 +302,8 @@ export default function TagBox( { externalTags, externalSetTags, onTagListChange
                         value={inputValue}
                         onChange={handleInputChange}
                         onKeyDown={handleKeyDown}
-                        placeholder={(tags.length === 0 && !isFocused && inputValue === '') ? '태그 선택 혹은 입력' : ''}
+                        //태그가 하나도 선택되지 않았고, 입력창이 포커스 되지 않았고, 입력창에 아무 것도 입력되지 않았을 때 placeholder에 '태그 선택 혹은 입력' 문구 표시
+                        placeholder={(tags.length === 0 && !isFocused && inputValue === '') ? '태그 선택 혹은 입력' : ''} 
                     />
                 </TagInputContainer>
             </Row>

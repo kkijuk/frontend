@@ -1,4 +1,5 @@
 // src/components/shared/InterestBox.jsx
+//관심분야 설정 박스
 import React from 'react';
 import styled from 'styled-components';
 

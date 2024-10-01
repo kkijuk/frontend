@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import ReactCalendar from '../shared/Calendar';
+import ReactCalendar from './Calendar';
 import moment from 'moment';
 import TagBox from '../shared/TagBox';
 import { CareerDetailEdit } from '../../api/Mycareer/CareerDetailEdit';
