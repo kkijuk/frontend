@@ -88,15 +88,26 @@ const DateRangeInput = styled.div`
   display: flex;
   align-items: center;
   margin-top: 20px;
-  gap: 10px;  
+  gap: 10px; /* 두 입력란 사이의 간격 설정 */
 `;
-
 
 const DateInput = styled.input`
   padding: 5px;
   border: 1px solid #D9D9D9;
-  border-radius: 5px;
-  margin-right: 10px;
+  border-radius: 12px;
+  background: #FFF;
+  margin-top: -5px;
+  width: 120px; /* 적절한 너비 설정 */
+  margin-left: 25px;
+`;
+
+const DateSeparator = styled.span`
+  font-size: 18px;
+  color: #333;
+  font-family: Regular;
+  position: absolute;
+  left: 770px;
+  top: 370px;
 `;
 
 const ResultsContainer = styled.div`
@@ -151,7 +162,8 @@ const TabButton = styled.button`
 const ResetContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 10px;
+  margin-left: 700px;
 `;
 
 const ResetButton = styled.button`
@@ -160,16 +172,18 @@ const ResetButton = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
-  font-size: 14px;
-  color: #333;
+  font-size: 16px;
+  font-family: Regular;
+  color: #707070;
   margin-left: 5px;
+  margin-top: -1px;
 `;
 
 const FilterIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 10px;
+  margin-right: -5px;
   svg {
     width: 20px;
     height: 20px;
@@ -347,6 +361,7 @@ const FilterPage = () => {
             value={startDate} 
             onChange={(e) => setStartDate(e.target.value)} 
           />
+           <DateSeparator>~</DateSeparator>
           <DateInput 
             type="date" 
             value={endDate} 

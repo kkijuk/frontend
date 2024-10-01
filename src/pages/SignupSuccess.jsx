@@ -74,11 +74,26 @@ const SignupSuccess = () => {
   const profileImageUrl = "string";
 
   useEffect(() => {
+    const preventScroll = (e) => {
+      e.preventDefault();
+    };
+
+    const $body = document.querySelector('body');
+    $body.style.overflow = 'hidden'; 
+    $body.addEventListener('wheel', preventScroll, { passive: false });
+    $body.addEventListener('touchmove', preventScroll, { passive: false });
+
     if (!hasCalled) {
       createMaster();
       createResume(address, profileImageUrl);
       setHasCalled(true);  // 호출 후 true로 설정
     }
+
+    return () => {
+      $body.removeEventListener('wheel', preventScroll);
+      $body.removeEventListener('touchmove', preventScroll);
+      $body.style.overflow = ''; 
+    };
   }, [hasCalled]);
 
   const handleButtonClick = () => {

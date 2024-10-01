@@ -54,7 +54,7 @@ const ContentText = styled.div`
 const Info = styled.div`
     color: var(--gray-02, #707070);
     font-family: Regular;
-    font-size: 10px;
+    font-size: 12px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;

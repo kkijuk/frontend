@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import logo from '../assets/logo.png';
 import { useNavigate } from 'react-router-dom';
@@ -7,23 +7,31 @@ import { useAuth } from '../components/AuthContext';
 
 const LoginScreen = styled.div`
   max-width: 400px;
-  margin: 50px auto;
+  margin: 0 auto;
   padding: 20px;
   background: white;
   border-radius: 10px;
   text-align: center;
-
+  margin: 90px auto 0; 
+  height: auto; 
+  overflow: hidden; 
+  
   p {
     color: #707070;
     font-family: light;
     margin-bottom: 50px;
     text-align: center; 
-      }
+  }
+
+ 
+  * {
+    box-sizing: border-box; 
+  }
 
   .textInput {
-    width: 350px;
-    height: 30px;
-    padding: 10px;
+    width: 400px;
+    height: 50px; 
+    padding: 10px; 
     margin: 10px 0;
     border: none;
     border-radius: 10px;
@@ -39,9 +47,9 @@ const LoginScreen = styled.div`
   }
 
   .button {
-    width: 350px;
+    width: 400px;
     height: 50px;
-    padding: 10px;
+    padding: 10px; 
     margin: 10px 0;
     border: none;
     border-radius: 10px;
@@ -49,11 +57,9 @@ const LoginScreen = styled.div`
     color: white;
     font-family: Regular;
     font-size: 19px;
-    font-style: normal;
-    font-weight: 500;
     cursor: pointer;
-    margin-top: 20px; 
-     margin-bottom: 20px;
+    margin-top: 60px; 
+    margin-bottom: 20px;
   }
 
   a {
@@ -66,37 +72,13 @@ const LoginScreen = styled.div`
     text-decoration: underline;
   }
 
-  .checkbox-container {
-    display: flex;
-    align-items: center;
-    margin-top: 0px;
-    margin-left: 20px; 
-  }
-
-  .checkbox {
-    margin-right: 5px;
-    padding-right: 0px; 
-  }
-
-  .label {
-    color: #707070;
-     font-family: Regular;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    white-space: nowrap;
-  }
-
   .links {
     color: #3AAF85; 
-     font-family: Regular;
+    font-family: Regular;
     font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
   }
 `;
+
 
 const ErrorMessage = styled.div`
   color: #FC5555;
@@ -105,7 +87,6 @@ const ErrorMessage = styled.div`
   font-family: Regular;
   font-size: 16px;
 `;
-
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -118,8 +99,6 @@ const LoginPage = () => {
   const handleLogin = async () => {
     try {
       const result = await login({ email, password });
-      console.log('로그인 성공:', result);
-
       if (result.message === "login success") {
         setLoginState(true); // 로그인 상태 업데이트
         navigate('/'); 
@@ -130,6 +109,23 @@ const LoginPage = () => {
       setErrorMessage(error.message);
     }
   };
+
+  useEffect(() => {
+    const preventScroll = (e) => {
+      e.preventDefault();
+    };
+
+    const $body = document.querySelector('body');
+    $body.style.overflow = 'hidden'; 
+    $body.addEventListener('wheel', preventScroll, { passive: false });
+    $body.addEventListener('touchmove', preventScroll, { passive: false });
+
+    return () => {
+      $body.removeEventListener('wheel', preventScroll);
+      $body.removeEventListener('touchmove', preventScroll);
+      $body.style.overflow = ''; 
+    };
+  }, []);
 
   return (
     <LoginScreen>
@@ -149,9 +145,8 @@ const LoginPage = () => {
         onChange={(e) => setPassword(e.target.value)}
         className="textInput"
       />
-{errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-<button className="button" onClick={handleLogin}>로그인</button>
-
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      <button className="button" onClick={handleLogin}>로그인</button>
       <div className="links">
         <a href="/signup">회원가입</a> | <a href="/passwordresetemail">비밀번호 찾기</a>
       </div>

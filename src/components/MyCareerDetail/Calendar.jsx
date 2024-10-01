@@ -1,3 +1,5 @@
+//MyCareerDetail의 DetailAdd, DetailAddEdit 컴포넌트에서 사용
+
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Calendar from 'react-calendar';
