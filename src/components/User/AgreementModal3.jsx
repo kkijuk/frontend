@@ -38,7 +38,7 @@ const StyledModal = styled.div`
   }
 
   h2 {
-    color: black; 
+    color: black;
     margin-top: 20px; 
     text-align: center; 
   }

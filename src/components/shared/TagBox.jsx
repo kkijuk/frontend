@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import AbilityTag from './AbilityTag'; // AbilityTag 컴포넌트 가져오기
 import { TagBoxFetchList, TagBoxCreateTag, TagBoxDeleteTag } from '../../api/Mycareer/TagBoxAPI';
 
 const Box = styled.div`
@@ -161,8 +160,6 @@ export default function TagBox( { externalTags, externalSetTags, onTagListChange
             setTagBoxTags(fetchedTags);
         };
         fetchTags();
-        console.log("활동기록 생성 tags:", tags);
-
     }, []); //여기 tags를 써서 tags에 변화가 생길 때마다 해당 useEffect가 실행되게 함 (Warning메시지 떠서 삭제함...)
 
     useEffect(() => {
