@@ -53,7 +53,7 @@ const MainContent = styled.div`
 
 const App = () => {
   const location = useLocation();
-  const hideFooterPaths = ["/login", "/signup", "/signupsuccess"];
+  const hideFooterPaths = ["/login", "/signup", "/signupsuccess", "/signupinterest"];
   const hideFooter = hideFooterPaths.includes(location.pathname);
 
   return (
