@@ -279,17 +279,17 @@ const OthersRewrite = () => {
                             <Delete onClick={() => deleteItem(question.number)}>삭제</Delete>
                             <InputTitle
                                 placeholder={'질문을 작성하세요'}
-                                style={{ height: '50px', marginBottom: '12px', paddingLeft: '50px', width: '770px' }}
+                                style={{ height: '20px', marginBottom: '12px', paddingLeft: '50px', width: '750px' }}
                                 value={question.title || ''}
                                 onChange={(e) => handleInputChange(question.number, 'title', e)}
                             />
                             <InputTitle
                                 placeholder={'답변을 작성하세요'}
-                                style={{ height: '150px', marginBottom: '35px' }}
+                                style={{ height: '150px', marginBottom: '35px', width:'780px' }}
                                 value={question.content || ''}
                                 onChange={(e) => handleInputChange(question.number, 'content', e)}
                             />
-                            <p style={{ fontFamily: 'Regular', fontSize: '16px', color: '#707070', position: 'absolute', right: '20px', top: `${index + 165}px` }}>
+                            <p style={{ fontFamily: 'Regular', fontSize: '16px', color: '#707070', position: 'absolute', right: '20px', top: `${index + 220}px` }}>
                                 {charCounts[index]} (공백포함)
                             </p>
 
@@ -362,17 +362,20 @@ const Linear = styled.div`
     margin-bottom: 20px;
 `
 
-const InputTitle = styled.input`
-    width: 820px;
+const InputTitle = styled.textarea`
+    width: 750px;
     flex-shrink: 0;
-    border: none;
+    border:none;
     border-radius: 10px;
-    background: var(--gray-06, #F5F5F5);
+    background: var(--gray-06, #F5F5F5);    
+    padding: 20px 20px;
     color: var(--gray-02, #707070);
-    font-family: Regular;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: normal;
+    font-family:Regular;
+    font-size:16px;
+    font-weight:400;
+    line-height:normal;
+    resize:none;
+    overflow:hidden;
 `
 
 const AddButton = styled.button`

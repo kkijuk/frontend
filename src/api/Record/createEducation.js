@@ -2,16 +2,17 @@ import api from "../../Axios";
 
 const createEducation = async (recordId, data) => {
     try {
-        const transformedData = {
-            category: data.category || '',           // level -> category
-            schoolName: data.schoolName || '',   
-            major: data.department || '',             
-            state: data.state || '',             // status -> state
-            admissionDate: data.admissionDate || '', 
-            graduationDate: data.graduationDate || ''
-        };
+        // const transformedData = {
+        //     category: data.category || '',           // level -> category
+        //     schoolName: data.schoolName || '',   
+        //     major: data.department || '',             
+        //     state: data.state || '',             // status -> state
+        //     admissionDate: data.admissionDate || '', 
+        //     graduationDate: data.graduationDate || ''
+        // };
         console.log(data);
-        const response = await api.post(`/history/resume/education?recordId=${recordId}`, transformedData);
+        // const response = await api.post(`/history/resume/education?recordId=${recordId}`, transformedData);
+        const response = await api.post(`/history/resume/education?recordId=${recordId}`, data);
         console.log("추가된 학력 내용: ",response.data.data);
 
         return response.data.data;

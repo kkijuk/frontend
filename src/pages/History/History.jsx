@@ -33,20 +33,24 @@ const History = () => {
         address:""
     });
 
-    const [educations, setEducations] = useState([]);
-    
-    const [careers,setCareers] = useState([]);
-
-    const [activities, setActivities] = useState([]);
+    const [educations, setEducations] = useState([]); //학력
+    const [careers,setCareers] = useState([]); //경력
+    const [activities, setActivities] = useState([]); //활동 및 경험 
+    const [projects, setProjects] = useState([]); //프로젝트
+    const [trainings, setTrainings] = usetState([]); //교육
+    const [certsAndLangs, setCertsAndLangs] = useState([]); //자격증 및 외국어
+    const [awards, setAwards] = useState([]); //수상
+    const [skills, setSkills] = useState([]); //스킬
+    const [others, setOthers] = useState([]); //추가 자료
 
     //state
-    const [isEdit, setIsEdit] = useState([]);
-    const [isAddItemOpen, setIsAddItemOpen] = useState(false);
+    const [isEdit, setIsEdit] = useState([]); //학력 편집모드 읽기모드 여부
+    const [isAddItemOpen, setIsAddItemOpen] = useState(false); //학력 추가모드
     const [show, setShow] = useState(false);//추가 불가 알람창
     const [isEditActModalOpen, setIsEditActModalOpen] = useState(false);
     const [isAddActModalOpen, setIsAddActModalOpen] = useState(false);
     const [addressStatus, setAddressStatus] = useState(null);
-    const [selectedCareer, setSelectedCareer] = useState(null);
+    const [selectedCareer, setSelectedCareer] = useState(null); //수정된 정보
     const categoryMap = {
         1: '동아리',
         2: '대외활동',
@@ -288,12 +292,14 @@ const History = () => {
     return (
         <BackgroundDiv>
             <BaseDiv>
+            {/* 0. toggles */}
             {isAddActModalOpen && <AddCareerModal onClose={toggleAddActModalOpen} onSave={handleAddCareer}/>}
             {isEditActModalOpen && 
                 <AddCareerModalEdit 
                     onClose={closeEditActModal}
                     data={selectedCareer}
                     onSave={(data)=>handleSaveCareerEdit(data)}/>}
+
             <p style={{fontFamily:'Regular', fontSize:'14px', color:'#707070', position:'absolute', top:'-30px', right:'0px'}}>
                 마지막 수정 일시: {lastUpdated}
             </p>
