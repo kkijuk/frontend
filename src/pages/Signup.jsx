@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import EmailVerificationForm from '../components/User/EmailVerificationForm';
 import PersonalInfoForm from '../components/User/PersonalInfoForm';
@@ -9,20 +9,16 @@ import InitialSignupForm from '../components/User/InitialSignupForm';
 
 const SignupPage = () => {
   const [step, setStep] = useState(1);
-
   const [email, setEmail] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
   const [name, setName] = useState('');
   const [contact, setContact] = useState('');
   const [birthdate, setBirthdate] = useState('');
-
   const [agreements1, setAgreements1] = useState(false);
   const [agreements2, setAgreements2] = useState(false);
   const [agreements3, setAgreements3] = useState(false);
-
   const [modalType, setModalType] = useState(null); // 어떤 모달을 열지 결정
 
   const navigate = useNavigate();
@@ -41,12 +37,30 @@ const SignupPage = () => {
   };
 
   const handleModal = (type) => {
-    setModalType(type); // 모달 타입 설정
+    setModalType(type); 
   };
 
   const closeModal = () => {
-    setModalType(null); // 모달 닫기
+    setModalType(null); 
   };
+
+ 
+  useEffect(() => {
+    const preventScroll = (e) => {
+      e.preventDefault();
+    };
+
+    const $body = document.querySelector('body');
+    $body.style.overflow = 'hidden'; // 스크롤바 숨기기
+    $body.addEventListener('wheel', preventScroll, { passive: false });
+    $body.addEventListener('touchmove', preventScroll, { passive: false });
+
+    return () => {
+      $body.removeEventListener('wheel', preventScroll);
+      $body.removeEventListener('touchmove', preventScroll);
+      $body.style.overflow = ''; 
+    };
+  }, []);
 
   return (
     <>
