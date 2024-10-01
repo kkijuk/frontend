@@ -23,10 +23,15 @@ const LoginScreen = styled.div`
     text-align: center; 
   }
 
+ 
+  * {
+    box-sizing: border-box; 
+  }
+
   .textInput {
-    width: 350px;
-    height: 30px;
-    padding: 10px;
+    width: 400px;
+    height: 50px; 
+    padding: 10px; 
     margin: 10px 0;
     border: none;
     border-radius: 10px;
@@ -42,9 +47,9 @@ const LoginScreen = styled.div`
   }
 
   .button {
-    width: 350px;
+    width: 400px;
     height: 50px;
-    padding: 10px;
+    padding: 10px; 
     margin: 10px 0;
     border: none;
     border-radius: 10px;
@@ -53,7 +58,7 @@ const LoginScreen = styled.div`
     font-family: Regular;
     font-size: 19px;
     cursor: pointer;
-    margin-top: 20px; 
+    margin-top: 60px; 
     margin-bottom: 20px;
   }
 
@@ -73,6 +78,7 @@ const LoginScreen = styled.div`
     font-size: 16px;
   }
 `;
+
 
 const ErrorMessage = styled.div`
   color: #FC5555;

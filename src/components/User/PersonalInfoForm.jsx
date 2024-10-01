@@ -49,10 +49,13 @@ const FormContainer = styled.div`
 
   .input-group {
     margin-bottom: 20px;
-    width: 100%;
+    width: 400px;
+    height: 50px;
+    flex-shrink: 0;
     text-align: left;
     font-family: Regular;
     font-size: 17px;
+    margin-top: 45px;
   }
 
   input[type="text"], input[type="date"], button {
@@ -75,6 +78,7 @@ const FormContainer = styled.div`
 
   label {
     color: #3AAF85;
+    margin-top: 70px; 
   }
 
   button {
@@ -84,6 +88,7 @@ const FormContainer = styled.div`
     margin: 10px 0;
     height: 50px;
     width: 100%;
+    margin-top: 85px;
     border: none;
     border-radius: 10px;
     font-family: Regular;
