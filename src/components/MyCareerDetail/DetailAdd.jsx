@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import InputBox from '../shared/InputBox';
-import ReactCalendar from '../shared/Calendar';
+import ReactCalendar from './Calendar';
 import moment from 'moment';
 import TagBox from '../shared/TagBox';
 import { AddDetail } from '../../api/Mycareer/AddDetail';
