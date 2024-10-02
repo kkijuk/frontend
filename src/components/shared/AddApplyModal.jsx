@@ -1,4 +1,5 @@
 //pages/Apply/ApplySchedule, History/Select
+//공고 추가 모달
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import TagBox from '../Apply/ModalTagBox';

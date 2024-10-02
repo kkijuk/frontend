@@ -1,3 +1,5 @@
+//components/MyCareerDetail/CareerList
+//태그
 import React from 'react';
 import styled from 'styled-components';
 
