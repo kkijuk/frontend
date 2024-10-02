@@ -171,7 +171,6 @@ const ResetButton = styled.button`
   align-items: center;
   background-color: transparent;
   border: none;
-  cursor: pointer;
   font-size: 16px;
   font-family: Regular;
   color: #707070;
@@ -182,6 +181,7 @@ const ResetButton = styled.button`
 const FilterIcon = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
   justify-content: center;
   margin-right: -5px;
   svg {
