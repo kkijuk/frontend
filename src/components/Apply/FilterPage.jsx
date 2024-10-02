@@ -33,13 +33,14 @@ const FilterTitle = styled.div`
   font-family: bold;
   color: #333;
   margin-bottom: 10px;
+  white-space: nowrap;  
 `;
 
 const FilterOptions = styled.div`
-  margin-right: 580px;
   margin-bottom: 9px;
   display: flex;
-  gap: 20px;
+  gap: 0px;  
+  padding-right: 475px; 
 `;
 
 const OptionButton = styled.button`
@@ -53,13 +54,16 @@ const OptionButton = styled.button`
   border-radius: 10px;
   cursor: pointer;
   height: 25px;
+  margin-left: 25px;
+  white-space: nowrap;  
+  overflow: hidden;  
+  text-overflow: ellipsis;  
 `;
 
 const SortSection = styled.div`
   display: flex;
   align-items: center;
   margin-top: 20px;
-  
 `;
 
 const SortOptionButton = styled.button`
@@ -70,7 +74,40 @@ const SortOptionButton = styled.button`
   cursor: pointer;
   font-family: medium;
   margin-bottom: 9px;
+`;
 
+const DateRangeTitle = styled.div`
+  font-size: 18px;
+  font-family: bold;
+  color: #333;
+  margin-bottom: 10px;  
+  white-space: nowrap;  
+`;
+
+const DateRangeInput = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px; /* 두 입력란 사이의 간격 설정 */
+`;
+
+const DateInput = styled.input`
+  padding: 5px;
+  border: 1px solid #D9D9D9;
+  border-radius: 12px;
+  background: #FFF;
+  margin-top: -5px;
+  width: 120px; /* 적절한 너비 설정 */
+  margin-left: 25px;
+`;
+
+const DateSeparator = styled.span`
+  font-size: 18px;
+  color: #333;
+  font-family: Regular;
+  position: absolute;
+  left: 770px;
+  top: 370px;
 `;
 
 const ResultsContainer = styled.div`
@@ -103,7 +140,7 @@ const SearchIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   svg {
     width: 20px;
     height: 20px;
@@ -122,12 +159,45 @@ const TabButton = styled.button`
   color: ${props => (props.active ? 'black' : '#E0E0E0')};
 `;
 
+const ResetContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 700px;
+`;
+
+const ResetButton = styled.button`
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  font-family: Regular;
+  color: #707070;
+  margin-left: 5px;
+  margin-top: -1px;
+`;
+
+const FilterIcon = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: center;
+  margin-right: -5px;
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+`;
+
 const FilterPage = () => {
   const navigate = useNavigate();
   const [activeOptions, setActiveOptions] = useState(['공고명']); 
   const [recruits, setRecruits] = useState([]); // 공고 리스트 상태
   const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태 추가
   const [sortOrder, setSortOrder] = useState('latest'); // 정렬 순서 상태 (latest: 최신순, oldest: 오래된순)
+  const [startDate, setStartDate] = useState(''); // 시작일 상태 추가
+  const [endDate, setEndDate] = useState(''); // 종료일 상태 추가
 
   const getCurrentDateTime = () => {
     const now = new Date();
@@ -189,6 +259,15 @@ const FilterPage = () => {
     fetchRecruitList();
   };
 
+  const handleResetClick = () => {
+    setSearchTerm('');
+    setActiveOptions(['공고명']);
+    setSortOrder('latest');
+    setStartDate('');
+    setEndDate('');
+    fetchRecruitList();
+  };
+
   return (
     <Container>
       <Title>지원관리</Title>
@@ -216,7 +295,6 @@ const FilterPage = () => {
             fontFamily: 'Bold',
             fontSize: '26px',
             fontWeight: '700',
-           
           }}
           onClick={() => handleOptionClick('status')}
         >
@@ -246,6 +324,12 @@ const FilterPage = () => {
               공고명
             </OptionButton>
             <OptionButton
+              active={activeOptions.includes('공고후기')}
+              onClick={() => handleOptionClick('공고후기')}
+            >
+              공고후기
+            </OptionButton>
+            <OptionButton
               active={activeOptions.includes('태그')}
               onClick={() => handleOptionClick('태그')}
             >
@@ -256,22 +340,47 @@ const FilterPage = () => {
         <SortSection>
           <FilterTitle>정렬</FilterTitle>
           <SortOptionButton
-  active={sortOrder === 'latest'}
-  onClick={() => handleSortOrderClick('latest')}
-  style={{ marginLeft: '30px' }}  // 최신순 버튼에 적용
->
-  최신순
-</SortOptionButton>
-<SortOptionButton
-  active={sortOrder === 'oldest'}
-  onClick={() => handleSortOrderClick('oldest')}
-  style={{ marginLeft: '5px' }}  // 오래된순 버튼에 적용
->
-  오래된순
-</SortOptionButton>
-
+            active={sortOrder === 'latest'} // 최신순이 기본으로  적용되어 있음
+            onClick={() => handleSortOrderClick('latest')}
+            style={{ marginLeft: '30px' }}  
+          >
+            최신순 
+          </SortOptionButton>
+          <SortOptionButton
+            active={sortOrder === 'oldest'}
+            onClick={() => handleSortOrderClick('oldest')}
+            style={{ marginLeft: '5px' }}  
+          >
+            오래된순
+          </SortOptionButton>
         </SortSection>
+        <DateRangeInput>
+          <DateRangeTitle>기간</DateRangeTitle>
+          <DateInput 
+            type="date" 
+            value={startDate} 
+            onChange={(e) => setStartDate(e.target.value)} 
+          />
+           <DateSeparator>~</DateSeparator>
+          <DateInput 
+            type="date" 
+            value={endDate} 
+            onChange={(e) => setEndDate(e.target.value)} 
+          />
+        </DateRangeInput>
       </FilterSection>
+      
+      <ResetContainer>
+          <FilterIcon onClick={handleResetClick}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"> 
+              <path d="M11.9985 7.00049H16.8569V2.14209" stroke="#707070" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16.8301 11.8301C16.4273 13.3337 15.5395 14.6623 14.3046 15.6099C13.0697 16.5574 11.5566 17.0711 10 17.0711C8.44342 17.0711 6.93033 16.5574 5.69541 15.6099C4.46049 14.6623 3.57275 13.3337 3.16987 11.8301C2.767 10.3266 2.87151 8.73212 3.46719 7.29402C4.06286 5.85592 5.11642 4.65457 6.46447 3.87628C7.81251 3.09798 9.37969 2.78625 10.923 2.98943C12.4662 3.1926 13.8993 3.89933 15 5" stroke="#707070" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </FilterIcon>
+          <ResetButton >
+            필터 초기화
+          </ResetButton>
+        </ResetContainer>
 
       <ResultsContainer>
         <SearchList data={recruits} />
@@ -281,9 +390,3 @@ const FilterPage = () => {
 };
 
 export default FilterPage;
-
-
-
-
-
-

@@ -19,7 +19,7 @@ const FormContainer = styled.div`
     color: #3AAF85;
     text-align: center;
     font-size: 24px;
-     font-family: bold;
+    font-family: bold;
     margin-top: -25px;
   }
 
@@ -44,15 +44,18 @@ const FormContainer = styled.div`
     font-size: 24px;
     color: black;
     cursor: pointer;
-     font-family: Regular;
+    font-family: Regular;
   }
 
   .input-group {
     margin-bottom: 20px;
-    width: 100%;
+    width: 400px;
+    height: 50px;
+    flex-shrink: 0;
     text-align: left;
     font-family: Regular;
     font-size: 17px;
+    margin-top: 45px;
   }
 
   input[type="text"], input[type="date"], button {
@@ -65,7 +68,7 @@ const FormContainer = styled.div`
     font-size: 16px;
     height: 50px;
     box-sizing: border-box;
-     font-family: Regular;
+    font-family: Regular;
   }
 
   input[type="text"]:focus, input[type="date"]:focus {
@@ -75,6 +78,7 @@ const FormContainer = styled.div`
 
   label {
     color: #3AAF85;
+    margin-top: 70px; 
   }
 
   button {
@@ -84,9 +88,10 @@ const FormContainer = styled.div`
     margin: 10px 0;
     height: 50px;
     width: 100%;
+    margin-top: 85px;
     border: none;
     border-radius: 10px;
-     font-family: Regular;
+    font-family: Regular;
   }
 `;
 
@@ -207,7 +212,7 @@ const PersonalInfoForm = ({ name, setName, contact, setContact, birthdate, setBi
         <input
           id="birthdate"
           type="date"
-          placeholder="0000-00-00"
+          placeholder="생년월일을 선택하세요"
           value={birthdate}
           onChange={(e) => setBirthdate(e.target.value)}
         />

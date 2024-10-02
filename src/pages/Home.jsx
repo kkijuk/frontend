@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import LoginProfileBox from '../components/Home/LoginProfileBox';
 import LogoutProfileBox from '../components/Home/LogoutProfileBox';
-import BannerTemp from '../components/Home/BannerTemp';
+import BannerComponent from '../components/Home/Banner';
 import DeadlineNoti from '../components/Home/DeadlineNoti';
 import WritingNoti from '../components/Home/WritingNoti';
 import RecommendBox from '../components/Home/RecommendBox';
@@ -99,7 +99,7 @@ export default function Home() {
                 </div>
             </Container1>
             {/* <Banner banners={bannerDummy} /> */}
-            <BannerTemp></BannerTemp>
+            <BannerComponent banners={bannerDummy} />
 
             <Container2>
                 <Label>잠깐! 잊지 않으셨죠?</Label>
