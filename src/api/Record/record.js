@@ -5,9 +5,9 @@ import api from "../../Axios";
 const createRecord = async (data) =>{
     try{
         const response = await api.post('/history/resume', data);
-        console.log('Record is successfully created!', response.data);
+        console.log('Success - createRecord:: ', response.data);
     }catch(error){
-        console.error('Error_createRecord: ', error);
+        console.error('Error: createRecord: ', error);
         if(error.response){
             // 서버 응답이 있는 경우
             console.error('Server responded with status code:', error.response.status);
@@ -32,10 +32,10 @@ const readRecord = async () => {
             },
             withCredentials: true
         });
-        console.log('Response Data:', response.data);  
+        console.log('Success - readRecord: ', response.data);  
         return response.data.data;
     } catch (error) {
-        console.error('Error_readRecord:', error); 
+        console.error('Error - readRecord:', error); 
         if (error.response) {
             // 서버 응답이 있는 경우
             console.error('Server responded with status code:', error.response.status);
@@ -51,15 +51,15 @@ const readRecord = async () => {
 };
 
 // [이력서 정보 수정]
-// 데
+// 프로필 사진 또는 주소가 바뀔 때 해당 api가 호출됩니다.
 const updateRecord = async (recordId, data) => {
     try {
         const response = await api.patch(`/history/resume/?recordId=${recordId}`, data);
-        console.log(response.data);
+        console.log("Success - updateRecode:", response.data);
 
         return response.data;
     } catch (error) {
-        console.error('Error_updateRecord:', error);
+        console.error('Error-updateRecord:', error);
         if (error.response) {
             // 서버 응답이 있는 경우
             console.error('Server responded with status code:', error.response.status);

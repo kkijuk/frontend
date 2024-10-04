@@ -1,12 +1,16 @@
-import api from "../../Axios";
+import api from "../../Axios"
+//마스터 자기소개서란? 모든 공고에 공통적으로 포함되는 질문을 추려놓은 자기소개서
+//한 회원 당 하나의 자기소개서가 생성됩니다.
 
-const createAward = async(recordId, data)=>{
+// [마스터 자기소개서 생성]
+// 회원 가입과 동시에 고유한 id를 가진 하나의 이력서가 생성됩니다.
+const createMaster = async(data)=>{
     try{
-        const response = await api.post(`/history/resume/award?recordId=${recordId}`, data);
-        console.log('Success-createAward:', response.data);
-        return response.data
+        const response = await api.post(`/history/intro/master`, data);
+        console.log("Sucess-createMaster: ", response.data);
+        return response.data; 
     }catch(error){
-        console.error("Error-createAward: ", error);
+        console.error("Error-createMaster: ", error);
         if(error.response){
             //서버 응답이 있는 경우
             console.error('Server responded with status code: ',error.response.status);
@@ -19,15 +23,17 @@ const createAward = async(recordId, data)=>{
             console.error('Error setting up request: ', error.message);
         }
     }
+
 }
 
-const updateAward = async(awardId, data) => {
+// [마스터 자기소개서 조회]
+const readMaster = async() => {
     try {
-        const response = await api.patch(`/history/resume/award?awardId=${awardId}`, data); 
-        console.log('Success-updateAward:', response.data);
+        const response = await api.get(`/history/intro/master`);
+        console.log('Success-readMaster:', response.data);
         return response.data;
     } catch (error) {
-        console.error("Error-updateAward: ", error);
+        console.error("Error-readMaster: ", error);
         if (error.response) {
             // 서버 응답이 있는 경우
             console.error('Server responded with status code: ', error.response.status);
@@ -42,13 +48,14 @@ const updateAward = async(awardId, data) => {
     }
 }
 
-const deleteAward = async(awardId) => {
+// [마스터 자기소개서 수정]
+const updateMaster = async(id, data) => {
     try {
-        const response = await api.delete(`/history/resume/award?awardId=${awardId}`);
-        console.log('Success-deleteAward:', response.data);
+        const response = await api.patch(`/history/intro/master?id=${id}`, data);
+        console.log('Success-updateMaster:', response.data);
         return response.data;
     } catch (error) {
-        console.error("Error-deleteAward: ", error);
+        console.error("Error-updateMaster: ", error);
         if (error.response) {
             // 서버 응답이 있는 경우
             console.error('Server responded with status code: ', error.response.status);
@@ -63,4 +70,4 @@ const deleteAward = async(awardId) => {
     }
 }
 
-export {createAward, updateAward, deleteAward}
+export {createMaster, readMaster, updateMaster}

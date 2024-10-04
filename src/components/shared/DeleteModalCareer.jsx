@@ -1,4 +1,4 @@
-//components/History/Resume/AddCareerModalEdit, /shared/AddCareerModal/Edit
+//components/Intro/Resume/AddCareerModalEdit, /shared/AddCareerModal/Edit
 import React from "react";
 import styled from "styled-components";
 
