@@ -7,7 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import DetailAdd from '../components/MyCareerDetail/DetailAdd';
 import CareerNameTag from '../components/shared/CareerNameTag';
-import AddCareerModalEdit from '../components/shared/AddCareerModalEdit';
+import AddCareerModalEdit from '../components/Modal/AddCareerModalEdit';
 import { CareerViewSelect } from '../api/Mycareer/CareerviewSelect';
 import { ViewCareerDetail } from '../api/Mycareer/ViewCareerDetail';
 

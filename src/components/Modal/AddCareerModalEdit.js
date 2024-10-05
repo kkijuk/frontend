@@ -1,10 +1,10 @@
 //pages/MycareerDetail
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import CategoryGroup from './CategoryGroup';
-import ReactCalendar from './CalendarSingle';
+import CategoryGroup from '../shared/CategoryGroup';
+import ReactCalendar from '../shared/CalendarSingle';
 import moment from 'moment';
-import CareerDeleteModal from './DeleteModalCareer';
+import CareerDeleteModal from '../shared/DeleteModalCareer';
 import { CareerEdit, CareerDelete } from '../../api/Mycareer/CareerEdit';
 import { useNavigate } from 'react-router-dom';
 
