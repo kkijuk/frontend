@@ -5,7 +5,7 @@ import CareerView from '../components/Mycareer/CareerView';
 import CareerViewYear from '../components/Mycareer/CareerViewYear';
 import CareerViewCategory from '../components/Mycareer/CareerViewCategory';
 import AddJobButton from '../components/shared/AddJobButton';
-import AddCareerModal from '../components/shared/AddCareerModal';
+import AddCareerModal from '../components/shared/Modal/AddCareerModal';
 import Timeline from '../components/Mycareer/Timeline';
 import SearchBar from '../components/shared/shareSearchBar';
 import { CareerViewSelect } from '../api/Mycareer/CareerviewSelect';
