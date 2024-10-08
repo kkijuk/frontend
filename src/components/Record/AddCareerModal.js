@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import CategoryGroup from '../../shared/CategoryGroup';
-import ReactCalendar from '../../shared/CalendarSingle';
+import CategoryGroup from '../shared/CategoryGroup';
+import ReactCalendar from '../shared/CalendarSingle';
 import moment from 'moment';
-import { addCareer } from '../../../api/Mycareer/Mycareer';
+import { addCareer } from '../../api/Mycareer/Mycareer';
 
 const ModalBackdrop = styled.div`
   position: fixed;

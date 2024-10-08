@@ -2,19 +2,19 @@ import api from '../../Axios';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import './history.css';
-import EducationItem from '../../components/History/Resume/EducationItem';
-import EditItem from '../../components/History/Resume/EditItem';
-import CareerItem from '../../components/History/Resume/CareerItem';
-import AddItem from '../../components/History/Resume/AddItem';
-import AddCareerModal from '../../components/History/Resume/AddCareerModal';
-import AddCareerModalEdit from '../../components/History/Resume/AddCareerModalEdit';
-import Address from '../../components/History/Address';
-import createRecord from '../../api/Record/createRecord';
-import updateRecord from '../../api/Record/updateRecord';
-import readRecord from '../../api/Record/readRecord';
-import createEducation from '../../api/Record/createEducation';
-import updateEducation from '../../api/Record/updateEducation';
-import deleteEducation from '../../api/Record/deleteEducation';
+import EducationItem from '../../components/Record/EducationItem';
+import EditItem from '../../components/Record/EditItem';
+import CareerItem from '../../components/Record/CareerItem';
+import AddItem from '../../components/Record/AddItem';
+import AddCareerModal from '../../components/Record/AddCareerModal';
+import AddCareerModalEdit from '../../components/Record/AddCareerModalEdit';
+import Address from '../../components/Intro/Address';
+import createRecord from '../../api/Record/record';
+import updateRecord from '../../api/Record/record';
+import readRecord from '../../api/Record/record';
+import createEducation from '../../api/Record/education';
+import updateEducation from '../../api/Record/education';
+import deleteEducation from '../../api/Record/education';
 
 
 const History = () => {
@@ -37,7 +37,7 @@ const History = () => {
     const [careers,setCareers] = useState([]); //경력
     const [activities, setActivities] = useState([]); //활동 및 경험 
     const [projects, setProjects] = useState([]); //프로젝트
-    const [trainings, setTrainings] = usetState([]); //교육
+    const [trainings, setTrainings] = useState([]); //교육
     const [certsAndLangs, setCertsAndLangs] = useState([]); //자격증 및 외국어
     const [awards, setAwards] = useState([]); //수상
     const [skills, setSkills] = useState([]); //스킬

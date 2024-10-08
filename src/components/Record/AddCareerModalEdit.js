@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import CategoryGroup from '../../shared/CategoryGroup';
-import ReactCalendar from '../../shared/CalendarSingle';
+import CategoryGroup from '../shared/CategoryGroup';
+import ReactCalendar from '../shared/CalendarSingle';
 import moment from 'moment';
-import CareerDeleteModal from '../../shared/DeleteModalCareer';
-import { CareerEdit } from '../../../api/Mycareer/CareerEdit';
-import { CareerDelete } from '../../../api/Mycareer/CareerEdit';
+import CareerDeleteModal from '../shared/DeleteModalCareer';
+import { CareerEdit } from '../../api/Mycareer/CareerEdit';
+import { CareerDelete } from '../../api/Mycareer/CareerEdit';
 import { useNavigate } from 'react-router-dom';
 
 //다현 추가

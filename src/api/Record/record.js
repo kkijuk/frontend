@@ -74,4 +74,4 @@ const updateRecord = async (recordId, data) => {
     }
 };
 
-export {createRecord, readRecord, updateRecord};
+export default {createRecord, readRecord, updateRecord};

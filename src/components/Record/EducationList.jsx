@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import '../../../pages/History/history.css'
+import '../../pages/History/history.css' 
 import EditItem from './EditItem'
 import EducationItem from './EducationItem'
 
