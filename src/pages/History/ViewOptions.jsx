@@ -2,8 +2,8 @@ import api from "../../Axios";
 import React, { useState, useEffect } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import Toggle from "../../components/History/Toggle";
-import AddButton from "../../components/History/AddButton";
+import Toggle from "../../components/Intro/Toggle";
+import AddButton from "../../components/Intro/AddButton";
 
 // Todo  
 // - 옵션 로직 수정

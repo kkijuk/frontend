@@ -1,4 +1,4 @@
-//pages/Apply/ApplySchedule, History/Select
+//pages/Apply/ApplySchedule, Intro/Select
 //공고 추가 모달
 import React, { useState } from 'react';
 import styled from 'styled-components';

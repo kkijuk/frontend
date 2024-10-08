@@ -1,4 +1,4 @@
-//pages/Mycareer, MycareerDetail, History
+//pages/Mycareer, MycareerDetail, Intro
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import CategoryGroup from '../shared/CategoryGroup';

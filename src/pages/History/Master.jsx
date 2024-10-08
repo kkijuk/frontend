@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import './history.css'
-import SubNav from '../../components/History/SubNav'
-import Convert from '../../components/History/Convert'
-import Toggle from '../../components/History/Toggle'
-import ButtonOptions from '../../components/History/AddButton'
+import SubNav from '../../components/Intro/SubNav'
+import Convert from '../../components/Intro/Convert'
+import Toggle from '../../components/Intro/Toggle'
+import ButtonOptions from '../../components/Intro/AddButton'
 
 // Todo
 // - 마스터 생성 요청 드리기
