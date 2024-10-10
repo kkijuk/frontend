@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import '../../../pages/History/history.css'
+import '../../pages/History/history.css'
 
 // api에서 받는 구분(state)으로 만료 여부도 표현
 const Edu = ({ isLevel, onChange, value }) => {

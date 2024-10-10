@@ -108,7 +108,7 @@ const MasterRewrite =()=>{
                 <InputTitle
                     id="oneLiner"
                     placeholder="한줄소개를 작성하세요"
-                    style={{height:'50px', marginBottom:'12px'}}
+                    style={{height:'20px', marginBottom:'12px'}}
                     value={questions.oneLiner||''}
                     onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
@@ -119,7 +119,7 @@ const MasterRewrite =()=>{
                 <InputTitle
                     id="motiveTitle"
                     placeholder="지원동기 제목을 작성하세요"
-                    style={{height:'50px', marginBottom:'12px'}}
+                    style={{height:'20px', marginBottom:'12px'}}
                     value={questions.motiveTitle||''}
                     onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
@@ -132,13 +132,13 @@ const MasterRewrite =()=>{
                     onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
                 <div style={{height:'30px'}}/>
-                <p style={{ fontFamily: 'Regular', fontSize: '16px', color: '#707070', textAlign: 'right', marginRight: '20px', position:'absolute', top:260, right:0 }}>
+                <p style={{ fontFamily: 'Regular', fontSize: '16px', color: '#707070', textAlign: 'right', marginRight: '20px', position:'absolute', top:360, right:0 }}>
                     {charCounts.motive} (공백 포함)
                 </p>
                 <InputTitle
                     id="prosAndConsTitle"
                     placeholder="장단점 제목을 작성하세요"
-                    style={{height:'50px', marginBottom:'12px'}}
+                    style={{height:'20px', marginBottom:'12px'}}
                     value={questions.prosAndConsTitle||''}
                     onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
@@ -151,13 +151,13 @@ const MasterRewrite =()=>{
                     onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
                 <div style={{height:'30px'}}/>
-                <p style={{ fontFamily: 'Regular', fontSize: '16px', color: '#707070', textAlign: 'right', marginRight: '20px',position:'absolute', top:510, right:0  }}>
+                <p style={{ fontFamily: 'Regular', fontSize: '16px', color: '#707070', textAlign: 'right', marginRight: '20px',position:'absolute', top:670, right:0  }}>
                     {charCounts.prosAndCons} (공백 포함)
                 </p>
                 <InputTitle
                     id="jobSuitabilityTitle"
                     placeholder="직무적합성 제목을 작성하세요"
-                    style={{height:'50px', marginBottom:'12px'}}
+                    style={{height:'20px', marginBottom:'12px'}}
                     value={questions.jobSuitabilityTitle||''}
                     onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
@@ -169,7 +169,7 @@ const MasterRewrite =()=>{
                     onChange={(e)=>handleOnChange(e.target.id, e.target.value)}
                 />
                 <div style={{height:'70px'}}></div>
-                <p style={{ fontFamily: 'Regular', fontSize: '16px', color: '#707070', textAlign: 'right', marginRight: '20px',position:'absolute', top:770, right:0   }}>
+                <p style={{ fontFamily: 'Regular', fontSize: '16px', color: '#707070', textAlign: 'right', marginRight: '20px',position:'absolute', top:980, right:0   }}>
                     {charCounts.jobSuitability} (공백 포함)
                 </p>
             </div>
@@ -204,18 +204,20 @@ const BaseDiv = styled.div`
     position:relative
 `
 
-const InputTitle = styled.input`
+const InputTitle = styled.textarea`
     width: 780px;
     flex-shrink: 0;
     border:none;
     border-radius: 10px;
     background: var(--gray-06, #F5F5F5);    
-    padding: 0px 20px;
+    padding: 20px 20px;
     color: var(--gray-02, #707070);
     font-family:Regular;
     font-size:16px;
     font-weight:400;
     line-height:normal;
+    resize:none;
+    overflow:hidden;
 `
 
 const Linear = styled.div`

@@ -12,6 +12,7 @@ import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
 import { useAuth } from '../../components/AuthContext';
 import { useNavigate } from 'react-router-dom'; // useNavigate import
 
+
 const Container = styled.div`
   width: 820px;
   margin: auto;
