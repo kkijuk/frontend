@@ -102,21 +102,22 @@ export default function ApplySchedule() {
   }, []);
   
   const handleJobClick = async (job) => {
-  if (job && job.recruitId) {
-    try {
-      const jobDetails = await getRecruitDetails(job.recruitId);
-      if (jobDetails) {
-        navigate(`/apply-detail/${job.recruitId}`, { state: { job: jobDetails, from: 'list' } });  
-      } else {
-        console.error('Job details not found');
+    if (job && job.id) {  // recruitId 대신 id로 변경
+      try {
+        const jobDetails = await getRecruitDetails(job.id); // 올바른 ID로 상세 정보 요청
+        if (jobDetails) {
+          navigate(`/apply-detail/${job.id}`, { state: { job: jobDetails, from: 'list' } });  
+        } else {
+          console.error('Job details not found');
+        }
+      } catch (error) {
+        console.error('Error fetching job details:', error);
       }
-    } catch (error) {
-      console.error('Error fetching job details:', error);
+    } else {
+      console.error('Job ID is missing');
     }
-  } else {
-    console.error('Job ID is missing');
-  }
-};
+  };
+  
 
   const waitingJobs = jobs.filter(job => job.status === 'UNAPPLIED' || job.status === 'PLANNED');
   const appliedJobs = jobs.filter(job => job.status !== 'UNAPPLIED' && job.status !== 'PLANNED');
