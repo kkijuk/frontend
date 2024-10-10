@@ -17,7 +17,7 @@ const Portfolio=()=>{
             <br></br><br></br><br></br><br></br>
             <Affiliation2 onAffiliationChange={(value) => setAffiliation(value)}/>
             <br></br><br></br><br></br><br></br><br></br>
-            {/* <AddActivityModal></AddActivityModal> */}
+            <AddActivityModal></AddActivityModal>
         </>
     )
 }
