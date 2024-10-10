@@ -102,19 +102,26 @@ export default function ApplySchedule() {
   }, []);
   
   const handleJobClick = async (job) => {
-    if (job && job.id) {  // recruitId 대신 id로 변경
-      try {
-        const jobDetails = await getRecruitDetails(job.id); // 올바른 ID로 상세 정보 요청
-        if (jobDetails) {
-          navigate(`/apply-detail/${job.id}`, { state: { job: jobDetails, from: 'list' } });  
-        } else {
-          console.error('Job details not found');
-        }
-      } catch (error) {
-        console.error('Error fetching job details:', error);
+    try {
+      let jobDetails = null;
+  
+      if (job && job.recruitId) {
+        // recruitId가 있으면 해당 값으로 API 요청
+        jobDetails = await getRecruitDetails(job.recruitId);
+      } else if (job && job.id) {
+        // recruitId가 없으면 id로 API 요청
+        jobDetails = await getRecruitDetails(job.id);
       }
-    } else {
-      console.error('Job ID is missing');
+  
+      if (jobDetails) {
+        // recruitId가 있으면 그걸 사용하고, 없으면 id 사용
+        const jobId = job.recruitId || job.id;
+        navigate(`/apply-detail/${jobId}`, { state: { job: jobDetails, from: 'list' } });
+      } else {
+        console.error('Job details not found');
+      }
+    } catch (error) {
+      console.error('Error fetching job details:', error);
     }
   };
   
