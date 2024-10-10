@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import './history.css'
 import styled from "styled-components";
-import AddApplyModal from "../../components/shared/AddApplyModal";
+import AddApplyModal from "../../components/Modal/AddApplyModal";
 import { createRecruit } from "../../api/Apply/Recruit";
 
 // Todo
