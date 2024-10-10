@@ -3,13 +3,14 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import styled from 'styled-components';
 import Home from "./pages/Home";
 import MyPage from "./pages/Mypage/Mypage";
-import MyCareer from "./pages/Mycareer";
+import MyCareer from "./pages/Mycareer/Mycareer";
+import MycareerSearch from './pages/Mycareer/Mycareer_search';
 import ApplySchedule from "./pages/Apply/ApplySchedule";
 import ApplyStatus from "./pages/Apply/ApplyStatus";
 import Community from "./pages/Community";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import MyCareerDetail from './pages/MycareerDetail';
+import MyCareerDetail from './pages/Mycareer/MycareerDetail';
 import SignupSuccess from "./pages/SignupSuccess";
 import ResetSuccess from "./pages/Mypage/ResetSuccess";
 import SubNav from './components/Intro/SubNav';
@@ -39,6 +40,8 @@ import FilterPage from './components/Apply/FilterPage';
 import { AuthProvider } from './components/AuthContext'; 
 import LoginRequired from './pages/LoginRequired';
 
+import CommingSoon from './pages/CommingSoon';
+
 const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -53,15 +56,18 @@ const MainContent = styled.div`
 
 const App = () => {
   const location = useLocation();
-  const hideFooterPaths = ["/login", "/signup", "/signupsuccess", "/signupinterest"];
-  const hideFooter = hideFooterPaths.includes(location.pathname);
+  
+  // commingsoon 페이지에서만 Header와 Footer를 숨기기
+  const isCommingSoon = location.pathname === "/commingsoon";
 
   return (
     <AppContainer>
-      <Header />
+      {!isCommingSoon && <Header />} {/* Header를 commingsoon 페이지에서 숨김 */}
       <MainContent>
         <Routes>
-          <Route path="/mycareer/:careerId" element={<MyCareerDetail />} />
+          
+          <Route path="/mycareer/:careerId" element={<MyCareerDetail />} />          
+          <Route path="/mycareer_search" element={<MycareerSearch />} />
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
@@ -96,11 +102,10 @@ const App = () => {
           <Route path="/mypage/passwordresetemailconfirm" element={<PasswordResetEmailConfirm />} />
           <Route path="/mypage/passwordreset" element={<PasswordReset />} />
           <Route path="/mypage/resetsuccess" element={<ResetSuccess />} />
-                    <Route path="/login-required" element={<LoginRequired />} />
-
+          <Route path="/login-required" element={<LoginRequired />} />
         </Routes>
       </MainContent>
-      {!hideFooter && <Footer />}
+      {!isCommingSoon && <Footer />} {/* Footer를 commingsoon 페이지에서 숨김 */}
     </AppContainer>
   );
 };
@@ -108,9 +113,9 @@ const App = () => {
 export default function AppWrapper() {
   return (
     <Router>
-      <AuthProvider> {/*이부분*/}
+      <AuthProvider>
         <App />
-      </AuthProvider>  {/*이부분*/}
+      </AuthProvider>
     </Router>
   );
 }
