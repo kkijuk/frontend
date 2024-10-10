@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import Title from './Title';
+import TabMenu from '../../components/Apply/TabMenu'; 
 import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
 import SearchList from './SearchList';
 
@@ -40,7 +40,7 @@ const FilterOptions = styled.div`
   margin-bottom: 9px;
   display: flex;
   gap: 0px;  
-  padding-right: 475px; 
+  padding-right: 500px; 
 `;
 
 const OptionButton = styled.button`
@@ -106,8 +106,8 @@ const DateSeparator = styled.span`
   color: #333;
   font-family: Regular;
   position: absolute;
-  left: 770px;
-  top: 370px;
+  left: 765px;
+  top: 415px;
 `;
 
 const ResultsContainer = styled.div`
@@ -147,17 +147,6 @@ const SearchIcon = styled.div`
   }
 `;
 
-const TabButton = styled.button`
-  padding: 10px 20px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: var(--black, #000);
-  font-family: 'Bold';
-  font-size: 26px;
-  font-weight: 700;
-  color: ${props => (props.active ? 'black' : '#E0E0E0')};
-`;
 
 const ResetContainer = styled.div`
   display: flex;
@@ -178,6 +167,36 @@ const ResetButton = styled.button`
   margin-top: -1px;
 `;
 
+const Title = styled.h1`
+  color: var(--black, #000);
+  font-family: 'Bold';
+  font-size: 30px;
+  font-weight: 700;
+  margin-top: 11px;
+  width: 820px;
+  margin-left: 18px;
+`;
+
+const TabMenuStyled = styled.div`
+  display: flex;
+  align-items: center; 
+  border-bottom: 4px solid #ddd;   
+  margin-bottom: 20px;
+`;
+
+const TabButton = styled.button`
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--black, #000);
+  font-family: 'Bold';
+  font-size: 25px;
+  white-space: nowrap;
+  font-weight: 700;
+  color: ${props => (props.active ? 'black' : '#E0E0E0')};
+`;
+
 const FilterIcon = styled.div`
   display: flex;
   align-items: center;
@@ -192,6 +211,7 @@ const FilterIcon = styled.div`
 
 const FilterPage = () => {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('schedule');
   const [activeOptions, setActiveOptions] = useState(['공고명']); 
   const [recruits, setRecruits] = useState([]); // 공고 리스트 상태
   const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태 추가
@@ -265,41 +285,31 @@ const FilterPage = () => {
     setSortOrder('latest');
     setStartDate('');
     setEndDate('');
-    fetchRecruitList();
   };
+
+  const handleTabClick = (tab) => {
+    if (tab === 'schedule') {
+      navigate('/apply-status'); 
+      setActiveTab('status');
+    } else {
+      navigate('/apply-schedule'); 
+      setActiveTab('schedule');
+    }
+  };
+
 
   return (
     <Container>
       <Title>지원관리</Title>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-        <button
-          style={{
-            padding: '10px 20px',
-            border: 'none',
-            background: 'none',
-            cursor: 'pointer',
-            fontFamily: 'Bold',
-            fontSize: '26px',
-            fontWeight: '700',
-          }}
-          onClick={() => handleOptionClick('schedule')}
-        >
+      <TabMenuStyled>
+        <TabButton active={activeTab === 'schedule'} onClick={() => handleTabClick('status')}>
           지원일정
-        </button>
-        <button
-          style={{
-            padding: '10px 20px',
-            border: 'none',
-            background: 'none',
-            cursor: 'pointer',
-            fontFamily: 'Bold',
-            fontSize: '26px',
-            fontWeight: '700',
-          }}
-          onClick={() => handleOptionClick('status')}
-        >
+        </TabButton>
+        <TabButton active={activeTab === 'status'} onClick={() => handleTabClick('schedule')}>
           지원현황
-        </button>
+        </TabButton>
+      </TabMenuStyled>
+    
         <SearchBarContainer>
           <SearchInput
             placeholder="공고 이름이나 태그를 검색하세요."
@@ -312,7 +322,7 @@ const FilterPage = () => {
             </svg>
           </SearchIcon>
         </SearchBarContainer>
-      </div>
+      
       <FilterSection>
         <FilterRow>
           <FilterTitle>대상</FilterTitle>
