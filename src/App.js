@@ -13,7 +13,7 @@ import Signup from "./pages/Signup";
 import MyCareerDetail from './pages/Mycareer/MycareerDetail';
 import SignupSuccess from "./pages/SignupSuccess";
 import ResetSuccess from "./pages/Mypage/ResetSuccess";
-import SubNav from './components/History/SubNav';
+import SubNav from './components/Intro/SubNav';
 import ViewOptions from './pages/History/ViewOptions';
 import History from "./pages/History/History";
 import Master from "./pages/History/Master";
