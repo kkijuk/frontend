@@ -6,7 +6,7 @@ import ViewToggle from '../../components/Apply/ViewToggle';
 import CalendarView from '../../components/Apply/CalendarView';
 import ListView from '../../components/Apply/ListView';
 import AddJobButton from '../../components/shared/AddJobButton';
-import AddApplyModal from '../../components/shared/AddApplyModal';
+import AddApplyModal from '../../components/Modal/AddApplyModal';
 import WaitingList from '../../components/Apply/WaitingList';
 import ApplyList from '../../components/Apply/ApplyList';
 import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';

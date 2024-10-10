@@ -1,4 +1,4 @@
-//pages/Apply/ApplySchedule, /pages/Mycareer, components/History/AddButton
+//pages/Apply/ApplySchedule, /pages/Mycareer, components/Intro/AddButton
 // 화면 오른쪽 아래 +버튼
 import React from 'react';
 import styled from 'styled-components';

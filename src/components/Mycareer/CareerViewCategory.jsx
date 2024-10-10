@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import CareerCategoryCircle from '../shared/CareerCategoryCircle';
+import CareerCategoryCircle from './CareerCategoryCircle';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 
 

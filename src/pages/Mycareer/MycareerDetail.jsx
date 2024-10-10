@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom'; // URL에서 careerId를 가져오기 위해 사용
-import Careerbox from '../components/MyCareerDetail/CareerBox';
-import CareerList from '../components/MyCareerDetail/CareerList';
+import Careerbox from '../../components/MyCareerDetail/CareerBox';
+import CareerList from '../../components/MyCareerDetail/CareerList';
 import EditIcon from '@mui/icons-material/Edit';
 
-import DetailAdd from '../components/MyCareerDetail/DetailAdd';
-import CareerNameTag from '../components/shared/CareerNameTag';
-import AddCareerModalEdit from '../components/shared/AddCareerModalEdit';
-import { CareerViewSelect } from '../api/Mycareer/CareerviewSelect';
-import { ViewCareerDetail } from '../api/Mycareer/ViewCareerDetail';
+import DetailAdd from '../../components/MyCareerDetail/DetailAdd';
+import CareerNameTag from '../../components/shared/CareerNameTag';
+import AddCareerModalEdit from '../../components/Modal/AddCareerModalEdit';
+import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
+import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 
 const Body = styled.div`
   width: 100vw;

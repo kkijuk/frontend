@@ -2,9 +2,9 @@ import api from "../../Axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import SubNav from '../../components/History/SubNav'
-import Toggle from '../../components/History/Toggle'
-import ListItem from "../../components/History/ListItem";
+import SubNav from '../../components/Intro/SubNav'
+import Toggle from '../../components/Intro/Toggle'
+import ListItem from "../../components/Intro/ListItem";
 
 const List = () => {
     let { state } = useParams(); // state 0(작성중), 1(작성완료), 2(보관중), 3(전체) 중 하나

@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react'
 import styled from 'styled-components'
-import '../../../pages/History/history.css'
+import '../../pages/History/history.css'
 import Edu from './Edu'
 import Date from './Date'
 

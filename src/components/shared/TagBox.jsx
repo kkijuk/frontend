@@ -1,4 +1,4 @@
-//components/MyCareerDetail/DetailAdd, DetailAddEdit
+//components/MyCareerDetail/ DetailAdd, DetailAddEdit
 
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';

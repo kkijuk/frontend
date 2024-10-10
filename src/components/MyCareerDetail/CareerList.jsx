@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import AbilityTag from '../shared/AbilityTag';
+import AbilityTag from './AbilityTag';
 import EditIcon from '@mui/icons-material/Edit';
 import DetailAddEdit from './DetailAddEdit';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
