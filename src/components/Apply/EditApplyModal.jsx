@@ -370,7 +370,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
           <LabelContainer>
             <LabelLink>링크</LabelLink>
           </LabelContainer>
-          <InputWrapperLink>zz
+          <InputWrapperLink>
             <Input
               type="text"
               placeholder="공고 혹은 접수 페이지 링크를 입력하세요"
