@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { Affiliation1 } from './Affiliation';
-import { Button } from '@mobiscroll/react';
+import { ReactComponent as CloseIcon } from '../../../assets/close.svg'
+import { validateAndFilterForm } from './validateAndFilterForm';
+import createCareer from '../../../api/Mycareer/createCareer';
 
-const AddActivityModal =({onAdd, onClose})=>{
+const AddCareerModal =({onClose})=>{
 
+    //카테고리 정보
     const categoryMap = {
         1: "동아리", 2:"대외활동", 3:"공모전/대회", 4:"프로젝트", 5:"경력", 6:"교육", 7:"기타"
     }
@@ -91,10 +94,28 @@ const AddActivityModal =({onAdd, onClose})=>{
         }
     }
 
+    const handleAddCareer = async () =>{
+        const allFormData = { title, alias, period, affiliation, role, organizer, careerType, workplace, position, jobField, educationHours, participantType};
+        
+        //검증 및 필터링 실행
+        const { isValid, errors, filteredData } = validateAndFilterForm(selectedCategory, allFormData);
+
+        //오류 생길 경우
+        if(!isValid){
+            alert(errors.join("/n"));
+            return;
+        }
+
+        await createCareer(selectedCategory, filteredData);
+        onClose();
+    }
 
     return(
         <ModalBackground>
             <ModalContainer>
+                <CloseButton onClick={onClose}>
+                    <CloseIcon/>
+                </CloseButton>
                 <h1 style={{textAlign: "center"}}>활동추가</h1>
                 <ButtonContainer>
                     {Object.keys(categoryMap).map((key)=>(
@@ -114,6 +135,7 @@ const AddActivityModal =({onAdd, onClose})=>{
                 </ModalForm>
                 <SaveButton
                     type="button"
+                    onClick={handleAddCareer} //formData 아직 정의 안됨
                 >저장</SaveButton>
             </ModalContainer>
         </ModalBackground>
@@ -122,7 +144,7 @@ const AddActivityModal =({onAdd, onClose})=>{
     )
 }
 
-export default AddActivityModal
+export default AddCareerModal
 
 
 // Modal 전체 레이아웃
@@ -240,4 +262,16 @@ const SaveButton = styled.button`
     align-items: center;
     margin-top: 20px;
     font-size: 18px;
+`
+
+const CloseButton = styled.button`
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #999999;
 `
