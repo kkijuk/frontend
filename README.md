@@ -133,13 +133,16 @@
 
 <br/>
 
-## ✏️ 끼적 실제로 사용해보기
-[www.kkijuk.com](https://www.kkijuk.com/)
-
-<br/>
-
-## 👂 끼적에게 의견을 전달해주세요!
-
-> 여러분의 소중한 의견을 기다립니다! 설문에 참여해 끼적을 더 나은 서비스로 만들어주세요.
-> <br />
-> [끼적 설문조사 하러가기](https://forms.gle/gBGTa7zGFs9m9xXJ6)
+## 🛠️ Commit
+feat: 새로운 기능 추가
+fix: 버그 수정
+style: 코드 formatting, 세미콜론 누락, 코드 자체의 변경이 없는 경우
+docs: 문서 작성 및 편집
+refactor: 코드 리팩토링
+test: 테스트 코드, 리팩토링 테스트 코드 추가 
+chore: 패키지 매니저 수정, 그 외 기타 수정 ex) .gitignore 
+design: CSS 등 사용자 UI 디자인 변경 
+comment: 필요한 주석 추가 및 변경 
+rename: 파일 또는 폴더 명을 수정하거나 옮기는 작업만인 경우 
+remove: 파일을 삭제하는 작업만 수행한 경우 
+!BREAKING CHANGE: 커다란 API 변경의 경우 
