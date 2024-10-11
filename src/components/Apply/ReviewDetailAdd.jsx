@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import ReviewInputBox from './ReviewInputBox';
 import ReactCalendar from './ReviewCalendar';
 import moment from 'moment';
-import { ReviewAdd } from '../../api/Apply/ReviewAdd'; 
+import { ReviewAdd } from '../../api/Apply/ReviewAdd';
+import { getRecruitDetails } from '../../api/Apply/RecruitDetails'; // RecruitDetails API에서 함수 불러오기
+import { updateRecruit } from '../../api/Apply/RecruitUpdate';  // 공고 업데이트 API 가져오기
 
 const Box = styled.div`
     height: 384px;
@@ -113,10 +115,27 @@ const Line = styled.div`
     background: var(--gray-03, #D9D9D9);
 `;
 
-export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를 prop으로 받아옴.
+// 공고의 태그를 업데이트하는 함수
+const updateRecruitTags = async (recruitId, newTag) => {
+    try {
+        // 기존 태그 가져오기
+        const recruitDetails = await getRecruitDetails(recruitId);
+        const currentTags = recruitDetails.tags || [];
+
+        // 태그 중복 확인 후 앞에 추가
+        if (!currentTags.includes(newTag)) {
+            const updatedTags = [newTag, ...currentTags];  // 새로운 태그를 맨 앞에 추가
+            await updateRecruit(recruitId, { ...recruitDetails, tags: updatedTags });  // 공고 업데이트
+        }
+    } catch (error) {
+        console.error('Failed to update tags:', error);
+    }
+};
+
+export default function ReviewDetailAdd({ recruitId, onSave }) {
     const [showCalendar, setShowCalendar] = useState(false);
     const [selectedDate, setSelectedDate] = useState('');
-    const [title, setTitle] = useState('');
+    const [title, setTitle] = useState('');  // 제목을 태그로 추가
     const [content, setContent] = useState('');
 
     const handleDateClick = () => {
@@ -136,7 +155,11 @@ export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를
                 content,
                 date: selectedDate,
             };
-            await ReviewAdd(recruitId, reviewData);
+            await ReviewAdd(recruitId, reviewData);  // 리뷰 추가 API 호출
+
+            // 제목으로 태그 추가, 리스트에서 상태에 따라 적용됨
+            await updateRecruitTags(recruitId, title);
+
             onSave(); // 저장 후 콜백 실행 (예: 모달 닫기, 목록 갱신 등)
         } catch (error) {
             console.error('Failed to save review:', error);
@@ -172,6 +195,7 @@ export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를
                     onChange={(e) => setContent(e.target.value)}
                 />
             </Middle>
+
             <Button>
                 <Cancel onClick={() => onSave()}>취소</Cancel>
                 <Save onClick={handleSaveClick}>저장</Save>
@@ -180,5 +204,3 @@ export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를
         </Box>
     );
 }
-
-

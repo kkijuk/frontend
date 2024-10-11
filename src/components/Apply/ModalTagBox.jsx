@@ -17,20 +17,6 @@ const Row = styled.div`
     gap: 20px;
 `;
 
-const Text = styled.div`
-     width: 32px;
-    height: 21px;
-    margin-top: 5px;
-    display: flex;
-    align-items: center;
-    color: var(--black, #000);
-    font-family: Light;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-`;
-
 const TagInputContainer = styled.div`
     width: 650px;
     display: flex;
@@ -99,24 +85,6 @@ const TagBoxListContainer = styled.div`
     }
 `;
 
-const WhiteTag = styled.div`
-     display: flex;
-    align-items: center;
-    height: 22px;
-    padding: 0px 8px; 
-    justify-content: center;
-    gap: 5px; 
-    border-radius: 10px;
-    background: #FFF; 
-    color: var(--main-01, #3AAF85);
-    text-align: center;
-    font-family: Light;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-`;
-
 const CloseButton = styled.button`
     background: none;
     border: none;
@@ -127,11 +95,41 @@ const CloseButton = styled.button`
     margin-left: 4px;
 `;
 
-export default function TagBox({ onTagChange }) {
+// 태그 스타일: 공고 상태에 따른 배경색과 하얀색 텍스트 (후기 제목으로 추가된 태그만 이 스타일 적용)
+const ReviewTag = styled.div`
+  background: ${({ status }) => {
+    if (status === 'UNAPPLIED') return '#D9D9D9';
+    if (status === 'PLANNED') return '#B0B0B0';
+    if (status === 'APPLYING') return '#707070';
+    if (status === 'ACCEPTED') return '#78D333';
+    if (status === 'REJECTED') return '#FA7C79';
+    return '#D9D9D9'; // 기본값
+  }};
+  color: white;
+  border-radius: 10px;
+  padding: 4px 8px;
+  font-size: 13px;
+  margin-left: 5px;
+  font-family: Light;
+`;
+
+// 기존 모달 태그 스타일 (변경 없음)
+const NormalTag = styled.div`
+  background: #FFF;  // 기존 스타일
+  color: var(--main-01, #3AAF85);
+  border-radius: 10px;
+  padding: 4px 8px;
+  font-size: 13px;
+  margin-left: 5px;
+  font-family: Light;
+`;
+
+export default function TagBox({ onTagChange, status }) {
     const [isTagVisible, setIsTagVisible] = useState(false);
     const [tagText, setTagText] = useState('태그 선택 혹은 입력');
     const [tags, setTags] = useState([]);
     const [allTags, setAllTags] = useState(['인턴', '정규직', '대외활동', '동아리']);
+    const [reviewTag, setReviewTag] = useState(''); // 후기 제목으로부터 추가된 태그
     const tagInputRef = useRef(null);
     const tagBoxListRef = useRef(null);
 
@@ -201,14 +199,23 @@ export default function TagBox({ onTagChange }) {
     return (
         <Box>
             <Row>
-            
                 <TagInputContainer onClick={handleTagClick}>
+                    {/* 리뷰 제목으로 추가된 태그 */}
+                    {reviewTag && (
+                        <ReviewTag status={status}>
+                            {reviewTag}
+                            <CloseButton onClick={() => setReviewTag('')}>x</CloseButton>
+                        </ReviewTag>
+                    )}
+
+                    {/* 모달에서 추가된 일반 태그들 */}
                     {tags.map((tag, index) => (
-                        <WhiteTag key={index}>
+                        <NormalTag key={index}>
                             {tag}
                             <CloseButton onClick={() => handleTagRemove(tag)}>x</CloseButton>
-                        </WhiteTag>
+                        </NormalTag>
                     ))}
+                    
                     <TagInput
                         ref={tagInputRef}
                         value={tagText}

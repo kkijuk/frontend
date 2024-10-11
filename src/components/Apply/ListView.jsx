@@ -13,7 +13,7 @@ const BackgroundSection = styled.div`
 `;
 
 const ContentSection = styled.div`
-  max-width: 820px;  // 너비 내커리어,이력관리와 통일 820으로
+  max-width: 820px;
   margin: 0 auto;
   padding: 15px;
   background-color: #f0f0f0;
@@ -34,11 +34,9 @@ const AdDateSection = styled.div`
 const AdDate = styled.div`
   font-size: 14px;
   color: var(--black, #000);
-   font-family: Regular;
+  font-family: Regular;
   font-size: 16px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   margin-bottom: 10px;
   margin-left: 5px;
 `;
@@ -50,7 +48,7 @@ const AdItem = styled.div`
   padding: 15px;
   margin-bottom: 10px;
   box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
-  cursor: pointer; 
+  cursor: pointer;
 `;
 
 const AdDetails = styled.div`
@@ -67,9 +65,7 @@ const AdTitle = styled.div`
   color: var(--black, #000);
   font-family: Pretendard;
   font-size: 18px;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
   margin-top: 5px;
 `;
 
@@ -78,15 +74,33 @@ const TagContainer = styled.div`
   flex-wrap: wrap;
   gap: 13px;
   margin-left: 15px;
-  margin-bottom: 5px; 
+  margin-bottom: 5px;
 `;
 
-const Tag = styled.span`
+// 기본 태그 스타일 (모달에서 추가된 태그)
+const DefaultTag = styled.span`
   background: #F5F5F5;
   border-radius: 10px;
   padding: 4px 8px;
- font-size: 13px;
+  font-size: 13px;
   color: #707070;
+  font-family: Light;
+`;
+
+// 후기 제목으로 추가된 태그 스타일 (공고 상태에 따라 색상 변경)
+const StatusTag = styled.span`
+  background: ${({ status }) => {
+    if (status === 'UNAPPLIED') return '#D9D9D9';
+    if (status === 'PLANNED') return '#B0B0B0';
+    if (status === 'APPLYING') return '#707070';
+    if (status === 'ACCEPTED') return '#78D333';
+    if (status === 'REJECTED') return '#FA7C79';
+    return '#D9D9D9';
+  }};
+  color: white;
+  border-radius: 10px;
+  padding: 4px 8px;
+  font-size: 13px;
   font-family: Light;
 `;
 
@@ -127,7 +141,7 @@ const ListView = ({ data, onJobClick }) => {
     return (
       <BackgroundSection>
         <ContentSection background="#f0f0f0">
-         
+          {/* 데이터가 없는 경우 빈 화면 처리 */}
         </ContentSection>
       </BackgroundSection>
     );
@@ -148,11 +162,17 @@ const ListView = ({ data, onJobClick }) => {
                   onClick={() => {
                     window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
                     onJobClick(ad);
-                  }}                >
+                  }}>
                   <TagContainer>
-                  {(ad.tag || ad.tags || []).map((tag, tagIdx) => (
-                      <Tag key={tagIdx}>{tag}</Tag>
-                    ))}
+                    {/* 공고 상태에 따라 색이 변경되는 후기 제목 태그와, 기존 태그를 구분 */}
+                    {(ad.tag || ad.tags || []).map((tag, tagIdx) => {
+                      if (ad.isReviewTitleTag && ad.reviewTitleTag === tag) {
+                        // 후기 제목 태그는 공고 상태에 따른 색상 적용
+                        return <StatusTag key={tagIdx} status={ad.status}>{tag}</StatusTag>;
+                      }
+                      // 그 외의 태그는 기본 스타일 적용
+                      return <DefaultTag key={tagIdx}>{tag}</DefaultTag>;
+                    })}
                   </TagContainer>
                   <AdDetails>
                     <AdTitleContainer>
