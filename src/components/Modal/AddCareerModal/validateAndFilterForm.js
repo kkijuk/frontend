@@ -25,7 +25,7 @@ export const validateAndFilterForm = (category, formData) => {
         7: ['title', 'alias', 'period'], // 기타
     };
 
-    // 필수 필드 검증 및 필터링
+    // 필터링
     const fieldsToInclude = allFields[category];
 
     fieldsToInclude.forEach(field => {

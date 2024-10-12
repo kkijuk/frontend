@@ -3,6 +3,11 @@ import React, { useState } from 'react';
 import api from '../../Axios';
 
 const createCareer = async(category, data)=>{
+
+    //data 필드명 변경 필요
+    // period -> startdate, enddate
+    // participantType -> isTeam, teamSize, contribution
+
     let endpoint = '';
     switch(category){
         case '1': //동아리
@@ -23,9 +28,9 @@ const createCareer = async(category, data)=>{
         case '6': //교육
             endpoint = '/career/educareer';
             break;
-        case '7': //기타... api 있는 지 확인
-            endpoint = '?'
-            break;
+        case '7': //기타... api 없음
+            console.log('category number is 7')
+            return;
         default:
             console.log('Unknown category');
             return;

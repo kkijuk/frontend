@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { Affiliation1 } from './Affiliation';
 import { ReactComponent as CloseIcon } from '../../../assets/close.svg'
 import { validateAndFilterForm } from './validateAndFilterForm';
 import createCareer from '../../../api/Mycareer/createCareer';
+import DateInput from './DateInput';
+import UnknownRadio from './UnknownRadio';
+import { Form } from 'react-router-dom';
 
 const AddCareerModal =({onClose})=>{
 
@@ -20,10 +23,12 @@ const AddCareerModal =({onClose})=>{
     const [selectedCategory, setSelectedCategory] = useState(1);
 
     //12가지 유형의 form Data 상태관리
-    const [title, setTitle] = useState(""); //활동명
+    const [name, setName] = useState(""); //활동명
     const [alias, setAlias] = useState(""); //별칭
-    const [period, setPeriod] = useState(""); //기간 type?
-    const [affiliation, setAffiliation] = useState(0); //소속(0: 교내, 1: 교외, 2: 기타)
+    const [startdate, setStartdate] = useState(""); //시작일자
+    const [enddate, setEnddate] = useState(""); //종료일자
+    const [unknown, setUnknown] = useState(false); //종료일자 알 수 없음 여부 
+    const [location, setLocation] = useState("ON_CAMPUS"); //소속(ON_CAMPUS: 교내, OFF_CAMPUS: 교외, OTHER: 기타)
     const [role, setRole] = useState(""); //역할
     const [organizer, setOrganizer] = useState(""); //주최
     const [careerType, setCareerType] = useState(""); //경력분류
@@ -33,6 +38,8 @@ const AddCareerModal =({onClose})=>{
     const [educationHours, setEducationHours] = useState(0); //교육시간
     const [participantType, setParticipantType] = useState({}); //인원-팀인원-기여도
 
+    const hasError = !startdate || (!unknown && !enddate);
+
     //Logic: 선택된 카테고리에 따라 상이한 forms 조합을 렌더링합니다.
     const renderFormByCategory =()=>{
         switch(selectedCategory){
@@ -41,17 +48,42 @@ const AddCareerModal =({onClose})=>{
                     <>
                     <FormItem spanTwoColumns>
                         <label>활동명 <span style={{color:"#FC5555"}}>*</span></label>   
-                        <input type="text" placeholder='ex) 광고 기획 동아리, 앱 개발 프로젝트 등(20자 이내)'></input>
+                        <input 
+                            type="text" 
+                            value={name}
+                            onChange={(e)=>setName(e.target.value)}
+                            placeholder='ex) 광고 기획 동아리, 앱 개발 프로젝트 등(20자 이내)'></input>
                     </FormItem>
                     <FormItem spanTwoColumns>
                         <label>별칭 <span style={{color:"#FC5555"}}>*</span></label>   
-                        <input type="text" placeholder='ex) UMC, 멋쟁이사자처럼 등(20자 이내)'></input>
+                        <input 
+                            type="text" 
+                            value={alias}
+                            onChange={(e)=>setAlias(e.target.value)}
+                            placeholder='ex) UMC, 멋쟁이사자처럼 등(20자 이내)'></input>
                     </FormItem>
                     <FormItem spanTwoColumns>
                         <label>기간 <span style={{color:"#FC5555"}}>*</span></label>   
                     </FormItem>
-                    <FormItem><input placeholder='YYYY-MM-DD'></input></FormItem>
-                    <FormItem><input placeholder='YYYY-MM-DD'></input></FormItem>
+                    {/* 시작날짜 */}
+                    <FormItem>
+                        <DateInput
+                            value={startdate}
+                            onChange={setStartdate}/>
+                    </FormItem>
+                    {/* 종료날짜 */}
+                    <FormItem>
+                        <DateInput
+                            value={enddate}
+                            onChange={setEnddate}
+                            disabled={unknown}/>
+                            
+                    </FormItem>
+                    <FormItem></FormItem>
+                    <FormItem>
+                        <UnknownRadio isUnknown={unknown} onToggle={()=>setUnknown(!unknown)}/> 
+                    </FormItem>
+
                     <FormItem>
                         <label>소속 <span style={{color:"#FC5555"}}>*</span></label>   
                     </FormItem>
@@ -59,9 +91,15 @@ const AddCareerModal =({onClose})=>{
                         <label>역할</label>     
                     </FormItem>
                     <FormItem>
-                        <Affiliation1 onAffiliationChange={() => console.log("not yet")}/>
+                        <Affiliation1 onAffiliationChange={(newLocation)=>{setLocation(newLocation); }}/>
                     </FormItem>
-                    <FormItem><input type="text" placeholder='ex) 팀장, 부원, 기획자 등'></input></FormItem>
+                    <FormItem>
+                        <input 
+                            type="text" 
+                            value={role}
+                            onChange={(e)=>setRole(e.target.value)}
+                            placeholder='ex) 팀장, 부원, 기획자 등'></input>
+                    </FormItem>
                     </>
 
                 )
@@ -94,10 +132,20 @@ const AddCareerModal =({onClose})=>{
         }
     }
 
+    useEffect(() => {
+        console.log("종료날짜:", enddate);
+      }, [enddate]); 
+
     const handleAddCareer = async () =>{
-        const allFormData = { title, alias, period, affiliation, role, organizer, careerType, workplace, position, jobField, educationHours, participantType};
+        // 날짜 입력 유효성 검증
+        if(hasError){
+            alert("올바른 기간 입력이 아닙니다.");
+            return;
+        }
+
+        const allFormData = { name, alias, startdate, enddate: unknown? null : enddate, unknown, location, role, organizer, careerType, workplace, position, jobField, educationHours, participantType};
         
-        //검증 및 필터링 실행
+        // 날짜 외 입력 데이터 검증 및 필터링 실행
         const { isValid, errors, filteredData } = validateAndFilterForm(selectedCategory, allFormData);
 
         //오류 생길 경우
