@@ -3,24 +3,23 @@ import styled from 'styled-components'
 
 // 첫 번째 버전: 교내, 교외만 
 const Affiliation1 =({onAffiliationChange})=>{
-    const [isOnCampus, setIsOnCampus] = useState(0);
+    const [isOnCampus, setIsOnCampus] = useState("ON_CAMPUS");
 
     const toggleAffiliation =(value)=>{
-        const isOnCampusSelected = value ==="교내";
-        setIsOnCampus(isOnCampusSelected);
-        onAffiliationChange(isOnCampusSelected) //parameter
+        setIsOnCampus(value);
+        onAffiliationChange(value) //parameter
     }
 
     return(
         <Container>
             <form>
                 <SelectButton
-                    state ={isOnCampus}
-                    onClick = {()=>toggleAffiliation("교내")}
+                    state ={isOnCampus==="ON_CAMPUS"}
+                    onClick = {()=>toggleAffiliation("ON_CAMPUS")}
                 >교내</SelectButton>
                 <SelectButton
-                    state ={!isOnCampus} 
-                    onClick = {()=>toggleAffiliation("교외")}
+                    state ={isOnCampus==="OFF_CAMPUS"} 
+                    onClick = {()=>toggleAffiliation("OFF_CAMPUS")}
                 >교외</SelectButton>
             </form>
         </Container>
@@ -29,7 +28,7 @@ const Affiliation1 =({onAffiliationChange})=>{
 
 // 두 번째 버전: 교내, 교외, 기타
 const Affiliation2 =({onAffiliationChange})=>{
-    const [selectedAffiliation, setSelectedAffiliation] = useState(0);
+    const [selectedAffiliation, setSelectedAffiliation] = useState("ON_CAMPUS");
 
     const toggleAffiliation =(value)=>{
         setSelectedAffiliation(value);
@@ -41,16 +40,16 @@ const Affiliation2 =({onAffiliationChange})=>{
         <Container>
             <form>
                 <SelectButton
-                    state ={selectedAffiliation === 0}
-                    onClick = {()=>toggleAffiliation(0)}
+                    state ={selectedAffiliation === "ON_CAMPUS"}
+                    onClick = {()=>toggleAffiliation("ON_CAMPUS")}
                 >교내</SelectButton>
                 <SelectButton
-                    state ={selectedAffiliation === 1} 
-                    onClick = {()=>toggleAffiliation(1)}
+                    state ={selectedAffiliation === "OFF_CAMPUS"} 
+                    onClick = {()=>toggleAffiliation("OFF_CAMPUS")}
                 >교외</SelectButton>
                 <SelectButton
-                    state ={selectedAffiliation === 2} 
-                    onClick = {()=>toggleAffiliation(2)}
+                    state ={selectedAffiliation === "OTHER"} 
+                    onClick = {()=>toggleAffiliation("OTHER")}
                 >기타</SelectButton>
             </form>
         </Container>
