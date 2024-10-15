@@ -3,18 +3,18 @@ import styled from 'styled-components';
 
 const BackgroundSection = styled.div`
   width: 100vw;
-  left: 50%;
-  transform: translateX(-50%);
   background-color: #f0f0f0;
   margin-top: 20px;
   position: relative;
   padding: 20px 0;
   box-sizing: border-box;
+  justify-content: center; /* 중앙 정렬 */
 `;
 
 const ContentSection = styled.div`
   max-width: 820px;
   margin: 0 auto;
+   width: 100%; /* 전체 너비에 맞춤 */
   padding: 20px;
   background-color: #f0f0f0;
   border-radius: 15px;
