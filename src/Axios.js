@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "https://api.kkijuk.com",
-    headers:{
-        'Content-Type':'application/json'
+    baseURL: process.env.REACT_APP_API_URL,
+    headers: {
+        'Content-Type': 'application/json',
     },
-    withCredentials: true
-})
+    withCredentials: true,
+});
 
 export default api;
