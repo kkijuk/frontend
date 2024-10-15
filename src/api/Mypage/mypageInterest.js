@@ -3,7 +3,7 @@ import axios from 'axios';
 export const mypageInterest = async () => {
   try {
     const response = await axios.get(
-        'https://api.kkijuk.com/member/myPage/field',
+        `${process.env.REACT_APP_API_URL}/member/myPage/field`,
         {
           withCredentials: true,
           headers: {

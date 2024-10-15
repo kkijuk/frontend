@@ -1,13 +1,10 @@
-const apiUrl = 'https://api.kkijuk.com/recruit';
-
 export const getRecruitDetails = async (id) => {
   try {
-    const response = await fetch(`${apiUrl}/${id}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/recruit/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
-
-        'accept': '*/*'
+        'accept': '*/*',
       },
       credentials: "include",
     });

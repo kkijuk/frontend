@@ -1,16 +1,18 @@
 import axios from 'axios';
 
+const apiUrl = process.env.REACT_APP_API_URL; 
+
 // 계정 관리 - 비밀번호 바꾸기
 export const ChangePassword = async (passwordData) => {
     try {
-        
-        const response = await axios.post('https://api.kkijuk.com/member/myPage/password', 
+        const response = await axios.post(
+            `${apiUrl}/member/myPage/password`, 
             passwordData, 
             {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                withCredentials: true,// 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
+                withCredentials: true, // 쿠키와 인증 정보를 함께 보냄
             }
         );
 

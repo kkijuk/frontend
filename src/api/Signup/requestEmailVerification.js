@@ -1,6 +1,6 @@
 export async function requestEmailVerification(email) {
     try {
-      const response = await fetch('https://api.kkijuk.com/auth', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/auth`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

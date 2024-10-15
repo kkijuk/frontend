@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const APIURL = 'https://api.kkijuk.com/member/myPage/field';
+const APIURL = `${process.env.REACT_APP_API_URL}/member/myPage/field`;
 
 export const mypageInterestEdit = async (interestsData) => {
   try {

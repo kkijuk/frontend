@@ -1,6 +1,6 @@
 export const updateRecruitStatus = async (recruitId, status) => {
   try {
-    const response = await fetch(`https://api.kkijuk.com/recruit/${recruitId}/status`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/recruit/${recruitId}/status`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
