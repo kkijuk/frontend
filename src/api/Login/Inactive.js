@@ -1,8 +1,10 @@
 import axios from 'axios';
 
 export const deleteUserAccount = async (token) => {
+    const apiUrl = `${process.env.REACT_APP_API_URL}/member/inactive`; 
+
     try {
-        const response = await axios.patch('https://api.kkijuk.com/member/inactive', null, {
+        const response = await axios.patch(apiUrl, null, {
             headers: {
                 'accept': '*/*',
                 'Authorization': `Bearer ${token}`,  

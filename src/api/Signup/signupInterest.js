@@ -1,7 +1,7 @@
 export const saveInterests = async (interestingList) => {
     try {
       console.log('Sending data to server:', { field: interestingList });
-      const response = await fetch('https://api.kkijuk.com/member/field', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/member/field`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

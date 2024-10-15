@@ -3,12 +3,14 @@ import styled from 'styled-components';
 
 const StatusContainer = styled.div`
   display: flex;
-  width: 850px;
+  width: 800px;
   align-items: center;
   justify-content: flex-start;
   padding: 10px 0px;
   gap: 30px; 
+  margin-left: 90px;
   padding-right: 90px; 
+  white-space: nowrap;
 `;
 
 const StatusButton = styled.button`

@@ -1,6 +1,6 @@
 export async function verifyAuthCode(email, authNumber) {
     try {
-      const response = await fetch('https://api.kkijuk.com/auth/confirm', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/confirm`, {
         method: 'POST',
         headers: {
          

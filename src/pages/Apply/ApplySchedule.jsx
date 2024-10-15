@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Layout from '../../components/Layout'; // Layout 컴포넌트를 추가합니다.
 import TabMenu from '../../components/Apply/TabMenu';
 import ViewToggle from '../../components/Apply/ViewToggle';
 import CalendarView from '../../components/Apply/CalendarView';
@@ -11,16 +12,6 @@ import WaitingList from '../../components/Apply/WaitingList';
 import ApplyList from '../../components/Apply/ApplyList';
 import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
 import { getRecruitDetails } from '../../api/Apply/RecruitDetails';  
-
-const Container = styled.div`
-   width: 820px;
-   margin-top: 40px;
-  max-width: 820px;
-  margin: 0 auto;
-  padding: 24px 40px;
-  background-color: white;
-  border-radius: 15px;
-`;
 
 const Title = styled.h1`
   color: var(--black, #000);
@@ -56,20 +47,17 @@ export default function ApplySchedule() {
   const handleSaveRecruit = async (newRecruitId) => {
     try {
         const newRecruit = await getRecruitDetails(newRecruitId);
-        console.log("Fetched new recruit with tags:", newRecruit.tags); // 태그 정보가 여기에 있는지 확인
         if (newRecruit) {
             const updatedJobs = [...jobs, newRecruit];
             const sortedJobs = updatedJobs.sort((a, b) => new Date(a.endTime) - new Date(b.endTime));
             setJobs(sortedJobs);
-
-            console.log("New recruit added and jobs updated:", sortedJobs);
         } else {
             console.error('Failed to retrieve the newly created recruit');
         }
     } catch (error) {
         console.error('Error fetching new recruit:', error);
     }
-};
+  };
 
 
   useEffect(() => {
@@ -77,7 +65,6 @@ export default function ApplySchedule() {
       try {
         const now = new Date();
         const testDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-        console.log('Fetching jobs from date:', testDate); 
         const recruitData = await getRecruitListAfterDate(testDate); 
   
         if (recruitData && recruitData.outputs && recruitData.outputs.length > 0) {
@@ -89,7 +76,6 @@ export default function ApplySchedule() {
             }))
           );
           setJobs(transformedJobs);
-          console.log('Transformed jobs:', transformedJobs); 
         } else {
           console.warn('No recruits found after the specified date.');
         }
@@ -106,15 +92,12 @@ export default function ApplySchedule() {
       let jobDetails = null;
   
       if (job && job.recruitId) {
-        // recruitId가 있으면 해당 값으로 API 요청
         jobDetails = await getRecruitDetails(job.recruitId);
       } else if (job && job.id) {
-        // recruitId가 없으면 id로 API 요청
         jobDetails = await getRecruitDetails(job.id);
       }
   
       if (jobDetails) {
-        // recruitId가 있으면 그걸 사용하고, 없으면 id 사용
         const jobId = job.recruitId || job.id;
         navigate(`/apply-detail/${jobId}`, { state: { job: jobDetails, from: 'list' } });
       } else {
@@ -124,14 +107,12 @@ export default function ApplySchedule() {
       console.error('Error fetching job details:', error);
     }
   };
-  
 
   const waitingJobs = jobs.filter(job => job.status === 'UNAPPLIED' || job.status === 'PLANNED');
   const appliedJobs = jobs.filter(job => job.status !== 'UNAPPLIED' && job.status !== 'PLANNED');
 
   return (
-    <Container>
-      <Title>지원관리</Title>
+    <Layout title="지원관리">
       <TabMenu activeTab="schedule" onTabClick={() => navigate('/apply-status')} />
       <TopSection>
         <StatusContainer>
@@ -152,6 +133,6 @@ export default function ApplySchedule() {
           onSave={handleSaveRecruit}
         />
       )}
-    </Container>
+    </Layout>
   );
 }

@@ -21,16 +21,21 @@ const CalendarContentSection = styled.div`
   background-color: #f0f0f0;
   border-radius: 15px;
   position: relative;
-  margin-left: 505px;
+ left: 50%; // 화면 중앙으로 이동
+  transform: translate(-50%, 0) translateX(-560px);
    @media (max-width: 1024px) {
     margin-left: 0; 
   }
 `;
 
 const CalendarAdListStyled = styled.div`
+  display: flex;            // Flexbox를 사용하여 아이템을 정렬
+  flex-direction: column;   // 세로 방향으로 정렬
+  align-items: center;      // 가운데 정렬
   padding: 20px;
   border-radius: 10px;
   margin-top: -10px;
+  width: 100%;              // 전체 너비 사용
 `;
 
 const CalendarAdDateSection = styled.div`
@@ -54,10 +59,12 @@ const CalendarAdItem = styled.div`
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 15px;
-  margin-bottom: 10px;
+  margin: 10px 0;          // 위 아래 여백 설정
   box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
   cursor: pointer; 
-  margin-left: 38px;
+  width: 100%;             // 전체 너비 사용
+  max-width: 800px;        // 최대 너비 설정 (필요에 따라 조정)
+  box-sizing: border-box;  // 여백 포함 너비 계산
 `;
 
 const CalendarAdDetails = styled.div`

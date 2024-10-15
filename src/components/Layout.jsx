@@ -28,7 +28,7 @@ const Top = styled.div`
     max-width: 820px; /* 최대 너비 설정 */
     height:68px;
     
-    background-color: #6eeb8f; 
+    background-color: none; 
     @media (max-width: 820px) {
         width: 100%; /* 작은 화면에서는 100% 너비를 차지 */
         box-sizing: border-box;
@@ -44,7 +44,7 @@ const Section = styled.div`
     flex-direction: column;
     align-items: center; /* 컨텐츠를 가운데 정렬 */
 
-    background-color: #eba66e;
+    //background-color: #eba66e;
 
     @media (max-width: 1280px) {
         width: 100%; /* 작은 화면에서 Section이 전체 너비를 차지 */
@@ -57,7 +57,7 @@ const RightAside = styled.div`
     width: 230px;
     height: 100%;
    
-    background-color: blue; 
+    background-color: none;
     @media (max-width: 1280px) {
         display: none; /* 1280px보다 작을 때 숨김 */
     }
@@ -67,7 +67,7 @@ const LeftAside = styled.div`
     width: 230px;
     height: 100%;
     
-    background-color: red; 
+    background-color: none;
     @media (max-width: 1280px) {
         display: none; /* 1280px보다 작을 때 숨김 */
     }
@@ -91,14 +91,14 @@ export default function Layout({ title, children }) {
     return (
         <Wrapper>
             <Container>
-                <LeftAside><h1>LeftAside</h1></LeftAside>
+                <LeftAside></LeftAside>
                     <Section>
                         <Top>
                             <TitleText>{title}</TitleText>
                         </Top>
                         {children}
                     </Section>                
-                <RightAside><h1>RightAside</h1></RightAside>
+                <RightAside></RightAside>
             </Container>
         </Wrapper>
         

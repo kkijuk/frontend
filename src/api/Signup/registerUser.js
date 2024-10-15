@@ -1,6 +1,6 @@
 export async function registerUser({ email, name, phoneNumber, birthDate, password, passwordConfirm }) {
     try {
-      const response = await fetch('https://api.kkijuk.com/member', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/member`, {
         method: 'POST',
         headers: {
 

@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Layout from '../../components/Layout'; // Layout 컴포넌트를 불러옵니다.
 import TabMenu from '../../components/Apply/TabMenu';
 import StatusListView from '../../components/Apply/StatusListView';
 import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
 import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
 import ApplyStatusButton from '../../components/Apply/ApplyStatusButton';
 
-const Container = styled.div`
-   width: 820px;
-   margin-top: 40px;
-  max-width: 820px;
-  margin: 0 auto;
-  padding: 24px 40px;
-  background-color: white;
-  border-radius: 15px;
-`;
 const Title = styled.h1`
   color: var(--black, #000);
   font-family: 'Bold';
@@ -25,7 +17,6 @@ const Title = styled.h1`
   width: 820px;
   margin-left: 18px;
 `;
-
 
 export default function ApplyStatus() {
   const [jobs, setJobs] = useState([]);
@@ -42,14 +33,11 @@ export default function ApplyStatus() {
     rejected: jobs.filter(job => job.status === 'REJECTED').length,
   };
 
-  // 페이지가 로드될 때 오늘 이후 마감인 모든 공고 목록을 가져오는 useEffect
   useEffect(() => {
     const fetchJobs = async () => {
       try {
         const now = new Date();
         const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-        console.log('Fetching jobs from date:', today);
-        
         const recruitData = await getRecruitListAfterDate(today);
 
         if (recruitData && recruitData.outputs && recruitData.outputs.length > 0) {
@@ -62,9 +50,6 @@ export default function ApplyStatus() {
 
           setJobs(sortedJobs);
           setFilteredJobs(sortedJobs);
-          console.log('Sorted jobs:', sortedJobs);
-        } else {
-          console.warn('No recruits found after the specified date.');
         }
       } catch (error) {
         console.error('Error fetching recruits:', error);
@@ -72,27 +57,19 @@ export default function ApplyStatus() {
     };
 
     fetchJobs();
-  }, []); // 컴포넌트가 마운트될 때 한 번만 실행
+  }, []);
 
   const handleStatusClick = (status) => {
     setActiveStatus(status);
     if (status === 'all') {
       setFilteredJobs(jobs);
-    } else if (status === 'notApply') {
-      setFilteredJobs(jobs.filter(job => job.status === 'UNAPPLIED'));
-    } else if (status === 'apply') {
-      setFilteredJobs(jobs.filter(job => job.status === 'PLANNED'));
-    } else if (status === 'applying') {
-      setFilteredJobs(jobs.filter(job => job.status === 'APPLYING'));
-    } else if (status === 'accepted') {
-      setFilteredJobs(jobs.filter(job => job.status === 'ACCEPTED'));
-    } else if (status === 'rejected') {
-      setFilteredJobs(jobs.filter(job => job.status === 'REJECTED'));
+    } else {
+      setFilteredJobs(jobs.filter(job => job.status === status.toUpperCase()));
     }
   };
 
   const handleJobClick = async (job) => {
-    const jobId = job.recruitId || job.id;  
+    const jobId = job.recruitId || job.id;
     if (jobId) {
       try {
         const jobDetails = await getRecruitDetails(jobId);
@@ -100,19 +77,14 @@ export default function ApplyStatus() {
       } catch (error) {
         console.error('Failed to fetch job details:', error);
       }
-    } else {
-      console.error('Job ID is missing or undefined');
     }
   };
-  
-  
 
   return (
-    <Container>
-      <Title>지원관리</Title>
+    <Layout title="지원관리">
       <TabMenu activeTab="status" onTabClick={() => navigate('/apply-schedule')} />
       <ApplyStatusButton activeStatus={activeStatus} onStatusClick={handleStatusClick} statusCounts={statusCounts} />
       <StatusListView data={filteredJobs} onJobClick={handleJobClick} />
-    </Container>
+    </Layout>
   );
 }

@@ -1,12 +1,11 @@
 export const deleteReview = async (recruitId, reviewId) => {
     try {
-        const response = await fetch(`https://api.kkijuk.com/recruit/${recruitId}/review/${reviewId}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/recruit/${recruitId}/review/${reviewId}`, {
             method: 'DELETE',
             headers: {
-
                 'accept': '*/*',
             },
-            credentials: "include",
+            credentials: "include", // 쿠키와 인증 정보를 함께 보냄
         });
 
         if (!response.ok) {
@@ -20,5 +19,3 @@ export const deleteReview = async (recruitId, reviewId) => {
         throw error;
     }
 };
-
-  
