@@ -1,6 +1,6 @@
 export async function editReview(recruitId, reviewId, reviewData) {
     try {
-        const response = await fetch(`https://api.kkijuk.com/recruit/${recruitId}/review/${reviewId}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/recruit/${recruitId}/review/${reviewId}`, {
             method: 'PUT',
             headers: {
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 
 
@@ -36,6 +36,7 @@ const FilterReset = styled.div`
     background: var(--white, #FFF);
     margin-top: 10px;
 
+    box-sizing: border-box;
     border:1px solid black;
     
     /* 추가된 부분: 가로 중앙 정렬 */
@@ -70,6 +71,8 @@ const ResetText = styled.div`
     justify-content: center; /* 수평 중앙 정렬 */
     align-items: center; /* 수직 중앙 정렬 */
 `;
+
+/*이거 안쓰고 시ㅣㅍ은데 뭐가 문제길래 어???*/
 const EmptyBox = styled.div`
     width: 820px;
     height: 17px;
@@ -81,11 +84,32 @@ const ContentBox = styled.div`
     
     box-sizing: border-box;
     border: 1px solid black;
-    
+
+    /* 글자 세로 중앙 정렬 하려고 추가한거*/
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: flex-start; /* 없애도 될 듯*/
+
     /* ContentBox 사이 간격 18px 추가 */
     &:not(:last-child) {
         margin-bottom: 18px;
 ;`
+
+const TitleBox = styled.div`
+    height: 25px;
+    width: 30px; /*원래는 28px로 되어있긴 함..*/
+    margin-left: 31px;
+    margin-right: 40px;
+
+    /* 글자 세로 중앙 정렬 하려고 추가한거*/
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: space-between; /* 가로 정렬(내용 간 간격 조절) */
+    
+    box-sizing: border-box;
+    border: 1px solid black;
+`;
+
 
 const TitleText = styled.div`
     color: var(--black, #000);
@@ -94,24 +118,159 @@ const TitleText = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    margin-left: 31px;
-    margint-right: 40px; 오른쪽에 40픽셀 떨어뜨리고 다른 내용 넣어주기
+`;
+
+
+const Tag = styled.div`
+    padding: 0 16px; /* 글자 양 옆에 16px 여백 */
+    height: 25px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: ${(props) =>
+        props.clicked ? 'var(--main-03, #E1FAED)' : 'var(--gray-06, #F5F5F5)'};
+    outline: ${(props) =>
+        props.clicked ? '1px solid var(--main-01, #3AAF85)' : 'none'};
+    color: ${(props) => 
+        props.clicked ? 'var(--main-01, #3AAF85)' : 'var(--gray-01, #424242)'};
+    font-weight: ${(props) => 
+        props.clicked ? 600 : 400};
+
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-sizing: border-box;
+
+    margin-right: 18px;
+    
+`;
+
+const Text = styled.div`
+    color: ${(props) => 
+        props.clicked ? 'var(--main-01, #3AAF85)' : 'var(--gray-01, #424242)'};
+    font-weight: ${(props) => 
+        props.clicked ? 600 : 400};    
+    margin-right: 20px; 
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    line-height: normal;
+    cursor: pointer;
+`
+
+const DateConatainer = styled.div`
+    width: 270px;
+    display: flex;
+    justify-content: space-between; /* 요소들을 양쪽 끝에 배치 */
+    align-items: center;
+    margin-right: 20px;
+`;
+
+const DateBox = styled.div`
+    width: 120px;
+    height: 25px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    border: 1px solid var(--gray-03, #D9D9D9);
+    background: #FFF;
+`;
+
+
+const Apply = styled.div`
+    width: 53px;
+    height: 25px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: var(--main-01, #3AAF85);
+
+    color: var(--white, #FFF);
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-weight: 500;
+
+    display: flex;
+    align-items: center; 
+    justify-content: center;
 `;
 
 export default function SearchFilter(){
+    const [clickedTags, setClickedTags] = useState({
+        activityName: false,
+        activityRecord: false,
+        tag: false,
+    });
+
+    const handleTagClick = (tag) => {
+        setClickedTags((prevState) => ({
+            ...prevState,
+            [tag]: !prevState[tag],
+        }));
+    };
+
+    const [clickedSort, setClickedSort] = useState({
+        latest: false,
+        earliest: false
+    });
+    
+    const handleSortClick = (sortType) => {
+        setClickedSort({
+            latest: sortType === 'latest',
+            earliest: sortType === 'earliest',
+        });
+    };
+
     return(
         <Box>
             <Filter>
                 <EmptyBox></EmptyBox>
                 <ContentBox>
-                    <TitleText>대상</TitleText>
+                    <TitleBox><TitleText>대상</TitleText></TitleBox>
+                    <Tag
+                        clicked={clickedTags.activityName}
+                        onClick={() => handleTagClick('activityName')}
+                    >
+                        활동명
+                    </Tag>
+                    <Tag
+                        clicked={clickedTags.activityRecord}
+                        onClick={() => handleTagClick('activityRecord')}
+                    >
+                        활동기록
+                    </Tag>
+                    <Tag
+                        clicked={clickedTags.tag}
+                        onClick={() => handleTagClick('tag')}
+                    >
+                        태그
+                    </Tag>
                 </ContentBox>
                 <ContentBox>
-                    <TitleText>정렬</TitleText>
+                    <TitleBox><TitleText>정렬</TitleText></TitleBox>
+                    <Text
+                        clicked={clickedSort.latest}
+                        onClick={() => handleSortClick('latest')}
+                    >
+                        최신순
+                    </Text>
+                    <Text
+                        clicked={clickedSort.earliest}
+                        onClick={() => handleSortClick('earliest')}
+                    >
+                        오래된순
+                    </Text>
                 </ContentBox>
                 <ContentBox>
-                    <TitleText>기간</TitleText>
+                    <TitleBox><TitleText>기간</TitleText></TitleBox>
+                    <DateConatainer>
+                        <DateBox></DateBox> ~ <DateBox></DateBox>
+                    </DateConatainer>
+                    <Apply>적용</Apply>
                 </ContentBox>
+
                 <EmptyBox></EmptyBox>
             </Filter>
             <FilterReset>

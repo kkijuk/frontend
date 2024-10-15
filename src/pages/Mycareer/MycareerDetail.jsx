@@ -20,6 +20,7 @@ const Body = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   padding-bottom: 100px;
+
 `;
 
 const Container1 = styled.div`

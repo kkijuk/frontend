@@ -1,6 +1,6 @@
 export const ReviewAdd = async (recruitId, reviewData) => {
     try {
-      const response = await fetch(`https://api.kkijuk.com/recruit/${recruitId}/review`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/recruit/${recruitId}/review`, {
         method: 'POST',
         headers: {
 

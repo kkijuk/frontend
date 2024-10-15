@@ -11,7 +11,8 @@ const AdCalendarStyled = styled.div`
   margin-bottom: 20px;
   display: flex;
   justify-content: center;
-  flex-direction: column;  
+  flex-direction: column;
+  align-items: center; /* 추가: 중앙 정렬 */
 `;
 
 const StyledCalendar = styled(Calendar)`

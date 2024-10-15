@@ -1,6 +1,6 @@
 export const updateRecruitApplyDate = async (recruitId, applyDate) => {
     try {
-      const response = await fetch(`https://api.kkijuk.com/recruit/${recruitId}/apply-date`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/recruit/${recruitId}/apply-date`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

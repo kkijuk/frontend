@@ -1,11 +1,10 @@
-const apiUrl = 'https://api.kkijuk.com/dashboard/remind/recruit';
-
 export const getRecruitRemind = async () => {
+  const apiUrl = `${process.env.REACT_APP_API_URL}/dashboard/remind/recruit`; 
+
   try {
     const response = await fetch(apiUrl, {
       method: 'GET',
       headers: {
-
         'Content-Type': 'application/json; charset=utf-8',
         'Accept': '*/*',
       },

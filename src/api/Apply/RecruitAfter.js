@@ -1,13 +1,10 @@
 export const getRecruitListAfterDate = async (date) => {
- 
-  const apiUrl = `https://api.kkijuk.com/recruit/list/after?time=${encodeURIComponent(date)}`;
-
   try {
     console.log('Fetching recruit list after date:', date);  // 디버깅용 로그 추가
-    const response = await fetch(apiUrl, {
+    
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/recruit/list/after?time=${encodeURIComponent(date)}`, {
       method: 'GET',
       headers: {
-
         'Content-Type': 'application/json; charset=utf-8',
         'accept': '*/*'
       },
@@ -32,4 +29,3 @@ export const getRecruitListAfterDate = async (date) => {
     throw error;
   }
 };
-

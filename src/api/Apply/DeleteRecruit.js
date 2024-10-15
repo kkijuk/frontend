@@ -1,4 +1,4 @@
-const apiUrl = 'https://api.kkijuk.com/recruit';
+const apiUrl = `${process.env.REACT_APP_API_URL}/recruit`;
 
 export const deleteRecruit = async (id) => {
   try {
