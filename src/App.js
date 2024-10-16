@@ -15,7 +15,9 @@ import SignupSuccess from "./pages/SignupSuccess";
 import ResetSuccess from "./pages/Mypage/ResetSuccess";
 import SubNav from './components/Intro/SubNav';
 import ViewOptions from './pages/History/ViewOptions';
+
 import History from "./pages/History/History";
+import ResumePdf from "./pages/History/ResumePDF"
 import Master from "./pages/History/Master";
 import Others from "./pages/History/Others";
 import MasterRewrite from "./pages/History/MasterRewrite";
@@ -34,6 +36,7 @@ import PasswordResetEmail from './pages/Mypage/PasswordResetEmail';
 import PasswordResetEmailConfirm from './pages/Mypage/PasswordResetEmailConfirm';
 import PasswordReset from './pages/Mypage/PasswordReset';
 import SignupInterest from './pages/SignupInterest';
+
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FilterPage from './components/Apply/FilterPage';
@@ -88,6 +91,8 @@ const App = () => {
           <Route path="/history/others/:id/rewrite" element={<OthersRewrite />} />
           <Route path="/history/select" element={<Select />} />
           <Route path="/history/add_apply" element={<AddApply />} />
+          <Route path="/history/resumeExport" element={<ResumePdf />} />
+
           <Route path="/apply-schedule" element={<ApplySchedule />} /> 
           <Route path="/apply-status" element={<ApplyStatus />} /> 
           <Route path="/apply-detail/:id" element={<ApplyDetail />} />
@@ -105,7 +110,6 @@ const App = () => {
           <Route path="/login-required" element={<LoginRequired />} />
         </Routes>
       </MainContent>
-      {!isCommingSoon && <Footer />} {/* Footer를 commingsoon 페이지에서 숨김 */}
     </AppContainer>
   );
 };
