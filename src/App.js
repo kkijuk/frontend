@@ -65,7 +65,7 @@ const App = () => {
 
   return (
     <AppContainer>
-      {!isCommingSoon && <Header />} {/* Header를 commingsoon 페이지에서 숨김 */}
+      {!isCommingSoon && <Header />} 
       <MainContent>
         <Routes>
           
