@@ -24,7 +24,7 @@ export default function Mycareer() {
   return (
       <div>
       <Layout title="내 커리어">
-        <Box>Hi I'm children.... :)</Box>
+        <Box>Hi I'm children.... :</Box>
       </Layout>
       
   </div>
