@@ -9,7 +9,6 @@ const Portfolio=()=>{
         console.log("Test");
     }
 
-    
 
     return(
         <>  

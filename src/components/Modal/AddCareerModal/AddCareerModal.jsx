@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { Affiliation1 } from './Affiliation';
 import { ReactComponent as CloseIcon } from '../../../assets/close.svg'
+import SvgIcon from '../../shared/SvgIcon';
 import { validateAndFilterForm } from './validateAndFilterForm';
 import createCareer from '../../../api/Mycareer/createCareer';
 import DateInput from './DateInput';
@@ -150,7 +151,7 @@ const AddCareerModal =({onClose})=>{
 
         //오류 생길 경우
         if(!isValid){
-            alert(errors.join("/n"));
+            alert(errors.join("\n"));
             return;
         }
 
@@ -162,7 +163,8 @@ const AddCareerModal =({onClose})=>{
         <ModalBackground>
             <ModalContainer>
                 <CloseButton onClick={onClose}>
-                    <CloseIcon/>
+                    {/* <CloseIcon/> */}
+                    <SvgIcon name="close" size={20} color="#999" />
                 </CloseButton>
                 <h1 style={{textAlign: "center"}}>활동추가</h1>
                 <ButtonContainer>
