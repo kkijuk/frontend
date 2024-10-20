@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import Layout from './components/Layout';
 import Home from "./pages/Home";
 import MyPage from "./pages/Mypage/Mypage";
 import MyCareer from "./pages/Mycareer/Mycareer";
@@ -68,16 +69,19 @@ const App = () => {
       {!isCommingSoon && <Header />} 
       <MainContent>
         <Routes>
-          
           <Route path="/mycareer/:careerId" element={<MyCareerDetail />} />          
           <Route path="/mycareer_search" element={<MycareerSearch />} />
+
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signupsuccess" element={<SignupSuccess />} />
+
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mycareer" element={<MyCareer />} />
+
           <Route path="/signupinterest" element={<SignupInterest />} />
+
           <Route element={<SubNav />}>
             <Route element={<ViewOptions />}>
               <Route path="/history/master" element={<Master />} />
@@ -91,8 +95,12 @@ const App = () => {
           <Route path="/history/others/:id/rewrite" element={<OthersRewrite />} />
           <Route path="/history/select" element={<Select />} />
           <Route path="/history/add_apply" element={<AddApply />} />
+<<<<<<< HEAD
+          
+=======
           <Route path="/history/resumeExport" element={<ResumePdf />} />
 
+>>>>>>> 1a795528577c80c77718e5b32a5480a0e8ffe59d
           <Route path="/apply-schedule" element={<ApplySchedule />} /> 
           <Route path="/apply-status" element={<ApplyStatus />} /> 
           <Route path="/apply-detail/:id" element={<ApplyDetail />} />
