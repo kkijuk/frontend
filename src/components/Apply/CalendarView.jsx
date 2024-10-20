@@ -12,7 +12,7 @@ const AdCalendarStyled = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  align-items: center; /* 추가: 중앙 정렬 */
+  align-items: center; 
 `;
 
 const StyledCalendar = styled(Calendar)`
