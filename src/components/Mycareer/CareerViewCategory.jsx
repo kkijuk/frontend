@@ -6,13 +6,13 @@ import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 
 const BackgroundSection = styled.div`
 	width: 100vw;
-	height: 600px;
+	height: auto;
 	left: 50%;
 	transform: translateX(-50%);
 	background-color: #f0f0f0;
 	position: relative;
 	box-sizing: border-box;
-	overflow-y: auto; /* 스크롤 가능하게 설정 */
+
 	display: flex;
 	justify-content: center; /* CategoryBox를 가운데로 정렬 */
 	align-items: flex-start; /* CategoryBox를 세로 축에서 상단에 정렬 */
@@ -94,38 +94,10 @@ const Date = styled.div`
 	margin-bottom: 20px;
 `;
 
-const getColor = (categoryName) => {
-	let category;
-	switch (categoryName) {
-		case '동아리':
-			category = 1;
-			break;
-		case '대외활동':
-			category = 2;
-			break;
-		case '공모전/대회':
-			category = 3;
-			break;
-		case '프로젝트':
-			category = 4;
-			break;
-		case '아르바이트/인턴':
-			category = 5;
-			break;
-		case '교육':
-			category = 6;
-			break;
-		default:
-			category = 7;
-	}
-	return category;
-};
-
-const formatDate = (dateString) => {
-	return dateString.replace(/-/g, '.');
-};
-
 const CareerViewCategory = ({ data }) => {
+	console.log(data);
+	const sortedKey = Object.keys(data).sort((a, b) => b - a);
+
 	const navigate = useNavigate();
 	const handleListBoxClick = async (careerId) => {
 		try {
@@ -145,31 +117,36 @@ const CareerViewCategory = ({ data }) => {
 	return (
 		<BackgroundSection>
 			<CategoryBox>
-				{data.data.map((item, index) => (
-					<React.Fragment key={index}>
-						<Category>
-							<CareerCategoryCircle category={getColor(item.categoryName)} />
-							<CategoryText>{item.categoryName}</CategoryText>
-						</Category>
-
-						{item.careers.map((career, careerIndex) => (
-							<ListBox
-								key={careerIndex}
-								onClick={() => handleListBoxClick(career.id)} // 클릭 시 career.id 전송
-							>
-								<Name>
-									<CareerContainer>
-										<CareerName>{career.careerName}</CareerName>
-										<AliasName>&nbsp;/ {career.alias}</AliasName>
-									</CareerContainer>
-								</Name>
-								<Date>
-									{formatDate(career.startDate)} ~ {formatDate(career.endDate)}
-								</Date>
-							</ListBox>
-						))}
-					</React.Fragment>
-				))}
+				{sortedKey.map((category, index) => {
+					return (
+						<React.Fragment key={index}>
+							<Category>
+								<CareerCategoryCircle category={category} />
+								<CategoryText>{category}</CategoryText>
+							</Category>
+							{data[category].map((item, careerIndex) => {
+								console.log('Item:', item);
+								console.log('Item category:', category);
+								return (
+									<ListBox
+										key={careerIndex}
+										onClick={() => handleListBoxClick(item.id)} // 클릭 시 career.id 전송
+									>
+										<Name>
+											<CareerContainer>
+												<CareerName>{item.name}</CareerName>
+												<AliasName>&nbsp;/ {item.alias}</AliasName>
+											</CareerContainer>
+										</Name>
+										<Date>
+											{item.startdate} ~ {item.endDate}
+										</Date>
+									</ListBox>
+								);
+							})}
+						</React.Fragment>
+					);
+				})}
 			</CategoryBox>
 		</BackgroundSection>
 	);
