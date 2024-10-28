@@ -6,13 +6,13 @@ import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 
 const BackgroundSection = styled.div`
 	width: 100vw;
-	height: 600px;
+	min-height: 100vh;
 	left: 50%;
 	transform: translateX(-50%);
 	background-color: #f0f0f0;
 	position: relative;
 	box-sizing: border-box;
-	overflow-y: auto; /* 스크롤 가능하게 설정 */
+
 	display: flex;
 	justify-content: center; /* CategoryBox를 가운데로 정렬 */
 	align-items: flex-start; /* CategoryBox를 세로 축에서 상단에 정렬 */
@@ -112,6 +112,9 @@ const formatDate = (dateString) => {
 
 const CareerViewYear = ({ data }) => {
 	console.log('CareerViewYear rendered');
+	const sortedYears = Object.keys(data).sort((a, b) => b - a);
+	console.log('SortedYears:', sortedYears);
+	console.log(data[sortedYears[0]]);
 
 	const navigate = useNavigate();
 	const handleListBoxClick = async (careerId) => {
@@ -129,15 +132,42 @@ const CareerViewYear = ({ data }) => {
 		}
 	};
 
-	if (!Array.isArray(data.data)) {
-		console.log('data값:', data);
-		return null;
+	if (!sortedYears.length || !data[sortedYears[0]]) {
+		return <div>데이터가 없습니다.</div>;
 	}
 
 	return (
 		<BackgroundSection>
 			<Contianer>
-				{data.data.map((item, index) => {
+				{sortedYears.map((year) => {
+					return (
+						<YearBox key={year}>
+							<Year>{year}</Year>
+							{data[year].map((item, index) => {
+								console.log('Item:', item);
+								console.log('Item year:', year);
+
+								return (
+									<ListBox key={index} onClick={() => handleListBoxClick(item.id)}>
+										<Category>
+											<CareerCategoryCircle category={item.category} />
+											<CategoryTextBox>{item.category}</CategoryTextBox>
+										</Category>
+										<CareerContainer>
+											<CareerName>{item.name}</CareerName>
+											<AliasName>&nbsp;/ {item.alias}</AliasName>
+										</CareerContainer>
+										<Date>
+											{item.startdate} ~ {item.endDate}
+										</Date>
+									</ListBox>
+								);
+							})}
+						</YearBox>
+					);
+				})}
+
+				{/* {data.data.map((item, index) => {
 					console.log('Item:', item);
 					console.log('Item year:', item.year);
 
@@ -166,7 +196,7 @@ const CareerViewYear = ({ data }) => {
 							))}
 						</YearBox>
 					);
-				})}
+				})} */}
 			</Contianer>
 		</BackgroundSection>
 	);
