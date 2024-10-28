@@ -6,7 +6,7 @@ import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 
 const BackgroundSection = styled.div`
 	width: 100vw;
-	min-height: 100vh;
+	min-height: auto;
 	left: 50%;
 	transform: translateX(-50%);
 	background-color: #f0f0f0;
@@ -18,9 +18,9 @@ const BackgroundSection = styled.div`
 	align-items: flex-start; /* CategoryBox를 세로 축에서 상단에 정렬 */
 `;
 
-const Contianer = styled.div`
+const Container = styled.div`
 	width: 820px;
-	height: 600px;
+	height: auto;
 	box-sizing: border-box; /* padding과 border를 포함한 전체 크기를 계산 */
 `;
 
@@ -113,8 +113,6 @@ const formatDate = (dateString) => {
 const CareerViewYear = ({ data }) => {
 	console.log('CareerViewYear rendered');
 	const sortedYears = Object.keys(data).sort((a, b) => b - a);
-	console.log('SortedYears:', sortedYears);
-	console.log(data[sortedYears[0]]);
 
 	const navigate = useNavigate();
 	const handleListBoxClick = async (careerId) => {
@@ -138,7 +136,7 @@ const CareerViewYear = ({ data }) => {
 
 	return (
 		<BackgroundSection>
-			<Contianer>
+			<Container>
 				{sortedYears.map((year) => {
 					return (
 						<YearBox key={year}>
@@ -166,38 +164,7 @@ const CareerViewYear = ({ data }) => {
 						</YearBox>
 					);
 				})}
-
-				{/* {data.data.map((item, index) => {
-					console.log('Item:', item);
-					console.log('Item year:', item.year);
-
-					return (
-						<YearBox key={index}>
-							<Year>{item.year}</Year>
-							{item.careers.map((career, careerIndex) => (
-								<ListBox
-									key={careerIndex}
-									onClick={() => handleListBoxClick(career.id)} // 클릭 시 career.id 전송
-								>
-									<Category>
-										<CareerCategoryCircle category={career.categoryId} />
-										<CategoryTextBox>{career.categoryName}</CategoryTextBox>
-									</Category>
-									<Name>
-										<CareerContainer>
-											<CareerName>{career.careerName}</CareerName>
-											<AliasName>&nbsp;/ {career.alias}</AliasName>
-										</CareerContainer>
-									</Name>
-									<Date>
-										{career.startDate} ~ {career.endDate}
-									</Date>
-								</ListBox>
-							))}
-						</YearBox>
-					);
-				})} */}
-			</Contianer>
+			</Container>
 		</BackgroundSection>
 	);
 };
