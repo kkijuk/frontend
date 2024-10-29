@@ -368,15 +368,15 @@ const FilterPage = () => {
 						<path
 							d="M11.9985 7.00049H16.8569V2.14209"
 							stroke="#707070"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
+							strokeWidth="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
 						/>
 						<path
 							d="M16.8301 11.8301C16.4273 13.3337 15.5395 14.6623 14.3046 15.6099C13.0697 16.5574 11.5566 17.0711 10 17.0711C8.44342 17.0711 6.93033 16.5574 5.69541 15.6099C4.46049 14.6623 3.57275 13.3337 3.16987 11.8301C2.767 10.3266 2.87151 8.73212 3.46719 7.29402C4.06286 5.85592 5.11642 4.65457 6.46447 3.87628C7.81251 3.09798 9.37969 2.78625 10.923 2.98943C12.4662 3.1926 13.8993 3.89933 15 5"
 							stroke="#707070"
-							stroke-width="2"
-							stroke-linecap="round"
+							strokeWidth="2"
+							strokeLinecap="round"
 						/>
 					</svg>
 				</FilterIcon>
