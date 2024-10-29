@@ -1,25 +1,24 @@
 const apiUrl = `${process.env.REACT_APP_API_URL}/recruit`;
 
 export const deleteRecruit = async (id) => {
-  try {
-    const response = await fetch(`${apiUrl}/${id}`, {
-      method: 'DELETE',
-      credentials: "include", // 쿠키와 인증 정보를 함께 보냄
+	try {
+		const response = await fetch(`${apiUrl}/${id}`, {
+			method: 'DELETE',
+			credentials: 'include', // 쿠키와 인증 정보를 함께 보냄
 
-      headers: {
+			headers: {
+				'Content-Type': 'application/json; charset=utf-8',
+			},
+		});
 
-        'Content-Type': 'application/json; charset=utf-8'
-      }
-    });
+		if (!response.ok) {
+			const errorData = await response.json();
+			throw new Error(errorData.message || 'Something went wrong');
+		}
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Something went wrong');
-    }
-
-    return response.json();
-  } catch (error) {
-    console.error("Error deleting recruit:", error.message);
-    throw error;
-  }
+		return response.json();
+	} catch (error) {
+		console.error('Error deleting recruit:', error.message);
+		throw error;
+	}
 };
