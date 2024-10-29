@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import TagBox from '../Apply/ModalTagBox';
+import ModalTagBox from '../Apply/ModalTagBox';  
+
 
 const ModalBackdrop = styled.div`
 	position: fixed;
@@ -296,9 +297,9 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
 		onClose();
 	};
 
-	const handleTagChange = (newTags) => {
+	const handleTagListChange = (newTags) => {
 		setTags(newTags);
-	};
+	  };
 
 	// 캘린더에서 날짜/시간 선택 시 상태 업데이트
 	const handleStartTimeChange = (e) => {
@@ -348,13 +349,14 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
 				</Row>
 				{/* 태그 필드 */}
 				<FieldWrapper>
-					<LabelTag>태그</LabelTag>
-					<InputWrapperTag>
-						<TagBoxWrapper>
-							<TagBox onTagChange={handleTagChange} initialTags={tags} />
-						</TagBoxWrapper>
-					</InputWrapperTag>
-				</FieldWrapper>
+  <LabelTag>태그</LabelTag>
+  <InputWrapperTag>
+    <TagBoxWrapper>
+	<ModalTagBox onTagListChange={handleTagListChange} initialTags={tags} />  {/* 태그 변경 함수 전달 */}
+    </TagBoxWrapper>
+  </InputWrapperTag>
+</FieldWrapper>
+
 				{/* 링크 필드 */}
 				<FieldWrapper>
 					<LabelContainer>
