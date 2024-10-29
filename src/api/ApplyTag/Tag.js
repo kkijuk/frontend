@@ -3,7 +3,7 @@ import axios from 'axios';
 // 공고 태그 불러오기 (GET)
 export const fetchModalTags = async () => {
 	try {
-		const response = await axios.get('https://api.kkijuk.com/recruit/tag', {
+		const response = await axios.get(`${process.env.REACT_APP_API_URL}/recruit/tag`, {
 			withCredentials: true,
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
@@ -19,7 +19,7 @@ export const fetchModalTags = async () => {
 // 공고 태그 추가 (POST)
 export const addModalTag = async (tagName) => {
 	try {
-		const response = await axios.post(`https://api.kkijuk.com/recruit/tag?tag=${tagName}`, {}, {
+		const response = await axios.post(`${process.env.REACT_APP_API_URL}/recruit/tag?tag=${tagName}`, {}, {
 			withCredentials: true,
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
@@ -34,7 +34,7 @@ export const addModalTag = async (tagName) => {
 // 공고 태그 삭제 (DELETE)
 export const deleteModalTag = async (tagName) => {
 	try {
-		await axios.delete(`https://api.kkijuk.com/recruit/tag?tag=${tagName}`, {
+		await axios.delete(`${process.env.REACT_APP_API_URL}/recruit/tag?tag=${tagName}`, {
 			withCredentials: true,
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
