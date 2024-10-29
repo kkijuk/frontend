@@ -123,29 +123,34 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
 
   // 엔터 입력 시 태그 추가 (POST 요청)
   const handleKeyDown = async (e) => {
-	if (e.key === 'Enter' && inputValue.trim() !== '') {
-	  const newTag = inputValue.trim();
-	  if (!tags.includes(newTag)) {
-		try {
-		  const createdTag = await addModalTag(newTag);  // 공고 태그 추가 API 호출
-		  console.log('API Response:', createdTag);  // API 응답 로그 출력
+    if (e.key === 'Enter' && inputValue.trim() !== '') {
+      const newTag = inputValue.trim();
+      if (!tags.includes(newTag)) {
+        try {
+          const createdTag = await addModalTag(newTag); // 공고 태그 추가 API 호출
+          console.log('API Response:', createdTag); // API 응답 로그 출력
   
-		  const tagName = createdTag?.tagName || createdTag?.data?.tag?.tagName || createdTag?.data?.tagName;
-		  
-		  if (tagName) {
-			const updatedTags = [...tags, tagName];
-			setTags(updatedTags);  // 상태 업데이트 후
-			onTagListChange(updatedTags);  // 변경된 태그 전달
-		  } else {
-			console.error('Invalid tag data:', createdTag);
-		  }
-		  setInputValue('');  // 입력 필드 초기화
-		} catch (error) {
-		  console.error('태그 추가 오류:', error);
-		}
-	  }
-	}
+          // createdTag의 형식을 확인하고 적절한 데이터 구조로 태그명을 가져오기
+          const tagName = createdTag?.tagName || 
+                          createdTag?.data?.tag?.tagName || 
+                          createdTag?.data?.tagName || 
+                          (Array.isArray(createdTag.tags) && createdTag.tags.includes(newTag) ? newTag : null);
+          
+          if (tagName) {
+            const updatedTags = [...tags, tagName];
+            setTags(updatedTags); // 상태 업데이트 후
+            onTagListChange(updatedTags); // 변경된 태그 전달
+          } else {
+            console.error('Invalid tag data:', createdTag);
+          }
+          setInputValue(''); // 입력 필드 초기화
+        } catch (error) {
+          console.error('태그 추가 오류:', error);
+        }
+      }
+    }
   };
+  
   
 
   // 태그 삭제 (DELETE 요청)
