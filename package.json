@@ -1,4 +1,5 @@
 {
+
 	"name": "write-down",
 	"version": "0.1.0",
 	"private": true,
@@ -62,6 +63,7 @@
 		"@eslint/js": "^9.12.0",
 		"@typescript-eslint/parser": "^8.11.0",
 		"eslint-plugin-react": "^7.37.1",
-		"globals": "^15.11.0"
+		"globals": "^15.11.0",
+		"prettier": "^3.3.3"
 	}
 }
