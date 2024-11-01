@@ -41,6 +41,7 @@ import SearchBar from '../../components/Mycareer/shareSearchBar';
 import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
 import { useAuth } from '../../components/AuthContext';
 import { useNavigate } from 'react-router-dom'; // useNavigate import
+import CareerTimeline from '../../components/Mycareer/CareerTimeline';
 
 const Container = styled.div`
 	width: 820px;
@@ -306,6 +307,7 @@ export default function Mycareer() {
 			{isLoggedIn && (
 				<>
 					{/* <Timeline triggerEffect={triggerEffect} /> */}
+					<CareerTimeline data={careers} />
 					<CareerView view={view} onToggle={setView} />
 					{view === 'year' && <CareerViewYear data={careers} />}
 					{view === 'category' && <CareerViewCategory data={careers} />}
