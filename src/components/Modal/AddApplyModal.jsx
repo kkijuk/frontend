@@ -2,7 +2,7 @@
 //공고 추가 모달
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import TagBox from '../Apply/ModalTagBox';
+import ModalTagBox from '../Apply/ModalTagBox';  // 일관성 있게 사용
 import { createRecruit } from '../../api/Apply/Recruit';
 
 const ModalBackdrop = styled.div`
@@ -315,9 +315,9 @@ const AddApplyModal = ({ onClose, onSave }) => {
 		}
 	};
 
-	const handleTagChange = (newTags) => {
+	const handleTagListChange = (newTags) => {
 		setTags(newTags);
-	};
+	  };
 
 	return (
 		<ModalBackdrop>
@@ -362,7 +362,7 @@ const AddApplyModal = ({ onClose, onSave }) => {
 					<LabelTag>태그</LabelTag>
 					<InputWrapperTag>
 						<TagBoxWrapper>
-							<TagBox onTagChange={handleTagChange} />
+						<ModalTagBox onTagListChange={handleTagListChange} />  {/* 변경된 태그 전달 */}
 						</TagBoxWrapper>
 					</InputWrapperTag>
 				</FieldWrapper>
@@ -379,7 +379,6 @@ const AddApplyModal = ({ onClose, onSave }) => {
 						/>
 					</InputWrapperLink>
 				</FieldWrapper>
-				<ErrorMessage>*필수 정보를 입력하세요!</ErrorMessage>
 				<ButtonWrapper>
 					<SaveButton onClick={handleSave}>확인</SaveButton>
 				</ButtonWrapper>

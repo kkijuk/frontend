@@ -265,9 +265,9 @@ const CustomNavigation = ({ date, setDate }) => {
 					<path
 						d="M15 6.5L9 12.5L15 18.5"
 						stroke="black"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
+						strokeWidth="2"
+						strokeLinecap="round"
+						strokeLinejoin="round"
 					/>
 				</svg>
 			</NavigationButtonleft>
@@ -277,9 +277,9 @@ const CustomNavigation = ({ date, setDate }) => {
 					<path
 						d="M9 18.5L15 12.5L9 6.5"
 						stroke="black"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
+						strokeWidth="2"
+						strokeLinecap="round"
+						strokeLinejoin="round"
 					/>
 				</svg>
 			</NavigationButtonright>
