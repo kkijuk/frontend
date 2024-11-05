@@ -54,7 +54,7 @@ const TimelineChart = () => {
 			fillColor: '#FFD93D',
 		},
 		{
-			y: [new Date('2024-02-18').getTime(), new Date('2024-08-20').getTime()],
+			y: [new Date('2024-02-18').getTime(), new Date('2024-07-20').getTime()],
 			name: 'IT 서비스 개발 동아리',
 			fillColor: '#C084FC',
 		},
@@ -87,6 +87,9 @@ const TimelineChart = () => {
 			zoom: {
 				enabled: false, // 줌 기능 비활성화
 			},
+			toolbar: {
+				show: false,
+			},
 		},
 		plotOptions: {
 			bar: {
@@ -94,10 +97,11 @@ const TimelineChart = () => {
 				distributed: false,
 				rangeBarOverlap: false,
 				dataLabels: {
-					hideOverflowingLabels: true,
+					hideOverflowingLabels: false,
 				},
 				barHeight: '18px',
 				borderRadius: 10,
+				offsetX: 0,
 				states: {
 					hover: {
 						filter: {
@@ -129,26 +133,33 @@ const TimelineChart = () => {
 				const startDate = moment(data.y[0]).format('YYYY.MM.DD');
 				const endDate = moment(data.y[1]).format('YYYY.MM.DD');
 				return `
-			<div style="
-				background: #333;
-				color: #fff;
-				padding: 10px;
-				border-radius: 8px;
-				font-size: 14px;
-				text-align: center;
-				box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-			">
-				<div>${name}</div>
-				<div style="font-size: 12px; margin-top: 4px;">${startDate} ~ ${endDate}</div>
-			</div>`;
+					<div style="
+						background: #333;
+						color: #fff;
+						padding: 10px;
+						border-radius: 8px;
+						font-size: 14px;
+						text-align: center;
+						box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+					">
+						<div>${name}</div>
+						<div style="font-size: 12px; margin-top: 4px;">${startDate} ~ ${endDate}</div>
+					</div>`;
 			},
 		},
 		xaxis: {
 			type: 'datetime',
 			labels: {
+				offsetX: 70,
 				formatter: function (val) {
 					return moment(val).format('YYYY.MM'); // 년월 포맷
 				},
+			},
+			axisBorder: {
+				show: false, // x축 경계 숨김
+			},
+			axisTicks: {
+				show: false, // x축 눈금 숨김
 			},
 		},
 		yaxis: {
@@ -183,7 +194,7 @@ const TimelineChart = () => {
 		},
 	});
 
-	return <ReactApexChart options={options} series={series} type="rangeBar" height={230} />;
+	return <ReactApexChart options={options} series={series} type="rangeBar" height={150} />;
 };
 
 export default TimelineChart;

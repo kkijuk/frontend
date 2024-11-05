@@ -9,9 +9,9 @@ const TimelineBox = styled.div`
 	border-radius: 10px;
 	border: 1px solid var(--gray-03, #d9d9d9);
 	background-color: white;
-	padding: 15px;
-	margin-bottom: 50px;
-	margin-left: 18px;
+	padding: 2px 0;
+	margin: 0 auto;
+	margin-bottom: 30px;
 	overflow-x: auto; /* Add horizontal scroll */
 	white-space: nowrap; /* Prevent line breaks */
 `;
