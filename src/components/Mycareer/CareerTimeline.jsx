@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import CareerNameTag from '../shared/CareerNameTag';
-import ApexChart from '../Mycareer/ApexChart'; // 추가
+import TimelineChart from '../Mycareer/TimelineChart'; // 추가
 
 const TimelineBox = styled.div`
 	flex-shrink: 0;
@@ -31,11 +31,11 @@ const TimelineDate = styled.div`
 `;
 
 const CareerTimeline = ({ data }) => {
-	const careerNames = data.map((item) => item.careerName);
-	const categories = data.map((item) => item.category);
+	// const careerNames = data.map((item) => item.careerName);
+	// const categories = data.map((item) => item.category);
 	return (
 		<TimelineBox>
-			<ApexChart data={data} /> {/* 차트 추가 */}
+			<TimelineChart data={data} /> {/* 차트 추가 */}
 		</TimelineBox>
 	);
 };
