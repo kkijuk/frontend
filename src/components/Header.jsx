@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../assets/logo.png';
 import { useAuth } from '../components/AuthContext';
-import { logout } from '../api/Login/Logout';
 
 const HeaderWrapper = styled.div`
 	width: 100%;

@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import Layout from './components/Layout';
 import Home from './pages/Home';
 import MyPage from './pages/Mypage/Mypage';
 import MyCareer from './pages/Mycareer/Mycareer';
@@ -39,12 +38,10 @@ import PasswordReset from './pages/Mypage/PasswordReset';
 import SignupInterest from './pages/SignupInterest';
 
 import Header from './components/Header';
-import Footer from './components/Footer';
 import FilterPage from './components/Apply/FilterPage';
 import { AuthProvider } from './components/AuthContext';
 import LoginRequired from './pages/LoginRequired';
 
-import CommingSoon from './pages/CommingSoon';
 
 const AppContainer = styled.div`
 	display: flex;
