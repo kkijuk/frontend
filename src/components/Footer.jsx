@@ -37,17 +37,6 @@ const BoldText = styled.span`
 	font-weight: 700;
 `;
 
-const div = styled.div`
-  position: relative;
-  width: 100%
-  font-size: 20px;
-`;
-
-const logoBox = styled.div`
-	display: flex;
-	gap: 30px;
-`;
-
 export default function Footer() {
 	const goInsta = () => {
 		window.open('https://www.instagram.com/kki.juk/?utm_source=ig_web_button_share_sheet', '_blank');

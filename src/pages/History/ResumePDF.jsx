@@ -7,6 +7,8 @@ import SelectResume from '../../components/ResumeExport/SelectResume'; //2. 내�
 const Section = styled.div`
 	width: 820px;
 	height: 100%;
+	border: 1px solid black;
+	
 `;
 
 const Text = styled.div`
@@ -43,6 +45,23 @@ const Box2 = styled.div`
 	box-sizing: border-box;
 `;
 
+const Button = styled.div`
+	width: 720px;
+	height: 50px;
+	flex-shrink: 0;
+	border-radius: 10px;
+	background: var(--main-01, #3AAF85);
+	margin: 30px auto 0;
+
+	color: #FFF;
+	text-align: center;
+	font-family: Pretendard;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+`;
+
 export default function ResumePdf() {
 	return (
 		<div>
@@ -56,6 +75,7 @@ export default function ResumePdf() {
 					<Box2>
 						<SelectResume></SelectResume>
 					</Box2>
+					<Button>확인</Button>
 				</Section>
 			</Layout>
 		</div>
