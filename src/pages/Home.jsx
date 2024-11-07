@@ -9,6 +9,9 @@ import RecommendBox from '../components/Home/RecommendBox';
 import TimelineHome from '../components/Home/TimelineHome';
 import { useAuth } from '../components/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Banner1SVG from '../assets/banner1.svg';
+import Banner2SVG from '../assets/banner2.svg';
+import Banner3SVG from '../assets/banner3.svg';
 
 const Body = styled.div`
 	width: 820px;
@@ -120,9 +123,9 @@ const dummyData = [
 ];
 
 const bannerDummy = [
-	{ image: 'https://i.ibb.co/hXPctnH/Frame-241.png', url: 'https://www.instagram.com/kki.juk/' },
-	{ image: 'https://i.ibb.co/BgYmmv7/Frame-242.png', url: 'https://forms.gle/y3VPjQaWBbVyegwk7' },
-	{ image: 'https://i.ibb.co/Y8HdHQH/Frame-243.png', url: '' },
+	{ image: Banner1SVG, url: 'https://www.instagram.com/kki.juk/' },
+	{ image: Banner2SVG, url: 'https://forms.gle/y3VPjQaWBbVyegwk7' },
+	{ image: Banner3SVG, url: '' },
 ];
 
 export default function Home() {
