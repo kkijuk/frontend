@@ -193,7 +193,7 @@ const EditDeleteContainer = styled.div`
 
 const SubHeader = styled.div`
 	width: 720px;
-	height: 60px;
+	min-height: 60px;
 	flex-shrink: 0;
 	border-radius: 12px;
 	background: var(--gray-06, #f5f5f5);
@@ -201,13 +201,17 @@ const SubHeader = styled.div`
 	position: relative;
 	margin-top: 20px;
 	margin-left: 70px;
+	display: flex;
+	flex-direction: column;
 `;
+
+
 
 const InfoLabelStart = styled.div`
 	width: 250px;
 	display: flex;
 	align-items: center;
-	gap: 50px;
+	gap: 20px;
 	position: absolute;
 	margin-left: 5px;
 	font-family: Bold;
@@ -224,15 +228,14 @@ const InfoLabelEnd = styled.div`
 `;
 
 const TagLabel = styled.div`
-	width: 250px;
+	width: 100%; 
 	display: flex;
-	align-items: center;
-	gap: 5px;
-	position: absolute;
+	flex-wrap: wrap;
+	gap: 8px;
 	margin-top: 40px;
-	margin-left: 5px;
+	margin-left: 6px;
 	font-family: Bold;
-	white-space: nowrap;
+	align-items: center;
 `;
 
 const Tag = styled.div`
@@ -249,9 +252,10 @@ const Tag = styled.div`
 	text-align: center;
 	font-weight: 400;
 	line-height: normal;
-	background: white;
+	background: white;  
 	color: var(--main-01, #3aaf85);
-	margin-left: 15px;
+	margin-left: 5px; 
+	margin-bottom: 5px; /* 줄바꿈 시 태그 간격을 위해 추가 */
 `;
 
 const DateText = styled.div`
@@ -784,17 +788,17 @@ const ApplyDetail = () => {
 					</CalendarWrapper>
 				)}
 				<SubHeader>
-					<InfoLabelStart>
-						접수 시작 <DateText>{formatDateTimeToLocal(job?.startTime)}</DateText>
-					</InfoLabelStart>
-					<InfoLabelEnd>
-						접수 마감 <DateText isEndTime>{formatDateTimeToLocal(job?.endTime)}</DateText>
-					</InfoLabelEnd>
-					<TagLabel>
-						태그
-						{job?.tags && job.tags.length > 0 && job.tags.map((tag, idx) => <Tag key={idx}>{tag}</Tag>)}
-					</TagLabel>
-				</SubHeader>
+		<InfoLabelStart>
+			접수 시작 <DateText>{formatDateTimeToLocal(job?.startTime)}</DateText>
+		</InfoLabelStart>
+		<InfoLabelEnd>
+			접수 마감 <DateText isEndTime>{formatDateTimeToLocal(job?.endTime)}</DateText>
+		</InfoLabelEnd>
+	<TagLabel>
+		태그
+		{job?.tags && job.tags.length > 0 && job.tags.map((tag, idx) => <Tag key={idx}>{tag}</Tag>)}
+	</TagLabel>
+</SubHeader>
 			</Header>
 
 			{job?.reviews &&
