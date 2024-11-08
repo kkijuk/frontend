@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import moment from 'moment';
 import 'react-calendar/dist/Calendar.css';
+import SvgIconBefore from '../../assets/before.svg';
 
 import EditApplyModal from '../../components/Apply/EditApplyModal';
 import ApplyDeleteModal from '../../components/Apply/ApplyDeleteModal';
@@ -719,7 +720,10 @@ const ApplyDetail = () => {
 	return (
 		<Container>
 			<Title>지원공고 관리</Title>
-			<BackLink to="/apply-status">&lt; 지원현황</BackLink>
+			<BackLink to="/apply-status">
+			<img src={SvgIconBefore} alt="Close" width={20} height={13} />
+                     지원현황
+            </BackLink>
 			<Header>
 				<TitleContainer>
 					<div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
