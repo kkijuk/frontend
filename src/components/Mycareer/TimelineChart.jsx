@@ -46,27 +46,29 @@ const TimelineChart = () => {
 		{
 			y: [new Date('2023-12-01').getTime(), new Date('2024-01-15').getTime()],
 			name: '학원 아르바이트',
-			fillColor: '#FF6B6B',
+			fillColor: '#FA7C79',
 		},
 		{
 			y: [new Date('2024-01-05').getTime(), new Date('2024-03-01').getTime()],
 			name: 'UXUI 소학회',
-			fillColor: '#FFD93D',
+			fillColor: '#FCC400',
 		},
 		{
 			y: [new Date('2024-02-18').getTime(), new Date('2024-07-20').getTime()],
 			name: 'IT 서비스 개발 동아리',
-			fillColor: '#C084FC',
+			fillColor: '#C48DEF',
 		},
 		{
-			y: [new Date('2024-03-01').getTime(), new Date('2024-03-15').getTime()],
+			y: [new Date('2024-03-01').getTime(), new Date('2024-04-15').getTime()],
 			name: '빅데이터',
-			fillColor: '#C084FC',
+			fillColor: '#C48DEF',
 		},
 	]);
 	const distributedData = distributePositions(rawData);
 
 	console.log(distributedData);
+	// TODO: 임의로 네칸에 배치하는 로직 짰는데 컨펌이 필요할 듯
+	// 기간이 짧아서 Bar 짧을 떄, 텍스트 어떻게 처리할지
 
 	const series = [
 		{
