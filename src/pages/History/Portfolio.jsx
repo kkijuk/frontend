@@ -8,6 +8,11 @@ const Portfolio = () => {
 	const setAffiliation = () => {
 		console.log('Test');
 	};
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const toggleModal = () => {
+		setIsModalOpen((prev) => !prev);
+	};
 
 	return (
 		<>
@@ -22,7 +27,8 @@ const Portfolio = () => {
 			<br></br>
 			<br></br>
 			<br></br>
-			<AddCareerModal></AddCareerModal>
+			<button onClick={toggleModal}>Add Career</button>
+			{isModalOpen && <AddCareerModal onClose={toggleModal}></AddCareerModal>}
 		</>
 	);
 };
