@@ -9,25 +9,25 @@ const createCareer = async (category, data) => {
 
 	let endpoint = '';
 	switch (category) {
-		case '1': //동아리
+		case 1: //동아리
 			endpoint = '/career/circle';
 			break;
-		case '2': //대외활동
+		case 2: //대외활동
 			endpoint = '/career/activity';
 			break;
-		case '3': //대회/공모전
+		case 3: //대회/공모전
 			endpoint = '/career/competition';
 			break;
-		case '4': //프로젝트
+		case 4: //프로젝트
 			endpoint = '/career/project';
 			break;
-		case '5': //경력
+		case 5: //경력
 			endpoint = '/career/employment';
 			break;
-		case '6': //교육
+		case 6: //교육
 			endpoint = '/career/educareer';
 			break;
-		case '7': //기타... api 없음
+		case 7: //기타... api 없음
 			console.log('category number is 7');
 			return;
 		default:

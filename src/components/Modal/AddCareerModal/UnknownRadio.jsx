@@ -19,7 +19,7 @@ const RadioContainer = styled.div`
 	display: flex;
 	justify-content: right;
 	align-items: center;
-	margin-top: 35px;
+	margin-top: -20px;
 `;
 
 const RadioWrapper = styled.div`
@@ -35,7 +35,7 @@ const HiddenRadio = styled.input.attrs({ type: 'radio' })`
 `;
 
 const StyledRadio = styled.div`
-	width: 20px;
+	width: 40px;
 	height: 20px;
 	background: ${(props) => (props.isUnknown ? '#3AAF85' : '#F5F5F5')};
 	border-radius: 50%;
@@ -63,4 +63,6 @@ const Info = styled.label`
 	font-style: normal;
 	line-height: normal;
 	margin-left: 15px;
+	margin-bottom: 0px !important;
+	align-items: center;
 `;
