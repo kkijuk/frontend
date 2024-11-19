@@ -132,13 +132,14 @@ const StatusTitleContainer = styled.div`
 
 const groupByStatus = (data) => {
 	return {
-		'미지원': data.filter((job) => job.status === 'UNAPPLIED'),
-		'지원 예정': data.filter((job) => job.status === 'PLANNED'),
-		'진행 중': data.filter((job) => job.status === 'APPLYING'),
-		'합격': data.filter((job) => job.status === 'ACCEPTED'),
-		'불합격': data.filter((job) => job.status === 'REJECTED'),
+	  '미지원': data.filter((job) => job.status === 'UNAPPLIED'),
+	  '지원 예정': data.filter((job) => job.status === 'PLANNED'),
+	  '진행 중': data.filter((job) => job.status === 'APPLYING'),
+	  '합격': data.filter((job) => job.status === 'ACCEPTED'),
+	  '불합격': data.filter((job) => job.status === 'REJECTED'),
 	};
-};
+  };
+  
 
 const getStatusColor = (status) => {
 	if (status === '미지원') return '#D9D9D9';
@@ -168,7 +169,7 @@ const StatusListView = ({ data = [], onJobClick }) => {
 										<AdItem
 											key={idx}
 											onClick={() => {
-												window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
+												window.scrollTo(0, 0); 
 												onJobClick(job);
 											}}
 										>
@@ -193,5 +194,6 @@ const StatusListView = ({ data = [], onJobClick }) => {
 		</BackgroundSection>
 	);
 };
+
 
 export default StatusListView;
