@@ -27,7 +27,6 @@ const StatusButton = styled.button`
 	text-align: center;
 	font-family: 'Medium';
 	font-size: 14px;
-	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
 	outline: none;
@@ -41,8 +40,8 @@ const StatusText = styled.span`
 
 const ApplyStatusButton = ({ activeStatus, onStatusClick, statusCounts }) => {
 	const handleClick = (status) => {
-		window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
-		onStatusClick(status); // 기존의 onStatusClick 핸들러 호출
+		window.scrollTo(0, 0); 
+		onStatusClick(status); 
 	};
 
 	return (
@@ -50,11 +49,11 @@ const ApplyStatusButton = ({ activeStatus, onStatusClick, statusCounts }) => {
 			<StatusButton active={activeStatus === 'all'} onClick={() => handleClick('all')} borderColor="#3AAF85">
 				전체보기 <StatusText>({statusCounts.all})</StatusText>
 			</StatusButton>
-			<StatusButton active={activeStatus === 'notApply'} onClick={() => handleClick('notApply')} borderColor="#D9D9D9">
-				미지원 <StatusText>({statusCounts.notApply})</StatusText>
+			<StatusButton active={activeStatus === 'unapplied'} onClick={() => handleClick('unapplied')} borderColor="#D9D9D9">
+				미지원 <StatusText>({statusCounts.unapplied})</StatusText>
 			</StatusButton>
-			<StatusButton active={activeStatus === 'apply'} onClick={() => handleClick('apply')} borderColor="#B0B0B0">
-				지원 예정 <StatusText>({statusCounts.apply})</StatusText>
+			<StatusButton active={activeStatus === 'planned'} onClick={() => handleClick('planned')} borderColor="#B0B0B0">
+				지원 예정 <StatusText>({statusCounts.planned})</StatusText>
 			</StatusButton>
 			<StatusButton active={activeStatus === 'applying'} onClick={() => handleClick('applying')} borderColor="#707070">
 				진행 중 <StatusText>({statusCounts.applying})</StatusText>
