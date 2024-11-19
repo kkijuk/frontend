@@ -55,24 +55,27 @@ const InputDate = styled.input`
 	font-family: Regular;
 	font-size: 16px;
 	width: 100%;
-	padding: 12px;
+	height: 60px;
+	// padding: 10px;
 	margin-bottom: 25px;
 	border: 1px solid #f5f5f5;
 	border-radius: 10px;
 	background: ${(props) => (props.disabled ? '#D9D9D9' : '#F5F5F5')};
 	color: ${(props) => (props.disabled ? '#A9A9A9' : '#000')};
-	height: 40px; /* 다른 input 필드와 동일한 높이 */
-	box-sizing: border-box; /* padding과 border를 포함한 크기 */
+	height: 40px;
 	cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
 `;
 
 const CalendarWrapper = styled.div`
 	position: absolute;
-	top: 50px; /* input 아래로 캘린더가 나타나도록 여백 설정 */
+	top: 50px; 
 	left: 0;
 	z-index: 10;
 	background: white;
-	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+	// box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 	border-radius: 10px;
 	padding: 10px;
+
+	width: 100%;
+	height: 300px;
 `;

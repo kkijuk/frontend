@@ -35,7 +35,7 @@ const Affiliation2 = ({ onAffiliationChange }) => {
 
 	return (
 		<>
-			<Container>
+			<Container style={{ width: '600px' }}>
 				<form>
 					<SelectButton state={selectedAffiliation === 'ON_CAMPUS'} onClick={() => toggleAffiliation('ON_CAMPUS')}>
 						교내
@@ -55,13 +55,14 @@ const Affiliation2 = ({ onAffiliationChange }) => {
 export { Affiliation1, Affiliation2 };
 
 const Container = styled.div`
-	width: 500px;
-	height: 60px;
+	width: 300px;
+	// height: 60px;
 	display: flex;
-	flex-direction: row; /* 버튼을 가로로 배치 */
-	justify-content: space-between;
-	align-items: center;
-	gap: 10px;
+	// flex-direction: row; /* 버튼을 가로로 배치 */
+	justify-content: flex-start;
+	// align-items: center;
+	// gap: 10px;
+	text-align: center;
 `;
 
 const SelectButton = styled.div`
@@ -69,13 +70,15 @@ const SelectButton = styled.div`
 	height: 50px;
 	font-size: 16px;
 	font-weight: 400;
-	line-height: normal;
+	line-height: 50px;
 	border-radius: 10px;
 	cursor: pointer;
+	margin-right: 10px;
 
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	display: inline-block;
+	// display: flex;
+	// justify-content: center;
+	// align-items: center;
 
 	background-color: ${(props) => (props.state ? '#E1FAED' : '#F5F5F5')};
 	color: ${(props) => (props.state ? '#3AAF85' : '#707070')};
