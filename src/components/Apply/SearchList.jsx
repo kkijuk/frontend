@@ -84,38 +84,44 @@ const StatusCircle = styled.span`
 	margin-top: 5px;
 `;
 
-const SearchList = ({ data }) => {
-	if (!data || data.length === 0) {
-		return (
-			<BackgroundSection>
-				<ContentSection></ContentSection>
-			</BackgroundSection>
-		);
-	}
+const SearchList = ({ recruits }) => {
+    if (!recruits || recruits.length === 0) {
+        return (
+            <BackgroundSection>
+                <ContentSection>검색 결과가 없습니다.</ContentSection>
+            </BackgroundSection>
+        );
+    }
 
-	return (
-		<BackgroundSection>
-			<ContentSection>
-				<AdListStyled>
-					{data.map((recruit, index) => (
-						<AdItem key={index}>
-							<TagContainer>
-								{recruit.tag.map((tag, tagIdx) => (
-									<Tag key={tagIdx}>{tag}</Tag>
-								))}
-							</TagContainer>
-							<AdDetails>
-								<AdTitleContainer>
-									<StatusCircle status={recruit.status} />
-									<AdTitle>{recruit.title}</AdTitle>
-								</AdTitleContainer>
-							</AdDetails>
-						</AdItem>
-					))}
-				</AdListStyled>
-			</ContentSection>
-		</BackgroundSection>
-	);
+    return (
+        <BackgroundSection>
+            <ContentSection>
+                <AdListStyled>
+                    {recruits.map((recruit) => (
+                        <AdItem key={recruit.recruitId}>
+                           
+                            <TagContainer>
+                                {recruit.tags &&
+                                    recruit.tags.map((tag, tagIdx) => (
+                                        <Tag key={tagIdx}>{tag}</Tag>
+                                    ))}
+                            </TagContainer>
+
+                           
+                            <AdDetails>
+                                <AdTitleContainer>
+                                    <StatusCircle status={recruit.status} />
+                                    <AdTitle>{recruit.recruitTitle}</AdTitle>
+                                </AdTitleContainer>
+                            </AdDetails>
+                        </AdItem>
+                    ))}
+                </AdListStyled>
+            </ContentSection>
+        </BackgroundSection>
+    );
 };
+
+
 
 export default SearchList;
