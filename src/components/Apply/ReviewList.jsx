@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-// import EditIcon from '@mui/icons-material/Edit';
 import ReviewDetailAddEdit from './ReviewDetailAddEdit';
 
 const Box = styled.div`

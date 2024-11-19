@@ -5,7 +5,7 @@ const StatusItem = styled.div`
 	background-color: #f5f5f5;
 	border-radius: 12px;
 	padding: 9px;
-	margin-right: 10px;
+	margin-right: 369px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
