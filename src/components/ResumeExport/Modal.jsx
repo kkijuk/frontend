@@ -96,7 +96,6 @@ export default function Modal({ onClose }) {
 		return null;
 	};
 
-	// PDF 다운로드 기능을 수행하는 함수
 	const handleDownloadPdf = async () => {
 		setIsLoading(true); // 로딩 상태 시작
 		const canvas = await handleOnCoverCanvas(); // 이력서 캡처 후 캔버스 객체 생성
@@ -105,17 +104,52 @@ export default function Modal({ onClose }) {
 			const imgWidth = canvas.width; // 캡처한 이미지의 너비
 			const imgHeight = canvas.height; // 캡처한 이미지의 높이
 
-			console.log('Captured Image Width:', imgWidth);
-			console.log('Captured Image Height:', imgHeight);
-
 			const doc = new jsPDF('p', 'mm', 'a4'); // 새로운 PDF 문서 생성, A4 크기로 설정
-			const pageWidth = doc.internal.pageSize.getWidth(); // PDF 페이지의 너비를 가져와 pageWidth에 저장
-			const pageHeight = doc.internal.pageSize.getHeight(); // PDF 페이지의 높이를 가져와 pageHeight에 저장
+			const pageWidth = doc.internal.pageSize.getWidth(); // PDF 페이지의 너비
+			const pageHeight = doc.internal.pageSize.getHeight(); // PDF 페이지의 높이
+			const verticalMargin = 10; // 상하단 여백 설정 (10mm)
 
-			doc.addImage(imageFile, 'JPEG', 0, 0, pageWidth, pageHeight); // PDF에 이미지 추가
+			// PDF와 캡처 이미지 간 비율 계산
+			const scale = pageWidth / imgWidth; // PDF 너비에 맞춘 비율 계산
+			const scaledHeight = imgHeight * scale; // 비율에 맞춘 이미지 전체 높이
 
-			// PDF를 새 탭에서 열기
-			window.open(doc.output('bloburl'));
+			let heightLeft = scaledHeight; // 남은 이미지 높이
+			let currentHeight = 0; // 현재 이미지 시작 위치
+
+			while (heightLeft > 0) {
+				const contentHeight = pageHeight - verticalMargin * 2; // 여백 제외한 콘텐츠 높이
+
+				// 현재 페이지에 출력할 이미지 영역 계산
+				const isLastPage = heightLeft <= contentHeight; // 마지막 페이지인지 확인
+				const cropHeight = isLastPage ? heightLeft : contentHeight;
+
+				const canvasPage = document.createElement('canvas');
+				canvasPage.width = canvas.width;
+				canvasPage.height = ((cropHeight / scale) * canvas.height) / scaledHeight;
+
+				const context = canvasPage.getContext('2d');
+				context.drawImage(
+					canvas,
+					0,
+					currentHeight / scale, // 원본 캔버스에서의 시작 높이
+					canvas.width,
+					(canvasPage.height * scaledHeight) / canvas.height, // 자를 높이
+					0,
+					0,
+					canvasPage.width,
+					canvasPage.height,
+				);
+
+				const pageImage = canvasPage.toDataURL('image/png');
+				doc.addImage(pageImage, 'PNG', 0, verticalMargin, pageWidth, cropHeight);
+
+				heightLeft -= contentHeight; // 남은 높이 갱신
+				currentHeight += contentHeight; // 시작 위치 갱신
+
+				if (!isLastPage) {
+					doc.addPage(); // 새 페이지 추가
+				}
+			}
 
 			// PDF를 "resume.pdf" 이름으로 저장
 			doc.save('resume.pdf');
