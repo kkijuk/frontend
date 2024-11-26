@@ -1,9 +1,10 @@
-import React, { useState } from 'react';  
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { fetchRecruitList } from '../../api/Apply/RecruitSearch'; 
+import { fetchRecruitList } from '../../api/Apply/RecruitSearch';
 import SearchList from './SearchList';
-import SvgIconBefore from '../../assets/before.svg';
+import SearchIcon from '../../assets/search.svg';  
 import { Link } from 'react-router-dom';
+import SvgIconBefore from '../../assets/before.svg';
 
 const Container = styled.div`
 	padding: 24px 40px;
@@ -27,7 +28,7 @@ const TabMenuStyled = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-bottom: 20px;
+	margin-bottom: 0px;
 	position: relative;
 
 	&::before {
@@ -50,10 +51,12 @@ const TabButton = styled.button`
 	border: none;
 	background: none;
 	cursor: pointer;
+	justify-content: flex-start;
 	color: ${(props) => (props.active ? 'black' : '#E0E0E0')};
 	font-family: 'Bold';
 	font-size: 18px;
 	font-weight: 700;
+	padding-left: 10px;  
 `;
 
 const SearchBarContainer = styled.div`
@@ -63,11 +66,11 @@ const SearchBarContainer = styled.div`
 	padding: 10px 20px;
 	border-radius: 12px;
 	margin-bottom: 10px;
-	margin-left: 20px;
+	margin-left: 150px;
 `;
 
 const SearchInput = styled.input`
-	width: 300px;
+	width: 525px;
 	border: none;
 	background: none;
 	outline: none;
@@ -94,7 +97,7 @@ const SortButtonsContainer = styled.div`
 `;
 
 const ResultsContainer = styled.div`
-	margin-top: 20px;
+	margin-top: 0px;
 `;
 
 const Title = styled.h1`
@@ -107,11 +110,38 @@ const Title = styled.h1`
 	margin-left: 18px;
 `;
 
+const SearchButton = styled.button`
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0; 
+`;
+
+const SearchResultsContainer = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	margin-left: 10px; 
+	margin-top: 10px; 
+	top: 15px;
+`;
+
+const SearchResultsTitle = styled.h2`
+	color: var(--black, #000);
+	font-family: Pretendard;
+	font-size: 24px;
+	font-weight: 700;
+	line-height: normal;
+	position: relative;
+	top: -50px; 
+`;
+
 const FilterPage = () => {
 	const [recruits, setRecruits] = useState([]); 
 	const [searchTerm, setSearchTerm] = useState('');
 	const [sortOrder, setSortOrder] = useState('latest');
 	const [activeTab, setActiveTab] = useState('전체'); 
+	const [isSearchClicked, setIsSearchClicked] = useState(false);
 
 	const fetchSearchResults = async () => {
 		try {
@@ -121,17 +151,16 @@ const FilterPage = () => {
 			let filteredRecruits = recruitResult || [];
 			let filteredReviews = reviewResult || [];
 	
-			// 탭에 따라 필터링
 			if (activeTab === '공고') {
 				filteredRecruits = filteredRecruits.filter((recruit) => 
 					recruit.recruitTitle.includes(searchTerm)
 				);
-				setRecruits(filteredRecruits); // 공고만 
+				setRecruits(filteredRecruits);
 			} else if (activeTab === '공고후기') {
 				filteredReviews = filteredReviews.filter((review) => 
 					review.recruitTitle.includes(searchTerm)
 				);
-				setRecruits(filteredReviews); // 공고후기만 
+				setRecruits(filteredReviews);
 			} else if (activeTab === '전체') {
 				filteredRecruits = filteredRecruits.filter((recruit) => 
 					recruit.recruitTitle.includes(searchTerm)
@@ -139,10 +168,9 @@ const FilterPage = () => {
 				filteredReviews = filteredReviews.filter((review) => 
 					review.recruitTitle.includes(searchTerm)
 				);
-				setRecruits([...filteredRecruits, ...filteredReviews]); // 공고와 후기 합쳐서 상태에 설정
+				setRecruits([...filteredRecruits, ...filteredReviews]);
 			}
 	
-			// 정렬 
 			if (sortOrder === 'latest') {
 				filteredRecruits.sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
 				filteredReviews.sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
@@ -150,24 +178,19 @@ const FilterPage = () => {
 				filteredRecruits.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
 				filteredReviews.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
 			}
-	
 		} catch (error) {
 			console.error('Error fetching recruit list:', error);
 		}
 	};
 	
-	
-	
 	const handleSearchClick = () => {
+		setIsSearchClicked(true);  
 		fetchSearchResults(); 
 	};
-	
 	
 	const handleTabClick = (tab) => {
 		setActiveTab(tab);
 	};
-
-
 
 	return (
 		<Container>
@@ -183,10 +206,20 @@ const FilterPage = () => {
 						value={searchTerm}
 						onChange={(e) => setSearchTerm(e.target.value)}
 					/>
-					<button onClick={handleSearchClick}>검색</button>
+					<SearchButton onClick={handleSearchClick}>
+						<img src={SearchIcon} alt="Search" width={20} height={20} />
+					</SearchButton>
 				</SearchBarContainer>
 			</div>
+
 			<TabMenuStyled>
+				{isSearchClicked &&  (
+					<SearchResultsContainer>
+						<SearchResultsTitle>
+							‘{searchTerm}’ 검색 결과
+						</SearchResultsTitle>
+					</SearchResultsContainer>
+				)}
 				<div>
 					<TabButton active={activeTab === '전체'} onClick={() => handleTabClick('전체')}>
 						전체
@@ -207,6 +240,7 @@ const FilterPage = () => {
 					</SortOptionButton>
 				</SortButtonsContainer>
 			</TabMenuStyled>
+
 			<ResultsContainer>
 				<SearchList recruits={recruits} />
 			</ResultsContainer>
