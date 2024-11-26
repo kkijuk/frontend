@@ -8,7 +8,6 @@ import Modal from '../../components/ResumeExport/Modal';
 const Section = styled.div`
 	width: 820px;
 	height: 100%;
-	border: 1px solid black;
 `;
 
 const Text = styled.div`
@@ -24,25 +23,16 @@ const Text = styled.div`
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
-
-	border: 1px solid black;
-	box-sizing: border-box;
 `;
 
 const Box1 = styled.div`
 	width: 820px;
 	height: 300px;
-
-	border: 1px solid black;
-	box-sizing: border-box;
 `;
 
 const Box2 = styled.div`
 	width: 820px;
 	height: 505px;
-
-	border: 1px solid black;
-	box-sizing: border-box;
 `;
 
 const Button = styled.div`
@@ -52,6 +42,11 @@ const Button = styled.div`
 	border-radius: 10px;
 	background: var(--main-01, #3aaf85);
 	margin: 30px auto 0;
+
+	display: flex; /* Flexbox로 중앙 정렬 */
+	flex-direction: column; /* 세로 방향 배치 */
+	align-items: center; /* 가로 중앙 정렬 */
+	justify-content: center; /* 세로 중앙 정렬 추가 */
 
 	color: #fff;
 	text-align: center;
