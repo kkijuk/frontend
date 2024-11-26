@@ -10,7 +10,7 @@ import ApplyStatus from './pages/Apply/ApplyStatus';
 import Community from './pages/Community';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import MyCareerDetail from './pages/Mycareer/MycareerDetail';
+import MyCareerDetail from './pages/Mycareer/MycareerD';
 import SignupSuccess from './pages/SignupSuccess';
 import ResetSuccess from './pages/Mypage/ResetSuccess';
 import SubNav from './components/Intro/SubNav';
@@ -42,7 +42,6 @@ import FilterPage from './components/Apply/FilterPage';
 import { AuthProvider } from './components/AuthContext';
 import LoginRequired from './pages/LoginRequired';
 
-
 const AppContainer = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -67,6 +66,8 @@ const App = () => {
 			<MainContent>
 				<Routes>
 					<Route path="/mycareer/:careerId" element={<MyCareerDetail />} />
+					<Route path="/mycareerdetail" element={<MyCareerDetail />} />
+
 					<Route path="/mycareer_search" element={<MycareerSearch />} />
 
 					<Route path="/" element={<Home />} />
