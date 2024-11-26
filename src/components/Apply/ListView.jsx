@@ -16,7 +16,6 @@ const ContentSection = styled.div`
 	max-width: 820px;
 	padding: 15px;
 	background-color: #f0f0f0;
-	border-radius: 15px;
 	position: relative;
 `;
 
