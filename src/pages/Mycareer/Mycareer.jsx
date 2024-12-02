@@ -55,7 +55,7 @@ export default function Mycareer() {
 		const status = view === 'year' ? 'year' : 'category';
 		const data = await CareerViewSelect(status);
 		if (data) {
-			setCareers(data);
+			setCareers(data.data);
 		}
 	};
 
@@ -74,9 +74,9 @@ export default function Mycareer() {
 	};
 
 	// Mock Data 제어
-	useEffect(() => {
-		view === 'year' ? setCareers(yearMockData) : setCareers(categoryMockData);
-	}, [view]);
+	// useEffect(() => {
+	// 	view === 'year' ? setCareers(yearMockData) : setCareers(categoryMockData);
+	// }, [view]);
 
 	const handleSearchClick = () => {
 		navigate('/Mycareer_search'); // 원하는 경로로 페이지 이동
@@ -98,9 +98,7 @@ export default function Mycareer() {
 					</div>
 				)}
 			</Container>
-			{/* {isLoggedIn && ()} */}
-			{view === 'year' && <CareerViewYear data={careers} />}
-			{view === 'category' && <CareerViewCategory data={careers} />}
+			{isLoggedIn && (view === 'year' ? <CareerViewYear data={careers} /> : <CareerViewCategory data={careers} />)}
 		</>
 	);
 }

@@ -6,12 +6,14 @@ import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 
 const BackgroundSection = styled.div`
 	width: 100vw;
+	min-height: 100vh;
 	background-color: #f0f0f0;
 	position: relative;
 	box-sizing: border-box;
 	display: flex;
 	justify-content: center;
 	align-items: flex-start;
+	padding: 20px 0;
 `;
 const CategoryBox = styled.div`
 	width: 100%;
@@ -123,6 +125,14 @@ const CareerViewCategory = ({ data }) => {
 			console.error('Error fetching careerId:', error);
 		}
 	};
+
+	if (!sortedKey.length || !data[sortedKey[0]].length) {
+		return (
+			<BackgroundSection>
+				<div>데이터가 없습니다.</div>
+			</BackgroundSection>
+		);
+	}
 
 	return (
 		<BackgroundSection>

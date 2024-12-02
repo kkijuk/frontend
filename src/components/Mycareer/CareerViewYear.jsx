@@ -6,6 +6,7 @@ import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 
 const BackgroundSection = styled.div`
 	width: 100vw;
+	min-height: 100vh;
 	background-color: #f0f0f0;
 	position: relative;
 	box-sizing: border-box;
@@ -138,7 +139,11 @@ const CareerViewYear = ({ data }) => {
 	};
 
 	if (!sortedYears.length || !data[sortedYears[0]]) {
-		return <div>데이터가 없습니다.</div>;
+		return (
+			<BackgroundSection>
+				<div>데이터가 없습니다.</div>
+			</BackgroundSection>
+		);
 	}
 
 	return (
@@ -149,11 +154,8 @@ const CareerViewYear = ({ data }) => {
 						<YearBox key={year}>
 							<Year>{year}</Year>
 							{data[year].map((item, index) => {
-								console.log('Item:', item);
-								console.log('Item year:', year);
-
 								return (
-									<ListBox key={index} onClick={() => handleListBoxClick(item.id)}>
+									<ListBox key={item.id} onClick={() => handleListBoxClick(item.id)}>
 										<Category>
 											<CareerCategoryCircle category={item.category} />
 											<CategoryTextBox>{item.category}</CategoryTextBox>
