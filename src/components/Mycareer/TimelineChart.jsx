@@ -9,34 +9,35 @@ const distributePositions = (data) => {
 		.map(() => []); // 최대 4개의 빈 칸을 초기화
 	let positionCount = Math.min(data.length, 4); // 데이터 개수가 4개 이하일 경우 해당 개수만큼만 초기화
 
-	const sortedData = data.sort((a, b) => a.y[1] - b.y[1]); // 날짜 순서로 정렬
+	const sortedData = data.sort((a, b) => {
+		// 1. 시작일이 빠른 순
+		const startDiff = a.y[0] - b.y[0];
+		if (startDiff !== 0) return startDiff;
 
-	const updatedData = sortedData.map((item, index) => {
-		// 초기 4칸을 채우는 경우
-		if (index < 4) {
-			positions[index].push(item); // 초기 4칸을 날짜 순서로 우선 채움
-			return { ...item, x: `${index}` }; // x 값을 문자열로 할당
-		}
-		// 이후 항목은 겹치지 않는 칸에 배치
-		for (let i = 0; i < positionCount; i++) {
-			const isNonOverlapping = positions[i].every((existingItem) => {
-				return item.y[1] <= existingItem.y[0] || item.y[0] >= existingItem.y[1];
-			});
+		// 2. 기간이 긴 순
+		const aDuration = a.y[1] - a.y[0];
+		const bDuration = b.y[1] - b.y[0];
+		return bDuration - aDuration;
+	});
 
-			if (isNonOverlapping) {
-				positions[i].push(item); // 겹치지 않으면 해당 칸에 추가
-				return { ...item, x: `${i}` }; // x 값을 문자열로 할당
-			}
-		}
-		// 겹치지 않는 칸이 없으면 빈칸에 배치
+	const updatedData = sortedData.map((item) => {
+		// 각 행에 대해 가장 적합한 위치 찾기
+		let bestRow = 0;
+		let minOverlap = Infinity;
+
 		for (let i = 0; i < 4; i++) {
-			if (positions[i].length === 0) {
-				positions[i].push(item);
-				return { ...item, x: `${i}` }; // x 값을 문자열로 할당
+			const overlappingItems = positions[i].filter(
+				(existingItem) => !(item.y[1] <= existingItem.y[0] || item.y[0] >= existingItem.y[1]),
+			).length;
+
+			if (overlappingItems < minOverlap) {
+				minOverlap = overlappingItems;
+				bestRow = i;
 			}
 		}
-		// 예외 상황에서 첫 번째 칸에 기본 배치
-		return { ...item, x: '0' };
+
+		positions[bestRow].push(item);
+		return { ...item, x: `${bestRow}` };
 	});
 
 	return updatedData;
