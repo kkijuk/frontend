@@ -138,26 +138,30 @@ const CareerViewYear = ({ data }) => {
 	return (
 		<BackgroundSection>
 			<Container>
-				{sortedYears.map((year) => (
-					<YearBox key={year}>
-						<Year>{year}</Year>
-						{data[year].map((item) => (
-							<ListBox key={item.id} onClick={() => handleListBoxClick(item.id, item.category)}>
-								<Category>
-									<CareerCategoryCircle category={item.category} />
-									<CategoryTextBox>{item.category}</CategoryTextBox>
-								</Category>
-								<CareerContainer>
-									<CareerName>{item.name}</CareerName>
-									<AliasName>&nbsp;/ {item.alias}</AliasName>
-								</CareerContainer>
-								<Date>
-									{item.startdate} ~ {item.endDate}
-								</Date>
-							</ListBox>
-						))}
-					</YearBox>
-				))}
+				{sortedYears.map((year) => {
+					return (
+						<YearBox key={year}>
+							<Year>{year}</Year>
+							{data[year].map((item, index) => {
+								return (
+									<ListBox key={item.id} onClick={() => handleListBoxClick(item.id)}>
+										<Category>
+											<CareerCategoryCircle category={item.category} />
+											<CategoryTextBox>{item.category}</CategoryTextBox>
+										</Category>
+										<CareerContainer>
+											<CareerName>{item.name}</CareerName>
+											<AliasName>&nbsp;/ {item.alias}</AliasName>
+										</CareerContainer>
+										<Date>
+											{item.startdate} ~ {item.endDate}
+										</Date>
+									</ListBox>
+								);
+							})}
+						</YearBox>
+					);
+				})}
 			</Container>
 		</BackgroundSection>
 	);
