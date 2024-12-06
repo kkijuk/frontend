@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Helper from '../../components/Intro/Helper';
 import styled from 'styled-components';
 // import './history.css'
 import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
@@ -29,6 +30,7 @@ const Portfolio = () => {
 			<br></br>
 			<button onClick={toggleModal}>Add Career</button>
 			{isModalOpen && <AddCareerModal onClose={toggleModal}></AddCareerModal>}
+			<Helper></Helper>
 		</>
 	);
 };

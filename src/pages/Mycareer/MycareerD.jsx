@@ -10,7 +10,7 @@ import CareerNameTag from '../../components/shared/CareerNameTag';
 import AddCareerModalEdit from '../../components/Modal/AddCareerModalEdit';
 import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
-
+import { addCareer } from '../../api/Mycareer/Mycareer';
 const CareerBoxList = styled.div`
 	display: flex;
 	width: 800px;
@@ -140,63 +140,74 @@ const Line = styled.div`
 	height: 2px;
 	background: var(--gray-03, #d9d9d9);
 `;
+const categoryMapping = {
+	대외활동: 'activity',
+	동아리: 'circle',
+	프로젝트: 'project',
+	교육: 'edu',
+	대회: 'competition',
+	경력: 'employment',
+};
 
 const formatDate = (dateString) => {
-	if (!dateString) return ''; // dateString이 undefined, null 또는 빈 문자열일 경우 빈 문자열 반환
+	console.log('formatDate called with:', dateString);
+	if (!dateString || typeof dateString !== 'string') return '';
 	return dateString.replace(/-/g, '.');
 };
 
-export default function MycareerDetail() {
+export default function MycareerD() {
 	const [careers, setCareers] = useState([]); // CareerBox에 들어갈 데이터
 	const [selectedCareerDetail, setSelectedCareerDetail] = useState(null); // 선택된 CareerBox의 상세 정보
 	const [isAdding, setIsAdding] = useState(false); // 활동 기록 추가 상태
-	const { careerId } = useParams(); // URL에서 careerId 가져오기
+	const { careerId, type } = useParams(); // URL에서 careerId 가져오기
 	const [isEditModalOpen, setIsEditModalOpen] = useState(false); // 모달 상태 추가
 	const [modalData, setModalData] = useState(null); // 모달에 표시할 데이터 상태
 
 	const navigate = useNavigate(); // useNavigate 훅 추가
 
-	// 데이터 가져오기 및 careerId에 해당하는 CareerBox 선택
 	useEffect(() => {
 		const fetchCareers = async () => {
-			const response = await CareerViewSelect('year'); // 항상 'year'로 설정하여 데이터 가져오기
-			const data = response.data; // 응답 데이터에서 'data' 배열 추출
-			console.log('박스 안의 data값:', data);
-			setCareers(data);
+			try {
+				// API 호출
+				const response = await CareerViewSelect('all'); // addCareer API 호출
+				if (response.data) {
+					// 데이터 매핑
+					const mappedData = response.data.map((career) => ({
+						...career,
+						category: categoryMapping[career.category] || career.category, // 한글 카테고리 -> 영문 카테고리로 변환
+					}));
+					setCareers(mappedData);
+				}
+			} catch (error) {
+				console.error('Error fetching career data:', error);
+			}
 		};
 
-		fetchCareers();
-	}, [careerId, navigate]);
+		fetchCareers(); // 데이터 가져오기 호출
+	}, []);
 
 	useEffect(() => {
-		const loadCareerDetail = async (careerId) => {
-			// 새로운 CareerBoxList 항목을 클릭할 때, DetailAdd 창을 닫음(qa관련)
-			if (isAdding) {
-				setIsAdding(false);
-			}
+		const loadCareerDetail = async (careerId, type) => {
+			if (isAdding) setIsAdding(false);
 
-			const careerDetail = await ViewCareerDetail(careerId);
-			console.log('선택된 CareerBox의 상세 데이터:', careerDetail);
-			setSelectedCareerDetail(careerDetail);
-			setIsAdding(false); // 새로운 Careerbox를 클릭하면 활동 기록 추가를 닫음
-
-			console.log('selectCareerDetail:', selectedCareerDetail);
-			if (careerDetail) {
-				navigate(`/mycareer/${careerId}`, { state: { details: careerDetail.data } });
+			try {
+				const careerDetail = await ViewCareerDetail(careerId, type);
+				console.log('선택된 CareerBox의 상세 데이터:', careerDetail);
+				setSelectedCareerDetail(careerDetail);
+			} catch (error) {
+				console.error('Error loading career detail:', error);
 			}
 		};
 
-		if (careerId) {
-			loadCareerDetail(careerId);
+		if (careerId && type) {
+			loadCareerDetail(careerId, type);
 		}
-	}, [careerId, isEditModalOpen, modalData, navigate]);
+	}, [careerId, type]);
 
-	// 활동 기록 추가 후 갱신하는 함수
 	const handleAddComplete = async () => {
 		setIsAdding(false);
-		console.log('활동 기록 추가 후 갱신 중');
-		if (careerId) {
-			const careerDetail = await ViewCareerDetail(careerId);
+		if (careerId && type) {
+			const careerDetail = await ViewCareerDetail(careerId, type);
 			setSelectedCareerDetail(careerDetail);
 		}
 	};
@@ -232,19 +243,16 @@ export default function MycareerDetail() {
 	return (
 		<Layout title="내 커리어">
 			<CareerBoxList>
-				{careers.map((yearItem) =>
-					yearItem.careers.map((item) => (
-						<Careerbox
-							key={item.id}
-							startDate={item.startDate}
-							endDate={item.endDate}
-							careerName={item.careerName}
-							category={item.categoryId}
-							selected={selectedCareerDetail?.data?.id === item.id} // ID를 기준으로 선택된 항목을 결정
-							onClick={() => navigate(`/mycareer/${item.id}`)} // 클릭 시 해당 항목의 상세 데이터를 로드
-						/>
-					)),
-				)}
+				{careers.map((item) => (
+					<Careerbox
+						key={item.id}
+						startDate={item.startdate}
+						endDate={item.enddate}
+						careerName={item.Name}
+						category={item.category} // 변환된 카테고리 값
+						onClick={() => navigate(`/mycareer/${type}/${item.id}`)} // 클릭 시 상세 보기로 이동
+					/>
+				))}
 			</CareerBoxList>
 
 			<Box></Box>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Layout from '../../components/Layout';
 import styled from 'styled-components';
-import SelectContent from '../../components/ResumeExport/SelectContent'; //1. 이력서에 ~ 아래 있는 박스
-import SelectResume from '../../components/ResumeExport/SelectResume'; //2. 내보내기할 양식~ 아래 있는 박스
+import SelectContent from '../../components/ResumeExport/SelectContent';
+import SelectResume from '../../components/ResumeExport/SelectResume';
 import Modal from '../../components/ResumeExport/Modal';
 
 const Section = styled.div`
@@ -16,7 +16,6 @@ const Text = styled.div`
 	margin-bottom: 24px;
 	margin-top: ${(props) => props.marginTop || '0px'};
 
-	/*text 스타일*/
 	color: var(--black, #000);
 	font-family: Pretendard;
 	font-size: 18px;
@@ -35,16 +34,17 @@ const Box2 = styled.div`
 	height: 505px;
 `;
 
-const Button = styled.div`
+const Button = styled.button`
 	width: 720px;
 	height: 50px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	background: var(--main-01, #3aaf85);
+	border: none; /* 테두리 제거 */
+
+	background: ${(props) => (props.disabled ? 'var(--gray-03, #d9d9d9)' : 'var(--main-01, #3aaf85)')};
 	margin: 30px auto 0;
 
 	display: flex; /* Flexbox로 중앙 정렬 */
-	flex-direction: column; /* 세로 방향 배치 */
 	align-items: center; /* 가로 중앙 정렬 */
 	justify-content: center; /* 세로 중앙 정렬 추가 */
 
@@ -55,12 +55,15 @@ const Button = styled.div`
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
+	cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')}; /* 비활성화 시 포인터 변경 */
 `;
 
 export default function ResumePdf() {
 	const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
+	const [selectedResume, setSelectedResume] = useState(null); // Resume 선택 상태 관리
 
 	const handleButtonClick = () => {
+		if (!selectedResume) return; // 선택되지 않은 상태에서 버튼 비활성화
 		setIsModalOpen(true); // 버튼 클릭 시 모달 열기
 	};
 
@@ -78,9 +81,17 @@ export default function ResumePdf() {
 					</Box1>
 					<Text marginTop="48px">2. 내보내기할 양식을 선택하세요.</Text>
 					<Box2>
-						<SelectResume />
+						<SelectResume
+							onSelect={(boxId) => setSelectedResume(boxId)} // 선택된 Resume Format 업데이트
+							selected={selectedResume} // 현재 선택된 Resume Format 전달
+						/>
 					</Box2>
-					<Button onClick={handleButtonClick}>확인</Button>
+					<Button
+						onClick={handleButtonClick}
+						disabled={!selectedResume} // 선택되지 않으면 비활성화
+					>
+						확인
+					</Button>
 				</Section>
 
 				{/* 모달 표시 */}

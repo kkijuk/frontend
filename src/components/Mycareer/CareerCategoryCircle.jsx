@@ -12,12 +12,12 @@ const getBackgroundColor = (category) => {
 			color = '#77AFF2';
 			break;
 		case '공모전/대회':
-			color = '#BB7AEF';
+			color = '#C48DEF';
 			break;
 		case '프로젝트':
 			color = '#78D333';
 			break;
-		case '아르바이트/인턴':
+		case '경력':
 			color = '#FA7C79';
 			break;
 		case '교육':
