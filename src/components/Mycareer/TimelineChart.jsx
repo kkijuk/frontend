@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+
+import { getColorByCategory } from '../../utils/getColorByCategory';
 
 const distributePositions = (data) => {
 	const maxRows = 4; // 최대 4줄
@@ -88,57 +88,13 @@ const TimelineChart = () => {
 	}));
 
 	const distributedData = distributePositions(formattedData);
-	const [rawData, setRawData] = useState([]);
 
-	const navigate = useNavigate();
-
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const res = await fetch(`${process.env.REACT_APP_API_URL}/career/timeline`, {
-					method: 'GET',
-					credentials: 'include', // 쿠키와 인증 정보를 함께 보냄
-					headers: {
-						'Content-Type': 'application/json; charset=utf-8',
-					},
-				});
-				const data = await res.json();
-				console.log(data);
-				setRawData(data.data);
-			} catch (error) {
-				console.error('Error fetching data:', error);
-			}
-		};
-		fetchData();
-	}, []);
-
-	const categoryColors = {
-		Circle: '#FCC400', // 예시 색상
-		Project: '#78D333',
-		EduCareer: '#F99538',
-		Activity: '#77AFF2',
-		Competition: '#BB7AEF',
-		// 필요한 경우 다른 카테고리 추가
-	};
-
-	const formattedData = rawData.map((item, idx) => ({
-		careerId: item.careerId,
-		y: [new Date(item.startdate).getTime(), new Date(item.enddate).getTime()],
-		name: item.title,
-		fillColor: categoryColors[item.category] || '#707070', // 기본 색상은 검정색
-	}));
-
-	const distributedData = distributePositions(formattedData);
-
-	// TODO: 임의로 네칸에 배치하는 로직 짰는데 컨펌이 필요할 듯
-	// 기간이 짧아서 Bar 짧을 떄, 텍스트 어떻게 처리할지
 	// TODO: 임의로 네칸에 배치하는 로직 짰는데 컨펌이 필요할 듯
 	// 기간이 짧아서 Bar 짧을 떄, 텍스트 어떻게 처리할지
 
 	const series = [
 		{
 			data: distributedData.map((item) => ({
-				careerId: item.careerId,
 				careerId: item.careerId,
 				x: item.x,
 				y: item.y,
@@ -147,20 +103,6 @@ const TimelineChart = () => {
 			})),
 		},
 	];
-
-	const handleChartClick = (event, chartContext, config) => {
-		const dataPointIndex = config.dataPointIndex;
-		const seriesIndex = config.seriesIndex;
-		console.log(dataPointIndex, seriesIndex);
-		if (dataPointIndex == -1 || seriesIndex == -1) return;
-		const data = chartContext.w.config.series[seriesIndex].data[dataPointIndex];
-
-		if (data && data.careerId) {
-			navigate(`/mycareer/${data.careerId}`);
-		} else {
-			console.error('Invalid data or careerId not found');
-		}
-	};
 
 	const handleChartClick = (event, chartContext, config) => {
 		const dataPointIndex = config.dataPointIndex;
