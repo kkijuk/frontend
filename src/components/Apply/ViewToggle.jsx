@@ -10,7 +10,7 @@ const ViewToggleStyled = styled.div`
 const ToggleContainer = styled.div`
 	background-color: #f5f5f5;
 	border-radius: 10px;
-	margin-right: 10px;
+	margin-right: -5px;
 	display: flex;
 	align-items: center;
 	justify-content: center;

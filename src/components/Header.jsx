@@ -207,40 +207,35 @@ export default function Header() {
 						<ul>
 							<li
 								onClick={() => handleNavigation('/mycareer')}
-								className={location.pathname === '/mycareer' ? 'active' : ''}
-							>
+								className={location.pathname === '/mycareer' ? 'active' : ''}>
 								내커리어
 							</li>
 							<li
 								onClick={() => handleNavigation('/history')}
-								className={location.pathname === '/history' ? 'active' : ''}
-							>
+								className={location.pathname === '/history' ? 'active' : ''}>
 								이력관리
 							</li>
+
 							<li
 								onClick={() => handleNavigation('/apply-schedule')}
-								className={location.pathname === '/apply-schedule' ? 'active' : ''}
-							>
+								className={location.pathname === '/apply-schedule' ? 'active' : ''}>
 								지원관리
 							</li>
 							<li
 								onClick={() => handleNavigation('/community')}
-								className={location.pathname === '/community' ? 'active' : ''}
-							>
+								className={location.pathname === '/community' ? 'active' : ''}>
 								커뮤니티
 							</li>
 							{!isLoggedIn ? (
 								<>
 									<li
 										onClick={() => handleNavigation('/login')}
-										className={`login-signup ${location.pathname === '/login' ? 'active' : ''}`}
-									>
+										className={`login-signup ${location.pathname === '/login' ? 'active' : ''}`}>
 										로그인
 									</li>
 									<li
 										onClick={() => handleNavigation('/signup')}
-										className={`login-signup ${location.pathname === '/signup' ? 'active' : ''}`}
-									>
+										className={`login-signup ${location.pathname === '/signup' ? 'active' : ''}`}>
 										회원가입
 									</li>
 								</>
@@ -254,8 +249,7 @@ export default function Header() {
 									height="30"
 									viewBox="0 0 30 30"
 									fill="none"
-									style={{ width: '30px', height: '30px', borderRadius: '10px' }}
-								>
+									style={{ width: '30px', height: '30px', borderRadius: '10px' }}>
 									<path
 										d="M15 15C18.4518 15 21.25 12.2018 21.25 8.75C21.25 5.29822 18.4518 2.5 15 2.5C11.5482 2.5 8.75 5.29822 8.75 8.75C8.75 12.2018 11.5482 15 15 15Z"
 										stroke="white"
