@@ -4,40 +4,41 @@ import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 
 const distributePositions = (data) => {
-	const positions = Array(4)
+	const maxRows = 4; // 최대 4줄
+	const positions = Array(maxRows)
 		.fill(null)
-		.map(() => []); // 최대 4개의 빈 칸을 초기화
-	let positionCount = Math.min(data.length, 4); // 데이터 개수가 4개 이하일 경우 해당 개수만큼만 초기화
+		.map(() => []); // 각 줄의 데이터를 저장할 배열
 
 	const sortedData = data.sort((a, b) => {
-		// 1. 시작일이 빠른 순
+		// 1. 시작일이 빠른 순으로 정렬
 		const startDiff = a.y[0] - b.y[0];
 		if (startDiff !== 0) return startDiff;
 
-		// 2. 기간이 긴 순
-		const aDuration = a.y[1] - a.y[0];
-		const bDuration = b.y[1] - b.y[0];
-		return bDuration - aDuration;
+		// 2. 기간이 긴 순으로 정렬
+		const durationA = a.y[1] - a.y[0];
+		const durationB = b.y[1] - b.y[0];
+		return durationB - durationA;
 	});
 
-	const updatedData = sortedData.map((item) => {
+	const updatedData = sortedData.filter((item) => {
 		// 각 행에 대해 가장 적합한 위치 찾기
-		let bestRow = 0;
-		let minOverlap = Infinity;
+		let assigned = false;
+		for (let row = 0; row < maxRows; row++) {
+			// 현재 행의 데이터들과 겹치는지 확인
+			const hasOverlap = positions[row].some(
+				(existingItem) => !(item.y[1] < existingItem.y[0] || item.y[0] > existingItem.y[1]),
+			);
 
-		for (let i = 0; i < 4; i++) {
-			const overlappingItems = positions[i].filter(
-				(existingItem) => !(item.y[1] <= existingItem.y[0] || item.y[0] >= existingItem.y[1]),
-			).length;
-
-			if (overlappingItems < minOverlap) {
-				minOverlap = overlappingItems;
-				bestRow = i;
+			if (!hasOverlap) {
+				// 겹치지 않는 경우 해당 행에 할당
+				positions[row].push(item);
+				item.x = String(row); // x값을 문자열로 할당
+				assigned = true;
+				break;
 			}
 		}
-
-		positions[bestRow].push(item);
-		return { ...item, x: `${bestRow}` };
+		// 네 줄 모두에 겹치는 경우 배열에서 제외
+		return assigned;
 	});
 
 	return updatedData;
@@ -135,11 +136,8 @@ const TimelineChart = () => {
 				horizontal: true,
 				distributed: false,
 				rangeBarOverlap: false,
-				dataLabels: {
-					hideOverflowingLabels: false,
-				},
-				barHeight: '18px',
-				borderRadius: 10,
+				barHeight: '16.5px',
+				borderRadius: 8,
 				offsetX: 0,
 				states: {
 					hover: {
@@ -189,7 +187,7 @@ const TimelineChart = () => {
 		xaxis: {
 			type: 'datetime',
 			labels: {
-				offsetX: 70,
+				offsetX: 25,
 				formatter: function (val) {
 					return moment(val).format('YYYY.MM'); // 년월 포맷
 				},
@@ -217,19 +215,6 @@ const TimelineChart = () => {
 		grid: {
 			show: false, // 전체 그리드를 숨기려면 이 옵션 사용
 			borderColor: 'transparent', // y축 선을 투명하게 설정
-			row: {
-				opacity: 1,
-			},
-			yaxis: {
-				lines: {
-					show: false, // y축 라인 숨김
-				},
-			},
-			xaxis: {
-				lines: {
-					show: false, // 중앙에 선이 보이도록 설정
-				},
-			},
 		},
 	});
 
