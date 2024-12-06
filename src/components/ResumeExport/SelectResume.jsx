@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -65,24 +65,22 @@ const SelectedOverlay = styled.div`
 	z-index: 1; /* FormatBox 뒤에 배치 */
 `;
 
-export default function SelectResume() {
-	const [selectedBox, setSelectedBox] = useState(null); // 선택된 박스를 관리하는 상태
-
+export default function SelectResume({ onSelect, selected }) {
 	const handleSelect = (boxId) => {
-		setSelectedBox(boxId); // 선택된 박스 업데이트
+		onSelect(boxId); // 상위 컴포넌트로 선택된 값 전달
 	};
 
 	return (
 		<Wrapper>
 			<Box>
 				<FormatBox onClick={() => handleSelect(1)}>
-					{selectedBox === 1 && <SelectedOverlay />} {/* 선택된 상태에서 강조 표시 */}
+					{selected === 1 && <SelectedOverlay />} {/* 선택된 상태에서 강조 표시 */}
 					<FormatText>양식 1</FormatText>
 					<Resume></Resume>
 				</FormatBox>
 
 				<FormatBox onClick={() => handleSelect(2)}>
-					{selectedBox === 2 && <SelectedOverlay />} {/* 선택된 상태에서 강조 표시 */}
+					{selected === 2 && <SelectedOverlay />} {/* 선택된 상태에서 강조 표시 */}
 					<FormatText>양식 2</FormatText>
 					<Resume></Resume>
 				</FormatBox>

@@ -10,7 +10,9 @@ import ApplyStatus from './pages/Apply/ApplyStatus';
 import Community from './pages/Community';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import MyCareerDetail from './pages/Mycareer/MycareerD';
+import MyCareerD from './pages/Mycareer/MycareerD';
+import MycareerDetail from './pages/Mycareer/MycareerDetail';
+
 import SignupSuccess from './pages/SignupSuccess';
 import ResetSuccess from './pages/Mypage/ResetSuccess';
 import SubNav from './components/Intro/SubNav';
@@ -65,8 +67,7 @@ const App = () => {
 			{!isCommingSoon && <Header />}
 			<MainContent>
 				<Routes>
-					<Route path="/mycareer/:careerId" element={<MyCareerDetail />} />
-					<Route path="/mycareerdetail" element={<MyCareerDetail />} />
+					<Route path="/mycareer/:careerId/:category" element={<MycareerDetail />} />
 
 					<Route path="/mycareer_search" element={<MycareerSearch />} />
 
