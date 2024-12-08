@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import Banner1SVG from '../assets/banner1.svg';
 import Banner2SVG from '../assets/banner2.svg';
 import Banner3SVG from '../assets/banner3.svg';
-
+import Box from '../components/Home/Box';
 const Body = styled.div`
 	width: 820px;
 	min-height: 100vh;
@@ -144,7 +144,7 @@ export default function Home() {
 			<Container1>
 				{isLoggedIn ? <LoginProfileBox /> : <LogoutProfileBox />}
 				<div onClick={handleTimelineClick}>
-					<TimelineHome />
+					<Box></Box>
 				</div>
 			</Container1>
 			{/* <Banner banners={bannerDummy} /> */}

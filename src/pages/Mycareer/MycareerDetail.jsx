@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Layout from '../../components/Layout';
+import DetailAdd from '../../components/MyCareerDetail/DetailAdd';
 import { useParams } from 'react-router-dom';
 
 import Careerbox from '../../components/MyCareerDetail/CareerBox';
@@ -12,7 +13,7 @@ import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 
 const CareerBoxContainer = styled.div`
 	width: 100%; /* 가로 스크롤을 위해 전체 너비 */
-	height: 105px;
+	height: 72px;
 	margin-top: 40px;
 	display: flex; /* 플렉스 박스를 사용 */
 	flex-wrap: nowrap; /* 줄 바꿈을 방지 */
@@ -28,8 +29,8 @@ const CareerContentContainer = styled.div`
 	margin-top: 30px;
 	margin-bottom: 32px;
 
-	border: 1px solid black;
-	box-sizing: border-box;
+	/*border: 1px solid black;
+	box-sizing: border-box;*/
 
 	position: relative; /* 위치를 기준으로 자식 컴포넌트가 확장 */
 `;
@@ -37,7 +38,15 @@ const CareerContentContainer = styled.div`
 const TitleContainer = styled.div`
 	height: 30px;
 	width: 100%;
-	/*양쪽 끝에 가게 */
+	display: flex; /* 요소를 가로로 배치 */
+	justify-content: space-between; /* 양쪽 끝에 요소 배치 */
+	align-items: center; /* 세로 가운데 정렬 */
+`;
+
+const IconWrapper = styled.div`
+	width: 30px;
+	height: 30px;
+	cursor: pointer; /* 클릭 가능한 아이콘 */
 `;
 
 const Title = styled.div`
@@ -86,7 +95,6 @@ const Line = styled.div`
 	height: 6px;
 
 	background: var(--gray-03, #d9d9d9);
-	margin-bottom: 24px;
 `;
 
 const CareerListBox = styled.div`
@@ -106,6 +114,15 @@ const CareerPlus = styled.button`
 	cursor: pointer;
 	position: fixed;
 	z-index: 1;
+
+	color: #fff;
+
+	text-align: center;
+	font-family: Pretendard;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
 
 	bottom: 30px;
 	background: ${(props) => (props.disabled ? 'var(--gray-03, #D9D9D9)' : 'var(--main-01, #3AAF85)')};
@@ -159,6 +176,16 @@ export default function MycareerDetail() {
 	const [careerList, setCareerList] = useState([]);
 	const [selectedCareer, setSelectedCareer] = useState({ id: careerId || null, type: category || null });
 	const [isEditing, setIsEditing] = useState(false); // 편집 상태 추가
+	const [isAdding, setIsAdding] = useState(false); // 상태 추가
+
+	const categoryToTypeMapCapital = {
+		대외활동: 'ACTIVITY',
+		동아리: 'CIRCLE',
+		프로젝트: 'PROJECT',
+		교육: 'EDU',
+		대회: 'COMPETETION',
+		경력: 'EMPLOYMENT',
+	};
 
 	const categoryToTypeMap = {
 		대외활동: 'activity',
@@ -172,6 +199,8 @@ export default function MycareerDetail() {
 	const fetchCareerDetails = async (id, type) => {
 		try {
 			const response = await ViewCareerDetail(id, type);
+			console.log('가져온 Career Details:', response.data); // 데이터 확인
+
 			setDetails(response.data);
 		} catch (error) {
 			console.error('Error fetching career details:', error);
@@ -199,6 +228,19 @@ export default function MycareerDetail() {
 
 		fetchAllCareers();
 	}, []);
+
+	const handleAddButtonClick = () => {
+		setIsAdding(true); // DetailAdd 표시
+	};
+
+	const handleCancelAdd = () => {
+		setIsAdding(false); // DetailAdd 숨기기
+	};
+
+	const handleSaveAdd = async () => {
+		setIsAdding(false); // DetailAdd 숨기기
+		await fetchCareerDetails(careerId, categoryToTypeMap[category]); // 데이터 새로고침
+	};
 
 	const handleCareerBoxClick = (id, type) => {
 		const mappedType = categoryToTypeMap[type] || type;
@@ -232,10 +274,17 @@ export default function MycareerDetail() {
 						/>
 					))}
 				</CareerBoxContainer>
-
 				<CareerContentContainer isEditing={isEditing}>
 					<TitleContainer>
 						<Title>{details?.alias || '제목 없음'}</Title>
+						<IconWrapper>
+							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+								<path
+									d="M0 23.7509V30H6.24913L24.6799 11.5692L18.4308 5.32009L0 23.7509ZM29.5126 6.73656C30.1625 6.08665 30.1625 5.0368 29.5126 4.38689L25.6131 0.487432C24.9632 -0.162477 23.9133 -0.162477 23.2634 0.487432L20.2139 3.53701L26.463 9.78614L29.5126 6.73656Z"
+									fill="#707070"
+								/>
+							</svg>
+						</IconWrapper>
 					</TitleContainer>
 					<Date>
 						{details?.startdate} ~ {details?.endDate}
@@ -249,12 +298,36 @@ export default function MycareerDetail() {
 						<Content onClick={handleEditClick}>{details?.summary || '활동내역을 작성해주세요.'}</Content>
 					)}
 				</CareerContentContainer>
-
 				<Line></Line>
-
 				<CareerListBox>
-					<CareerList></CareerList>
+					{details && details.detailList && details.detailList.length > 0 ? (
+						details.detailList.map((detail) => (
+							<CareerList
+								key={detail.detailId}
+								title={detail.title || '제목 없음'}
+								date={`${detail.startDate} ~ ${detail.endDate || '진행중'}`}
+								contents={detail.content || '내용 없음'}
+								detailTag={detail.detailTag || []}
+								careerId={careerId}
+								detailId={detail.detailId}
+								onClose={() => console.log('Detail 닫힘')}
+								onUpdate={() => fetchCareerDetails(careerId, selectedCareer.type)} // 데이터 새로고침
+							/>
+						))
+					) : (
+						<div>세부사항이 없습니다.</div>
+					)}
+					{isAdding && (
+						<DetailAdd
+							onCancel={handleCancelAdd}
+							onSave={handleSaveAdd}
+							careerId={careerId}
+							careerType={categoryToTypeMapCapital[category]}
+						/>
+					)}
 				</CareerListBox>
+
+				<CareerPlus onClick={handleAddButtonClick}>활동 기록 추가</CareerPlus>
 			</PageContainer>
 		</Layout>
 	);
