@@ -1,0 +1,32 @@
+
+<svg width="100" height="100" class="icons">
+<!-- favicon -->
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" id="favicon">
+    <rect width="150" height="150" rx="30" fill="white"></rect>
+  </symbol>
+<!-- close icon -->
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" id="close">
+    <path id="Vector" d="M20 2.01429L17.9857 0L10 7.98571L2.01429 0L0 2.01429L7.98571 10L0 17.9857L2.01429 20L10 12.0143L17.9857 20L20 17.9857L12.0143 10L20 2.01429Z" fill="#999999"></path>
+  </symbol>
+<!-- pencil icon -->
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 70" id="pencil">
+    <g id="Group 427319575">
+      <g id="Ellipse 9" filter="url(#filter0_d_2258_1553)">
+        <circle cx="35" cy="31" r="31" fill="#B0B0B0"></circle>
+      </g>
+      <path id="Vector" d="M20 39.7509V46H26.2491L44.6799 27.5692L38.4308 21.3201L20 39.7509ZM49.5126 22.7366C50.1625 22.0867 50.1625 21.0368 49.5126 20.3869L45.6131 16.4874C44.9632 15.8375 43.9133 15.8375 43.2634 16.4874L40.2139 19.537L46.463 25.7861L49.5126 22.7366Z" fill="white"></path>
+    </g>
+    <defs>
+      <filter id="filter0_d_2258_1553" x="0" y="0" width="70" height="70" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix>
+        <feOffset dy="4"></feOffset>
+        <feGaussianBlur stdDeviation="2"></feGaussianBlur>
+        <feComposite in2="hardAlpha" operator="out"></feComposite>
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix>
+        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2258_1553"></feBlend>
+        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2258_1553" result="shape"></feBlend>
+      </filter>
+    </defs>
+  </symbol>
+</svg>
