@@ -122,7 +122,8 @@ const TimelineChart = () => {
 		chart: {
 			height: 350,
 			type: 'rangeBar',
-			background: '#fff',
+			offsetX: 0,
+			background: 'transparent',
 			zoom: {
 				enabled: false, // 줌 기능 비활성화
 			},

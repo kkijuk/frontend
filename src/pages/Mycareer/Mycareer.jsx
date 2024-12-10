@@ -73,11 +73,6 @@ export default function Mycareer() {
 		}
 	};
 
-	// Mock Data 제어
-	// useEffect(() => {
-	// 	view === 'year' ? setCareers(yearMockData) : setCareers(categoryMockData);
-	// }, [view]);
-
 	const handleSearchClick = () => {
 		navigate('/Mycareer_search'); // 원하는 경로로 페이지 이동
 	};
