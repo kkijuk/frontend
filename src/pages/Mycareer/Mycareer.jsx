@@ -56,6 +56,7 @@ export default function Mycareer() {
 		const data = await CareerViewSelect(status);
 		if (data) {
 			setCareers(data.data);
+			console.log(data.data);
 		}
 	};
 
