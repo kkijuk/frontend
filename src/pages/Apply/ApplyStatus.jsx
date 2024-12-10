@@ -8,15 +8,6 @@ import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
 import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
 import ApplyStatusButton from '../../components/Apply/ApplyStatusButton';
 
-const Title = styled.h1`
-	color: var(--black, #000);
-	font-family: 'Bold';
-	font-size: 30px;
-	font-weight: 700;
-	margin-top: 11px;
-	width: 820px;
-	margin-left: 18px;
-`;
 
 export default function ApplyStatus() {
 	const [jobs, setJobs] = useState([]);
