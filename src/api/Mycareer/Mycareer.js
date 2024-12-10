@@ -1,10 +1,9 @@
 import axios from 'axios';
 const apiUrl = 'https://api.kkijuk.com/career';
 
-export const addCareer = async (addCareerData) => {
+export const addCareer = async () => {
 	try {
-		console.log(addCareerData);
-		const response = await axios.post('https://api.kkijuk.com/career', JSON.stringify(addCareerData), {
+		const response = await axios.get(`${apiUrl}?status=year`, {
 			withCredentials: true,
 
 			headers: {

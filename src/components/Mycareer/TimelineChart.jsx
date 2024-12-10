@@ -1,76 +1,101 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
+
+import { getColorByCategory } from '../../utils/getColorByCategory';
 
 const distributePositions = (data) => {
-	const positions = Array(4)
+	const maxRows = 4; // 최대 4줄
+	const positions = Array(maxRows)
 		.fill(null)
-		.map(() => []); // 최대 4개의 빈 칸을 초기화
-	let positionCount = Math.min(data.length, 4); // 데이터 개수가 4개 이하일 경우 해당 개수만큼만 초기화
+		.map(() => []); // 각 줄의 데이터를 저장할 배열
 
-	const sortedData = data.sort((a, b) => a.y[0] - b.y[0]); // 날짜 순서로 정렬
+	const sortedData = data.sort((a, b) => {
+		// 1. 시작일이 빠른 순으로 정렬
+		const startDiff = a.y[0] - b.y[0];
+		if (startDiff !== 0) return startDiff;
 
-	const updatedData = sortedData.map((item, index) => {
-		// 초기 4칸을 채우는 경우
-		if (index < 4) {
-			positions[index].push(item); // 초기 4칸을 날짜 순서로 우선 채움
-			return { ...item, x: `${index}` }; // x 값을 문자열로 할당
-		}
-		// 이후 항목은 겹치지 않는 칸에 배치
-		for (let i = 0; i < positionCount; i++) {
-			const isNonOverlapping = positions[i].every((existingItem) => {
-				return item.y[1] <= existingItem.y[0] || item.y[0] >= existingItem.y[1];
-			});
+		// 2. 기간이 긴 순으로 정렬
+		const durationA = a.y[1] - a.y[0];
+		const durationB = b.y[1] - b.y[0];
+		return durationB - durationA;
+	});
 
-			if (isNonOverlapping) {
-				positions[i].push(item); // 겹치지 않으면 해당 칸에 추가
-				return { ...item, x: `${i}` }; // x 값을 문자열로 할당
+	const updatedData = sortedData.filter((item) => {
+		// 각 행에 대해 가장 적합한 위치 찾기
+		let assigned = false;
+		for (let row = 0; row < maxRows; row++) {
+			// 현재 행의 데이터들과 겹치는지 확인
+			const hasOverlap = positions[row].some(
+				(existingItem) => !(item.y[1] < existingItem.y[0] || item.y[0] > existingItem.y[1]),
+			);
+
+			if (!hasOverlap) {
+				// 겹치지 않는 경우 해당 행에 할당
+				positions[row].push(item);
+				item.x = String(row); // x값을 문자열로 할당
+				assigned = true;
+				break;
 			}
 		}
-		// 겹치지 않는 칸이 없으면 빈칸에 배치
-		for (let i = 0; i < 4; i++) {
-			if (positions[i].length === 0) {
-				positions[i].push(item);
-				return { ...item, x: `${i}` }; // x 값을 문자열로 할당
-			}
-		}
-		// 예외 상황에서 첫 번째 칸에 기본 배치
-		return { ...item, x: '0' };
+		// 네 줄 모두에 겹치는 경우 배열에서 제외
+		return assigned;
 	});
 
 	return updatedData;
 };
 
 const TimelineChart = () => {
-	const [rawData] = useState([
-		{
-			y: [new Date('2023-12-01').getTime(), new Date('2024-01-15').getTime()],
-			name: '학원 아르바이트',
-			fillColor: '#FF6B6B',
-		},
-		{
-			y: [new Date('2024-01-05').getTime(), new Date('2024-03-01').getTime()],
-			name: 'UXUI 소학회',
-			fillColor: '#FFD93D',
-		},
-		{
-			y: [new Date('2024-02-18').getTime(), new Date('2024-07-20').getTime()],
-			name: 'IT 서비스 개발 동아리',
-			fillColor: '#C084FC',
-		},
-		{
-			y: [new Date('2024-03-01').getTime(), new Date('2024-03-15').getTime()],
-			name: '빅데이터',
-			fillColor: '#C084FC',
-		},
-	]);
-	const distributedData = distributePositions(rawData);
+	const [rawData, setRawData] = useState([]);
 
-	console.log(distributedData);
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const res = await fetch(`${process.env.REACT_APP_API_URL}/career/timeline`, {
+					method: 'GET',
+					credentials: 'include', // 쿠키와 인증 정보를 함께 보냄
+					headers: {
+						'Content-Type': 'application/json; charset=utf-8',
+					},
+				});
+				const data = await res.json();
+				console.log(data);
+				setRawData(data.data);
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
+		};
+		fetchData();
+	}, []);
+
+	const categoryColors = {
+		Circle: '#FCC400', // 예시 색상
+		Project: '#78D333',
+		EduCareer: '#F99538',
+		Activity: '#77AFF2',
+		Competition: '#BB7AEF',
+		// 필요한 경우 다른 카테고리 추가
+	};
+
+	const formattedData = rawData.map((item, idx) => ({
+		careerId: item.careerId,
+		y: [new Date(item.startdate).getTime(), new Date(item.enddate).getTime()],
+		name: item.title,
+		fillColor: categoryColors[item.category] || '#707070', // 기본 색상은 검정색
+	}));
+
+	const distributedData = distributePositions(formattedData);
+
+	// TODO: 임의로 네칸에 배치하는 로직 짰는데 컨펌이 필요할 듯
+	// 기간이 짧아서 Bar 짧을 떄, 텍스트 어떻게 처리할지
 
 	const series = [
 		{
 			data: distributedData.map((item) => ({
+				careerId: item.careerId,
 				x: item.x,
 				y: item.y,
 				name: item.name,
@@ -78,6 +103,20 @@ const TimelineChart = () => {
 			})),
 		},
 	];
+
+	const handleChartClick = (event, chartContext, config) => {
+		const dataPointIndex = config.dataPointIndex;
+		const seriesIndex = config.seriesIndex;
+		console.log(dataPointIndex, seriesIndex);
+		if (dataPointIndex == -1 || seriesIndex == -1) return;
+		const data = chartContext.w.config.series[seriesIndex].data[dataPointIndex];
+
+		if (data && data.careerId) {
+			navigate(`/mycareer/${data.careerId}`);
+		} else {
+			console.error('Invalid data or careerId not found');
+		}
+	};
 
 	const [options] = useState({
 		chart: {
@@ -90,17 +129,17 @@ const TimelineChart = () => {
 			toolbar: {
 				show: false,
 			},
+			events: {
+				click: handleChartClick,
+			},
 		},
 		plotOptions: {
 			bar: {
 				horizontal: true,
 				distributed: false,
 				rangeBarOverlap: false,
-				dataLabels: {
-					hideOverflowingLabels: false,
-				},
-				barHeight: '18px',
-				borderRadius: 10,
+				barHeight: '16.5px',
+				borderRadius: 8,
 				offsetX: 0,
 				states: {
 					hover: {
@@ -150,7 +189,7 @@ const TimelineChart = () => {
 		xaxis: {
 			type: 'datetime',
 			labels: {
-				offsetX: 70,
+				offsetX: 25,
 				formatter: function (val) {
 					return moment(val).format('YYYY.MM'); // 년월 포맷
 				},
@@ -178,19 +217,6 @@ const TimelineChart = () => {
 		grid: {
 			show: false, // 전체 그리드를 숨기려면 이 옵션 사용
 			borderColor: 'transparent', // y축 선을 투명하게 설정
-			row: {
-				opacity: 1,
-			},
-			yaxis: {
-				lines: {
-					show: false, // y축 라인 숨김
-				},
-			},
-			xaxis: {
-				lines: {
-					show: false, // 중앙에 선이 보이도록 설정
-				},
-			},
 		},
 	});
 

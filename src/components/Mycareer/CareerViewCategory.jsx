@@ -6,22 +6,25 @@ import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 
 const BackgroundSection = styled.div`
 	width: 100vw;
-	height: auto;
-	left: 50%;
-	transform: translateX(-50%);
+	min-height: 100vh;
 	background-color: #f0f0f0;
 	position: relative;
 	box-sizing: border-box;
-
 	display: flex;
-	justify-content: center; /* CategoryBox를 가운데로 정렬 */
-	align-items: flex-start; /* CategoryBox를 세로 축에서 상단에 정렬 */
+	justify-content: center;
+	align-items: flex-start;
+	padding: 20px 0;
 `;
-
 const CategoryBox = styled.div`
-	width: 820px;
+	width: 100%;
+	max-width: 820px;
 	gap: 12px;
 	margin-bottom: 10px;
+	padding: 0 15px; /* 좌우 여백 추가 */
+
+	@media (max-width: 600px) {
+		padding: 0 10px; /* 작은 화면에서 패딩 조정 */
+	}
 `;
 
 const Category = styled.div`
@@ -37,27 +40,33 @@ const CategoryText = styled.div`
 	color: var(--black, #000);
 	font-family: regular;
 	font-size: 20px;
-	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
 	margin-top: 14px;
 	margin-bottom: 20px;
-	margin-left: 10px; /* 카테고리 아이콘과 텍스트 사이의 간격 추가 */
+	margin-left: 10px;
+
+	@media (max-width: 600px) {
+		font-size: 16px; /* 작은 화면에서 폰트 크기 축소 */
+	}
 `;
 
 const ListBox = styled.div`
-	width: 820px;
-	height: 74px;
-
+	width: 95%;
+	height: auto;
 	padding: 10px;
-	padding-left: 20px;
 	flex-shrink: 0;
 	border-radius: 10px;
 	background: var(--white, #fff);
 	box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
+	margin-left: 5px;
 	margin-bottom: 10px;
 	box-sizing: border-box;
 	cursor: pointer;
+
+	@media (max-width: 600px) {
+		padding: 10px; /* 작은 화면에서 패딩 축소 */
+	}
 `;
 
 const Name = styled.div``;
@@ -66,11 +75,14 @@ const AliasName = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
 	font-size: 18px;
-	font-style: regular;
 	font-weight: 400;
 	line-height: normal;
 	margin-bottom: 9px;
 	margin-top: 5px;
+
+	@media (max-width: 600px) {
+		font-size: 14px; /* 작은 화면에서 폰트 크기 축소 */
+	}
 `;
 
 const CareerContainer = styled.div`
@@ -113,6 +125,14 @@ const CareerViewCategory = ({ data }) => {
 			console.error('Error fetching careerId:', error);
 		}
 	};
+
+	if (!sortedKey.length || !data[sortedKey[0]].length) {
+		return (
+			<BackgroundSection>
+				<div>데이터가 없습니다.</div>
+			</BackgroundSection>
+		);
+	}
 
 	return (
 		<BackgroundSection>
