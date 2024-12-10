@@ -149,7 +149,7 @@ const TextArea = styled.textarea`
 	overflow-y: auto; /* 텍스트가 넘칠 경우 스크롤 생성 */
 `;
 
-export default function DetailAdd({ onCancel, onSave, careerId }) {
+export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 	// careerId도 prop으로 받음
 	const [showCalendar, setShowCalendar] = useState(false);
 	const [selectedDate, setSelectedDate] = useState('');
@@ -187,6 +187,7 @@ export default function DetailAdd({ onCancel, onSave, careerId }) {
 		}
 		const [startDate, endDate] = selectedDate.split(' ~ ');
 		const data = {
+			careerType,
 			title,
 			content,
 			startDate,

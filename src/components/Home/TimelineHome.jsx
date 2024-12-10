@@ -260,8 +260,7 @@ export default function Timeline({ triggerEffect }) {
 											key={idx}
 											category={data.categoryId}
 											left={calculateLeft(data.startDate, earliestDate, oneMonthInPixels)}
-											width={calculateWidth(data.startDate, data.endDate, oneMonthInPixels)}
-										>
+											width={calculateWidth(data.startDate, data.endDate, oneMonthInPixels)}>
 											{data.careerName}
 										</Tag>
 									),
@@ -274,8 +273,7 @@ export default function Timeline({ triggerEffect }) {
 									key={idx}
 									category={data.categoryId}
 									left={calculateLeft(data.startDate, earliestDate, oneMonthInPixels)}
-									width={calculateWidth(data.startDate, data.endDate, oneMonthInPixels)}
-								>
+									width={calculateWidth(data.startDate, data.endDate, oneMonthInPixels)}>
 									{data.careerName}
 								</Tag>
 							))}
@@ -287,8 +285,7 @@ export default function Timeline({ triggerEffect }) {
 									key={idx}
 									category={data.categoryId}
 									left={calculateLeft(data.startDate, earliestDate, oneMonthInPixels)}
-									width={calculateWidth(data.startDate, data.endDate, oneMonthInPixels)}
-								>
+									width={calculateWidth(data.startDate, data.endDate, oneMonthInPixels)}>
 									{data.careerName}
 								</Tag>
 							))}
@@ -300,8 +297,7 @@ export default function Timeline({ triggerEffect }) {
 									key={idx}
 									category={data.categoryId}
 									left={calculateLeft(data.startDate, earliestDate, oneMonthInPixels)}
-									width={calculateWidth(data.startDate, data.endDate, oneMonthInPixels)}
-								>
+									width={calculateWidth(data.startDate, data.endDate, oneMonthInPixels)}>
 									{data.careerName}
 								</Tag>
 							))}
@@ -314,8 +310,7 @@ export default function Timeline({ triggerEffect }) {
 							<XLabel
 								key={index}
 								style={{ left: `${(index / (xLabels.length - 1)) * 100}%` }}
-								isJuneOrDecember={label.endsWith('.06') || label.endsWith('.12')}
-							>
+								isJuneOrDecember={label.endsWith('.06') || label.endsWith('.12')}>
 								{label}
 							</XLabel>
 						))}

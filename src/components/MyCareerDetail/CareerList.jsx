@@ -106,7 +106,7 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
 						<p key={index}>{line}</p>
 					))}
 				</Contents>
-				<AbilityTag tags={detailTag} />
+				<AbilityTag tags={detailTag.map((tag) => tag.tagName)} />
 				{/* <EditIconStyled titleAccess="Edit" onClick={handleEditClick} /> */}
 			</Box>
 			<Line></Line>
