@@ -14,10 +14,11 @@ const BackgroundSection = styled.div`
 const ContentSection = styled.div`
     max-width: 820px;
     margin: 0 auto;
-    padding: 15px;
+    padding: -40px;
     background-color: #f0f0f0;
     border-radius: 15px;
-`; 
+    margin-top: -40px;
+`;
 
 const AdListStyled = styled.div`
     padding: 20px;
@@ -45,16 +46,67 @@ const AdTitleContainer = styled.div`
     display: flex;
     align-items: center;
     margin-left: 16px;
+    margin-top: 12px;
 `;
 
-const AdTitle = styled.div`
+const RecruitTitleForRecruitResult = styled.div`
     color: var(--black, #000);
     font-family: Pretendard;
     font-size: 18px;
     font-style: normal;
-    font-weight: 700;
+    font-weight: 500;
     line-height: normal;
     margin-top: 5px;
+`;
+
+const RecruitTitleForReviewResult = styled.div`
+    color: var(--black, #000);
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-top: -41px;
+`;
+
+const ReviewHeader = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 7px;
+`;
+
+const ReviewTitle = styled.div`
+    color: var(--black, #000);
+    font-family: Pretendard;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 5px;
+    margin-left: 29px;
+`;
+
+const ReviewContent = styled.div`
+    color: var(--black, #000);
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 11px;
+    margin-left: 29px;
+`;
+
+const ReviewDate = styled.div`
+   color: var(--gray-02, #707070);
+   text-align: right;
+   font-family: Normal;
+   line-height: normal;
+   margin-top: 5px;
+   margin-right: 50px;
+   font-size: 14px;
+   font-style: normal;
 `;
 
 const TagContainer = styled.div`
@@ -71,7 +123,7 @@ const Tag = styled.span`
     color: #707070;
 `;
 
-const StatusCircle = styled.span`
+const StatusCircleForRecruitResult = styled.span`
     display: inline-block;
     width: 15px;
     height: 15px;
@@ -84,9 +136,28 @@ const StatusCircle = styled.span`
         if (status === 'REJECTED') return '#FA7C79';
         return '#707070';
     }};
-    margin-right: 10px;
+    margin-right: 10px; 
     margin-top: 5px;
 `;
+
+const StatusCircleForReviewResult = styled.span`
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: ${({ status }) => {
+        if (status === 'UNAPPLIED') return '#D9D9D9';
+        if (status === 'PLANNED') return '#B0B0B0';
+        if (status === 'APPLYING') return '#707070';
+        if (status === 'ACCEPTED') return '#78D333';
+        if (status === 'REJECTED') return '#FA7C79';
+        return '#707070';
+    }};
+    margin-left: -5px; 
+    margin-right: 9px;
+    margin-top: -41px;
+`;
+
 
 const DateContainer = styled.div`
     color: var(--gray-02, #707070);
@@ -94,26 +165,50 @@ const DateContainer = styled.div`
     font-size: 12px;
     font-family: Normal;
     line-height: normal;
-    margin-left: auto; 
-    align-self: center; 
-    padding-right: 15px; 
+    margin-left: auto;
+    align-self: center;
+    padding-right: 15px;
 `;
 
-const SearchList = ({ recruits }) => {
+const CategoryTitle = styled.div`
+    color: var(--black, #000);
+    font-family: Pretendard;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 10px;
+    margin-top: 20px;
+`;
+
+const SearchList = ({ recruits, activeTab }) => {
     if (!recruits || recruits.length === 0) {
         return (
             <BackgroundSection>
-               
+                {/* 검색 결과가 없을 때 UI 처리 없어도 될듯,,*/}
             </BackgroundSection>
         );
     }
+
+    // 공고와 후기의 개수 계산
+    const recruitCount = recruits.filter((recruit) => !recruit.reviews || recruit.reviews.length === 0).length;
+    const reviewCount = recruits.reduce((count, recruit) => count + (recruit.reviews ? recruit.reviews.length : 0), 0);
 
     return (
         <BackgroundSection>
             <ContentSection>
                 <AdListStyled>
+                    {/* 공고 제목 표시 */}
+                    {activeTab === '전체' && recruitCount > 0 && (
+                        <CategoryTitle>
+                            공고 ({recruitCount})
+                        </CategoryTitle>
+                    )}
+
+                    {/* 공고 리스트 */}
                     {recruits.map((recruit) => {
-                        // 날짜 데이터를 지정된 형식으로 변환
+                        if (recruit.reviews && recruit.reviews.length > 0) return null;
+
                         const formattedStartTime = new Date(recruit.startTime).toLocaleDateString('ko-KR', {
                             year: 'numeric',
                             month: '2-digit',
@@ -134,7 +229,6 @@ const SearchList = ({ recruits }) => {
                                                 <Tag key={tagIdx}>{tag}</Tag>
                                             ))}
                                     </TagContainer>
-
                                     <DateContainer>
                                         {formattedStartTime} ~ {formattedEndTime}
                                     </DateContainer>
@@ -142,9 +236,67 @@ const SearchList = ({ recruits }) => {
 
                                 <AdDetails>
                                     <AdTitleContainer>
-                                        <StatusCircle status={recruit.status} />
-                                        <AdTitle>{recruit.recruitTitle}</AdTitle>
+                                        <StatusCircleForRecruitResult status={recruit.status} />
+                                        <RecruitTitleForRecruitResult>
+                                            {recruit.recruitTitle}
+                                        </RecruitTitleForRecruitResult>
                                     </AdTitleContainer>
+                                </AdDetails>
+                            </AdItem>
+                        );
+                    })}
+
+                    {/* 공고후기 제목 표시 */}
+                    {activeTab === '전체' && reviewCount > 0 && (
+                        <CategoryTitle>
+                            공고후기 ({reviewCount})
+                        </CategoryTitle>
+                    )}
+
+                                        {/* 후기 리스트 */}
+                                        {recruits.map((recruit) => {
+                        if (!recruit.reviews || recruit.reviews.length === 0) return null;
+
+                        const formattedStartTime = new Date(recruit.startTime).toLocaleDateString('ko-KR', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                        });
+                        const formattedEndTime = new Date(recruit.endTime).toLocaleDateString('ko-KR', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                        });
+
+                        return (
+                            <AdItem key={recruit.recruitId}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <TagContainer>
+                                        {recruit.tags &&
+                                            recruit.tags.map((tag, tagIdx) => (
+                                                <Tag key={tagIdx}>{tag}</Tag>
+                                            ))}
+                                    </TagContainer>
+                                    <DateContainer>
+                                        {formattedStartTime} ~ {formattedEndTime}
+                                    </DateContainer>
+                                </div>
+                                <AdDetails>
+                                    <AdTitleContainer>
+                                        <StatusCircleForReviewResult status={recruit.status} />
+                                        <RecruitTitleForReviewResult>
+                                            {recruit.recruitTitle}
+                                        </RecruitTitleForReviewResult>
+                                    </AdTitleContainer>
+                                    {recruit.reviews.map((review) => (
+                                        <div key={review.reviewId}>
+                                            <ReviewHeader>
+                                                <ReviewTitle>{review.reviewTitle}</ReviewTitle>
+                                                <ReviewDate>{review.reviewDate}</ReviewDate>
+                                            </ReviewHeader>
+                                            <ReviewContent>{review.reviewContent}</ReviewContent>
+                                        </div>
+                                    ))}
                                 </AdDetails>
                             </AdItem>
                         );
@@ -156,3 +308,5 @@ const SearchList = ({ recruits }) => {
 };
 
 export default SearchList;
+
+
