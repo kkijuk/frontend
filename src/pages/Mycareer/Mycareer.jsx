@@ -56,7 +56,6 @@ export default function Mycareer() {
 		const data = await CareerViewSelect(status);
 		if (data) {
 			setCareers(data.data);
-			console.log(data.data);
 		}
 	};
 
@@ -73,11 +72,6 @@ export default function Mycareer() {
 			setTriggerEffect((prev) => !prev);
 		}
 	};
-
-	// Mock Data 제어
-	// useEffect(() => {
-	// 	view === 'year' ? setCareers(yearMockData) : setCareers(categoryMockData);
-	// }, [view]);
 
 	const handleSearchClick = () => {
 		navigate('/Mycareer_search'); // 원하는 경로로 페이지 이동
