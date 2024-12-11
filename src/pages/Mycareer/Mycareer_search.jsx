@@ -7,6 +7,15 @@ const Wrapper = styled.div`
 	height: 100%;
 `;
 
+const Container = styled.div`
+	width: 100%;
+	max-width: 820px;
+	margin: 0 auto;
+	background-color: white;
+	border-radius: 15px;
+	box-sizing: border-box;
+`;
+
 const Top = styled.div`
 	width: 100%;
 	height: 286px;
@@ -38,12 +47,5 @@ const SearchBox = styled.div`
 `;
 
 export default function MycareerSearch() {
-	return (
-		<Wrapper>
-			<Top>
-				<SearchFilter></SearchFilter>
-			</Top>
-			<Bottom></Bottom>
-		</Wrapper>
-	);
+	return <Container></Container>;
 }
