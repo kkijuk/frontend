@@ -1,6 +1,6 @@
 //pages/Mycareer
 //검색바
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
@@ -40,9 +40,15 @@ const SearchIcon = styled.div`
 	}
 `;
 
-const SearchBar = () => {
+const SearchBar = ({ initialSearchQuery }) => {
 	const [searchValue, setSearchValue] = useState('');
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (initialSearchQuery) {
+			setSearchValue(initialSearchQuery);
+		}
+	}, []);
 
 	const handleSearch = () => {
 		if (searchValue.trim()) {
