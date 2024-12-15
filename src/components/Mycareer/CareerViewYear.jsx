@@ -114,10 +114,6 @@ const Date = styled.div`
 	}
 `;
 
-const formatDate = (dateString) => {
-	return dateString.replace(/-/g, '.');
-};
-
 const CareerViewYear = ({ data }) => {
 	const navigate = useNavigate();
 

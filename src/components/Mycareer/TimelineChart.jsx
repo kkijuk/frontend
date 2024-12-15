@@ -4,7 +4,7 @@ import ReactApexChart from 'react-apexcharts';
 import moment from 'moment';
 
 import distributeTimelinePositions from '../../utils/distributeTimelinePositions';
-import { getColorByCategory } from '../../utils/getColorByCategory';
+import getColorByCategory from '../../utils/getColorByCategory';
 
 const TimelineChart = () => {
 	const [rawData, setRawData] = useState([]);
