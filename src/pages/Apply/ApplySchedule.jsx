@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Layout from '../../components/Layout'; // Layout 컴포넌트를 추가합니다.
+import Layout from '../../components/Layout'; 
 import TabMenu from '../../components/Apply/TabMenu';
 import ViewToggle from '../../components/Apply/ViewToggle';
 import CalendarView from '../../components/Apply/CalendarView';
