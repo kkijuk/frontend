@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Layout from '../../components/Layout'; 
 import TabMenu from '../../components/Apply/TabMenu';
 import StatusListView from '../../components/Apply/StatusListView';
 import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
-import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
+import { getValidRecruitList } from '../../api/Apply/RecruitValid';
 import ApplyStatusButton from '../../components/Apply/ApplyStatusButton';
-
 
 export default function ApplyStatus() {
 	const [jobs, setJobs] = useState([]);
@@ -29,28 +28,30 @@ export default function ApplyStatus() {
 			try {
 			  const now = new Date();
 			  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-			  const recruitData = await getRecruitListAfterDate(today);
+			  const recruitData = await getValidRecruitList(today);
 		  
-			  if (recruitData && recruitData.outputs && recruitData.outputs.length > 0) {
-				const sortedJobs = recruitData.outputs
-				  .flatMap((group) =>
-					group.recruits.map((recruit) => ({
-					  ...recruit,
-					  endTime: `${group.endDate} 00:00:00`,
-					})),
-				  )
-				  .sort((a, b) => new Date(a.endTime) - new Date(b.endTime));
-		  
-				console.log('Jobs data:', sortedJobs); 
-				setJobs(sortedJobs);
-				setFilteredJobs(sortedJobs);
+			  if (recruitData) {
+				const combinedJobs = [];
+				['unapplied', 'planned', 'applying', 'accepted', 'rejected'].forEach((status) => {
+				  if (recruitData[status]?.recruits) {
+					combinedJobs.push(
+					  ...recruitData[status].recruits.map((recruit) => ({
+						...recruit,
+						status: status.toUpperCase(),
+					  }))
+					);
+				  }
+				});
+				combinedJobs.sort((a, b) => a.id - b.id);
+				console.log('Jobs data:', combinedJobs);
+				setJobs(combinedJobs);
+				setFilteredJobs(combinedJobs);
 			  }
 			} catch (error) {
 			  console.error('Error fetching recruits:', error);
 			}
 		  };
 		  
-
 		fetchJobs();
 	}, []);
 
@@ -62,13 +63,10 @@ export default function ApplyStatus() {
 		  setFilteredJobs(jobs);
 		} else {
 		  const filtered = jobs.filter((job) => job.status.trim().toUpperCase() === formattedStatus);
-
 		  setFilteredJobs(filtered);
 		}
-	  };
+	};
 	  
-	  
-
 	const handleJobClick = async (job) => {
 		const jobId = job.recruitId || job.id;
 		if (jobId) {
