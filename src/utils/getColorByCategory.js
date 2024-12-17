@@ -1,4 +1,4 @@
-export const getColorByCategory = (category) => {
+const getColorByCategory = (category) => {
 	let color;
 	switch (category) {
 		case '동아리':
@@ -27,3 +27,5 @@ export const getColorByCategory = (category) => {
 	}
 	return color;
 };
+
+export default getColorByCategory;

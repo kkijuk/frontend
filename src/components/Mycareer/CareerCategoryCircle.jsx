@@ -2,41 +2,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const getBackgroundColor = (category) => {
-	let color;
-	switch (category) {
-		case '동아리':
-			color = '#FCC400';
-			break;
-		case '대외활동':
-			color = '#77AFF2';
-			break;
-		case '공모전/대회':
-			color = '#C48DEF';
-			break;
-		case '프로젝트':
-			color = '#78D333';
-			break;
-		case '경력':
-			color = '#FA7C79';
-			break;
-		case '교육':
-			color = '#F99538';
-			break;
-		case '기타':
-			color = '#707070';
-			break;
-		default:
-			color = '#707070';
-	}
-	return color;
-};
+import getColorByCategory from '../../utils/getColorByCategory';
 
 const Circle = styled.div`
 	width: 15px;
 	height: 15px;
 	border-radius: 50%;
-	background-color: ${(props) => getBackgroundColor(props.category)};
+	background-color: ${(props) => getColorByCategory(props.category)};
 	margin: 0 6px 6px 0;
 `;
 

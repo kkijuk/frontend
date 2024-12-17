@@ -1,6 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
+
+import queryClient from './api/queryClient/queryClient';
+import { AuthProvider } from './components/AuthContext';
+
 import Home from './pages/Home';
 import MyPage from './pages/Mypage/Mypage';
 import MyCareer from './pages/Mycareer/Mycareer';
@@ -10,7 +15,6 @@ import ApplyStatus from './pages/Apply/ApplyStatus';
 import Community from './pages/Community';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import MyCareerD from './pages/Mycareer/MycareerD';
 import MycareerDetail from './pages/Mycareer/MycareerDetail';
 
 import SignupSuccess from './pages/SignupSuccess';
@@ -41,7 +45,6 @@ import SignupInterest from './pages/SignupInterest';
 
 import Header from './components/Header';
 import FilterPage from './components/Apply/FilterPage';
-import { AuthProvider } from './components/AuthContext';
 import LoginRequired from './pages/LoginRequired';
 
 const AppContainer = styled.div`
@@ -119,10 +122,12 @@ const App = () => {
 
 export default function AppWrapper() {
 	return (
-		<Router>
-			<AuthProvider>
-				<App />
-			</AuthProvider>
-		</Router>
+		<QueryClientProvider client={queryClient}>
+			<Router>
+				<AuthProvider>
+					<App />
+				</AuthProvider>
+			</Router>
+		</QueryClientProvider>
 	);
 }
