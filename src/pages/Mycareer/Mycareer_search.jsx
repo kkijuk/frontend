@@ -5,6 +5,7 @@ import SearchBar from '../../components/Mycareer/shareSearchBar';
 import { useSearchParams } from 'react-router-dom';
 import MycareerSearchView from '../../components/MycareerSearch/MycareerSearchView';
 import { useFetchActivity } from '../../hooks/MycareerSearch/useFetchActivity';
+import MycareerSearchTotal from '../../components/MycareerSearch/MycareerSearchTotal';
 
 const Container = styled.div`
 	width: 100%;
@@ -56,25 +57,42 @@ const SearchQueryResult = styled.h1`
 	line-height: normal;
 `;
 
+const BackgroundSection = styled.div`
+	width: 100vw;
+	min-height: 80vh;
+	background-color: #f0f0f0;
+	position: relative;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	padding: 20px 0;
+`;
+
 export default function MycareerSearch() {
 	const [searchParams] = useSearchParams();
 	const [view, setView] = useState('1');
 	const [sortOrder, setSortOrder] = useState('new');
-	const { data: activity, isLoading, error } = useFetchActivity(searchParams, sortOrder);
-	console.log(activity);
 
 	const searchQuery = searchParams.get('query') || '';
 
 	return (
-		<Container>
-			<SearchBox>
-				<Title>내커리어</Title>
-				<SearchBar initialSearchQuery={searchQuery} />
-			</SearchBox>
-			<SearchQueryResultBox>
-				<SearchQueryResult>'{searchQuery}' 검색 결과</SearchQueryResult>
-			</SearchQueryResultBox>
-			<MycareerSearchView view={view} onViewToggle={setView} sortOrder={sortOrder} onSortToggle={setSortOrder} />
-		</Container>
+		<>
+			<Container>
+				<SearchBox>
+					<Title>내커리어</Title>
+					<SearchBar initialSearchQuery={searchQuery} />
+				</SearchBox>
+				<SearchQueryResultBox>
+					<SearchQueryResult>'{searchQuery}' 검색 결과</SearchQueryResult>
+				</SearchQueryResultBox>
+				<MycareerSearchView view={view} onViewToggle={setView} sortOrder={sortOrder} onSortToggle={setSortOrder} />
+			</Container>
+			<BackgroundSection>
+				{view === '1' && <MycareerSearchTotal sortOrder={sortOrder} searchQuery={searchQuery}></MycareerSearchTotal>}
+				{view === '2' && <MycareerSearchTotal></MycareerSearchTotal>}
+				{view === '3' && <MycareerSearchTotal></MycareerSearchTotal>}
+			</BackgroundSection>
+		</>
 	);
 }
