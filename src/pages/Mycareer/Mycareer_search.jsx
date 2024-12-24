@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import Title from '../../components/Apply/Title';
 import SearchBar from '../../components/Mycareer/shareSearchBar';
 import { useSearchParams } from 'react-router-dom';
-import MycareerSearchView from '../../components/MycareerSearch/MycareerSearchView';
-import { useFetchActivity } from '../../hooks/MycareerSearch/useFetchActivity';
-import MycareerSearchTotal from '../../components/MycareerSearch/MycareerSearchTotal';
+import MyCareerSearchView from '../../components/MyCareerSearch/MyCareerSearchView';
+import { useFetchActivity } from '../../hooks/MyCareerSearch/useFetchActivity';
+import MyCareerSearchTotal from '../../components/MyCareerSearch/MyCareerSearchTotal';
 
 const Container = styled.div`
 	width: 100%;
@@ -69,7 +69,7 @@ const BackgroundSection = styled.div`
 	padding: 20px 0;
 `;
 
-export default function MycareerSearch() {
+export default function MyCareerSearch() {
 	const [searchParams] = useSearchParams();
 	const [view, setView] = useState('1');
 	const [sortOrder, setSortOrder] = useState('new');
@@ -86,12 +86,17 @@ export default function MycareerSearch() {
 				<SearchQueryResultBox>
 					<SearchQueryResult>'{searchQuery}' 검색 결과</SearchQueryResult>
 				</SearchQueryResultBox>
-				<MycareerSearchView view={view} onViewToggle={setView} sortOrder={sortOrder} onSortToggle={setSortOrder} />
+				<MyCareerSearchView view={view} onViewToggle={setView} sortOrder={sortOrder} onSortToggle={setSortOrder} />
 			</Container>
 			<BackgroundSection>
-				{view === '1' && <MycareerSearchTotal sortOrder={sortOrder} searchQuery={searchQuery}></MycareerSearchTotal>}
-				{view === '2' && <MycareerSearchTotal></MycareerSearchTotal>}
-				{view === '3' && <MycareerSearchTotal></MycareerSearchTotal>}
+				{view === '1' && (
+					<MyCareerSearchTotal
+						sortOrder={sortOrder}
+						searchQuery={searchQuery}
+						onViewToggle={setView}></MyCareerSearchTotal>
+				)}
+				{view === '2' && <MyCareerSearchTotal></MyCareerSearchTotal>}
+				{view === '3' && <MyCareerSearchTotal></MyCareerSearchTotal>}
 			</BackgroundSection>
 		</>
 	);
