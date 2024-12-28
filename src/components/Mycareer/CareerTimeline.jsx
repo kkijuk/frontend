@@ -4,27 +4,37 @@ import styled from 'styled-components';
 import TimelineChart from '../Mycareer/TimelineChart'; // 추가
 
 const TimelineBox = styled.div`
-	width: 95%; /* 화면 크기에 맞게 너비 조정 */
+
+	width: 95%;
 	height: 160px;
-	max-width: 820px; /* 최대 너비 제한 */
+	max-width: 820px;
 	border-radius: 10px;
 	border: 1px solid var(--gray-03, #d9d9d9);
 	background-color: white;
-
 	margin: 0 auto;
 	margin-bottom: 30px;
-	white-space: nowrap; /* 줄바꿈 방지 */
+	white-space: nowrap;
+	overflow: hidden; // 추가: 내부 컨텐츠가 넘치지 않도록 함
+	position: relative; // 추가: 자식 요소의 절대 위치 기준점
 
 	@media (max-width: 600px) {
-		padding: 1px 0; /* 작은 화면에서 패딩 축소 */
-		margin-bottom: 20px; /* 마진 조정 */
+		padding: 1px 0;
+		margin-bottom: 20px;
 	}
+`;
+
+const ChartWrapper = styled.div`
+	position: absolute;
+	left: -100px; // 차트를 왼쪽으로 이동
+	right: 20px; // 오른쪽 여백 조정
 `;
 
 const CareerTimeline = ({ data }) => {
 	return (
 		<TimelineBox>
-			<TimelineChart data={data} /> {/* 차트 추가 */}
+			<ChartWrapper>
+				<TimelineChart data={data} />
+			</ChartWrapper>
 		</TimelineBox>
 	);
 };

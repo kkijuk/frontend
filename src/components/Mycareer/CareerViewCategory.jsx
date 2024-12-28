@@ -107,14 +107,12 @@ const Date = styled.div`
 `;
 
 const CareerViewCategory = ({ data }) => {
-	console.log(data);
 	const sortedKey = Object.keys(data).sort((a, b) => b - a);
 
 	const navigate = useNavigate();
 	const handleListBoxClick = async (careerId) => {
 		try {
 			const responseData = await ViewCareerDetail(careerId);
-			console.log('Received careerId:', careerId);
 			if (responseData) {
 				window.scrollTo(0, 0);
 
@@ -139,17 +137,15 @@ const CareerViewCategory = ({ data }) => {
 			<CategoryBox>
 				{sortedKey.map((category, index) => {
 					return (
-						<React.Fragment key={index}>
+						<React.Fragment key={category}>
 							<Category>
 								<CareerCategoryCircle category={category} />
 								<CategoryText>{category}</CategoryText>
 							</Category>
 							{data[category].map((item, careerIndex) => {
-								console.log('Item:', item);
-								console.log('Item category:', category);
 								return (
 									<ListBox
-										key={careerIndex}
+										key={`${item.id}_${item.category}`}
 										onClick={() => handleListBoxClick(item.id)} // 클릭 시 career.id 전송
 									>
 										<Name>
