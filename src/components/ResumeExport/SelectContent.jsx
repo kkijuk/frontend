@@ -10,13 +10,14 @@ const Wrapper = styled.div`
 const CategoryBox = styled.div`
 	width: 820px;
 	height: 33px;
+	border: 1px solid black;
 `;
 
 const Category = styled.div`
 	height: 33px;
 	display: inline-flex; /* Flexbox로 설정하여 수직 가운데 정렬 가능 */
 	align-items: center; /* 세로 가운데 정렬 */
-	padding: 0 28px; /* 양쪽에 28px의 공간을 줌 */
+	padding: 0 25px; /* 양쪽에 28px의 공간을 줌 */
 	border-radius: 10px 10px 0px 0px;
 	background-color: ${(props) =>
 		props.isSelected ? 'var(--gray-06, #F5F5F5)' : '#FFFFFF'}; /* 선택 여부에 따른 배경색 */
@@ -77,6 +78,54 @@ export default function SelectContent() {
 				</>
 			);
 		}
+		if (selectedCategory === 4) {
+			return (
+				<>
+					<Experience text="웹개발 소학회" />
+					<Experience text="IT서비스 개발 동아리" />
+				</>
+			);
+		}
+		if (selectedCategory === 5) {
+			return (
+				<>
+					<Experience text="웹개발 소학회" />
+					<Experience text="IT서비스 개발 동아리" />
+				</>
+			);
+		}
+		if (selectedCategory === 6) {
+			return (
+				<>
+					<Experience text="웹개발 소학회" />
+					<Experience text="IT서비스 개발 동아리" />
+				</>
+			);
+		}
+		if (selectedCategory === 7) {
+			return (
+				<>
+					<Experience text="웹개발 소학회" />
+					<Experience text="IT서비스 개발 동아리" />
+				</>
+			);
+		}
+		if (selectedCategory === 8) {
+			return (
+				<>
+					<Experience text="웹개발 소학회" />
+					<Experience text="IT서비스 개발 동아리" />
+				</>
+			);
+		}
+		if (selectedCategory === 9) {
+			return (
+				<>
+					<Experience text="웹개발 소학회" />
+					<Experience text="IT서비스 개발 동아리" />
+				</>
+			);
+		}
 	};
 
 	return (
@@ -90,6 +139,24 @@ export default function SelectContent() {
 				</Category>
 				<Category isSelected={selectedCategory === 3} onClick={() => handleCategoryClick(3)}>
 					<CategoryText isSelected={selectedCategory === 3}>활동 및 경험</CategoryText>
+				</Category>
+				<Category isSelected={selectedCategory === 4} onClick={() => handleCategoryClick(4)}>
+					<CategoryText isSelected={selectedCategory === 4}>프로젝트</CategoryText>
+				</Category>
+				<Category isSelected={selectedCategory === 5} onClick={() => handleCategoryClick(5)}>
+					<CategoryText isSelected={selectedCategory === 5}>교육</CategoryText>
+				</Category>
+				<Category isSelected={selectedCategory === 6} onClick={() => handleCategoryClick(6)}>
+					<CategoryText isSelected={selectedCategory === 6}>수상</CategoryText>
+				</Category>
+				<Category isSelected={selectedCategory === 7} onClick={() => handleCategoryClick(7)}>
+					<CategoryText isSelected={selectedCategory === 7}>자격증/외국어</CategoryText>
+				</Category>
+				<Category isSelected={selectedCategory === 8} onClick={() => handleCategoryClick(8)}>
+					<CategoryText isSelected={selectedCategory === 8}>스킬</CategoryText>
+				</Category>
+				<Category isSelected={selectedCategory === 9} onClick={() => handleCategoryClick(9)}>
+					<CategoryText isSelected={selectedCategory === 9}>추가자료</CategoryText>
 				</Category>
 			</CategoryBox>
 
