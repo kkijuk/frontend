@@ -7,6 +7,7 @@ import { useSearchParams } from 'react-router-dom';
 import MyCareerSearchView from '../../components/MyCareerSearch/MyCareerSearchView';
 import { useFetchActivity } from '../../hooks/MyCareerSearch/useFetchActivity';
 import MyCareerSearchTotal from '../../components/MyCareerSearch/MyCareerSearchTotal';
+import MyCareerSearchActivity from '../../components/MyCareerSearch/MyCareerSearchActivity/MyCareerSearchActivity';
 
 const Container = styled.div`
 	width: 100%;
@@ -74,11 +75,10 @@ export default function MyCareerSearch() {
 	const [searchParams] = useSearchParams();
 	const [view, setView] = useState('1');
 	const [sortOrder, setSortOrder] = useState('new');
-  
+
 	const searchQuery = searchParams.get('query') || '';
 
 	return (
-
 		<>
 			<Container>
 				<SearchBox>
@@ -92,12 +92,17 @@ export default function MyCareerSearch() {
 			</Container>
 			<BackgroundSection>
 				{view === '1' && (
-					<MyCareerSearchTotal	
+					<MyCareerSearchTotal
 						sortOrder={sortOrder}
 						searchQuery={searchQuery}
 						onViewToggle={setView}></MyCareerSearchTotal>
 				)}
-				{view === '2' && <MyCareerSearchTotal></MyCareerSearchTotal>}
+				{view === '2' && (
+					<MyCareerSearchActivity
+						sortOrder={sortOrder}
+						searchQuery={searchQuery}
+						onViewToggle={setView}></MyCareerSearchActivity>
+				)}
 				{view === '3' && <MyCareerSearchTotal></MyCareerSearchTotal>}
 			</BackgroundSection>
 		</>
