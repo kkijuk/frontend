@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Title from '../../components/Apply/Title';
 import SearchBar from '../../components/Mycareer/shareSearchBar';
 import { useSearchParams } from 'react-router-dom';
+
 import MyCareerSearchView from '../../components/MyCareerSearch/MyCareerSearchView';
 import { useFetchActivity } from '../../hooks/MyCareerSearch/useFetchActivity';
 import MyCareerSearchTotal from '../../components/MyCareerSearch/MyCareerSearchTotal';
@@ -73,10 +74,11 @@ export default function MyCareerSearch() {
 	const [searchParams] = useSearchParams();
 	const [view, setView] = useState('1');
 	const [sortOrder, setSortOrder] = useState('new');
-
+  
 	const searchQuery = searchParams.get('query') || '';
 
 	return (
+
 		<>
 			<Container>
 				<SearchBox>

@@ -150,8 +150,6 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
       }
     }
   };
-  
-  
 
   // 태그 삭제 (DELETE 요청)
   const handleTagRemove = async (tagName) => {
@@ -191,12 +189,13 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
               <CloseButton onClick={() => handleTagRemove(tag)}>x</CloseButton>
             </Tag>
           ))}
-          <TagInput
+          {/* 리뷰 제목이 태그로 변환되는 부분 주석 처리 */}
+          {/* <TagInput
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             placeholder="태그 입력"
-          />
+          /> */}
         </TagInputContainer>
       </Row>
       {isTagBoxVisible && (

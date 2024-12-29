@@ -44,6 +44,7 @@ import PasswordReset from './pages/Mypage/PasswordReset';
 import SignupInterest from './pages/SignupInterest';
 
 import Header from './components/Header';
+import Footer from './components/Footer';
 import FilterPage from './components/Apply/FilterPage';
 import LoginRequired from './pages/LoginRequired';
 
@@ -116,6 +117,7 @@ const App = () => {
 					<Route path="/login-required" element={<LoginRequired />} />
 				</Routes>
 			</MainContent>
+			{!isCommingSoon && <Footer />}
 		</AppContainer>
 	);
 };
