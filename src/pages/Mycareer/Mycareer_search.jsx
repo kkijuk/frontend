@@ -90,7 +90,7 @@ export default function MyCareerSearch() {
 			</Container>
 			<BackgroundSection>
 				{view === '1' && (
-					<MyCareerSearchTotal
+					<MyCareerSearchTotal	
 						sortOrder={sortOrder}
 						searchQuery={searchQuery}
 						onViewToggle={setView}></MyCareerSearchTotal>

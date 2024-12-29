@@ -116,7 +116,7 @@ export default function MyCareerSearchTotalActivityDetail({ activityDetail, isAc
 		<Container>
 			{isActivityDetailLoading
 				? 'loading...'
-				: activityDetail.data.map((activityDetail, idx) => (
+				: activityDetail?.data.data.map((activityDetail, idx) => (
 						<Box key={idx}>
 							<TopWrapper>
 								<TopLeft>

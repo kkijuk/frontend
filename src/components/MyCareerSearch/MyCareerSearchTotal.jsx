@@ -5,6 +5,10 @@ import { useFetchActivityDetail } from '../../hooks/MyCareerSearch/useFetchActiv
 
 import MyCareerSearchTotalActivity from './MyCareerSearchTotal/MyCareerSearchTotalActivity';
 import MyCareerSearchTotalActivityDetail from './MyCareerSearchTotal/MyCareerSearchTotalActivityDetail';
+import { useFetchTagList } from '../../hooks/MyCareerSearch/useFetchTagList';
+import MyCareerSearchTotalActivityTags from './MyCareerSearchTotal/\bMyCareerSearchTotalActivityTags';
+import { getActivityByTag } from '../../api/MycareerSearch/getActivityByTag';
+import { useFetchActivityByTag } from '../../hooks/MyCareerSearch/useFetchActivityByTag';
 
 const Container = styled.div`
 	width: 100%;
@@ -127,6 +131,24 @@ const activityDetailMockData = {
 	],
 };
 
+const activityTagListMockData = {
+	message: '조회가 정상적으로 이루어졌습니다.',
+	data: [
+		{
+			tagId: 3,
+			tagName: '소통 방법',
+		},
+		{
+			tagId: 1,
+			tagName: '소통 소통',
+		},
+		{
+			tagId: 2,
+			tagName: '소통 하기',
+		},
+	],
+};
+
 export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewToggle }) {
 	const {
 		data: activity,
@@ -140,23 +162,47 @@ export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewTogg
 		error: activityDetailError,
 	} = useFetchActivityDetail(searchQuery, sortOrder);
 
+	const {
+		data: activityTagList,
+		isLoading: isActivityTagListLoading,
+		error: activityTagListError,
+	} = useFetchTagList(searchQuery);
+
+	// const {} = useFetchActivityByTag(tagID, sortOrder);
+
 	const handleButtonClick = (e) => {
 		onViewToggle(e.target.value);
 	};
+
+	console.log(activityTagList);
 
 	return (
 		<Container>
 			<Title>활동 ({activity?.data.data.length})</Title>
 			<MyCareerSearchTotalActivity activity={activity} isActivityLoading={isActivityLoading} />
+
 			<Wrapper>
-				<Title>활동기록 ({activityDetailMockData?.data.length})</Title>
+				<Title>활동기록 ({activityDetail?.data.data.length})</Title>
 				<ChangeViewButton value="2" onClick={handleButtonClick}>
 					모두보기
 				</ChangeViewButton>
 			</Wrapper>
 			<MyCareerSearchTotalActivityDetail
-				activityDetail={activityDetailMockData}
+				activityDetail={activityDetail}
 				isActivityDetailLoading={isActivityDetailLoading}
+			/>
+
+			<Wrapper>
+				<Title>태그 ({activityTagList?.data.data.length})</Title>
+				<ChangeViewButton value="3" onClick={handleButtonClick}>
+					모두보기
+				</ChangeViewButton>
+			</Wrapper>
+
+			<MyCareerSearchTotalActivityTags
+				activityTagList={activityTagList}
+				isActivityTagListLoading={isActivityTagListLoading}
+				sortOrder={sortOrder}
 			/>
 		</Container>
 	);
