@@ -58,7 +58,10 @@ export default function Footer() {
 						<BoldText>사업자등록번호 798-06-02922</BoldText>
 						<br />
 					</nameBox>
+					<br />
 					kkijuk30@gmail.com
+					<br />
+					<BoldText>Copyright © 끼적. All rights reserved.</BoldText>
 					<br />
 					<logoBox>
 						<img
