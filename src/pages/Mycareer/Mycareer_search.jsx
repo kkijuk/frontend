@@ -7,8 +7,10 @@ import { useSearchParams } from 'react-router-dom';
 import MyCareerSearchView from '../../components/MyCareerSearch/MyCareerSearchView';
 import { useFetchActivity } from '../../hooks/MyCareerSearch/useFetchActivity';
 import MyCareerSearchTotal from '../../components/MyCareerSearch/MyCareerSearchTotal';
+
 import MyCareerSearchActivity from '../../components/MyCareerSearch/MyCareerSearchActivity/MyCareerSearchActivity';
 import MyCareerSearchTag from '../../components/MyCareerSearch/MyCareerSearchTag/MyCareerSearchTag';
+
 
 const Container = styled.div`
 	width: 100%;

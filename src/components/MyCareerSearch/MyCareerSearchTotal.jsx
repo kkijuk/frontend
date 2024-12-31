@@ -6,7 +6,9 @@ import { useFetchActivityDetail } from '../../hooks/MyCareerSearch/useFetchActiv
 import MyCareerSearchTotalActivity from './MyCareerSearchTotal/MyCareerSearchTotalActivity';
 import MyCareerSearchTotalActivityDetail from './MyCareerSearchTotal/MyCareerSearchTotalActivityDetail';
 import { useFetchTagList } from '../../hooks/MyCareerSearch/useFetchTagList';
+
 import MyCareerSearchTotalActivityTags from './MyCareerSearchTotal/MyCareerSearchTotalActivityTags';
+
 import { getActivityByTag } from '../../api/MycareerSearch/getActivityByTag';
 import { useFetchActivityByTag } from '../../hooks/MyCareerSearch/useFetchActivityByTag';
 
