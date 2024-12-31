@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Title from '../../components/Apply/Title';
 import SearchBar from '../../components/Mycareer/shareSearchBar';
 import { useSearchParams } from 'react-router-dom';
-import MycareerSearchView from '../../components/MycareerSearch/MycareerSearchView';
+import MycareerSearchView from '../../components/MyCareerSearch/MycareerSearchView';
 import { useFetchActivity } from '../../hooks/MycareerSearch/useFetchActivity';
 
 const Container = styled.div`
