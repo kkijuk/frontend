@@ -6,7 +6,9 @@ import { useFetchActivityDetail } from '../../hooks/MyCareerSearch/useFetchActiv
 import MyCareerSearchTotalActivity from './MyCareerSearchTotal/MyCareerSearchTotalActivity';
 import MyCareerSearchTotalActivityDetail from './MyCareerSearchTotal/MyCareerSearchTotalActivityDetail';
 import { useFetchTagList } from '../../hooks/MyCareerSearch/useFetchTagList';
-import MyCareerSearchTotalActivityTags from './MyCareerSearchTotal/\bMyCareerSearchTotalActivityTags';
+
+import MyCareerSearchTotalActivityTags from './MyCareerSearchTotal/MyCareerSearchTotalActivityTags';
+
 import { getActivityByTag } from '../../api/MycareerSearch/getActivityByTag';
 import { useFetchActivityByTag } from '../../hooks/MyCareerSearch/useFetchActivityByTag';
 
@@ -44,111 +46,6 @@ const ChangeViewButton = styled.button`
 	color: var(--gray-02, #707070);
 `;
 
-const activityDetailMockData = {
-	message: '활동 조회가 정상적으로 이루어졌습니다.',
-	data: [
-		{
-			careerId: 1, //"활동"에 대한 데이터들 ( 활동 아이디 )
-			careerType: '프로젝트', //카테고리
-			careerTitle: '웹 프로젝트', //활동 명
-			careerAlias: '끼적', //활동 별칭
-			startdate: '2024-04-14', //활동 시작 날짜
-			endDate: '2024-10-14', //활동 종료 날짜
-			detailList: [
-				//"활동 기록" 에 대한 데이터들
-				{
-					detailId: 1, //활동 기록 아이디
-					title: '피그마', //활동 기록 제목
-					content: '끼적 웹 프로젝트 디자인', //활동 기록 내용
-					startDate: '2024-04-14', //활동 기록 시작 날짜
-					endDate: '2024-10-14', //활동 기록 종료 날짜
-					detailTag: [
-						//태그 관련 데이터들
-						{
-							id: 1, //태그 아이디
-							tagName: '피그마 활용 능력', //태그 이름
-						},
-						{
-							id: 2,
-							tagName: '커뮤니케이션 활용 능력',
-						},
-					],
-				},
-			],
-		},
-		{
-			careerId: 1,
-			careerType: '경력', //카테고리
-			careerTitle: '학원 채점 아르바이트',
-			careerAlias: '근무처',
-			startdate: '2024-04-14',
-			endDate: '2024-10-14',
-			detailList: [
-				{
-					detailId: 3,
-					title: '경력',
-					content: '피그마를 사용해서~',
-					startDate: '2024-04-14',
-					endDate: '2024-10-14',
-					detailTag: [
-						{
-							id: 1,
-							tagName: '피그마 활용 능력',
-						},
-						{
-							id: 2,
-							tagName: '커뮤니케이션 활용 능력',
-						},
-						{
-							id: 3,
-							tagName: '대인관계 능력',
-						},
-					],
-				},
-				{
-					detailId: 3,
-					title: '경력',
-					content: '피그마를 사용해서~',
-					startDate: '2024-04-14',
-					endDate: '2024-10-14',
-					detailTag: [
-						{
-							id: 1,
-							tagName: '피그마 활용 능력',
-						},
-						{
-							id: 2,
-							tagName: '커뮤니케이션 활용 능력',
-						},
-						{
-							id: 3,
-							tagName: '대인관계 능력',
-						},
-					],
-				},
-			],
-		},
-	],
-};
-
-const activityTagListMockData = {
-	message: '조회가 정상적으로 이루어졌습니다.',
-	data: [
-		{
-			tagId: 3,
-			tagName: '소통 방법',
-		},
-		{
-			tagId: 1,
-			tagName: '소통 소통',
-		},
-		{
-			tagId: 2,
-			tagName: '소통 하기',
-		},
-	],
-};
-
 export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewToggle }) {
 	const {
 		data: activity,
@@ -174,15 +71,15 @@ export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewTogg
 		onViewToggle(e.target.value);
 	};
 
-	console.log(activityTagList);
-
 	return (
 		<Container>
 			<Title>활동 ({activity?.data.data.length})</Title>
 			<MyCareerSearchTotalActivity activity={activity} isActivityLoading={isActivityLoading} />
 
 			<Wrapper>
-				<Title>활동기록 ({activityDetail?.data.data.length})</Title>
+				<Title>
+					활동기록 ({activityDetail?.data.data.reduce((total, item) => total + (item.detailList?.length || 0), 0)})
+				</Title>
 				<ChangeViewButton value="2" onClick={handleButtonClick}>
 					모두보기
 				</ChangeViewButton>

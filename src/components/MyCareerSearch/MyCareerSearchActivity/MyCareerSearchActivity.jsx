@@ -1,11 +1,13 @@
 import styled from 'styled-components';
+
 import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
+import { useFetchActivityDetail } from '../../../hooks/MyCareerSearch/useFetchActivityDetail';
 
 const Container = styled.div`
 	width: 100%;
+	max-width: 820px;
+	margin: 0 auto;
 	box-sizing: border-box;
-	padding: 0 15px;
-	margin-bottom: 20px;
 `;
 
 const Box = styled.div`
@@ -107,58 +109,50 @@ const DetailTag = styled.div`
 	line-height: normal;
 `;
 
-// TODO: react query로부터 받아온 데이터로 loading, 데이터 바인딩
+export default function MyCareerSearchActivity({ sortOrder, searchQuery, onViewToggle }) {
+	const {
+		data: activityDetail,
+		isLoading: isActivityDetailLoading,
+		error: activityDetailError,
+	} = useFetchActivityDetail(searchQuery, sortOrder);
 
-export default function MyCareerSearchTotalActivityDetail({ activityDetail, isActivityDetailLoading }) {
-	let totalDetailsRendered = 0; // 총 렌더링된 detail 개수를 추적
+	console.log(activityDetail);
 
 	return (
 		<Container>
 			{isActivityDetailLoading
 				? 'loading...'
-				: activityDetail?.data.data.map((activity, idx) => {
-						// 현재 activity의 detailList에서 렌더링 가능한 최대 개수 계산
-						const remainingDetails = 3 - totalDetailsRendered;
-						if (remainingDetails <= 0) return null; // 총 3개를 초과하면 렌더링 중단
-
-						// 현재 activity의 detailList를 제한된 개수만 렌더링
-						const detailsToRender = activity.detailList.slice(0, remainingDetails);
-
-						// 렌더링된 detail 개수 업데이트
-						totalDetailsRendered += detailsToRender.length;
-
-						return (
-							<Box key={idx}>
-								<TopWrapper>
-									<TopLeft>
-										<CareerCategoryCircle category={activity.careerType} />
-										<DetailCareerTitle>
-											{activity.careerTitle} / {activity.careerAlias}
-										</DetailCareerTitle>
-									</TopLeft>
-									<DetailCareerDate>
-										{activity.startdate} ~ {activity.endDate}
-									</DetailCareerDate>
-								</TopWrapper>
-								<MainWrapper>
-									{detailsToRender.map((detail, i) => (
-										<DetailWrapper key={i}>
-											<TopWrapper>
-												<DetailTitle>{detail.title}</DetailTitle>
-												<DetailCareerDate>{detail.endDate}</DetailCareerDate>
-											</TopWrapper>
-											<DetailContent>{detail.content}</DetailContent>
-											<BottomWrapper>
-												{detail.detailTag.map((tag, j) => (
-													<DetailTag key={j}>{tag.tagName}</DetailTag>
-												))}
-											</BottomWrapper>
-										</DetailWrapper>
-									))}
-								</MainWrapper>
-							</Box>
-						);
-					})}
+				: activityDetail?.data.data.map((activityDetail, idx) => (
+						<Box key={idx}>
+							<TopWrapper>
+								<TopLeft>
+									<CareerCategoryCircle category={activityDetail.careerType} />
+									<DetailCareerTitle>
+										{activityDetail.careerTitle} / {activityDetail.careerAlias}
+									</DetailCareerTitle>
+								</TopLeft>
+								<DetailCareerDate>
+									{activityDetail.startdate} ~ {activityDetail.endDate}
+								</DetailCareerDate>
+							</TopWrapper>
+							<MainWrapper>
+								{activityDetail.detailList.map((detail, i) => (
+									<DetailWrapper>
+										<TopWrapper>
+											<DetailTitle>{detail.title}</DetailTitle>
+											<DetailCareerDate>{detail.endDate}</DetailCareerDate>
+										</TopWrapper>
+										<DetailContent>{detail.content}</DetailContent>
+										<BottomWrapper>
+											{detail.detailTag.map((tag, j) => (
+												<DetailTag>{tag.tagName}</DetailTag>
+											))}
+										</BottomWrapper>
+									</DetailWrapper>
+								))}
+							</MainWrapper>
+						</Box>
+					))}
 		</Container>
 	);
 }
