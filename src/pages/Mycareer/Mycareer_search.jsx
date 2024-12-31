@@ -8,6 +8,7 @@ import MyCareerSearchView from '../../components/MyCareerSearch/MyCareerSearchVi
 import { useFetchActivity } from '../../hooks/MyCareerSearch/useFetchActivity';
 import MyCareerSearchTotal from '../../components/MyCareerSearch/MyCareerSearchTotal';
 import MyCareerSearchActivity from '../../components/MyCareerSearch/MyCareerSearchActivity/MyCareerSearchActivity';
+import MyCareerSearchTag from '../../components/MyCareerSearch/MyCareerSearchTag/MyCareerSearchTag';
 
 const Container = styled.div`
 	width: 100%;
@@ -103,7 +104,10 @@ export default function MyCareerSearch() {
 						searchQuery={searchQuery}
 						onViewToggle={setView}></MyCareerSearchActivity>
 				)}
-				{view === '3' && <MyCareerSearchTotal></MyCareerSearchTotal>}
+
+				{view === '3' && (
+					<MyCareerSearchTag sortOrder={sortOrder} searchQuery={searchQuery} onViewToggle={setView}></MyCareerSearchTag>
+				)}
 			</BackgroundSection>
 		</>
 	);

@@ -105,6 +105,8 @@ export default function MyCareerSearchTotalActivityTags({ activityTagList, isAct
 		setSelectedTag(tagId); // 선택된 태그 업데이트
 	};
 
+	let totalDetailsRendered = 0; // 총 렌더링된 detail 개수를 추적
+
 	return (
 		<Container>
 			{/* 태그 목록 */}
@@ -127,15 +129,28 @@ export default function MyCareerSearchTotalActivityTags({ activityTagList, isAct
 				) : activityError ? (
 					<p>오류가 발생했습니다. 다시 시도해주세요.</p>
 				) : activityData?.data.data.length > 0 ? (
-					activityData?.data.data.map((activity) => (
-						<ActivityItem key={activity.careerId}>
-							<div>
-								<h3>{activity.careerTitle}</h3>
-								<p>{activity.content}</p>
-							</div>
-							<span>{activity.date}</span>
-						</ActivityItem>
-					))
+					activityData?.data.data.map((activity) => {
+						console.log(activity);
+						const remainingDetails = 3 - totalDetailsRendered;
+						if (remainingDetails <= 0) return null; // 총 3개를 초과하면 렌더링 중단
+
+						// 현재 activity의 detailList를 제한된 개수만 렌더링
+						const detailsToRender = activity.detailList.slice(0, remainingDetails);
+						console.log(detailsToRender);
+
+						// 렌더링된 detail 개수 업데이트
+						totalDetailsRendered += detailsToRender.length;
+
+						return detailsToRender.map((detail, i) => (
+							<ActivityItem key={detail.careerId}>
+								<div>
+									<h3>{detail.title}</h3>
+									<p>{detail.content}</p>
+								</div>
+								<span>{detail.date}</span>
+							</ActivityItem>
+						));
+					})
 				) : (
 					<p>선택된 태그에 대한 활동이 없습니다.</p>
 				)}

@@ -69,15 +69,15 @@ export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewTogg
 		onViewToggle(e.target.value);
 	};
 
-	console.log(activityTagList);
-
 	return (
 		<Container>
 			<Title>활동 ({activity?.data.data.length})</Title>
 			<MyCareerSearchTotalActivity activity={activity} isActivityLoading={isActivityLoading} />
 
 			<Wrapper>
-				<Title>활동기록 ({activityDetail?.data.data.length})</Title>
+				<Title>
+					활동기록 ({activityDetail?.data.data.reduce((total, item) => total + (item.detailList?.length || 0), 0)})
+				</Title>
 				<ChangeViewButton value="2" onClick={handleButtonClick}>
 					모두보기
 				</ChangeViewButton>

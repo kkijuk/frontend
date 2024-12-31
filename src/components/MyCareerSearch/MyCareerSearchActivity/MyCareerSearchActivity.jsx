@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import { useFetchActivityDetail } from '../../../hooks/MyCareerSearch/useFetchActivityDetail';
 import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
+import { useFetchActivityDetail } from '../../../hooks/MyCareerSearch/useFetchActivityDetail';
 
 const Container = styled.div`
 	width: 100%;
