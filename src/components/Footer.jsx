@@ -6,18 +6,17 @@ import paperplaneicon from '../assets/paperplaneicon.png';
 
 const FooterStyle = styled.div`
 	width: 100%;
-	height: 300px;
+	height: 200px;
 	background-color: #edf2f1;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-top: 50px;
 	flex-direction: column;
 	font-family: Pretendard;
 	color: #424242;
-	position: absolute;
-	padding-top: 30px;
-	z-index: 10;
+	padding: 30px 0;
+	box-sizing: border-box; /* 패딩 포함 */
+	margin-top: auto; /* Footer를 아래로 밀기 */
 `;
 
 const SmallText = styled.div`
@@ -34,7 +33,9 @@ const SmallText = styled.div`
 `;
 
 const BoldText = styled.span`
-	font-weight: 700;
+	font-weight: 500;
+	margin-right: 20px;
+	word-spacing: 1px;
 `;
 
 export default function Footer() {
@@ -50,18 +51,17 @@ export default function Footer() {
 		<div>
 			<FooterStyle>
 				<img style={{ width: '70px', height: '30px' }} src={logo} alt="로고" />
-				UMC 6th KKIJUK
-				<br />
 				<br />
 				<SmallText>
-					" 당신의 끼를 적어두세요 "<br />
 					<nameBox>
-						<BoldText>PM</BoldText> 엎질 <BoldText>DESIGN</BoldText> 운히 <BoldText>WEB</BoldText> 카이트 모니 연두 퍼지{' '}
-						<BoldText>SERVER</BoldText> 테이프 넬리 노아 사이다
-						<br />
+						<BoldText>서울특별시 광진구 면목로15길 16</BoldText>
+						<BoldText>사업자등록번호 798-06-02922</BoldText>
 						<br />
 					</nameBox>
+					<br />
 					kkijuk30@gmail.com
+					<br />
+					<BoldText>Copyright © 끼적. All rights reserved.</BoldText>
 					<br />
 					<logoBox>
 						<img
