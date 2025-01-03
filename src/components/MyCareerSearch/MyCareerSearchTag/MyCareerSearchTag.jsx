@@ -142,6 +142,44 @@ const DetailTag = styled.div`
 	line-height: normal;
 `;
 
+const NotExistSearchWrapper = styled.div`
+	color: var(--gray-02, #707070);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-top: 40px;
+	padding: 20px;
+
+	div {
+		margin-bottom: 20px;
+	}
+`;
+
+const NotExistSearchButton = styled.button`
+	border-radius: 0.625rem;
+	background: var(--main-01, #3aaf85);
+	display: flex;
+	width: 11.25rem;
+	height: 1.875rem;
+	justify-content: center;
+	align-items: center;
+	gap: 0.625rem;
+	flex-shrink: 0;
+	color: #ffffff;
+	font-family: Pretendard, sans-serif;
+	font-size: 0.875rem;
+	font-weight: 500;
+	line-height: normal;
+	cursor: pointer;
+	border: none;
+	transition: background-color 0.3s ease;
+
+	&:hover {
+		background-color: #2e9872;
+	}
+`;
+
 export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle }) {
 	const [selectedTag, setSelectedTag] = useState(null); // 선택된 태그 상태
 
@@ -172,6 +210,17 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 
 	console.log(activityTagList);
 	console.log(activityData);
+
+	if (activityTagList?.data?.data.length === 0) {
+		return (
+			<>
+				<NotExistSearchWrapper>
+					<div>'{searchQuery}'의 검색 결과가 없어요.</div>
+					<NotExistSearchButton>내 활동 보러가기</NotExistSearchButton>
+				</NotExistSearchWrapper>
+			</>
+		);
+	}
 
 	return (
 		<Container>

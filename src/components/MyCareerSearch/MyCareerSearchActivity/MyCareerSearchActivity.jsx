@@ -109,6 +109,44 @@ const DetailTag = styled.div`
 	line-height: normal;
 `;
 
+const NotExistSearchWrapper = styled.div`
+	color: var(--gray-02, #707070);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-top: 40px;
+	padding: 20px;
+
+	div {
+		margin-bottom: 20px;
+	}
+`;
+
+const NotExistSearchButton = styled.button`
+	border-radius: 0.625rem;
+	background: var(--main-01, #3aaf85);
+	display: flex;
+	width: 11.25rem;
+	height: 1.875rem;
+	justify-content: center;
+	align-items: center;
+	gap: 0.625rem;
+	flex-shrink: 0;
+	color: #ffffff;
+	font-family: Pretendard, sans-serif;
+	font-size: 0.875rem;
+	font-weight: 500;
+	line-height: normal;
+	cursor: pointer;
+	border: none;
+	transition: background-color 0.3s ease;
+
+	&:hover {
+		background-color: #2e9872;
+	}
+`;
+
 export default function MyCareerSearchActivity({ sortOrder, searchQuery, onViewToggle }) {
 	const {
 		data: activityDetail,
@@ -120,39 +158,48 @@ export default function MyCareerSearchActivity({ sortOrder, searchQuery, onViewT
 
 	return (
 		<Container>
-			{isActivityDetailLoading
-				? 'loading...'
-				: activityDetail?.data.data.map((activityDetail, idx) => (
-						<Box key={idx}>
-							<TopWrapper>
-								<TopLeft>
-									<CareerCategoryCircle category={activityDetail.careerType} />
-									<DetailCareerTitle>
-										{activityDetail.careerTitle} / {activityDetail.careerAlias}
-									</DetailCareerTitle>
-								</TopLeft>
-								<DetailCareerDate>
-									{activityDetail.startdate} ~ {activityDetail.endDate}
-								</DetailCareerDate>
-							</TopWrapper>
-							<MainWrapper>
-								{activityDetail.detailList.map((detail, i) => (
-									<DetailWrapper>
-										<TopWrapper>
-											<DetailTitle>{detail.title}</DetailTitle>
-											<DetailCareerDate>{detail.endDate}</DetailCareerDate>
-										</TopWrapper>
-										<DetailContent>{detail.content}</DetailContent>
-										<BottomWrapper>
-											{detail.detailTag.map((tag, j) => (
-												<DetailTag>{tag.tagName}</DetailTag>
-											))}
-										</BottomWrapper>
-									</DetailWrapper>
-								))}
-							</MainWrapper>
-						</Box>
-					))}
+			{isActivityDetailLoading ? (
+				'loading...'
+			) : activityDetail?.data?.data?.length === 0 ? (
+				<>
+					<NotExistSearchWrapper>
+						<div>'{searchQuery}'의 검색 결과가 없어요.</div>
+						<NotExistSearchButton>내 활동 보러가기</NotExistSearchButton>
+					</NotExistSearchWrapper>
+				</>
+			) : (
+				activityDetail?.data.data.map((activityDetail, idx) => (
+					<Box key={idx}>
+						<TopWrapper>
+							<TopLeft>
+								<CareerCategoryCircle category={activityDetail.careerType} />
+								<DetailCareerTitle>
+									{activityDetail.careerTitle} / {activityDetail.careerAlias}
+								</DetailCareerTitle>
+							</TopLeft>
+							<DetailCareerDate>
+								{activityDetail.startdate} ~ {activityDetail.endDate}
+							</DetailCareerDate>
+						</TopWrapper>
+						<MainWrapper>
+							{activityDetail.detailList.map((detail, i) => (
+								<DetailWrapper>
+									<TopWrapper>
+										<DetailTitle>{detail.title}</DetailTitle>
+										<DetailCareerDate>{detail.endDate}</DetailCareerDate>
+									</TopWrapper>
+									<DetailContent>{detail.content}</DetailContent>
+									<BottomWrapper>
+										{detail.detailTag.map((tag, j) => (
+											<DetailTag>{tag.tagName}</DetailTag>
+										))}
+									</BottomWrapper>
+								</DetailWrapper>
+							))}
+						</MainWrapper>
+					</Box>
+				))
+			)}
 		</Container>
 	);
 }
