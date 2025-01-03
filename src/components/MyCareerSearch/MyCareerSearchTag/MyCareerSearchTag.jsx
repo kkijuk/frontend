@@ -161,6 +161,9 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 		if (activityTagList?.data?.data.length > 0) {
 			setSelectedTag(activityTagList.data.data[0].tagId); // 첫 번째 태그 ID를 기본값으로 설정
 		}
+		return () => {
+			setSelectedTag(null);
+		};
 	}, [activityTagList]);
 
 	const handleTagClick = (tagId) => {
