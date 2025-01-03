@@ -82,6 +82,15 @@ const ActivityItem = styled.div`
 	}
 `;
 
+const NotExistSearch = styled.div`
+	color: var(--gray-02, #707070);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+	padding-bottom: 40px;
+`;
+
 // TODO: API 데이터 형식 피그마와 대조하여 수정 필요
 
 export default function MyCareerSearchTotalActivityTags({ activityTagList, isActivityTagListLoading, sortOrder }) {
@@ -111,53 +120,56 @@ export default function MyCareerSearchTotalActivityTags({ activityTagList, isAct
 	let totalDetailsRendered = 0; // 총 렌더링된 detail 개수를 추적
 
 	return (
-		<Container>
-			{/* 태그 목록 */}
-			<TagWrapper>
-				{isActivityTagListLoading ? (
-					<div>로딩중...</div>
-				) : (
-					activityTagList?.data?.data.map((tag) => (
-						<Tag key={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => handleTagClick(tag.tagId)}>
-							{tag.tagName}
-						</Tag>
-					))
-				)}
-			</TagWrapper>
+		<>
+			{/* 태그 및 활동 리스트 */}
+			{isActivityTagListLoading ? (
+				<p>로딩중...</p>
+			) : activityTagList?.data?.data.length === 0 ? (
+				<NotExistSearch>검색 결과가 없어요.</NotExistSearch>
+			) : (
+				<Container>
+					{/* 태그 목록 */}
+					<TagWrapper>
+						{activityTagList?.data?.data.map((tag) => (
+							<Tag key={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => handleTagClick(tag.tagId)}>
+								{tag.tagName}
+							</Tag>
+						))}
+					</TagWrapper>
 
-			{/* 활동 리스트 */}
-			<ActivityWrapper>
-				{isActivityLoading ? (
-					<p>로딩중...</p>
-				) : activityError ? (
-					<p>오류가 발생했습니다. 다시 시도해주세요.</p>
-				) : activityData?.data.data.length > 0 ? (
-					activityData?.data.data.map((activity) => {
-						console.log(activity);
-						const remainingDetails = 3 - totalDetailsRendered;
-						if (remainingDetails <= 0) return null; // 총 3개를 초과하면 렌더링 중단
+					{/* 활동 리스트 */}
+					{isActivityLoading ? (
+						<p>로딩중...</p>
+					) : activityError ? (
+						<p>오류가 발생했습니다. 다시 시도해주세요.</p>
+					) : activityData?.data.data.length > 0 ? (
+						<ActivityWrapper>
+							{activityData?.data.data.map((activity) => {
+								const remainingDetails = 3 - totalDetailsRendered;
+								if (remainingDetails <= 0) return null; // 총 3개를 초과하면 렌더링 중단
 
-						// 현재 activity의 detailList를 제한된 개수만 렌더링
-						const detailsToRender = activity.detailList.slice(0, remainingDetails);
-						console.log(detailsToRender);
+								// 현재 activity의 detailList를 제한된 개수만 렌더링
+								const detailsToRender = activity.detailList.slice(0, remainingDetails);
 
-						// 렌더링된 detail 개수 업데이트
-						totalDetailsRendered += detailsToRender.length;
+								// 렌더링된 detail 개수 업데이트
+								totalDetailsRendered += detailsToRender.length;
 
-						return detailsToRender.map((detail, i) => (
-							<ActivityItem key={detail.careerId}>
-								<div>
-									<h3>{detail.title}</h3>
-									<p>{detail.content}</p>
-								</div>
-								<span>{detail.date}</span>
-							</ActivityItem>
-						));
-					})
-				) : (
-					<p>선택된 태그에 대한 활동이 없습니다.</p>
-				)}
-			</ActivityWrapper>
-		</Container>
+								return detailsToRender.map((detail, i) => (
+									<ActivityItem key={detail.careerId}>
+										<div>
+											<h3>{detail.title}</h3>
+											<p>{detail.content}</p>
+										</div>
+										<span>{detail.date}</span>
+									</ActivityItem>
+								));
+							})}
+						</ActivityWrapper>
+					) : (
+						<NotExistSearch>선택된 태그에 대한 활동이 없어요.</NotExistSearch>
+					)}
+				</Container>
+			)}
+		</>
 	);
 }

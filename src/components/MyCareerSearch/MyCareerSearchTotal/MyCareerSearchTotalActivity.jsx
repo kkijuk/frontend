@@ -51,12 +51,25 @@ const ActivityCareerTitle = styled.div`
 	margin-left: 5px;
 `;
 
+const NotExistSearch = styled.div`
+	color: var(--gray-02, #707070);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+	padding-bottom: 40px;
+`;
+
 export default function MyCareerSearchTotalActivity({ activity, isActivityLoading }) {
 	return (
-		<ActivityContainer>
-			{isActivityLoading
-				? 'loading...'
-				: activity.data.data.map((activity, idx) => (
+		<>
+			{isActivityLoading ? (
+				<ActivityContainer>loading...</ActivityContainer>
+			) : activity.data.data.length === 0 ? (
+				<NotExistSearch>검색 결과가 없어요.</NotExistSearch>
+			) : (
+				<ActivityContainer>
+					{activity.data.data.map((activity, idx) => (
 						<ActivityBox key={idx}>
 							<ActivityContent>
 								<CareerCategoryCircle category={activity.category.categoryKoName} />
@@ -70,6 +83,8 @@ export default function MyCareerSearchTotalActivity({ activity, isActivityLoadin
 							</AcitivityDate>
 						</ActivityBox>
 					))}
-		</ActivityContainer>
+				</ActivityContainer>
+			)}
+		</>
 	);
 }
