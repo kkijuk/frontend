@@ -3,14 +3,8 @@ import styled from 'styled-components';
 import Title from '../../components/Apply/Title';
 import SearchBar from '../../components/Mycareer/shareSearchBar';
 import { useSearchParams } from 'react-router-dom';
-
-import MyCareerSearchView from '../../components/MyCareerSearch/MyCareerSearchView';
-import { useFetchActivity } from '../../hooks/MyCareerSearch/useFetchActivity';
-import MyCareerSearchTotal from '../../components/MyCareerSearch/MyCareerSearchTotal';
-
-import MyCareerSearchActivity from '../../components/MyCareerSearch/MyCareerSearchActivity/MyCareerSearchActivity';
-import MyCareerSearchTag from '../../components/MyCareerSearch/MyCareerSearchTag/MyCareerSearchTag';
-
+import MycareerSearchView from '../../components/MyCareerSearch/MycareerSearchView';
+import { useFetchActivity } from '../../hooks/MycareerSearch/useFetchActivity';
 
 const Container = styled.div`
 	width: 100%;
