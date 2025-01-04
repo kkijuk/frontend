@@ -8,7 +8,7 @@ const ActivityContainer = styled.div`
 	padding: 0 15px;
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
-	gap: 50px;
+	gap: 20px 50px;
 	margin-bottom: 20px;
 `;
 

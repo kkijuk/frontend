@@ -66,6 +66,7 @@ export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewTogg
 	} = useFetchTagList(searchQuery);
 
 	// const {} = useFetchActivityByTag(tagID, sortOrder);
+	console.log(activityTagList);
 
 	const handleButtonClick = (e) => {
 		onViewToggle(e.target.value);
@@ -90,7 +91,7 @@ export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewTogg
 			/>
 
 			<Wrapper>
-				<Title>태그 ({activityTagList?.data.data.length})</Title>
+				<Title>태그 ({activityTagList?.data.data.detailCount})</Title>
 				<ChangeViewButton value="3" onClick={handleButtonClick}>
 					모두보기
 				</ChangeViewButton>

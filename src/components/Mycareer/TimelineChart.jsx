@@ -31,15 +31,6 @@ const TimelineChart = () => {
 		fetchData();
 	}, []);
 
-	const categoryColors = {
-		Circle: '#FCC400', // 예시 색상
-		Project: '#78D333',
-		EduCareer: '#F99538',
-		Activity: '#77AFF2',
-		Competition: '#BB7AEF',
-		// 필요한 경우 다른 카테고리 추가
-	};
-
 	const formattedData = rawData.map((item, idx) => ({
 		careerId: item.careerId,
 		y: [new Date(item.startdate).getTime(), new Date(item.enddate).getTime()],

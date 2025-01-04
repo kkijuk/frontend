@@ -105,8 +105,8 @@ export default function MyCareerSearchTotalActivityTags({ activityTagList, isAct
 
 	// 첫 번째 태그를 기본 선택
 	useEffect(() => {
-		if (activityTagList?.data?.data.length > 0) {
-			setSelectedTag(activityTagList.data.data[0].tagId); // 첫 번째 태그 ID를 기본값으로 설정
+		if (activityTagList?.data?.data.tagList.length > 0) {
+			setSelectedTag(activityTagList.data.data.tagList[0].tagId); // 첫 번째 태그 ID를 기본값으로 설정
 		}
 		return () => {
 			setSelectedTag(null);
@@ -124,13 +124,13 @@ export default function MyCareerSearchTotalActivityTags({ activityTagList, isAct
 			{/* 태그 및 활동 리스트 */}
 			{isActivityTagListLoading ? (
 				<p>로딩중...</p>
-			) : activityTagList?.data?.data.length === 0 ? (
+			) : activityTagList?.data?.data.tagList.length === 0 ? (
 				<NotExistSearch>검색 결과가 없어요.</NotExistSearch>
 			) : (
 				<Container>
 					{/* 태그 목록 */}
 					<TagWrapper>
-						{activityTagList?.data?.data.map((tag) => (
+						{activityTagList?.data?.data.tagList.map((tag) => (
 							<Tag key={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => handleTagClick(tag.tagId)}>
 								{tag.tagName}
 							</Tag>

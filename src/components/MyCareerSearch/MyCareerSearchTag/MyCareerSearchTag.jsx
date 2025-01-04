@@ -196,8 +196,8 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 	} = useFetchActivityByTag(selectedTag, sortOrder);
 
 	useEffect(() => {
-		if (activityTagList?.data?.data.length > 0) {
-			setSelectedTag(activityTagList.data.data[0].tagId); // 첫 번째 태그 ID를 기본값으로 설정
+		if (activityTagList?.data?.data.tagList.length > 0) {
+			setSelectedTag(activityTagList.data.data.tagList[0].tagId); // 첫 번째 태그 ID를 기본값으로 설정
 		}
 		return () => {
 			setSelectedTag(null);
@@ -211,7 +211,7 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 	console.log(activityTagList);
 	console.log(activityData);
 
-	if (activityTagList?.data?.data.length === 0) {
+	if (activityTagList?.data?.data.tagList.length === 0) {
 		return (
 			<>
 				<NotExistSearchWrapper>
@@ -228,7 +228,7 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 				{isActivityTagListLoading ? (
 					<div>로딩중...</div>
 				) : (
-					activityTagList?.data?.data.map((tag) => (
+					activityTagList?.data?.data.tagList.map((tag) => (
 						<Tag key={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => handleTagClick(tag.tagId)}>
 							{tag.tagName}
 						</Tag>

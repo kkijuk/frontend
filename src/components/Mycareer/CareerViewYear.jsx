@@ -140,10 +140,12 @@ const CareerViewYear = ({ data }) => {
 							<Year>{year}</Year>
 							{data[year].map((item, index) => {
 								return (
-									<ListBox key={`${item.category}_${item.id}`} onClick={() => handleListBoxClick(item.id)}>
+									<ListBox
+										key={`${item.category.categoryId}_${item.id}`}
+										onClick={() => handleListBoxClick(item.id, item.category.categoryId)}>
 										<Category>
-											<CareerCategoryCircle category={item.category} />
-											<CategoryTextBox>{item.category}</CategoryTextBox>
+											<CareerCategoryCircle category={item.category.categoryKoName} />
+											<CategoryTextBox>{item.category.categoryKoName}</CategoryTextBox>
 										</Category>
 										<CareerContainer>
 											<CareerName>{item.name}</CareerName>

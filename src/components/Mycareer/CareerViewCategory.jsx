@@ -115,10 +115,8 @@ const CareerViewCategory = ({ data }) => {
 			const responseData = await ViewCareerDetail(careerId);
 			if (responseData) {
 				window.scrollTo(0, 0);
-
 				navigate(`/mycareer/${careerId}`, { details: responseData });
 			}
-			// 여기서 tagList를 이용해 추가 작업을 할 수 있습니다.
 		} catch (error) {
 			console.error('Error fetching careerId:', error);
 		}
