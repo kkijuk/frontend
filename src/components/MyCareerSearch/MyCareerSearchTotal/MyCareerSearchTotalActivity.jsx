@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
+import { useNavigate } from 'react-router-dom';
 
 const ActivityContainer = styled.div`
 	width: 100%;
@@ -61,6 +62,8 @@ const NotExistSearch = styled.div`
 `;
 
 export default function MyCareerSearchTotalActivity({ activity, isActivityLoading }) {
+	const navigate = useNavigate();
+
 	return (
 		<>
 			{isActivityLoading ? (
@@ -70,7 +73,9 @@ export default function MyCareerSearchTotalActivity({ activity, isActivityLoadin
 			) : (
 				<ActivityContainer>
 					{activity.data.data.map((activity, idx) => (
-						<ActivityBox key={idx}>
+						<ActivityBox
+							key={idx}
+							onClick={() => navigate(`/mycareer/${activity.category.categoryId}/${activity.careerId}`)}>
 							<ActivityContent>
 								<CareerCategoryCircle category={activity.category.categoryKoName} />
 								<ActivityCareerTitle>

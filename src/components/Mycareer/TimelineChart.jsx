@@ -33,6 +33,7 @@ const TimelineChart = () => {
 
 	const formattedData = rawData.map((item, idx) => ({
 		careerId: item.careerId,
+		category: item.category,
 		y: [new Date(item.startdate).getTime(), new Date(item.enddate).getTime()],
 		name: item.title,
 		fillColor: getColorByCategory(item.category.categoryKoName) || '#707070', // 기본 색상은 검정색
@@ -47,6 +48,7 @@ const TimelineChart = () => {
 		{
 			data: distributedData.map((item) => ({
 				careerId: item.careerId,
+				category: item.category,
 				x: item.x,
 				y: item.y,
 				name: item.name,
@@ -63,7 +65,7 @@ const TimelineChart = () => {
 		const data = chartContext.w.config.series[seriesIndex].data[dataPointIndex];
 
 		if (data && data.careerId) {
-			navigate(`/mycareer/${data.careerId}`);
+			navigate(`/mycareer/${data.category.categoryId}/${data.careerId}`);
 		} else {
 			console.error('Invalid data or careerId not found');
 		}

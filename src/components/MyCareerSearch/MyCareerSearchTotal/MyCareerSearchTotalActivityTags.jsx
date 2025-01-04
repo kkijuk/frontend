@@ -14,7 +14,7 @@ const Container = styled.div`
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-// 태그 리스트 Wrapper
+// 태그 목록 Wrapper
 const TagWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
@@ -31,9 +31,6 @@ const Tag = styled.button`
 	border: 1px solid ${(props) => (props.isActive ? '#3aaf85' : '#f5f5f5')};
 	font-family: Pretendard;
 	font-size: 0.75rem;
-	font-style: normal;
-	font-weight: 400;
-	line-height: normal;
 	cursor: pointer;
 	transition:
 		background-color 0.3s ease,
@@ -52,36 +49,52 @@ const ActivityWrapper = styled.div`
 
 // 활동 항목
 const ActivityItem = styled.div`
-	display: flex;
-	justify-content: space-between;
-	padding: 15px;
+	padding: 25px 15px;
 	border-bottom: 1px solid #eaeaea;
+	display: flex;
+	flex-direction: column;
 
 	&:last-child {
 		border-bottom: none;
 	}
-
-	div {
-		margin-bottom: 10px;
-	}
-
-	h3 {
-		font-size: 1rem;
-		font-weight: 500;
-	}
-
-	p {
-		font-size: 0.85rem;
-		color: #6d6d6d;
-		margin: 5px 0 0 0;
-	}
-
-	span {
-		font-size: 0.75rem;
-		color: #9b9b9b;
-	}
 `;
 
+// 상단 Wrapper (제목과 날짜를 양쪽 정렬)
+const ActivityTop = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+`;
+
+// 제목 (왼쪽)
+const ActivityTitle = styled.h3`
+	font-size: 1rem;
+	font-weight: 500;
+	margin: 0;
+`;
+
+// 날짜 (오른쪽)
+const ActivityDate = styled.div`
+	font-size: 0.85rem;
+	color: #6d6d6d;
+`;
+
+// 콘텐츠
+const ActivityContent = styled.p`
+	font-size: 0.85rem;
+	color: #6d6d6d;
+	margin: 5px 0 0 0;
+`;
+
+// 하단 날짜
+const ActivityFooter = styled.span`
+	font-size: 0.75rem;
+	color: #9b9b9b;
+	margin-top: 5px;
+`;
+
+// 검색 결과가 없을 때 표시
 const NotExistSearch = styled.div`
 	color: var(--gray-02, #707070);
 	display: flex;
@@ -96,9 +109,8 @@ const NotExistSearch = styled.div`
 export default function MyCareerSearchTotalActivityTags({ activityTagList, isActivityTagListLoading, sortOrder }) {
 	const [selectedTag, setSelectedTag] = useState(null); // 선택된 태그 상태
 
-	// useFetchActivityByTag 훅 사용
 	const {
-		data: activityData,
+		data: activityData, // 선택된 태그에 대한 활동
 		isLoading: isActivityLoading,
 		error: activityError,
 	} = useFetchActivityByTag(selectedTag, sortOrder);
@@ -108,20 +120,13 @@ export default function MyCareerSearchTotalActivityTags({ activityTagList, isAct
 		if (activityTagList?.data?.data.tagList.length > 0) {
 			setSelectedTag(activityTagList.data.data.tagList[0].tagId); // 첫 번째 태그 ID를 기본값으로 설정
 		}
-		return () => {
-			setSelectedTag(null);
-		};
+		return () => setSelectedTag(null);
 	}, [activityTagList]);
-
-	const handleTagClick = (tagId) => {
-		setSelectedTag(tagId); // 선택된 태그 업데이트
-	};
 
 	let totalDetailsRendered = 0; // 총 렌더링된 detail 개수를 추적
 
 	return (
 		<>
-			{/* 태그 및 활동 리스트 */}
 			{isActivityTagListLoading ? (
 				<p>로딩중...</p>
 			) : activityTagList?.data?.data.tagList.length === 0 ? (
@@ -131,7 +136,7 @@ export default function MyCareerSearchTotalActivityTags({ activityTagList, isAct
 					{/* 태그 목록 */}
 					<TagWrapper>
 						{activityTagList?.data?.data.tagList.map((tag) => (
-							<Tag key={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => handleTagClick(tag.tagId)}>
+							<Tag key={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => setSelectedTag(tag.tagId)}>
 								{tag.tagName}
 							</Tag>
 						))}
@@ -146,7 +151,7 @@ export default function MyCareerSearchTotalActivityTags({ activityTagList, isAct
 						<ActivityWrapper>
 							{activityData?.data.data.map((activity) => {
 								const remainingDetails = 3 - totalDetailsRendered;
-								if (remainingDetails <= 0) return null; // 총 3개를 초과하면 렌더링 중단
+								if (remainingDetails <= 0) return null; // 총 3개의 detail만 렌더링
 
 								// 현재 activity의 detailList를 제한된 개수만 렌더링
 								const detailsToRender = activity.detailList.slice(0, remainingDetails);
@@ -156,11 +161,12 @@ export default function MyCareerSearchTotalActivityTags({ activityTagList, isAct
 
 								return detailsToRender.map((detail, i) => (
 									<ActivityItem key={detail.careerId}>
-										<div>
-											<h3>{detail.title}</h3>
-											<p>{detail.content}</p>
-										</div>
-										<span>{detail.date}</span>
+										<ActivityTop>
+											<ActivityTitle>{detail.title}</ActivityTitle>
+											<ActivityDate>{detail.endDate}</ActivityDate>
+										</ActivityTop>
+										<ActivityContent>{detail.content}</ActivityContent>
+										<ActivityFooter>{detail.date}</ActivityFooter>
 									</ActivityItem>
 								));
 							})}

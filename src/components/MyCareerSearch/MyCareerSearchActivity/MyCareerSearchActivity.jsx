@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
 import { useFetchActivityDetail } from '../../../hooks/MyCareerSearch/useFetchActivityDetail';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
 	width: 100%;
@@ -148,6 +149,8 @@ const NotExistSearchButton = styled.button`
 `;
 
 export default function MyCareerSearchActivity({ sortOrder, searchQuery, onViewToggle }) {
+	const navigate = useNavigate();
+
 	const {
 		data: activityDetail,
 		isLoading: isActivityDetailLoading,
@@ -164,12 +167,14 @@ export default function MyCareerSearchActivity({ sortOrder, searchQuery, onViewT
 				<>
 					<NotExistSearchWrapper>
 						<div>'{searchQuery}'의 검색 결과가 없어요.</div>
-						<NotExistSearchButton>내 활동 보러가기</NotExistSearchButton>
+						<NotExistSearchButton onClick={() => navigate('/mycareer')}>내 활동 보러가기</NotExistSearchButton>
 					</NotExistSearchWrapper>
 				</>
 			) : (
 				activityDetail?.data.data.map((activityDetail, idx) => (
-					<Box key={idx}>
+					<Box
+						key={idx}
+						onClick={() => navigate(`/mycareer/${activityDetail.category.categoryId}/${activityDetail.careerId}`)}>
 						<TopWrapper>
 							<TopLeft>
 								<CareerCategoryCircle category={activityDetail.careerType} />

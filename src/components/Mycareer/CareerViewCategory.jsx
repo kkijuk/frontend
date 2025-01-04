@@ -110,16 +110,9 @@ const CareerViewCategory = ({ data }) => {
 	const sortedKey = Object.keys(data).sort((a, b) => b - a);
 
 	const navigate = useNavigate();
-	const handleListBoxClick = async (careerId) => {
-		try {
-			const responseData = await ViewCareerDetail(careerId);
-			if (responseData) {
-				window.scrollTo(0, 0);
-				navigate(`/mycareer/${careerId}`, { details: responseData });
-			}
-		} catch (error) {
-			console.error('Error fetching careerId:', error);
-		}
+
+	const handleListBoxClick = (careerId, category) => {
+		navigate(`/mycareer/${category}/${careerId}`, { state: { careerId, category } });
 	};
 
 	if (!sortedKey.length || !data[sortedKey[0]].length) {
@@ -144,7 +137,7 @@ const CareerViewCategory = ({ data }) => {
 								return (
 									<ListBox
 										key={`${item.id}_${item.category}`}
-										onClick={() => handleListBoxClick(item.id)} // 클릭 시 career.id 전송
+										onClick={() => handleListBoxClick(item.id, item.category.categoryId)} // 클릭 시 career.id 전송
 									>
 										<Name>
 											<CareerContainer>

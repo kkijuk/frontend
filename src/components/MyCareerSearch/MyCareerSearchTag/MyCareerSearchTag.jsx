@@ -5,6 +5,7 @@ import { useFetchActivityDetail } from '../../../hooks/MyCareerSearch/useFetchAc
 import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
 import { useFetchTagList } from '../../../hooks/MyCareerSearch/useFetchTagList';
 import { useFetchActivityByTag } from '../../../hooks/MyCareerSearch/useFetchActivityByTag';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
 	width: 100%;
@@ -181,6 +182,7 @@ const NotExistSearchButton = styled.button`
 `;
 
 export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle }) {
+	const navigate = useNavigate();
 	const [selectedTag, setSelectedTag] = useState(null); // 선택된 태그 상태
 
 	const {
@@ -204,19 +206,12 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 		};
 	}, [activityTagList]);
 
-	const handleTagClick = (tagId) => {
-		setSelectedTag(tagId); // 선택된 태그 업데이트
-	};
-
-	console.log(activityTagList);
-	console.log(activityData);
-
 	if (activityTagList?.data?.data.tagList.length === 0) {
 		return (
 			<>
 				<NotExistSearchWrapper>
 					<div>'{searchQuery}'의 검색 결과가 없어요.</div>
-					<NotExistSearchButton>내 활동 보러가기</NotExistSearchButton>
+					<NotExistSearchButton onClick={() => navigate('/mycareer')}>내 활동 보러가기</NotExistSearchButton>
 				</NotExistSearchWrapper>
 			</>
 		);
@@ -229,7 +224,7 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 					<div>로딩중...</div>
 				) : (
 					activityTagList?.data?.data.tagList.map((tag) => (
-						<Tag key={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => handleTagClick(tag.tagId)}>
+						<Tag key={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => setSelectedTag(tag.tagId)}>
 							{tag.tagName}
 						</Tag>
 					))
@@ -238,7 +233,9 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 			{isActivityLoading
 				? 'loading...'
 				: activityData?.data.data.map((activityData, idx) => (
-						<Box key={idx}>
+						<Box
+							key={idx}
+							onClick={() => navigate(`/mycareer/${activityData.category.categoryId}/${activityData.careerId}`)}>
 							<TopWrapper>
 								<TopLeft>
 									<CareerCategoryCircle category={activityData.careerType} />

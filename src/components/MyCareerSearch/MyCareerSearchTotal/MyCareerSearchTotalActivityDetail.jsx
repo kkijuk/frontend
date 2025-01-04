@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
 	width: 100%;
@@ -118,6 +119,7 @@ const NotExistSearch = styled.div`
 // TODO: react query로부터 받아온 데이터로 loading, 데이터 바인딩
 
 export default function MyCareerSearchTotalActivityDetail({ activityDetail, isActivityDetailLoading }) {
+	const navigate = useNavigate();
 	let totalDetailsRendered = 0; // 총 렌더링된 detail 개수를 추적
 
 	return (
@@ -139,7 +141,7 @@ export default function MyCareerSearchTotalActivityDetail({ activityDetail, isAc
 					totalDetailsRendered += detailsToRender.length;
 
 					return (
-						<Box key={idx}>
+						<Box key={idx} onClick={() => navigate(`/mycareer/${activity.category.categoryId}/${activity.careerId}`)}>
 							<TopWrapper>
 								<TopLeft>
 									<CareerCategoryCircle category={activity.careerType} />
