@@ -48,27 +48,26 @@ const ChangeViewButton = styled.button`
 
 export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewToggle }) {
 	const {
-		data: activity,
+		data: activity, // 전체 활동
 		isLoading: isActivityLoading,
 		error: activityError,
 	} = useFetchActivity(searchQuery, sortOrder);
 
 	const {
-		data: activityDetail,
+		data: activityDetail, // 전체 활동기록
 		isLoading: isActivityDetailLoading,
 		error: activityDetailError,
 	} = useFetchActivityDetail(searchQuery, sortOrder);
 
 	const {
-		data: activityTagList,
+		data: activityTagList, // 전체 태그
 		isLoading: isActivityTagListLoading,
 		error: activityTagListError,
 	} = useFetchTagList(searchQuery);
 
-	// const {} = useFetchActivityByTag(tagID, sortOrder);
-
 	const handleButtonClick = (e) => {
 		onViewToggle(e.target.value);
+		window.scrollTo({ top: 0, behavior: 'smooth' });
 	};
 
 	return (
@@ -90,7 +89,7 @@ export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewTogg
 			/>
 
 			<Wrapper>
-				<Title>태그 ({activityTagList?.data.data.length})</Title>
+				<Title>태그 ({activityTagList?.data.data.detailCount})</Title>
 				<ChangeViewButton value="3" onClick={handleButtonClick}>
 					모두보기
 				</ChangeViewButton>
