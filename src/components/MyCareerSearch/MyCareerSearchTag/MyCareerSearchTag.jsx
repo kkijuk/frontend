@@ -5,7 +5,9 @@ import { useFetchActivityDetail } from '../../../hooks/MyCareerSearch/useFetchAc
 import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
 import { useFetchTagList } from '../../../hooks/MyCareerSearch/useFetchTagList';
 import { useFetchActivityByTag } from '../../../hooks/MyCareerSearch/useFetchActivityByTag';
+
 import { useNavigate } from 'react-router-dom';
+
 
 const Container = styled.div`
 	width: 100%;
@@ -183,6 +185,7 @@ const NotExistSearchButton = styled.button`
 
 export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle }) {
 	const navigate = useNavigate();
+
 	const [selectedTag, setSelectedTag] = useState(null); // 선택된 태그 상태
 
 	const {
@@ -223,6 +226,7 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 				{isActivityTagListLoading ? (
 					<div>로딩중...</div>
 				) : (
+
 					activityTagList?.data?.data.tagList.map((tag) => (
 						<Tag key={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => setSelectedTag(tag.tagId)}>
 							{tag.tagName}

@@ -14,6 +14,7 @@ const Container = styled.div`
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
+
 // 태그 목록 Wrapper
 const TagWrapper = styled.div`
 	display: flex;
@@ -49,6 +50,7 @@ const ActivityWrapper = styled.div`
 
 // 활동 항목
 const ActivityItem = styled.div`
+
 	padding: 25px 15px;
 	border-bottom: 1px solid #eaeaea;
 	display: flex;

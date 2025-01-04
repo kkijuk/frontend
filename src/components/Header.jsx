@@ -221,11 +221,7 @@ export default function Header() {
 								className={location.pathname === '/apply-schedule' ? 'active' : ''}>
 								지원관리
 							</li>
-							<li
-								onClick={() => handleNavigation('/community')}
-								className={location.pathname === '/community' ? 'active' : ''}>
-								커뮤니티
-							</li>
+							
 							{!isLoggedIn ? (
 								<>
 									<li

@@ -1,12 +1,16 @@
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+
+import { useFetchActivityDetail } from '../../../hooks/MyCareerSearch/useFetchActivityDetail';
 import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
-import { useNavigate } from 'react-router-dom';
+import { useFetchTagList } from '../../../hooks/MyCareerSearch/useFetchTagList';
+import { useFetchActivityByTag } from '../../../hooks/MyCareerSearch/useFetchActivityByTag';
 
 const Container = styled.div`
 	width: 100%;
+	max-width: 820px;
+	margin: 0 auto;
 	box-sizing: border-box;
-	padding: 0 15px;
-	margin-bottom: 20px;
 `;
 
 const Box = styled.div`
@@ -17,6 +21,36 @@ const Box = styled.div`
 	border-radius: 10px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	cursor: pointer;
+`;
+
+const TagWrapper = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 20px;
+`;
+
+const Tag = styled.button`
+	padding: 3px 10px;
+	border-radius: 20px;
+	// background: ${(props) => (props.isActive ? '#3aaf85' : '#f5f5f5')};
+	// color: ${(props) => (props.isActive ? '#ffffff' : '#3aaf85')};
+	color: #3aaf85;
+	border: 1px solid ${(props) => (props.isActive ? '#3aaf85' : '#f5f5f5')};
+	font-family: Pretendard;
+	font-size: 0.75rem;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	cursor: pointer;
+	transition:
+		background-color 0.3s ease,
+		color 0.3s ease;
+
+	&:hover {
+		background-color: #3aaf85;
+		color: #ffffff;
+	}
 `;
 
 const TopWrapper = styled.div`
@@ -108,55 +142,65 @@ const DetailTag = styled.div`
 	line-height: normal;
 `;
 
-const NotExistSearch = styled.div`
-	color: var(--gray-02, #707070);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 20px;
-`;
+export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle }) {
+	const [selectedTag, setSelectedTag] = useState(null); // 선택된 태그 상태
 
-// TODO: react query로부터 받아온 데이터로 loading, 데이터 바인딩
+	const {
+		data: activityTagList,
+		isLoading: isActivityTagListLoading,
+		error: activityTagListError,
+	} = useFetchTagList(searchQuery);
 
-export default function MyCareerSearchTotalActivityDetail({ activityDetail, isActivityDetailLoading }) {
-	const navigate = useNavigate();
+	const {
+		data: activityData,
+		isLoading: isActivityLoading,
+		error: activityError,
+	} = useFetchActivityByTag(selectedTag, sortOrder);
 
-	let totalDetailsRendered = 0; // 총 렌더링된 detail 개수를 추적
+	useEffect(() => {
+		if (activityTagList?.data?.data.length > 0) {
+			setSelectedTag(activityTagList.data.data[0].tagId); // 첫 번째 태그 ID를 기본값으로 설정
+		}
+	}, [activityTagList]);
+
+	const handleTagClick = (tagId) => {
+		setSelectedTag(tagId); // 선택된 태그 업데이트
+	};
+
+	console.log(activityTagList);
+	console.log(activityData);
 
 	return (
 		<Container>
-			{isActivityDetailLoading ? (
-				'loading...'
-			) : activityDetail?.data?.data?.length === 0 ? (
-				<NotExistSearch>검색 결과가 없어요.</NotExistSearch>
-			) : (
-				activityDetail?.data?.data.map((activity, idx) => {
-					// 현재 activity의 detailList에서 렌더링 가능한 최대 개수 계산
-					const remainingDetails = 3 - totalDetailsRendered;
-					if (remainingDetails <= 0) return null; // 총 3개를 초과하면 렌더링 중단
-
-					// 현재 activity의 detailList를 제한된 개수만 렌더링
-					const detailsToRender = activity.detailList.slice(0, remainingDetails);
-
-					// 렌더링된 detail 개수 업데이트
-					totalDetailsRendered += detailsToRender.length;
-
-					return (
-						<Box key={idx} onClick={() => navigate(`/mycareer/${activity.category.categoryId}/${activity.careerId}`)}>
+			<TagWrapper>
+				{isActivityTagListLoading ? (
+					<div>로딩중...</div>
+				) : (
+					activityTagList?.data?.data.map((tag) => (
+						<Tag key={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => handleTagClick(tag.tagId)}>
+							{tag.tagName}
+						</Tag>
+					))
+				)}
+			</TagWrapper>
+			{isActivityLoading
+				? 'loading...'
+				: activityData?.data.data.map((activityData, idx) => (
+						<Box key={idx}>
 							<TopWrapper>
 								<TopLeft>
-									<CareerCategoryCircle category={activity.careerType} />
+									<CareerCategoryCircle category={activityData.careerType} />
 									<DetailCareerTitle>
-										{activity.careerTitle} / {activity.careerAlias}
+										{activityData.careerTitle} / {activityData.careerAlias}
 									</DetailCareerTitle>
 								</TopLeft>
 								<DetailCareerDate>
-									{activity.startdate} ~ {activity.endDate}
+									{activityData.startdate} ~ {activityData.endDate}
 								</DetailCareerDate>
 							</TopWrapper>
 							<MainWrapper>
-								{detailsToRender.map((detail, i) => (
-									<DetailWrapper key={i}>
+								{activityData.detailList.map((detail, i) => (
+									<DetailWrapper>
 										<TopWrapper>
 											<DetailTitle>{detail.title}</DetailTitle>
 											<DetailCareerDate>{detail.endDate}</DetailCareerDate>
@@ -164,16 +208,14 @@ export default function MyCareerSearchTotalActivityDetail({ activityDetail, isAc
 										<DetailContent>{detail.content}</DetailContent>
 										<BottomWrapper>
 											{detail.detailTag.map((tag, j) => (
-												<DetailTag key={j}>{tag.tagName}</DetailTag>
+												<DetailTag>{tag.tagName}</DetailTag>
 											))}
 										</BottomWrapper>
 									</DetailWrapper>
 								))}
 							</MainWrapper>
 						</Box>
-					);
-				})
-			)}
+					))}
 		</Container>
 	);
 }
