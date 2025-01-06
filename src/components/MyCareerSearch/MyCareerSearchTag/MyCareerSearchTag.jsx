@@ -6,9 +6,6 @@ import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
 import { useFetchTagList } from '../../../hooks/MyCareerSearch/useFetchTagList';
 import { useFetchActivityByTag } from '../../../hooks/MyCareerSearch/useFetchActivityByTag';
 
-import { useNavigate } from 'react-router-dom';
-
-
 const Container = styled.div`
 	width: 100%;
 	max-width: 820px;
@@ -145,47 +142,7 @@ const DetailTag = styled.div`
 	line-height: normal;
 `;
 
-const NotExistSearchWrapper = styled.div`
-	color: var(--gray-02, #707070);
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	margin-top: 40px;
-	padding: 20px;
-
-	div {
-		margin-bottom: 20px;
-	}
-`;
-
-const NotExistSearchButton = styled.button`
-	border-radius: 0.625rem;
-	background: var(--main-01, #3aaf85);
-	display: flex;
-	width: 11.25rem;
-	height: 1.875rem;
-	justify-content: center;
-	align-items: center;
-	gap: 0.625rem;
-	flex-shrink: 0;
-	color: #ffffff;
-	font-family: Pretendard, sans-serif;
-	font-size: 0.875rem;
-	font-weight: 500;
-	line-height: normal;
-	cursor: pointer;
-	border: none;
-	transition: background-color 0.3s ease;
-
-	&:hover {
-		background-color: #2e9872;
-	}
-`;
-
 export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle }) {
-	const navigate = useNavigate();
-
 	const [selectedTag, setSelectedTag] = useState(null); // 선택된 태그 상태
 
 	const {
@@ -201,24 +158,17 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 	} = useFetchActivityByTag(selectedTag, sortOrder);
 
 	useEffect(() => {
-		if (activityTagList?.data?.data.tagList.length > 0) {
-			setSelectedTag(activityTagList.data.data.tagList[0].tagId); // 첫 번째 태그 ID를 기본값으로 설정
+		if (activityTagList?.data?.data.length > 0) {
+			setSelectedTag(activityTagList.data.data[0].tagId); // 첫 번째 태그 ID를 기본값으로 설정
 		}
-		return () => {
-			setSelectedTag(null);
-		};
 	}, [activityTagList]);
 
-	if (activityTagList?.data?.data.tagList.length === 0) {
-		return (
-			<>
-				<NotExistSearchWrapper>
-					<div>'{searchQuery}'의 검색 결과가 없어요.</div>
-					<NotExistSearchButton onClick={() => navigate('/mycareer')}>내 활동 보러가기</NotExistSearchButton>
-				</NotExistSearchWrapper>
-			</>
-		);
-	}
+	const handleTagClick = (tagId) => {
+		setSelectedTag(tagId); // 선택된 태그 업데이트
+	};
+
+	console.log(activityTagList);
+	console.log(activityData);
 
 	return (
 		<Container>
@@ -226,9 +176,8 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 				{isActivityTagListLoading ? (
 					<div>로딩중...</div>
 				) : (
-
-					activityTagList?.data?.data.tagList.map((tag) => (
-						<Tag key={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => setSelectedTag(tag.tagId)}>
+					activityTagList?.data?.data.map((tag) => (
+						<Tag key={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => handleTagClick(tag.tagId)}>
 							{tag.tagName}
 						</Tag>
 					))
@@ -237,9 +186,7 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 			{isActivityLoading
 				? 'loading...'
 				: activityData?.data.data.map((activityData, idx) => (
-						<Box
-							key={idx}
-							onClick={() => navigate(`/mycareer/${activityData.category.categoryId}/${activityData.careerId}`)}>
+						<Box key={idx}>
 							<TopWrapper>
 								<TopLeft>
 									<CareerCategoryCircle category={activityData.careerType} />
