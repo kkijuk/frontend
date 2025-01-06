@@ -63,9 +63,9 @@ const StepTwoContainer = styled.div`
     }
 
     &.active {
-      background: var(--main-01, #3AAF85);
-      color: white;
-      border: 1px solid var(--main-01, #3AAF85);
+      background: var(--main-01, #E1FAED);
+      color: #3AAF85;
+      border: 2px solid var(--main-01, #3AAF85);
     }
   }
 
