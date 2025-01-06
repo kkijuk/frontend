@@ -31,17 +31,9 @@ const TimelineChart = () => {
 		fetchData();
 	}, []);
 
-	const categoryColors = {
-		Circle: '#FCC400', // 예시 색상
-		Project: '#78D333',
-		EduCareer: '#F99538',
-		Activity: '#77AFF2',
-		Competition: '#BB7AEF',
-		// 필요한 경우 다른 카테고리 추가
-	};
-
 	const formattedData = rawData.map((item, idx) => ({
 		careerId: item.careerId,
+		category: item.category,
 		y: [new Date(item.startdate).getTime(), new Date(item.enddate).getTime()],
 		name: item.title,
 		fillColor: getColorByCategory(item.category.categoryKoName) || '#707070', // 기본 색상은 검정색
@@ -56,6 +48,7 @@ const TimelineChart = () => {
 		{
 			data: distributedData.map((item) => ({
 				careerId: item.careerId,
+				category: item.category,
 				x: item.x,
 				y: item.y,
 				name: item.name,
@@ -72,7 +65,7 @@ const TimelineChart = () => {
 		const data = chartContext.w.config.series[seriesIndex].data[dataPointIndex];
 
 		if (data && data.careerId) {
-			navigate(`/mycareer/${data.careerId}`);
+			navigate(`/mycareer/${data.category.categoryId}/${data.careerId}`);
 		} else {
 			console.error('Invalid data or careerId not found');
 		}

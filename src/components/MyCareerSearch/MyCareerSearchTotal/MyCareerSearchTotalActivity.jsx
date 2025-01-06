@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
+import { useNavigate } from 'react-router-dom';
 
 const ActivityContainer = styled.div`
 	width: 100%;
@@ -8,7 +9,7 @@ const ActivityContainer = styled.div`
 	padding: 0 15px;
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
-	gap: 50px;
+	gap: 20px 50px;
 	margin-bottom: 20px;
 `;
 
@@ -51,13 +52,30 @@ const ActivityCareerTitle = styled.div`
 	margin-left: 5px;
 `;
 
+const NotExistSearch = styled.div`
+	color: var(--gray-02, #707070);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+	padding-bottom: 40px;
+`;
+
 export default function MyCareerSearchTotalActivity({ activity, isActivityLoading }) {
+	const navigate = useNavigate();
+
 	return (
-		<ActivityContainer>
-			{isActivityLoading
-				? 'loading...'
-				: activity.data.data.map((activity, idx) => (
-						<ActivityBox key={idx}>
+		<>
+			{isActivityLoading ? (
+				<ActivityContainer>loading...</ActivityContainer>
+			) : activity.data.data.length === 0 ? (
+				<NotExistSearch>검색 결과가 없어요.</NotExistSearch>
+			) : (
+				<ActivityContainer>
+					{activity.data.data.map((activity, idx) => (
+						<ActivityBox
+							key={idx}
+							onClick={() => navigate(`/mycareer/${activity.category.categoryId}/${activity.careerId}`)}>
 							<ActivityContent>
 								<CareerCategoryCircle category={activity.category.categoryKoName} />
 								<ActivityCareerTitle>
@@ -70,6 +88,8 @@ export default function MyCareerSearchTotalActivity({ activity, isActivityLoadin
 							</AcitivityDate>
 						</ActivityBox>
 					))}
-		</ActivityContainer>
+				</ActivityContainer>
+			)}
+		</>
 	);
 }
