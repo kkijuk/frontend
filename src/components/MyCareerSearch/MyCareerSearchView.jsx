@@ -59,7 +59,7 @@ const ViewTitle = styled.div`
 	}
 `;
 
-const MycareerSearchView = ({ view, onViewToggle, sortOrder, onSortToggle }) => {
+export default function MyCareerSearchView({ view, onViewToggle, sortOrder, onSortToggle }) {
 	return (
 		<ViewToggleStyled>
 			<ToggleButtonsContainer>
@@ -83,6 +83,4 @@ const MycareerSearchView = ({ view, onViewToggle, sortOrder, onSortToggle }) => 
 			</ToggleButtonsContainer>
 		</ViewToggleStyled>
 	);
-};
-
-export default MycareerSearchView;
+}
