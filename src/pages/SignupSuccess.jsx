@@ -14,7 +14,7 @@ const SignupSuccessScreen = styled.div`
 	text-align: center;
 	margin-bottom: 90px;
 	position: relative;
-	top: 180px;
+	top: 100px;
 
 	p {
 		margin-bottom: 10px;

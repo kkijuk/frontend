@@ -64,7 +64,7 @@ const AgreementModal = ({ show, handleModal }) => (
 				제 1 조 (목적)
 				<br />
 				끼적 서비스 이용을 위해 아래와 같이 개인정보를 수집 및 이용합니다. 동의를 거부할 권리가 있으며, 동의 거부 시
-				끼적적 회원서비스 이용이 불가합니다.
+				끼적 회원서비스 이용이 불가합니다.
 			</p>
 			<div className="image-container">
 				<img src="Agreement.png" />
