@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import logo from '../assets/logo.png';
 
@@ -52,7 +53,7 @@ const TopButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  padding-right: 20px; /* 오른쪽 정렬 */
+  padding-right: 20px;
 `;
 
 const Title = styled.div`
@@ -69,8 +70,8 @@ const Title = styled.div`
 `;
 
 const SocialButton = styled.button`
-  width: 350px; 
-  height: 56px; 
+  width: 350px;
+  height: 56px;
   border: none;
   border-radius: 4px;
   margin: 8px 0;
@@ -80,8 +81,7 @@ const SocialButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  cursor: pointer;
+  position: relative;
 
   &.kakao {
     background-color: #ffe812;
@@ -90,17 +90,20 @@ const SocialButton = styled.button`
     svg {
       width: 28px;
       height: 28px;
+      position: absolute;
+      left: 20px;
     }
   }
 
   &.naver {
     background-color: #03c75a;
     color: #fff;
-    
 
     svg {
-      width: 55px;
-      height: 55px;
+      width: 49px;
+      height: 49px;
+      position: absolute;
+      left: 3px;
     }
   }
 `;
@@ -114,15 +117,15 @@ const ButtonContainer = styled.div`
 `;
 
 const KakaoIcon = () => (
-    <svg
-    xmlns='http://www.w3.org/2000/svg'
-    viewBox='0 0 24 24'
-    fill='black'
-    width='30px'
-    height='30px'
->
-    <path d='M12,2C6.48,2,2,5.58,2,10.14c0,2.58,1.78,4.87,4.45,6.24C6.15,17.85,5.4,19.81,5.27,19.81c0,0,0,0,0,0c0.26,0.02,3.35-1.24,4.92-2.09c0.61,0.11,1.25,0.18,1.91,0.18c5.52,0,10-3.58,10-8.14S17.52,2,12,2z' />
-</svg>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="black"
+    width="30px"
+    height="30px"
+  >
+    <path d="M12,2C6.48,2,2,5.58,2,10.14c0,2.58,1.78,4.87,4.45,6.24C6.15,17.85,5.4,19.81,5.27,19.81c0,0,0,0,0,0c0.26,0.02,3.35-1.24,4.92-2.09c0.61,0.11,1.25,0.18,1.91,0.18c5.52,0,10-3.58,10-8.14S17.52,2,12,2z" />
+  </svg>
 );
 
 const NaverIcon = () => (
@@ -136,9 +139,26 @@ const NaverIcon = () => (
 );
 
 const SocialLogin = () => {
+  useEffect(() => {
+    const preventScroll = (e) => {
+      e.preventDefault();
+    };
+
+    const $body = document.querySelector('body');
+    $body.style.overflow = 'hidden'; // 스크롤바 숨기기
+    $body.addEventListener('wheel', preventScroll, { passive: false });
+    $body.addEventListener('touchmove', preventScroll, { passive: false });
+
+    return () => {
+      $body.removeEventListener('wheel', preventScroll);
+      $body.removeEventListener('touchmove', preventScroll);
+      $body.style.overflow = '';
+    };
+  }, []);
+
   return (
     <>
-     <TopButtonWrapper>
+      <TopButtonWrapper>
         <TopButton>Instagram</TopButton>
         <TopButton>문의</TopButton>
       </TopButtonWrapper>
