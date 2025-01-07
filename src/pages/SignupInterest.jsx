@@ -47,7 +47,7 @@ const CloseButton = styled.button`
 	border: none;
 	cursor: pointer;
 	margin-top: 15px;
-	margin-bottom: 25px;
+	margin-bottom: 35px;
 `;
 
 const Title = styled.h2`
