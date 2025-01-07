@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const StepTwoContainer = styled.div`
@@ -8,34 +8,7 @@ const StepTwoContainer = styled.div`
   background: white;
   border-radius: 10px;
   text-align: center;
-
- h2 {
-		color: black;
-		text-align: center;
-		font-size: 24px;
-		font-family: bold;
-		margin-top: -25px;
-	}
-
-  .progress-bar {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-
-    .progress-step {
-      flex: 1;
-      height: 4px;
-      background-color: #e0e0e0;
-
-      &.active {
-        background-color: var(--main-01, #3AAF85);
-      }
-
-      & + & {
-        margin-left: 10px;
-      }
-    }
-  }
+  margin-top: 40px;
 
   .status-container {
     display: flex;
@@ -48,7 +21,7 @@ const StepTwoContainer = styled.div`
   .status-button {
     width: 180px;
     height: 50px;
-    border: 1px solid #e0e0e0;
+    border: none;
     border-radius: 10px;
     background: #f5f5f5;
     font-size: 16px;
@@ -56,11 +29,6 @@ const StepTwoContainer = styled.div`
     color: #707070;
     cursor: pointer;
     transition: background 0.3s, color 0.3s;
-
-    &:hover {
-      background: var(--main-02, #88D1B6);
-      color: white;
-    }
 
     &.active {
       background: var(--main-01, #E1FAED);
@@ -70,15 +38,13 @@ const StepTwoContainer = styled.div`
   }
 
   .complete-button {
-    width: 100%;
-    max-width: 300px;
+    width: 400px;
     height: 50px;
     background: var(--main-01, #3AAF85);
     color: white;
     border: none;
     border-radius: 10px;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 17px;
     cursor: pointer;
     transition: background 0.3s;
 
@@ -88,8 +54,33 @@ const StepTwoContainer = styled.div`
   }
 `;
 
+const Title = styled.div`
+  color: #707070;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 30px;
+`;
+
+const Toast = styled.div`
+  position: fixed;
+  bottom: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  z-index: 1000;
+`;
+
 const SignupStepTwo = ({ handleSignup }) => {
-  const [selectedStatus, setSelectedStatus] = React.useState(null);
+  const [selectedStatuses, setSelectedStatuses] = useState([]);
+  const [showToast, setShowToast] = useState(false);
 
   const statuses = [
     '중/고등학생',
@@ -103,21 +94,27 @@ const SignupStepTwo = ({ handleSignup }) => {
   ];
 
   const handleStatusClick = (status) => {
-    setSelectedStatus(status);
+    if (selectedStatuses.includes(status)) {
+      // 이미 선택된 상태라면 해제
+      setSelectedStatuses(selectedStatuses.filter((s) => s !== status));
+    } else if (selectedStatuses.length < 2) {
+      // 아직 2개 미만 선택 시 추가
+      setSelectedStatuses([...selectedStatuses, status]);
+    } else {
+      // 2개 초과 시 토스트 메시지 표시
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2000); // 2초 후 토스트 메시지 숨김
+    }
   };
 
   return (
     <StepTwoContainer>
-      <h2>회원가입</h2>
-      <div className="progress-bar">
-        <div className="progress-step active"></div>
-        <div className="progress-step active"></div>
-      </div>
+      <Title>마지막 단계예요! 당신은 지금 어떤 상태인가요?</Title>
       <div className="status-container">
         {statuses.map((status) => (
           <button
             key={status}
-            className={`status-button ${selectedStatus === status ? 'active' : ''}`}
+            className={`status-button ${selectedStatuses.includes(status) ? 'active' : ''}`}
             onClick={() => handleStatusClick(status)}
           >
             {status}
@@ -127,6 +124,7 @@ const SignupStepTwo = ({ handleSignup }) => {
       <button className="complete-button" onClick={handleSignup}>
         완료
       </button>
+      {showToast && <Toast>최대 2개까지 선택 가능해요.</Toast>}
     </StepTwoContainer>
   );
 };
