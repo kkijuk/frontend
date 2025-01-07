@@ -14,7 +14,9 @@ import ApplySchedule from './pages/Apply/ApplySchedule';
 import ApplyStatus from './pages/Apply/ApplyStatus';
 import Community from './pages/Community';
 import Login from './pages/Login';
+import SocialLogin from './pages/SocialLogin';
 import Signup from './pages/Signup';
+import NewSignup from './pages/NewSignup';
 import MycareerDetail from './pages/Mycareer/MycareerDetail';
 
 import SignupSuccess from './pages/SignupSuccess';
@@ -77,7 +79,9 @@ const App = () => {
 
 					<Route path="/" element={<Home />} />
 					<Route path="/login" element={<Login />} />
+					<Route path="/sociallogin" element={<SocialLogin />} />
 					<Route path="/signup" element={<Signup />} />
+					<Route path="/signuppage" element={<NewSignup />} />
 					<Route path="/signupsuccess" element={<SignupSuccess />} />
 
 					<Route path="/mypage" element={<MyPage />} />
