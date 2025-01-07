@@ -52,7 +52,7 @@ const TopButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  padding-right: 20px; /* 오른쪽 정렬 */
+  padding-right: 20px; 
 `;
 
 const Title = styled.div`
@@ -79,9 +79,8 @@ const SocialButton = styled.button`
   font-weight: 700;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
-  cursor: pointer;
+  justify-content: center; 
+  position: relative; /* 아이콘 위치를 조정하기 위해 추가 */
 
   &.kakao {
     background-color: #ffe812;
@@ -90,20 +89,24 @@ const SocialButton = styled.button`
     svg {
       width: 28px;
       height: 28px;
+      position: absolute;
+      left: 20px;
     }
   }
 
   &.naver {
     background-color: #03c75a;
     color: #fff;
-    
 
     svg {
-      width: 55px;
-      height: 55px;
+      width: 49px; 
+      height: 49px;
+      position: absolute;
+      left: 3px; 
     }
   }
 `;
+
 
 const ButtonContainer = styled.div`
   margin-top: -27px;
