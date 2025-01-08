@@ -3,12 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import SignupStepOne from '../components/User/SignupStepOne';
 import SignupStepTwo from '../components/User/SignupStepTwo';
 import styled from 'styled-components';
+import { ReactComponent as BackButtonSVG } from '../assets/main/backbutton.svg';
 
 const Container = styled.div`
   max-width: 500px;
   margin: 50px auto;
   text-align: center;
-  margin-top: 19px;
+  margin-top: 120px;
+`;
+
+const TitleContainer = styled.div`
+  position: relative;
+  display: inline-block; 
+  text-align: center;
 `;
 
 const Title = styled.h1`
@@ -28,31 +35,20 @@ const StepBarContainer = styled.div`
 
 const StepBar = styled.div`
   width: 163px;
-height: 6px;
+  height: 6px;
   border-radius: 6px;
   background-color: ${(props) => (props.active ? '#88D1B6' : '#e0e0e0')};
   margin: 0 5px;
-  transition: background-color 0.3s;
+  transition: background-color 0.7s;
 `;
 
-const BackButton = styled.button`
-  display: inline-block; //임시로 뒤로가기 버튼 생성
-  margin-top: 20px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
-  background-color: #ccc;
-  color: #000;
+const BackButton = styled(BackButtonSVG)`
+  position: absolute;
+  left: -126px; /* 제목 기준 왼쪽으로 50px 떨어지도록 설정 */
+  top: 48%; 
+  transform: translateY(-50%); 
   cursor: pointer;
-  font-size: 16px;
-  font-family: Regular;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #b3b3b3;
-  }
 `;
-
 
 const NewSignup = () => {
   const [step, setStep] = useState(1);
@@ -106,7 +102,10 @@ const NewSignup = () => {
 
   return (
     <Container>
+      <TitleContainer>
+      {step === 2 && <BackButton onClick={handlePrevStep} />}
       <Title>회원가입</Title>
+    </TitleContainer>
       <StepBarContainer>
         <StepBar active={step === 1} />
         <StepBar active={step === 2} />
@@ -123,10 +122,10 @@ const NewSignup = () => {
         />
       )}
       {step === 2 && (
-        <>
-          <SignupStepTwo handleSignup={handleSignup} />
-          <BackButton onClick={handlePrevStep}>뒤로가기</BackButton>
-        </>
+        <SignupStepTwo 
+          handleSignup={handleSignup} 
+          handlePrevStep={handlePrevStep} // 이전 단계로 이동
+        />
       )}
     </Container>
   );

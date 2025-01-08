@@ -1,15 +1,74 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import logo from '../assets/logo.png';
+import round from '../assets/main/round.svg';
+import star1 from '../assets/main/star1.svg';
+import star2 from '../assets/main/star2.svg';
+import text1 from '../assets/main/text1.svg';
+import text2 from '../assets/main/text2.svg';
+
+const PageContainer = styled.div`
+  background: var(--background, linear-gradient(180deg, #FFF 33%, #E1F4ED 100%));
+  height: auto;
+  flex: 1;
+  position: relative;
+`;
+
+const SvgContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  height: auto;
+  top: 0;
+  left: 0;
+  z-index: 900;
+
+  img {
+    position: absolute;
+
+    &.round {
+      top: 320px;
+      left: 0px;
+      width: 600px;
+      height: 600px;
+    }
+
+    &.star1 {
+      top: 400px;
+      right: 250px;
+      width: 280px;
+      height: 280px;
+    }
+
+    &.star2 {
+      top: 310px;
+      left: 100px;
+      width: 130px;
+      height: 130px;
+    }
+
+    &.text2 {
+      top: 590px;
+      right: 20px;
+      width: 400px;
+      height: 400px;
+    }
+
+    &.text1 {
+      top: 390px;
+      left: 20px;
+       width: 400px;
+      height: 400px;
+    }
+  }
+`;
 
 const LoginScreen = styled.div`
   max-width: 400px;
   margin: 0 auto;
   padding: 20px;
-  background: white;
   border-radius: 10px;
   text-align: center;
-  margin: 90px auto 0;
+  margin: 150px auto 0;
   height: auto;
   overflow: hidden;
 
@@ -28,6 +87,23 @@ const LoginScreen = styled.div`
 
   * {
     box-sizing: border-box;
+  }
+`;
+
+const TextOverlay = styled.div`
+  position: absolute;
+  color: #000; 
+  font-size: 17px; 
+  z-index: 1100;
+
+  &.text1 {
+    top: 576px; 
+    left: 91px;
+  }
+
+  &.text2 {
+    top: 776px; 
+    right: 91px;
   }
 `;
 
@@ -66,13 +142,14 @@ const Title = styled.div`
   line-height: normal;
   margin-bottom: -95px;
   z-index: 1000;
-  margin-top: 40px;
+  margin-top: 50px;
 `;
 
 const SocialButton = styled.button`
   width: 350px;
   height: 56px;
   border: none;
+  z-index: 1000;
   border-radius: 4px;
   margin: 8px 0;
   font-family: Pretendard;
@@ -157,7 +234,16 @@ const SocialLogin = () => {
   }, []);
 
   return (
-    <>
+    <PageContainer>
+      <SvgContainer>
+        <img src={round} alt="Round Icon" className="round" />
+        <img src={star1} alt="Star 1 Icon" className="star1" />
+        <img src={star2} alt="Star 2 Icon" className="star2" />
+        <img src={text1} alt="Text 1 Icon" className="text1" />
+        <img src={text2} alt="Text 2 Icon" className="text2" />
+        <TextOverlay className="text1">여기저기 흩어져 있던 내 활동을 차곡차곡!</TextOverlay>
+        <TextOverlay className="text2">막막한 이력서와 자기소개서까지 한번에!</TextOverlay>
+      </SvgContainer>
       <TopButtonWrapper>
         <TopButton>Instagram</TopButton>
         <TopButton>문의</TopButton>
@@ -177,7 +263,7 @@ const SocialLogin = () => {
           </SocialButton>
         </ButtonContainer>
       </LoginScreen>
-    </>
+    </PageContainer>
   );
 };
 
