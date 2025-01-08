@@ -65,30 +65,26 @@ const MainContent = styled.div`
 const App = () => {
 	const location = useLocation();
 
-	// commingsoon 페이지에서만 Header와 Footer를 숨기기
-	const isCommingSoon = location.pathname === '/commingsoon';
+	
+	const hideHeaderFooterRoutes = ['/commingsoon', '/sociallogin', '/signuppage', '/signupinterest','/signupsuccess' ];
+	const hideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
 
 	return (
 		<AppContainer>
-			{!isCommingSoon && <Header />}
+			{!hideHeaderFooter && <Header />}
 			<MainContent>
 				<Routes>
 					<Route path="/mycareer/:careerId/:category" element={<MycareerDetail />} />
-
 					<Route path="/mycareer_search" element={<MycareerSearch />} />
-
 					<Route path="/" element={<Home />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/sociallogin" element={<SocialLogin />} />
 					<Route path="/signup" element={<Signup />} />
 					<Route path="/signuppage" element={<NewSignup />} />
 					<Route path="/signupsuccess" element={<SignupSuccess />} />
-
 					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/mycareer" element={<MyCareer />} />
-
 					<Route path="/signupinterest" element={<SignupInterest />} />
-
 					<Route element={<SubNav />}>
 						<Route element={<ViewOptions />}>
 							<Route path="/history/master" element={<Master />} />
@@ -103,7 +99,6 @@ const App = () => {
 					<Route path="/history/select" element={<Select />} />
 					<Route path="/history/add_apply" element={<AddApply />} />
 					<Route path="/history/resumeExport" element={<ResumePdf />} />
-
 					<Route path="/apply-schedule" element={<ApplySchedule />} />
 					<Route path="/apply-status" element={<ApplyStatus />} />
 					<Route path="/apply-detail/:id" element={<ApplyDetail />} />
@@ -121,10 +116,12 @@ const App = () => {
 					<Route path="/login-required" element={<LoginRequired />} />
 				</Routes>
 			</MainContent>
-			{!isCommingSoon && <Footer />}
+			
+			{!hideHeaderFooter && <Footer />}
 		</AppContainer>
 	);
 };
+
 
 export default function AppWrapper() {
 	return (
