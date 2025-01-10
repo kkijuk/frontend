@@ -6,6 +6,7 @@ import star1 from '../assets/main/star1.svg';
 import star2 from '../assets/main/star2.svg';
 import text1 from '../assets/main/text1.svg';
 import text2 from '../assets/main/text2.svg';
+import useAuthStore from '../stores/useAuthStore';
 
 const PageContainer = styled.div`
   background: var(--background, linear-gradient(180deg, #FFF 33%, #E1F4ED 100%));
@@ -161,16 +162,26 @@ const SocialButton = styled.button`
   position: relative;
 
   &.kakao {
-    background-color: #ffe812;
-    color: #000;
+  background-color: #ffe812;
+  color: #000;
 
-    svg {
-      width: 28px;
-      height: 28px;
-      position: absolute;
-      left: 20px;
-    }
+  svg {
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    left: 20px;
   }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:active {
+    background-color: #e0cb10; 
+    transform: scale(0.98);   
+  }
+}
+
 
   &.naver {
     background-color: #03c75a;
@@ -216,6 +227,8 @@ const NaverIcon = () => (
 );
 
 const SocialLogin = () => {
+  const login = useAuthStore((state) => state.login);
+
   useEffect(() => {
     const preventScroll = (e) => {
       e.preventDefault();
@@ -232,6 +245,45 @@ const SocialLogin = () => {
       $body.style.overflow = '';
     };
   }, []);
+
+  const handleKakaoLogin = () => {
+    const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&response_type=code&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`;
+    window.location.href = kakaoLoginUrl;
+  };
+
+  useEffect(() => {
+    // URL에서 인가code 추출  
+    const urlParams = new URLSearchParams(window.location.search);
+    const authCode = urlParams.get('code');
+
+    if (authCode) {
+      // 백엔드로 인가 코드 전달
+      const kakaoAuthUrl = `${process.env.REACT_APP_API_URL}/auth/kakao/login?code=${authCode}`;
+      
+      fetch(kakaoAuthUrl, {
+          method: 'GET', 
+      })
+          .then((response) => response.json())
+          .then((data) => {
+            const { accessToken, refreshToken } = data.Token;
+            const { isProfileComplete } = data;
+
+              // 토큰 저장
+              useAuthStore.getState().login(accessToken, refreshToken);
+
+          // isProfileComplete 값에 따라 리다이렉트
+          if (isProfileComplete) {
+            window.location.href = '/';
+          } else {
+            window.location.href = '/signuppage';
+          }
+        })
+        .catch((error) => {
+          console.error('Error sending auth code to backend:', error);
+          alert('로그인 처리 중 문제가 발생했습니다. 다시 시도해주세요.');
+        });
+    }
+  }, [login]);
 
   return (
     <PageContainer>
@@ -253,7 +305,7 @@ const SocialLogin = () => {
         <img src={logo} width="164px" height="80px" alt="Logo" />
         <p>당신의 끼를 적어두세요</p>
         <ButtonContainer>
-          <SocialButton className="kakao">
+        <SocialButton className="kakao" onClick={handleKakaoLogin}>
             <KakaoIcon />
             카카오 로그인
           </SocialButton>
