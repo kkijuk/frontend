@@ -175,7 +175,7 @@ export default function MyCareerSearchActivity({ sortOrder, searchQuery, onViewT
 				activityDetail?.data.data.map((activityDetail, idx) => (
 					<Box
 						key={idx}
-						onClick={() => navigate(`/mycareer/${activityDetail.category.categoryId}/${activityDetail.careerId}`)}>
+						onClick={() => navigate(`/mycareer/${activityDetail.category.categoryKoName}/${activityDetail.careerId}`)}>
 						<TopWrapper>
 							<TopLeft>
 								<CareerCategoryCircle category={activityDetail.careerType} />
@@ -183,16 +183,15 @@ export default function MyCareerSearchActivity({ sortOrder, searchQuery, onViewT
 									{activityDetail.careerTitle} / {activityDetail.careerAlias}
 								</DetailCareerTitle>
 							</TopLeft>
-							<DetailCareerDate>
-								{activityDetail.startdate} ~ {activityDetail.endDate}
-							</DetailCareerDate>
 						</TopWrapper>
 						<MainWrapper>
 							{activityDetail.detailList.map((detail, i) => (
 								<DetailWrapper>
 									<TopWrapper>
 										<DetailTitle>{detail.title}</DetailTitle>
-										<DetailCareerDate>{detail.endDate}</DetailCareerDate>
+										<DetailCareerDate>
+											{detail.startDate} ~ {detail.endDate}
+										</DetailCareerDate>
 									</TopWrapper>
 									<DetailContent>{detail.content}</DetailContent>
 									<BottomWrapper>

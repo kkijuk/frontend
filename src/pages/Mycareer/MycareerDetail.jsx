@@ -12,7 +12,7 @@ import CareerList from '../../components/MyCareerDetail/CareerList';
 
 import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
-import de from '@mobiscroll/react/dist/src/i18n/de.js';
+// import de from '@mobiscroll/react/dist/src/i18n/de.js';
 const CareerBoxContainer = styled.div`
 	width: 100%; /* 가로 스크롤을 위해 전체 너비 */
 	height: 72px;
