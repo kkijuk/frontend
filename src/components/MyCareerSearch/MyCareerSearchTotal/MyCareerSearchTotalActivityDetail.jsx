@@ -142,7 +142,7 @@ export default function MyCareerSearchTotalActivityDetail({ activityDetail, isAc
 					totalDetailsRendered += detailsToRender.length;
 
 					return (
-						<Box key={idx} onClick={() => navigate(`/mycareer/${activity.category.categoryId}/${activity.careerId}`)}>
+						<Box key={idx} onClick={() => navigate(`/mycareer/${activity.category.categoryKoName}/${activity.careerId}`)}>
 							<TopWrapper>
 								<TopLeft>
 									<CareerCategoryCircle category={activity.careerType} />

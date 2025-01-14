@@ -175,7 +175,7 @@ export default function MyCareerSearchActivity({ sortOrder, searchQuery, onViewT
 				activityDetail?.data.data.map((activityDetail, idx) => (
 					<Box
 						key={idx}
-						onClick={() => navigate(`/mycareer/${activityDetail.category.categoryId}/${activityDetail.careerId}`)}>
+						onClick={() => navigate(`/mycareer/${activityDetail.category.categoryKoName}/${activityDetail.careerId}`)}>
 						<TopWrapper>
 							<TopLeft>
 								<CareerCategoryCircle category={activityDetail.careerType} />
