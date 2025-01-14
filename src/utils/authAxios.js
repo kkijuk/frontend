@@ -8,7 +8,7 @@ const useAuthAxios = () => {
     const { setSnackbarOpen } = useAuthStore.getState(); // 알림 설정 함수 가져오기
 
     const axiosInstance = axios.create({
-        baseURL: import.meta.env.VITE_API_URL,
+        baseURL: process.env.REACT_APP_API_URL,
     });
 
     // 무한 요청 방지 플래그
