@@ -168,10 +168,14 @@ export default function MyCareerSearchTotalActivityTags({ activityTagList, isAct
 								console.log(detailsToRender);
 
 								return detailsToRender.map((detail, i) => (
-									<ActivityItem key={detail.careerId} onClick={()=> navigate(`/mycareer/${activity.category.categoryKoName}/${activity.careerId}`)}>
+									<ActivityItem
+										key={detail.careerId}
+										onClick={() => navigate(`/mycareer/${activity.category.categoryKoName}/${activity.careerId}`)}>
 										<ActivityTop>
 											<ActivityTitle>{detail.title}</ActivityTitle>
-											<ActivityDate>{detail.endDate}</ActivityDate>
+											<ActivityDate>
+												{detail.startDate} ~ {detail.endDate}
+											</ActivityDate>
 										</ActivityTop>
 										<ActivityContent>{detail.content}</ActivityContent>
 										<ActivityFooter>{detail.date}</ActivityFooter>

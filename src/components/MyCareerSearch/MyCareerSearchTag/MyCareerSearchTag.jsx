@@ -244,16 +244,15 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 										{activityData.careerTitle} / {activityData.careerAlias}
 									</DetailCareerTitle>
 								</TopLeft>
-								<DetailCareerDate>
-									{activityData.startdate} ~ {activityData.endDate}
-								</DetailCareerDate>
 							</TopWrapper>
 							<MainWrapper>
 								{activityData.detailList.map((detail, i) => (
 									<DetailWrapper>
 										<TopWrapper>
 											<DetailTitle>{detail.title}</DetailTitle>
-											<DetailCareerDate>{detail.endDate}</DetailCareerDate>
+											<DetailCareerDate>
+												{detail.startDate} ~ {detail.endDate}
+											</DetailCareerDate>
 										</TopWrapper>
 										<DetailContent>{detail.content}</DetailContent>
 										<BottomWrapper>

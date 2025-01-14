@@ -142,7 +142,9 @@ export default function MyCareerSearchTotalActivityDetail({ activityDetail, isAc
 					totalDetailsRendered += detailsToRender.length;
 
 					return (
-						<Box key={idx} onClick={() => navigate(`/mycareer/${activity.category.categoryKoName}/${activity.careerId}`)}>
+						<Box
+							key={idx}
+							onClick={() => navigate(`/mycareer/${activity.category.categoryKoName}/${activity.careerId}`)}>
 							<TopWrapper>
 								<TopLeft>
 									<CareerCategoryCircle category={activity.careerType} />
@@ -150,16 +152,15 @@ export default function MyCareerSearchTotalActivityDetail({ activityDetail, isAc
 										{activity.careerTitle} / {activity.careerAlias}
 									</DetailCareerTitle>
 								</TopLeft>
-								<DetailCareerDate>
-									{activity.startdate} ~ {activity.endDate}
-								</DetailCareerDate>
 							</TopWrapper>
 							<MainWrapper>
 								{detailsToRender.map((detail, i) => (
 									<DetailWrapper key={i}>
 										<TopWrapper>
 											<DetailTitle>{detail.title}</DetailTitle>
-											<DetailCareerDate>{detail.endDate}</DetailCareerDate>
+											<DetailCareerDate>
+												{detail.startDate} ~ {detail.endDate}
+											</DetailCareerDate>
 										</TopWrapper>
 										<DetailContent>{detail.content}</DetailContent>
 										<BottomWrapper>
