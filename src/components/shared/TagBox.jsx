@@ -136,7 +136,7 @@ const CloseButton = styled.button`
 	margin-left: 4px; /* 왼쪽 여백 추가 */
 `;
 
-export default function TagBox({ /*externalTags,*/ onTagListChange }) {
+export default function TagBox({ externalTags, onTagListChange }) {
 	const [tags, setTags] = useState([]); //TagInputContainer에 표시할 태그
 	const [TagBoxTags, setTagBoxTags] = useState([]); // TagBoxListContainer에 표시할 태그
 
@@ -152,6 +152,11 @@ export default function TagBox({ /*externalTags,*/ onTagListChange }) {
         setTags(externalTags || []);  // null 또는 undefined가 아닌 배열로 설정
     }, [externalTags]);
     */
+
+	useEffect(() => {
+		console.log('TagBox received externalTags:', externalTags);
+		setTags(externalTags || []);
+	}, [externalTags]);
 
 	useEffect(() => {
 		const fetchTags = async () => {
@@ -320,8 +325,7 @@ export default function TagBox({ /*externalTags,*/ onTagListChange }) {
 									onClick={(e) => {
 										e.stopPropagation();
 										handleTagDelete(tag.id, tag.tagName);
-									}}
-								>
+									}}>
 									x
 								</CloseButton>
 							</Tag>

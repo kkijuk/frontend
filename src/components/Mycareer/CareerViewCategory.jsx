@@ -137,7 +137,7 @@ const CareerViewCategory = ({ data }) => {
 								return (
 									<ListBox
 										key={`${item.id}_${item.category}`}
-										onClick={() => handleListBoxClick(item.id, item.category.categoryId)} // 클릭 시 career.id 전송
+										onClick={() => handleListBoxClick(item.id, item.category.categoryKoName)} // 클릭 시 career.id 전송
 									>
 										<Name>
 											<CareerContainer>
