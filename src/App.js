@@ -66,7 +66,7 @@ const App = () => {
 	const location = useLocation();
 
 	
-	const hideHeaderFooterRoutes = ['/commingsoon', '/sociallogin', '/signuppage', '/signupinterest','/signupsuccess' ];
+	const hideHeaderFooterRoutes = ['/commingsoon', '/auth', '/signuppage', '/signupinterest','/signupsuccess' ];
 	const hideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
 
 	return (
@@ -78,7 +78,7 @@ const App = () => {
 					<Route path="/mycareer_search" element={<MycareerSearch />} />
 					<Route path="/" element={<Home />} />
 					<Route path="/login" element={<Login />} />
-					<Route path="/sociallogin" element={<SocialLogin />} />
+					<Route path="/auth" element={<SocialLogin />} />
 					<Route path="/signup" element={<Signup />} />
 					<Route path="/signuppage" element={<NewSignup />} />
 					<Route path="/signupsuccess" element={<SignupSuccess />} />
