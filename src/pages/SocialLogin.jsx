@@ -1,15 +1,11 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import logo from '../assets/logo.png';
-import round from '../assets/main/round.svg';
-import star1 from '../assets/main/star1.svg';
-import star2 from '../assets/main/star2.svg';
-import text1 from '../assets/main/text1.svg';
-import text2 from '../assets/main/text2.svg';
 import useAuthStore from '../stores/useAuthStore';
+import { useNavigate } from 'react-router-dom';
 
 const PageContainer = styled.div`
-  background: var(--background, linear-gradient(180deg, #FFF 33%, #E1F4ED 100%));
+  background: var(--background, linear-gradient(180deg, #FFF 30%, #E1F4ED 100%));
   height: auto;
   flex: 1;
   position: relative;
@@ -25,41 +21,6 @@ const SvgContainer = styled.div`
 
   img {
     position: absolute;
-
-    &.round {
-      top: 320px;
-      left: 0px;
-      width: 600px;
-      height: 600px;
-    }
-
-    &.star1 {
-      top: 400px;
-      right: 250px;
-      width: 280px;
-      height: 280px;
-    }
-
-    &.star2 {
-      top: 310px;
-      left: 100px;
-      width: 130px;
-      height: 130px;
-    }
-
-    &.text2 {
-      top: 590px;
-      right: 20px;
-      width: 400px;
-      height: 400px;
-    }
-
-    &.text1 {
-      top: 390px;
-      left: 20px;
-       width: 400px;
-      height: 400px;
-    }
   }
 `;
 
@@ -193,6 +154,14 @@ const SocialButton = styled.button`
       position: absolute;
       left: 3px;
     }
+
+    &:hover {
+    cursor: pointer;
+  }
+
+  &:active {
+    transform: scale(0.98);   
+  }
   }
 `;
 
@@ -227,7 +196,8 @@ const NaverIcon = () => (
 );
 
 const SocialLogin = () => {
-  const login = useAuthStore((state) => state.login);
+  const { login } = useAuthStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const preventScroll = (e) => {
@@ -251,14 +221,26 @@ const SocialLogin = () => {
     window.location.href = kakaoLoginUrl;
   };
 
+  const handleNaverLogin = () => {
+    const clientId = process.env.REACT_APP_NAVER_CLIENT_ID;
+    const redirectUri = process.env.REACT_APP_NAVER_REDIRECT_URI;
+    const state = process.env.REACT_APP_NAVER_STATE;
+    const naverLoginUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&state=${state}&redirect_uri=${redirectUri}`;
+    
+    window.location.href = naverLoginUrl;
+  };
+
   useEffect(() => {
     // URL에서 인가code 추출  
     const urlParams = new URLSearchParams(window.location.search);
-    const authCode = urlParams.get('code');
+    const kakaoCode = urlParams.get('code');
+    const naverCode = urlParams.get('code');
+    const naverState = urlParams.get('state');
 
-    if (authCode) {
-      // 백엔드로 인가 코드 전달
-      const kakaoAuthUrl = `${process.env.REACT_APP_API_URL}/auth/kakao/login?code=${authCode}`;
+    
+    if (kakaoCode) {
+      // 백엔드로 카카오 인가 코드 전달 
+      const kakaoAuthUrl = `${process.env.REACT_APP_API_URL}/auth/kakao/login?code=${kakaoCode}`;
       
       fetch(kakaoAuthUrl, {
           method: 'GET', 
@@ -269,18 +251,46 @@ const SocialLogin = () => {
             const { isProfileComplete } = data;
 
               // 토큰 저장
-              useAuthStore.getState().login(accessToken, refreshToken);
+              login(accessToken, refreshToken);
 
           // isProfileComplete 값에 따라 리다이렉트
           if (isProfileComplete) {
-            window.location.href = '/';
+            navigate('/'); // 홈 화면으로 이동
           } else {
-            window.location.href = '/signuppage';
+            navigate('/signup'); // 회원가입 화면으로 이동
           }
         })
         .catch((error) => {
           console.error('Error sending auth code to backend:', error);
-          alert('로그인 처리 중 문제가 발생했습니다. 다시 시도해주세요.');
+          alert('카카오 로그인 처리 중 문제가 발생했습니다. 다시 시도해주세요.');
+        });
+    }
+
+    if (naverCode && naverState) {
+      // 백엔드로 네이버 인가 코드 전달 
+      const naverAuthUrl = `${process.env.REACT_APP_API_URL}/auth/naver/login?code=${naverCode}&state=${naverState}`;
+
+      fetch(naverAuthUrl, {
+        method: 'GET',
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const { accessToken, refreshToken } = data.Token;
+          const { isProfileComplete } = data;
+
+          // 토큰 저장
+          login(accessToken, refreshToken);
+
+          // isProfileComplete 값에 따라 리다이렉트
+          if (isProfileComplete) {
+            navigate('/'); // 홈 화면으로 이동
+          } else {
+            navigate('/signup'); // 회원가입 화면으로 이동
+          }
+        })
+        .catch((error) => {
+          console.error('네이버 로그인 실패:', error);
+          alert('네이버 로그인 처리 중 문제가 발생했습니다. 다시 시도해주세요.');
         });
     }
   }, [login]);
@@ -288,16 +298,11 @@ const SocialLogin = () => {
   return (
     <PageContainer>
       <SvgContainer>
-        <img src={round} alt="Round Icon" className="round" />
-        <img src={star1} alt="Star 1 Icon" className="star1" />
-        <img src={star2} alt="Star 2 Icon" className="star2" />
-        <img src={text1} alt="Text 1 Icon" className="text1" />
-        <img src={text2} alt="Text 2 Icon" className="text2" />
-        <TextOverlay className="text1">여기저기 흩어져 있던 내 활동을 차곡차곡!</TextOverlay>
-        <TextOverlay className="text2">막막한 이력서와 자기소개서까지 한번에!</TextOverlay>
       </SvgContainer>
       <TopButtonWrapper>
-        <TopButton>Instagram</TopButton>
+      <TopButton onClick={() => window.open('https://www.instagram.com/kki.juk/', '_blank')}>
+    Instagram
+  </TopButton>
         <TopButton>문의</TopButton>
       </TopButtonWrapper>
       <Title>쉽고 빠르게 쌓아가는 나만의 커리어 아카이브</Title>
@@ -309,7 +314,7 @@ const SocialLogin = () => {
             <KakaoIcon />
             카카오 로그인
           </SocialButton>
-          <SocialButton className="naver">
+          <SocialButton className="naver" onClick={handleNaverLogin}>
             <NaverIcon />
             네이버 로그인
           </SocialButton>
