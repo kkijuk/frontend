@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Helper from '../../components/Intro/Helper';
 import styled from 'styled-components';
 // import './history.css'
 import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
@@ -30,6 +31,7 @@ const Portfolio = () => {
 			<br></br>
 			<button onClick={toggleModal}>Add Career</button>
 			{isModalOpen && <AddCareerModal onClose={toggleModal}></AddCareerModal>}
+<<<<<<< HEAD
 
 			<CustomDropdown
 				placeholder="test"
@@ -37,6 +39,9 @@ const Portfolio = () => {
 				width = {20}
 				onSelect = {()=>{console.log("test")}}
 			/>
+=======
+			<Helper></Helper>
+>>>>>>> 283b7c0bedd8092697aa66317aabaf8d51ae7770
 		</>
 	);
 };

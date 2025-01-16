@@ -6,7 +6,7 @@ export const AddDetail = async (careerId, data) => {
 		console.log('careerId:', careerId);
 
 		const response = await axios.post(
-			`https://api.kkijuk.com/career/${careerId}`,
+			`https://api.kkijuk.com/career/detail/${careerId}`,
 
 			data,
 			{

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-// import EditIcon from '@mui/icons-material/Edit';
 import ReviewDetailAddEdit from './ReviewDetailAddEdit';
+import editIcon from '../../assets/edit.svg';
 
 const Box = styled.div`
 	display: flex;
@@ -57,12 +57,12 @@ const Line = styled.div`
 	background: var(--gray-03, #d9d9d9);
 `;
 
-// const EditIconStyled = styled(EditIcon)`
-// 	position: absolute;
-// 	bottom: 24px;
-// 	right: 40px;
-// 	cursor: pointer;
-// `;
+const EditIconStyled = styled.img`
+	position: absolute;
+	bottom: 24px;
+	right: 40px;
+	cursor: pointer;
+`;
 
 export default function ReviewList({ recruitId, reviewId, title, date, contents = '', onDelete, fetchData }) {
 	const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
@@ -91,6 +91,7 @@ export default function ReviewList({ recruitId, reviewId, title, date, contents 
 					))}
 				</Contents>
 
+				<EditIconStyled src={editIcon} alt="Edit" title="Edit" onClick={handleEditClick} />
 				{/* <EditIconStyled titleAccess="Edit" onClick={handleEditClick} /> */}
 			</Box>
 			{isDetailAddVisible && (

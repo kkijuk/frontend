@@ -1,6 +1,10 @@
-import React from 'react';
+import React from 'react'; 
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
+
+import queryClient from './api/queryClient/queryClient';
+
 import Home from './pages/Home';
 import MyPage from './pages/Mypage/Mypage';
 import MyCareer from './pages/Mycareer/Mycareer';
@@ -8,9 +12,11 @@ import MycareerSearch from './pages/Mycareer/Mycareer_search';
 import ApplySchedule from './pages/Apply/ApplySchedule';
 import ApplyStatus from './pages/Apply/ApplyStatus';
 import Community from './pages/Community';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import MyCareerDetail from './pages/Mycareer/MycareerDetail';
+
+import SocialLogin from './pages/SocialLogin';
+import NewSignup from './pages/NewSignup';
+import MycareerDetail from './pages/Mycareer/MycareerDetail';
+
 import SignupSuccess from './pages/SignupSuccess';
 import ResetSuccess from './pages/Mypage/ResetSuccess';
 import SubNav from './components/Intro/SubNav';
@@ -39,9 +45,13 @@ import PasswordReset from './pages/Mypage/PasswordReset';
 import SignupInterest from './pages/SignupInterest';
 
 import Header from './components/Header';
+import Footer from './components/Footer';
 import FilterPage from './components/Apply/FilterPage';
+<<<<<<< HEAD
 import { AuthProvider } from './components/AuthContext';
 import LoginRequired from './pages/LoginRequired';
+=======
+>>>>>>> 283b7c0bedd8092697aa66317aabaf8d51ae7770
 
 const AppContainer = styled.div`
 	display: flex;
@@ -58,28 +68,28 @@ const MainContent = styled.div`
 const App = () => {
 	const location = useLocation();
 
-	// commingsoon 페이지에서만 Header와 Footer를 숨기기
-	const isCommingSoon = location.pathname === '/commingsoon';
+	const hideHeaderFooterRoutes = ['/commingsoon', '/', '/signup', '/signupinterest','/signupsuccess' ];
+	const hideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
 
 	return (
 		<AppContainer>
-			{!isCommingSoon && <Header />}
+			{!hideHeaderFooter && <Header />}
 			<MainContent>
 				<Routes>
-					<Route path="/mycareer/:careerId" element={<MyCareerDetail />} />
+					<Route path="/mycareer/:careerId/:category" element={<MycareerDetail />} />
 					<Route path="/mycareer_search" element={<MycareerSearch />} />
-
-					<Route path="/" element={<Home />} />
-					<Route path="/login" element={<Login />} />
-					<Route path="/signup" element={<Signup />} />
+					<Route path="/home" element={<Home />} />
+					<Route path="/" element={<SocialLogin />} />
+					<Route path="/signup" element={<NewSignup />} />
 					<Route path="/signupsuccess" element={<SignupSuccess />} />
-
 					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/mycareer" element={<MyCareer />} />
-
 					<Route path="/signupinterest" element={<SignupInterest />} />
+<<<<<<< HEAD
 
 					<Route path="/history" element={<History/>} />
+=======
+>>>>>>> 283b7c0bedd8092697aa66317aabaf8d51ae7770
 					<Route element={<SubNav />}>
 						<Route element={<ViewOptions />}>
 							<Route path="/history/master" element={<Master />} />
@@ -94,7 +104,6 @@ const App = () => {
 					<Route path="/history/select" element={<Select />} />
 					<Route path="/history/add_apply" element={<AddApply />} />
 					<Route path="/history/resumeExport" element={<ResumePdf />} />
-
 					<Route path="/apply-schedule" element={<ApplySchedule />} />
 					<Route path="/apply-status" element={<ApplyStatus />} />
 					<Route path="/apply-detail/:id" element={<ApplyDetail />} />
@@ -109,19 +118,19 @@ const App = () => {
 					<Route path="/mypage/passwordresetemailconfirm" element={<PasswordResetEmailConfirm />} />
 					<Route path="/mypage/passwordreset" element={<PasswordReset />} />
 					<Route path="/mypage/resetsuccess" element={<ResetSuccess />} />
-					<Route path="/login-required" element={<LoginRequired />} />
 				</Routes>
 			</MainContent>
+			{!hideHeaderFooter && <Footer />}
 		</AppContainer>
 	);
 };
 
 export default function AppWrapper() {
 	return (
-		<Router>
-			<AuthProvider>
+		<QueryClientProvider client={queryClient}>
+			<Router>
 				<App />
-			</AuthProvider>
-		</Router>
+			</Router>
+		</QueryClientProvider>
 	);
 }

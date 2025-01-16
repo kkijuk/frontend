@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Education, Career, Experience } from './Content';
 
 const Wrapper = styled.div`
 	width: 820px;
@@ -9,19 +10,14 @@ const Wrapper = styled.div`
 const CategoryBox = styled.div`
 	width: 820px;
 	height: 33px;
+	border: 1px solid black;
 `;
 
 const Category = styled.div`
 	height: 33px;
-	/*display inlineblock은 글씨 크기에 따라 너비 자동 조절*/
-	display: inline-block;
-	padding: 0 28px; /* 양쪽에 28px의 공간을 줌 */
-
-	/* 글자 세로 가운데 정렬 */
 	display: inline-flex; /* Flexbox로 설정하여 수직 가운데 정렬 가능 */
 	align-items: center; /* 세로 가운데 정렬 */
-
-	flex-shrink: 0;
+	padding: 0 25px; /* 양쪽에 28px의 공간을 줌 */
 	border-radius: 10px 10px 0px 0px;
 	background-color: ${(props) =>
 		props.isSelected ? 'var(--gray-06, #F5F5F5)' : '#FFFFFF'}; /* 선택 여부에 따른 배경색 */
@@ -44,13 +40,92 @@ const ContentBox = styled.div`
 	flex-shrink: 0;
 	border-radius: 0px 10px 10px 10px;
 	background: var(--gray-06, #f5f5f5);
+
+	display: flex; /* Flexbox로 중앙 정렬 */
+	flex-direction: column; /* 세로 방향 배치 */
+	align-items: center; /* 가로 중앙 정렬 */
 `;
 
 export default function SelectContent() {
-	const [selectedCategory, setSelectedCategory] = useState(1); //학력이 기본적으로 클릭되어있는 상태
+	const [selectedCategory, setSelectedCategory] = useState(1); // 학력이 기본적으로 클릭되어있는 상태
 
 	const handleCategoryClick = (category) => {
 		setSelectedCategory(category);
+	};
+
+	const renderContent = () => {
+		if (selectedCategory === 1) {
+			return (
+				<>
+					<Education text="xx고등학교" />
+					<Education text="서울여자대학교" />
+				</>
+			);
+		}
+		if (selectedCategory === 2) {
+			return (
+				<>
+					<Career text="영어학원 알바" />
+					<Career text="영어학원 알바2" />
+				</>
+			);
+		}
+		if (selectedCategory === 3) {
+			return (
+				<>
+					<Experience text="웹개발 소학회" />
+					<Experience text="IT서비스 개발 동아리" />
+				</>
+			);
+		}
+		if (selectedCategory === 4) {
+			return (
+				<>
+					<Experience text="웹개발 소학회" />
+					<Experience text="IT서비스 개발 동아리" />
+				</>
+			);
+		}
+		if (selectedCategory === 5) {
+			return (
+				<>
+					<Experience text="웹개발 소학회" />
+					<Experience text="IT서비스 개발 동아리" />
+				</>
+			);
+		}
+		if (selectedCategory === 6) {
+			return (
+				<>
+					<Experience text="웹개발 소학회" />
+					<Experience text="IT서비스 개발 동아리" />
+				</>
+			);
+		}
+		if (selectedCategory === 7) {
+			return (
+				<>
+					<Experience text="웹개발 소학회" />
+					<Experience text="IT서비스 개발 동아리" />
+				</>
+			);
+		}
+		if (selectedCategory === 8) {
+			return (
+				<>
+					<Experience text="웹개발 소학회" />
+					<Experience text="IT서비스 개발 동아리" />
+				</>
+			);
+		}
+		if (selectedCategory === 9) {
+			return (
+				<>
+					<Experience text="웹개발 소학회" />
+					<Experience text="IT서비스 개발 동아리" />
+				</>
+			);
+		}
 	};
 
 	return (
@@ -63,11 +138,31 @@ export default function SelectContent() {
 					<CategoryText isSelected={selectedCategory === 2}>경력</CategoryText>
 				</Category>
 				<Category isSelected={selectedCategory === 3} onClick={() => handleCategoryClick(3)}>
-					<CategoryText isSelected={selectedCategory === 3}>자격증</CategoryText>
+					<CategoryText isSelected={selectedCategory === 3}>활동 및 경험</CategoryText>
+				</Category>
+				<Category isSelected={selectedCategory === 4} onClick={() => handleCategoryClick(4)}>
+					<CategoryText isSelected={selectedCategory === 4}>프로젝트</CategoryText>
+				</Category>
+				<Category isSelected={selectedCategory === 5} onClick={() => handleCategoryClick(5)}>
+					<CategoryText isSelected={selectedCategory === 5}>교육</CategoryText>
+				</Category>
+				<Category isSelected={selectedCategory === 6} onClick={() => handleCategoryClick(6)}>
+					<CategoryText isSelected={selectedCategory === 6}>수상</CategoryText>
+				</Category>
+				<Category isSelected={selectedCategory === 7} onClick={() => handleCategoryClick(7)}>
+					<CategoryText isSelected={selectedCategory === 7}>자격증/외국어</CategoryText>
+				</Category>
+				<Category isSelected={selectedCategory === 8} onClick={() => handleCategoryClick(8)}>
+					<CategoryText isSelected={selectedCategory === 8}>스킬</CategoryText>
+				</Category>
+				<Category isSelected={selectedCategory === 9} onClick={() => handleCategoryClick(9)}>
+					<CategoryText isSelected={selectedCategory === 9}>추가자료</CategoryText>
 				</Category>
 			</CategoryBox>
 
-			<ContentBox></ContentBox>
+			<ContentBox>
+				{renderContent()} {/* 선택된 카테고리에 따라 콘텐츠를 렌더링 */}
+			</ContentBox>
 		</Wrapper>
 	);
 }

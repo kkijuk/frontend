@@ -1,36 +1,88 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const Box = styled.div`
 	width: 150px;
 	height: 35px;
-	flex-shrink: 0;
+	display: flex; /* Flexbox 활성화 */
+	justify-content: space-between; /* 좌우 간격 */
+	align-items: center; /* 세로 중앙 정렬 */
 	border-radius: 10px;
 	background: var(--white, #fff);
+	padding: 5px;
+	box-sizing: border-box;
+`;
+
+const PublicText = styled.div`
+	color: ${(props) => (props.isActive ? '#fff' : 'var(--gray-03, #d9d9d9)')};
+	text-align: center;
+	font-family: Pretendard;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	position: relative;
+	z-index: 1;
+	cursor: pointer;
 `;
 
 const Public = styled.div`
 	width: 65px;
 	height: 25px;
-	flex-shrink: 0;
 	border-radius: 10px;
-	background: var(--sub-gn, #78d333);
+	background: ${(props) => (props.isActive ? 'var(--sub-gn, #78d333)' : 'transparent')};
+	position: absolute;
+	z-index: 0;
+`;
+
+const PrivateText = styled.div`
+	color: ${(props) => (props.isActive ? '#fff' : 'var(--gray-03, #d9d9d9)')};
+	text-align: center;
+	font-family: Pretendard;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	position: relative;
+	z-index: 1;
+	cursor: pointer;
 `;
 
 const Private = styled.div`
 	width: 65px;
 	height: 25px;
-	flex-shrink: 0;
 	border-radius: 10px;
-	background: var(--sub-rd, #fa7c79);
+	background: ${(props) => (props.isActive ? 'var(--sub-rd, #fa7c79)' : 'transparent')};
+	position: absolute;
+	z-index: 0;
 `;
 
-//공개 비공개 사이에 간격 있고.. 일단 둘다 배치하고 클릭했을 때 색 보이게 클릭 안된 상태면 색 안보이게 + 텍스트 색깔도 바꿔야 함. 상태 관리(눌렀는지 여부 useState)
+const Wrapper = styled.div`
+	position: relative;
+	width: 65px; /* 텍스트와 배경이 일치하도록 고정 */
+	height: 100%; /* 부모(Box) 높이에 맞춤 */
+	display: flex; /* Flexbox 활성화 */
+	justify-content: center; /* 가로 중앙 정렬 */
+	align-items: center; /* 세로 중앙 정렬 */
+`;
+
 export default function Toggle() {
+	const [isPublic, setIsPublic] = useState(true);
+
 	return (
 		<Box>
-			<Public></Public>
-			<Private></Private>
+			<Wrapper>
+				<Public isActive={isPublic} />
+				<PublicText isActive={isPublic} onClick={() => setIsPublic(true)}>
+					공개
+				</PublicText>
+			</Wrapper>
+			<Wrapper>
+				<Private isActive={!isPublic} />
+				<PrivateText isActive={!isPublic} onClick={() => setIsPublic(false)}>
+					비공개{' '}
+				</PrivateText>
+			</Wrapper>
 		</Box>
 	);
 }

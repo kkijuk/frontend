@@ -1,41 +1,39 @@
 import React from 'react';
 import styled from 'styled-components';
-import CareerNameTag from '../shared/CareerNameTag';
+
 import TimelineChart from '../Mycareer/TimelineChart'; // 추가
 
 const TimelineBox = styled.div`
-	flex-shrink: 0;
-	width: 820px;
+	width: 95%;
+	height: 160px;
+	max-width: 820px;
 	border-radius: 10px;
 	border: 1px solid var(--gray-03, #d9d9d9);
 	background-color: white;
-	padding: 2px 0;
 	margin: 0 auto;
 	margin-bottom: 30px;
-	overflow-x: auto; /* Add horizontal scroll */
-	white-space: nowrap; /* Prevent line breaks */
+	white-space: nowrap;
+	overflow: hidden; // 추가: 내부 컨텐츠가 넘치지 않도록 함
+	position: relative; // 추가: 자식 요소의 절대 위치 기준점
+
+	@media (max-width: 600px) {
+		padding: 1px 0;
+		margin-bottom: 20px;
+	}
 `;
 
-const CareerNameT = styled.div`
-	margin-left: 23px;
-`;
-
-const TimelineDate = styled.div`
-	color: var(--gray-02, #707070);
-	text-align: center;
-	font-family: Pretendard;
-	font-size: 12px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: normal;
+const ChartWrapper = styled.div`
+	position: absolute;
+	left: 0px; // 차트를 왼쪽으로 이동
+	right: 0px; // 오른쪽 여백 조정
 `;
 
 const CareerTimeline = ({ data }) => {
-	// const careerNames = data.map((item) => item.careerName);
-	// const categories = data.map((item) => item.category);
 	return (
 		<TimelineBox>
-			<TimelineChart data={data} /> {/* 차트 추가 */}
+			<ChartWrapper>
+				<TimelineChart data={data} />
+			</ChartWrapper>
 		</TimelineBox>
 	);
 };

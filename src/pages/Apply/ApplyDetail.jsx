@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import moment from 'moment';
 import 'react-calendar/dist/Calendar.css';
-
+import SvgIconBefore from '../../assets/before.svg';
 import EditApplyModal from '../../components/Apply/EditApplyModal';
 import ApplyDeleteModal from '../../components/Apply/ApplyDeleteModal';
 import { deleteRecruit } from '../../api/Apply/DeleteRecruit';
@@ -193,7 +193,7 @@ const EditDeleteContainer = styled.div`
 
 const SubHeader = styled.div`
 	width: 720px;
-	height: 60px;
+	min-height: 60px;
 	flex-shrink: 0;
 	border-radius: 12px;
 	background: var(--gray-06, #f5f5f5);
@@ -201,13 +201,17 @@ const SubHeader = styled.div`
 	position: relative;
 	margin-top: 20px;
 	margin-left: 70px;
+	display: flex;
+	flex-direction: column;
+
+	
 `;
 
 const InfoLabelStart = styled.div`
 	width: 250px;
 	display: flex;
 	align-items: center;
-	gap: 50px;
+	gap: 20px;
 	position: absolute;
 	margin-left: 5px;
 	font-family: Bold;
@@ -224,15 +228,14 @@ const InfoLabelEnd = styled.div`
 `;
 
 const TagLabel = styled.div`
-	width: 250px;
+	width: 100%; 
 	display: flex;
-	align-items: center;
-	gap: 5px;
-	position: absolute;
+	flex-wrap: wrap;
+	gap: 8px;
 	margin-top: 40px;
-	margin-left: 5px;
+	margin-left: 6px;
 	font-family: Bold;
-	white-space: nowrap;
+	align-items: center;
 `;
 
 const Tag = styled.div`
@@ -249,9 +252,10 @@ const Tag = styled.div`
 	text-align: center;
 	font-weight: 400;
 	line-height: normal;
-	background: white;
+	background: white;  
 	color: var(--main-01, #3aaf85);
-	margin-left: 15px;
+	margin-left: 5px; 
+	margin-bottom: 5px; /* 줄바꿈 시 태그 간격을 위해 추가 */
 `;
 
 const DateText = styled.div`
@@ -509,6 +513,37 @@ const StyledCalendarContainer = styled.div`
 	z-index: 10;
 `;
 
+const CountdownBox = styled.div`
+  position: absolute; /* 위치를 고정 */
+  top: 50%; /* 부모 컨테이너의 중앙에 배치 */
+  right: 15px; /* 오른쪽 여백 */
+  transform: translateY(-50%); /* 정확히 수직 가운데 정렬 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 15px; /* 내부 여백 */
+  background: white;
+  border-radius: 12px;
+  color: #fa7c79;
+  font-family: Pretendard, sans-serif;
+  min-width: 120px; /* 최소 너비 설정 */
+  height: auto;
+
+  .label {
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 5px;
+    white-space: nowrap;
+  }
+
+  .time {
+    font-size: 20px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+`;
+
 const ApplyDetail = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -521,6 +556,7 @@ const ApplyDetail = () => {
 	const [showCalendar, setShowCalendar] = useState(false);
 	const [showReviewAdd, setShowReviewAdd] = useState(false);
 	const [gotoShow, setGotoShow] = useState(false);
+	const [timeLeft, setTimeLeft] = useState('');
 
 	const fetchJobDetails = async () => {
 		try {
@@ -557,6 +593,33 @@ const ApplyDetail = () => {
 
 		updateJobState();
 	}, [id, location.state]);
+
+	useEffect(() => {
+		if (!job?.endTime) return;
+
+		const updateCountdown = () => {
+			const now = new Date();
+			const end = new Date(job.endTime);
+			const diff = end - now;
+
+			if (diff <= 0) {
+				setTimeLeft('마감되었습니다.');
+				return;
+			}
+
+			const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+			const hours = String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+			const minutes = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, '0');
+			const seconds = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
+
+			setTimeLeft(`${days}일 ${hours}:${minutes}:${seconds}`);
+		};
+
+		const intervalId = setInterval(updateCountdown, 1000);
+		updateCountdown(); // 초기 값 설정
+
+		return () => clearInterval(intervalId); // 컴포넌트 언마운트 시 정리
+	}, [job?.endTime]);
 
 	const handleEditClick = () => {
 		setIsEditModalOpen(true);
@@ -715,7 +778,10 @@ const ApplyDetail = () => {
 	return (
 		<Container>
 			<Title>지원공고 관리</Title>
-			<BackLink to="/apply-status">&lt; 지원현황</BackLink>
+			<BackLink to="/apply-status">
+			<img src={SvgIconBefore} alt="Close" width={20} height={13} />
+                     지원현황
+            </BackLink>
 			<Header>
 				<TitleContainer>
 					<div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -784,17 +850,23 @@ const ApplyDetail = () => {
 					</CalendarWrapper>
 				)}
 				<SubHeader>
-					<InfoLabelStart>
-						접수 시작 <DateText>{formatDateTimeToLocal(job?.startTime)}</DateText>
-					</InfoLabelStart>
-					<InfoLabelEnd>
-						접수 마감 <DateText isEndTime>{formatDateTimeToLocal(job?.endTime)}</DateText>
-					</InfoLabelEnd>
-					<TagLabel>
-						태그
-						{job?.tags && job.tags.length > 0 && job.tags.map((tag, idx) => <Tag key={idx}>{tag}</Tag>)}
-					</TagLabel>
-				</SubHeader>
+		<InfoLabelStart>
+			접수 시작 <DateText>{formatDateTimeToLocal(job?.startTime)}</DateText>
+		</InfoLabelStart>
+		<InfoLabelEnd>
+			접수 마감 <DateText isEndTime>{formatDateTimeToLocal(job?.endTime)}</DateText>
+		</InfoLabelEnd>
+		{status === 'UNAPPLIED' && (
+      <CountdownBox>
+        <div className="label">마감까지</div>
+        <div className="time">{timeLeft}</div>
+      </CountdownBox>
+    )}
+	<TagLabel>
+		태그
+		{job?.tags && job.tags.length > 0 && job.tags.map((tag, idx) => <Tag key={idx}>{tag}</Tag>)}
+	</TagLabel>
+</SubHeader>
 			</Header>
 
 			{job?.reviews &&

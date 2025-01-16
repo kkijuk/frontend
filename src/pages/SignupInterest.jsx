@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // useNavigate import
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+
 import InterestBox from '../components/shared/InterestBox';
 import InterestSkipModal from '../components/User/InterestSkipModal';
 import { saveInterests } from '../api/Signup/signupInterest';
-import { useAuth } from '../components/AuthContext';
 
 const ContentArea = styled.div`
-	margin: 0 auto;
-	padding: 20px;
-	background-color: white;
-	width: 400px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	flex-direction: column;
-	overflow-y: auto;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  flex-direction: column;
+  overflow-y: auto;
+
+  svg {
+    display: none; 
+  }
 `;
 
 const InterestArea = styled.div`
@@ -42,19 +46,19 @@ const CloseButton = styled.button`
 	background: transparent;
 	border: none;
 	cursor: pointer;
-	margin-top: 34px;
-	margin-bottom: 18px;
+	margin-top: 15px;
+	margin-bottom: 35px;
 `;
 
 const Title = styled.h2`
 	margin-bottom: 10px;
-	font-size: 32px;
-	color: var(--main-01, #3aaf85);
-	text-align: center;
-	font-family: Pretendard;
-	font-style: normal;
-	font-weight: 700;
-	line-height: normal;
+	color: var(--black, #000);
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
 `;
 
 const Label = styled.label`
@@ -88,6 +92,7 @@ const SaveButton = styled.button`
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
+	margin-top: 30px;
 
 	&:hover {
 		background-color: #35a576;
@@ -98,13 +103,13 @@ const SignupInterest = ({ onSave = () => {} }) => {
 	const [interestingList, setSelectedInterest] = useState([]);
 	const navigate = useNavigate();
 	const [showModal, setShowModal] = useState(false);
-	const { isLoggedIn } = useAuth(); // 로그인 상태 확인
 
 	useEffect(() => {
-		if (!isLoggedIn) {
-			navigate('/login'); // 로그인 상태가 아니면 로그인 페이지로 이동 아마 이럴일은 없을 것입니다
+		const unwantedSvg = document.querySelector("body > svg");
+		if (unwantedSvg) {
+		  unwantedSvg.parentNode.removeChild(unwantedSvg);
 		}
-	}, [isLoggedIn, navigate]);
+	  }, []);
 
 	const handleInterestSelect = (interest) => {
 		setSelectedInterest((prevSelectedInterests) =>
@@ -176,8 +181,8 @@ const SignupInterest = ({ onSave = () => {} }) => {
 					/>
 				))}
 			</InterestArea>
-			<CloseButton onClick={() => setShowModal(true)}>건너뛰기</CloseButton>
 			<SaveButton onClick={handleSave}>완료</SaveButton>
+			<CloseButton onClick={() => setShowModal(true)}>건너뛰기</CloseButton>
 			{showModal && <InterestSkipModal onClose={handleModalClose} onConfirm={handleModalConfirm} />}
 		</ContentArea>
 	);

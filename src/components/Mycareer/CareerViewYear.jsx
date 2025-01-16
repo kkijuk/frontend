@@ -6,59 +6,60 @@ import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 
 const BackgroundSection = styled.div`
 	width: 100vw;
-	min-height: auto;
-	left: 50%;
-	transform: translateX(-50%);
+	min-height: 100vh;
 	background-color: #f0f0f0;
 	position: relative;
 	box-sizing: border-box;
-
 	display: flex;
-	justify-content: center; /* CategoryBox를 가운데로 정렬 */
-	align-items: flex-start; /* CategoryBox를 세로 축에서 상단에 정렬 */
+	justify-content: center;
+	align-items: flex-start;
+	padding: 20px 0;
 `;
 
 const Container = styled.div`
-	width: 820px;
-	height: auto;
-	box-sizing: border-box; /* padding과 border를 포함한 전체 크기를 계산 */
+	width: 100%;
+	max-width: 820px;
+	box-sizing: border-box;
+	padding: 0 15px; /* 좌우 여백 추가로 반응형에서 보기 좋게 */
 `;
 
 const YearBox = styled.div`
-	width: 820px;
+	width: 100%;
 	gap: 12px;
 	margin-bottom: 20px;
 `;
 
 const Year = styled.div`
 	color: var(--black, #000);
-
 	font-family: regular;
 	font-size: 22px;
-	font-style: normal;
 	font-weight: 400;
-	line-height: normal;
-	margin-top: 22px;
 	margin-bottom: 10px;
+
+	@media (max-width: 600px) {
+		font-size: 18px; /* 작은 화면에서 폰트 크기 축소 */
+	}
 `;
 
 const ListBox = styled.div`
-	width: 820px;
+	width: 95%; /* 화면에 맞게 가변적으로 조정 */
 	height: auto;
-	padding: 15px;
-	padding-left: 20px;
-	box-sizing: border-box;
+	padding: 10px;
 	background-color: white;
-	border-radius: 8px;
+	flex-shrink: 0;
+	border-radius: 10px;
 	margin-bottom: 15px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	cursor: pointer;
+
+	@media (max-width: 860px) {
+		padding: 10px; /* 작은 화면에서 패딩 축소 */
+	}
 `;
 
 const Category = styled.div`
 	height: 15px;
 	display: flex;
-	flex-direction: row;
 	align-items: center;
 	margin-bottom: 9px;
 `;
@@ -66,72 +67,68 @@ const Category = styled.div`
 const CategoryTextBox = styled.div`
 	display: flex;
 	align-items: center;
-	margin-bottom: 8px;
-	margin-top: 4px;
-	font-style: regular;
-`;
+	margin: 4px 0 8px 0;
+	font-size: 14px;
 
-const Name = styled.div``;
+	@media (max-width: 600px) {
+		font-size: 12px; /* 작은 화면에서 폰트 크기 축소 */
+	}
+`;
 
 const CareerName = styled.div`
 	color: var(--black, #000);
 	font-family: bold;
 	font-size: 18px;
-	font-style: regular;
 	font-weight: 700;
-	line-height: normal;
-	margin-bottom: 9px;
-	margin-top: 5px;
+	margin: 5px 0 9px 0;
+
+	@media (max-width: 600px) {
+		font-size: 16px; /* 작은 화면에서 폰트 크기 축소 */
+	}
 `;
 
 const AliasName = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
 	font-size: 18px;
-	font-style: regular;
 	font-weight: 400;
-	line-height: normal;
-	margin-bottom: 9px;
-	margin-top: 5px;
+	margin: 5px 0 9px 0;
+
+	@media (max-width: 600px) {
+		font-size: 16px; /* 작은 화면에서 폰트 크기 축소 */
+	}
 `;
 
 const CareerContainer = styled.div`
-	display: flex; /* Flexbox로 가로 정렬 */
-	align-items: center; /* 세로 가운데 정렬 (선택 사항) */
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap; /* 작은 화면에서 요소가 줄 바꿈되도록 설정 */
 `;
 
 const Date = styled.div`
-	font-style: light;
 	font-size: 14px;
 	color: #555;
+
+	@media (max-width: 600px) {
+		font-size: 12px; /* 작은 화면에서 폰트 크기 축소 */
+	}
 `;
 
-const formatDate = (dateString) => {
-	return dateString.replace(/-/g, '.');
-};
-
 const CareerViewYear = ({ data }) => {
-	console.log('CareerViewYear rendered');
-	const sortedYears = Object.keys(data).sort((a, b) => b - a);
-
 	const navigate = useNavigate();
-	const handleListBoxClick = async (careerId) => {
-		try {
-			const responseData = await ViewCareerDetail(careerId);
-			console.log('Received careerId:', careerId);
-			if (responseData) {
-				window.scrollTo(0, 0);
 
-				navigate(`/mycareer/${careerId}`, { details: responseData });
-			}
-			// 여기서 tagList를 이용해 추가 작업을 할 수 있습니다.
-		} catch (error) {
-			console.error('Error fetching careerId:', error);
-		}
+	const handleListBoxClick = (careerId, category) => {
+		navigate(`/mycareer/${category}/${careerId}`, { state: { careerId, category } });
 	};
 
+	const sortedYears = Object.keys(data).sort((a, b) => b - a);
+
 	if (!sortedYears.length || !data[sortedYears[0]]) {
-		return <div>데이터가 없습니다.</div>;
+		return (
+			<BackgroundSection>
+				<div>데이터가 없습니다.</div>
+			</BackgroundSection>
+		);
 	}
 
 	return (
@@ -142,14 +139,13 @@ const CareerViewYear = ({ data }) => {
 						<YearBox key={year}>
 							<Year>{year}</Year>
 							{data[year].map((item, index) => {
-								console.log('Item:', item);
-								console.log('Item year:', year);
-
 								return (
-									<ListBox key={index} onClick={() => handleListBoxClick(item.id)}>
+									<ListBox
+										key={`${item.category.categoryId}_${item.id}`}
+										onClick={() => handleListBoxClick(item.id, item.category.categoryKoName)}>
 										<Category>
-											<CareerCategoryCircle category={item.category} />
-											<CategoryTextBox>{item.category}</CategoryTextBox>
+											<CareerCategoryCircle category={item.category.categoryKoName} />
+											<CategoryTextBox>{item.category.categoryKoName}</CategoryTextBox>
 										</Category>
 										<CareerContainer>
 											<CareerName>{item.name}</CareerName>

@@ -7,11 +7,11 @@ import DeadlineNoti from '../components/Home/DeadlineNoti';
 import WritingNoti from '../components/Home/WritingNoti';
 import RecommendBox from '../components/Home/RecommendBox';
 import TimelineHome from '../components/Home/TimelineHome';
-import { useAuth } from '../components/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Banner1SVG from '../assets/banner1.svg';
 import Banner2SVG from '../assets/banner2.svg';
 import Banner3SVG from '../assets/banner3.svg';
+import Box from '../components/Home/Box';
 
 const Body = styled.div`
 	width: 820px;
@@ -129,22 +129,19 @@ const bannerDummy = [
 ];
 
 export default function Home() {
-	const { isLoggedIn } = useAuth();
 	const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
 
 	const handleTimelineClick = () => {
-		if (!isLoggedIn) {
-			window.scrollTo(0, 0);
-			navigate('/login-required'); // 로그아웃 상태일 시 로그인 페이지로 이동합니다.
-		}
+		window.scrollTo(0, 0);
+		navigate('/login-required'); // 로그아웃 상태일 시 로그인 페이지로 이동합니다.
 	};
 
 	return (
 		<Body>
 			<Container1>
-				{isLoggedIn ? <LoginProfileBox /> : <LogoutProfileBox />}
+				<LoginProfileBox />
 				<div onClick={handleTimelineClick}>
-					<TimelineHome />
+					<Box></Box>
 				</div>
 			</Container1>
 			{/* <Banner banners={bannerDummy} /> */}
