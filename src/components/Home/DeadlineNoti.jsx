@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { getRecruitRemind } from '../../api/Home/getRecruitRemind';
-import { useAuth } from '../AuthContext'; // AuthContext 가져오기
 import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
@@ -84,36 +83,31 @@ const PlaceholderText = styled.div`
 `;
 
 export default function DeadlineNoti() {
-	const { isLoggedIn } = useAuth(); // 로그인 상태 가져오기
 	const navigate = useNavigate();
 	const [recruits, setRecruits] = useState([]);
 
 	useEffect(() => {
-		if (isLoggedIn) {
-			// 로그인 상태일 때만 데이터 가져오기
-			async function fetchData() {
-				try {
-					const response = await getRecruitRemind();
-					if (!response) {
-						throw new Error('Failed to fetch data');
-					}
-					const filledRecruits = [...response.slice(0, 2)]; // 최대 2개의 데이터만 사용
-					// 데이터가 2개 미만일 경우 빈 박스를 추가
-					while (filledRecruits.length < 2) {
-						filledRecruits.push({});
-					}
-					setRecruits(filledRecruits);
-				} catch (error) {
-					console.error('에러- Failed to fetch data:', error);
-					setRecruits([{}, {}]); // 에러 발생 시 빈 박스 유지
+		
+		async function fetchData() {
+			try {
+				const response = await getRecruitRemind();
+				if (!response) {
+					throw new Error('Failed to fetch data');
 				}
+				const filledRecruits = [...response.slice(0, 2)]; // 최대 2개의 데이터만 사용
+				// 데이터가 2개 미만일 경우 빈 박스를 추가
+				while (filledRecruits.length < 2) {
+					filledRecruits.push({});
+				}
+				setRecruits(filledRecruits);
+			} catch (error) {
+				console.error('에러- Failed to fetch data:', error);
+				setRecruits([{}, {}]); // 에러 발생 시 빈 박스 유지
 			}
-
-			fetchData();
-		} else {
-			setRecruits([{}, {}]); // 로그아웃 상태일 때도 빈 박스 유지
 		}
-	}, [isLoggedIn]);
+
+		fetchData();
+	}, []);
 
 	const handleClick = (isEmpty, id) => {
 		window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { getIntroduce } from '../../api/Home/getIntroduce';
-import { useAuth } from '../AuthContext'; // AuthContext 가져오기
 import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
@@ -84,36 +83,31 @@ const PlaceholderText = styled.div`
 `;
 
 export default function WritingNoti() {
-	const { isLoggedIn } = useAuth(); // 로그인 상태 가져오기
 	const navigate = useNavigate();
 	const [introduceList, setIntroduceList] = useState([]);
 
 	useEffect(() => {
-		if (isLoggedIn) {
-			const fetchIntroduce = async () => {
-				try {
-					const data = await getIntroduce();
-					if (data && data.length > 0) {
-						const filledIntroduceList = [...data.slice(0, 2)]; // 최대 2개의 데이터만 사용
-						// 빈 박스가 있어야 하므로 데이터가 2개 미만일 경우 빈 박스를 추가
-						while (filledIntroduceList.length < 2) {
-							filledIntroduceList.push({});
-						}
-						setIntroduceList(filledIntroduceList);
-					} else {
-						setIntroduceList([{}, {}]); // 데이터가 없을 경우 빈 박스 유지
+		const fetchIntroduce = async () => {
+			try {
+				const data = await getIntroduce();
+				if (data && data.length > 0) {
+					const filledIntroduceList = [...data.slice(0, 2)]; // 최대 2개의 데이터만 사용
+					// 빈 박스가 있어야 하므로 데이터가 2개 미만일 경우 빈 박스를 추가
+					while (filledIntroduceList.length < 2) {
+						filledIntroduceList.push({});
 					}
-				} catch (error) {
-					console.error('Error fetching data:', error);
-					setIntroduceList([{}, {}]); // 에러 발생 시에도 빈 박스 유지
+					setIntroduceList(filledIntroduceList);
+				} else {
+					setIntroduceList([{}, {}]); // 데이터가 없을 경우 빈 박스 유지
 				}
-			};
+			} catch (error) {
+				console.error('Error fetching data:', error);
+				setIntroduceList([{}, {}]); // 에러 발생 시에도 빈 박스 유지
+			}
+		};
 
-			fetchIntroduce();
-		} else {
-			setIntroduceList([{}, {}]); // 로그아웃 상태에서도 빈 박스 유지
-		}
-	}, [isLoggedIn]);
+		fetchIntroduce();
+	}, []);
 
 	const regex = /[^0-9]/g;
 
@@ -131,7 +125,7 @@ export default function WritingNoti() {
 		<Container>
 			<Label>자기소개서 작성 완료를 기다려요</Label>
 			{introduceList.map((introduce, index) => {
-				const isEmpty = !introduce.recruitTitle; // 로그인 상태일 때만 데이터 표시 -> 취소
+				const isEmpty = !introduce.recruitTitle; // 데이터 없는 경우 처리
 				const num = introduce.deadline ? parseInt(introduce.deadline.replace(regex, ''), 10) : null;
 				const id = introduce.introduceId;
 				const fontColor = num <= 7 ? '#FA7C79' : '#707070'; // 현재: 7일 이하면 글자색 빨간색

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // useNavigate import
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+
 import InterestBox from '../components/shared/InterestBox';
 import InterestSkipModal from '../components/User/InterestSkipModal';
 import { saveInterests } from '../api/Signup/signupInterest';
-import { useAuth } from '../components/AuthContext';
 
 const ContentArea = styled.div`
   margin: 0 auto;
@@ -103,13 +103,6 @@ const SignupInterest = ({ onSave = () => {} }) => {
 	const [interestingList, setSelectedInterest] = useState([]);
 	const navigate = useNavigate();
 	const [showModal, setShowModal] = useState(false);
-	const { isLoggedIn } = useAuth(); // 로그인 상태 확인
-
-	useEffect(() => {
-		if (!isLoggedIn) {
-			navigate('/login'); // 로그인 상태가 아니면 로그인 페이지로 이동 
-		}
-	}, [isLoggedIn, navigate]);
 
 	useEffect(() => {
 		const unwantedSvg = document.querySelector("body > svg");
