@@ -7,6 +7,7 @@ import moment from 'moment';
 import 'react-calendar/dist/Calendar.css';
 
 const CalendarWrapper = styled.div`
+	z-index: 1000;
 	.react-calendar {
 		width: 281px;
 		height: 263px;

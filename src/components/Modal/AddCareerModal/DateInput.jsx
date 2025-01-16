@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import ReactCalendar from '../../shared/CalendarSingle';
+import CustomCalendarPicker from '../../Record/CustomCalendarPicker';
 
 const DateInput = ({ value, onChange, disabled }) => {
 	const [showCalendar, setShowCalendar] = useState(false);
@@ -37,7 +38,10 @@ const DateInput = ({ value, onChange, disabled }) => {
 			/>
 			{showCalendar && (
 				<CalendarWrapper ref={calendarRef}>
-					<ReactCalendar onChange={handleDateChange} />
+					{/* <ReactCalendar onChange={handleDateChange} /> */}
+					<CustomCalendarPicker
+						value={value}
+						onChange={handleDateChange}/>
 				</CalendarWrapper>
 			)}
 		</DateInputWrapper>
@@ -46,15 +50,22 @@ const DateInput = ({ value, onChange, disabled }) => {
 
 export default DateInput;
 
+const DateInput2 = ()=>{
+
+}
+
+export {DateInput2};
+
 const DateInputWrapper = styled.div`
 	position: relative;
-	width: 100%; /* 부모 요소에 맞춰 전체 너비를 사용 */
+	width: 260px;
 `;
 
 const InputDate = styled.input`
+	// position: absolute;
 	font-family: Regular;
 	font-size: 16px;
-	width: 100%;
+	width: 240px;
 	height: 60px;
 	// padding: 10px;
 	margin-bottom: 25px;
@@ -70,11 +81,10 @@ const CalendarWrapper = styled.div`
 	position: absolute;
 	top: 50px; 
 	left: 0;
-	z-index: 10;
+	z-index: 1000;
 	background: white;
 	// box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 	border-radius: 10px;
-	padding: 10px;
 
 	width: 100%;
 	height: 300px;

@@ -26,14 +26,14 @@ const createRecord = async (data) => {
 // 이력서 페이지 접속 시에 호출합니다.
 const readRecord = async () => {
 	try {
-		const response = await api.get('/history/resume/', {
+		const response = await api.get('/history/resume', {
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			withCredentials: true,
 		});
 		console.log('Success - readRecord: ', response.data);
-		return response.data.data;
+		return response.data;
 	} catch (error) {
 		console.error('Error - readRecord:', error);
 		if (error.response) {
@@ -55,10 +55,14 @@ const readRecord = async () => {
 const updateRecord = async (recordId, data) => {
 	try {
 		const response = await api.patch(`/history/resume/?recordId=${recordId}`, data);
+		console.log("recordId: ", recordId);
+		console.log(data);
 		console.log('Success - updateRecode:', response.data);
 
 		return response.data;
 	} catch (error) {
+		console.log("recordId: ", recordId);
+		console.log(data);
 		console.error('Error-updateRecord:', error);
 		if (error.response) {
 			// 서버 응답이 있는 경우
@@ -74,4 +78,4 @@ const updateRecord = async (recordId, data) => {
 	}
 };
 
-export default { createRecord, readRecord, updateRecord };
+export { createRecord, readRecord, updateRecord };

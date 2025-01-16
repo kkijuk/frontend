@@ -7,18 +7,18 @@ const CareerItem = ({ data, isLastItem, onEdit }) => {
 	// const isPastDue = data.endDate < formattedToday; //true: 기한 경과, false: 기한 내
 
 	return (
-		<div style={{ display: 'flex' }}>
+		<div style={{ display: 'flex', width: '100%' }}>	
 			<TimeLine>
-				<Oval category={data.category} isPastDue={data.isCurrent}></Oval>
-				<Line category={data.category} isLastItem={isLastItem} isPastDue={data.isCurrent}></Line>
+				{/* <Oval category={data.category.categoryKoName} isPastDue={data.isCurrent}></Oval> */}
+				{/* <Line category={data.category.categoryKoName} isLastItem={isLastItem} isPastDue={data.isCurrent}></Line> */}
 			</TimeLine>
 			<Container>
 				<div>
-					<LevelTag category={data.category}>{data.category}</LevelTag>
+					<LevelTag category={data.category.categoryKoName}>{data.category.categoryKoName}</LevelTag>
 					<SchoolInfo>
-						<SchoolName>{data.careerName}</SchoolName>
+						<SchoolName>{data.name}</SchoolName>
 						<Dates>
-							{data.startDate} ~ {data.endDate} <Status>({data.period}개월)</Status>
+							{data.startDate} ~ {data.endDate} <Status>(n개월)</Status>
 						</Dates>
 						<p>
 							<span style={{ fontWeight: '600', marginRight: '30px' }}>활동내역</span>
@@ -130,7 +130,6 @@ const Line = styled.div`
 
 const EditButton = styled.button`
 	width: 65px;
-	margin-left: auto;
 	background-color: #f5f5f5;
 	color: #707070;
 	border: none;
@@ -139,23 +138,25 @@ const EditButton = styled.button`
 	opacity: 0;
 	transition: opacity 0.2s ease-in-out;
 	position: absolute;
-	right: 20px;
+	right: -450px;
+	top:0;
 `;
 
 const Container = styled.div`
-	width: 820px;
+	width: 100%
 	display: flex;
 	align-items: flex-start;
 	margin-bottom: 45px;
 	font-family: 'Regular';
+	position: relative;
 	&:hover ${EditButton} {
 		opacity: 1;
 		cursor: pointer;
-		positon: relative;
 	}
 `;
 
 const LevelTag = styled.div`
+	width: 80px;
 	height: 22px;
 	background-color: ${(props) =>
 		props.category === '동아리'
@@ -172,12 +173,14 @@ const LevelTag = styled.div`
 								? '#F99538'
 								: '#707070'};
 	color: white;
-	padding: 5px 10px;
+	padding: 2px 5px;
 	border-radius: 5px;
 	font-size: 14px;
-	font-weight: bold;
+	font-family: 'Re	gular';
 	margin-bottom: 10px;
-	display: inline-block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	line-height: 25px;
 `;
 

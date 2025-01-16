@@ -13,7 +13,7 @@ const ParticipantType = ({ isTeam, setIsTeam, teamSize, setTeamSize, contributio
 				<Label>
 					인원 <span style={{ color: '#FC5555' }}>*</span>
 				</Label>
-				<Label style={{ left: '310px' }}>팀 인원</Label>
+				<Label style={{ marginLeft: '170px' }}>팀 인원</Label>
 				<Label style={{ left: '560px' }}>기여도</Label>
 			</LabelGroup>
 			<ContentGroup>
@@ -27,7 +27,7 @@ const ParticipantType = ({ isTeam, setIsTeam, teamSize, setTeamSize, contributio
 				</ButtonGroup>
 				<InputGroup>
 					<Input type="number" value={teamSize} onChange={(e) => setTeamSize(e.target.value)} disabled={!isTeam} />
-					<span>명</span>
+					<span style={{marginRight:'10px'}}>명</span>
 					<Input
 						type="number"
 						value={contribution}
@@ -53,7 +53,7 @@ const Container = styled.div`
 const LabelGroup = styled.div`
 	display: flex;
 	justify-content: space-between;
-	margin-bottom: 30px;
+	margin-bottom: 5px;
 	width: 100%;
 	position: relative;
 `;
@@ -61,22 +61,26 @@ const LabelGroup = styled.div`
 const Label = styled.label`
 	font-size: 14px;
 	font-weight: bold;
-	position: absolute;
-	width: 125px;
+	font-family: 'Regular';
+	// position: absolute;
+	width: 120px;
 	text-align: left;
-	margin-bottom: 5px;
+	line-height: 10px;
+	// margin-bottom: 5px;
+	
 `;
 
 const ContentGroup = styled.div`
 	display: flex;
 	align-items: center;
 	width: 100%;
-	gap: 20px;
+	gap: 40px;
 `;
 
 const ButtonGroup = styled.div`
 	display: flex;
 	gap: 10px;
+	width:260px;
 `;
 
 const SelectButton = styled.div`
@@ -84,11 +88,12 @@ const SelectButton = styled.div`
 	height: 50px;
 	font-size: 16px;
 	font-weight: 400;
+	font-family: 'Regular';
 	line-height: 50px;
 	border-radius: 10px;
 	cursor: pointer;
 	display: inline-block;
-	margin-right: 10px;
+	// margin-right: 10px;
 
 	background-color: ${(props) => (props.selected ? '#E1FAED' : '#f5f5f5')};
 	color: ${(props) => (props.selected ? '#3AAF85' : '#707070')};
@@ -99,15 +104,18 @@ const SelectButton = styled.div`
 const InputGroup = styled.div`
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	width:260px;
+	// gap: 10px;
+	margin-left:15px;
 
 	span {
 		font-size: 14px;
+		margin-left:5px;
 	}
 `;
 
 const Input = styled.input`
-	width: 100px;
+	width: 90px;
 	height: 50px;
 	padding: 5px;
 	font-size: 14px;

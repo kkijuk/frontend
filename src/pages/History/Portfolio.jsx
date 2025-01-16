@@ -3,6 +3,7 @@ import styled from 'styled-components';
 // import './history.css'
 import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
 import { Affiliation1, Affiliation2 } from '../../components/Modal/AddCareerModal/Affiliation';
+import CustomDropdown from '../../components/Record/CustomDropdown';
 
 const Portfolio = () => {
 	const setAffiliation = () => {
@@ -29,6 +30,13 @@ const Portfolio = () => {
 			<br></br>
 			<button onClick={toggleModal}>Add Career</button>
 			{isModalOpen && <AddCareerModal onClose={toggleModal}></AddCareerModal>}
+
+			<CustomDropdown
+				placeholder="test"
+				menuItems = {["1", "2","3"]}
+				width = {20}
+				onSelect = {()=>{console.log("test")}}
+			/>
 		</>
 	);
 };

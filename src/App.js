@@ -17,6 +17,7 @@ import SubNav from './components/Intro/SubNav';
 import ViewOptions from './pages/History/ViewOptions';
 
 import History from './pages/History/History';
+import HistoryD from './pages/History/HistoryDummy';
 import ResumePdf from './pages/History/ResumePDF';
 import Master from './pages/History/Master';
 import Others from './pages/History/Others';
@@ -41,7 +42,6 @@ import Header from './components/Header';
 import FilterPage from './components/Apply/FilterPage';
 import { AuthProvider } from './components/AuthContext';
 import LoginRequired from './pages/LoginRequired';
-
 
 const AppContainer = styled.div`
 	display: flex;
@@ -79,13 +79,14 @@ const App = () => {
 
 					<Route path="/signupinterest" element={<SignupInterest />} />
 
+					<Route path="/history" element={<History/>} />
 					<Route element={<SubNav />}>
 						<Route element={<ViewOptions />}>
 							<Route path="/history/master" element={<Master />} />
 							<Route path="/history/others/:id" element={<Others />} />
 							<Route path="/history/list/:state" element={<List />} />
 						</Route>
-						<Route path="/history" element={<History />} />
+						{/* <Route path="/history" element={<History/>} /> */}
 						<Route path="/history/portfolio" element={<Portfolio />} />
 					</Route>
 					<Route path="/history/master/rewrite" element={<MasterRewrite />} />
