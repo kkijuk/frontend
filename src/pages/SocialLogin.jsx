@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import logo from '../assets/logo.png';
 import useAuthStore from '../stores/useAuthStore';
 import { useNavigate } from 'react-router-dom';
+import background from '../assets/main/background.svg';
+import star1 from '../assets/main/star1.svg';
+import star2 from '../assets/main/star2.svg';
 
 const PageContainer = styled.div`
   background: var(--background, linear-gradient(180deg, #FFF 30%, #E1F4ED 100%));
@@ -11,7 +14,7 @@ const PageContainer = styled.div`
   position: relative;
 `;
 
-const SvgContainer = styled.div`
+const SvgContainer = styled.div` 
   position: absolute;
   width: 100%;
   height: auto;
@@ -35,16 +38,18 @@ const LoginScreen = styled.div`
   overflow: hidden;
 
   p {
-    color: #707070;
+    color: #424242;
     font-family: light;
-    margin-bottom: 50px;
+    margin-bottom: 75px;
     margin-top: 10px;
     text-align: center;
-    color: var(--gray-02, #707070);
-    font-size: 19px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
+    font-size: 21px;
+    font-weight: 800;
+    font-family: Light;
+
+    span.highlight {
+      color: var(--main-01, #3AAF85); 
+    }
   }
 
   * {
@@ -98,13 +103,14 @@ const Title = styled.div`
   color: var(--main-01, #3AAF85);
   text-align: center;
   font-family: Pretendard;
-  font-size: 16px;
+  font-size: 19px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 800;
+    font-family: Light;
   line-height: normal;
-  margin-bottom: -95px;
+  margin-bottom: -150px;
   z-index: 1000;
-  margin-top: 50px;
+  margin-top: 80px;
 `;
 
 const SocialButton = styled.button`
@@ -308,7 +314,9 @@ const SocialLogin = () => {
       <Title>쉽고 빠르게 쌓아가는 나만의 커리어 아카이브</Title>
       <LoginScreen>
         <img src={logo} width="164px" height="80px" alt="Logo" />
-        <p>당신의 끼를 적어두세요</p>
+        <p>
+          당신의 <span className="highlight">끼</span>를 <span className="highlight">적</span>어두세요
+        </p>
         <ButtonContainer>
         <SocialButton className="kakao" onClick={handleKakaoLogin}>
             <KakaoIcon />
