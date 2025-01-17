@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import './history.css';
 import Layout from '../../components/Layout'
-import useRecordStore from '../../store/useRecordStore';
+import useRecordStore from '../../stores/useRecordStore';
 import AddEducationForm from '../../components/Record/addForms/AddEducationForm';
 import AddAwardForm from '../../components/Record/addForms/AddAwardForm';
 import AddSkillForm from '../../components/Record/addForms/AddSkillForm';

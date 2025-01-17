@@ -31,17 +31,7 @@ const Portfolio = () => {
 			<br></br>
 			<button onClick={toggleModal}>Add Career</button>
 			{isModalOpen && <AddCareerModal onClose={toggleModal}></AddCareerModal>}
-<<<<<<< HEAD
-
-			<CustomDropdown
-				placeholder="test"
-				menuItems = {["1", "2","3"]}
-				width = {20}
-				onSelect = {()=>{console.log("test")}}
-			/>
-=======
 			<Helper></Helper>
->>>>>>> 283b7c0bedd8092697aa66317aabaf8d51ae7770
 		</>
 	);
 };

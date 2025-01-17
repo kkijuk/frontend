@@ -3,17 +3,18 @@ import styled from 'styled-components';
 
 import { Affiliation1 } from './Affiliation';
 import { Affiliation2 } from './Affiliation';
-import SvgIcon from '../../shared/SvgIcon';
+import SvgIcon from '../SvgIcon';
 import { validateAndFilterForm } from './validateAndFilterForm';
 import createCareer from '../../../api/Mycareer/createCareer';
+import updateCareer from '../../../api/Mycareer/updateCareer';
 import DateInput from './DateInput';
 import UnknownRadio from './UnknownRadio';
 import CareerTypeDropdown, {CareerTypeDropdown2} from './CareerTypeDropdown';
 import ParticipantType from './ParticipantType';
 import { Form } from 'react-router-dom';
-import CustomDropdown from '../../Record/CustomDropdown';
+import CustomDropdown from '../Record/CustomDropdown';
 
-const AddCareerModal = ({ onClose }) => {
+const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 	//카테고리 정보
 	const categoryMap = {
 		1: '동아리',
@@ -34,30 +35,61 @@ const AddCareerModal = ({ onClose }) => {
 		7: '#707070',
 	};
 
+	// 현재 모달 모드(활동 추가 or 활동 수정)
+	const isEditMode = mode === 'edit';
+
 	//현재 선택된 카테고리
-	const [selectedCategory, setSelectedCategory] = useState(1);
+	const [selectedCategory, setSelectedCategory] = useState(initialData?.category||1);
 
 	//12가지 유형의 form Data 상태관리
-	const [name, setName] = useState(''); //활동명
-	const [alias, setAlias] = useState(''); //별칭
-	const [startdate, setStartdate] = useState(null); //시작일자
-	const [enddate, setEnddate] = useState(null); //종료일자
-	const [unknown, setUnknown] = useState(false); //종료일자 알 수 없음 여부
-	const [location, setLocation] = useState('ON_CAMPUS'); //소속(ON_CAMPUS: 교내, OFF_CAMPUS: 교외, OTHER: 기타)
-	const [role, setRole] = useState(''); //역할
-	const [organizer, setOrganizer] = useState(''); //주최
-	const [careerType, setCareerType] = useState(''); //경력분류
-	// const [workplace, setWorkplace] = useState(''); //근무처
-	const [position, setPosition] = useState(''); //직급/직위
-	const [jobField, setJobField] = useState(''); //직무/분야
-	const [educationHours, setEducationHours] = useState(0); //교육시간
-	// const [participantType, setParticipantType] = useState({}); //인원-팀인원-기여도
-	const [isTeam, setIsTeam] = useState(false);
-	const [teamSize, setTeamSize] = useState(0);
-	const [contribution, setContribution] = useState(0);
+	const [name, setName] = useState(initialData?.name||''); //활동명
+	const [alias, setAlias] = useState(initialData?.alias||''); //별칭
+	const [startdate, setStartdate] = useState(initialData?.startdate||null); //시작일자
+	const [enddate, setEnddate] = useState(initialData?.enddate||null); //종료일자
+	const [unknown, setUnknown] = useState(initialData?.unknown||false); //종료일자 알 수 없음 여부
+	const [location, setLocation] = useState(initialData?.location||'ON_CAMPUS'); //소속(ON_CAMPUS: 교내, OFF_CAMPUS: 교외, OTHER: 기타)
+	const [role, setRole] = useState(initialData?.role||''); //역할
+	const [organizer, setOrganizer] = useState(initialData?.organizer||''); //주최
+	const [careerType, setCareerType] = useState(initialData?.careerType||''); //경력분류
+	const [workplace, setWorkplace] = useState(initialData?.workplace||''); //근무처
+	const [position, setPosition] = useState(initialData?.position||''); //직급/직위
+	const [jobField, setJobField] = useState(initialData?.jobField||''); //직무/분야
+	const [educationHours, setEducationHours] = useState(initialData?.educationHours||0); //교육시간
+	const [isTeam, setIsTeam] = useState(initialData?.isTeam||false);
+	const [teamSize, setTeamSize] = useState(initialData?.teamSize||0);
+	const [contribution, setContribution] = useState(initialData?.contribution||0);
 
+	//각 폼 별 상태 모니터링
+	useEffect(() => {
+		console.log({
+			name,
+			alias,
+			startdate,
+			enddate,
+			unknown,
+			location,
+			role,
+			organizer,
+			careerType,
+			position,
+			jobField,
+			educationHours,
+			isTeam,
+			teamSize,
+			contribution,
+		});
+		}, 
+		[
+			name, alias, startdate, enddate, unknown, 
+			location, role, organizer, careerType, 
+			position, jobField, educationHours, 
+			isTeam, teamSize, contribution
+	]);
+
+	// 기간 설정 관련
 	const hasError = !startdate || (!unknown && !enddate);
 
+	// 경력 Dropdown 옵션
 	const careerOptions = ["아르바이트", "인턴", "정규직", "계약직", "프리랜서"];
 	const [isCareerDropdownOpen, setIsCareerDropdownOpen] = useState(false);
 
@@ -120,6 +152,7 @@ const AddCareerModal = ({ onClose }) => {
 								소속 <span style={{ color: '#FC5555' }}>*</span>
 							</label>
 							<Affiliation1
+								value={location}
 								onAffiliationChange={(newLocation) => {
 									setLocation(newLocation);
 								}}
@@ -501,7 +534,12 @@ const AddCareerModal = ({ onClose }) => {
 							<label>
 								교육 시간 <span style={{ color: '#FC5555' }}>*</span>
 							</label>
-							<input type="text" value={educationHours} onChange={(e) => setEducationHours(e.target.value)}></input>
+							<div>
+								<input 
+									style={{width:'200px', marginRight:'10px'}}
+									type="text" value={educationHours} onChange={(e) => setEducationHours(e.target.value)}></input>
+								<label style={{fontSize:'16px'}}>시간</label>
+							</div>
 						</FormItem>
 					</>
 				);
@@ -561,10 +599,8 @@ const AddCareerModal = ({ onClose }) => {
 		}
 	};
 
-	useEffect(() => {
-		console.log('종료날짜:', enddate);
-	}, [enddate]);
 
+	// 활동 추가 함수
 	const handleAddCareer = async () => {
 		// 날짜 입력 유효성 검증
 		if (hasError) {
@@ -591,6 +627,7 @@ const AddCareerModal = ({ onClose }) => {
 		};
 
 		// 날짜 외 입력 데이터 검증 및 필터링 실행
+		// 잘 수행되면 isValid:true와 filteredDate를, 오류가 있으면 isValid:false와 errors를 반환
 		const { isValid, errors, filteredData } = validateAndFilterForm(selectedCategory, allFormData);
 
 		//오류 생길 경우
@@ -599,13 +636,26 @@ const AddCareerModal = ({ onClose }) => {
 			return;
 		}
 
-		try {
-			console.log('Sending data:', filteredData);
-			const response = await createCareer(selectedCategory, filteredData);
-			console.log('Success: ', response);
-		} catch (error) {
-			console.error('createCareer 호출 중 오류 발생: ', error.response ? error.response.data : error.message);
+		if(mode === 'edit') {// 수정모드일 경우우
+			try{
+				// 수정 모드에서는 id를 추가해줍니다.
+				filteredData.id = initialData.id;
+				console.log('Sending data:', filteredData);
+				const response = await updateCareer(selectedCategory, filteredData);
+				console.log('Success: ', response);
+			} catch (error) {
+				console.error('수정모드에서 id 추가 중 오류 발생: ', error);
+			}
+		}else{// 추가모드일 경우
+			try {
+				console.log('Sending data:', filteredData);
+				const response = await createCareer(selectedCategory, filteredData);
+				console.log('Success: ', response);
+			} catch (error) {
+				console.error('createCareer 호출 중 오류 발생: ', error.response ? error.response.data : error.message);
+			}
 		}
+
 		onClose();
 	};
 
@@ -616,7 +666,9 @@ const AddCareerModal = ({ onClose }) => {
 					{/* <CloseIcon/> */}
 					<SvgIcon name="close" size={20} color="#999" />
 				</CloseButton>
-				<h1 style={{ textAlign: 'center' }}>활동추가</h1>
+				<h1 style={{ textAlign: 'center' }}>
+					{isEditMode ? '활동 수정' : '활동 추가'}
+				</h1>
 				<ButtonContainer>
 					{Object.keys(categoryMap).map((key) => (
 						<CategoryButton

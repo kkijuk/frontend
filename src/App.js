@@ -47,11 +47,6 @@ import SignupInterest from './pages/SignupInterest';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FilterPage from './components/Apply/FilterPage';
-<<<<<<< HEAD
-import { AuthProvider } from './components/AuthContext';
-import LoginRequired from './pages/LoginRequired';
-=======
->>>>>>> 283b7c0bedd8092697aa66317aabaf8d51ae7770
 
 const AppContainer = styled.div`
 	display: flex;
@@ -85,11 +80,8 @@ const App = () => {
 					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/mycareer" element={<MyCareer />} />
 					<Route path="/signupinterest" element={<SignupInterest />} />
-<<<<<<< HEAD
 
 					<Route path="/history" element={<History/>} />
-=======
->>>>>>> 283b7c0bedd8092697aa66317aabaf8d51ae7770
 					<Route element={<SubNav />}>
 						<Route element={<ViewOptions />}>
 							<Route path="/history/master" element={<Master />} />

@@ -7,7 +7,7 @@
 		"@emotion/styled": "^11.13.0",
 		"@mobiscroll/cli": "^1.15.0",
 		"@mobiscroll/react": "npm:@mobiscroll/react-next-trial@^5.31.2",
-		"@tanstack/react-query": "^5.62.8",
+		"@tanstack/react-query": "^5.64.1",
 		"@testing-library/jest-dom": "^5.17.0",
 		"@testing-library/react": "^13.4.0",
 		"@testing-library/user-event": "^13.5.0",
@@ -37,11 +37,7 @@
 		"url": "^0.11.4",
 		"util": "^0.12.5",
 		"web-vitals": "^2.1.4",
-<<<<<<< HEAD
-		"zustand": "^5.0.1"
-=======
 		"zustand": "^5.0.3"
->>>>>>> 283b7c0bedd8092697aa66317aabaf8d51ae7770
 	},
 	"scripts": {
 		"start": "react-scripts start",
