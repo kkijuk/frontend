@@ -76,6 +76,7 @@ const App = () => {
 					<Route path="/home" element={<Home />} />
 					<Route path="/" element={<SocialLogin />} />
 					<Route path="/login/oauth2/code/kakao" element={<KakaoRedirect />} />
+					<Route path="/login/oauth2/code/naver" element={<NaverRedirect />} />
 					<Route path="/signup" element={<NewSignup />} />
 					<Route path="/signupsuccess" element={<SignupSuccess />} />
 					<Route path="/mypage" element={<MyPage />} />
