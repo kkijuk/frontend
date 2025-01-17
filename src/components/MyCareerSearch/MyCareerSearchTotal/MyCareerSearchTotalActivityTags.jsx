@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import React, { useState, useEffect } from 'react';
 import { useFetchActivityByTag } from '../../../hooks/MycareerSearch/useFetchActivityByTag';
+import { useNavigate } from 'react-router-dom';
 
 // 메인 컨테이너
 const Container = styled.div`
@@ -45,6 +46,7 @@ const Tag = styled.button`
 // 활동 리스트 Wrapper
 const ActivityWrapper = styled.div`
 	margin-top: 20px;
+	cursor: pointer;
 `;
 
 // 활동 항목
@@ -109,11 +111,15 @@ const NotExistSearch = styled.div`
 export default function MyCareerSearchTotalActivityTags({ activityTagList, isActivityTagListLoading, sortOrder }) {
 	const [selectedTag, setSelectedTag] = useState(null); // 선택된 태그 상태
 
+	const navigate = useNavigate();
+
 	const {
 		data: activityData, // 선택된 태그에 대한 활동
 		isLoading: isActivityLoading,
 		error: activityError,
 	} = useFetchActivityByTag(selectedTag, sortOrder);
+
+	console.log(activityData);
 
 	// 첫 번째 태그를 기본 선택
 	useEffect(() => {
@@ -159,11 +165,17 @@ export default function MyCareerSearchTotalActivityTags({ activityTagList, isAct
 								// 렌더링된 detail 개수 업데이트
 								totalDetailsRendered += detailsToRender.length;
 
+								console.log(detailsToRender);
+
 								return detailsToRender.map((detail, i) => (
-									<ActivityItem key={detail.careerId}>
+									<ActivityItem
+										key={detail.careerId}
+										onClick={() => navigate(`/mycareer/${activity.category.categoryKoName}/${activity.careerId}`)}>
 										<ActivityTop>
 											<ActivityTitle>{detail.title}</ActivityTitle>
-											<ActivityDate>{detail.endDate}</ActivityDate>
+											<ActivityDate>
+												{detail.startDate} ~ {detail.endDate}
+											</ActivityDate>
 										</ActivityTop>
 										<ActivityContent>{detail.content}</ActivityContent>
 										<ActivityFooter>{detail.date}</ActivityFooter>

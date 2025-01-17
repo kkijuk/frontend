@@ -142,7 +142,7 @@ const CareerViewYear = ({ data }) => {
 								return (
 									<ListBox
 										key={`${item.category.categoryId}_${item.id}`}
-										onClick={() => handleListBoxClick(item.id, item.category.categoryId)}>
+										onClick={() => handleListBoxClick(item.id, item.category.categoryKoName)}>
 										<Category>
 											<CareerCategoryCircle category={item.category.categoryKoName} />
 											<CategoryTextBox>{item.category.categoryKoName}</CategoryTextBox>

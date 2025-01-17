@@ -21,6 +21,9 @@ const StyledButton = styled.button`
   align-items: center;
   justify-content: center;
   margin-top: 40px;
+  &:hover {
+    background: #2a9f72;
+  }
 `;
 
 const FormContainer = styled.div`
@@ -85,6 +88,16 @@ const FormContainer = styled.div`
   }
 `;
 
+const Divider = styled.div`
+  width: 395px;
+  height: 0px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--gray-03, #D9D9D9);
+  margin: 5px auto;
+  margin-top: -7px;
+  margin-bottom: 20px;
+`;
+
 const Title = styled.h2`
   color: #333;
 text-align: center;
@@ -100,10 +113,11 @@ const AllAgreementContainer = styled.div`
   width: 392px;
   height: 40px;
   flex-shrink: 0;
-  background: var(--gray-05, #f1f1f1);
   display: flex;
   align-items: center;
   padding: 0 10px;
+  stroke-width: 1px;
+  stroke: var(--gray-03, #D9D9D9);
   margin: 10px 0;
 
   input[type='checkbox'] {
@@ -192,7 +206,7 @@ const SignupStepOne = ({
         />
         <label>모두 동의</label>
       </AllAgreementContainer>
-
+	  <Divider />
       {/* 개별 동의 항목 */}
       <Agreement
         checked={agreements1}

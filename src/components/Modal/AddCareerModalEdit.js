@@ -292,7 +292,7 @@ const AddCareerModalEdit = ({ onClose, onSave, data }) => {
 		console.log('Received data:', data);
 
 		if (data) {
-			setSelectedCategory(data.data.categoryName);
+			//setSelectedCategory(data.data.categoryName);
 			setCategory(data.data.categoryId);
 			setCareerName(data.data.careerName);
 			setAlias(data.data.alias);
@@ -302,6 +302,19 @@ const AddCareerModalEdit = ({ onClose, onSave, data }) => {
 			setSummary(data.data.summary);
 		}
 	}, [data]);
+
+	useEffect(() => {
+		console.log('Modal Current State:', {
+			selectedCategory,
+			category,
+			careerName,
+			alias,
+			startDate,
+			endDate,
+			isUnknown,
+			summary,
+		});
+	}, [selectedCategory, category, careerName, alias, startDate, endDate, isUnknown, summary]);
 
 	const handleStartDateChange = (date) => {
 		setStartDate(moment(date).format('YYYY-MM-DD'));

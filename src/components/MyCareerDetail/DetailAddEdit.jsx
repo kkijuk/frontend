@@ -169,11 +169,19 @@ export default function DetailAddEdit({
 	const [tagNames, setTagNames] = useState([]);
 	const [tagIds, setTagIds] = useState([]);
 
-	useEffect(() => {
+	/*useEffect(() => {
 		// initialTags 배열의 tagName만 추출하여 tagNames 배열 생성
 		const extractedTagNames = initialTags.map((tag) => tag.tagName);
 		setTagNames(extractedTagNames);
 		console.log('initialTags:', initialTags);
+	}, [initialTags]); 아래로 수정*/
+	useEffect(() => {
+		// initialTags가 유효한 값인지 체크
+		if (initialTags && Array.isArray(initialTags) && initialTags.length > 0) {
+			const extractedTagNames = initialTags.map((tag) => tag.tagName);
+			setTagNames(extractedTagNames);
+			console.log('Passing to TagBox1:', extractedTagNames);
+		}
 	}, [initialTags]);
 
 	const handleDateClick = () => {
@@ -208,6 +216,7 @@ export default function DetailAddEdit({
 			endDate: endDate || startDate || selectedDate,
 			tagList: tagIds, // 태그의 id 리스트를 전송
 		};
+		console.log('handleSave 호출 - 전송할 data:', data);
 
 		try {
 			await CareerDetailEdit(careerId, detailId, data); // API 호출
@@ -221,6 +230,8 @@ export default function DetailAddEdit({
 
 	const handleCancel = async () => {
 		if (window.confirm('정말로 삭제하시겠습니까?')) {
+			console.log('careerId:', careerId);
+			console.log('detailId:', detailId);
 			try {
 				await CareerDetailDelete(careerId, detailId); // 삭제 API 호출
 				alert('삭제되었습니다.');
@@ -252,6 +263,8 @@ export default function DetailAddEdit({
 					<Label>내용</Label>
 					<TextArea height="100px" width="720px" value={contents} onChange={(e) => setContents(e.target.value)} />
 				</Middle>
+				{console.log('TagBox Props - externalTags:', tagNames)}
+
 				<TagBox
 					externalTags={tagNames}
 					externalSetTags={setTagNames}

@@ -19,7 +19,7 @@ const StepTwoContainer = styled.div`
   }
 
   .status-button {
-    width: 180px;
+    width: 193px;
     height: 50px;
     border: none;
     border-radius: 10px;
@@ -36,51 +36,60 @@ const StepTwoContainer = styled.div`
       border: 2px solid var(--main-01, #3AAF85);
     }
   }
+`;
 
-  .complete-button {
-    width: 400px;
-    height: 50px;
-    background: var(--main-01, #3AAF85);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 17px;
-    cursor: pointer;
-    transition: background 0.3s;
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 15px; 
+  margin-top: 20px;
+`;
 
-    &:hover {
-      background: #2a9f72;
-    }
+
+const CompleteButton = styled.button`
+  width: 400px;
+  height: 50px;
+  background: var(--main-01, #3AAF85);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 17px;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background: #2a9f72;
   }
 `;
 
 const Title = styled.div`
-  color: #707070;
-  text-align: center;
-  font-family: Pretendard;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  margin-bottom: 30px;
+color: #333;
+text-align: center;
+font-family: normal;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+margin-bottom: 30px;
 `;
 
-const Toast = styled.div`
-  position: fixed;
-  bottom: 50%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 14px;
+const ErrorMessage = styled.div`
+  margin-top: -15px; 
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
   z-index: 1000;
+  color: var(--error, #FF7979);
+  text-align: center;
+  font-family: normal;
+  width: 100%; 
+  font-size: 15px;
 `;
 
-const SignupStepTwo = ({ handleSignup }) => {
+const SignupStepTwo = ({ handleSignup, handlePrevStep }) => {
   const [selectedStatuses, setSelectedStatuses] = useState([]);
-  const [showToast, setShowToast] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
 
   const statuses = [
     '중/고등학생',
@@ -102,8 +111,8 @@ const SignupStepTwo = ({ handleSignup }) => {
       setSelectedStatuses([...selectedStatuses, status]);
     } else {
       // 2개 초과 시 토스트 메시지 표시
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 2000); // 2초 후 토스트 메시지 숨김
+      setShowErrorMessage(true);
+      setTimeout(() => setShowErrorMessage(false), 2000); // 2초 후 토스트 메시지 숨김
     }
   };
 
@@ -121,10 +130,10 @@ const SignupStepTwo = ({ handleSignup }) => {
           </button>
         ))}
       </div>
-      <button className="complete-button" onClick={handleSignup}>
-        완료
-      </button>
-      {showToast && <Toast>최대 2개까지 선택 가능해요.</Toast>}
+      {showErrorMessage && <ErrorMessage>최대 2개까지 선택 가능해요</ErrorMessage>}
+      <ButtonContainer>
+        <CompleteButton onClick={handleSignup}>다음</CompleteButton>
+      </ButtonContainer>
     </StepTwoContainer>
   );
 };

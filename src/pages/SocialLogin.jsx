@@ -1,33 +1,76 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import logo from '../assets/logo.png';
+import useAuthStore from '../stores/useAuthStore';
+import { useNavigate } from 'react-router-dom';
+import background from '../assets/main/background.svg';
+import star1 from '../assets/main/star1.svg';
+import star2 from '../assets/main/star2.svg';
+
+const PageContainer = styled.div`
+  background: var(--background, linear-gradient(180deg, #FFF 30%, #E1F4ED 100%));
+  height: auto;
+  flex: 1;
+  position: relative;
+`;
+
+const SvgContainer = styled.div` 
+  position: absolute;
+  width: 100%;
+  height: auto;
+  top: 0;
+  left: 0;
+  z-index: 900;
+
+  img {
+    position: absolute;
+  }
+`;
 
 const LoginScreen = styled.div`
   max-width: 400px;
   margin: 0 auto;
   padding: 20px;
-  background: white;
   border-radius: 10px;
   text-align: center;
-  margin: 90px auto 0;
+  margin: 150px auto 0;
   height: auto;
   overflow: hidden;
 
   p {
-    color: #707070;
+    color: #424242;
     font-family: light;
-    margin-bottom: 50px;
+    margin-bottom: 75px;
     margin-top: 10px;
     text-align: center;
-    color: var(--gray-02, #707070);
-    font-size: 19px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
+    font-size: 21px;
+    font-weight: 800;
+    font-family: Light;
+
+    span.highlight {
+      color: var(--main-01, #3AAF85); 
+    }
   }
 
   * {
     box-sizing: border-box;
+  }
+`;
+
+const TextOverlay = styled.div`
+  position: absolute;
+  color: #000; 
+  font-size: 17px; 
+  z-index: 1100;
+
+  &.text1 {
+    top: 576px; 
+    left: 91px;
+  }
+
+  &.text2 {
+    top: 776px; 
+    right: 91px;
   }
 `;
 
@@ -60,19 +103,21 @@ const Title = styled.div`
   color: var(--main-01, #3AAF85);
   text-align: center;
   font-family: Pretendard;
-  font-size: 16px;
+  font-size: 19px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 800;
+    font-family: Light;
   line-height: normal;
-  margin-bottom: -95px;
+  margin-bottom: -150px;
   z-index: 1000;
-  margin-top: 40px;
+  margin-top: 80px;
 `;
 
 const SocialButton = styled.button`
   width: 350px;
   height: 56px;
   border: none;
+  z-index: 1000;
   border-radius: 4px;
   margin: 8px 0;
   font-family: Pretendard;
@@ -84,16 +129,26 @@ const SocialButton = styled.button`
   position: relative;
 
   &.kakao {
-    background-color: #ffe812;
-    color: #000;
+  background-color: #ffe812;
+  color: #000;
 
-    svg {
-      width: 28px;
-      height: 28px;
-      position: absolute;
-      left: 20px;
-    }
+  svg {
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    left: 20px;
   }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:active {
+    background-color: #e0cb10; 
+    transform: scale(0.98);   
+  }
+}
+
 
   &.naver {
     background-color: #03c75a;
@@ -105,6 +160,14 @@ const SocialButton = styled.button`
       position: absolute;
       left: 3px;
     }
+
+    &:hover {
+    cursor: pointer;
+  }
+
+  &:active {
+    transform: scale(0.98);   
+  }
   }
 `;
 
@@ -139,6 +202,9 @@ const NaverIcon = () => (
 );
 
 const SocialLogin = () => {
+  const { login } = useAuthStore();
+  const navigate = useNavigate();
+
   useEffect(() => {
     const preventScroll = (e) => {
       e.preventDefault();
@@ -156,28 +222,48 @@ const SocialLogin = () => {
     };
   }, []);
 
+  const handleKakaoLogin = () => {
+    const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&response_type=code&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`;
+    window.location.href = kakaoLoginUrl;
+  };
+
+  const handleNaverLogin = () => {
+    const clientId = process.env.REACT_APP_NAVER_CLIENT_ID;
+    const redirectUri = process.env.REACT_APP_NAVER_REDIRECT_URI;
+    const state = process.env.REACT_APP_NAVER_STATE;
+    const naverLoginUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&state=${state}&redirect_uri=${redirectUri}`;
+    
+    window.location.href = naverLoginUrl;
+  };
+
   return (
-    <>
+    <PageContainer>
+      <SvgContainer>
+      </SvgContainer>
       <TopButtonWrapper>
-        <TopButton>Instagram</TopButton>
+      <TopButton onClick={() => window.open('https://www.instagram.com/kki.juk/', '_blank')}>
+    Instagram
+  </TopButton>
         <TopButton>문의</TopButton>
       </TopButtonWrapper>
       <Title>쉽고 빠르게 쌓아가는 나만의 커리어 아카이브</Title>
       <LoginScreen>
         <img src={logo} width="164px" height="80px" alt="Logo" />
-        <p>당신의 끼를 적어두세요</p>
+        <p>
+          당신의 <span className="highlight">끼</span>를 <span className="highlight">적</span>어두세요
+        </p>
         <ButtonContainer>
-          <SocialButton className="kakao">
+        <SocialButton className="kakao" onClick={handleKakaoLogin}>
             <KakaoIcon />
             카카오 로그인
           </SocialButton>
-          <SocialButton className="naver">
+          <SocialButton className="naver" onClick={handleNaverLogin}>
             <NaverIcon />
             네이버 로그인
           </SocialButton>
         </ButtonContainer>
       </LoginScreen>
-    </>
+    </PageContainer>
   );
 };
 
