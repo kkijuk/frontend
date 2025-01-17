@@ -10,7 +10,7 @@ const SocialRedirect = ({ provider }) => {
 
   useEffect(() => {
     if (!code) {
-      console.error('인가 코드가 없습니다.');
+      console.error('인가 코드가 없습니데데.');
       return;
     }
 
