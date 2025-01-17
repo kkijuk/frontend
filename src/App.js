@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import queryClient from './api/queryClient/queryClient';
 import KakaoRedirect from './components/Redirect'; // default export는 중괄호 없이 가져옵니다.
-
+import NaverRedirect from './components/Redirect';
 import Home from './pages/Home';
 import MyPage from './pages/Mypage/Mypage';
 import MyCareer from './pages/Mycareer/Mycareer';
