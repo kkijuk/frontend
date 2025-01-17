@@ -4,6 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
 
 import queryClient from './api/queryClient/queryClient';
+import KakaoRedirect from './components/Redirect'; // default export는 중괄호 없이 가져옵니다.
 
 import Home from './pages/Home';
 import MyPage from './pages/Mypage/Mypage';
@@ -74,6 +75,7 @@ const App = () => {
 					<Route path="/mycareer_search" element={<MycareerSearch />} />
 					<Route path="/home" element={<Home />} />
 					<Route path="/" element={<SocialLogin />} />
+					<Route path="/login/oauth2/code/kakao" element={<KakaoRedirect />} />
 					<Route path="/signup" element={<NewSignup />} />
 					<Route path="/signupsuccess" element={<SignupSuccess />} />
 					<Route path="/mypage" element={<MyPage />} />
