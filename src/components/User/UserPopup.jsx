@@ -14,11 +14,12 @@ const PopupBackground = styled.div`
 `;
 
 const PopupContainer = styled.div`
-  width: 525px;
-  height: 381px;
+ position: relative;
+  width: 500px;
+  height: 370px;
   flex-shrink: 0;
   background: #fff;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 30px;
   text-align: center;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -48,6 +49,7 @@ const CheckboxContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin: 20px 0;
+  font-size: 14px;
 `;
 
 const Checkbox = styled.input`
@@ -68,13 +70,14 @@ const PopupButton = styled.button`
 `;
 
 const CloseButton = styled.button`
-  position: absolute;
+  position: absolute; 
   top: 15px;
-  right: 15px;
+  right: 15px; 
   background: none;
   border: none;
-  font-size: 18px;
+  font-size: 40px;
   cursor: pointer;
+  color: gray;
 `;
 
 export default function UserPopup({ onClose, onConfirm }) {
@@ -83,8 +86,8 @@ export default function UserPopup({ onClose, onConfirm }) {
   return (
     <PopupBackground>
       <PopupContainer>
-        <CloseButton onClick={onClose}>×</CloseButton>
         <Title>계정 탈퇴</Title>
+        <CloseButton onClick={onClose}>×</CloseButton>
         <Content>
           탈퇴하기 버튼을 클릭하면, 7일 후 회원님의 계정을 탈퇴 처리합니다.
           <br />
