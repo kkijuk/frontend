@@ -12,6 +12,7 @@ export const AddDetail = async (careerId, data) => {
 			{
 				headers: {
 					'Content-Type': 'application/json; charset=utf-8',
+					'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 				},
 				withCredentials: true,
 			},

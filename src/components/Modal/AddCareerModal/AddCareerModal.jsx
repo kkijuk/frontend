@@ -13,7 +13,13 @@ import CareerTypeDropdown, {CareerTypeDropdown2} from './CareerTypeDropdown';
 import ParticipantType from './ParticipantType';
 import { Form } from 'react-router-dom';
 
+<<<<<<< HEAD
 const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
+=======
+import moment from 'moment'; // moment 라이브러리 임포트(세연)
+
+const AddCareerModal = ({ onClose }) => {
+>>>>>>> ee1d227db4b40fd5e90e305b73d071a0ab3b8825
 	//카테고리 정보
 	const categoryMap = {
 		1: '동아리',
@@ -41,6 +47,7 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 	const [selectedCategory, setSelectedCategory] = useState(initialData?.category||1);
 
 	//12가지 유형의 form Data 상태관리
+<<<<<<< HEAD
 	const [name, setName] = useState(initialData?.name||''); //활동명
 	const [alias, setAlias] = useState(initialData?.alias||''); //별칭
 	const [startdate, setStartdate] = useState(initialData?.startdate||null); //시작일자
@@ -57,6 +64,25 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 	const [isTeam, setIsTeam] = useState(initialData?.isTeam||false);
 	const [teamSize, setTeamSize] = useState(initialData?.teamSize||0);
 	const [contribution, setContribution] = useState(initialData?.contribution||0);
+=======
+	const [name, setName] = useState(''); //활동명
+	const [alias, setAlias] = useState(''); //별칭
+	const [startdate, setStartdate] = useState(null); //시작일자
+	const [enddate, setEnddate] = useState(null); //종료일자
+	const [unknown, setUnknown] = useState(false); //종료일자 알 수 없음 여부
+	const [location, setLocation] = useState('ON_CAMPUS'); //소속(ON_CAMPUS: 교내, OFF_CAMPUS: 교외, OTHER: 기타)
+	const [role, setRole] = useState(''); //역할
+	const [organizer, setOrganizer] = useState(''); //주최
+	const [careerType, setCareerType] = useState(''); //경력분류
+	// const [workplace, setWorkplace] = useState(''); //근무처
+	const [position, setPosition] = useState(''); //직급/직위
+	const [jobField, setJobField] = useState(''); //직무/분야
+	const [time, setTime] = useState(0); //교육시간
+	// const [participantType, setParticipantType] = useState({}); //인원-팀인원-기여도
+	const [isTeam, setIsTeam] = useState(false);
+	const [teamSize, setTeamSize] = useState(0);
+	const [contribution, setContribution] = useState(0);
+>>>>>>> ee1d227db4b40fd5e90e305b73d071a0ab3b8825
 
 	//각 폼 별 상태 모니터링
 	useEffect(() => {
@@ -533,12 +559,16 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 							<label>
 								교육 시간 <span style={{ color: '#FC5555' }}>*</span>
 							</label>
+<<<<<<< HEAD
 							<div>
 								<input 
 									style={{width:'200px', marginRight:'10px'}}
 									type="text" value={educationHours} onChange={(e) => setEducationHours(e.target.value)}></input>
 								<label style={{fontSize:'16px'}}>시간</label>
 							</div>
+=======
+							<input type="text" value={time} onChange={(e) => setTime(e.target.value)}></input>
+>>>>>>> ee1d227db4b40fd5e90e305b73d071a0ab3b8825
 						</FormItem>
 					</>
 				);
@@ -607,11 +637,15 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 			return;
 		}
 
+		// startdate와 enddate를 YYYY-MM-DD 형식으로 변환하기 위해 추가 (에러)
+		const formattedStartdate = moment(startdate).format('YYYY-MM-DD');
+		const formattedEnddate = unknown ? null : moment(enddate).format('YYYY-MM-DD');
+
 		const allFormData = {
 			name,
 			alias,
-			startdate,
-			enddate: unknown ? null : enddate,
+			startdate: formattedStartdate,
+			enddate: formattedEnddate,
 			unknown,
 			location,
 			role,
@@ -619,11 +653,12 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 			careerType,
 			position,
 			jobField,
-			educationHours,
+			time,
 			isTeam,
 			teamSize,
 			contribution,
 		};
+		console.log('Sending data:', allFormData);
 
 		// 날짜 외 입력 데이터 검증 및 필터링 실행
 		// 잘 수행되면 isValid:true와 filteredDate를, 오류가 있으면 isValid:false와 errors를 반환

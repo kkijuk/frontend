@@ -15,6 +15,7 @@ export const CareertextEdit = async (careerId, categoryEnName, summary) => {
 			{
 				headers: {
 					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 				},
 			},
 		);
@@ -45,6 +46,7 @@ export const CareerEdit = async (careerId, data) => {
 
 				headers: {
 					'Content-Type': 'application/json; charset=utf-8',
+					'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 				},
 				// 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
 			},
@@ -70,6 +72,7 @@ export const CareerDelete = async (careerId) => {
 				withCredentials: true,
 				headers: {
 					'Content-Type': 'application/json; charset=utf-8',
+					'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 				},
 			},
 		);
