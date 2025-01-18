@@ -3,7 +3,7 @@ import axios from 'axios';
 export const CareerDetailEdit = async (careerId, detailId, data) => {
 	try {
 		const response = await axios.patch(
-			`https://api.kkijuk.com/career/${careerId}/${detailId}`,
+			`https://api.kkijuk.com/career/detail/${careerId}/${detailId}`,
 			data,
 
 			{
