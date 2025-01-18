@@ -30,6 +30,10 @@ const useRecordStore = create((set, get) => ({
             const response = await readRecord(); 
             const data = response.data;
             console.log('Fetch Record Data:', data);
+
+            if(!data.record_id){
+                throw new Error('Record not found');
+            }
             
             // 임시
             const normalizeData = (items, idField) =>
@@ -37,10 +41,10 @@ const useRecordStore = create((set, get) => ({
 
             set({
                 recordId: data.record_id,
-                // educations: data.educationList,
-                // licenses: data.licenses,
-                // awards: data.awards,
-                // skills: data.skills,
+                educations: data.educationList,
+                licenses: data.licenses,
+                awards: data.awards,
+                skills: data.skills,
                 educations: normalizeData(data.educationList, 'educationId'),
                 licenses: normalizeData(data.licenses, 'licenseId'),
                 awards: normalizeData(data.awards, 'awardId'),

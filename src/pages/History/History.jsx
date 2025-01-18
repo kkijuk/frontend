@@ -4,7 +4,7 @@ import './history.css';
 import { set } from 'react-hook-form';
 // zustand, api
 import useRecordStore from '../../stores/useRecordStore';
-import { readRecord, updateRecord } from '../../api/Record/record';
+import { createRecord, readRecord, updateRecord } from '../../api/Record/record';
 // components
 import Layout from '../../components/Layout'
 import AddEducationForm from '../../components/Record/addForms/AddEducationForm';
@@ -50,20 +50,32 @@ const History = () => {
 		phone: '',
 		email: '',
 		address: '',
-		});
-	
-	  // 주소 편집 모드 관리 State
-	  const [isEditingAddress, setIsEditingAddress] = useState(false);
-	  // input에 임시로 입력되는 주소
-	  const [tempAddress, setTempAddress] = useState('');	
+	});
 
+	const [showCreateButton, setShowCreateButton] = useState(false);
+	const handleCreateRecord = async () => {
+		try {
+			const response = await createRecord();
+			window.location.reload();
+			console.log('Success - createRecord: ', response.data);
+		} catch (error) {
+			console.error('Error: createRecord: ', error);
+		}
+	}
+	
 	// 이력서 불러오기
 	useEffect(() => {
-		fetchRecord().then(()=>{
-			console.log(`Record ID: `, recordId);
-		})
-	}, [fetchRecord, recordId]);
+		const fetchData = async () => {
+			await fetchRecord();
+			if(error === 'not created'){
+				setShowCreateButton(true);
+			}
+			console.log('Record Id:', recordId);
+		}
+		fetchData();
+	}, [fetchRecord, recordId, error]);
 
+	// 사용자 정보 불러오기
 	useEffect(() => {
 		async function getUserData() {
 		  const response = await readRecord(); 
@@ -84,6 +96,10 @@ const History = () => {
 		getUserData();
 	  }, []);
 
+	// 주소 편집 모드 관리 State
+	const [isEditingAddress, setIsEditingAddress] = useState(false);
+	// input에 임시로 입력되는 주소
+	const [tempAddress, setTempAddress] = useState('');	
 
 	//폼 오픈 상태 관리
 	const [openedForms, setOpenedForms] = useState({
@@ -200,265 +216,280 @@ const History = () => {
 	};
 
 	return (
-		<Layout title="서류준비">
-			<div>
-				{/* <AddCareerModal></AddCareerModal> */}
-				<div style={{display:'flex', marginBlock:'30px'}}>
-				<ProfileBox/>
-				<UserInfoWrapper>
-					<div style={{width:'100%'}}>
-						<UpdatedAt>마지막 수정 일시: {userData.updatedAt}</UpdatedAt>
-					</div>
-					<InfoTable>
-						<InfoLabel>이름</InfoLabel>
-						<InfoValue>{userData.name}</InfoValue>
+		<>
+			{showCreateButton ? (
+				<CreateRecordButton onClick={handleCreateRecord}>
+					이력서 생성하기
+				</CreateRecordButton>
+			) : (
+				<Layout title="서류준비">
+					<div>
+						{/* <AddCareerModal></AddCareerModal> */}
+						<div style={{display:'flex', marginBlock:'30px'}}>
+						<ProfileBox/>
+						<UserInfoWrapper>
+							<div style={{width:'100%'}}>
+								<UpdatedAt>마지막 수정 일시: {userData.updatedAt}</UpdatedAt>
+							</div>
+							<InfoTable>
+								<InfoLabel>이름</InfoLabel>
+								<InfoValue>{userData.name}</InfoValue>
 
-						<InfoLabel>생년월일</InfoLabel>
-						<InfoValue>{userData.birthday}</InfoValue>
+								<InfoLabel>생년월일</InfoLabel>
+								<InfoValue>{userData.birthday}</InfoValue>
 
-						<InfoLabel>전화번호</InfoLabel>
-						<InfoValue>{userData.phone}</InfoValue>
+								<InfoLabel>전화번호</InfoLabel>
+								<InfoValue>{userData.phone}</InfoValue>
 
-						<InfoLabel>이메일</InfoLabel>
-						<InfoValue>{userData.email}</InfoValue>
+								<InfoLabel>이메일</InfoLabel>
+								<InfoValue>{userData.email}</InfoValue>
 
-						<InfoLabel>주소</InfoLabel>
-						<InfoValue>
-							{/* 주소가 NULL 인 경우 */}
-							{!userData.address && !isEditingAddress && (
-								<NullModeAddress onClick={handleAddressPlaceholderClick}>
-									주소를 입력하세요
-								</NullModeAddress>
-								)}
+								<InfoLabel>주소</InfoLabel>
+								<InfoValue>
+									{/* 주소가 NULL 인 경우 */}
+									{!userData.address && !isEditingAddress && (
+										<NullModeAddress onClick={handleAddressPlaceholderClick}>
+											주소를 입력하세요
+										</NullModeAddress>
+										)}
 
-								{/* 주소가 NULL이 아닌데 편집 모드가 아닐 때 */}
-								{userData.address && !isEditingAddress && (
-								<HoverWrapper>
-									<span>{userData.address}</span>
-									<EditButton onClick={handleEditAddressClick}>수정</EditButton>
-								</HoverWrapper>
-								)}
+										{/* 주소가 NULL이 아닌데 편집 모드가 아닐 때 */}
+										{userData.address && !isEditingAddress && (
+										<HoverWrapper>
+											<span>{userData.address}</span>
+											<EditButton onClick={handleEditAddressClick}>수정</EditButton>
+										</HoverWrapper>
+										)}
 
-								{/* 편집 모드일 때 */}
-								{isEditingAddress && (
-								<EditAddressContainer>
-									<AddressInput
-									type="text"
-									value={tempAddress}
-									onChange={handleAddressInputChange}
-									placeholder="주소를 입력하세요"
-									/>
-									<ButtonGroup>
-										<SaveButton onClick={handleUpdateAddress}>수정</SaveButton>
-										<CancelButton onClick={handleCancelEdit}>취소</CancelButton>
-									</ButtonGroup>
-								</EditAddressContainer>
-								)}
-						</InfoValue>
-					</InfoTable>
-				</UserInfoWrapper>
-				</div>
-				<Line></Line>
-				<SectionWrapper>
-					<SectionHeader>
-						<h2>학력</h2>
-						<AddButton onClick={() => toggleAddForm('educations')}>+</AddButton>
-					</SectionHeader>
-					<ContentWrapper>
-						{openedForms.add.educations && 
-						<AddEducationForm 
-							onClose={() => toggleAddForm('educations')}
-						/>}
-						<div style={{height:'50px'}}></div>
-						{educations.map((education, index) => (
-							<EducationItem
-								key={education.id}
-								data={education}
-								isLastItem={index === educations.length - 1}
-								// onEdit={() => toggleEditForm('educations', education.id)}
-							/>
-						))}
-					</ContentWrapper>
-				</SectionWrapper>
-				<Line></Line>
-
-				<SectionWrapper>
-					<SectionHeader>
-						<h2>경력</h2>
-						{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
-					</SectionHeader>
-					<ContentWrapper>
-						{employments.map((employment, index) => (
-								<CareerItem
-									key={employment.id}
-									data={employment}
-									isLastItem={index === employments.length - 1}
-							/>
-						))}
-					</ContentWrapper>
-				</SectionWrapper>
-				<Line></Line>
-
-				<SectionWrapper>
-					<SectionHeader>
-						<h2>활동 및 경험</h2>
-						{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
-					</SectionHeader>
-					<ContentWrapper>
-					{activitiesAndExperiences.map((activity, index) => (
-							<CareerItem
-								key={activity.id}
-								data={activity}
-								isLastItem={index === activitiesAndExperiences.length - 1}
-							/>
-					))}
-					</ContentWrapper>
-				</SectionWrapper>
-				<Line></Line>
-
-				<SectionWrapper>
-					<SectionHeader>
-						<h2>프로젝트</h2>
-						{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
-					</SectionHeader>
-					<ContentWrapper>
-						{projects.map((project, index) => (
-							<CareerItem
-								key={project.id}
-								data={project}
-								isLastItem={index === projects.length - 1}
-							/>
-						))}
-					</ContentWrapper>
-				</SectionWrapper>
-				<Line></Line>
-
-				<SectionWrapper>
-					<SectionHeader>
-						<h2>교육</h2>
-						{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
-					</SectionHeader>
-					<ContentWrapper>
-						{eduCareers.map((eduCareer, index) => (
-							<CareerItem
-								key={eduCareer.id}
-								data={eduCareer}
-								isLastItem={index === eduCareers.length - 1}	
-							/>
-						))}
-					</ContentWrapper>
-				</SectionWrapper>
-				<Line></Line>
-
-				<SectionWrapper>
-					<SectionHeader>
-						<h2>수상</h2>
-						<AddButton onClick={() => toggleAddForm('awards')}>+</AddButton>
-					</SectionHeader>
-					<ContentWrapper>
-						{openedForms.add.awards &&
-						<AddAwardForm
-							onClose={() => toggleAddForm('awards')}
-						/>}
-						<div style={{height:'50px'}}></div>
-						{awards.map((award, index) => (
-							<AwardItem 
-								key={award.id} 
-								data={award} 
-								onEdit={() => toggleEditForm('awards', award.id)} 
-							/>
-						))}
-					</ContentWrapper>
-				</SectionWrapper>
-				<Line></Line>
-
-				<SectionWrapper>
-					<SectionHeader>
-						<h2>자격증 · 외국어</h2>
-						<AddButton onClick={() => toggleAddForm('licenses')}>+</AddButton>
-					</SectionHeader>
-					<ContentWrapper>
-						{openedForms.add.licenses &&
-						<AddLicenseForm
-							onClose={() => toggleAddForm('licenses')}
-						/>}
-						<div style={{height:'50px'}}></div>
-						<Section>
-							<Tag>자격증</Tag>
-							<ItemsWrapper>
-								{licenseSection.map((license, index) => (
-									<LicenseItem 
-										key={license.id} 
-										data={license} 
-										// onEdit={() => toggleEditForm('licenses', license.id)} 
-									/>
-								))}
-							</ItemsWrapper>
-						</Section>
-						<div style={{height:'50px'}}></div>
-						<Section>
-							<Tag>외국어</Tag>
-							<ItemsWrapper>
-								{foreignSection.map((foreign, index) => (
-									<LicenseItem 
-										key={foreign.id} 
-										data={foreign} 
-										// onEdit={() => toggleEditForm('licenses', license.id)} 
-									/>
-								))}
-							</ItemsWrapper>
-						</Section>
-					</ContentWrapper>
-				</SectionWrapper>
-				<Line></Line>
-
-				<SectionWrapper>
-					<SectionHeader>
-						<h2>스킬</h2>
-						<AddButton onClick={() => toggleAddForm('skills')}>+</AddButton>
-					</SectionHeader>
-					<ContentWrapper>
-						{openedForms.add.skills &&
-						<AddSkillForm
-							onClose={() => toggleAddForm('skills')}
-						/>}
-						<div style={{height:'50px'}}></div>
-						{Object.entries(skillSections).map(([sectionType, sectionSkills]) => 
-							sectionSkills.length > 0 ? (
-							<Section key={sectionType}>
-								<Tag>{getSectionName(sectionType)}</Tag>
-								<ItemsWrapper>
-									{sectionSkills.map(skill => (
-									<SkillItem
-										key={skill.id}
-										data={skill}
-										// onEdit={() => console.log(`Edit Skill: ${skill.id}`)}
-									/>
-									))}
-								</ItemsWrapper>
+										{/* 편집 모드일 때 */}
+										{isEditingAddress && (
+										<EditAddressContainer>
+											<AddressInput
+											type="text"
+											value={tempAddress}
+											onChange={handleAddressInputChange}
+											placeholder="주소를 입력하세요"
+											/>
+											<ButtonGroup>
+												<SaveButton onClick={handleUpdateAddress}>수정</SaveButton>
+												<CancelButton onClick={handleCancelEdit}>취소</CancelButton>
+											</ButtonGroup>
+										</EditAddressContainer>
+										)}
+								</InfoValue>
+							</InfoTable>
+						</UserInfoWrapper>
+						</div>
+						<Line></Line>
+						<SectionWrapper>
+							<SectionHeader>
+								<h2>학력</h2>
+								<AddButton onClick={() => toggleAddForm('educations')}>+</AddButton>
+							</SectionHeader>
+							<ContentWrapper>
+								{openedForms.add.educations && 
+								<AddEducationForm 
+									onClose={() => toggleAddForm('educations')}
+								/>}
 								<div style={{height:'50px'}}></div>
-							</Section>
-						):null)}
-					</ContentWrapper>
-				</SectionWrapper>
-				<Line></Line>
+								{educations.map((education, index) => (
+									<EducationItem
+										key={education.id}
+										data={education}
+										isLastItem={index === educations.length - 1}
+										// onEdit={() => toggleEditForm('educations', education.id)}
+									/>
+								))}
+							</ContentWrapper>
+						</SectionWrapper>
+						<Line></Line>
 
-				<SectionWrapper>
-					<SectionHeader>
-						<h2>추가자료</h2>
-						{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
-					</SectionHeader>
-					<ContentWrapper>
-						
-					</ContentWrapper>
-				</SectionWrapper>
-				<Line></Line>
-			</div>
-		</Layout>
+						<SectionWrapper>
+							<SectionHeader>
+								<h2>경력</h2>
+								{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+							</SectionHeader>
+							<ContentWrapper>
+								{employments.map((employment, index) => (
+										<CareerItem
+											key={employment.id}
+											data={employment}
+											isLastItem={index === employments.length - 1}
+									/>
+								))}
+							</ContentWrapper>
+						</SectionWrapper>
+						<Line></Line>
+
+						<SectionWrapper>
+							<SectionHeader>
+								<h2>활동 및 경험</h2>
+								{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+							</SectionHeader>
+							<ContentWrapper>
+							{activitiesAndExperiences.map((activity, index) => (
+									<CareerItem
+										key={activity.id}
+										data={activity}
+										isLastItem={index === activitiesAndExperiences.length - 1}
+									/>
+							))}
+							</ContentWrapper>
+						</SectionWrapper>
+						<Line></Line>
+
+						<SectionWrapper>
+							<SectionHeader>
+								<h2>프로젝트</h2>
+								{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+							</SectionHeader>
+							<ContentWrapper>
+								{projects.map((project, index) => (
+									<CareerItem
+										key={project.id}
+										data={project}
+										isLastItem={index === projects.length - 1}
+									/>
+								))}
+							</ContentWrapper>
+						</SectionWrapper>
+						<Line></Line>
+
+						<SectionWrapper>
+							<SectionHeader>
+								<h2>교육</h2>
+								{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+							</SectionHeader>
+							<ContentWrapper>
+								{eduCareers.map((eduCareer, index) => (
+									<CareerItem
+										key={eduCareer.id}
+										data={eduCareer}
+										isLastItem={index === eduCareers.length - 1}	
+									/>
+								))}
+							</ContentWrapper>
+						</SectionWrapper>
+						<Line></Line>
+
+						<SectionWrapper>
+							<SectionHeader>
+								<h2>수상</h2>
+								<AddButton onClick={() => toggleAddForm('awards')}>+</AddButton>
+							</SectionHeader>
+							<ContentWrapper>
+								{openedForms.add.awards &&
+								<AddAwardForm
+									onClose={() => toggleAddForm('awards')}
+								/>}
+								<div style={{height:'50px'}}></div>
+								{awards.map((award, index) => (
+									<AwardItem 
+										key={award.id} 
+										data={award} 
+										onEdit={() => toggleEditForm('awards', award.id)} 
+									/>
+								))}
+							</ContentWrapper>
+						</SectionWrapper>
+						<Line></Line>
+
+						<SectionWrapper>
+							<SectionHeader>
+								<h2>자격증 · 외국어</h2>
+								<AddButton onClick={() => toggleAddForm('licenses')}>+</AddButton>
+							</SectionHeader>
+							<ContentWrapper>
+								{openedForms.add.licenses &&
+								<AddLicenseForm
+									onClose={() => toggleAddForm('licenses')}
+								/>}
+								<div style={{height:'50px'}}></div>
+								<Section>
+									<Tag>자격증</Tag>
+									<ItemsWrapper>
+										{licenseSection.map((license, index) => (
+											<LicenseItem 
+												key={license.id} 
+												data={license} 
+												// onEdit={() => toggleEditForm('licenses', license.id)} 
+											/>
+										))}
+									</ItemsWrapper>
+								</Section>
+								<div style={{height:'50px'}}></div>
+								<Section>
+									<Tag>외국어</Tag>
+									<ItemsWrapper>
+										{foreignSection.map((foreign, index) => (
+											<LicenseItem 
+												key={foreign.id} 
+												data={foreign} 
+												// onEdit={() => toggleEditForm('licenses', license.id)} 
+											/>
+										))}
+									</ItemsWrapper>
+								</Section>
+							</ContentWrapper>
+						</SectionWrapper>
+						<Line></Line>
+
+						<SectionWrapper>
+							<SectionHeader>
+								<h2>스킬</h2>
+								<AddButton onClick={() => toggleAddForm('skills')}>+</AddButton>
+							</SectionHeader>
+							<ContentWrapper>
+								{openedForms.add.skills &&
+								<AddSkillForm
+									onClose={() => toggleAddForm('skills')}
+								/>}
+								<div style={{height:'50px'}}></div>
+								{Object.entries(skillSections).map(([sectionType, sectionSkills]) => 
+									sectionSkills.length > 0 ? (
+									<Section key={sectionType}>
+										<Tag>{getSectionName(sectionType)}</Tag>
+										<ItemsWrapper>
+											{sectionSkills.map(skill => (
+											<SkillItem
+												key={skill.id}
+												data={skill}
+												// onEdit={() => console.log(`Edit Skill: ${skill.id}`)}
+											/>
+											))}
+										</ItemsWrapper>
+										<div style={{height:'50px'}}></div>
+									</Section>
+								):null)}
+							</ContentWrapper>
+						</SectionWrapper>
+						<Line></Line>
+
+						<SectionWrapper>
+							<SectionHeader>
+								<h2>추가자료</h2>
+								{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+							</SectionHeader>
+							<ContentWrapper>
+								
+							</ContentWrapper>
+						</SectionWrapper>
+						<Line></Line>
+					</div>
+				</Layout>
+			)}
+		</>
 	);
 };
 
 export default History;
+
+const CreateRecordButton = styled.button`
+	width: 200px;
+	height: 130px;
+	font-size: 24px;
+	font-family: 'Regular'
+`
 
 const SectionWrapper = styled.div`
   margin-bottom: 40px;
