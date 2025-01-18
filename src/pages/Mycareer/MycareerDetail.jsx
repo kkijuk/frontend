@@ -12,7 +12,9 @@ import CareerList from '../../components/MyCareerDetail/CareerList';
 
 import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
-// import de from '@mobiscroll/react/dist/src/i18n/de.js';
+import { CareertextEdit } from '../../api/Mycareer/CareerEdit';
+
+
 const CareerBoxContainer = styled.div`
 	width: 100%; /* 가로 스크롤을 위해 전체 너비 */
 	height: 72px;
@@ -249,9 +251,25 @@ export default function MycareerDetail() {
 		setIsEditing(true); // 편집 모드로 변경
 	};
 
-	const handleSaveClick = () => {
-		setIsEditing(false); // 편집 모드 종료
-		// 저장 로직 추가 가능
+	const handleSaveClick = async () => {
+		try {
+			if (!details?.summary) {
+				alert('활동 내역을 입력하세요.');
+				return;
+			}
+
+			// API 호출
+			await CareertextEdit(
+				careerId, // 현재 활동 ID
+				details?.category?.categoryEnName, // 카테고리 이름
+				details?.summary, // 작성한 활동 내역
+			);
+
+			alert('활동 내역이 성공적으로 저장되었습니다.');
+			setIsEditing(false); // 편집 모드 종료
+		} catch (error) {
+			alert('활동 내역 저장에 실패했습니다.');
+		}
 	};
 
 	const handleCloseEdit = () => {
@@ -310,7 +328,10 @@ export default function MycareerDetail() {
 					</Date>
 					{isEditing ? (
 						<EditActivityContent>
-							<Textbox defaultValue={details?.summary || ''} />
+							<Textbox
+								defaultValue={details?.summary || ''}
+								onChange={(e) => setDetails({ ...details, summary: e.target.value })}
+							/>
 							<EditBox onClick={handleSaveClick}>저장</EditBox>
 						</EditActivityContent>
 					) : (
