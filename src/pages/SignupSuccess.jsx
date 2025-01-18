@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import createMaster from '../api/Signup/createMaster';
 import createResume from '../api/Signup/createResume';
-import { useAuth } from '../components/AuthContext';
 
 const SignupSuccessScreen = styled.div`
 	max-width: flex;
@@ -67,7 +66,6 @@ const SignupSuccessScreen = styled.div`
 
 const SignupSuccess = () => {
 	const navigate = useNavigate();
-	const { login } = useAuth();
 	const [hasCalled, setHasCalled] = useState(false); // 호출 여부 상태 관리
 
 	const address = 'string';
@@ -97,7 +95,6 @@ const SignupSuccess = () => {
 	}, [hasCalled]);
 
 	const handleButtonClick = () => {
-		login(); // 회원가입이 완료된 후 자동 로그인
 		navigate('/signupinterest'); // 관심분야 등록 페이지로 이동
 	};
 

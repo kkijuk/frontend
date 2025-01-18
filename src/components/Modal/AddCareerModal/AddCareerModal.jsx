@@ -12,6 +12,8 @@ import CareerTypeDropdown from './CareerTypeDropdown';
 import ParticipantType from './ParticipantType';
 import { Form } from 'react-router-dom';
 
+import moment from 'moment'; // moment 라이브러리 임포트(세연)
+
 const AddCareerModal = ({ onClose }) => {
 	//카테고리 정보
 	const categoryMap = {
@@ -49,7 +51,7 @@ const AddCareerModal = ({ onClose }) => {
 	// const [workplace, setWorkplace] = useState(''); //근무처
 	const [position, setPosition] = useState(''); //직급/직위
 	const [jobField, setJobField] = useState(''); //직무/분야
-	const [educationHours, setEducationHours] = useState(0); //교육시간
+	const [time, setTime] = useState(0); //교육시간
 	// const [participantType, setParticipantType] = useState({}); //인원-팀인원-기여도
 	const [isTeam, setIsTeam] = useState(false);
 	const [teamSize, setTeamSize] = useState(0);
@@ -450,7 +452,7 @@ const AddCareerModal = ({ onClose }) => {
 							<label>
 								교육 시간 <span style={{ color: '#FC5555' }}>*</span>
 							</label>
-							<input type="text" value={educationHours} onChange={(e) => setEducationHours(e.target.value)}></input>
+							<input type="text" value={time} onChange={(e) => setTime(e.target.value)}></input>
 						</FormItem>
 					</>
 				);
@@ -515,11 +517,15 @@ const AddCareerModal = ({ onClose }) => {
 			return;
 		}
 
+		// startdate와 enddate를 YYYY-MM-DD 형식으로 변환하기 위해 추가 (에러)
+		const formattedStartdate = moment(startdate).format('YYYY-MM-DD');
+		const formattedEnddate = unknown ? null : moment(enddate).format('YYYY-MM-DD');
+
 		const allFormData = {
 			name,
 			alias,
-			startdate,
-			enddate: unknown ? null : enddate,
+			startdate: formattedStartdate,
+			enddate: formattedEnddate,
 			unknown,
 			location,
 			role,
@@ -527,11 +533,12 @@ const AddCareerModal = ({ onClose }) => {
 			careerType,
 			position,
 			jobField,
-			educationHours,
+			time,
 			isTeam,
 			teamSize,
 			contribution,
 		};
+		console.log('Sending data:', allFormData);
 
 		// 날짜 외 입력 데이터 검증 및 필터링 실행
 		const { isValid, errors, filteredData } = validateAndFilterForm(selectedCategory, allFormData);

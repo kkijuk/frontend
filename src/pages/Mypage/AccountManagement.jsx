@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { deleteUserAccount } from '../../api/Login/Inactive';
 import { ChangePassword } from '../../api/Mypage/AccountManagement';
 import { verifyPassword } from '../../api/Mypage/MyinformationVerify';
+import Popup from '../../components/User/UserPopup';
 
 const Box = styled.div`
 	display: flex;
@@ -146,6 +147,7 @@ export default function AccountMangement() {
 	const [newPassword, setNewPassword] = useState('');
 	const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
+	const [isPopupVisible, setIsPopupVisible] = useState(false);
 
 	const validatePassword = async () => {
 		try {
@@ -207,16 +209,21 @@ export default function AccountMangement() {
 		}
 	};
 
-	const handleDelete = async () => {
-		const token = localStorage.getItem('token'); // 로컬 스토리지에서 토큰을 가져옵니다.
+	const handleDelete = () => {
+		setIsPopupVisible(true); // 팝업 표시
+	  };
+	
+	  const confirmDelete = async () => {
+		setIsPopupVisible(false);
+		const token = localStorage.getItem('token');
 		const result = await deleteUserAccount(token);
-
+	
 		if (result.success) {
-			alert('회원 탈퇴가 정상적으로 처리되었습니다.');
+		  alert('회원 탈퇴가 정상적으로 처리되었습니다.');
 		} else {
-			console.error(`회원 탈퇴 중 오류가 발생했습니다: ${result.message}`);
+		  console.error(`회원 탈퇴 중 오류 발생: ${result.message}`);
 		}
-	};
+	  };
 
 	return (
 		<Box>
@@ -259,6 +266,12 @@ export default function AccountMangement() {
 				</DeleteText>
 				<DeleteButton onClick={handleDelete}>탈퇴하기</DeleteButton>
 			</Container2>
+			{isPopupVisible && (
+        <Popup
+          onClose={() => setIsPopupVisible(false)}
+          onConfirm={confirmDelete}
+        />
+      )}
 		</Box>
 	);
 }

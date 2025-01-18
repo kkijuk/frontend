@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Layout from '../../components/Layout'; 
 import TabMenu from '../../components/Apply/TabMenu';
+import AddJobButton from '../../components/shared/AddJobButton';
+import AddApplyModal from '../../components/Modal/AddApplyModal';
 import StatusListView from '../../components/Apply/StatusListView';
 import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
 import { getValidRecruitList } from '../../api/Apply/RecruitValid';
@@ -12,6 +14,7 @@ export default function ApplyStatus() {
 	const [jobs, setJobs] = useState([]);
 	const [filteredJobs, setFilteredJobs] = useState([]);
 	const [activeStatus, setActiveStatus] = useState('all');
+	const [showModal, setShowModal] = useState(false);
 	const navigate = useNavigate();
 
 	const statusCounts = {
@@ -22,6 +25,28 @@ export default function ApplyStatus() {
 		accepted: jobs.filter((job) => job.status === 'ACCEPTED').length,
 		rejected: jobs.filter((job) => job.status === 'REJECTED').length,
 	};
+
+	const handleSaveRecruit = async (newRecruitId) => {
+		try {
+			const newRecruit = await getRecruitDetails(newRecruitId);
+			if (newRecruit) {
+				const updatedJobs = [...jobs, newRecruit].sort((a, b) => new Date(a.endTime) - new Date(b.endTime));
+				setJobs(updatedJobs);
+	
+				// 현재 활성 상태에 따라 filteredJobs 업데이트
+				if (activeStatus === 'all') {
+					setFilteredJobs(updatedJobs);
+				} else {
+					setFilteredJobs(updatedJobs.filter((job) => job.status === activeStatus.toUpperCase()));
+				}
+			} else {
+				console.error('Failed to retrieve the newly created recruit');
+			}
+		} catch (error) {
+			console.error('Error fetching new recruit:', error);
+		}
+	};
+	
 
 	useEffect(() => {
 		const fetchJobs = async () => {
@@ -84,6 +109,8 @@ export default function ApplyStatus() {
 			<TabMenu activeTab="status" onTabClick={() => navigate('/apply-schedule')} />
 			<ApplyStatusButton activeStatus={activeStatus} onStatusClick={handleStatusClick} statusCounts={statusCounts} />
 			<StatusListView data={filteredJobs} onJobClick={handleJobClick} />
+			<AddJobButton onClick={() => setShowModal(true)} />
+			{showModal && <AddApplyModal onClose={() => setShowModal(false)} onSave={handleSaveRecruit} />}
 		</Layout>
 	);
 }

@@ -3,6 +3,8 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Layout from '../../components/Layout';
 import DetailAdd from '../../components/MyCareerDetail/DetailAdd';
+import DetailAddEdit from '../../components/MyCareerDetail/DetailAddEdit';
+import AddCareerModalEdit from '../../components/Modal/AddCareerModalEdit';
 import { useParams } from 'react-router-dom';
 
 import Careerbox from '../../components/MyCareerDetail/CareerBox';
@@ -10,6 +12,8 @@ import CareerList from '../../components/MyCareerDetail/CareerList';
 
 import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
+import { CareertextEdit } from '../../api/Mycareer/CareerEdit';
+
 
 const CareerBoxContainer = styled.div`
 	width: 100%; /* 가로 스크롤을 위해 전체 너비 */
@@ -176,16 +180,10 @@ export default function MycareerDetail() {
 	const [careerList, setCareerList] = useState([]);
 	const [selectedCareer, setSelectedCareer] = useState({ id: careerId || null, type: category || null });
 	const [isEditing, setIsEditing] = useState(false); // 편집 상태 추가
-	const [isAdding, setIsAdding] = useState(false); // 상태 추가
-
-	const categoryToTypeMapCapital = {
-		대외활동: 'ACTIVITY',
-		동아리: 'CIRCLE',
-		프로젝트: 'PROJECT',
-		교육: 'EDU',
-		대회: 'COMPETETION',
-		경력: 'EMPLOYMENT',
-	};
+	const [isAdding, setIsAdding] = useState(false); // 상태 추가  const [editingDetailId, setEditingDetailId] = useState(null); // 현재 DetailAddEdit 상태인 detailId
+	const [editingDetailId, setEditingDetailId] = useState(null); // 현재 DetailAddEdit 상태인 detailId
+	const [isModalOpen, setIsModalOpen] = useState(false); // 수정 모달 상태 관리
+	const [modalData, setModalData] = useState(null); // 모달에 전달할 데이터
 
 	const categoryToTypeMap = {
 		대외활동: 'activity',
@@ -245,6 +243,7 @@ export default function MycareerDetail() {
 	const handleCareerBoxClick = (id, type) => {
 		const mappedType = categoryToTypeMap[type] || type;
 		setSelectedCareer({ id, type: mappedType });
+		setIsAdding(false);
 		fetchCareerDetails(id, mappedType);
 	};
 
@@ -252,9 +251,47 @@ export default function MycareerDetail() {
 		setIsEditing(true); // 편집 모드로 변경
 	};
 
-	const handleSaveClick = () => {
-		setIsEditing(false); // 편집 모드 종료
-		// 저장 로직 추가 가능
+	const handleSaveClick = async () => {
+		try {
+			if (!details?.summary) {
+				alert('활동 내역을 입력하세요.');
+				return;
+			}
+
+			// API 호출
+			await CareertextEdit(
+				careerId, // 현재 활동 ID
+				details?.category?.categoryEnName, // 카테고리 이름
+				details?.summary, // 작성한 활동 내역
+			);
+
+			alert('활동 내역이 성공적으로 저장되었습니다.');
+			setIsEditing(false); // 편집 모드 종료
+		} catch (error) {
+			alert('활동 내역 저장에 실패했습니다.');
+		}
+	};
+
+	const handleCloseEdit = () => {
+		setEditingDetailId(null); // DetailAddEdit 닫기
+	}; //추가
+
+	const openModal = () => {
+		// 모달 열기 + 데이터 설정
+		setModalData({
+			name: details?.name,
+			alias: details?.alias,
+			category: details?.category?.categoryKoName,
+			activityName: details?.alias,
+			startdate: details?.startdate,
+			enddate: details?.endDate,
+			summary: details?.summary,
+		});
+		setIsModalOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsModalOpen(false); // 모달 닫기
 	};
 
 	return (
@@ -268,7 +305,7 @@ export default function MycareerDetail() {
 							startdate={career.startdate}
 							enddate={career.endDate}
 							careerName={career.name}
-							category={career.category}
+							category={career.category.categoryKoName}
 							selected={career.id === selectedCareer.id && categoryToTypeMap[career.category] === selectedCareer.type}
 							onClick={() => handleCareerBoxClick(career.id, career.category)}
 						/>
@@ -277,7 +314,7 @@ export default function MycareerDetail() {
 				<CareerContentContainer isEditing={isEditing}>
 					<TitleContainer>
 						<Title>{details?.alias || '제목 없음'}</Title>
-						<IconWrapper>
+						<IconWrapper onClick={openModal}>
 							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
 								<path
 									d="M0 23.7509V30H6.24913L24.6799 11.5692L18.4308 5.32009L0 23.7509ZM29.5126 6.73656C30.1625 6.08665 30.1625 5.0368 29.5126 4.38689L25.6131 0.487432C24.9632 -0.162477 23.9133 -0.162477 23.2634 0.487432L20.2139 3.53701L26.463 9.78614L29.5126 6.73656Z"
@@ -291,7 +328,10 @@ export default function MycareerDetail() {
 					</Date>
 					{isEditing ? (
 						<EditActivityContent>
-							<Textbox defaultValue={details?.summary || ''} />
+							<Textbox
+								defaultValue={details?.summary || ''}
+								onChange={(e) => setDetails({ ...details, summary: e.target.value })}
+							/>
 							<EditBox onClick={handleSaveClick}>저장</EditBox>
 						</EditActivityContent>
 					) : (
@@ -300,20 +340,36 @@ export default function MycareerDetail() {
 				</CareerContentContainer>
 				<Line></Line>
 				<CareerListBox>
-					{details && details.detailList && details.detailList.length > 0 ? (
-						details.detailList.map((detail) => (
-							<CareerList
-								key={detail.detailId}
-								title={detail.title || '제목 없음'}
-								date={`${detail.startDate} ~ ${detail.endDate || '진행중'}`}
-								contents={detail.content || '내용 없음'}
-								detailTag={detail.detailTag || []}
-								careerId={careerId}
-								detailId={detail.detailId}
-								onClose={() => console.log('Detail 닫힘')}
-								onUpdate={() => fetchCareerDetails(careerId, selectedCareer.type)} // 데이터 새로고침
-							/>
-						))
+					{details?.detailList?.length > 0 ? (
+						details.detailList.map((detail) =>
+							editingDetailId === detail.detailId ? (
+								<DetailAddEdit
+									key={detail.detailId}
+									initialTitle={detail.title}
+									initialDate={detail.startDate}
+									initialContents={detail.content}
+									initialTags={detail.detailTag || []}
+									careerId={careerId}
+									detailId={detail.detailId}
+									onClose={handleCloseEdit}
+									onUpdate={() => fetchCareerDetails(careerId, selectedCareer.type)}
+								/>
+							) : (
+								<CareerList
+									key={detail.detailId}
+									title={detail.title}
+									date={`${detail.startDate} ~ ${detail.endDate || '진행중'}`}
+									contents={detail.content}
+									detailTag={detail.detailTag || []}
+									careerId={careerId}
+									detailId={detail.detailId}
+									categoryEnName={details?.category?.categoryEnName}
+									onClose={handleCloseEdit}
+									onUpdate={() => fetchCareerDetails(careerId, selectedCareer.type)}
+									onEditClick={() => handleEditClick(detail.detailId)}
+								/>
+							),
+						)
 					) : (
 						<div>세부사항이 없습니다.</div>
 					)}
@@ -322,12 +378,13 @@ export default function MycareerDetail() {
 							onCancel={handleCancelAdd}
 							onSave={handleSaveAdd}
 							careerId={careerId}
-							careerType={categoryToTypeMapCapital[category]}
+							careerType={categoryToTypeMap[category]}
 						/>
 					)}
 				</CareerListBox>
 
 				<CareerPlus onClick={handleAddButtonClick}>활동 기록 추가</CareerPlus>
+				{isModalOpen && modalData && <AddCareerModalEdit onClose={closeModal} data={modalData} />}
 			</PageContainer>
 		</Layout>
 	);

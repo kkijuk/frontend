@@ -6,6 +6,7 @@ export const CareerViewSelect = async (status) => {
 			credentials: 'include', // 쿠키와 인증 정보를 함께 보냄
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 			},
 		});
 

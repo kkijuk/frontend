@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigate import
 import styled from 'styled-components';
 
-import { useAuth } from '../../components/AuthContext';
 import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
 import { yearMockData, categoryMockData } from './mockData';
 
@@ -11,7 +10,7 @@ import CareerView from '../../components/Mycareer/CareerView';
 import CareerViewYear from '../../components/Mycareer/CareerViewYear';
 import CareerViewCategory from '../../components/Mycareer/CareerViewCategory';
 import AddJobButton from '../../components/shared/AddJobButton';
-import AddCareerModal from '../../components/Modal/AddCareerModal';
+import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
 import SearchBar from '../../components/Mycareer/shareSearchBar';
 import CareerTimeline from '../../components/Mycareer/CareerTimeline';
 
@@ -48,7 +47,6 @@ export default function Mycareer() {
 	const [showModal, setShowModal] = useState(false);
 	const [careers, setCareers] = useState({});
 	const [triggerEffect, setTriggerEffect] = useState(false);
-	const { isLoggedIn } = useAuth(); // 로그인 상태 확인
 	const navigate = useNavigate();
 
 	const fetchData = async () => {
@@ -60,17 +58,13 @@ export default function Mycareer() {
 	};
 
 	useEffect(() => {
-		// 로그인된 상태일 때만 데이터 가져오기
-		if (isLoggedIn) {
-			fetchData();
-		}
-	}, [view, isLoggedIn]);
+		// 데이터를 항상 가져오도록 수정
+		fetchData();
+	}, [view]);
 
 	const handleAddCareer = () => {
-		if (isLoggedIn) {
-			fetchData();
-			setTriggerEffect((prev) => !prev);
-		}
+		fetchData();
+		setTriggerEffect((prev) => !prev);
 	};
 
 	const handleSearchClick = () => {
@@ -84,16 +78,14 @@ export default function Mycareer() {
 					<Title>내커리어</Title>
 					<SearchBar onClick={handleSearchClick} /> {/* 클릭 이벤트 추가 */}
 				</SearchBox>
-				{isLoggedIn && (
-					<div>
-						<CareerTimeline data={careers} />
-						<CareerView view={view} onToggle={setView} />
-						<AddJobButton onClick={() => setShowModal(true)} />
-						{showModal && <AddCareerModal onClose={() => setShowModal(false)} onSave={handleAddCareer} />}
-					</div>
-				)}
+				<div>
+					<CareerTimeline data={careers} />
+					<CareerView view={view} onToggle={setView} />
+					<AddJobButton onClick={() => setShowModal(true)} />
+					{showModal && <AddCareerModal onClose={() => setShowModal(false)} onSave={handleAddCareer} />}
+				</div>
 			</Container>
-			{isLoggedIn && (view === 'year' ? <CareerViewYear data={careers} /> : <CareerViewCategory data={careers} />)}
+			{view === 'year' ? <CareerViewYear data={careers} /> : <CareerViewCategory data={careers} />}
 		</>
 	);
 }
