@@ -1,9 +1,8 @@
 import api from '../../Axios';
-import record from './record';
 
 const createLicense = async (recordId, data) => {
 	try {
-		const response = await api.post(`/history/resume/license/recordId=${record}`);
+		const response = await api.post(`/history/resume/license/recordId=${recordId}`);
 		console.log('Success-createLicense:', response.data);
 		return response.data;
 	} catch (error) {
@@ -50,4 +49,4 @@ const deleteLicense = async (licenseId, data) => {
 	} catch (error) {}
 };
 
-export default { createLicense, updateLicense, deleteLicense };
+export { createLicense, updateLicense, deleteLicense };

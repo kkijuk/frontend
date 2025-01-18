@@ -1,10 +1,11 @@
-import React from 'react'; 
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react'; 
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
 
 import queryClient from './api/queryClient/queryClient';
 import SocialRedirect from './components/Redirect';
+import api, {setupApiInterceptors} from './Axios'
 
 import Home from './pages/Home';
 import MyPage from './pages/Mypage/Mypage';
@@ -62,9 +63,14 @@ const MainContent = styled.div`
 
 const App = () => {
 	const location = useLocation();
+	const navigate = useNavigate();
 
 	const hideHeaderFooterRoutes = ['/commingsoon', '/', '/signup', '/signupinterest','/signupsuccess' ];
 	const hideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
+
+	useEffect(()=>{
+		setupApiInterceptors(navigate);
+	}, [navigate]);
 
 	return (
 		<AppContainer>
@@ -82,13 +88,16 @@ const App = () => {
 					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/mycareer" element={<MyCareer />} />
 					<Route path="/signupinterest" element={<SignupInterest />} />
+
+					<Route path="/history2" element={<History/>} />
 					<Route element={<SubNav />}>
+						<Route path="/history" element={<History/>} />
 						<Route element={<ViewOptions />}>
 							<Route path="/history/master" element={<Master />} />
 							<Route path="/history/others/:id" element={<Others />} />
 							<Route path="/history/list/:state" element={<List />} />
 						</Route>
-						<Route path="/history" element={<History />} />
+						{/* <Route path="/history" element={<History/>} /> */}
 						<Route path="/history/portfolio" element={<Portfolio />} />
 					</Route>
 					<Route path="/history/master/rewrite" element={<MasterRewrite />} />

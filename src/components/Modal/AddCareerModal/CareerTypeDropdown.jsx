@@ -28,35 +28,130 @@ const CareerTypeDropdown = ({ onchange }) => {
 
 export default CareerTypeDropdown;
 
-const DropdownContainer = styled.div`
-	width: 100%;
-`;
+const CareerTypeDropdown2 = ({ options, placeholder, value, onChange, isOpen, onToggle, width="260px" }) => {
+	const handleOptionClick = (option) =>{
+		onChange(option);
+		onToggle();
+	}
+
+	return(
+		<DropdownContainer width={width}>
+			<DropdownHeader onClick={onToggle} isActive={isOpen} isPlaceholder={!value}>
+				<Text>{value || placeholder}</Text>
+				<Arrow isOpen={isOpen} />
+			</DropdownHeader>
+			{isOpen && (
+				<DropdownList>
+				{options.map((option, index) => (
+					<DropdownItem key={index} onClick={() => handleOptionClick(option)}>
+					{option}
+					</DropdownItem>
+				))}
+				</DropdownList>
+			)}
+		</DropdownContainer>
+	)
+}
+
+export {CareerTypeDropdown2};
+
+// const DropdownContainer = styled.div`
+// 	width: 100%;
+// 	height:50px;
+// `;
 
 const Select = styled.select`
-	width: 100%;
-	padding: 10px;
-	font-size: 16px;
-	border: 1px solid #ccc;
-	border-radius: 10px;
-	background-color: #f5f5f5;
-	color: #707070;
-	cursor: pointer;
-
-	&:focus {
-		outline: none;
-		border-color: #3aaf85;
-	}
-
-	option {
-		color: #000;
-	}
+  height: 45px;
+  border-radius: 10px;
+  border: ${(props) =>
+    props.className === "경력 구분을 선택해주세요"
+      ? "1px solid var(--gray-02, #707070)"
+      : "none"};
+  background: ${(props) =>
+    props.className === "경력 구분을 선택해주세요" ? "var(--white, #FFF)" : "#F5F5F5"};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  font-size: 16px;
+  font-weight: 400;
+  color: ${(props) => (props.className === "placeholder" ? "#d9d9d9" : "black")};
+  cursor: pointer;
 `;
 
 const Option = styled.option`
 	background-color: #fff;
 	color: #707070;
+	font-family:'Regular';
 
 	&[value=''] {
 		color: #a9a9a9; /* placeholder 색상 */
 	}
+`;
+
+// Styled Components
+const DropdownContainer = styled.div`
+  position: relative;
+  width: ${(props) => props.width};
+  font-family: Regular;
+`;
+
+const DropdownHeader = styled.div`
+  height: 45px;
+  border-radius: 10px;
+  border: 1px solid #707070;
+  background: var(--white, #fff);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  font-size: 16px;
+  font-weight: 400;
+  color: ${(props) => (props.isPlaceholder ? "#d9d9d9" : "black")};
+  cursor: pointer;
+`;
+
+const Text = styled.span`
+  flex: 1;
+  text-align: center;
+`;
+
+const Arrow = styled.div`
+  width: 5px;
+  height: 5px;
+  border: solid #d9d9d9;
+  border-width: 0 2px 2px 0;
+  transform: ${(props) => (props.isOpen ? "rotate(45deg)" : "rotate(135deg)")};
+  transition: transform 0.2s;
+`;
+
+const DropdownList = styled.ul`
+  position: absolute;
+  top: 50px;
+  width: 100%;
+  border: 1px solid var(--gray-02, #707070);
+  border-radius: 10px;
+  background: var(--white, #fff);
+  list-style: none;
+  padding: 10px 0;
+  margin: 0;
+  z-index: 1000;
+`;
+
+const DropdownItem = styled.li`
+  padding: 10px;
+  font-size: 16px;
+  font-family:'Regular';
+  text-align: center;
+  cursor: pointer;
+  color: black;
+  background: white;
+
+  &:hover {
+    background: var(--gray-06, #f5f5f5);
+  }
+
+  & + & {
+    margin-top: 15px;
+  }
 `;

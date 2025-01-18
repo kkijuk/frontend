@@ -70,6 +70,7 @@ const SelectButton = styled.div`
 	height: 50px;
 	font-size: 16px;
 	font-weight: 400;
+	font-family: 'Regular';
 	line-height: 50px;
 	border-radius: 10px;
 	cursor: pointer;
