@@ -4,6 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
 
 import queryClient from './api/queryClient/queryClient';
+import SocialRedirect from './components/Redirect';
 
 import Home from './pages/Home';
 import MyPage from './pages/Mypage/Mypage';
@@ -75,6 +76,8 @@ const App = () => {
 					<Route path="/mycareer_search" element={<MycareerSearch />} />
 					<Route path="/home" element={<Home />} />
 					<Route path="/" element={<SocialLogin />} />
+					<Route path="/login/oauth2/code/kakao" element={<SocialRedirect provider="kakao" />} />
+<Route path="/login/oauth2/code/naver" element={<SocialRedirect provider="naver" />} />
 					<Route path="/signup" element={<NewSignup />} />
 					<Route path="/signupsuccess" element={<SignupSuccess />} />
 					<Route path="/mypage" element={<MyPage />} />

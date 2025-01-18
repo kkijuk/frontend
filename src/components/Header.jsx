@@ -157,7 +157,7 @@ export default function Header() {
 		<HeaderWrapper>
 			<HeaderStyle>
 				<NavContainer>
-					<LogoContainer onClick={() => handleNavigation('/')}>
+					<LogoContainer onClick={() => handleNavigation('/home')}>
 						<img style={{ width: '80px', height: '40px' }} src={logo} alt="로고" />
 					</LogoContainer>
 					<Nav>
