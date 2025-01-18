@@ -4,6 +4,7 @@ import styled from 'styled-components';
 // import './history.css'
 import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
 import { Affiliation1, Affiliation2 } from '../../components/Modal/AddCareerModal/Affiliation';
+import CustomDropdown from '../../components/Record/CustomDropdown';
 
 const Portfolio = () => {
 	const setAffiliation = () => {

@@ -29,4 +29,14 @@
       </filter>
     </defs>
   </symbol>
+
+  <!-- Question Mark -->
+  <symbol xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 19 19" id="question-mark">
+    <path d="M9.5 1C4.825 1 1 4.825 1 9.5C1 14.175 4.825 18 9.5 18C14.175 18 18 14.175 18 9.5C18 4.825 14.175 1 9.5 1Z" stroke="#707070" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M9.65997 10.5V10.29C9.65997 9.61004 10.08 9.25002 10.5 8.96002C10.91 8.68002 11.3199 8.32003 11.3199 7.66003C11.3199 6.74003 10.58 6 9.65997 6C8.73997 6 8 6.74003 8 7.66003" stroke="#707070" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M9.65566 12.8896H9.66466" stroke="#707070" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path>
+  </symbol>
 </svg>
+
+
+

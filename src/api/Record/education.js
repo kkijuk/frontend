@@ -70,4 +70,4 @@ const deleteEducation = async (educationId) => {
 	}
 };
 
-export default { createEducation, updateEducation, deleteEducation };
+export { createEducation, updateEducation, deleteEducation };
