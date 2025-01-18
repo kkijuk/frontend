@@ -8,6 +8,7 @@ export const addCareer = async () => {
 
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 			},
 		});
 		console.log('통신 완료 : ', response.data);
