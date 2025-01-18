@@ -36,7 +36,11 @@ const createCareer = async (category, data) => {
 	}
 
 	try {
-		const response = await api.post(endpoint, data);
+		const response = await api.post(endpoint, data, {
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
+			},
+		});
 		console.log('Success-createCareer:', response.data);
 		return response.data;
 	} catch (error) {
