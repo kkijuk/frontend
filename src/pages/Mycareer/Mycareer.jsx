@@ -10,7 +10,7 @@ import CareerView from '../../components/Mycareer/CareerView';
 import CareerViewYear from '../../components/Mycareer/CareerViewYear';
 import CareerViewCategory from '../../components/Mycareer/CareerViewCategory';
 import AddJobButton from '../../components/shared/AddJobButton';
-import AddCareerModal from '../../components/Modal/AddCareerModal';
+import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
 import SearchBar from '../../components/Mycareer/shareSearchBar';
 import CareerTimeline from '../../components/Mycareer/CareerTimeline';
 
