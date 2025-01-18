@@ -9,7 +9,7 @@ export const validateAndFilterForm = (category, formData) => {
 		3: ['name', 'alias', 'startdate', 'enddate', 'unknown', 'organizer', 'isTeam', 'teamSize', 'contribution'], // 공모전/대회
 		4: ['name', 'alias', 'startdate', 'enddate', 'unknown', 'location', 'isTeam', 'teamSize', 'contribution'], // 프로젝트
 		5: ['name', 'startdate', 'enddate', 'unknown', 'type', 'alias', 'position', 'jobField'], // 경력
-		6: ['name', 'alias', 'startdate', 'enddate', 'unknown', 'organizer', 'educationHours'], // 교육
+		6: ['name', 'alias', 'startdate', 'enddate', 'unknown', 'organizer', 'time'], // 교육
 	};
 
 	// 필수 필드 정의
@@ -19,7 +19,7 @@ export const validateAndFilterForm = (category, formData) => {
 		3: ['name', 'alias', 'startdate', 'organizer'],
 		4: ['name', 'alias', 'startdate', 'location'],
 		5: ['name', 'startdate', 'type', 'alias'],
-		6: ['name', 'alias', 'startdate', 'organizer', 'educationHours'],
+		6: ['name', 'alias', 'startdate', 'organizer', 'time'],
 	};
 
 	// 필수 필드 확인 및 필터링

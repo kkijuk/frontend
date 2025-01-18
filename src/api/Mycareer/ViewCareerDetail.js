@@ -7,6 +7,7 @@ export const ViewCareerDetail = async (careerId, type) => {
 		const response = await axios.get(`https://api.kkijuk.com/career/${type}/${careerId}`, {
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 			},
 			withCredentials: true, // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
 		});
