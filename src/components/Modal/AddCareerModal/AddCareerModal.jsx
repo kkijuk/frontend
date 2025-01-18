@@ -538,6 +538,7 @@ const AddCareerModal = ({ onClose }) => {
 			teamSize,
 			contribution,
 		};
+		console.log('Sending data:', allFormData);
 
 		// 날짜 외 입력 데이터 검증 및 필터링 실행
 		const { isValid, errors, filteredData } = validateAndFilterForm(selectedCategory, allFormData);
