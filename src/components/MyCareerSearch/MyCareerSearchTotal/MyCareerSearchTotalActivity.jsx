@@ -75,7 +75,7 @@ export default function MyCareerSearchTotalActivity({ activity, isActivityLoadin
 					{activity.data.data.map((activity, idx) => (
 						<ActivityBox
 							key={idx}
-							onClick={() => navigate(`/mycareer/${activity.category.categoryId}/${activity.careerId}`)}>
+							onClick={() => navigate(`/mycareer/${activity.category.categoryKoName}/${activity.careerId}`)}>
 							<ActivityContent>
 								<CareerCategoryCircle category={activity.category.categoryKoName} />
 								<ActivityCareerTitle>

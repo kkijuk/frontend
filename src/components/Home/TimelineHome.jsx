@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
-import { useAuth } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 // Chart와 Line 스타일 컴포넌트 정의
@@ -142,30 +141,27 @@ const calculateWidth = (startDate, endDate, oneMonthInPixels) => {
 };
 
 export default function Timeline({ triggerEffect }) {
-	const { isLoggedIn } = useAuth(); // 로그인 상태를 가져옴
 	const [careers, setCareers] = useState([]);
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (isLoggedIn) {
-			const fetchCareers = async () => {
-				const status = 'year';
-				const responseData = await CareerViewSelect(status);
+		const fetchCareers = async () => {
+			const status = 'year';
+			const responseData = await CareerViewSelect(status);
 
-				console.log('API 호출 결과:', responseData);
+			console.log('API 호출 결과:', responseData);
 
-				if (responseData && responseData.data) {
-					const allCareers = responseData.data.flatMap((yearData) => yearData.careers);
-					setCareers(allCareers);
-					console.log('설정된 careers 상태:', allCareers);
-				} else {
-					console.log('데이터가 없습니다.');
-				}
-			};
+			if (responseData && responseData.data) {
+				const allCareers = responseData.data.flatMap((yearData) => yearData.careers);
+				setCareers(allCareers);
+				console.log('설정된 careers 상태:', allCareers);
+			} else {
+				console.log('데이터가 없습니다.');
+			}
+		};
 
-			fetchCareers();
-		}
-	}, [triggerEffect, isLoggedIn]);
+		fetchCareers();
+	}, [triggerEffect]);
 
 	// startDate가 제일 빠른 순서대로 정렬된 새로운 배열 생성
 	const sortedCareerData = [...careers].sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
@@ -250,7 +246,7 @@ export default function Timeline({ triggerEffect }) {
 	return (
 		<div onClick={handleClick}>
 			<Chart>
-				{isLoggedIn && careers.length > 0 && (
+				{careers.length > 0 && (
 					<>
 						<Line1>
 							{groups[0].map(

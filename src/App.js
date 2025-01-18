@@ -1,10 +1,10 @@
-import React from 'react';
+import React from 'react'; 
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
 
 import queryClient from './api/queryClient/queryClient';
-import { AuthProvider } from './components/AuthContext';
+import SocialRedirect from './components/Redirect';
 
 import Home from './pages/Home';
 import MyPage from './pages/Mypage/Mypage';
@@ -13,9 +13,8 @@ import MycareerSearch from './pages/Mycareer/Mycareer_search';
 import ApplySchedule from './pages/Apply/ApplySchedule';
 import ApplyStatus from './pages/Apply/ApplyStatus';
 import Community from './pages/Community';
-import Login from './pages/Login';
+
 import SocialLogin from './pages/SocialLogin';
-import Signup from './pages/Signup';
 import NewSignup from './pages/NewSignup';
 import MycareerDetail from './pages/Mycareer/MycareerDetail';
 
@@ -48,7 +47,6 @@ import SignupInterest from './pages/SignupInterest';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FilterPage from './components/Apply/FilterPage';
-import LoginRequired from './pages/LoginRequired';
 
 const AppContainer = styled.div`
 	display: flex;
@@ -65,8 +63,7 @@ const MainContent = styled.div`
 const App = () => {
 	const location = useLocation();
 
-	
-	const hideHeaderFooterRoutes = ['/commingsoon', '/sociallogin', '/signuppage', '/signupinterest','/signupsuccess' ];
+	const hideHeaderFooterRoutes = ['/commingsoon', '/', '/signup', '/signupinterest','/signupsuccess' ];
 	const hideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
 
 	return (
@@ -76,11 +73,11 @@ const App = () => {
 				<Routes>
 					<Route path="/mycareer/:careerId/:category" element={<MycareerDetail />} />
 					<Route path="/mycareer_search" element={<MycareerSearch />} />
-					<Route path="/" element={<Home />} />
-					<Route path="/login" element={<Login />} />
-					<Route path="/sociallogin" element={<SocialLogin />} />
-					<Route path="/signup" element={<Signup />} />
-					<Route path="/signuppage" element={<NewSignup />} />
+					<Route path="/home" element={<Home />} />
+					<Route path="/" element={<SocialLogin />} />
+					<Route path="/login/oauth2/code/kakao" element={<SocialRedirect provider="kakao" />} />
+<Route path="/login/oauth2/code/naver" element={<SocialRedirect provider="naver" />} />
+					<Route path="/signup" element={<NewSignup />} />
 					<Route path="/signupsuccess" element={<SignupSuccess />} />
 					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/mycareer" element={<MyCareer />} />
@@ -113,23 +110,18 @@ const App = () => {
 					<Route path="/mypage/passwordresetemailconfirm" element={<PasswordResetEmailConfirm />} />
 					<Route path="/mypage/passwordreset" element={<PasswordReset />} />
 					<Route path="/mypage/resetsuccess" element={<ResetSuccess />} />
-					<Route path="/login-required" element={<LoginRequired />} />
 				</Routes>
 			</MainContent>
-			
 			{!hideHeaderFooter && <Footer />}
 		</AppContainer>
 	);
 };
 
-
 export default function AppWrapper() {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<Router>
-				<AuthProvider>
-					<App />
-				</AuthProvider>
+				<App />
 			</Router>
 		</QueryClientProvider>
 	);

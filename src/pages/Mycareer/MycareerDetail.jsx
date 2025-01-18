@@ -14,6 +14,7 @@ import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 import { CareertextEdit } from '../../api/Mycareer/CareerEdit';
 
+
 const CareerBoxContainer = styled.div`
 	width: 100%; /* 가로 스크롤을 위해 전체 너비 */
 	height: 72px;
