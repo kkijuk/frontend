@@ -1,4 +1,4 @@
-import { createStore } from 'zustand/vanilla'; // zustand named export로 변경
+import { create } from 'zustand'; // zustand named export로 변경
 import { createAward, updateAward, deleteAward } from '../api/Record/award.js';
 import {createEducation, updateEducation, deleteEducation} from '../api/Record/education.js'; // default export
 import {createLicense, updateLicense, deleteLicense} from '../api/Record/license.js'; // default export
@@ -9,7 +9,7 @@ import * as CareerEditAPI from "../api/Mycareer/CareerEdit.js"
 import { CareerEdit, CareerDelete } from "../api/Mycareer/CareerEdit.js"
 
 // 기존 코드 유지
-const useRecordStore = createStore((set, get) => ({
+const useRecordStore = create((set, get) => ({
     //초기 상태
     educations: [], 
     licenses: [], 

@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import './history.css';
-import Layout from '../../components/Layout'
+import { set } from 'react-hook-form';
+// zustand, api
 import useRecordStore from '../../stores/useRecordStore';
+import { readRecord, updateRecord } from '../../api/Record/record';
+// components
+import Layout from '../../components/Layout'
 import AddEducationForm from '../../components/Record/addForms/AddEducationForm';
 import AddAwardForm from '../../components/Record/addForms/AddAwardForm';
 import AddSkillForm from '../../components/Record/addForms/AddSkillForm';
@@ -13,13 +17,12 @@ import CareerItem from '../../components/Record/CareerItem';
 import AwardItem from '../../components/Record/readOnlyItems/AwardItem';
 import LicenseItem from '../../components/Record/readOnlyItems/LicenseItem';
 import SkillItem from '../../components/Record/readOnlyItems/SkillItem';
-import { set } from 'react-hook-form';
-import { readRecord, updateRecord } from '../../api/Record/record';
 import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
 
 const History = () => {
+	const store = useRecordStore();
 	const {
-		// api call7
+		// api call
 		fetchRecord,
 		addItem,
 		updateItem,
@@ -36,10 +39,9 @@ const History = () => {
 		licenses, // 자격증
 		awards, // 수상
 		skills, // 스킬
-
 		status,
 		error,
-	} = useRecordStore();
+	} = store;
 
 	const [userData, setUserData] = useState({
 		updatedAt: '',
