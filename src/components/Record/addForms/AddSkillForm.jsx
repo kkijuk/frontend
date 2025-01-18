@@ -3,21 +3,26 @@ import styled from "styled-components";
 import CustomDropdown from "../CustomDropdown";
 import SvgIcon from "../../shared/SvgIcon";
 
-const AddSkillForm = ({ onClose, onSave }) => {
+const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
     skillType: "",
     skillName: "",
     skillLevel: "",
   });
 
+  // 수정 모드일 경우 formData 기존 내용으로 초기화
+  useEffect(() => {
+    if (mode === "edit" && initialData) {
+      setFormData(initialData);
+    }
+  }, [mode, initialData]);
+
+  // 변경된 데이터 저장
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = () => {
-    onSave(formData);
-  };
-
+  // Dropdown 관련
   const skillTypes = ["IT", "OA", "그래픽", "외국어", "기타"];
   const skillLevels = ["기초", "초급", "중급", "고급", "전문가"];
 
@@ -91,19 +96,32 @@ const AddSkillForm = ({ onClose, onSave }) => {
           )}
         </IconWrapper>
         <ButtonRow>
+          {mode === "edit" ? (
             <Button
-            onClick={onClose}
-            style={{
+              onClick={()=>onDelete(id)}
+              style={{
+                border: "1px solid var(--sub-bu, #FA7C79)",
+                background: "var(--white, #FFF)",
+                color: "#FA7C79",
+              }}
+            >
+              삭제
+            </Button>
+          ) : (
+            <Button
+              onClick={onClose}
+              style={{
                 border: "1px solid var(--sub-bu, #77AFF2)",
                 background: "var(--white, #FFF)",
                 color: "#77AFF2",
-            }}
+              }}
             >
-            취소
+              취소
             </Button>
+            )}
             <Button
             primary
-            onClick={handleSave}
+            onClick={()=>onSave(formData)}
             style={{
                 border: "1px solid var(--main-01, #3AAF85)",
                 background: "var(--main-01, #3AAF85)",

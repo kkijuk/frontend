@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import CustomCalendarPicker from "../CustomCalendarPicker";
 
-const AddLicenseForm = ({ onClose, onSave }) => {
+const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
     licenseTag: "자격증", // 기본 값
     acquireDate: "",
@@ -12,17 +12,23 @@ const AddLicenseForm = ({ onClose, onSave }) => {
     administer: "",
   });
 
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const dateInputRef = useRef(null);
+  // 수정 모드일 경우 formData 기존 내용으로 초기화
+  useEffect(() => {
+    if (mode === "edit" && initialData) {
+      setFormData(initialData);
+    }
+  }, [mode, initialData]);
 
+  // 변경된 데이터 저장
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = () => {
-    onSave(formData);
-  };
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const dateInputRef = useRef(null);
 
+
+  // DatePicker 관련
   const handleDatePickerToggle = () => {
     setShowDatePicker((prev) => !prev);
   };
@@ -57,7 +63,7 @@ const AddLicenseForm = ({ onClose, onSave }) => {
                 자격증
                 </TypeButton>
                 <TypeButton
-                active={formData.type === "외국어"}
+                active={formData.licenseTag === "외국어"}
                 onClick={() => handleInputChange("licenseTag", "외국어")}
                 >
                 외국어
@@ -115,19 +121,32 @@ const AddLicenseForm = ({ onClose, onSave }) => {
                 style={{ width: "195px" }}
             />
             <ButtonRow>
+              {mode === "edit" ? (
                 <Button
-                onClick={onClose}
-                style={{
+                  onClick={()=>onDelete(id)}
+                  style={{
+                    border: "1px solid var(--sub-bu, #FA7C79)",
+                    background: "var(--white, #FFF)",
+                    color: "#FA7C79",
+                  }}
+                >
+                  삭제
+                </Button>
+              ) : (
+                <Button
+                  onClick={onClose}
+                  style={{
                     border: "1px solid var(--sub-bu, #77AFF2)",
                     background: "var(--white, #FFF)",
                     color: "#77AFF2",
-                }}
+                  }}
                 >
-                취소
+                  취소
                 </Button>
-                <Button
+              )}
+              <Button
                 primary
-                onClick={handleSave}
+                onClick={()=>onSave(formData)}
                 style={{
                     border: "1px solid var(--main-01, #3AAF85)",
                     background: "var(--main-01, #3AAF85)",
@@ -135,7 +154,7 @@ const AddLicenseForm = ({ onClose, onSave }) => {
                 }}
                 >
                 추가
-                </Button>
+              </Button>
             </ButtonRow>
             </Row>
         </FormContent>

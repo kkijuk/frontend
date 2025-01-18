@@ -4,7 +4,7 @@ import CustomDropdown from "../CustomDropdown";
 import CustomDatePicker from "../CustomDatePicker";
 
 
-const AddEducationForm = ({ onClose, onSave }) => {
+const AddEducationForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
     educationType: "",
     schoolName: "",
@@ -14,14 +14,19 @@ const AddEducationForm = ({ onClose, onSave }) => {
     graduationDate: "",
   });
 
+  // 수정 모드일 경우 formData 기존 내용으로 초기화
+  useEffect(() => {
+    if (mode === "edit" && initialData) {
+      setFormData(initialData);
+    }
+  }, [mode, initialData]);
+
+  // 변경된 데이터 저장
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = () => {
-    onSave(formData);
-  };
-
+  // Dropdown 관련
   const optionsEducationType = ["고등학교", "전문대학교", "대학교", "대학원(석사)", "대학원(박사)"];
   const optionsEducationStatus = ["재학", "휴학", "졸업예정", "졸업", "중퇴", "편입"];
 
@@ -150,12 +155,30 @@ const AddEducationForm = ({ onClose, onSave }) => {
         )}
 
         <ButtonRow>
-          <Button 
-            onClick={onClose} 
-            style={{border:'1px solid var(--sub-bu, #77AFF2)', background:'var(--white, #FFF)', color: '#77AFF2'}}>
-            취소
-          </Button>
-          <Button primary onClick={handleSave}
+          {mode === "edit" ? (
+                <Button
+                  onClick={()=>onDelete(id)}
+                  style={{
+                    border: "1px solid var(--sub-bu, #FA7C79)",
+                    background: "var(--white, #FFF)",
+                    color: "#FA7C79",
+                  }}
+                >
+                  삭제
+                </Button>
+              ) : (
+                <Button
+                  onClick={onClose}
+                  style={{
+                    border: "1px solid var(--sub-bu, #77AFF2)",
+                    background: "var(--white, #FFF)",
+                    color: "#77AFF2",
+                  }}
+                >
+                  취소
+                </Button>
+            )}
+          <Button primary onClick={()=>onSave(formData)}
             style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
             추가
           </Button>

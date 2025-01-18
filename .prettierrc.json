@@ -1,21 +1,4 @@
 {
-<<<<<<< HEAD
-    "printWidth": 120,
-    "tabWidth": 2,
-    "useTabs": true,
-    "semi": true,
-    "singleQuote": true,
-    "quoteProps": "consistent",
-    "bracketSpacing": true,
-    "endOfLine": "auto",
-    "arrowParens": "always",
-    "trailingComma": "all",
-    "jsxBracketSameLine": true,
-    "prettier.singleQuote": true,
-    "prettier.jsxSingleQuote": true,
-    "prettier.embeddedLanguageFormatting": "auto"
-  }
-=======
 	"printWidth": 120,
 	"tabWidth": 2,
 	"useTabs": true,
@@ -32,4 +15,3 @@
 	"prettier.embeddedLanguageFormatting": "auto"
 }
 
->>>>>>> 283b7c0bedd8092697aa66317aabaf8d51ae7770

@@ -29,6 +29,7 @@ const useRecordStore = createStore((set, get) => ({
         try {
             const response = await readRecord(); 
             const data = response.data;
+            console.log('Fetch Record Data:', data);
             
             // 임시
             const normalizeData = (items, idField) =>

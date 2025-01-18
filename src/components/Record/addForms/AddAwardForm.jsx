@@ -1,8 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import CustomCalendarPicker from "../CustomCalendarPicker";
 
-const AddAwardForm = ({ onClose, onSave }) => {
+const AddAwardForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
     awardDate: "",
     competitionName: "",
@@ -10,16 +10,21 @@ const AddAwardForm = ({ onClose, onSave }) => {
     awardingInstitution: "",
   });
 
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const dateInputRef = useRef(null);
+  // 수정 모드일 경우 formData 기존 내용으로 초기화
+  useEffect(() => {
+    if (mode === "edit" && initialData) {
+      setFormData(initialData);
+    }
+  }, [mode, initialData]);
 
+  // 변경된 데이터 저장
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = () => {
-    onSave(formData);
-  };
+  // DatePicker 관련
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const dateInputRef = useRef(null);
 
   const handleDatePickerToggle = () => {
     setShowDatePicker((prev) => !prev);
@@ -30,14 +35,14 @@ const AddAwardForm = ({ onClose, onSave }) => {
     setShowDatePicker(false);
   };
 
-  const calculatePickerPosition = (ref) => {
-    if (!ref.current) return { top: 0, left: 0 };
-    const rect = ref.current.getBoundingClientRect();
-    return {
-      top: rect.bottom + window.scrollY + 10, // Input 아래 10px
-      left: rect.left + window.scrollX,
-    };
-  };
+  // const calculatePickerPosition = (ref) => {
+  //   if (!ref.current) return { top: 0, left: 0 };
+  //   const rect = ref.current.getBoundingClientRect();
+  //   return {
+  //     top: rect.bottom + window.scrollY + 10, // Input 아래 10px
+  //     left: rect.left + window.scrollX,
+  //   };
+  // };
 
   return (
     <Container>
@@ -52,7 +57,7 @@ const AddAwardForm = ({ onClose, onSave }) => {
             onClick={handleDatePickerToggle}
           />
           {showDatePicker && (
-              <DatePickerWrapper style={calculatePickerPosition(dateInputRef)}>
+              <DatePickerWrapper>
                 <CustomCalendarPicker
                   value={formData.awardDate}
                   onChange={handleDateChange}
@@ -85,19 +90,32 @@ const AddAwardForm = ({ onClose, onSave }) => {
           style={{width:'195px'}}
         />
         <ButtonRow>
-            <Button
-            onClick={onClose}
-            style={{
-              border: "1px solid var(--sub-bu, #77AFF2)",
-              background: "var(--white, #FFF)",
-              color: "#77AFF2",
-            }}
-          >
-            취소
-          </Button>
+          {mode === "edit" ? (
+                <Button
+                  onClick={()=>onDelete(id)}
+                  style={{
+                    border: "1px solid var(--sub-bu, #FA7C79)",
+                    background: "var(--white, #FFF)",
+                    color: "#FA7C79",
+                  }}
+                >
+                  삭제
+                </Button>
+              ) : (
+                <Button
+                  onClick={onClose}
+                  style={{
+                    border: "1px solid var(--sub-bu, #77AFF2)",
+                    background: "var(--white, #FFF)",
+                    color: "#77AFF2",
+                  }}
+                >
+                  취소
+                </Button>
+          )}
           <Button
             primary
-            onClick={handleSave}
+            onClick={()=>onSave(formData)}
             style={{
               border: "1px solid var(--sub-bu, #3AAF85)",
               background: "var(--white, #3AAF85)",
@@ -164,8 +182,8 @@ const DatePickerInput = styled.input.attrs({ type: "text" })`
 `;
 
 const DatePickerWrapper = styled.div`
-  position: absoulte;
-  top:50px;
+  position: absolute;
+  top:48px;
   z-index: 1000;
 `;
 
