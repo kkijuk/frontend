@@ -12,6 +12,8 @@ import CareerTypeDropdown from './CareerTypeDropdown';
 import ParticipantType from './ParticipantType';
 import { Form } from 'react-router-dom';
 
+import moment from 'moment'; // moment 라이브러리 임포트(세연)
+
 const AddCareerModal = ({ onClose }) => {
 	//카테고리 정보
 	const categoryMap = {
@@ -515,11 +517,15 @@ const AddCareerModal = ({ onClose }) => {
 			return;
 		}
 
+		// startdate와 enddate를 YYYY-MM-DD 형식으로 변환하기 위해 추가 (에러)
+		const formattedStartdate = moment(startdate).format('YYYY-MM-DD');
+		const formattedEnddate = unknown ? null : moment(enddate).format('YYYY-MM-DD');
+
 		const allFormData = {
 			name,
 			alias,
-			startdate,
-			enddate: unknown ? null : enddate,
+			startdate: formattedStartdate,
+			enddate: formattedEnddate,
 			unknown,
 			location,
 			role,
