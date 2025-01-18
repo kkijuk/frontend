@@ -51,8 +51,9 @@ export const validateAndFilterForm = (category, formData) => {
 	});
 
 	// `enddate` timestamp 형식 확인
-	filteredData.startdate = formData.startdate ? new Date(formData.startdate).toISOString() : null;
-	filteredData.enddate = formData.enddate && !formData.unknown ? new Date(formData.enddate).toISOString() : undefined;
+	filteredData.startdate = formData.startdate ? formData.startdate : null;
+	filteredData.enddate = formData.enddate && !formData.unknown ? formData.enddate : undefined;
+
 	filteredData.unknown = formData.unknown || false;
 
 	// `location` 처리
