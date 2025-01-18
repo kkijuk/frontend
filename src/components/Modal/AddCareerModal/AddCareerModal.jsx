@@ -51,7 +51,7 @@ const AddCareerModal = ({ onClose }) => {
 	// const [workplace, setWorkplace] = useState(''); //근무처
 	const [position, setPosition] = useState(''); //직급/직위
 	const [jobField, setJobField] = useState(''); //직무/분야
-	const [educationHours, setEducationHours] = useState(0); //교육시간
+	const [time, setTime] = useState(0); //교육시간
 	// const [participantType, setParticipantType] = useState({}); //인원-팀인원-기여도
 	const [isTeam, setIsTeam] = useState(false);
 	const [teamSize, setTeamSize] = useState(0);
@@ -452,7 +452,7 @@ const AddCareerModal = ({ onClose }) => {
 							<label>
 								교육 시간 <span style={{ color: '#FC5555' }}>*</span>
 							</label>
-							<input type="text" value={educationHours} onChange={(e) => setEducationHours(e.target.value)}></input>
+							<input type="text" value={time} onChange={(e) => setTime(e.target.value)}></input>
 						</FormItem>
 					</>
 				);
@@ -533,7 +533,7 @@ const AddCareerModal = ({ onClose }) => {
 			careerType,
 			position,
 			jobField,
-			educationHours,
+			time,
 			isTeam,
 			teamSize,
 			contribution,

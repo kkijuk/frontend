@@ -9,6 +9,7 @@ export const TagBoxFetchList = async () => {
 
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 			},
 		});
 		console.log('통신 완료: ', response.data);
@@ -35,6 +36,7 @@ export const TagBoxCreateTag = async (tagName) => {
 
 				headers: {
 					'Content-Type': 'application/json; charset=utf-8',
+					'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 				},
 			},
 		);
@@ -57,6 +59,7 @@ export const TagBoxDeleteTag = async (tagId) => {
 
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 			},
 		});
 		console.log('태그 삭제 완료: ', response.data);
