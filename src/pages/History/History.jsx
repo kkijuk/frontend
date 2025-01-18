@@ -1,494 +1,669 @@
-import api from '../../Axios';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import './history.css';
-import EducationItem from '../../components/Record/EducationItem';
-import EditItem from '../../components/Record/EditItem';
+import Layout from '../../components/Layout'
+import useRecordStore from '../../stores/useRecordStore';
+import AddEducationForm from '../../components/Record/addForms/AddEducationForm';
+import AddAwardForm from '../../components/Record/addForms/AddAwardForm';
+import AddSkillForm from '../../components/Record/addForms/AddSkillForm';
+import AddLicenseForm from '../../components/Record/addForms/AddLicenseForm';
+import EducationItem from '../../components/Record/readOnlyItems/EducationItem';
+// import ActivityItem from '../../components/Record/readOnlyItems/ActivityItem';
 import CareerItem from '../../components/Record/CareerItem';
-import AddItem from '../../components/Record/AddItem';
-import AddCareerModal from '../../components/Record/AddCareerModal';
-import AddCareerModalEdit from '../../components/Record/AddCareerModalEdit';
-import Address from '../../components/Intro/Address';
-import createRecord from '../../api/Record/record';
-import updateRecord from '../../api/Record/record';
-import readRecord from '../../api/Record/record';
-import createEducation from '../../api/Record/education';
-import updateEducation from '../../api/Record/education';
-import deleteEducation from '../../api/Record/education';
+import AwardItem from '../../components/Record/readOnlyItems/AwardItem';
+import LicenseItem from '../../components/Record/readOnlyItems/LicenseItem';
+import SkillItem from '../../components/Record/readOnlyItems/SkillItem';
+import { set } from 'react-hook-form';
+import { readRecord, updateRecord } from '../../api/Record/record';
+import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
 
 const History = () => {
-	const profileTitles = ['이름', '생년월일', '전화번호', '이메일', '주소'];
+	const {
+		// api call7
+		fetchRecord,
+		addItem,
+		updateItem,
+		deleteItem,
+		recordId,
+		// ** 학력
+		educations,
+		// ** 내 커리어 카테고리
+		employments, // 경력
+		activitiesAndExperiences, //활동 및 경험
+		projects, // 프로젝트
+		eduCareers, // 교육
+		// ** 신규 추가
+		licenses, // 자격증
+		awards, // 수상
+		skills, // 스킬
 
-	//(Data)
-	const [recordId, setRecordId] = useState(0);
-	const [lastUpdated, setLastUpdated] = useState('');
-	const [profiles, setProfiles] = useState({
-		img: '',
+		status,
+		error,
+	} = useRecordStore();
+
+	const [userData, setUserData] = useState({
+		updatedAt: '',
 		name: '',
-		birth: '',
-		mobile: '',
+		birthday: '',
+		phone: '',
 		email: '',
 		address: '',
-	});
+		});
+	
+	  // 주소 편집 모드 관리 State
+	  const [isEditingAddress, setIsEditingAddress] = useState(false);
+	  // input에 임시로 입력되는 주소
+	  const [tempAddress, setTempAddress] = useState('');	
 
-	const [educations, setEducations] = useState([]); //학력
-	const [careers, setCareers] = useState([]); //경력
-	const [activities, setActivities] = useState([]); //활동 및 경험
-	const [projects, setProjects] = useState([]); //프로젝트
-	const [trainings, setTrainings] = useState([]); //교육
-	const [certsAndLangs, setCertsAndLangs] = useState([]); //자격증 및 외국어
-	const [awards, setAwards] = useState([]); //수상
-	const [skills, setSkills] = useState([]); //스킬
-	const [others, setOthers] = useState([]); //추가 자료
-
-	//state
-	const [isEdit, setIsEdit] = useState([]); //학력 편집모드 읽기모드 여부
-	const [isAddItemOpen, setIsAddItemOpen] = useState(false); //학력 추가모드
-	const [show, setShow] = useState(false); //추가 불가 알람창
-	const [isEditActModalOpen, setIsEditActModalOpen] = useState(false);
-	const [isAddActModalOpen, setIsAddActModalOpen] = useState(false);
-	const [addressStatus, setAddressStatus] = useState(null);
-	const [selectedCareer, setSelectedCareer] = useState(null); //수정된 정보
-	const categoryMap = {
-		1: '동아리',
-		2: '대외활동',
-		3: '공모전/대회',
-		4: '프로젝트',
-		5: '아르바이트/인턴',
-		6: '교육',
-		7: '기타활동',
-	};
+	// 이력서 불러오기
+	useEffect(() => {
+		fetchRecord().then(()=>{
+			console.log(`Record ID: `, recordId);
+		})
+	}, [fetchRecord, recordId]);
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const data = await readRecord();
+		async function getUserData() {
+		  const response = await readRecord(); 
+		  const result = response.data;
+		  if (result) {
+			const { updatedAt, name, birthday, phone, email, address, profileImageUrl } = result;
+			setUserData({
+			  updatedAt: updatedAt || '',
+			  name: name || '',
+			  birthday: birthday || '',
+			  phone: phone || '',
+			  email: email || '',
+			  address: address || '',
+			  profileImageUrl: profileImageUrl || '',
+			});
+		  }
+		}
+		getUserData();
+	  }, []);
 
-				setRecordId(data.record_id);
-				setLastUpdated(data.updatedAt);
-				setProfiles({
-					img: data.profileImageUrl,
-					name: data.name,
-					birth: data.birthday,
-					mobile: data.phone,
-					email: data.email,
-					address: data.address,
-				});
-				setEducations(data.educationList || []);
-				setIsEdit(Array((data.educationList || []).length).fill(false));
-				setCareers(data.jobs);
-				setActivities(data.activitiesAndExperiences || []);
-				// 주소가 있으면 addressStatus를 0으로 설정, 없으면 1로 설정
-				if (data.address) {
-					setAddressStatus(0);
-				} else {
-					setAddressStatus(null); // null로 설정하여 '주소를 입력하세요'가 표시되도록 함
-				}
-			} catch (err) {
-				console.log('Failed to load records');
-			}
+
+	//폼 오픈 상태 관리
+	const [openedForms, setOpenedForms] = useState({
+		edit: { // 수정 폼 관리
+			educations: null,
+			licenses: null,
+			awards: null,
+			skills: null,
+		},
+		add: { // 추가 폼 관리
+			educations: false,
+			licenses: false,
+			awards: false,
+			skills: false,
+		},
+	});
+
+	//수정 폼 토글
+	const toggleEditForm = (category, id = null) => {
+		setOpenedForms((prev) => ({
+			...prev,
+			edit: {
+				...prev.edit,
+				[category]: prev.edit[category] === id ? null : id,
+			},
+		}));
+	};
+
+	//추가 폼 토글
+	const toggleAddForm = (category) => {
+		setOpenedForms((prev) => ({
+			...prev,
+			add: {
+				...prev.add,
+				[category]: !prev.add[category], // 현재 상태를 반전
+			},
+		}));
+	};
+
+	// 데이터 분류
+	const licenseSection = licenses.filter(item => item.licenseTag === 'LICENSE');
+	const foreignSection = licenses.filter(item => item.licenseTag === 'FOREIGN');
+	const skillSections = {
+		IT: skills.filter(skill => skill.skillTag === 'IT'),
+		OA: skills.filter(skill => skill.skillTag === 'OA'),
+		GRAPHIC: skills.filter(skill => skill.skillTag === 'GRAPHIC'),
+		FOREIGNLANGUAGE: skills.filter(skill => skill.skillTag === 'FOREIGNLANGUAGE'),
+		ETC: skills.filter(skill => skill.skillTag === 'ETC'),
+	  };
+
+	// 섹션 이름 변환 함수
+	const getSectionName = (type) => {
+		const names = {
+		IT: 'IT',
+		OA: 'OA',
+		GRAPHIC: '그래픽',
+		FOREIGNLANGUAGE: '외국어',
+		ETC: '기타',
 		};
-		fetchData();
-	}, []);
+		return names[type] || '기타';
+    };
+	
+	if (status === 'loading') return <p>Loading...</p>;
+	if (status === 'failed') return <p>Error: {error}</p>;
 
-	//(Actions)
-	//########################################################################
-	//학력 추가
-	const handleAddEducation = async (newEducation) => {
+	//주소 관련 로직
+	// (1) '주소를 입력하세요' 클릭 -> 편집 모드로 전환
+	const handleAddressPlaceholderClick = () => {
+		setIsEditingAddress(true);
+		setTempAddress(''); // input 초기화
+	}
+
+	// (2) 이미 주소가 있는 상태에서 '수정' 버튼 클릭 -> 편집 모드로 전환
+	const handleEditAddressClick = () => {
+		setIsEditingAddress(true);
+		setTempAddress(userData.address || ''); // 기존 주소값을 input에 넣음
+	};
+	
+	// (3) input에서 변경값 반영
+	const handleAddressInputChange = (e) => {
+		setTempAddress(e.target.value);
+	};
+	
+	// (4) 수정 완료 시 호출
+	const handleUpdateAddress = async () => {
 		try {
-			const { category, schoolName, major, admissionDate, graduationDate, state } = newEducation;
-			console.log('handled info: ', newEducation);
-			if (!category || !schoolName || !admissionDate || !graduationDate || !state) {
-				alert('모든 필드를 입력해주세요!');
-				return;
-			}
-			const addedEducation = await createEducation(recordId, newEducation);
-			setEducations([...educations, addedEducation]);
-			setIsAddItemOpen(false);
+		// updateRecord API 호출
+		const responseData = await updateRecord(recordId, 
+		{
+			address: tempAddress,
+			profileImageUrl: "string",
+		});
+
+		// 서버에서 수정된 address를 받아온 경우
+		if (responseData && responseData.address) {
+			// userData에 반영
+			setUserData((prev) => ({
+			...prev,
+			address: responseData.address,
+			}));
+		}
+
+		// 편집 모드 종료
+		setIsEditingAddress(false);
 		} catch (err) {
-			console.error('Failed to add education: ', err);
-		}
-	};
-	//학력 수정
-	const handleUpdateEducation = async (educationId, updatedData) => {
-		try {
-			if (!updatedData || Object.keys(updatedData).length === 0) {
-				alert('입력된 값이 없습니다!');
-				return;
-			}
-
-			console.log('Updated Data:', updatedData);
-			const updatedEducation = await updateEducation(educationId, updatedData);
-			console.log('Updated Education from API:', updatedEducation);
-
-			setEducations((prevEducations) =>
-				prevEducations.map((edu) => (edu.educationId === educationId ? updatedEducation : edu)),
-			);
-
-			const educationIndex = educations.findIndex((edu) => edu.educationId === educationId);
-			setIsEdit((prev) => prev.map((edit, i) => (i === educationIndex ? false : edit)));
-			handleCancelEdit(educationIndex);
-		} catch (err) {
-			console.error('Failed to update education: ', err);
+		console.error('주소 업데이트 실패:', err);
 		}
 	};
 
-	//학력 삭제
-	const handleDeleteEducation = async (index, educationId) => {
-		try {
-			await deleteEducation(educationId);
-			handleCancelEdit(index);
-			setEducations(educations.filter((_, i) => i !== index));
-			window.location.reload();
-		} catch (err) {
-			console.error('Failed to delete education: ', err);
-		}
-	};
-	//########################################################################
-	//주소 상태
-	const handleNullAddressClick = () => {
-		setAddressStatus(1); // 주소를 입력할 수 있는 상태로 전환
-	};
-
-	//주소 변경
-	const handleSaveAddress = async (newAddress) => {
-		try {
-			const updatedRecord = await updateRecord(recordId, { address: newAddress, prifileImageUrl: profiles.img });
-			if (updatedRecord) {
-				setProfiles((prev) => ({
-					...prev,
-					address: updatedRecord.data.address, // 응답 데이터를 이용해 상태 업데이트
-				}));
-				setAddressStatus(0);
-			}
-		} catch (err) {
-			console.error('Failed to update address: ', err);
-		}
-	};
-
-	//etc about showing
-	//학력 편집모드->읽기모드 전환
-	const handleCancelEdit = (index) => {
-		setIsEdit((prev) => prev.map((edit, i) => (i === index ? false : edit)));
-	};
-	//학력 읽기모드->편집모드 전환
-	const handleEdit = (index) => {
-		setIsEdit((prev) => prev.map((edit, i) => (i === index ? true : edit)));
-	};
-	//학력 추가 취소
-	const handleCancleAdd = () => {
-		setIsAddItemOpen(false);
-	};
-	//학력 추가 제한
-	const showLimiter = () => {
-		setShow(true);
-		setTimeout(() => {
-			setShow(false);
-		}, 3000);
-	};
-	//학력 추가 제한
-	const handleAdd = () => {
-		isAddItemOpen ? showLimiter() : setIsAddItemOpen(true);
-	};
-
-	//활동 추가 모달 토글
-	const toggleAddActModalOpen = () => {
-		setIsAddActModalOpen((prev) => !prev);
-	};
-	//활동 수정 모달 닫기
-	const closeEditActModal = () => {
-		setIsEditActModalOpen(false);
-	};
-	// 활동 수정 모달 토글
-	const toggleEditActModalOpen = (careerId) => {
-		const career = [...careers, ...activities].find((item) => item.careerId === careerId);
-		if (career) {
-			const categoryMap = {
-				'동아리': 1,
-				'대외활동': 2,
-				'공모전/대회': 3,
-				'프로젝트': 4,
-				'아르바이트/인턴': 5,
-				'교육': 6,
-				'기타활동': 7,
-			};
-			const careerData = {
-				id: careerId,
-				categoryName: career.category,
-				categoryId: null, // 실제 값으로 채워야 함
-				careerName: career.careerName,
-				alias: career.alias,
-				startDate: career.startDate,
-				endDate: career.endDate,
-				isUnknown: null, // 적절한 값으로 채워야 함
-				summary: career.summary,
-			};
-
-			setSelectedCareer({ data: careerData });
-			console.log('선택된 정보:', selectedCareer);
-		}
-		setIsEditActModalOpen(true);
-	};
-
-	// 추가한 활동 기간 계산
-	const calculateDuration = (startDate, endDate) => {
-		const start = new Date(startDate);
-		const end = new Date(endDate);
-
-		const yearDiff = end.getFullYear() - start.getFullYear();
-		const monthDiff = end.getMonth() - start.getMonth();
-
-		return yearDiff * 12 + monthDiff + 1; // +1 to count the starting month
-	};
-
-	//추가한 활동 업데이트
-	const handleAddCareer = (newCareer) => {
-		console.log('추가된 활동: ', newCareer);
-		const categoryText = categoryMap[newCareer.category] || '기타활동';
-
-		// Calculate the duration in months
-		let duration = null;
-		if (newCareer.startDate && newCareer.endDate) {
-			duration = calculateDuration(newCareer.startDate, newCareer.endDate);
-		}
-		const updatedCareer = {
-			...newCareer,
-			category: categoryText,
-			duration: duration ? `${duration}개월` : '기간 정보 없음', // 기간 정보가 없으면 '기간 정보 없음'으로 처리
-		};
-
-		setCareers([...careers, updatedCareer]);
-		setIsAddActModalOpen(false);
-	};
-
-	//수정한 활동 업데이트
-	const handleSaveCareerEdit = (updatedData) => {
-		const categoryText = categoryMap[updatedData.category] || '기타활동';
-
-		let duration = null;
-		if (updatedData.startDate && updatedData.endDate) {
-			duration = calculateDuration(updatedData.startDate, updatedData.endDate);
-		}
-
-		const updatedCareer = {
-			...updatedData,
-			category: categoryText,
-			duration: duration ? `${duration}개월` : '기간 정보 없음', // 기간 정보가 없으면 '기간 정보 없음'으로 처리
-		};
-
-		setCareers((prevCareers) =>
-			prevCareers.map((career) => (career.careerId === updatedCareer.careerId ? updatedCareer : career)),
-		);
-		setIsEditActModalOpen(false);
+	// (5) 취소
+	const handleCancelEdit = () => {
+		setIsEditingAddress(false);
+		setTempAddress('');
 	};
 
 	return (
-		<BackgroundDiv>
-			<BaseDiv>
-				{/* 0. toggles */}
-				{isAddActModalOpen && <AddCareerModal onClose={toggleAddActModalOpen} onSave={handleAddCareer} />}
-				{isEditActModalOpen && (
-					<AddCareerModalEdit
-						onClose={closeEditActModal}
-						data={selectedCareer}
-						onSave={(data) => handleSaveCareerEdit(data)}
-					/>
-				)}
+		<Layout title="서류준비">
+			<div>
+				{/* <AddCareerModal></AddCareerModal> */}
+				<div style={{display:'flex', marginBlock:'30px'}}>
+				<ProfileBox/>
+				<UserInfoWrapper>
+					<div style={{width:'100%'}}>
+						<UpdatedAt>마지막 수정 일시: {userData.updatedAt}</UpdatedAt>
+					</div>
+					<InfoTable>
+						<InfoLabel>이름</InfoLabel>
+						<InfoValue>{userData.name}</InfoValue>
 
-				<p
-					style={{
-						fontFamily: 'Regular',
-						fontSize: '14px',
-						color: '#707070',
-						position: 'absolute',
-						top: '-30px',
-						right: '0px',
-					}}
-				>
-					마지막 수정 일시: {lastUpdated}
-				</p>
-				{/* 1. Profiles */}
-				<div style={{ display: 'flex', alignContent: 'center', gap: '40px' }}>
-					<div
-						style={{
-							width: '150px',
-							height: '200px',
-							backgroundColor: '#FFF',
-							display: 'flex',
-							justifyContent: 'center',
-						}}
-					>
-						{/* 프로필사진 */}
-						<img src="/images/emoji.jpg" alt="Profile" style={{ width: '200px' }} />
-					</div>
-					<div style={{ width: '70px' }}>
-						{profileTitles.map((profileTitle, index) => (
-							<p key={index} style={{ color: '#707070', fontSize: '18px' }}>
-								{profileTitle}
-							</p>
-						))}
-					</div>
-					<div style={{ height: '203px' }}>
-						<p style={{ color: '#707070', fontSize: '14px', margin: '15px 0px 19px 0px' }}>{profiles.name}</p>
-						<p style={{ color: '#707070', fontSize: '14px', margin: '15px 0px 19px 0px' }}>{profiles.birth}</p>
-						<p style={{ color: '#707070', fontSize: '14px', margin: '15px 0px 19px 0px' }}>{profiles.mobile}</p>
-						<p style={{ color: '#707070', fontSize: '14px', margin: '15px 0px 19px 0px' }}>{profiles.email}</p>
-						{addressStatus === 1 ? (
-							<Address
-								data={profiles.address}
-								status={addressStatus}
-								isEdit={() => setAddressStatus(1)}
-								onSave={(curData) => handleSaveAddress(curData)}
-							/>
-						) : !profiles.address || addressStatus === null ? (
-							<p
-								style={{
-									color: '#707070',
-									fontSize: '14px',
-									textDecorationLine: 'underline',
-									margin: '15px 0px',
-									cursor: 'pointer',
-								}}
-								onClick={handleNullAddressClick}
-							>
-								주소를 입력하세요
-							</p>
-						) : (
-							<Address
-								data={profiles.address}
-								status={addressStatus}
-								isEdit={() => setAddressStatus(1)}
-								onSave={(curData) => handleSaveAddress(curData)}
-							/>
-						)}
-					</div>
+						<InfoLabel>생년월일</InfoLabel>
+						<InfoValue>{userData.birthday}</InfoValue>
+
+						<InfoLabel>전화번호</InfoLabel>
+						<InfoValue>{userData.phone}</InfoValue>
+
+						<InfoLabel>이메일</InfoLabel>
+						<InfoValue>{userData.email}</InfoValue>
+
+						<InfoLabel>주소</InfoLabel>
+						<InfoValue>
+							{/* 주소가 NULL 인 경우 */}
+							{!userData.address && !isEditingAddress && (
+								<NullModeAddress onClick={handleAddressPlaceholderClick}>
+									주소를 입력하세요
+								</NullModeAddress>
+								)}
+
+								{/* 주소가 NULL이 아닌데 편집 모드가 아닐 때 */}
+								{userData.address && !isEditingAddress && (
+								<HoverWrapper>
+									<span>{userData.address}</span>
+									<EditButton onClick={handleEditAddressClick}>수정</EditButton>
+								</HoverWrapper>
+								)}
+
+								{/* 편집 모드일 때 */}
+								{isEditingAddress && (
+								<EditAddressContainer>
+									<AddressInput
+									type="text"
+									value={tempAddress}
+									onChange={handleAddressInputChange}
+									placeholder="주소를 입력하세요"
+									/>
+									<ButtonGroup>
+										<SaveButton onClick={handleUpdateAddress}>수정</SaveButton>
+										<CancelButton onClick={handleCancelEdit}>취소</CancelButton>
+									</ButtonGroup>
+								</EditAddressContainer>
+								)}
+						</InfoValue>
+					</InfoTable>
+				</UserInfoWrapper>
 				</div>
-
-				<Linear />
-				{/* (2) Educations */}
-				<h3>학력</h3>
-				{educations
-					.slice()
-					.reverse()
-					.map((education, index) =>
-						isEdit[index] ? (
-							<EditItem
-								key={index}
-								data={education}
-								isLastItem={index === educations.length - 1}
-								onCancel={() => handleDeleteEducation(index, education.educationId)}
-								onEdit={(updatedData) => handleUpdateEducation(education.educationId, updatedData)}
-							/>
-						) : (
+				<Line></Line>
+				<SectionWrapper>
+					<SectionHeader>
+						<h2>학력</h2>
+						<AddButton onClick={() => toggleAddForm('educations')}>+</AddButton>
+					</SectionHeader>
+					<ContentWrapper>
+						{openedForms.add.educations && 
+						<AddEducationForm 
+							onClose={() => toggleAddForm('educations')}
+						/>}
+						<div style={{height:'50px'}}></div>
+						{educations.map((education, index) => (
 							<EducationItem
-								key={index}
+								key={education.id}
 								data={education}
-								onEdit={() => handleEdit(index)}
 								isLastItem={index === educations.length - 1}
+								// onEdit={() => toggleEditForm('educations', education.id)}
 							/>
-						),
-					)}
-				<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-					{/* //api */}
-					{isAddItemOpen && (
-						<AddItem onCancel={handleCancleAdd} onAdd={(updatedData) => handleAddEducation(updatedData)}></AddItem>
-					)}
-					<AddButton onClick={handleAdd}>+</AddButton>
-					<Limiter show={show}>현재 학력을 먼저 채워주세요!</Limiter>
-				</div>
+						))}
+					</ContentWrapper>
+				</SectionWrapper>
+				<Line></Line>
 
-				<Linear />
-				{/* (3) Careers */}
-				<h3 style={{ marginBottom: '30px' }}>경력</h3>
-				{careers
-					.slice()
-					.reverse()
-					.map((career, index) => (
-						<CareerItem
-							key={index}
-							data={career}
-							isLastItem={index === careers.length - 1}
-							onEdit={() => toggleEditActModalOpen(career.careerId)}
-						/>
-					))}
-				<AddButton onClick={toggleAddActModalOpen}>+</AddButton>
+				<SectionWrapper>
+					<SectionHeader>
+						<h2>경력</h2>
+						{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+					</SectionHeader>
+					<ContentWrapper>
+						{employments.map((employment, index) => (
+								<CareerItem
+									key={employment.id}
+									data={employment}
+									isLastItem={index === employments.length - 1}
+							/>
+						))}
+					</ContentWrapper>
+				</SectionWrapper>
+				<Line></Line>
 
-				<Linear />
-				{/* (4) Activities */}
-				<h3 style={{ marginBottom: '30px' }}>활동 및 경험</h3>
-				{activities
-					.slice()
-					.reverse()
-					.map((activity, index) => (
-						<CareerItem
-							key={index}
-							data={activity}
-							isLastItem={index === activities.length - 1}
-							onEdit={() => toggleEditActModalOpen(activity.careerId)}
-						/>
-						//api onSubmit 추가해야함
+				<SectionWrapper>
+					<SectionHeader>
+						<h2>활동 및 경험</h2>
+						{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+					</SectionHeader>
+					<ContentWrapper>
+					{activitiesAndExperiences.map((activity, index) => (
+							<CareerItem
+								key={activity.id}
+								data={activity}
+								isLastItem={index === activitiesAndExperiences.length - 1}
+							/>
 					))}
-				<AddButton onClick={toggleAddActModalOpen}>+</AddButton>
-			</BaseDiv>
-		</BackgroundDiv>
+					</ContentWrapper>
+				</SectionWrapper>
+				<Line></Line>
+
+				<SectionWrapper>
+					<SectionHeader>
+						<h2>프로젝트</h2>
+						{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+					</SectionHeader>
+					<ContentWrapper>
+						{projects.map((project, index) => (
+							<CareerItem
+								key={project.id}
+								data={project}
+								isLastItem={index === projects.length - 1}
+							/>
+						))}
+					</ContentWrapper>
+				</SectionWrapper>
+				<Line></Line>
+
+				<SectionWrapper>
+					<SectionHeader>
+						<h2>교육</h2>
+						{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+					</SectionHeader>
+					<ContentWrapper>
+						{eduCareers.map((eduCareer, index) => (
+							<CareerItem
+								key={eduCareer.id}
+								data={eduCareer}
+								isLastItem={index === eduCareers.length - 1}	
+							/>
+						))}
+					</ContentWrapper>
+				</SectionWrapper>
+				<Line></Line>
+
+				<SectionWrapper>
+					<SectionHeader>
+						<h2>수상</h2>
+						<AddButton onClick={() => toggleAddForm('awards')}>+</AddButton>
+					</SectionHeader>
+					<ContentWrapper>
+						{openedForms.add.awards &&
+						<AddAwardForm
+							onClose={() => toggleAddForm('awards')}
+						/>}
+						<div style={{height:'50px'}}></div>
+						{awards.map((award, index) => (
+							<AwardItem 
+								key={award.id} 
+								data={award} 
+								onEdit={() => toggleEditForm('awards', award.id)} 
+							/>
+						))}
+					</ContentWrapper>
+				</SectionWrapper>
+				<Line></Line>
+
+				<SectionWrapper>
+					<SectionHeader>
+						<h2>자격증 · 외국어</h2>
+						<AddButton onClick={() => toggleAddForm('licenses')}>+</AddButton>
+					</SectionHeader>
+					<ContentWrapper>
+						{openedForms.add.licenses &&
+						<AddLicenseForm
+							onClose={() => toggleAddForm('licenses')}
+						/>}
+						<div style={{height:'50px'}}></div>
+						<Section>
+							<Tag>자격증</Tag>
+							<ItemsWrapper>
+								{licenseSection.map((license, index) => (
+									<LicenseItem 
+										key={license.id} 
+										data={license} 
+										// onEdit={() => toggleEditForm('licenses', license.id)} 
+									/>
+								))}
+							</ItemsWrapper>
+						</Section>
+						<div style={{height:'50px'}}></div>
+						<Section>
+							<Tag>외국어</Tag>
+							<ItemsWrapper>
+								{foreignSection.map((foreign, index) => (
+									<LicenseItem 
+										key={foreign.id} 
+										data={foreign} 
+										// onEdit={() => toggleEditForm('licenses', license.id)} 
+									/>
+								))}
+							</ItemsWrapper>
+						</Section>
+					</ContentWrapper>
+				</SectionWrapper>
+				<Line></Line>
+
+				<SectionWrapper>
+					<SectionHeader>
+						<h2>스킬</h2>
+						<AddButton onClick={() => toggleAddForm('skills')}>+</AddButton>
+					</SectionHeader>
+					<ContentWrapper>
+						{openedForms.add.skills &&
+						<AddSkillForm
+							onClose={() => toggleAddForm('skills')}
+						/>}
+						<div style={{height:'50px'}}></div>
+						{Object.entries(skillSections).map(([sectionType, sectionSkills]) => 
+							sectionSkills.length > 0 ? (
+							<Section key={sectionType}>
+								<Tag>{getSectionName(sectionType)}</Tag>
+								<ItemsWrapper>
+									{sectionSkills.map(skill => (
+									<SkillItem
+										key={skill.id}
+										data={skill}
+										// onEdit={() => console.log(`Edit Skill: ${skill.id}`)}
+									/>
+									))}
+								</ItemsWrapper>
+								<div style={{height:'50px'}}></div>
+							</Section>
+						):null)}
+					</ContentWrapper>
+				</SectionWrapper>
+				<Line></Line>
+
+				<SectionWrapper>
+					<SectionHeader>
+						<h2>추가자료</h2>
+						{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+					</SectionHeader>
+					<ContentWrapper>
+						
+					</ContentWrapper>
+				</SectionWrapper>
+				<Line></Line>
+			</div>
+		</Layout>
 	);
 };
 
 export default History;
 
-const BackgroundDiv = styled.div`
-	width: 100%;
-	height: 100%;
-	margin-top: 40px;
-	display: flex;
-	justify-content: center;
+const SectionWrapper = styled.div`
+  margin-bottom: 40px;
+  width:820px;
+  padding-top:25px;
+  padding-bottom:25px;
 `;
 
-const BaseDiv = styled.div`
-	width: 820px;
-	max-width: 820px;
-	position: relative;
-	z-index: 999;
+const SectionHeader = styled.div`
+width:820px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin:0px;
+.
+  h2 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  button {
+    background: var(--main-01, #3AAF85);
+    color: var(--white, #FFF);
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
 `;
 
-const Linear = styled.div`
-	width: 820px;
-	height: 2px;
-	background: #f1f1f1;
-	margin: 30px 0px;
+const ContentWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 수평 가운데 정렬 */
+    justify-content: center; /* 수직 가운데 정렬 (필요 시) */
+    margin-top: 20px; /* SectionHeader와 간격 조절 */
+    width: 100%; /* 부모 컨테이너의 너비 사용 */
 `;
 
-const AddButton = styled.button`
-	width: 820px;
-	height: 50px;
+
+const ItemList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+
+const AddButton = styled.div`
+	width: 47px;
+	height: 37px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	border: 1px solid var(--gray-03, #d9d9d9);
-	text-align: center;
-	background: #fff;
-	color: #d9d9d9;
-	font-size: 30px;
-	cursor: pointer;
-
-	&:hover {
-		border: 1px solid #707070;
-		color: #707070;
-	}
-`;
-
-const Limiter = styled.div`
-	width: 200px;
-	height: 80px;
-	background-color: RGBA(0, 0, 0, 0.7);
-	color: white;
-	font-family: Regular;
-	font-size: 16px;
-	border-radius: 10px;
+	border: 1px solid var(--gray-03, #D9D9D9);
+	background:#FFFFFF;
+	color: var(--gray-03, #D9D9D9);
+	font-family: Pretendard;
+	font-size: 32px;
+	font-style: normal;
+	font-weight: 400;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	position: fixed;
-	top: 550px;
-	opacity: ${(props) => (props.show ? 1 : 0)};
-	transition: opacity 1s;
+	cursor:pointer;
+	padding-bottom:5px;
+`
+
+const Line = styled.div`
+	width: 820px;
+	height: 2px;
+	background:#F1F1F1;
+`
+
+const Section = styled.div`
+	width:100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+`;
+
+const ItemsWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2열 배치 */
+  gap: 25px;
+`;
+
+const Tag = styled.div`
+	width: 81px;
+	height: 22px;
+	flex-shrink: 0;
+	background:#707070;
+	color: var(--white, #FFF);
+	font-family: Regular;
+	font-size: 14px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 5px;
+`
+
+const ProfileBox = styled.div`
+	width: 150px;
+	height: 200px;
+	background: var(--gray-05, #F1F1F1);
+`
+
+const UserInfoWrapper = styled.div`
+	width: 650px;
+	display:flex;
+	flex-direction:column;
+	margin-left: 40px;
+	position: relative;
+`
+const UpdatedAt = styled.div`
+  width: 250px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 14px;
+  color: #707070;
+  font-family: Regular;
+`;
+
+const InfoTable = styled.div`
+	display: grid;
+	grid-template-columns: auto 1fr; 
+	row-gap: 15px; 
+	column-gap: 30px;
+	margin-top: 20px;
+`
+
+const InfoLabel = styled.div`
+  font-size: 18px;
+  color: #707070;
+  font-family: Regular;
+`;
+
+const InfoValue = styled.div`
+  font-size: 14px;
+  color: #707070;
+  font-family: Regular;
+`;
+
+const NullModeAddress = styled.span`
+  text-decoration: underline;
+  cursor: pointer;
+  color: #999;
+`;
+
+// 주소가 존재할 때 hover 시 '수정' 버튼 보이기
+const HoverWrapper = styled.div`
+  display: inline-block;
+  position: relative;
+
+`;
+
+const EditButton = styled.button`
+	width: 40px;
+	height: 19px;
+	border-radius: 7px;
+	color: var(--gray-02, #707070);
+	font-size: 12px;
+	background: var(--gray-06, #F5F5F5);
+	cursor: pointer;
+	border:none;
+	margin-left: 20px;
+	justify-content:center;
+`;
+
+// 편집모드일 때 나타나는 컴포넌트
+const EditAddressContainer = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+const AddressInput = styled.input`
+  font-size: 14px;
+  color:#707070;
+  width: 200px;
+  border:none;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const SaveButton = styled.button`
+	width: 42px;
+	height: 19px;
+	border-radius: 7px;
+	color: var(--gray-02, #707070);
+	font-size: 12px;
+	background: var(--gray-06, #F5F5F5);
+	cursor: pointer;
+	border:none;
+	display:flex;
+	justify-content:center;
+`;
+
+const CancelButton = styled.button`
+	width: 42px;
+	height: 19px;
+	border-radius: 7px;
+	color: var(--gray-02, #F5F5F5);
+	font-size: 12px;
+	background: var(--gray-06, #707070);
+	cursor: pointer;
+		border:none;
+	display:flex;
+	justify-content:center;
 `;

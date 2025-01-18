@@ -35,8 +35,8 @@ const HiddenRadio = styled.input.attrs({ type: 'radio' })`
 `;
 
 const StyledRadio = styled.div`
-	width: 40px;
-	height: 20px;
+	width: 16px;
+	height: 16px;
 	background: ${(props) => (props.isUnknown ? '#3AAF85' : '#F5F5F5')};
 	border-radius: 50%;
 	transition: all 150ms;
@@ -56,13 +56,14 @@ const StyledRadio = styled.div`
 	}
 `;
 
-const Info = styled.label`
+const Info = styled.div`
 	color: var(--main-01, #3aaf85);
 	font-family: Regular;
-	font-size: 14px;
+	font-size: 16px;
 	font-style: normal;
 	line-height: normal;
 	margin-left: 15px;
-	margin-bottom: 0px !important;
+	// margin-top:10px;
+	// margin-bottom: 0px !important;
 	align-items: center;
 `;
