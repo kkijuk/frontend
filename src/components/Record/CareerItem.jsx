@@ -176,7 +176,7 @@ const LevelTag = styled.div`
 	padding: 2px 5px;
 	border-radius: 5px;
 	font-size: 14px;
-	font-family: 'Re	gular';
+	font-family: 'Regular';
 	margin-bottom: 10px;
 	display: flex;
 	align-items: center;
