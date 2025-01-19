@@ -288,7 +288,7 @@ export default function MycareerDetail() {
 			summary: details?.summary,
 		});
 		setIsModalOpen(true);
-		console.log('Generated initialData for AddCareerModal:', data);
+		console.log('Generated initialData for AddCareerModal:', modalData);
 	};
 
 	const closeModal = () => {
