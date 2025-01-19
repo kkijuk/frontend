@@ -30,7 +30,7 @@ export const CareerDetailEdit = async (careerId, detailId, data) => {
 export const CareerDetailDelete = async (careerId, detailId) => {
 	try {
 		const response = await axios.delete(
-			`https://api.kkijuk.com/career/${careerId}/${detailId}`,
+			`https://api.kkijuk.com/career/detail/${careerId}/${detailId}`,
 
 			{
 				withCredentials: true,
