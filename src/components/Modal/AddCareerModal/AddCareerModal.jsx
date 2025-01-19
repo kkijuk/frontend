@@ -37,8 +37,17 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	// 현재 모달 모드(활동 추가 or 활동 수정)
 	const isEditMode = mode === 'edit';
 
-	//현재 선택된 카테고리
-	const [selectedCategory, setSelectedCategory] = useState(initialData?.category || 1);
+	// 현재 선택된 카테고리 (기본값은 1)
+	const [selectedCategory, setSelectedCategory] = useState(1);
+
+	// 초기 데이터 처리
+	useEffect(() => {
+		if (initialData?.category) {
+			// 한글 카테고리를 숫자로 매핑
+			const categoryNumber = Object.keys(categoryMap).find((key) => categoryMap[key] === initialData.category);
+			setSelectedCategory(parseInt(categoryNumber, 10) || 1);
+		}
+	}, [initialData]);
 
 	//12가지 유형의 form Data 상태관리
 	const [name, setName] = useState(''); //활동명
@@ -99,13 +108,6 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	useEffect(() => {
 		// initialData가 변경될 때마다 콘솔에 출력
 		console.log('Received initialData:', initialData);
-
-		if (initialData) {
-			setName(initialData.name || '');
-			setAlias(initialData.alias || '');
-			setStartdate(initialData.startdate || null);
-			setEnddate(initialData.enddate || null);
-		}
 	}, [initialData]);
 
 	// 기간 설정 관련
