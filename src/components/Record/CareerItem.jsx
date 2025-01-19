@@ -12,19 +12,11 @@ const CareerItem = ({ data, isLastItem, onEdit }) => {
 	const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
 	const [isCareerModalOpen, setIsCareerModalOpen] = useState(false);
 	const [isSummaryEditMode, setIsSummaryEditMode] = useState(false);
-	const [detail, setDetail] = useState(data.summary);
 
-	// 활동 내역 수정
-	const handleDetailSave = async () => {
-		try{
-			const updatedData = {...data, summary: detail};
-			await editCareer(data.id, updatedData);
-			setIsSummaryEditMode(false);
-			setIsKebabMenuOpen(false);
-			window.location.reload();
-		} catch (error) {
-			console.error('Edit Career Error: ', error);
-		}
+	const handleDetailSave = () => {
+		setIsSummaryEditMode(false);
+		setIsKebabMenuOpen(false);
+		// 활동내역 수정 api 호출
 	}
 
 	// 활동 기간 계산
@@ -69,7 +61,7 @@ const CareerItem = ({ data, isLastItem, onEdit }) => {
 			/>}
 			<TimeLine>
 				<Oval category={data.category.categoryKoName} isPastDue={data.isCurrent}></Oval>
-				<Line category={data.category.categoryKoName} isLastItem={isLastItem} isPastDue={data.isCurrent}></Line>
+				<Line category={data.category.categoryKoName} isLastItem={isLastItem} isPastDue={data.isCurrent} isSummaryEditMode={isSummaryEditMode}></Line>
 			</TimeLine>
 			<Container>
 				<div>
@@ -136,7 +128,7 @@ const Oval = styled.div`
 							? '#C48DEF'
 							: props.category === '프로젝트'
 								? '#78D333'
-								: props.category === '아르바이트/인턴'
+								: props.category === '경력'
 									? '#FA7C79'
 									: props.category === '교육'
 										? '#F99538'
@@ -152,7 +144,7 @@ const Oval = styled.div`
 						? '3px solid #C48DEF'
 						: props.category === '프로젝트'
 							? '3px solid #78D333'
-							: props.category === '아르바이트/인턴'
+							: props.category === '경력'
 								? '3px solid #FA7C79'
 								: props.category === '교육'
 									? '3px solid #F99538'
@@ -164,7 +156,7 @@ const Oval = styled.div`
 
 const Line = styled.div`
 	width: 2px;
-	height: 166px;
+	height: ${(props) => (props.isSummaryEditMode ? '220px' : '166px')};
 	border-top: none;
 	border-right: none;
 	border-bottom: none;
@@ -180,7 +172,7 @@ const Line = styled.div`
 						? '2px solid #C48DEF'
 						: props.category === '프로젝트' && props.isPastDue
 							? '2px solid #78D333'
-							: props.category === '아르바이트/인턴' && props.isPastDue
+							: props.category === '경력' && props.isPastDue
 								? '2px solid #FA7C79'
 								: props.category === '교육' && props.isPastDue
 									? '2px solid #F99538'
@@ -194,7 +186,7 @@ const Line = styled.div`
 													? '2px dashed #C48DEF'
 													: props.category === '프로젝트' && !props.isPastDue
 														? '2px dashed #78D333'
-														: props.category === '아르바이트/인턴' && !props.isPastDue
+														: props.category === '경력' && !props.isPastDue
 															? '2px dashed #FA7C79'
 															: props.category === '교육' && !props.isPastDue
 																? '2px dashed #F99538'
@@ -204,17 +196,12 @@ const Line = styled.div`
 `;
 
 const EditButton = styled.button`
-	width: 65px;
-	background-color: #f5f5f5;
-	color: #707070;
 	border: none;
-	border-radius: 10px;
 	padding: 5px 10px;
-	opacity: 0;
-	transition: opacity 0.2s ease-in-out;
 	position: absolute;
 	right: -450px;
 	top:0;
+	background-color: #FFF;
 `;
 
 const Container = styled.div`
@@ -242,16 +229,16 @@ const LevelTag = styled.div`
 					? '#C48DEF'
 					: props.category === '프로젝트'
 						? '#78D333'
-						: props.category === '아르바이트/인턴'
+						: props.category === '경력'
 							? '#FA7C79'
 							: props.category === '교육'
 								? '#F99538'
 								: '#707070'};
 	color: white;
-	padding: 2px 5px;
 	border-radius: 5px;
 	font-size: 14px;
 	font-family: 'Regular';
+	font-weight: 700;
 	margin-bottom: 10px;
 	display: flex;
 	align-items: center;
@@ -278,9 +265,52 @@ const Department = styled.div`
 
 const Dates = styled.div`
 	font-size: 16px;
-	color: #666;
 `;
 
 const Status = styled.span`
-	color: #999;
+	margin-left: 10px;
+	font-family: 'Regular';
 `;
+
+const DetailContainer = styled.div`
+	display: flex;
+	flex-direction: row;
+	margin-top: 10px;
+`;
+
+const DetailWrapper = styled.div`
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	margin-top: 10px;
+`
+
+const DetailTextArea = styled.textarea`
+	width: 430px;
+	height: 76px;
+	padding: 10px;
+	border-radius: 7px;
+	border: none;
+	background: var(--gray-05, #F1F1F1);
+	font-family: 'Regular';
+	font-size: 16px;
+	resize: none;
+`
+
+const DetailSaveButton = styled.button`
+	width: 67px;
+	height: 96px;
+	margin-left: 10px;
+	flex-shrink: 0;
+	border-radius: 7px;
+	border: none;
+	background: var(--main-01, #3AAF85);	
+	cursor = pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-family: 'Regular';
+	font-size: 12px;
+	color: white;
+	cursor: pointer;
+`

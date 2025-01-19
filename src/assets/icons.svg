@@ -48,6 +48,17 @@
       </clipPath>
     </defs>
   </symbol>
+
+<!-- job link -->
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" id="jobLink">
+  <g id="vuesax/linear/export">
+    <g id="export">
+      <path id="Vector" d="M8.125 7.20312L13.25 2.07812" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path id="Vector_2" d="M13.75 4.57813V1.57812H10.75" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path id="Vector_3" d="M6.875 1.57812H5.625C2.5 1.57812 1.25 2.82812 1.25 5.95312V9.70312C1.25 12.8281 2.5 14.0781 5.625 14.0781H9.375C12.5 14.0781 13.75 12.8281 13.75 9.70312V8.45312" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+    </g>
+  </g>
+  </symbol>
 </svg>
 
 
