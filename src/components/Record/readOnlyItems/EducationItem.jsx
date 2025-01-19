@@ -1,30 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import AddEducationForm from '../addForms/AddEducationForm';
 
 const EducationItem = ({ data, onEdit, isLastItem }) => {
+	const [isEditMode, setIsEditMode] = useState(false);
+
 	console.log('EducationItem: ', data);
 
 	return (
 		<div style={{ display: 'flex', width:'100%'}}>
-			<TimeLine>
-				<Oval status={data.state}></Oval>
-				<Line isLastItem={isLastItem} status={data.state}></Line>
-			</TimeLine>
-			<Container>
-				<div>
-					<LevelTag status={data.state}>{data.category}</LevelTag>
-					<SchoolInfo>
-						<SchoolName>{data.schoolName}</SchoolName>
-						{data.major && <Department>{data.major}</Department>}
-						<Dates>
-							{data.admissionDate} ~ {data.graduationDate} <Status>({data.state})</Status>
-						</Dates>
-					</SchoolInfo>
-				</div>
-				<EditButton id="edit" onClick={onEdit}>
-					수정
-				</EditButton>
-			</Container>
+			{isEditMode ? (
+				<EditContainer>
+					<AddEducationForm
+					mode='edit'
+					initialData={data}
+					onClose={() => setIsEditMode(false)}
+					/>
+				</EditContainer>
+			) : (
+				<>
+				<TimeLine>
+					<Oval status={data.state}></Oval>
+					<Line isLastItem={isLastItem} status={data.state}></Line>
+				</TimeLine>
+				<Container>
+					<div>
+						<LevelTag status={data.state}>{data.category}</LevelTag>
+						<SchoolInfo>
+							<SchoolName>{data.schoolName}</SchoolName>
+							{data.major && <Department>{data.major}</Department>}
+							<Dates>
+								{data.admissionDate} ~ {data.graduationDate} <Status>({data.state})</Status>
+							</Dates>
+						</SchoolInfo>
+					</div>
+					<EditButton id="edit" onClick={() => setIsEditMode(true)}>
+						수정
+					</EditButton>
+				</Container>
+				</>
+			)}
+
 		</div>
 	);
 };
@@ -79,8 +95,16 @@ const EditButton = styled.button`
   opacity:0;
   transition: opacity 0.2s ease-in-out;
   position:absolute;
-  right:150px;
+  right:260px;
 `;
+const EditContainer = styled.div`
+	width: 820px;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	margin-bottom: 45px;
+	font-family: 'Regular';
+`
 
 const Container = styled.div`
 	width: 820px;

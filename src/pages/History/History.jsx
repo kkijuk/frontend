@@ -297,6 +297,8 @@ const History = () => {
 										key={education.id}
 										data={education}
 										isLastItem={index === educations.length - 1}
+										onDelete={() => deleteItem('educations', education.id)}
+										onSave={(updates) => updateItem('educations', education.id, updates)}
 										// onEdit={() => toggleEditForm('educations', education.id)}
 									/>
 								))}

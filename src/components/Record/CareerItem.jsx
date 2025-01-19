@@ -1,34 +1,109 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { editCareer } from '../../api/Mycareer/Career';
 
 const CareerItem = ({ data, isLastItem, onEdit }) => {
 	// const today = new Date();
 	// const formattedToday = today.toISOString().slice(0,7).replace('-','.');
 	// const isPastDue = data.endDate < formattedToday; //true: 기한 경과, false: 기한 내
 
+	// 상태 관리
+	const [careerData, setCareerData] = useState(data);
+	const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
+	const [isCareerModalOpen, setIsCareerModalOpen] = useState(false);
+	const [isSummaryEditMode, setIsSummaryEditMode] = useState(false);
+	const [detail, setDetail] = useState(data.summary);
+
+	// 활동 내역 수정
+	const handleDetailSave = async () => {
+		try{
+			const updatedData = {...data, summary: detail};
+			await editCareer(data.id, updatedData);
+			setIsSummaryEditMode(false);
+			setIsKebabMenuOpen(false);
+			window.location.reload();
+		} catch (error) {
+			console.error('Edit Career Error: ', error);
+		}
+	}
+
+	// 활동 기간 계산
+	const calculateMonths = (start, end) => {
+		if (!end) return null; // endDate가 null이면 null 반환
+	
+		const startDate = new Date(start);
+		const endDate = new Date(end);
+		const yearDiff = endDate.getFullYear() - startDate.getFullYear();
+		const monthDiff = endDate.getMonth() - startDate.getMonth();
+	
+		return yearDiff * 12 + monthDiff + 1; // 총 개월 수 계산
+	};
+	const activityMonths = calculateMonths(data.startdate, data.enddate);
+
+	// 경력인 경우, 태그에는 categoryKoName이 아닌 type으로 표시
+	const getEmploymentsType = (type) => {
+		switch(type) {
+			case 'PART_TIME':
+				return '아르바이트';
+			case 'INTERNSHIP':
+				return '인턴';
+			case 'FULL_TIME':
+				return '정규직';
+			case 'CONTRACT':
+				return '계약직';
+			case 'FREELANCE':
+				return '프리랜서';
+			default:
+				return '기타';
+		}
+	};
+	const displayCategory = data.category.categoryKoName === '경력' ? getEmploymentsType(data.type) : data.category.categoryKoName;
+
 	return (
 		<div style={{ display: 'flex', width: '100%' }}>	
+			{isCareerModalOpen && 
+				<AddCareerModal 
+					mode='edit'
+					initialData={careerData} 
+					onClose={() => setIsCareerModalOpen(false)} 
+			/>}
 			<TimeLine>
-				{/* <Oval category={data.category.categoryKoName} isPastDue={data.isCurrent}></Oval> */}
-				{/* <Line category={data.category.categoryKoName} isLastItem={isLastItem} isPastDue={data.isCurrent}></Line> */}
+				<Oval category={data.category.categoryKoName} isPastDue={data.isCurrent}></Oval>
+				<Line category={data.category.categoryKoName} isLastItem={isLastItem} isPastDue={data.isCurrent}></Line>
 			</TimeLine>
 			<Container>
 				<div>
-					<LevelTag category={data.category.categoryKoName}>{data.category.categoryKoName}</LevelTag>
+					<LevelTag category={data.category.categoryKoName}>{displayCategory}</LevelTag>
 					<SchoolInfo>
 						<SchoolName>{data.name}</SchoolName>
 						<Dates>
-							{data.startDate} ~ {data.endDate} <Status>(n개월)</Status>
+							{data.startdate ? data.startdate : '시작 날짜 없음'} ~ {data.enddate ? data.enddate : '종료 날짜 없음'}
+							{activityMonths ? <Status>({activityMonths}개월)</Status> : <Status>(진행 중)</Status>}
 						</Dates>
-						<p>
-							<span style={{ fontWeight: '600', marginRight: '30px' }}>활동내역</span>
-							{data.summary}
-						</p>
+						<DetailContainer>
+							<span style={{ fontWeight: '600', marginRight: '30px', lineHeight:'14px' }}>활동내역</span>
+							{isSummaryEditMode ? (
+								<DetailWrapper>
+									<DetailTextArea></DetailTextArea>
+									<DetailSaveButton
+										onClick={handleDetailSave}
+									>확인</DetailSaveButton>
+								</DetailWrapper>
+							) : (
+								<>
+									{data.summary}
+								</>
+							)}
+						</DetailContainer>
 					</SchoolInfo>
 				</div>
-				<EditButton id="edit" onClick={onEdit}>
-					수정
+				<EditButton>
+					<KebabMenu
+						onModalOpen={() => setIsCareerModalOpen(true)}
+						onDetailOpen={() => setIsSummaryEditMode(true)}
+					/>
 				</EditButton>
+
 			</Container>
 		</div>
 	);

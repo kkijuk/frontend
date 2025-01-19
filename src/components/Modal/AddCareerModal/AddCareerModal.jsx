@@ -663,7 +663,6 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 		<ModalBackground>
 			<ModalContainer>
 				<CloseButton onClick={onClose}>
-					{/* <CloseIcon/> */}
 					<SvgIcon name="close" size={20} color="#999" />
 				</CloseButton>
 				<h1 style={{ textAlign: 'center' }}>
