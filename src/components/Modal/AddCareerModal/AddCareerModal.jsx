@@ -105,9 +105,26 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		contribution,
 	]);
 
+	// 초기 데이터 설정
 	useEffect(() => {
-		// initialData가 변경될 때마다 콘솔에 출력
-		console.log('Received initialData:', initialData);
+		if (initialData) {
+			setName(initialData.name || '');
+			setAlias(initialData.alias || '');
+			setStartdate(initialData.startdate || null);
+			setEnddate(initialData.enddate || null);
+			setUnknown(initialData.unknown || false);
+			setLocation(initialData.location || 'ON_CAMPUS');
+			setRole(initialData.role || '');
+			setOrganizer(initialData.organizer || '');
+			setCareerType(initialData.careerType || '');
+			setWorkplace(initialData.workplace || '');
+			setPosition(initialData.position || '');
+			setJobField(initialData.jobField || '');
+			setTime(initialData.time || 0);
+			setIsTeam(initialData.isTeam || false);
+			setTeamSize(initialData.teamSize || 0);
+			setContribution(initialData.contribution || 0);
+		}
 	}, [initialData]);
 
 	// 기간 설정 관련
