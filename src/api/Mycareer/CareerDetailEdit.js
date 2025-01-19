@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+//내커리어 careerdetail 추가
 export const CareerDetailEdit = async (careerId, detailId, data) => {
 	try {
 		const response = await axios.patch(
