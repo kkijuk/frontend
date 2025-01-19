@@ -384,7 +384,9 @@ export default function MycareerDetail() {
 				</CareerListBox>
 
 				<CareerPlus onClick={handleAddButtonClick}>활동 기록 추가</CareerPlus>
-				{isModalOpen && modalData && <AddCareerModal onClose={closeModal} data={modalData} mode="edit" />}
+				{isModalOpen && modalData && (
+					<AddCareerModal onClose={closeModal} data={modalData} mode="edit" initialData={modalData} />
+				)}
 			</PageContainer>
 		</Layout>
 	);
