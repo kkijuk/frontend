@@ -40,11 +40,12 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	// 현재 선택된 카테고리 (기본값은 1)
 	const [selectedCategory, setSelectedCategory] = useState(1);
 
-	// 초기 데이터 처리
 	useEffect(() => {
 		if (initialData?.category) {
-			// 한글 카테고리를 숫자로 매핑
-			const categoryNumber = Object.keys(categoryMap).find((key) => categoryMap[key] === initialData.category);
+			// 한글 카테고리 이름을 숫자 키로 변환
+			const categoryNumber = Object.keys(categoryMap).find(
+				(key) => categoryMap[key] === initialData.category.categoryKoName, // 수정된 부분
+			);
 			setSelectedCategory(parseInt(categoryNumber, 10) || 1);
 		}
 	}, [initialData]);
@@ -105,9 +106,26 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		contribution,
 	]);
 
+	// 초기 데이터 설정
 	useEffect(() => {
-		// initialData가 변경될 때마다 콘솔에 출력
-		console.log('Received initialData:', initialData);
+		if (initialData) {
+			setName(initialData.name || '');
+			setAlias(initialData.alias || '');
+			setStartdate(initialData.startdate || null);
+			setEnddate(initialData.endDate || null);
+			setUnknown(initialData.unknown || false);
+			setLocation(initialData.location || 'ON_CAMPUS');
+			setRole(initialData.role || '');
+			setOrganizer(initialData.organizer || '');
+			setCareerType(initialData.careerType || '');
+			setWorkplace(initialData.workplace || '');
+			setPosition(initialData.position || '');
+			setJobField(initialData.jobField || '');
+			setTime(initialData.time || 0);
+			setIsTeam(initialData.isTeam || false);
+			setTeamSize(initialData.teamSize || 0);
+			setContribution(initialData.contribution || 0);
+		}
 	}, [initialData]);
 
 	// 기간 설정 관련
