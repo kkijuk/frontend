@@ -40,6 +40,7 @@ const readRecord = async () => {
 			// 서버 응답이 있는 경우
 			console.error('Server responded with status code:', error.response.status);
 			console.error('Response Data:', error.response.data);
+			return error.response.data;
 		} else if (error.request) {
 			// 요청이 보내졌지만 응답을 받지 못한 경우
 			console.error('No response received. Request details:', error.request);

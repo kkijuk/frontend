@@ -5,8 +5,7 @@ import { Affiliation1 } from './Affiliation';
 import { Affiliation2 } from './Affiliation';
 import SvgIcon from '../../shared/SvgIcon'
 import { validateAndFilterForm } from './validateAndFilterForm';
-import createCareer from '../../../api/Mycareer/createCareer';
-// import updateCareer from '../../../api/Mycareer/updateCareer';
+import { createCareer, editCareer } from '../../../api/Mycareer/Career';
 import DateInput from './DateInput';
 import UnknownRadio from './UnknownRadio';
 import CareerTypeDropdown, {CareerTypeDropdown2} from './CareerTypeDropdown';
@@ -640,10 +639,10 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 		if(mode === 'edit') {// 수정모드일 경우우
 			try{
 				// 수정 모드에서는 id를 추가해줍니다.
-				filteredData.id = initialData.id;
+				const careerId = initialData.id;
 				console.log('Sending data:', filteredData);
-				// const response = await updateCareer(selectedCategory, filteredData);
-				// console.log('Success: ', response);
+				const response = await editCareer(selectedCategory, careerId, filteredData);
+				console.log('Success: ', response);
 			} catch (error) {
 				console.error('수정모드에서 id 추가 중 오류 발생: ', error);
 			}
