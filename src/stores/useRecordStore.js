@@ -4,7 +4,7 @@ import {createEducation, updateEducation, deleteEducation} from '../api/Record/e
 import {createLicense, updateLicense, deleteLicense} from '../api/Record/license.js'; // default export
 import { createSkill, updateSkill, deleteSkill } from '../api/Record/skill.js';
 import { readRecord } from '../api/Record/record.js'; // default export
-import createCareer from '../api/Mycareer/createCareer.js';
+import createCareer from '../api/Mycareer/Career.js';
 import * as CareerEditAPI from "../api/Mycareer/CareerEdit.js"
 import { CareerEdit, CareerDelete } from "../api/Mycareer/CareerEdit.js"
 
@@ -28,12 +28,13 @@ const useRecordStore = create((set, get) => ({
         set({ status: 'loading' });
         try {
             const response = await readRecord(); 
-            const data = response.data;
+            
             console.log('Fetch Record Data:', data);
 
-            if(!data.record_id){
-                throw new Error('Record not found');
+            if(data.message === "해당 유저의 이력서가 존재하지 않습니다."){
+                throw new Error('not created');
             }
+            const data = response.data;
             
             // 임시
             const normalizeData = (items, idField) =>
