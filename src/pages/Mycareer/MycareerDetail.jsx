@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Layout from '../../components/Layout';
 import DetailAdd from '../../components/MyCareerDetail/DetailAdd';
 import DetailAddEdit from '../../components/MyCareerDetail/DetailAddEdit';
+import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
 import AddCareerModalEdit from '../../components/Modal/AddCareerModalEdit';
 import { useParams } from 'react-router-dom';
 
@@ -13,7 +14,6 @@ import CareerList from '../../components/MyCareerDetail/CareerList';
 import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 import { CareertextEdit } from '../../api/Mycareer/CareerEdit';
-
 
 const CareerBoxContainer = styled.div`
 	width: 100%; /* 가로 스크롤을 위해 전체 너비 */
@@ -384,7 +384,7 @@ export default function MycareerDetail() {
 				</CareerListBox>
 
 				<CareerPlus onClick={handleAddButtonClick}>활동 기록 추가</CareerPlus>
-				{isModalOpen && modalData && <AddCareerModalEdit onClose={closeModal} data={modalData} />}
+				{isModalOpen && modalData && <AddCareerModal onClose={closeModal} data={modalData} mode="edit" />}
 			</PageContainer>
 		</Layout>
 	);
