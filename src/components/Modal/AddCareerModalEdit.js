@@ -293,7 +293,7 @@ const AddCareerModalEdit = ({ onClose, onSave, data }) => {
 
 		if (data) {
 			//setSelectedCategory(data.data.categoryName);
-			setCategory(data.data.category);
+			setCategory(data.data.categoryId);
 			setCareerName(data.data.careerName);
 			setAlias(data.data.alias);
 			setStartDate(data.data.startDate);
