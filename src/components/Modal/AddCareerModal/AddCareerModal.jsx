@@ -3,17 +3,17 @@ import styled from 'styled-components';
 
 import { Affiliation1 } from './Affiliation';
 import { Affiliation2 } from './Affiliation';
-import SvgIcon from '../../shared/SvgIcon'
+import SvgIcon from '../../shared/SvgIcon';
 import { validateAndFilterForm } from './validateAndFilterForm';
 import { createCareer, editCareer } from '../../../api/Mycareer/Career';
 import DateInput from './DateInput';
 import UnknownRadio from './UnknownRadio';
-import CareerTypeDropdown, {CareerTypeDropdown2} from './CareerTypeDropdown';
+import CareerTypeDropdown, { CareerTypeDropdown2 } from './CareerTypeDropdown';
 import ParticipantType from './ParticipantType';
 import { Form } from 'react-router-dom';
 import moment from 'moment'; // moment 라이브러리 임포트(세연)
 
-const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
+const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	//카테고리 정보
 	const categoryMap = {
 		1: '동아리',
@@ -38,7 +38,7 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 	const isEditMode = mode === 'edit';
 
 	//현재 선택된 카테고리
-	const [selectedCategory, setSelectedCategory] = useState(initialData?.category||1);
+	const [selectedCategory, setSelectedCategory] = useState(initialData?.category || 1);
 
 	//12가지 유형의 form Data 상태관리
 	const [name, setName] = useState(''); //활동명
@@ -78,19 +78,41 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 			teamSize,
 			contribution,
 		});
-		}, 
-		[
-			name, alias, startdate, enddate, unknown, 
-			location, role, organizer, careerType, 
-			position, jobField, time, 
-			isTeam, teamSize, contribution
+	}, [
+		name,
+		alias,
+		startdate,
+		enddate,
+		unknown,
+		location,
+		role,
+		organizer,
+		careerType,
+		position,
+		jobField,
+		time,
+		isTeam,
+		teamSize,
+		contribution,
 	]);
+
+	useEffect(() => {
+		// initialData가 변경될 때마다 콘솔에 출력
+		console.log('Received initialData:', initialData);
+
+		if (initialData) {
+			setName(initialData.name || '');
+			setAlias(initialData.alias || '');
+			setStartdate(initialData.startdate || null);
+			setEnddate(initialData.enddate || null);
+		}
+	}, [initialData]);
 
 	// 기간 설정 관련
 	const hasError = !startdate || (!unknown && !enddate);
 
 	// 경력 Dropdown 옵션
-	const careerOptions = ["아르바이트", "인턴", "정규직", "계약직", "프리랜서"];
+	const careerOptions = ['아르바이트', '인턴', '정규직', '계약직', '프리랜서'];
 	const [isCareerDropdownOpen, setIsCareerDropdownOpen] = useState(false);
 
 	//Logic: 선택된 카테고리에 따라 상이한 forms 조합을 렌더링합니다.
@@ -103,7 +125,7 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{color:'#3AAF85', fontSize: '14px', marginLeft:'10px'}}>
+								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -118,8 +140,8 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{color:'#3AAF85', fontSize: '14px', marginLeft:'10px'}}>
-										활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
+								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+									활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
 								</span>
 							</label>
 							<input
@@ -138,7 +160,7 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 
 						{/* 시작날짜 */}
 						<FormItem>
-							<DateInput value={startdate} onChange={setStartdate}/>
+							<DateInput value={startdate} onChange={setStartdate} />
 						</FormItem>
 						{/* 종료날짜 */}
 						<FormItem>
@@ -177,7 +199,7 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{color:'#3AAF85', fontSize: '14px', marginLeft:'10px'}}>
+								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -192,8 +214,8 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{color:'#3AAF85', fontSize: '14px', marginLeft:'10px'}}>
-										활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
+								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+									활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
 								</span>
 							</label>
 							<input
@@ -258,7 +280,7 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{color:'#3AAF85', fontSize: '14px', marginLeft:'10px'}}>
+								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -273,8 +295,8 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{color:'#3AAF85', fontSize: '14px', marginLeft:'10px'}}>
-										활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
+								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+									활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
 								</span>
 							</label>
 							<input
@@ -329,10 +351,9 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{color:'#3AAF85', fontSize: '14px', marginLeft:'10px'}}>
+								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
-
 							</label>
 							<input
 								type="text"
@@ -345,8 +366,8 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{color:'#3AAF85', fontSize: '14px', marginLeft:'10px'}}>
-										활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
+								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+									활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
 								</span>
 							</label>
 							<input
@@ -408,12 +429,12 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 							</label>
 							{/* <CareerTypeDropdown onChange={(e)=>setCareerType(e.target.value)}></CareerTypeDropdown> */}
 							<CareerTypeDropdown2
-								options = {careerOptions}
+								options={careerOptions}
 								placeholder="경력 구분을 선택해주세요."
-								value = {careerType}
+								value={careerType}
 								onChange={setCareerType}
-								isOpen = {isCareerDropdownOpen}
-								onToggle={()=>setIsCareerDropdownOpen(!isCareerDropdownOpen)}
+								isOpen={isCareerDropdownOpen}
+								onToggle={() => setIsCareerDropdownOpen(!isCareerDropdownOpen)}
 							/>
 						</FormItem>
 
@@ -421,7 +442,7 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 						<FormItem>
 							<label>
 								근무처 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{color:'#3AAF85', fontSize: '14px', marginLeft:'10px'}}>
+								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
 									근무한 곳의 이름을 작성해주세요.
 								</span>
 							</label>
@@ -432,8 +453,8 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{color:'#3AAF85', fontSize: '14px', marginLeft:'10px'}}>
-								경력의 성격이 잘 드러나도록 작성해주세요.
+								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+									경력의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
 							<input type="text" value={name} onChange={(e) => setName(e.target.value)}></input>
@@ -476,7 +497,7 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{color:'#3AAF85', fontSize: '14px', marginLeft:'10px'}}>
+								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -491,8 +512,8 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{color:'#3AAF85', fontSize: '14px', marginLeft:'10px'}}>
-										활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
+								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+									활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
 								</span>
 							</label>
 							<input
@@ -516,9 +537,7 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 						{/* 종료날짜 */}
 						<FormItem>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
-							<UnknownRadio 
-							
-								isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
+							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
 						</FormItem>
 
 						{/* 주최 */}
@@ -545,7 +564,7 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{color:'#3AAF85', fontSize: '14px', marginLeft:'10px'}}>
+								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -560,8 +579,8 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{color:'#3AAF85', fontSize: '14px', marginLeft:'10px'}}>
-										활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
+								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+									활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
 								</span>
 							</label>
 							<input
@@ -593,7 +612,6 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 				return null;
 		}
 	};
-
 
 	// 활동 추가 함수
 	const handleAddCareer = async () => {
@@ -636,8 +654,9 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 			return;
 		}
 
-		if(mode === 'edit') {// 수정모드일 경우우
-			try{
+		if (mode === 'edit') {
+			// 수정모드일 경우우
+			try {
 				// 수정 모드에서는 id를 추가해줍니다.
 				const careerId = initialData.id;
 				console.log('Sending data:', filteredData);
@@ -646,7 +665,8 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 			} catch (error) {
 				console.error('수정모드에서 id 추가 중 오류 발생: ', error);
 			}
-		}else{// 추가모드일 경우
+		} else {
+			// 추가모드일 경우
 			try {
 				console.log('Sending data:', filteredData);
 				const response = await createCareer(selectedCategory, filteredData);
@@ -666,9 +686,7 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 					{/* <CloseIcon/> */}
 					<SvgIcon name="close" size={20} color="#999" />
 				</CloseButton>
-				<h1 style={{ textAlign: 'center' }}>
-					{isEditMode ? '활동 수정' : '활동 추가'}
-				</h1>
+				<h1 style={{ textAlign: 'center' }}>{isEditMode ? '활동 수정' : '활동 추가'}</h1>
 				<ButtonContainer>
 					{Object.keys(categoryMap).map((key) => (
 						<CategoryButton
@@ -681,7 +699,7 @@ const AddCareerModal = ({ onClose, mode = "add", initialData }) => {
 						</CategoryButton>
 					))}
 				</ButtonContainer>
-				<div style={{height:'18px'}}/>
+				<div style={{ height: '18px' }} />
 				<ModalForm>{renderFormByCategory()}</ModalForm>
 				<SaveButton
 					type="button"
@@ -750,7 +768,7 @@ const FormItem = styled.div`
 
 const ButtonContainer = styled.div`
 	display: flex;
-	width:100%;
+	width: 100%;
 	gap: 10px; /* 버튼들 간의 간격 설정 */
 	justify-content: space-between; /* 버튼을 가운데 정렬 */
 	flex-wrap: wrap; /* 버튼들이 화면에 맞지 않을 경우 줄바꿈 처리 */
@@ -823,7 +841,7 @@ const SaveButton = styled.button`
 	align-items: center;
 	margin-top: 30px;
 	font-size: 18px;
-	font-family:'Regular';
+	font-family: 'Regular';
 `;
 
 const CloseButton = styled.button`
