@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import api from '../../Axios';
 
 // 활동 생성
-const createCareer = async (category, data) => {
-
+export const createCareer = async (category, data) => {
 	let endpoint = '';
 	switch (category) {
 		case 1: //동아리
@@ -57,12 +56,10 @@ const createCareer = async (category, data) => {
 	}
 };
 
-export { createCareer };
-
 // 활동 수정
-const editCareer = async (category, careerId, data) => {
+export const editCareer = async (category, careerId, data) => {
 	let endpoint = '';
-	switch(category){
+	switch (category) {
 		case 1: //동아리
 			endpoint = `/career/circle/${careerId}`;
 			break;
@@ -89,7 +86,7 @@ const editCareer = async (category, careerId, data) => {
 			return;
 	}
 
-	try{
+	try {
 		const response = await api.patch(endpoint, data, {
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -108,14 +105,12 @@ const editCareer = async (category, careerId, data) => {
 			console.error('Error setting up request: ', error.message);
 		}
 	}
-}
+};
 
-export { editCareer };
-
-// 활동 삭제	
-const deleteCareer = async (category, careerId) => {
+// 활동 삭제
+export const deleteCareer = async (category, careerId) => {
 	let endpoint = '';
-	switch(category){
+	switch (category) {
 		case 1: //동아리
 			endpoint = `/career/circle/${careerId}`;
 			break;
@@ -142,11 +137,11 @@ const deleteCareer = async (category, careerId) => {
 			return;
 	}
 
-	try{
+	try {
 		const response = await api.delete(endpoint, {
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem('token')}`,
-			},	
+			},
 		});
 		console.log('Success-deleteCareer:', response.data);
 		return response.data;
@@ -161,6 +156,4 @@ const deleteCareer = async (category, careerId) => {
 			console.error('Error setting up request: ', error.message);
 		}
 	}
-}
-
-export { deleteCareer };
+};

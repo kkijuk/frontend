@@ -1,9 +1,10 @@
 import axios from 'axios';
 
+//내커리어 careerdetail 추가
 export const CareerDetailEdit = async (careerId, detailId, data) => {
 	try {
 		const response = await axios.patch(
-			`https://api.kkijuk.com/career/${careerId}/${detailId}`,
+			`https://api.kkijuk.com/career/detail/${careerId}/${detailId}`,
 			data,
 
 			{
@@ -29,7 +30,7 @@ export const CareerDetailEdit = async (careerId, detailId, data) => {
 export const CareerDetailDelete = async (careerId, detailId) => {
 	try {
 		const response = await axios.delete(
-			`https://api.kkijuk.com/career/${careerId}/${detailId}`,
+			`https://api.kkijuk.com/career/detail/${careerId}/${detailId}`,
 
 			{
 				withCredentials: true,
