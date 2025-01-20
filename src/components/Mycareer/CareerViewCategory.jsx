@@ -105,17 +105,11 @@ const Date = styled.div`
 	color: #555;
 	margin-bottom: 20px;
 `;
-
 const CareerViewCategory = ({ data }) => {
-	const sortedKey = Object.keys(data).sort((a, b) => b - a);
-
 	const navigate = useNavigate();
 
-	const handleListBoxClick = (careerId, category) => {
-		navigate(`/mycareer/${category}/${careerId}`, { state: { careerId, category } });
-	};
-
-	if (!sortedKey.length || !data[sortedKey[0]].length) {
+	// 데이터가 없거나 유효하지 않을 경우 처리
+	if (!data || typeof data !== 'object') {
 		return (
 			<BackgroundSection>
 				<div>데이터가 없습니다.</div>
@@ -123,34 +117,52 @@ const CareerViewCategory = ({ data }) => {
 		);
 	}
 
+	// 데이터의 키를 정렬
+	const sortedKey = Object.keys(data).sort((a, b) => b - a);
+
+	// 데이터가 없을 경우 처리
+	const hasData = sortedKey.some((key) => Array.isArray(data[key]) && data[key].length > 0);
+	if (!hasData) {
+		return (
+			<BackgroundSection>
+				<div>데이터가 없습니다.</div>
+			</BackgroundSection>
+		);
+	}
+
+	const handleListBoxClick = (careerId, category) => {
+		navigate(`/mycareer/${category}/${careerId}`, { state: { careerId, category } });
+	};
+
 	return (
 		<BackgroundSection>
 			<CategoryBox>
-				{sortedKey.map((category, index) => {
+				{sortedKey.map((category) => {
+					// 카테고리 내 데이터가 없는 경우 건너뜀
+					if (!Array.isArray(data[category]) || data[category].length === 0) return null;
+
 					return (
 						<React.Fragment key={category}>
 							<Category>
 								<CareerCategoryCircle category={category} />
 								<CategoryText>{category}</CategoryText>
 							</Category>
-							{data[category].map((item, careerIndex) => {
-								return (
-									<ListBox
-										key={`${item.id}_${item.category}`}
-										onClick={() => handleListBoxClick(item.id, item.category.categoryKoName)} // 클릭 시 career.id 전송
-									>
-										<Name>
-											<CareerContainer>
-												<CareerName>{item.name}</CareerName>
-												<AliasName>&nbsp;/ {item.alias}</AliasName>
-											</CareerContainer>
-										</Name>
-										<Date>
-											{item.startdate} ~ {item.endDate}
-										</Date>
-									</ListBox>
-								);
-							})}
+							{data[category].map((item) => (
+								<ListBox
+									key={`${item.id}_${item.category}`}
+									onClick={() => handleListBoxClick(item.id, item.category.categoryKoName)} // 클릭 시 career.id 전송
+								>
+									<Name>
+										<CareerContainer>
+											<CareerName>{item.name}</CareerName>
+											<AliasName>&nbsp;/ {item.alias}</AliasName>
+										</CareerContainer>
+									</Name>
+									<Date>
+										{item.startdate} ~ {item.endDate}
+									</Date>
+								</ListBox>
+							))}
 						</React.Fragment>
 					);
 				})}
