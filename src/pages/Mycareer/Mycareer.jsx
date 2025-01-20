@@ -79,7 +79,7 @@ export default function Mycareer() {
 					<SearchBar onClick={handleSearchClick} /> {/* 클릭 이벤트 추가 */}
 				</SearchBox>
 				<div>
-					<CareerTimeline data={careers} />
+					<CareerTimeline />
 					<CareerView view={view} onToggle={setView} />
 					<AddJobButton onClick={() => setShowModal(true)} />
 					{showModal && <AddCareerModal onClose={() => setShowModal(false)} onSave={handleAddCareer} />}
