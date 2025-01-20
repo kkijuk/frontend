@@ -182,7 +182,12 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onDelete, initial
                   취소
                 </Button>
             )}
-          <Button primary onClick={()=>{onSave(formData); onClose();}}
+          <Button 
+            primary 
+            onClick={()=>{
+              onSave(formData); 
+              onClose();
+            }}
             style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
             추가
           </Button>

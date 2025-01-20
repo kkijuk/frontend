@@ -85,7 +85,7 @@ const Line = styled.div`
 `;
 
 const EditButton = styled.button`
-  width:65px;q
+  width:65px;
   margin-left: auto;
   background-color: #F5F5F5;
   color: #707070;

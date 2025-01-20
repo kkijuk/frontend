@@ -115,7 +115,10 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
           )}
           <Button
             primary
-            onClick={()=>onSave(formData)}
+            onClick={() => {
+              onSave(formData);
+              onClose();
+            }}
             style={{
               border: "1px solid var(--sub-bu, #3AAF85)",
               background: "var(--white, #3AAF85)",
