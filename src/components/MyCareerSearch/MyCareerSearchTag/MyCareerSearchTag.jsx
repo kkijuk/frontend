@@ -239,7 +239,7 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 							onClick={() => navigate(`/mycareer/${activityData.category.categoryKoName}/${activityData.careerId}`)}>
 							<TopWrapper>
 								<TopLeft>
-									<CareerCategoryCircle category={activityData.careerType} />
+									<CareerCategoryCircle category={activityData.category.categoryKoName} />
 									<DetailCareerTitle>
 										{activityData.careerTitle} / {activityData.careerAlias}
 									</DetailCareerTitle>
