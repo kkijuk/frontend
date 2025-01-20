@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react'; 
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
 
 import queryClient from './api/queryClient/queryClient';
 import SocialRedirect from './components/Redirect';
-import api, {setupApiInterceptors} from './Axios'
+import api, { setupApiInterceptors } from './Axios';
+import useGA4 from './hooks/useGA4';
 
 import Home from './pages/Home';
 import MyPage from './pages/Mypage/Mypage';
@@ -65,10 +66,13 @@ const App = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const hideHeaderFooterRoutes = ['/commingsoon', '/', '/signup', '/signupinterest','/signupsuccess' ];
+	const hideHeaderFooterRoutes = ['/commingsoon', '/', '/signup', '/signupinterest', '/signupsuccess'];
 	const hideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
 
-	useEffect(()=>{
+	// GA4 초기화
+	useGA4();
+
+	useEffect(() => {
 		setupApiInterceptors(navigate);
 	}, [navigate]);
 
@@ -82,16 +86,16 @@ const App = () => {
 					<Route path="/home" element={<Home />} />
 					<Route path="/" element={<SocialLogin />} />
 					<Route path="/login/oauth2/code/kakao" element={<SocialRedirect provider="kakao" />} />
-<Route path="/login/oauth2/code/naver" element={<SocialRedirect provider="naver" />} />
+					<Route path="/login/oauth2/code/naver" element={<SocialRedirect provider="naver" />} />
 					<Route path="/signup" element={<NewSignup />} />
 					<Route path="/signupsuccess" element={<SignupSuccess />} />
 					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/mycareer" element={<MyCareer />} />
 					<Route path="/signupinterest" element={<SignupInterest />} />
 
-					<Route path="/history2" element={<History/>} />
+					<Route path="/history2" element={<History />} />
 					<Route element={<SubNav />}>
-						<Route path="/history" element={<History/>} />
+						<Route path="/history" element={<History />} />
 						<Route element={<ViewOptions />}>
 							<Route path="/history/master" element={<Master />} />
 							<Route path="/history/others/:id" element={<Others />} />
