@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import SvgIcon from '../SvgIcon';
+import SvgIcon from '../shared/SvgIcon';
 
 const KebabMenu = ({onModalOpen, onDetailOpen}) => {
     const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);

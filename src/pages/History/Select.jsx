@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Layout from "./Layout";
-import SvgIcon from "./component/SvgIcon";
+import SvgIcon from "../../components/shared/SvgIcon";
 
 
 const Select = () => {

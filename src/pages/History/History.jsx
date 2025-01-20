@@ -11,6 +11,7 @@ import AddEducationForm from '../../components/Record/addForms/AddEducationForm'
 import AddAwardForm from '../../components/Record/addForms/AddAwardForm';
 import AddSkillForm from '../../components/Record/addForms/AddSkillForm';
 import AddLicenseForm from '../../components/Record/addForms/AddLicenseForm';
+import AddFileForm from '../../components/Record/addForms/AddFileForm';
 import EducationItem from '../../components/Record/readOnlyItems/EducationItem';
 // import ActivityItem from '../../components/Record/readOnlyItems/ActivityItem';
 import CareerItem from '../../components/Record/CareerItem';
@@ -19,6 +20,7 @@ import LicenseItem from '../../components/Record/readOnlyItems/LicenseItem';
 import SkillItem from '../../components/Record/readOnlyItems/SkillItem';
 import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
 import ScrollNavigator from '../../components/Record/ScrollNavigator';
+import FileItem from '../../components/Record/readOnlyItems/FileItem';
 
 const History = () => {
 	const store = useRecordStore();
@@ -120,6 +122,7 @@ const History = () => {
 			licenses: false,
 			awards: false,
 			skills: false,
+			files: false,
 		},
 	});
 
@@ -238,7 +241,7 @@ const History = () => {
 
 	const [activeSection, setActiveSection] = useState("");
 
-	//(2) 화면 영역 계산산
+	//(2) 화면 영역 계산
 	useEffect (()=>{
 		const observer = new IntersectionObserver(
 			(entries) => {
@@ -293,7 +296,7 @@ const History = () => {
 						<ProfileBox/>
 						<UserInfoWrapper>
 							<div style={{width:'100%'}}>
-								<UpdatedAt>마지막 수정 일시: {update_at}</UpdatedAt>
+								<UpdatedAt>마지막 수정 일시: {updated_at}</UpdatedAt>
 							</div>
 							<InfoTable>
 								<InfoLabel>이름</InfoLabel>
@@ -560,11 +563,23 @@ const History = () => {
 							id = {sections[9].id}
 							key = {sections[9].id}
 						>
-								<h2>추가자료</h2>
-								{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+							<h2>추가자료</h2>
+							<AddButton onClick={() => toggleAddForm('files')}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
-								
+								{openedForms.add.files &&
+									<AddFileForm
+										onClose={() => toggleAddForm('files')}
+										// onSave={} s3저장 함수 호출(useRecordStore)
+								/>}
+								<div style={{height:'50px'}}></div>
+								{files.map((file, index)=>{
+									<FileItem
+										data={file}
+										// onDown={} s3조회 함수 호출(useRecordStore)
+										// onDelete={} s3삭제 함수 호출(useRecordStore)
+									/>
+								})}
 							</ContentWrapper>
 						</SectionWrapper>
 						<Line></Line>
