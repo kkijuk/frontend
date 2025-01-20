@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReactApexChart from 'react-apexcharts';
 import moment from 'moment';
@@ -12,7 +12,7 @@ const TimelineChart = () => {
 	const navigate = useNavigate();
 
 	// useState는 항상 컴포넌트의 최상단에서 호출
-	const [options] = React.useState({
+	const [options] = useState({
 		chart: {
 			height: 350,
 			type: 'rangeBar',
@@ -100,6 +100,8 @@ const TimelineChart = () => {
 		return <div>Error loading timeline data.</div>;
 	}
 
+	console.log('rawData', rawData);
+
 	const formattedData = rawData.data.map((item) => ({
 		careerId: item.careerId,
 		category: item.category,
@@ -107,8 +109,11 @@ const TimelineChart = () => {
 		name: item.title,
 		fillColor: getColorByCategory(item.category.categoryKoName) || '#707070',
 	}));
+	console.log('formattedData', formattedData);
 
 	const distributedData = distributeTimelinePositions(formattedData);
+
+	console.log('distributedData', distributedData);
 
 	const series = [
 		{
