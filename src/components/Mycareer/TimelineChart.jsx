@@ -102,7 +102,7 @@ const TimelineChart = () => {
 
 	// console.log('rawData', rawData);
 
-	const formattedData = rawData?.data.map((item) => ({
+	const formattedData = rawData?.data?.data.map((item) => ({
 		careerId: item.careerId,
 		category: item.category,
 		y: [new Date(item.startdate).getTime(), new Date(item.enddate).getTime()],
