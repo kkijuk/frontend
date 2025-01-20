@@ -32,7 +32,9 @@ const TimelineChart = () => {
 
 					const data = chartContext.w.config.series[seriesIndex].data[dataPointIndex];
 					if (data && data.careerId) {
-						navigate(`/mycareer/${data.category.categoryKoName}/${data.careerId}`);
+						navigate(`/mycareer/${data.category.categoryKoName}/${data.careerId}`, {
+							state: { careerId: data.careerId, category: data.category.categoryKoName },
+						});
 					} else {
 						console.error('Invalid data or careerId not found');
 					}
