@@ -147,7 +147,7 @@ export default function MyCareerSearchTotalActivityDetail({ activityDetail, isAc
 							onClick={() => navigate(`/mycareer/${activity.category.categoryKoName}/${activity.careerId}`)}>
 							<TopWrapper>
 								<TopLeft>
-									<CareerCategoryCircle category={activity.careerType} />
+									<CareerCategoryCircle category={activity.category.categoryKoName} />
 									<DetailCareerTitle>
 										{activity.careerTitle} / {activity.careerAlias}
 									</DetailCareerTitle>
