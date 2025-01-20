@@ -21,6 +21,7 @@ import SkillItem from '../../components/Record/readOnlyItems/SkillItem';
 import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
 import ScrollNavigator from '../../components/Record/ScrollNavigator';
 import FileItem from '../../components/Record/readOnlyItems/FileItem';
+import Profile from '../../components/Record/Profile';
 
 const History = () => {
 	const store = useRecordStore();
@@ -58,7 +59,7 @@ const History = () => {
 	// 	email: '',
 	// 	address: '',
 	// });
-	const {name, birth, mobile, email, address} = userData;
+	const {profile, name, birth, mobile, email, address} = userData;
 
 	const [showCreateButton, setShowCreateButton] = useState(false);
 	const handleCreateRecord = async () => {
@@ -271,6 +272,13 @@ const History = () => {
 		}
 	}
 
+	// 프로필 사진 변경 관련 로직
+	const [profileBlob, setProfileBlob] = useState(profile);
+	const handleProfileChange = (file) => {
+		setProfileBlob(file);
+		console.log('Profile Image changed:', file);
+	}
+
 	return (
 		<>
 			{showCreateButton ? (
@@ -293,7 +301,11 @@ const History = () => {
 					<div>
 						{/* <AddCareerModal></AddCareerModal> */}
 						<div style={{display:'flex', marginBlock:'30px'}}>
-						<ProfileBox/>
+						{/* <ProfileBox/> */}
+						<Profile
+							profileBlob={profileBlob}
+							onProfileChange={handleProfileChange}
+						/>
 						<UserInfoWrapper>
 							<div style={{width:'100%'}}>
 								<UpdatedAt>마지막 수정 일시: {updated_at}</UpdatedAt>
