@@ -12,11 +12,19 @@ const CareerItem = ({ data, isLastItem, onEdit }) => {
 	const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
 	const [isCareerModalOpen, setIsCareerModalOpen] = useState(false);
 	const [isSummaryEditMode, setIsSummaryEditMode] = useState(false);
+	const [detail, setDetail] = useState(data.summary);
 
-	const handleDetailSave = () => {
-		setIsSummaryEditMode(false);
-		setIsKebabMenuOpen(false);
-		// 활동내역 수정 api 호출
+	// 활동 내역 수정
+	const handleDetailSave = async () => {
+		try{
+			const updatedData = {...data, summary: detail};
+			await editCareer(data.id, updatedData);
+			setIsSummaryEditMode(false);
+			setIsKebabMenuOpen(false);
+			window.location.reload();
+		} catch (error) {
+			console.error('Edit Career Error: ', error);
+		}
 	}
 
 	// 활동 기간 계산
@@ -51,6 +59,11 @@ const CareerItem = ({ data, isLastItem, onEdit }) => {
 	};
 	const displayCategory = data.category.categoryKoName === '경력' ? getEmploymentsType(data.type) : data.category.categoryKoName;
 
+	// 활동내역 placeholder (아래 들여쓰기 상태 고정!)
+	const detailPlaceHolder = `· 핵심적인 활동 내용과 담당했던 역할, 주요 성과를 요약해서 작성해 주세요.
+· 서술식보다는 개조식으로 간결하게 작성하는 것이 좋아요.
+· 이곳에 작성한 내용은 [서류준비-이력서]에 자동으로 삽입됩니다.`
+
 	return (
 		<div style={{ display: 'flex', width: '100%' }}>	
 			{isCareerModalOpen && 
@@ -73,10 +86,10 @@ const CareerItem = ({ data, isLastItem, onEdit }) => {
 							{activityMonths ? <Status>({activityMonths}개월)</Status> : <Status>(진행 중)</Status>}
 						</Dates>
 						<DetailContainer>
-							<span style={{ fontWeight: '600', marginRight: '30px', lineHeight:'14px' }}>활동내역</span>
+							<div style={{ width:'58px',fontWeight: '600', marginRight: '30px', lineHeight:'14px' }}>활동내역</div>
 							{isSummaryEditMode ? (
 								<DetailWrapper>
-									<DetailTextArea></DetailTextArea>
+									<DetailTextArea placeholder={detailPlaceHolder}></DetailTextArea>
 									<DetailSaveButton
 										onClick={handleDetailSave}
 									>확인</DetailSaveButton>
@@ -282,11 +295,11 @@ const DetailWrapper = styled.div`
 	display: flex;
 	flex-direction: row;
 	align-items: flex-start;
-	margin-top: 10px;
+	// margin-top: 10px;
 `
 
 const DetailTextArea = styled.textarea`
-	width: 430px;
+	width: 519px;
 	height: 76px;
 	padding: 10px;
 	border-radius: 7px;
@@ -295,6 +308,12 @@ const DetailTextArea = styled.textarea`
 	font-family: 'Regular';
 	font-size: 16px;
 	resize: none;
+	:: plcaeholder {
+		color: #707070;
+		font-family: 'Regular';
+		font-size: 16px;
+		white-space: pre-line;
+	}
 `
 
 const DetailSaveButton = styled.button`

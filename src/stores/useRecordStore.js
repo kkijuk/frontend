@@ -11,6 +11,15 @@ import { CareerEdit, CareerDelete } from '../api/Mycareer/CareerEdit.js';
 // 기존 코드 유지
 const useRecordStore = create((set, get) => ({
 	//초기 상태
+    userData:{
+        userId:null,
+        name:null,
+        birth:null,
+        mobile:null,
+        email:null,
+        address:null
+    },
+    updated_at:null,
 	educations: [],
 	licenses: [],
 	awards: [],
@@ -40,6 +49,15 @@ const useRecordStore = create((set, get) => ({
 			const normalizeData = (items, idField) => items.map((item) => ({ ...item, id: item[idField] }));
 
 			set({
+                userData:{
+                    userId:data.userId,
+                    name:data.name,
+                    birth:data.birth,
+                    mobile:data.mobile,
+                    email:data.email,
+                    address:data.address
+                },
+                updated_at:data.updated_at,
 				recordId: data.record_id,
 				educations: data.educationList,
 				licenses: data.licenses,
