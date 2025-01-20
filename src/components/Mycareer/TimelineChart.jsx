@@ -100,9 +100,9 @@ const TimelineChart = () => {
 		return <div>Error loading timeline data.</div>;
 	}
 
-	console.log('rawData', rawData);
+	// console.log('rawData', rawData);
 
-	const formattedData = rawData.data.map((item) => ({
+	const formattedData = rawData?.data.map((item) => ({
 		careerId: item.careerId,
 		category: item.category,
 		y: [new Date(item.startdate).getTime(), new Date(item.enddate).getTime()],
