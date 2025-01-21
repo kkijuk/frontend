@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { editCareer } from '../../api/Mycareer/Career';
+import KebabMenu from '../KebabMenu';
 
-const CareerItem = ({ data, isLastItem, onEdit }) => {
+const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 	// const today = new Date();
 	// const formattedToday = today.toISOString().slice(0,7).replace('-','.');
 	// const isPastDue = data.endDate < formattedToday; //true: 기한 경과, false: 기한 내
@@ -70,7 +71,8 @@ const CareerItem = ({ data, isLastItem, onEdit }) => {
 				<AddCareerModal 
 					mode='edit'
 					initialData={careerData} 
-					onClose={() => setIsCareerModalOpen(false)} 
+					// onClose={() => setIsCareerModalOpen(false)} 
+					onClose={() => setIsOpen(false)}
 			/>}
 			<TimeLine>
 				<Oval category={data.category.categoryKoName} isPastDue={data.isCurrent}></Oval>
@@ -104,7 +106,8 @@ const CareerItem = ({ data, isLastItem, onEdit }) => {
 				</div>
 				<EditButton>
 					<KebabMenu
-						onModalOpen={() => setIsCareerModalOpen(true)}
+						// onModalOpen={() => setIsCareerModalOpen(true)}
+						onModalOpen={() => setIsOpen(true)}
 						onDetailOpen={() => setIsSummaryEditMode(true)}
 					/>
 				</EditButton>

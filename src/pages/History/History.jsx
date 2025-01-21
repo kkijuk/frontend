@@ -410,10 +410,11 @@ const History = () => {
 							</SectionHeader>
 							<ContentWrapper>
 								{employments.map((employment, index) => (
-										<CareerItem
-											key={employment.id}
-											data={employment}
-											isLastItem={index === employments.length - 1}
+									<CareerItem
+										key={employment.id}
+										data={employment}
+										isLastItem={index === employments.length - 1}
+										setIsOpen={(isOpen) => setIsAddCareerModalOpen(isOpen)}
 									/>
 								))}
 							</ContentWrapper>
@@ -434,6 +435,7 @@ const History = () => {
 										key={activity.id}
 										data={activity}
 										isLastItem={index === activitiesAndExperiences.length - 1}
+										setIsOpen={(isOpen) => setIsAddCareerModalOpen(isOpen)}
 									/>
 							))}
 							</ContentWrapper>
@@ -454,6 +456,7 @@ const History = () => {
 										key={project.id}
 										data={project}
 										isLastItem={index === projects.length - 1}
+										setIsOpen={(isOpen) => setIsAddCareerModalOpen(isOpen)}
 									/>
 								))}
 							</ContentWrapper>
@@ -474,6 +477,7 @@ const History = () => {
 										key={eduCareer.id}
 										data={eduCareer}
 										isLastItem={index === eduCareers.length - 1}	
+										setIsOpen={(isOpen) => setIsAddCareerModalOpen(isOpen)}
 									/>
 								))}
 							</ContentWrapper>
