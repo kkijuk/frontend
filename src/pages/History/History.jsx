@@ -491,6 +491,7 @@ const History = () => {
 							<ContentWrapper>
 								{openedForms.add.awards &&
 								<AddAwardForm
+									onSave={(updates) => addItems('awards', recordId, updates)}
 									onClose={() => toggleAddForm('awards')}
 								/>}
 								<div style={{height:'50px'}}></div>
@@ -499,6 +500,8 @@ const History = () => {
 										key={award.id} 
 										data={award} 
 										onEdit={() => toggleEditForm('awards', award.id)} 
+										onUpdate = {(updates) => updateItem('awards', award.id, updates)}
+										onDelete={() => deleteItem('awards', award.id)}
 									/>
 								))}
 							</ContentWrapper>

@@ -162,7 +162,7 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
           {mode === "edit" ? (
             <Button
               onClick={()=>{
-                onDelete(id);
+                onDelete();
                 onClose();
               }}
               style={{

@@ -15,7 +15,6 @@ const EducationItem = ({ data, isLastItem, onSave, onUpdate, onDelete, onClose }
 						mode='edit'
 						initialData={data}
 						onClose={() => setIsEditMode(false)}
-						onSave = {onSave}
 						onUpdate = {(FormData) => onUpdate(FormData)}
 						onDelete={onDelete}
 					/>
