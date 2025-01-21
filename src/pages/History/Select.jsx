@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "./Layout";
 import SvgIcon from "../../components/shared/SvgIcon";
 import { getValidRecruitList } from "../../api/Apply/RecruitValid";
+import { createIntro } from "../../api/Intro/intro";
+import AddApplyModal from "../../components/Modal/AddApplyModal";
 
 
 const Select = () => {
+  const navigate = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [recruitList, setRecruitList] = useState([]);
   useEffect(() => {
@@ -21,7 +27,7 @@ const Select = () => {
   }, []);
   
   // 공고 선택 상태
-  const [selectedJob, setSelectedJob] = useState(dummyData.length > 0 ? dummyData[0].id : null);
+  const [selectedJob, setSelectedJob] = useState(recruitList.length > 0 ? recruitList[0].id : null);
   const handleSelectJob = (id) => {
     if (selectedJob === id) {
       setSelectedJob(null); // 선택 해제
@@ -42,8 +48,29 @@ const Select = () => {
     return `D-${daysLeft}`;
   };
 
+  const handleNextClick = async () => {
+    try{
+      const response = await createIntro(selectedJob, {
+        // 자소서 생성 기본 데이터
+        "questionList": [
+          {
+            "title": "string",
+            "content": "string",
+            "number": 0
+          }
+        ],
+        "state": 0
+      });
+      console.log("자기소개서 생성 결과:", response);
+      navigate(`/history/others/${response.data.id}`);
+    } catch (error) {
+      console.error("Failed to create intro:", error);
+    }
+  }
+
   return (
     <Layout title="Select">
+      {isModalOpen && <AddApplyModal onClose={handleCloseModal} />}
       <ContentWrapper>
         <div style={{height:'100px'}}/>
         <h2>자기소개서를 작성할 공고를 선택해주세요.</h2>
@@ -87,6 +114,7 @@ const Select = () => {
         </ListBox>
         <AddNewJob>+ 새로운 공고 추가</AddNewJob>
         <NextButton
+          onClick={handleNextClick}
           disabled = {!selectedJob}>
           다음
         </NextButton>
