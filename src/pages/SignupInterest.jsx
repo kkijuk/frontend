@@ -131,7 +131,7 @@ const SignupInterest = ({ onSave = () => {} }) => {
 			console.log('Interest list being sent:', interestingList);
 
 			onSave(result); // API 응답 데이터를 처리할 필요가 있으면 사용
-			navigate('/');
+			navigate('/home');
 		} catch (error) {
 			console.error('Error occurred while saving interests:', error.message);
 			console.error('Stack Trace:', error.stack); // 스택 추적도 출력
@@ -139,7 +139,7 @@ const SignupInterest = ({ onSave = () => {} }) => {
 	};
 
 	const handleClose = () => {
-		navigate('/');
+		navigate('/home');
 	};
 
 	const handleModalClose = () => {
