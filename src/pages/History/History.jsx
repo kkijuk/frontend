@@ -115,12 +115,12 @@ const History = () => {
 
 	//폼 오픈 상태 관리
 	const [openedForms, setOpenedForms] = useState({
-		edit: { // 수정 폼 관리
-			educations: null,
-			licenses: null,
-			awards: null,
-			skills: null,
-		},
+		// edit: { // 수정 폼 관리
+		// 	educations: null,
+		// 	licenses: null,
+		// 	awards: null,
+		// 	skills: null,
+		// },
 		add: { // 추가 폼 관리
 			educations: false,
 			licenses: false,
@@ -384,6 +384,7 @@ const History = () => {
 								{openedForms.add.educations && 
 								<AddEducationForm 
 									onClose={() => toggleAddForm('educations')}
+									onSave={(updates) => updateItem('educations', recordId, updates)}
 								/>}
 								<div style={{height:'50px'}}></div>
 								{educations.map((education, index) => (
@@ -391,9 +392,8 @@ const History = () => {
 										key={education.id}
 										data={education}
 										isLastItem={index === educations.length - 1}
+										onUpdate = {(updates) => updateItem('educations', education.id, updates)}
 										onDelete={() => deleteItem('educations', education.id)}
-										onSave={(updates) => updateItem('educations', education.id, updates)}
-										// onEdit={() => toggleEditForm('educations', education.id)}
 									/>
 								))}
 							</ContentWrapper>

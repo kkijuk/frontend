@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import AddEducationForm from '../addForms/AddEducationForm';
 
-const EducationItem = ({ data, onEdit, isLastItem }) => {
+const EducationItem = ({ data, isLastItem, onSave, onUpdate, onDelete, onClose }) => {
 	const [isEditMode, setIsEditMode] = useState(false);
 
 	console.log('EducationItem: ', data);
@@ -12,9 +12,12 @@ const EducationItem = ({ data, onEdit, isLastItem }) => {
 			{isEditMode ? (
 				<EditContainer>
 					<AddEducationForm
-					mode='edit'
-					initialData={data}
-					onClose={() => setIsEditMode(false)}
+						mode='edit'
+						initialData={data}
+						onClose={() => setIsEditMode(false)}
+						onSave = {onSave}
+						onUpdate = {(FormData) => onUpdate(FormData)}
+						onDelete={onDelete}
 					/>
 				</EditContainer>
 			) : (

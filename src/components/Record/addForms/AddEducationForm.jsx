@@ -4,7 +4,7 @@ import CustomDropdown from "../CustomDropdown";
 import CustomDatePicker from "../CustomDatePicker";
 
 
-const AddEducationForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData }) => {
+const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
     educationType: "",
     schoolName: "",
@@ -160,37 +160,52 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onDelete, initial
 
         <ButtonRow>
           {mode === "edit" ? (
-                <Button
-                  onClick={()=>{onDelete(id); onClose();}}
-                  style={{
-                    border: "1px solid var(--sub-bu, #FA7C79)",
-                    background: "var(--white, #FFF)",
-                    color: "#FA7C79",
-                  }}
-                >
-                  삭제
-                </Button>
-              ) : (
-                <Button
-                  onClick={onClose}
-                  style={{
-                    border: "1px solid var(--sub-bu, #77AFF2)",
-                    background: "var(--white, #FFF)",
-                    color: "#77AFF2",
-                  }}
-                >
-                  취소
-                </Button>
-            )}
+            <Button
+              onClick={()=>{
+                onDelete(id);
+                onClose();
+              }}
+              style={{
+                border: "1px solid var(--sub-bu, #FA7C79)",
+                background: "var(--white, #FFF)",
+                color: "#FA7C79",
+              }}
+            >
+              삭제
+            </Button>
+          ) : (
+            <Button
+              onClick={onClose}
+              style={{
+                border: "1px solid var(--sub-bu, #77AFF2)",
+                background: "var(--white, #FFF)",
+                color: "#77AFF2",
+              }}
+            >
+              취소
+            </Button>
+        )}
+        {mode === "edit" ? (
           <Button 
             primary 
-            onClick={()=>{
-              onSave(formData); 
+            onClick={() => {
+              onUpdate(formData);
+              onClose();
+            }}
+            style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+            저장
+          </Button>
+          ) : (
+          <Button 
+            primary 
+            onClick={() => {
+              onSave(formData);
               onClose();
             }}
             style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
             추가
           </Button>
+        )}
       </ButtonRow>
       </Row>
     </Container>
