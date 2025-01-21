@@ -1,24 +1,20 @@
+import api from '../../Axios'; 
+
 export const updateRecruitStatus = async (recruitId, status) => {
-	try {
-		const response = await fetch(`${process.env.REACT_APP_API_URL}/recruit/${recruitId}/status`, {
-			method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json',
+  if (!recruitId || !status) {
+    console.error('Invalid parameters for API request');
+    throw new Error('Both recruitId and status are required');
+  }
 
-				'accept': '*/*',
-			},
-			credentials: 'include',
+  try {
+    // Axios로 PATCH 요청
+    const response = await api.patch(`/recruit/${recruitId}/status`, { status });
 
-			body: JSON.stringify({ status }),
-		});
+    console.log('Recruit status updated:', response.data);
 
-		if (!response.ok) {
-			throw new Error('Failed to update status');
-		}
-
-		return await response.json();
-	} catch (error) {
-		console.error('Error updating status:', error);
-		throw error;
-	}
+    return response.data; // API 응답 데이터 반환
+  } catch (error) {
+    console.error('Error updating recruit status:', error.message);
+    throw error; // 에러를 그대로 throw
+  }
 };

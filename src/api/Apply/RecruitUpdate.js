@@ -1,45 +1,40 @@
+import api from '../../Axios'; 
+
 export const updateRecruit = async (recruitId, updatedJob) => {
-	// 로컬 시간을 'YYYY-MM-DD HH:mm' 형식으로 변환
-	const formatToServerTime = (dateTime) => {
-		const localDate = new Date(dateTime);
+  if (!recruitId || !updatedJob) {
+    console.error('Invalid parameters for API request');
+    throw new Error('Both recruitId and updatedJob are required');
+  }
 
-		const year = localDate.getFullYear();
-		const month = String(localDate.getMonth() + 1).padStart(2, '0');
-		const day = String(localDate.getDate()).padStart(2, '0');
-		const hours = String(localDate.getHours()).padStart(2, '0');
-		const minutes = String(localDate.getMinutes()).padStart(2, '0');
+  // 로컬 시간을 'YYYY-MM-DD HH:mm' 형식으로 변환
+  const formatToServerTime = (dateTime) => {
+    const localDate = new Date(dateTime);
 
-		return `${year}-${month}-${day} ${hours}:${minutes}`;
-	};
+    const year = localDate.getFullYear();
+    const month = String(localDate.getMonth() + 1).padStart(2, '0');
+    const day = String(localDate.getDate()).padStart(2, '0');
+    const hours = String(localDate.getHours()).padStart(2, '0');
+    const minutes = String(localDate.getMinutes()).padStart(2, '0');
 
-	const apiUrl = `${process.env.REACT_APP_API_URL}/recruit/${recruitId}`;
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  };
 
-	try {
-		const response = await fetch(apiUrl, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			credentials: 'include',
-			body: JSON.stringify({
-				title: updatedJob.title || null,
-				startTime: updatedJob.startTime ? formatToServerTime(updatedJob.startTime) : null,
-				endTime: updatedJob.endTime ? formatToServerTime(updatedJob.endTime) : null,
-				status: updatedJob.status || null,
-				tags: updatedJob.tags.length > 0 ? updatedJob.tags : null,
-				link: updatedJob.link || null,
-			}),
-		});
+  try {
+    // Axios로 PUT 요청
+    const response = await api.put(`/recruit/${recruitId}`, {
+      title: updatedJob.title || null,
+      startTime: updatedJob.startTime ? formatToServerTime(updatedJob.startTime) : null,
+      endTime: updatedJob.endTime ? formatToServerTime(updatedJob.endTime) : null,
+      status: updatedJob.status || null,
+      tags: updatedJob.tags && updatedJob.tags.length > 0 ? updatedJob.tags : null,
+      link: updatedJob.link || null,
+    });
 
-		if (!response.ok) {
-			const errorMessage = await response.text(); // 서버에서 반환한 에러 메시지 확인
-			console.error('Error message from server:', errorMessage);
-			throw new Error('Failed to update job');
-		}
+    console.log('Recruit updated successfully:', response.data);
 
-		return response.json();
-	} catch (error) {
-		console.error('Error updating recruit:', error.message);
-		throw error;
-	}
+    return response.data; // API 응답 데이터 반환
+  } catch (error) {
+    console.error('Error updating recruit:', error.message);
+    throw error; // 에러를 그대로 throw
+  }
 };
