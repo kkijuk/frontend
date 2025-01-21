@@ -236,6 +236,55 @@ const SocialLogin = () => {
     window.location.href = naverLoginUrl;
   };
 
+  useEffect(() => {
+    const code = new URL(window.location.href).searchParams.get('code');
+    const state = new URL(window.location.href).searchParams.get('state');
+    const provider = new URL(window.location.href).searchParams.get('provider'); // `provider` 추가
+
+    if (code) {
+      const apiUrl =
+        provider === 'kakao'
+          ? `${process.env.REACT_APP_API_URL}/auth/kakao/login?code=${code}`
+          : provider === 'naver'
+          ? `${process.env.REACT_APP_API_URL}/auth/naver/login?code=${code}&state=${state}`
+          : null;
+
+      if (apiUrl) {
+        fetch(apiUrl, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              return response.json().then((err) => {
+                throw new Error(err.message || `HTTP error! status: ${response.status}`);
+              });
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log(`${provider} 로그인 성공:`, data);
+
+            if (data && data.Token) {
+              const { accessToken, refreshToken } = data.Token;
+
+              // 토큰 저장
+              login(accessToken, refreshToken);
+
+              // 홈 화면으로 리다이렉트
+              navigate('/home');
+            } else {
+              console.error('토큰이 없습니다.');
+            }
+          })
+          .catch((error) => {
+            console.error(`${provider} 로그인 실패:`, error.message);
+            alert(`${provider} 로그인 처리 중 문제가 발생했습니다: ${error.message}`);
+          });
+      }
+    }
+  }, [login, navigate]);
+
   return (
     <PageContainer>
       <SvgContainer>
