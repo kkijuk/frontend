@@ -9,6 +9,7 @@ import * as CareerEditAPI from '../api/Mycareer/CareerEdit.js';
 import { CareerEdit, CareerDelete } from '../api/Mycareer/CareerEdit.js';
 import { createPresignedUrl, saveKeyName, deleteS3File } from '../api/Record/s3File.js';
 import { addURL, deleteURL } from '../api/Record/url.js';
+import { updateUserData } from '../api/Record/user.js';
 
 // 기존 코드 유지
 const useRecordStore = create((set, get) => ({
@@ -153,7 +154,7 @@ const useRecordStore = create((set, get) => ({
 		}
 	},
 
-	// 항목 삭제제
+	// 항목 삭제
 	deleteItem: async (category, id) => {
 		try {
 			switch (category) {
@@ -224,6 +225,17 @@ const useRecordStore = create((set, get) => ({
 			}
 		} catch (error) {
 			console.error('Delete Etc Item Error:', error);
+		}
+	},
+
+	updateUserData: async (data) => {
+		try {
+			const response = await updateUserData(data);
+			set((state) => ({
+				userData: { ...state.userData, ...data },
+			}));
+		} catch (error) {
+			console.error('Update User Data Error:', error);
 		}
 	}
 }));

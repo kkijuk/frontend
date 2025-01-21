@@ -79,23 +79,22 @@ const AddFileForm = ({ onClose, onSave}) => {
                             border: "1px solid var(--sub-bu, #77AFF2)",
                             background: "var(--white, #FFF)",
                             color: "#77AFF2",
-                        }}>
-                            취소
+                          }}>
+                              취소
                         </Button>
 
                         <Button
-                        primary
-                        onClick={() => {
-                            onSave(formData); // 저장 api 호출
-                            onClose(); 
-                          }}
-                        style={{
-                            border: "1px solid var(--main-01, #3AAF85)",
-                            background: "var(--main-01, #3AAF85)",
-                            color: "#FFFFFF",
-                        }}
-                        >
-                        추가
+                          primary
+                          onClick={() => {
+                              onSave(formData); // 저장 api 호출
+                              onClose(); 
+                            }}
+                          style={{
+                              border: "1px solid var(--main-01, #3AAF85)",
+                              background: "var(--main-01, #3AAF85)",
+                              color: "#FFFFFF",
+                          }}>
+                          추가
                         </Button>
                     </ButtonRow>
                 </Row>

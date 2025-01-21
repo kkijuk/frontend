@@ -22,6 +22,7 @@ import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal
 import ScrollNavigator from '../../components/Record/ScrollNavigator';
 import FileItem from '../../components/Record/readOnlyItems/FileItem';
 import Profile from '../../components/Record/Profile';
+import EmailAndAddress from '../../components/Record/EmailAndAddress';
 
 const History = () => {
 	const store = useRecordStore();
@@ -34,6 +35,7 @@ const History = () => {
 		recordId,
 		addEtcItem,
 		deleteEtcItem,
+		updateUserData,
 		//사용자 정보
 		userData,
 		// ** 학력
@@ -131,15 +133,15 @@ const History = () => {
 	});
 
 	//수정 폼 토글
-	const toggleEditForm = (category, id = null) => {
-		setOpenedForms((prev) => ({
-			...prev,
-			edit: {
-				...prev.edit,
-				[category]: prev.edit[category] === id ? null : id,
-			},
-		}));
-	};
+	// const toggleEditForm = (category, id = null) => {
+	// 	setOpenedForms((prev) => ({
+	// 		...prev,
+	// 		edit: {
+	// 			...prev.edit,
+	// 			[category]: prev.edit[category] === id ? null : id,
+	// 		},
+	// 	}));
+	// };
 
 	//추가 폼 토글
 	const toggleAddForm = (category) => {
@@ -278,13 +280,49 @@ const History = () => {
 		}
 	}
 
-	// 프로필 사진 변경 관련 로직
+	// 인적사항 변경 관련 로직
+	// (1) 상태 정의
+	const [editableUserData, setEditableUserData] = useState({
+		profileImageUrl: profile,
+		address: address,
+		//email: email,
+	});
+
+	//(2) 프로필 사진 변경 관련 로직
 	const [profileBlob, setProfileBlob] = useState(profile);
 	const handleProfileChange = (file) => {
 		setProfileBlob(file);
-		// 사용자 정보 변경 api 호출
+		setEditableUserData((prev) => ({
+			...prev,
+			profileImageUrl: file,
+		}));
 		console.log('Profile Image changed:', file);
 	}
+
+	//(3) 이메일 또는 주소 변경 시
+	const handleEmailOrAddressChange = (data) => {
+		// if(data.type === 'email'){
+		// 	setEditableUserData((prev) => ({
+		// 		...prev,
+		// 		email: data.data
+		// 	}));
+		// } 
+		
+		if(data.type === 'address'){
+			setEditableUserData((prev) => ({
+				...prev,
+				address: data.data
+			}));
+		}
+	};
+
+	// (4) editableUserData 변경 시 서버에 반영
+	useEffect(() => {
+		const updateData = async () => {
+			await updateUserData(editableUserData);
+		};
+		updateData();
+	}, [editableUserData]);
 
 	return (
 		<>
@@ -337,36 +375,11 @@ const History = () => {
 
 								<InfoLabel>주소</InfoLabel>
 								<InfoValue>
-									{/* 주소가 NULL 인 경우 */}
-									{!address && !isEditingAddress && (
-										<NullModeAddress onClick={handleAddressPlaceholderClick}>
-											주소를 입력하세요
-										</NullModeAddress>
-										)}
-
-										{/* 주소가 NULL이 아닌데 편집 모드가 아닐 때 */}
-										{address && !isEditingAddress && (
-										<HoverWrapper>
-											<span>{address}</span>
-											<EditButton onClick={handleEditAddressClick}>수정</EditButton>
-										</HoverWrapper>
-										)}
-
-										{/* 편집 모드일 때 */}
-										{isEditingAddress && (
-										<EditAddressContainer>
-											<AddressInput
-											type="text"
-											value={tempAddress}
-											onChange={handleAddressInputChange}
-											placeholder="주소를 입력하세요"
-											/>
-											<ButtonGroup>
-												<SaveButton onClick={handleUpdateAddress}>수정</SaveButton>
-												<CancelButton onClick={handleCancelEdit}>취소</CancelButton>
-											</ButtonGroup>
-										</EditAddressContainer>
-										)}
+									<EmailAndAddress
+										type="address"
+										data={address}
+										onSave={(data) => handleEmailOrAddressChange(data)}
+									/>
 								</InfoValue>
 							</InfoTable>
 						</UserInfoWrapper>
@@ -601,14 +614,15 @@ const History = () => {
 								{openedForms.add.files &&
 									<AddFileForm
 										onClose={() => toggleAddForm('files')}
-										// onSave={} s3저장 함수 호출(useRecordStore)
+										onSave={(data) => addEtcItem(data)}
+										
 								/>}
 								<div style={{height:'50px'}}></div>
 								{files.map((file, index)=>{
 									<FileItem
 										data={file}
-										// onDown={} s3조회 함수 호출(useRecordStore)
 										// onDelete={} s3삭제 함수 호출(useRecordStore)
+										onDelete={(data) => deleteEtcItem(data)}
 									/>
 								})}
 							</ContentWrapper>
