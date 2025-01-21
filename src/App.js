@@ -68,6 +68,8 @@ const App = () => {
 
 	const hideHeaderFooterRoutes = ['/commingsoon', '/', '/signup', '/signupinterest', '/signupsuccess'];
 	const hideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
+	// GA4 초기화
+	useGA4();
 
 	useEffect(() => {
 		setupApiInterceptors(navigate);
@@ -82,14 +84,14 @@ const App = () => {
 					<Route path="/mycareer_search" element={<MycareerSearch />} />
 					<Route path="/home" element={<Home />} />
 					<Route path="/" element={<SocialLogin />} />
-					<Route path="/login/oauth2/code/kakao" element={<SocialRedirect provider="kakao" />} />
-					<Route path="/login/oauth2/code/naver" element={<SocialRedirect provider="naver" />} />
+
 					<Route path="/signup" element={<NewSignup />} />
 					<Route path="/signupsuccess" element={<SignupSuccess />} />
 					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/mycareer" element={<MyCareer />} />
 					<Route path="/signupinterest" element={<SignupInterest />} />
-
+					<Route path="/login/oauth2/code/kakao" element={<SocialRedirect provider="kakao" />} />
+					<Route path="/login/oauth2/code/naver" element={<SocialRedirect provider="naver" />} />
 					<Route path="/history2" element={<History />} />
 					<Route element={<SubNav />}>
 						<Route path="/history" element={<History />} />
