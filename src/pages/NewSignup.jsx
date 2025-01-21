@@ -59,7 +59,10 @@ const NewSignup = () => {
   });
 
   const handleNextStep = () => setStep(2);
-  const handleSignup = () => console.log('회원가입 완료');
+  const handleSignup = () => {
+    console.log('회원가입 완료');
+    navigate('/signupsuccess'); // 회원가입 완료 시 signupsuccess 페이지로 이동
+  };
 
   return (
     <div>
