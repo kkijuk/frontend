@@ -148,7 +148,7 @@ export default function AuthenticationAccount() {
 						<Email></Email>
 						<KakaoTag>카카오</KakaoTag>
 					</EmailTextBox>
-					<Input>이메일을 입력하세요</Input>
+					<Input placeholder="이메일을 입력하세요" value={inputEmail} onChange={handleInputChange} />{' '}
 				</EmailBox>
 				<Box height={50}></Box>
 				<Button onclick={handleSubmit}>확인</Button>
