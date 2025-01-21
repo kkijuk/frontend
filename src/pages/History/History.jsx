@@ -32,6 +32,8 @@ const History = () => {
 		updateItem,
 		deleteItem,
 		recordId,
+		addEtcItem,
+		deleteEtcItem,
 		//사용자 정보
 		userData,
 		// ** 학력
@@ -45,6 +47,7 @@ const History = () => {
 		licenses, // 자격증
 		awards, // 수상
 		skills, // 스킬
+		files,
 		// 업데이트 날짜
 		updated_at,
 		status,
@@ -148,6 +151,9 @@ const History = () => {
 			},
 		}));
 	};
+
+	// 내 커리어 관련 활동 추가 모달 관리
+	const [isAddCareerModalOpen, setIsAddCareerModalOpen] = useState(false);
 
 	// 데이터 분류
 	const licenseSection = licenses.filter(item => item.licenseTag === 'LICENSE');
@@ -276,6 +282,7 @@ const History = () => {
 	const [profileBlob, setProfileBlob] = useState(profile);
 	const handleProfileChange = (file) => {
 		setProfileBlob(file);
+		// 사용자 정보 변경 api 호출
 		console.log('Profile Image changed:', file);
 	}
 
@@ -300,6 +307,11 @@ const History = () => {
 				>
 					<div>
 						{/* <AddCareerModal></AddCareerModal> */}
+						{isAddCareerModalOpen &&
+							<AddCareerModal
+								onClose={() => setIsAddCareerModalOpen(null)}
+							/>
+						}
 						<div style={{display:'flex', marginBlock:'30px'}}>
 						{/* <ProfileBox/> */}
 						<Profile
@@ -394,7 +406,7 @@ const History = () => {
 								key = {sections[2].id}
 							>
 								<h2>경력</h2>
-								{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+								<AddButton onClick={()=>setIsAddCareerModalOpen(true)}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{employments.map((employment, index) => (
@@ -414,7 +426,7 @@ const History = () => {
 								key = {sections[3].id}
 							>
 								<h2>활동 및 경험</h2>
-								{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+								<AddButton onClick={()=>setIsAddCareerModalOpen(true)}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 							{activitiesAndExperiences.map((activity, index) => (
@@ -434,7 +446,7 @@ const History = () => {
 								key = {sections[4].id}
 							>
 								<h2>프로젝트</h2>
-								{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+								<AddButton onClick={()=>setIsAddCareerModalOpen(true)}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{projects.map((project, index) => (
@@ -454,7 +466,7 @@ const History = () => {
 								key = {sections[5].id}
 							>
 								<h2>교육</h2>
-								{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+								<AddButton onClick={()=>setIsAddCareerModalOpen(true)}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{eduCareers.map((eduCareer, index) => (
