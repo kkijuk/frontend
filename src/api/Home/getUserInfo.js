@@ -1,20 +1,14 @@
+import api from '../../Axios'; 
+
 export const getUserInfo = async () => {
-	const apiUrl = `${process.env.REACT_APP_API_URL}/dashboard/user-info`;
+  try {
+    // Axios GET 요청
+    const response = await api.get('/dashboard/user-info');
 
-	try {
-		const response = await fetch(apiUrl, {
-			credentials: 'include', // 쿠키와 인증 정보를 함께 보냄
-		});
-
-		if (response.ok) {
-			const data = await response.json();
-			return data;
-		} else {
-			console.error('Failed to fetch data:', response.status);
-			return null;
-		}
-	} catch (error) {
-		console.error('Error fetching data:', error);
-		return null;
-	}
+    // 응답 데이터 반환
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user info:', error.message);
+    return null;
+  }
 };
