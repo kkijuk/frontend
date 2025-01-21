@@ -80,11 +80,16 @@ const History = () => {
 	// 이력서 불러오기
 	useEffect(() => {
 		const fetchData = async () => {
-			await fetchRecord();
-			if(error === 'not created'){
+			try{
+				await fetchRecord();
+				if(error === 'not created'){
+					setShowCreateButton(true);
+				}
+				console.log('Record Id:', recordId);
+			} catch (error) {
+				console.error('Error: fetchRecord: ', error);
 				setShowCreateButton(true);
 			}
-			console.log('Record Id:', recordId);
 		}
 		fetchData();
 	}, [fetchRecord, recordId, error]);

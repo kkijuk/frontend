@@ -89,7 +89,6 @@ const App = () => {
 					<Route path="/mycareer" element={<MyCareer />} />
 					<Route path="/signupinterest" element={<SignupInterest />} />
 
-					<Route path="/history2" element={<History/>} />
 					<Route element={<SubNav />}>
 						<Route path="/history" element={<History/>} />
 						<Route element={<ViewOptions />}>
@@ -97,7 +96,6 @@ const App = () => {
 							<Route path="/history/others/:id" element={<Others />} />
 							<Route path="/history/list/:state" element={<List />} />
 						</Route>
-						{/* <Route path="/history" element={<History/>} /> */}
 						<Route path="/history/portfolio" element={<Portfolio />} />
 					</Route>
 					<Route path="/history/master/rewrite" element={<MasterRewrite />} />
