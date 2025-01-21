@@ -4,6 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
 
 import queryClient from './api/queryClient/queryClient';
+
 import api, {setupApiInterceptors} from './Axios'
 import SocialRedirect from './components/Redirect';
 import Home from './pages/Home';
@@ -34,7 +35,8 @@ import Select from './pages/History/Select';
 import AddApply from './pages/History/AddApply';
 import Portfolio from './pages/History/Portfolio';
 import ApplyDetail from './pages/Apply/ApplyDetail';
-import AuthenticationAccount from './pages/Mypage/AuthenticationAccount';
+import AuthenticationAccount from './pages/Mypage/Confirm';
+
 import AccountMangement from './pages/Mypage/AccountManagement';
 import MyInformation from './pages/Mypage/Myinformation';
 import Field from './pages/Mypage/Field';
@@ -67,6 +69,7 @@ const App = () => {
 	const hideHeaderFooterRoutes = ['/commingsoon', '/', '/signup', '/signupinterest', '/signupsuccess'];
 	const hideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
 
+
 	// GA4 초기화
 	useGA4();
 
@@ -83,14 +86,13 @@ const App = () => {
 					<Route path="/mycareer_search" element={<MycareerSearch />} />
 					<Route path="/home" element={<Home />} />
 					<Route path="/" element={<SocialLogin />} />
-		
+
 					<Route path="/signup" element={<NewSignup />} />
 					<Route path="/signupsuccess" element={<SignupSuccess />} />
 					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/mycareer" element={<MyCareer />} />
 					<Route path="/signupinterest" element={<SignupInterest />} />
-					<Route path="/login/oauth2/code/kakao" element={<SocialRedirect provider="kakao" />} />
-					<Route path="/login/oauth2/code/naver" element={<SocialRedirect provider="naver" />} />
+
 					<Route path="/history2" element={<History />} />
 					<Route element={<SubNav />}>
 						<Route path="/history" element={<History />} />
