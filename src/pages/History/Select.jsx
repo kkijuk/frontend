@@ -2,72 +2,26 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Layout from "./Layout";
 import SvgIcon from "../../components/shared/SvgIcon";
+import { getValidRecruitList } from "../../api/Apply/RecruitValid";
 
 
 const Select = () => {
 
-  const dummyData = [
-    {
-      id: 1,
-      title: "[00기업] 2024 하반기 신입사원 모집",
-      dueDate: "D-10",
-      tag: ["신입", "정규직","서비스기획","서비스기획"],
-      reviewTag: "1차 서류면접",
-    },
-    {
-      id: 2,
-      title: "[XX기업] 데이터 분석 인턴 채용",
-      dueDate: "D-7",
-      tag: ["인턴", "데이터 분석"],
-      reviewTag: "2차 면접",
-    },
-    {
-      id: 3,
-      title: "[ABC기업] UX/UI 디자이너 채용",
-      dueDate: "D-5",
-      tag: ["디자인", "UX/UI","서비스기획","서비스기획"],
-      reviewTag: "포트폴리오 검토",
-    },
-    {
-      id: 4,
-      title: "[00기업] 2024 하반기 인턴 채용",
-      dueDate: "D-2",
-      tag: ["인턴"],
-      reviewTag: "1차 서류면접",
-    },
-    {
-      id: 5,
-      title: "[ZZ기업] IT 개발자 모집",
-      dueDate: "D-3",
-      tag: ["개발", "정규직"],
-      reviewTag: "코딩 테스트",
-    },
-    {
-      id: 6,
-      title: "[FF기업] 마케팅 채용 공고",
-      dueDate: "D-12",
-      tag: ["마케팅"],
-      reviewTag: "1차 면접",
-    },
-    {
-      id: 7,
-      title: "[JK기업] 2024 기술직 인턴 모집",
-      dueDate: "D-8",
-      tag: ["인턴", "기술직"],
-      reviewTag: "2차 서류 평가",
-    },
-    {
-      id: 8,
-      title: "[LL기업] 2024 경영지원 신입사원 채용",
-      dueDate: "D-4",
-      tag: ["신입", "경영지원"],
-      reviewTag: "최종 면접",
-    },
-  ];
+  const [recruitList, setRecruitList] = useState([]);
+  useEffect(() => {
+    const fetchRecruitList = async () => {
+      try {
+        const response = await getValidRecruitList();
+        setRecruitList(response.data.unapplied.recruits);
+      } catch (error) {
+        console.error("Failed to fetch recruit list:", error);
+      }
+    };
+    fetchRecruitList();
+  }, []);
   
   // 공고 선택 상태
   const [selectedJob, setSelectedJob] = useState(dummyData.length > 0 ? dummyData[0].id : null);
-
   const handleSelectJob = (id) => {
     if (selectedJob === id) {
       setSelectedJob(null); // 선택 해제
@@ -78,6 +32,15 @@ const Select = () => {
 
   useEffect(() => {console.log("현재 선택:", selectedJob)}, [selectedJob]);
 
+
+  //기한 계산
+  const calculateDaysLeft = (endTime) => {
+    const endDate = new Date(endTime);
+    const currentDate = new Date();
+    const timeDiff = endDate - currentDate;
+    const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    return `D-${daysLeft}`;
+  };
 
   return (
     <Layout title="Select">
@@ -93,24 +56,28 @@ const Select = () => {
           </ColumnHeaderSection>
 
           <ListSection>
-            {dummyData.map((data) => (
+            {recruitList.map((recruit) => (
               <ListItem
-                key={data.id}
-                onClick={() => handleSelectJob(data.id)}
-                isSelected={selectedJob === data.id}
+                key={recruit.id}
+                onClick={() => handleSelectJob(recruit.id)}
+                isSelected={selectedJob === recruit.id}
               >
                   <Title>
-                    {data.title.length > 20 ? `${data.title.slice(0, 20)}...` : data.title}
+                    {recruit.title.length > 20 ? `${recruit.title.slice(0, 20)}...` : recruit.title}
                   </Title>
-                  <DueDate isUrgent={parseInt(data.dueDate.replace("D-", "")) <= 7}>
-                    {data.dueDate}
+                  <DueDate isUrgent={parseInt(calculateDaysLeft(recruit.endTime).replace("D-", "")) <= 7}>
+                    {calculateDaysLeft(recruit.endTime)}
                   </DueDate>
                   <TagContainer>
-                    {data.tag.map((tag) => (
-                      <Tag>{tag}</Tag>
+                    {recruit.tags.map((tag) => (
+                      <Tag key={tag}>{tag}</Tag>
                     ))}
                   </TagContainer>
-                  <JobLinkBox>
+                  <JobLinkBox 
+                    onClick={
+                      (e) => { e.stopPropagation(); 
+                      window.open(recruit.link, '_blank'); 
+                    }}>
                     공고 보러가기
                     <SvgIcon name="jobLink" size={15} color="var(--gray-02, #707070)"/>
                   </JobLinkBox>
