@@ -101,8 +101,12 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
     { label: '취준생', value: 'JOB_SEEKER' },
     { label: '대학 재/휴학생', value: 'COLLEGE_STUDENT' },
     { label: '직장인', value: 'EMPLOYEE' },
+    { label: '대학 졸업(유예)생', value: 'COLLEGE_GRADUATE' },
+    { label: '프리랜서', value: 'FREELANCER' },
+    { label: '창업/사업 중', value: 'ENTREPRENEUR' },
     { label: '기타', value: 'OTHER' },
   ];
+  
 
   const handleStatusClick = (status) => {
     if (selectedStatuses.includes(status)) {
@@ -149,28 +153,23 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
   return (
     <StepTwoContainer>
       <Title>마지막 단계예요! 당신은 지금 어떤 상태인가요?</Title>
-      <div style={{ marginBottom: '20px' }}>
+      <div className="status-container">
         {statuses.map((status) => (
           <button
             key={status.value}
+            className={`status-button ${
+              selectedStatuses.includes(status.value) ? 'active' : ''
+            }`}
             onClick={() => handleStatusClick(status.value)}
-            style={{
-              backgroundColor: selectedStatuses.includes(status.value) ? '#3AAF85' : '#F5F5F5',
-              color: selectedStatuses.includes(status.value) ? 'white' : '#707070',
-              margin: '5px',
-              padding: '10px 20px',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              transition: 'all 0.3s',
-            }}
           >
             {status.label}
           </button>
         ))}
       </div>
       {showErrorMessage && <ErrorMessage>최대 2개까지 선택 가능해요</ErrorMessage>}
-      <CompleteButton onClick={handleSubmit}>완료</CompleteButton>
+      <ButtonContainer>
+        <CompleteButton onClick={handleSubmit}>완료</CompleteButton>
+      </ButtonContainer>
     </StepTwoContainer>
   );
 };

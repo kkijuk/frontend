@@ -14,7 +14,7 @@ const Container = styled.div`
 
 const TitleContainer = styled.div`
   position: relative;
-  display: inline-block; 
+  display: inline-block;
   text-align: center;
 `;
 
@@ -44,9 +44,9 @@ const StepBar = styled.div`
 
 const BackButton = styled(BackButtonSVG)`
   position: absolute;
-  left: -126px; /* 제목 기준 왼쪽으로 50px 떨어지도록 설정 */
-  top: 48%; 
-  transform: translateY(-50%); 
+  left: -126px;
+  top: 48%;
+  transform: translateY(-50%);
   cursor: pointer;
 `;
 
@@ -61,26 +61,57 @@ const NewSignup = () => {
   const navigate = useNavigate();
 
   const handleNextStep = () => setStep(2);
+  const handlePrevStep = () => setStep(1);
   const handleSignup = () => {
     console.log('회원가입 완료');
-    navigate('/signupsuccess'); // 회원가입 완료 시 signupsuccess 페이지로 이동
+    navigate('/signupsuccess');
   };
 
+  useEffect(() => {
+    const preventScroll = (e) => e.preventDefault();
+    const $body = document.querySelector('body');
+    $body.style.overflow = 'hidden';
+    $body.addEventListener('wheel', preventScroll, { passive: false });
+    $body.addEventListener('touchmove', preventScroll, { passive: false });
+
+    return () => {
+      $body.removeEventListener('wheel', preventScroll);
+      $body.removeEventListener('touchmove', preventScroll);
+      $body.style.overflow = '';
+    };
+  }, []);
+
   return (
-    <div>
+    <Container>
+      <TitleContainer>
+        {step === 2 && <BackButton onClick={handlePrevStep} />}
+        <Title>회원가입</Title>
+      </TitleContainer>
+      <StepBarContainer>
+        <StepBar active={step === 1} />
+        <StepBar active={step === 2} />
+      </StepBarContainer>
       {step === 1 && (
         <SignupStepOne
           agreements1={agreements.isTermsAgreed}
-          setAgreements1={(value) => setAgreements({ ...agreements, isTermsAgreed: value })}
+          setAgreements1={(value) =>
+            setAgreements({ ...agreements, isTermsAgreed: value })
+          }
           agreements2={agreements.isPrivacyAgreed}
-          setAgreements2={(value) => setAgreements({ ...agreements, isPrivacyAgreed: value })}
+          setAgreements2={(value) =>
+            setAgreements({ ...agreements, isPrivacyAgreed: value })
+          }
           agreements3={agreements.isMarketingAgreed}
-          setAgreements3={(value) => setAgreements({ ...agreements, isMarketingAgreed: value })}
+          setAgreements3={(value) =>
+            setAgreements({ ...agreements, isMarketingAgreed: value })
+          }
           handleNextStep={handleNextStep}
         />
       )}
-      {step === 2 && <SignupStepTwo handleSignup={handleSignup} agreements={agreements} />}
-    </div>
+      {step === 2 && (
+        <SignupStepTwo handleSignup={handleSignup} agreements={agreements} />
+      )}
+    </Container>
   );
 };
 
