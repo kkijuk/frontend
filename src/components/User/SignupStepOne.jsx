@@ -160,34 +160,8 @@ const AllAgreementContainer = styled.div`
   }
 `;
 
-
-const SignupStepOne = ({
-  agreements1,
-  setAgreements1,
-  agreements2,
-  setAgreements2,
-  agreements3,
-  setAgreements3,
-  handleNextStep,
-}) => {
+const SignupStepOne = ({ agreements1, setAgreements1, agreements2, setAgreements2, agreements3, setAgreements3, handleNextStep }) => {
   const [modalType, setModalType] = useState(null);
-  const [allChecked, setAllChecked] = useState(false);
-
-  const handleModal = (type) => {
-    setModalType(type);
-  };
-
-  const closeModal = () => {
-    setModalType(null);
-  };
-
-  const handleAllChecked = () => {
-    const newCheckedState = !allChecked;
-    setAllChecked(newCheckedState);
-    setAgreements1(newCheckedState);
-    setAgreements2(newCheckedState);
-    setAgreements3(newCheckedState);
-  };
 
   return (
     <FormContainer>
@@ -198,41 +172,41 @@ const SignupStepOne = ({
 
 
       {/* 모두 동의 */}
-	  <AllAgreementContainer>
+	    <AllAgreementContainer>
         <input
           type="checkbox"
-          checked={allChecked}
-          onChange={handleAllChecked}
+          checked={agreements1 && agreements2 && agreements3}
+          onChange={(e) => {
+            const checked = e.target.checked;
+            setAgreements1(checked);
+            setAgreements2(checked);
+            setAgreements3(checked);
+          }}
         />
         <label>모두 동의</label>
       </AllAgreementContainer>
-	  <Divider />
-      {/* 개별 동의 항목 */}
       <Agreement
         checked={agreements1}
         setChecked={setAgreements1}
-        label="이용약관 동의(필수)"
-        handleModal={() => handleModal(1)}
+        label="이용약관 동의 (필수)"
+        handleModal={() => setModalType(1)}
       />
       <Agreement
         checked={agreements2}
         setChecked={setAgreements2}
-        label="개인정보 수집 및 이용동의(필수)"
-        handleModal={() => handleModal(2)}
+        label="개인정보 동의 (필수)"
+        handleModal={() => setModalType(2)}
       />
       <Agreement
         checked={agreements3}
         setChecked={setAgreements3}
-        label="마케팅 활용동의(선택)"
-        handleModal={() => handleModal(3)}
+        label="마케팅 활용 동의 (선택)"
+        handleModal={() => setModalType(3)}
       />
-
       <StyledButton onClick={handleNextStep}>다음</StyledButton>
-
-      {/* 모달 */}
-      {modalType === 1 && <AgreementModal1 show={true} handleModal={closeModal} />}
-      {modalType === 2 && <AgreementModal2 show={true} handleModal={closeModal} />}
-      {modalType === 3 && <AgreementModal3 show={true} handleModal={closeModal} />}
+      {modalType === 1 && <AgreementModal1 />}
+      {modalType === 2 && <AgreementModal2 />}
+      {modalType === 3 && <AgreementModal3 />}
     </FormContainer>
   );
 };

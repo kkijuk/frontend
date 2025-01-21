@@ -28,11 +28,11 @@ const ChartWrapper = styled.div`
 	right: 0px; // 오른쪽 여백 조정
 `;
 
-const CareerTimeline = ({ data }) => {
+const CareerTimeline = () => {
 	return (
 		<TimelineBox>
 			<ChartWrapper>
-				<TimelineChart data={data} />
+				<TimelineChart />
 			</ChartWrapper>
 		</TimelineBox>
 	);
