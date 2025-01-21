@@ -1,24 +1,17 @@
+import api from '../../Axios'; 
+
 export const getRecruitListAfterDate = async (date) => {
 	try {
 		console.log('Fetching recruit list after date:', date); // 디버깅용 로그 추가
 
-		const response = await fetch(
-			`${process.env.REACT_APP_API_URL}/recruit/list/after?time=${encodeURIComponent(date)}`,
-			{
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json; charset=utf-8',
-					'accept': '*/*',
-				},
-				credentials: 'include',
+		// Axios GET 요청
+		const response = await api.get(`/recruit/list/after`, {
+			params: {
+				time: date, // 쿼리 파라미터 추가
 			},
-		);
+		});
 
-		if (!response.ok) {
-			throw new Error('Failed to fetch recruit list');
-		}
-
-		const data = await response.json();
+		const data = response.data;
 		console.log('Recruit list fetched:', data); // 디버깅용 로그 추가
 
 		// recruitData의 recruits 배열이 비어있는 경우 처리
@@ -28,7 +21,7 @@ export const getRecruitListAfterDate = async (date) => {
 
 		return data;
 	} catch (error) {
-		console.error('Error fetching recruit list:', error);
+		console.error('Error fetching recruit list:', error.message);
 		throw error;
 	}
 };

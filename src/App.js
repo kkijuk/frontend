@@ -4,9 +4,9 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
 
 import queryClient from './api/queryClient/queryClient';
-import SocialRedirect from './components/Redirect';
-import api, { setupApiInterceptors } from './Axios';
 
+import api, {setupApiInterceptors} from './Axios'
+import SocialRedirect from './components/Redirect';
 import Home from './pages/Home';
 import MyPage from './pages/Mypage/Mypage';
 import MyCareer from './pages/Mycareer/Mycareer';
@@ -14,7 +14,7 @@ import MycareerSearch from './pages/Mycareer/Mycareer_search';
 import ApplySchedule from './pages/Apply/ApplySchedule';
 import ApplyStatus from './pages/Apply/ApplyStatus';
 import Community from './pages/Community';
-
+import useGA4 from './hooks/useGA4';
 import SocialLogin from './pages/SocialLogin';
 import NewSignup from './pages/NewSignup';
 import MycareerDetail from './pages/Mycareer/MycareerDetail';
@@ -68,6 +68,10 @@ const App = () => {
 
 	const hideHeaderFooterRoutes = ['/commingsoon', '/', '/signup', '/signupinterest', '/signupsuccess'];
 	const hideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
+	// GA4 초기화
+	useGA4();
+
+
 	// GA4 초기화
 	useGA4();
 
