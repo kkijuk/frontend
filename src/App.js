@@ -13,7 +13,7 @@ import MycareerSearch from './pages/Mycareer/Mycareer_search';
 import ApplySchedule from './pages/Apply/ApplySchedule';
 import ApplyStatus from './pages/Apply/ApplyStatus';
 import Community from './pages/Community';
-
+import useGA4 from './hooks/useGA4';
 import SocialLogin from './pages/SocialLogin';
 import NewSignup from './pages/NewSignup';
 import MycareerDetail from './pages/Mycareer/MycareerDetail';
