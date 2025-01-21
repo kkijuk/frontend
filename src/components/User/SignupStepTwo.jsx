@@ -107,11 +107,11 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
     { label: '기타', value: 'OTHER' },
   ];
   
-
+// 나중에 2개로 수정하기 에러 메세지도 
   const handleStatusClick = (status) => {
     if (selectedStatuses.includes(status)) {
       setSelectedStatuses(selectedStatuses.filter((s) => s !== status)); // 선택 해제
-    } else if (selectedStatuses.length < 2) {
+    } else if (selectedStatuses.length < 1) {
       setSelectedStatuses([...selectedStatuses, status]); // 상태 추가
     } else {
       setShowErrorMessage(true); // 에러 메시지 표시
@@ -170,7 +170,7 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
           </button>
         ))}
       </div>
-      {showErrorMessage && <ErrorMessage>최대 2개까지 선택 가능해요</ErrorMessage>}
+      {showErrorMessage && <ErrorMessage>최대 1개까지 선택 가능해요</ErrorMessage>}
       <ButtonContainer>
         <CompleteButton onClick={handleSubmit}>완료</CompleteButton>
       </ButtonContainer>
