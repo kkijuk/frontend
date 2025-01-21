@@ -121,19 +121,23 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
 
   const handleSubmit = async () => {
     if (selectedStatuses.length === 0) {
-      alert('최소 1개의 상태를 선택해주세요.');
+      alert('직업을 선택해주세요.');
       return;
     }
-
+  
     try {
+      const payload = {
+        isTermsAgreed: agreements.isTermsAgreed,
+        isPrivacyAgreed: agreements.isPrivacyAgreed,
+        isMarketingAgreed: agreements.isMarketingAgreed ? 'BOTH' : 'NONE',
+        memberJob: selectedStatuses[0], // 단일 선택
+      };
+  
+      console.log('요청 데이터:', payload);
+  
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/member/profile`,
-        {
-          isTermsAgreed: agreements.isTermsAgreed,
-          isPrivacyAgreed: agreements.isPrivacyAgreed,
-          isMarketingAgreed: agreements.isMarketingAgreed ? 'BOTH' : null,
-          memberJob: selectedStatuses.join(', '), // 선택한 상태를 문자열로 변환
-        },
+        payload,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -141,12 +145,12 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
           },
         }
       );
-
-      console.log('추가 정보 입력 성공:', response.data);
+  
+      console.log('회원가입 성공:', response.data);
       handleSignup();
     } catch (error) {
-      console.error('추가 정보 입력 실패:', error.message);
-      alert('추가 정보 입력 중 오류가 발생했습니다. 다시 시도해주세요.');
+      console.error('회원가입 실패:', error.message);
+      alert('회원가입 중 오류가 발생했습니다. 다시 시도해주세요.');
     }
   };
 
