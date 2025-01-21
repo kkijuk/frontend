@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import queryClient from './api/queryClient/queryClient';
 import api, {setupApiInterceptors} from './Axios'
-
+import SocialRedirect from './components/Redirect';
 import Home from './pages/Home';
 import MyPage from './pages/Mypage/Mypage';
 import MyCareer from './pages/Mycareer/Mycareer';
@@ -89,7 +89,8 @@ const App = () => {
 					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/mycareer" element={<MyCareer />} />
 					<Route path="/signupinterest" element={<SignupInterest />} />
-
+					<Route path="/login/oauth2/code/kakao" element={<SocialRedirect provider="kakao" />} />
+					<Route path="/login/oauth2/code/naver" element={<SocialRedirect provider="naver" />} />
 					<Route path="/history2" element={<History />} />
 					<Route element={<SubNav />}>
 						<Route path="/history" element={<History />} />
