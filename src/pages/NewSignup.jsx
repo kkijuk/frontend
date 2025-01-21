@@ -58,6 +58,8 @@ const NewSignup = () => {
     isMarketingAgreed: false,
   });
 
+  const navigate = useNavigate();
+
   const handleNextStep = () => setStep(2);
   const handleSignup = () => {
     console.log('회원가입 완료');
