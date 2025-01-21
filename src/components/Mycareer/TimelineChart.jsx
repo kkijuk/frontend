@@ -32,7 +32,9 @@ const TimelineChart = () => {
 
 					const data = chartContext.w.config.series[seriesIndex].data[dataPointIndex];
 					if (data && data.careerId) {
-						navigate(`/mycareer/${data.category.categoryKoName}/${data.careerId}`);
+						navigate(`/mycareer/${data.category.categoryKoName}/${data.careerId}`, {
+							state: { careerId: data.careerId, category: data.category.categoryKoName },
+						});
 					} else {
 						console.error('Invalid data or careerId not found');
 					}
@@ -100,8 +102,6 @@ const TimelineChart = () => {
 		return <div>Error loading timeline data.</div>;
 	}
 
-	console.log('rawData', rawData);
-
 	const formattedData = rawData?.data.map((item) => ({
 		careerId: item.careerId,
 		category: item.category,
@@ -109,11 +109,8 @@ const TimelineChart = () => {
 		name: item.title,
 		fillColor: getColorByCategory(item.category.categoryKoName) || '#707070',
 	}));
-	console.log('formattedData', formattedData);
 
 	const distributedData = distributeTimelinePositions(formattedData);
-
-	console.log('distributedData', distributedData);
 
 	const series = [
 		{

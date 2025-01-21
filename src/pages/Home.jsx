@@ -12,6 +12,7 @@ import Banner1SVG from '../assets/banner1.svg';
 import Banner2SVG from '../assets/banner2.svg';
 import Banner3SVG from '../assets/banner3.svg';
 import Box from '../components/Home/Box';
+import CareerTimeline from '../components/Mycareer/CareerTimeline';
 
 const Body = styled.div`
 	width: 820px;
@@ -140,9 +141,7 @@ export default function Home() {
 		<Body>
 			<Container1>
 				<LoginProfileBox />
-				<div onClick={handleTimelineClick}>
-					<Box></Box>
-				</div>
+				<CareerTimeline />
 			</Container1>
 			{/* <Banner banners={bannerDummy} /> */}
 			<BannerComponent banners={bannerDummy} />

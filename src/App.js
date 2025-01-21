@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'; 
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
@@ -64,10 +64,13 @@ const App = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const hideHeaderFooterRoutes = ['/commingsoon', '/', '/signup', '/signupinterest','/signupsuccess' ];
+	const hideHeaderFooterRoutes = ['/commingsoon', '/', '/signup', '/signupinterest', '/signupsuccess'];
 	const hideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
 
-	useEffect(()=>{
+	// GA4 초기화
+	useGA4();
+
+	useEffect(() => {
 		setupApiInterceptors(navigate);
 	}, [navigate]);
 
@@ -87,9 +90,9 @@ const App = () => {
 					<Route path="/mycareer" element={<MyCareer />} />
 					<Route path="/signupinterest" element={<SignupInterest />} />
 
-					<Route path="/history2" element={<History/>} />
+					<Route path="/history2" element={<History />} />
 					<Route element={<SubNav />}>
-						<Route path="/history" element={<History/>} />
+						<Route path="/history" element={<History />} />
 						<Route element={<ViewOptions />}>
 							<Route path="/history/master" element={<Master />} />
 							<Route path="/history/others/:id" element={<Others />} />
