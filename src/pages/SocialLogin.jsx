@@ -236,43 +236,6 @@ const SocialLogin = () => {
     window.location.href = naverLoginUrl;
   };
 
-  useEffect(() => {
-    const code = new URL(window.location.href).searchParams.get('code');
-    const state = new URL(window.location.href).searchParams.get('state');
-    if (!code) return;
-  
-    const apiUrl = state
-      ? `${process.env.REACT_APP_API_URL}/auth/naver/login?code=${code}&state=${state}`
-      : `${process.env.REACT_APP_API_URL}/auth/kakao/login?code=${code}`;
-  
-    fetch(apiUrl, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((err) => {
-            throw new Error(err.message || `HTTP error! status: ${response.status}`);
-          });
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log('로그인 성공:', data);
-        if (data && data.Token) {
-          const { accessToken, refreshToken } = data.Token;
-          login(accessToken, refreshToken);
-          navigate('/home');
-        } else {
-          console.error('토큰이 없습니다.');
-        }
-      })
-      .catch((error) => {
-        console.error('로그인 실패:', error.message);
-        alert(`로그인 처리 중 문제가 발생했습니다: ${error.message}`);
-      });
-  }, [login, navigate]);
-
   return (
     <PageContainer>
       <SvgContainer>
