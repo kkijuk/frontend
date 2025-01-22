@@ -15,12 +15,14 @@ import { fetchEmail } from '../../api/Mypage/MyinformationVerify';
 const Container = styled.div`
 	width: 820px;
 	height: 300px;
+	border: 1px solid black;
 `;
 
 const Box = styled.div`
 	/* props로 height 설정 */
 	width: 820px;
 	height: ${(props) => props.height || '100px'}; /* 기본값은 100px */
+	border: 1px solid black;
 `;
 
 const Text = styled.div`
@@ -34,17 +36,20 @@ const Text = styled.div`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+	border: 1px solid black;
 `;
 
 const EmailBox = styled.div`
 	width: 400px;
 	height: 81px;
+	border: 1px solid black;
 `;
 
 const EmailTextBox = styled.div`
 	width: 400px;
 	height: 31px;
 	gap: 20px;
+	border: 1px solid black;
 `;
 
 const EmailText = styled.div`
@@ -54,6 +59,7 @@ const EmailText = styled.div`
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
+	border: 1px solid black;
 `;
 
 const Email = styled.div`
@@ -63,6 +69,7 @@ const Email = styled.div`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+	border: 1px solid black;
 `;
 
 const KakaoTag = styled.div`
@@ -78,6 +85,7 @@ const KakaoTag = styled.div`
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
+	border: 1px solid black;
 `;
 
 const Input = styled.input`
@@ -136,7 +144,7 @@ export default function AuthenticationAccount() {
 		}
 	};
 	return (
-		<Layout title="마이페이지">
+		<div>
 			<SubNav2></SubNav2>
 			<Container>
 				<Box height={100}></Box>
@@ -154,6 +162,6 @@ export default function AuthenticationAccount() {
 				<Button onclick={handleSubmit}>확인</Button>
 				{errorMessage && <Text style={{ color: 'red' }}>{errorMessage}</Text>}
 			</Container>
-		</Layout>
+		</div>
 	);
 }
