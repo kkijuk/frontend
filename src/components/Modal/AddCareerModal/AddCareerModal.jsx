@@ -5,7 +5,7 @@ import { Affiliation1 } from './Affiliation';
 import { Affiliation2 } from './Affiliation';
 import SvgIcon from '../../shared/SvgIcon';
 import { validateAndFilterForm } from './validateAndFilterForm';
-import { createCareer, editCareer } from '../../../api/Mycareer/Career';
+import { createCareer, editCareer, deleteCareer } from '../../../api/Mycareer/Career';
 import DateInput from './DateInput';
 import UnknownRadio from './UnknownRadio';
 import CareerTypeDropdown, { CareerTypeDropdown2 } from './CareerTypeDropdown';
@@ -681,7 +681,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				const careerId = initialData.id;
 				console.log('Sending data:', filteredData);
 				const response = await editCareer(selectedCategory, careerId, filteredData);
-				console.log('Success: ', response);
+				console.log('Success - 활동 수정: ', response);
 				// onClose();
 				window.location.reload();
 			} catch (error) {
@@ -692,7 +692,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 			try {
 				console.log('Sending data:', filteredData);
 				const response = await createCareer(selectedCategory, filteredData);
-				console.log('Success: ', response);
+				console.log('Success - 활동 추가: ', response);
 				// onClose();
 				window.location.reload();
 			} catch (error) {
@@ -702,6 +702,22 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 
 		onClose();
 	};
+
+	// 활동 삭제 함수
+	const handleDeleteCareer = async () => {
+		if (mode === 'edit') {
+			try {
+				const careerId = initialData.id;
+				const response = await deleteCareer(selectedCategory, careerId);
+				console.log('Success - 활동 삭제: ', response);
+				// onClose();
+				window.location.reload();
+			} catch (error) {
+				console.error('deleteCareer 호출 중 오류 발생: ', error.response ? error.response.data : error.message);
+			}
+		}
+		onClose();
+	}
 
 	return (
 		<ModalBackground>
@@ -724,12 +740,29 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				</ButtonContainer>
 				<div style={{ height: '18px' }} />
 				<ModalForm>{renderFormByCategory()}</ModalForm>
+				{isEditMode ? (
+				<div style={{display:'flex', flexDirection:'row',alignItems:'center', width:'100%'}}>
+					<DeleteButton
+						type="button"
+						onClick={handleDeleteCareer}>
+						삭제
+					</DeleteButton>
+					<SaveButton
+						type="button"
+						onClick={handleAddCareer} 
+						style={{width:'425px'}}
+					>
+						저장
+					</SaveButton>
+				</div>
+				):(
 				<SaveButton
 					type="button"
-					onClick={handleAddCareer} //formData 아직 정의 안됨
+					onClick={handleAddCareer} 
 				>
 					저장
 				</SaveButton>
+				)}
 			</ModalContainer>
 		</ModalBackground>
 	);
