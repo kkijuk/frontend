@@ -2,7 +2,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 export const fetchEmail = async () => {
 	try {
-		const response = await fetch(`${apiUrl}/member/myPage`, {
+		const response = await fetch(`${apiUrl}/member/checkEmail`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
