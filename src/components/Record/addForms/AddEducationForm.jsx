@@ -4,7 +4,7 @@ import CustomDropdown from "../CustomDropdown";
 import CustomDatePicker from "../CustomDatePicker";
 
 
-const AddEducationForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData }) => {
+const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
     educationType: "",
     schoolName: "",
@@ -25,6 +25,7 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onDelete, initial
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
+
 
   // Dropdown 관련
   const optionsEducationType = ["고등학교", "전문대학교", "대학교", "대학원(석사)", "대학원(박사)"];
@@ -118,70 +119,93 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onDelete, initial
           onToggle={() => handleDropdownToggle("educationStatus")}
           isOpen={showEducationStatusDropdown}
         />
-        <DatePickerInput
-          ref={admissionInputRef} 
-          readOnly
-          type="text"
-          placeholder="입학년월"
-          value={formData.admissionDate}
-          onClick={() => handleDatePickerToggle("admissionDate")}
-        />
-        {showAdmissionDatePicker && (
-          <DatePickerWrapper style={calculatePickerPosition(admissionInputRef)}>
-            <CustomDatePicker
-              value={formData.admissionDate}
-              onChange={(value) => handleDateChange("admissionDate", value)}
-              onClose={() => setShowAdmissionDatePicker(false)}
-            />
-          </DatePickerWrapper>
-        )}
+        <DatePickerContainer>
+          <DatePickerInput
+            readOnly
+            type="text"
+            placeholder="입학년월"
+            value={formData.admissionDate}
+            onClick={() => handleDatePickerToggle("admissionDate")}
+          />
+          {showAdmissionDatePicker && (
+            <DatePickerWrapper>
+              <CustomDatePicker
+                value={formData.admissionDate}
+                onChange={(value) => handleDateChange("admissionDate", value)}
+                onClose={() => setShowAdmissionDatePicker(false)}
+              />
+            </DatePickerWrapper>
+          )}
+        </DatePickerContainer>
+        
+        <DatePickerContainer>
+          <DatePickerInput
+            readOnly
+            type="text"
+            placeholder="졸업년월"
+            value={formData.graduationDate}
+            onClick={() => handleDatePickerToggle("graduationDate")}
+          />
+          {showGraduationDatePicker && (
+            <DatePickerWrapper>
+              <CustomDatePicker
+                value={formData.graduationDate}
+                onChange={(value) => handleDateChange("graduationDate", value)}
+                onClose={() => setShowGraduationDatePicker(false)}
+              />
+            </DatePickerWrapper>
+          )}
+        </DatePickerContainer>
 
-        <DatePickerInput
-          ref={graduationInputRef}
-          readOnly
-          type="text"
-          placeholder="졸업년월"
-          value={formData.graduationDate}
-          onClick={() => handleDatePickerToggle("graduationDate")}
-        />
-        {showGraduationDatePicker && (
-          <DatePickerWrapper style={calculatePickerPosition(graduationInputRef)}>
-            <CustomDatePicker
-              value={formData.graduationDate}
-              onChange={(value) => handleDateChange("graduationDate", value)}
-              onClose={() => setShowGraduationDatePicker(false)}
-            />
-          </DatePickerWrapper>
-        )}
 
         <ButtonRow>
           {mode === "edit" ? (
-                <Button
-                  onClick={()=>onDelete(id)}
-                  style={{
-                    border: "1px solid var(--sub-bu, #FA7C79)",
-                    background: "var(--white, #FFF)",
-                    color: "#FA7C79",
-                  }}
-                >
-                  삭제
-                </Button>
-              ) : (
-                <Button
-                  onClick={onClose}
-                  style={{
-                    border: "1px solid var(--sub-bu, #77AFF2)",
-                    background: "var(--white, #FFF)",
-                    color: "#77AFF2",
-                  }}
-                >
-                  취소
-                </Button>
-            )}
-          <Button primary onClick={()=>onSave(formData)}
+            <Button
+              onClick={()=>{
+                onDelete();
+                onClose();
+              }}
+              style={{
+                border: "1px solid var(--sub-bu, #FA7C79)",
+                background: "var(--white, #FFF)",
+                color: "#FA7C79",
+              }}
+            >
+              삭제
+            </Button>
+          ) : (
+            <Button
+              onClick={onClose}
+              style={{
+                border: "1px solid var(--sub-bu, #77AFF2)",
+                background: "var(--white, #FFF)",
+                color: "#77AFF2",
+              }}
+            >
+              취소
+            </Button>
+        )}
+        {mode === "edit" ? (
+          <Button 
+            primary 
+            onClick={() => {
+              onUpdate(formData);
+              onClose();
+            }}
+            style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+            저장
+          </Button>
+          ) : (
+          <Button 
+            primary 
+            onClick={() => {
+              onSave(formData);
+              onClose();
+            }}
             style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
             추가
           </Button>
+        )}
       </ButtonRow>
       </Row>
     </Container>

@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../../stores/useAuthStore';
+import { createRecord } from '../../api/Record/record';
+import { createIntro } from '../../api/Intro/intro';
 
 const StepTwoContainer = styled.div`
   max-width: 600px;
@@ -145,8 +147,39 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
           },
         }
       );
-  
       console.log('회원가입 성공:', response.data);
+
+      // 이력서 생성
+      const createRecordResponse = await createRecord({
+        "address": "string",
+        "profileImageUrl": "string"
+      })
+      console.log('이력서 생성 성공:', createRecordResponse.data);
+
+      // 자기소개서 생성
+      const createIntroResponse = await createIntro({
+        "questionList": [
+          {
+            "title": "string",
+            "content": "string",
+            "number": 0
+          },
+          {
+            "title": "string",
+            "content": "string",
+            "number": 1
+          }
+          ,
+          {
+            "title": "string",
+            "content": "string",
+            "number": 2
+          }
+        ],
+        "state": 0
+      })
+      console.log('소개 생성 성공:', createIntroResponse.data);
+
       handleSignup();
     } catch (error) {
       console.error('회원가입 실패:', error.message);
