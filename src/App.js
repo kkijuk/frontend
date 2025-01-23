@@ -64,7 +64,7 @@ const App = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const hideHeaderFooterRoutes = ['/commingsoon', '/', '/signup', '/signupinterest', '/signupsuccess'];
+	const hideHeaderFooterRoutes = ['/commingsoon', '/signup', '/signupinterest', '/signupsuccess'];
 	const hideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
 
 	// GA4 초기화

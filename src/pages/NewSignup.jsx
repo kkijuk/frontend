@@ -52,6 +52,8 @@ const BackButton = styled(BackButtonSVG)`
 
 const NewSignup = () => {
   const [step, setStep] = useState(1);
+
+  // 약관 동의 상태를 하나의 객체로 관리
   const [agreements, setAgreements] = useState({
     isTermsAgreed: false,
     isPrivacyAgreed: false,
@@ -62,12 +64,17 @@ const NewSignup = () => {
 
   const handleNextStep = () => setStep(2);
   const handlePrevStep = () => setStep(1);
+
+  const handleAgreementChange = (key, value) => {
+    setAgreements((prev) => ({ ...prev, [key]: value }));
+  };
+
   const handleSignup = () => {
     console.log('회원가입 완료');
     navigate('/signupsuccess');
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     const preventScroll = (e) => e.preventDefault();
     const $body = document.querySelector('body');
     $body.style.overflow = 'hidden';
@@ -79,7 +86,7 @@ const NewSignup = () => {
       $body.removeEventListener('touchmove', preventScroll);
       $body.style.overflow = '';
     };
-  }, []);
+  }, []); */
 
   return (
     <Container>
@@ -93,18 +100,8 @@ const NewSignup = () => {
       </StepBarContainer>
       {step === 1 && (
         <SignupStepOne
-          agreements1={agreements.isTermsAgreed}
-          setAgreements1={(value) =>
-            setAgreements({ ...agreements, isTermsAgreed: value })
-          }
-          agreements2={agreements.isPrivacyAgreed}
-          setAgreements2={(value) =>
-            setAgreements({ ...agreements, isPrivacyAgreed: value })
-          }
-          agreements3={agreements.isMarketingAgreed}
-          setAgreements3={(value) =>
-            setAgreements({ ...agreements, isMarketingAgreed: value })
-          }
+          agreements={agreements} // 전체 동의 상태 전달
+          setAgreements={handleAgreementChange} // 동의 상태 변경 함수 전달
           handleNextStep={handleNextStep}
         />
       )}
