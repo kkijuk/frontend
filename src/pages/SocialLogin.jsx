@@ -205,7 +205,7 @@ const SocialLogin = () => {
   const { login } = useAuthStore();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  /* useEffect(() => {
     const preventScroll = (e) => {
       e.preventDefault();
     };
@@ -220,7 +220,7 @@ const SocialLogin = () => {
       $body.removeEventListener('touchmove', preventScroll);
       $body.style.overflow = '';
     };
-  }, []);
+  }, []); */
 
   const handleKakaoLogin = () => {
     const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&response_type=code&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`;
