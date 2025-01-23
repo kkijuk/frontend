@@ -15,13 +15,17 @@ const StyledModal = styled.div`
 
 	.modal-content {
 		background-color: #fefefe;
+		border-radius: 10px;
+        background: #FFF;
 		margin: 5% auto; /* 모달이 화면 중앙에 오도록 조정 */
 		padding: 20px;
-		border: 1px solid #888;
-		width: 80%;
-		max-height: 80%; /* 모달의 최대 높이를 설정 */
-		overflow-y: auto; /* 모달 내에서 내용 스크롤 가능하도록 설정 */
-	}
+		border: 2px solid #FFF;
+		width: 540px;
+        height: 650px;
+        flex-shrink: 0;
+		 overflow-y: auto; /* 세로 스크롤 기능 활성화 */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+}
 
 	.close {
 		color: #aaa;
@@ -38,9 +42,21 @@ const StyledModal = styled.div`
 	}
 
 	h2 {
-		color: black;
-		margin-top: 20px;
-		text-align: center;
+    color: #000;
+    font-family: Pretendard;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+	}
+
+	p {
+	color: var(--gray-02, #707070);
+font-family: Pretendard;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
 	}
 `;
 
@@ -50,7 +66,7 @@ const AgreementModal = ({ show, handleModal }) => (
 			<span className="close" onClick={handleModal}>
 				&times;
 			</span>
-			<h2>광고성 정보 수신 동의(선택)</h2>
+			<h2>광고성 정보 수신 동의</h2>
 			<p>
 				1. 수집 및 이용 목적
 				<br />

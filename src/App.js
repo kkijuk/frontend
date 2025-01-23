@@ -4,7 +4,6 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
 
 import queryClient from './api/queryClient/queryClient';
-
 import api, {setupApiInterceptors} from './Axios'
 import SocialRedirect from './components/Redirect';
 import Home from './pages/Home';
@@ -35,8 +34,7 @@ import Select from './pages/History/Select';
 import AddApply from './pages/History/AddApply';
 import Portfolio from './pages/History/Portfolio';
 import ApplyDetail from './pages/Apply/ApplyDetail';
-import AuthenticationAccount from './pages/Mypage/Confirm';
-
+import AuthenticationAccount from './pages/Mypage/AuthenticationAccount';
 import AccountMangement from './pages/Mypage/AccountManagement';
 import MyInformation from './pages/Mypage/Myinformation';
 import Field from './pages/Mypage/Field';
@@ -66,11 +64,9 @@ const App = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const hideHeaderFooterRoutes = ['/commingsoon', '/', '/signup', '/signupinterest', '/signupsuccess'];
-	const hideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
-	// GA4 초기화
-	useGA4();
-
+	// 헤더를 숨길 경로 설정
+	const hideHeaderRoutes = ['/commingsoon', '/', '/signup', '/signupinterest', '/signupsuccess']; 
+	const hideHeader = hideHeaderRoutes.includes(location.pathname);
 
 	// GA4 초기화
 	useGA4();
@@ -81,14 +77,13 @@ const App = () => {
 
 	return (
 		<AppContainer>
-			{!hideHeaderFooter && <Header />}
+			{!hideHeader && <Header />} {/* 헤더는 조건부 렌더링 */}
 			<MainContent>
 				<Routes>
 					<Route path="/mycareer/:careerId/:category" element={<MycareerDetail />} />
 					<Route path="/mycareer_search" element={<MycareerSearch />} />
 					<Route path="/home" element={<Home />} />
 					<Route path="/" element={<SocialLogin />} />
-
 					<Route path="/signup" element={<NewSignup />} />
 					<Route path="/signupsuccess" element={<SignupSuccess />} />
 					<Route path="/mypage" element={<MyPage />} />
@@ -127,7 +122,7 @@ const App = () => {
 					<Route path="/mypage/resetsuccess" element={<ResetSuccess />} />
 				</Routes>
 			</MainContent>
-			{!hideHeaderFooter && <Footer />}
+			<Footer /> {/* 푸터는 항상 렌더링 */}
 		</AppContainer>
 	);
 };
