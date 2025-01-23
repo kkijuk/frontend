@@ -4,6 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
 
 import queryClient from './api/queryClient/queryClient';
+
 import api, {setupApiInterceptors} from './Axios'
 import SocialRedirect from './components/Redirect';
 import Home from './pages/Home';
@@ -34,7 +35,8 @@ import Select from './pages/History/Select';
 import AddApply from './pages/History/AddApply';
 import Portfolio from './pages/History/Portfolio';
 import ApplyDetail from './pages/Apply/ApplyDetail';
-import AuthenticationAccount from './pages/Mypage/AuthenticationAccount';
+import AuthenticationAccount from './pages/Mypage/Confirm';
+
 import AccountMangement from './pages/Mypage/AccountManagement';
 import MyInformation from './pages/Mypage/Myinformation';
 import Field from './pages/Mypage/Field';
