@@ -81,18 +81,22 @@ const TitleText = styled.div`
     margin-top: 35px;
 '`;
 
-export default function Layout({ title, children }) {
+export default function Layout({ title, children, leftAsideContent, rightAsideContent }) {
 	return (
 		<Wrapper>
 			<Container>
-				<LeftAside></LeftAside>
+				<LeftAside>
+					{leftAsideContent}
+				</LeftAside>
 				<Section>
 					<Top>
 						<TitleText>{title}</TitleText>
 					</Top>
 					{children}
 				</Section>
-				<RightAside></RightAside>
+				<RightAside>
+					{rightAsideContent}
+				</RightAside>
 			</Container>
 		</Wrapper>
 	);
