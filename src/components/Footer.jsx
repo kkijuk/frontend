@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import AgreementModal1 from '../components/User/AgreementModal1';
+import AgreementModal2 from '../components/User/AgreementModal2';
 import logo from '../assets/logo.png';
 import instagramLogo from '../assets/instagramLogo.png';
 import paperplaneicon from '../assets/paperplaneicon.png';
@@ -11,7 +13,7 @@ const FooterStyle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 30px 50px; /* 상단과 하단 여백 추가 */
+  padding: 30px 50px;
   box-sizing: border-box;
   font-family: Pretendard;
   color: #707070;
@@ -23,12 +25,19 @@ const FooterStyle = styled.div`
 
     .links {
       font-size: 12px;
-      margin-bottom: 25px; /* 아래 간격 조정 */
+      margin-bottom: 25px;
       cursor: pointer;
+
+      span {
+        margin-right: 10px;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
 
     .logo {
-      margin-bottom: 15px; /* 로고와 아래 요소 간 간격 조정 */
+      margin-bottom: 15px;
 
       img {
         width: 80px;
@@ -47,18 +56,19 @@ const FooterStyle = styled.div`
 
     .contact-title {
       font-size: 12px;
-      margin-bottom: 15px; /* "contact us"와 아이콘 사이 간격 */
+      margin-bottom: 15px;
       color: #424242;
     }
 
     .icons {
       display: flex;
       justify-content: flex-end;
-      margin-bottom: 15px; /* 아이콘과 연락처 정보 사이 간격 */
+      margin-bottom: 15px;
+
       img {
         width: 18px;
         height: 18px;
-        margin-left: 12px; /* 아이콘 사이 간격 */
+        margin-left: 12px;
         cursor: pointer;
       }
     }
@@ -67,19 +77,22 @@ const FooterStyle = styled.div`
       font-size: 12px;
 
       .email {
-        margin-bottom: 10px; /* 이메일과 주소 간격 */
+        margin-bottom: 10px;
         cursor: pointer;
         color: #707070;
       }
 
       div {
-        margin-bottom: 5px; /* 각 줄 간격 */
+        margin-bottom: 5px;
       }
     }
   }
 `;
 
 export default function Footer() {
+  const [isModal1Open, setModal1Open] = useState(false);
+  const [isModal2Open, setModal2Open] = useState(false);
+
   const goInsta = () => {
     window.open('https://www.instagram.com/kki.juk/?utm_source=ig_web_button_share_sheet', '_blank');
   };
@@ -89,31 +102,38 @@ export default function Footer() {
   };
 
   return (
-    <FooterStyle>
-      {/* 왼쪽 섹션 */}
-      <div className="left">
-        <div className="links">서비스 이용약관 | 개인정보 처리방침</div>
-        <div className="logo">
-          <img src={logo} alt="끼적 로고" />
-        </div>
-        <div className="copyright">COPYRIGHT © 끼적. All rights reserved.</div>
-      </div>
-
-      {/* 오른쪽 섹션 */}
-      <div className="right">
-        <div className="contact-title">contact us</div>
-        <div className="icons">
-          <img src={instagramLogo} alt="Instagram" onClick={goInsta} />
-          <img src={paperplaneicon} alt="Paperplane" onClick={goEmail} />
-        </div>
-        <div className="contact-info">
-          <div className="email" onClick={goEmail}>
-            kkijuk30@gmail.com
+    <>
+      <FooterStyle>
+        <div className="left">
+          <div className="links">
+            <span onClick={() => setModal1Open(true)}>서비스 이용약관</span>
+            <span onClick={() => setModal2Open(true)}>개인정보 처리방침</span>
           </div>
-          <div>서울특별시 광진구 면목로15길 16</div>
-          <div>사업자등록번호 798-06-02922</div>
+          <div className="logo">
+            <img src={logo} alt="끼적 로고" />
+          </div>
+          <div className="copyright">COPYRIGHT © 끼적. All rights reserved.</div>
         </div>
-      </div>
-    </FooterStyle>
+
+        <div className="right">
+          <div className="contact-title">contact us</div>
+          <div className="icons">
+            <img src={instagramLogo} alt="Instagram" onClick={goInsta} />
+            <img src={paperplaneicon} alt="Paperplane" onClick={goEmail} />
+          </div>
+          <div className="contact-info">
+            <div className="email" onClick={goEmail}>
+              kkijuk30@gmail.com
+            </div>
+            <div>서울특별시 광진구 면목로15길 16</div>
+            <div>사업자등록번호 798-06-02922</div>
+          </div>
+        </div>
+      </FooterStyle>
+
+      {/* 모달 상태와 prop 통일 */}
+      <AgreementModal1 show={isModal1Open} handleModal={() => setModal1Open(false)} />
+      <AgreementModal2 show={isModal2Open} handleModal={() => setModal2Open(false)} />
+    </>
   );
 }

@@ -12,7 +12,7 @@ const StyledModal = styled.div`
 	height: 100%;
 	overflow: auto;
 	background-color: rgba(0, 0, 0, 0.4);
-	z-index: 2;
+	z-index: 1000;
 
 	
 	.image-container {
