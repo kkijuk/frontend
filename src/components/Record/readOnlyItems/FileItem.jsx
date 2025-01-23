@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { downS3File } from "../../../api/Record/s3File";
+import AddFileForm from "../addForms/AddFileForm";
 
-const FileItem = ({ id, data, onDelete }) => {
+const FileItem = ({ id, data, onSave, onUpdate, onDelete }) => {
 
   const [isTypeURL, setIsTypeUrl] = useState(true);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
     if (data) {
@@ -55,15 +57,29 @@ const FileItem = ({ id, data, onDelete }) => {
   };
 
   return (
-    <Container>
-      <FileOrURLName>
-        {isTypeURL ? data.urlTitle : data.fileTitle}
-      </FileOrURLName>
-      <ContentLink onClick={handleContentLinkClick}>
-        {isTypeURL ? data.url : data.fileTitle}
-      </ContentLink>
-      <DeleteButton onClick = {()=>onDelete(data)}>삭제</DeleteButton>
-    </Container>
+    <div style={{ display: 'flex', width:'100%'}}>
+      {isEditMode ? (
+        <EditContainer>
+          <AddFileForm
+            mode='edit'
+            initialData={data}
+            onClose={() => setIsEditMode(false)}
+            onUpdate = {(FormData) => onUpdate(FormData)}
+            onDelete={(FormData)=>onDelete(FormData)}
+          />
+        </EditContainer>
+      ):(
+        <Container>
+          <FileOrURLName>
+            {isTypeURL ? data.urlTitle : data.fileTitle}
+          </FileOrURLName>
+          <ContentLink onClick={handleContentLinkClick}>
+            {isTypeURL ? data.url : data.fileTitle}
+          </ContentLink>
+          <DeleteButton onClick = {setIsEditMode(true)}>수정</DeleteButton>
+        </Container>
+      )}
+    </div>
   );
 };
 
@@ -123,3 +139,12 @@ const Container = styled.div`
         cursor: pointer;
 	}
 `;
+
+const EditContainer = styled.div`
+	width: 820px;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	margin-bottom: 45px;
+	font-family: 'Regular';
+`

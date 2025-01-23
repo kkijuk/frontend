@@ -36,6 +36,7 @@ const History = () => {
 		recordId,
 		addEtcItem,
 		deleteEtcItem,
+		updateEtcItem,
 		updateUserData,
 		//사용자 정보
 		userData,
@@ -128,26 +129,11 @@ const History = () => {
 
 	}, [fetchRecord, recordId, error, sections]);
 
-	// useEffect (()=>{	// 인디케이터 관련 로직. 화면 영역 계산
-	// 	const observer = new IntersectionObserver(
-	// 		(entries) => {
-	// 			entries.forEach((entry)=>{
-	// 				if(entry.isIntersecting){
-	// 					setActiveSection(entry.target.id);
-	// 				}
-	// 			})
-	// 		},
-	// 		{ rootMargin: "-50% 0px -50% 0px" }
-	// 	)
+	useEffect(() => {
+		// 사용자 정보 업데이트
+		updateUserData(editableUserData);
+	}, [editableUserData]);
 
-	// 	sections.forEach((section) => {
-	// 		const element = document.getElementById(section.id);
-	// 		if (element) observer.observe(element);
-
-	// 	});
-
-	// 	return ()=>observer.disconnect();
-	// }, [sections]);
 
 	// LOGIC
 	if (status === 'loading') return <p>Loading...</p>;
@@ -238,8 +224,6 @@ const History = () => {
 			}));
 		}
 	};
-
-	//----------------------------------------------------------------------------
 
 	return (
 		<>
@@ -537,8 +521,8 @@ const History = () => {
 								{files.map((file, index)=>{
 									<FileItem
 										data={file}
-										// onDelete={} s3삭제 함수 호출(useRecordStore)
 										onDelete={(data) => deleteEtcItem(data)}
+										onUpdate={(data) => updateEtcItem(data)}
 									/>
 								})}
 							</ContentWrapper>

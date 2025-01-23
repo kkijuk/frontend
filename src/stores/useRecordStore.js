@@ -228,6 +228,34 @@ const useRecordStore = create((set, get) => ({
 		}
 	},
 
+	// 기타 항목 수정
+	updateEtcItem: async (oldData, newData) => {
+		try {
+			if (oldData.fileType === 'File') {
+				await deleteS3File(oldData);
+				const { keyName, presignedURL } = await createPresignedUrl(newData);
+				const savedData = await saveKeyName(keyName, presignedURL);
+				set((state) => ({
+					files: state.files.map((item) =>
+						item.keyName === oldData.keyName ? savedData : item
+					),
+				}));
+			} else if (oldData.fileType === 'URL') {
+				await deleteURL(oldData);
+				const savedData = await addURL(newData);
+				set((state) => ({
+					files: state.files.map((item) =>
+						item.url === oldData.url ? savedData : item
+					),
+				}));
+			} else {
+				throw new Error('Invalid fileType');
+			}
+		} catch (error) {
+			console.error('Update Etc Item Error:', error);
+		}
+	},
+
 	updateUserData: async (data) => {
 		try {
 			const response = await updateUserData(data);

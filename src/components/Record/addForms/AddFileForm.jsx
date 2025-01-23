@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import FileSearch from "../FileSearch";
 
-const AddFileForm = ({ onClose, onSave}) => {
+const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialData}) => {
     const [formData, setFormData] = useState({
         fileId: "",
         fileType: "URL", //기본값
@@ -13,6 +13,14 @@ const AddFileForm = ({ onClose, onSave}) => {
     });
 
     const [isTypeURL, setIsTypeUrl] = useState(true);
+
+    // 수정 모드일 경우 formData 기존 내용으로 초기화
+    useEffect(() => {
+      if (mode === "edit" && initialData) {
+        setFormData(initialData);
+      }
+    }, [mode, initialData]);
+
 
     // 변경된 데이터 저장
     const handleInputChange = (field, value) => {
@@ -41,7 +49,6 @@ const AddFileForm = ({ onClose, onSave}) => {
         <Container>
             <FormContent>
                 <Row>
-
                     {isTypeURL ? (
                         <Input
                             type="text"
@@ -73,29 +80,53 @@ const AddFileForm = ({ onClose, onSave}) => {
                         <FileSearch></FileSearch>
                     )}
                     <ButtonRow>
-                        <Button
-                            onClick={onClose}
-                            style={{
-                            border: "1px solid var(--sub-bu, #77AFF2)",
-                            background: "var(--white, #FFF)",
-                            color: "#77AFF2",
-                          }}>
-                              취소
-                        </Button>
-
-                        <Button
-                          primary
-                          onClick={() => {
-                              onSave(formData); // 저장 api 호출
-                              onClose(); 
-                            }}
-                          style={{
-                              border: "1px solid var(--main-01, #3AAF85)",
-                              background: "var(--main-01, #3AAF85)",
-                              color: "#FFFFFF",
-                          }}>
-                          추가
-                        </Button>
+                    {mode === "edit" ? (
+                      <Button
+                        onClick={()=>{
+                          onDelete(formData);
+                          onClose();
+                        }}
+                        style={{
+                          border: "1px solid var(--sub-bu, #FA7C79)",
+                          background: "var(--white, #FFF)",
+                          color: "#FA7C79",
+                        }}
+                      >
+                        삭제
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={onClose}
+                        style={{
+                          border: "1px solid var(--sub-bu, #77AFF2)",
+                          background: "var(--white, #FFF)",
+                          color: "#77AFF2",
+                        }}
+                      >
+                        취소
+                      </Button>
+                    )}
+                    {mode === "edit" ? (
+                      <Button 
+                        primary 
+                        onClick={() => {
+                          onUpdate(formData);
+                          onClose();
+                        }}
+                        style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+                        저장
+                      </Button>
+                      ) : (
+                      <Button 
+                        primary 
+                        onClick={() => {
+                          onSave(formData);
+                          onClose();
+                        }}
+                        style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+                        추가
+                      </Button>
+                    )}
                     </ButtonRow>
                 </Row>
             </FormContent>
