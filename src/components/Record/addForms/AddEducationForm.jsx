@@ -273,6 +273,10 @@ const DatePickerWrapper = styled.div`
   transform: translateY(10px);
 `;
 
+const DatePickerContainer = styled.div`
+	position: relative;
+`;
+
 const ButtonRow = styled.div`
   display: flex;
   justify-content: flex-end;

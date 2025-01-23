@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { editCareer } from '../../api/Mycareer/Career';
 import KebabMenu from './KebabMenu';
+import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
 
 const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 	// const today = new Date();
