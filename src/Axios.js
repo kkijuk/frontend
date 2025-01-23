@@ -2,7 +2,7 @@ import axios from 'axios';
 import { refreshAccessToken } from './services/refreshToken';
 import useAuthStore from './stores/useAuthStore';
 
-// Axios 인스턴스 생성성
+// Axios 인스턴스 생성 
 const api = axios.create({
 	baseURL: process.env.REACT_APP_API_URL,
 	headers: {

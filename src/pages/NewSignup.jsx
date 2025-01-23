@@ -14,7 +14,7 @@ const Container = styled.div`
 
 const TitleContainer = styled.div`
   position: relative;
-  display: inline-block; 
+  display: inline-block;
   text-align: center;
 `;
 
@@ -44,52 +44,33 @@ const StepBar = styled.div`
 
 const BackButton = styled(BackButtonSVG)`
   position: absolute;
-  left: -126px; /* 제목 기준 왼쪽으로 50px 떨어지도록 설정 */
-  top: 48%; 
-  transform: translateY(-50%); 
+  left: -126px;
+  top: 48%;
+  transform: translateY(-50%);
   cursor: pointer;
 `;
 
 const NewSignup = () => {
   const [step, setStep] = useState(1);
-  const [agreements1, setAgreements1] = useState(false);
-  const [agreements2, setAgreements2] = useState(false);
-  const [agreements3, setAgreements3] = useState(false);
-  const [modalType, setModalType] = useState(null);
+  const [agreements, setAgreements] = useState({
+    isTermsAgreed: false,
+    isPrivacyAgreed: false,
+    isMarketingAgreed: false,
+  });
 
   const navigate = useNavigate();
 
-  const handleNextStep = () => {
-    if (step === 1) {
-      setStep(2);
-    } else if (step === 2) {
-      handleSignup();
-    }
-  };
-
-  const handlePrevStep = () => {
-    setStep(1); // Step 1로 돌아가기
-  };
-
+  const handleNextStep = () => setStep(2);
+  const handlePrevStep = () => setStep(1);
   const handleSignup = () => {
-    navigate('/signupsuccess'); // 회원가입 성공 페이지로 이동
-  };
-
-  const handleModal = (type) => {
-    setModalType(type);
-  };
-
-  const closeModal = () => {
-    setModalType(null);
+    console.log('회원가입 완료');
+    navigate('/signupsuccess');
   };
 
   useEffect(() => {
-    const preventScroll = (e) => {
-      e.preventDefault();
-    };
-
+    const preventScroll = (e) => e.preventDefault();
     const $body = document.querySelector('body');
-    $body.style.overflow = 'hidden'; // 스크롤바 숨기기
+    $body.style.overflow = 'hidden';
     $body.addEventListener('wheel', preventScroll, { passive: false });
     $body.addEventListener('touchmove', preventScroll, { passive: false });
 
@@ -103,29 +84,32 @@ const NewSignup = () => {
   return (
     <Container>
       <TitleContainer>
-      {step === 2 && <BackButton onClick={handlePrevStep} />}
-      <Title>회원가입</Title>
-    </TitleContainer>
+        {step === 2 && <BackButton onClick={handlePrevStep} />}
+        <Title>회원가입</Title>
+      </TitleContainer>
       <StepBarContainer>
         <StepBar active={step === 1} />
         <StepBar active={step === 2} />
       </StepBarContainer>
       {step === 1 && (
         <SignupStepOne
-          agreements1={agreements1}
-          setAgreements1={setAgreements1}
-          agreements2={agreements2}
-          setAgreements2={setAgreements2}
-          agreements3={agreements3}
-          setAgreements3={setAgreements3}
+          agreements1={agreements.isTermsAgreed}
+          setAgreements1={(value) =>
+            setAgreements({ ...agreements, isTermsAgreed: value })
+          }
+          agreements2={agreements.isPrivacyAgreed}
+          setAgreements2={(value) =>
+            setAgreements({ ...agreements, isPrivacyAgreed: value })
+          }
+          agreements3={agreements.isMarketingAgreed}
+          setAgreements3={(value) =>
+            setAgreements({ ...agreements, isMarketingAgreed: value })
+          }
           handleNextStep={handleNextStep}
         />
       )}
       {step === 2 && (
-        <SignupStepTwo 
-          handleSignup={handleSignup} 
-          handlePrevStep={handlePrevStep} // 이전 단계로 이동
-        />
+        <SignupStepTwo handleSignup={handleSignup} agreements={agreements} />
       )}
     </Container>
   );

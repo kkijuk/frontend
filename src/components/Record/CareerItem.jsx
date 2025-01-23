@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { editCareer } from '../../api/Mycareer/Career';
-import KebabMenu from '../KebabMenu';
+import KebabMenu from './KebabMenu';
 
 const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 	// const today = new Date();

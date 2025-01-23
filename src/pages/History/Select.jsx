@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Layout from "./Layout";
+import Layout from "../../components/Layout";
 import SvgIcon from "../../components/shared/SvgIcon";
 import { getValidRecruitList } from "../../api/Apply/RecruitValid";
 import { createIntro } from "../../api/Intro/intro";
@@ -70,7 +70,7 @@ const Select = () => {
 
   return (
     <Layout title="Select">
-      {isModalOpen && <AddApplyModal onClose={handleCloseModal} />}
+      {isModalOpen && <AddApplyModal onClose={setIsModalOpen(!isModalOpen)} />}
       <ContentWrapper>
         <div style={{height:'100px'}}/>
         <h2>자기소개서를 작성할 공고를 선택해주세요.</h2>

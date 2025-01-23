@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import api from '../../Axios';
 import { getRecruitDetails } from '../../api/Apply/RecruitDetails'; // API 호출을 위해 import
 
 const CalendarBackgroundSection = styled.div`
@@ -126,17 +127,18 @@ const CalendarListView = ({ date, data, count, onJobClick }) => {
 	}
 
 	const handleJobClick = async (ad) => {
-		console.log('Selected ad:', ad); // ad 객체를 로그로 출력하여 확인
+		console.log('Selected ad:', ad); // 선택된 공고 로그 출력
 		try {
-			// API를 호출하여 전체 데이터를 가져옵니다.
-			const fullAdDetails = await getRecruitDetails(ad.recruitId);
-			console.log('Full ad details:', fullAdDetails); // 가져온 데이터 로그 출력
-			// 상세 페이지로 이동하면서, 가져온 전체 데이터를 전달합니다.
-			navigate(`/apply-detail/${ad.recruitId}`, { state: { job: fullAdDetails } });
+		  const response = await api.get(`/recruit/${ad.recruitId}`); // Axios를 통해 API 호출
+		  const fullAdDetails = { ...response.data, id: ad.recruitId }; // 응답 데이터와 ID를 결합
+		  console.log('Full ad details:', fullAdDetails); // 전체 데이터 로그 출력
+	
+		  // 상세 페이지로 이동하며 데이터 전달
+		  navigate(`/apply-detail/${ad.recruitId}`, { state: { job: fullAdDetails } });
 		} catch (error) {
-			console.error('Failed to fetch recruit details:', error);
+		  console.error('Failed to fetch recruit details:', error);
 		}
-	};
+	  };
 
 	// 날짜를 하루 뒤로 조정하여 표시
 	const adjustedDate = new Date(date);

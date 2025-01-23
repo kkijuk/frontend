@@ -277,17 +277,10 @@ export default function MycareerDetail() {
 	}; //추가
 
 	const openModal = () => {
-		// 모달 열기 + 데이터 설정
-		setModalData({
-			name: details?.name,
-			alias: details?.alias,
-			category: details?.category?.categoryKoName,
-			activityName: details?.alias,
-			startdate: details?.startdate,
-			enddate: details?.endDate,
-			summary: details?.summary,
-		});
+		// 모달 열기 + 데이터 설정, 데이터 다보내기
+		setModalData({ ...details }); // 전체 details 데이터를 modalData로 설정
 		setIsModalOpen(true);
+		console.log('Generated initialData for AddCareerModal:', modalData);
 	};
 
 	const closeModal = () => {
@@ -384,7 +377,9 @@ export default function MycareerDetail() {
 				</CareerListBox>
 
 				<CareerPlus onClick={handleAddButtonClick}>활동 기록 추가</CareerPlus>
-				{isModalOpen && modalData && <AddCareerModal onClose={closeModal} data={modalData} mode="edit" />}
+				{isModalOpen && modalData && (
+					<AddCareerModal onClose={closeModal} data={modalData} mode="edit" initialData={modalData} />
+				)}
 			</PageContainer>
 		</Layout>
 	);

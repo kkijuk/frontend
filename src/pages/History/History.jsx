@@ -6,7 +6,7 @@ import { set } from 'react-hook-form';
 import useRecordStore from '../../stores/useRecordStore';
 import { createRecord, readRecord, updateRecord } from '../../api/Record/record';
 // components
-import Layout from '../../components/Layout'
+import Layout from '../../components/Layout';
 import AddEducationForm from '../../components/Record/addForms/AddEducationForm';
 import AddAwardForm from '../../components/Record/addForms/AddAwardForm';
 import AddSkillForm from '../../components/Record/addForms/AddSkillForm';
@@ -25,6 +25,7 @@ import Profile from '../../components/Record/Profile';
 import EmailAndAddress from '../../components/Record/EmailAndAddress';
 
 const History = () => {
+	// useRecordStore 호출
 	const store = useRecordStore();
 	const {
 		// api call
@@ -56,27 +57,39 @@ const History = () => {
 		error,
 	} = store;
 
-	// const [userData, setUserData] = useState({
-	// 	updatedAt: '',
-	// 	name: '',
-	// 	birthday: '',
-	// 	phone: '',
-	// 	email: '',
-	// 	address: '',
-	// });
+	// DATA
 	const {profile, name, birth, mobile, email, address} = userData;
+	const licenseSection = licenses.filter(item => item.licenseTag === 'LICENSE');
+	const foreignSection = licenses.filter(item => item.licenseTag === 'FOREIGN');
+	const skillSections = {
+		IT: skills.filter(skill => skill.skillTag === 'IT'),
+		OA: skills.filter(skill => skill.skillTag === 'OA'),
+		GRAPHIC: skills.filter(skill => skill.skillTag === 'GRAPHIC'),
+		FOREIGNLANGUAGE: skills.filter(skill => skill.skillTag === 'FOREIGNLANGUAGE'),
+		ETC: skills.filter(skill => skill.skillTag === 'ETC'),
+	};
 
-	const [showCreateButton, setShowCreateButton] = useState(false);
-	const handleCreateRecord = async () => {
-		try {
-			const response = await createRecord();
-			window.location.reload();
-			console.log('Success - createRecord: ', response.data);
-		} catch (error) {
-			console.error('Error: createRecord: ', error);
-		}
-	}
-	
+	// useState
+	const [showCreateButton, setShowCreateButton] = useState(false); // 이력서 생성 여부
+	const [openedForms, setOpenedForms] = useState({ // 폼 오픈 상태 관리
+		add: { // 추가 폼 관리
+			educations: false,
+			licenses: false,
+			awards: false,
+			skills: false,
+			files: false,
+		},
+	});
+	const [isAddCareerModalOpen, setIsAddCareerModalOpen] = useState(false); // 내 커리어 관련 활동 추가 모달 관리
+	const [activeSection, setActiveSection] = useState("");	// 인디케이터 활성화 섹션
+	const [editableUserData, setEditableUserData] = useState({	// 사용자 정보 수정
+		profileImageUrl: profile,
+		address: address,
+		//email: email,
+	});
+	const [profileBlob, setProfileBlob] = useState(profile);	// 프로필 이미지
+
+	// useEffect
 	// 이력서 불러오기
 	useEffect(() => {
 		const fetchData = async () => {
@@ -92,171 +105,8 @@ const History = () => {
 			}
 		}
 		fetchData();
-	}, [fetchRecord, recordId, error]);
 
-	// 사용자 정보 불러오기
-	// useEffect(() => {
-	// 	async function getUserData() {
-	// 	  const response = await readRecord(); 
-	// 	  const result = response.data;
-	// 	  if (result) {
-	// 		const { updatedAt, name, birthday, phone, email, address, profileImageUrl } = result;
-	// 		setUserData({
-	// 		  updatedAt: updatedAt || '',
-	// 		  name: name || '',
-	// 		  birthday: birthday || '',
-	// 		  phone: phone || '',
-	// 		  email: email || '',
-	// 		  address: address || '',
-	// 		  profileImageUrl: profileImageUrl || '',
-	// 		});
-	// 	  }
-	// 	}
-	// 	getUserData();
-	//   }, []);
-
-	// 주소 편집 모드 관리 State
-	const [isEditingAddress, setIsEditingAddress] = useState(false);
-	// input에 임시로 입력되는 주소
-	const [tempAddress, setTempAddress] = useState('');	
-
-	//폼 오픈 상태 관리
-	const [openedForms, setOpenedForms] = useState({
-		// edit: { // 수정 폼 관리
-		// 	educations: null,
-		// 	licenses: null,
-		// 	awards: null,
-		// 	skills: null,
-		// },
-		add: { // 추가 폼 관리
-			educations: false,
-			licenses: false,
-			awards: false,
-			skills: false,
-			files: false,
-		},
-	});
-
-	//수정 폼 토글
-	// const toggleEditForm = (category, id = null) => {
-	// 	setOpenedForms((prev) => ({
-	// 		...prev,
-	// 		edit: {
-	// 			...prev.edit,
-	// 			[category]: prev.edit[category] === id ? null : id,
-	// 		},
-	// 	}));
-	// };
-
-	//추가 폼 토글
-	const toggleAddForm = (category) => {
-		setOpenedForms((prev) => ({
-			...prev,
-			add: {
-				...prev.add,
-				[category]: !prev.add[category], // 현재 상태를 반전
-			},
-		}));
-	};
-
-	// 내 커리어 관련 활동 추가 모달 관리
-	const [isAddCareerModalOpen, setIsAddCareerModalOpen] = useState(false);
-
-	// 데이터 분류
-	const licenseSection = licenses.filter(item => item.licenseTag === 'LICENSE');
-	const foreignSection = licenses.filter(item => item.licenseTag === 'FOREIGN');
-	const skillSections = {
-		IT: skills.filter(skill => skill.skillTag === 'IT'),
-		OA: skills.filter(skill => skill.skillTag === 'OA'),
-		GRAPHIC: skills.filter(skill => skill.skillTag === 'GRAPHIC'),
-		FOREIGNLANGUAGE: skills.filter(skill => skill.skillTag === 'FOREIGNLANGUAGE'),
-		ETC: skills.filter(skill => skill.skillTag === 'ETC'),
-	  };
-
-	// 섹션 이름 변환 함수
-	const getSectionName = (type) => {
-		const names = {
-		IT: 'IT',
-		OA: 'OA',
-		GRAPHIC: '그래픽',
-		FOREIGNLANGUAGE: '외국어',
-		ETC: '기타',
-		};
-		return names[type] || '기타';
-    };
-	
-	if (status === 'loading') return <p>Loading...</p>;
-	if (status === 'failed') return <p>Error: {error}</p>;
-
-	//주소 관련 로직
-	// (1) '주소를 입력하세요' 클릭 -> 편집 모드로 전환
-	const handleAddressPlaceholderClick = () => {
-		setIsEditingAddress(true);
-		setTempAddress(''); // input 초기화
-	}
-
-	// (2) 이미 주소가 있는 상태에서 '수정' 버튼 클릭 -> 편집 모드로 전환
-	const handleEditAddressClick = () => {
-		setIsEditingAddress(true);
-		setTempAddress(address || ''); // 기존 주소값을 input에 넣음
-	};
-	
-	// (3) input에서 변경값 반영
-	const handleAddressInputChange = (e) => {
-		setTempAddress(e.target.value);
-	};
-	
-	// (4) 수정 완료 시 호출
-	const handleUpdateAddress = async () => {
-		try {
-		// updateRecord API 호출
-		const responseData = await updateRecord(recordId, 
-		{
-			address: tempAddress,
-			profileImageUrl: "string",
-		});
-
-		// 서버에서 수정된 address를 받아온 경우
-		if (responseData && responseData.address) {
-			// userData에 반영
-			setUserData((prev) => ({
-			...prev,
-			address: responseData.address,
-			}));
-		}
-
-		// 편집 모드 종료
-		setIsEditingAddress(false);
-		} catch (err) {
-		console.error('주소 업데이트 실패:', err);
-		}
-	};
-
-	// (5) 취소
-	const handleCancelEdit = () => {
-		setIsEditingAddress(false);
-		setTempAddress('');
-	};
-
-	// 인디케이터 관련 로직
-	//(1) section, activeSection
-	const sections = [
-		{id: "user", name: "인적사항"},
-		{id: "educations", name: "학력"},
-		{id: "employments", name: "경력"},
-		{id: "activitiesAndExperiences", name: "활동 및 경험"},
-		{id: "projects", name: "프로젝트"},
-		{id: "eduCareers", name: "교육"},
-		{id: "awards", name: "수상"},
-		{id: "licenses", name: "자격증 · 외국어"},
-		{id: "skills", name: "스킬"},
-		{id:"etc", name: "추가자료"}
-	];
-
-	const [activeSection, setActiveSection] = useState("");
-
-	//(2) 화면 영역 계산
-	useEffect (()=>{
+		// 인디케이터 관련 로직 - 화면 영역 계산
 		const observer = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry)=>{
@@ -275,9 +125,85 @@ const History = () => {
 		});
 
 		return ()=>observer.disconnect();
-	}, [sections]);
 
-	//(3) 인디케이터 메뉴 클릭
+	}, [fetchRecord, recordId, error, sections]);
+
+	// useEffect (()=>{	// 인디케이터 관련 로직. 화면 영역 계산
+	// 	const observer = new IntersectionObserver(
+	// 		(entries) => {
+	// 			entries.forEach((entry)=>{
+	// 				if(entry.isIntersecting){
+	// 					setActiveSection(entry.target.id);
+	// 				}
+	// 			})
+	// 		},
+	// 		{ rootMargin: "-50% 0px -50% 0px" }
+	// 	)
+
+	// 	sections.forEach((section) => {
+	// 		const element = document.getElementById(section.id);
+	// 		if (element) observer.observe(element);
+
+	// 	});
+
+	// 	return ()=>observer.disconnect();
+	// }, [sections]);
+
+	// LOGIC
+	if (status === 'loading') return <p>Loading...</p>;
+	if (status === 'failed') return <p>Error: {error}</p>;
+
+	// 이력서 생성
+	const handleCreateRecord = async () => {
+		try {
+			const response = await createRecord();
+			window.location.reload();
+			console.log('Success - createRecord: ', response.data);
+		} catch (error) {
+			console.error('Error: createRecord: ', error);
+		}
+	}
+
+	//추가 폼 토글
+	const toggleAddForm = (category) => {
+		setOpenedForms((prev) => ({
+			...prev,
+			add: {
+				...prev.add,
+				[category]: !prev.add[category], // 현재 상태를 반전
+			},
+		}));
+	};
+
+	// 섹션 이름 변환 함수
+	const getSectionName = (type) => {
+		const names = {
+		IT: 'IT',
+		OA: 'OA',
+		GRAPHIC: '그래픽',
+		FOREIGNLANGUAGE: '외국어',
+		ETC: '기타',
+		};
+		return names[type] || '기타';
+    };
+
+		// 인디케이터 관련 로직
+	//(1) section, activeSection
+	const sections = [
+		{id: "user", name: "인적사항"},
+		{id: "educations", name: "학력"},
+		{id: "employments", name: "경력"},
+		{id: "activitiesAndExperiences", name: "활동 및 경험"},
+		{id: "projects", name: "프로젝트"},
+		{id: "eduCareers", name: "교육"},
+		{id: "awards", name: "수상"},
+		{id: "licenses", name: "자격증 · 외국어"},
+		{id: "skills", name: "스킬"},
+		{id:"etc", name: "추가자료"}
+	];
+	
+
+	//(2) 인디케이터 메뉴 클릭
 	const scrollToSection = (id) => {
 		const element = document.getElementById(id);
 		if(element) {
@@ -286,15 +212,7 @@ const History = () => {
 	}
 
 	// 인적사항 변경 관련 로직
-	// (1) 상태 정의
-	const [editableUserData, setEditableUserData] = useState({
-		profileImageUrl: profile,
-		address: address,
-		//email: email,
-	});
-
-	//(2) 프로필 사진 변경 관련 로직
-	const [profileBlob, setProfileBlob] = useState(profile);
+	//(1) 프로필 사진 변경 관련 로직
 	const handleProfileChange = (file) => {
 		setProfileBlob(file);
 		setEditableUserData((prev) => ({
@@ -304,7 +222,7 @@ const History = () => {
 		console.log('Profile Image changed:', file);
 	}
 
-	//(3) 이메일 또는 주소 변경 시
+	//(2) 이메일 또는 주소 변경 시
 	const handleEmailOrAddressChange = (data) => {
 		// if(data.type === 'email'){
 		// 	setEditableUserData((prev) => ({
@@ -321,13 +239,7 @@ const History = () => {
 		}
 	};
 
-	// (4) editableUserData 변경 시 서버에 반영
-	useEffect(() => {
-		const updateData = async () => {
-			await updateUserData(editableUserData);
-		};
-		updateData();
-	}, [editableUserData]);
+	//----------------------------------------------------------------------------
 
 	return (
 		<>
@@ -370,10 +282,10 @@ const History = () => {
 								<InfoValue>{name}</InfoValue>
 
 								<InfoLabel>생년월일</InfoLabel>
-								<InfoValue>{birthday}</InfoValue>
+								<InfoValue>{birth}</InfoValue>
 
 								<InfoLabel>전화번호</InfoLabel>
-								<InfoValue>{phone}</InfoValue>
+								<InfoValue>{mobile}</InfoValue>
 
 								<InfoLabel>이메일</InfoLabel>
 								<InfoValue>{email}</InfoValue>
@@ -513,7 +425,7 @@ const History = () => {
 							<ContentWrapper>
 								{openedForms.add.awards &&
 								<AddAwardForm
-									onSave={(updates) => addItems('awards', recordId, updates)}
+									onSave={(updates) => addItem('awards', recordId, updates)}
 									onClose={() => toggleAddForm('awards')}
 								/>}
 								<div style={{height:'50px'}}></div>
@@ -521,7 +433,6 @@ const History = () => {
 									<AwardItem 
 										key={award.id} 
 										data={award} 
-										onEdit={() => toggleEditForm('awards', award.id)} 
 										onUpdate = {(updates) => updateItem('awards', award.id, updates)}
 										onDelete={() => deleteItem('awards', award.id)}
 									/>
