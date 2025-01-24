@@ -1,11 +1,11 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // react-router-dom의 useNavigate 훅 추가
 
 import SubNav2 from '../../components/Mypage/SubNav2';
 import Layout from '../../components/Layout';
 import styled from 'styled-components';
-import { fetchEmail } from '../../api/Mypage/MyinformationVerify';
+import { fetchLogindata, fetchEmail } from '../../api/Mypage/mypage';
 
 //마이페이지 변경 이후 !!필요!! 한 부분
 //베타 테스트에 사용
@@ -73,12 +73,11 @@ const Email = styled.div`
 	line-height: normal;
 `;
 
-const KakaoTag = styled.div`
+const Tag = styled.div`
 	width: 65px;
 	height: 25px;
 	border-radius: 10px;
-	background: var(--sub-ye, #fcc400);
-
+	background: ${(props) => (props.socialType === 'KAKAO' ? 'var(--sub-ye, #fcc400)' : '#03C75A')};
 	color: var(--white, #fff);
 	text-align: center;
 	font-family: Pretendard;
@@ -87,7 +86,6 @@ const KakaoTag = styled.div`
 	font-weight: 500;
 	line-height: 25px;
 `;
-
 const Input = styled.input`
 	width: 400px;
 	height: 50px;
@@ -124,10 +122,27 @@ const Button = styled.button`
 	margin-top: 50px;
 `;
 
-export default function AuthenticationAccount() {
+export default function Confirm() {
 	const [inputEmail, setInputEmail] = useState('');
+	const [maskedEmail, setMaskedEmail] = useState(''); // 가려진 이메일 상태
+	const [socialType, setSocialType] = useState(''); // 로그인 방식 상태
 	const [errorMessage, setErrorMessage] = useState('');
 	const navigate = useNavigate(); // useNavigate 훅 사용
+
+	useEffect(() => {
+		// API 호출하여 가려진 이메일 및 로그인 방식 가져오기
+		const fetchLoginData = async () => {
+			try {
+				const data = await fetchLogindata();
+				setMaskedEmail(data.email);
+				setSocialType(data.socialType);
+			} catch (error) {
+				console.error('로그인 데이터 가져오기 오류:', error);
+			}
+		};
+
+		fetchLoginData();
+	}, []);
 
 	const handleInputChange = (e) => {
 		setInputEmail(e.target.value);
@@ -158,12 +173,13 @@ export default function AuthenticationAccount() {
 				<EmailBox>
 					<EmailTextBox>
 						<EmailText>이메일</EmailText>
-						<Email>k*****ij.@naver.com</Email>
-						<KakaoTag>카카오</KakaoTag>
+						<Email>{maskedEmail}</Email>
+						<Tag socialType={socialType}>{socialType}</Tag>
 					</EmailTextBox>
 					<Input placeholder="이메일을 입력하세요" />
 				</EmailBox>
-				<Button>확인</Button>
+				<Button onClick={handleSubmit}>확인</Button>
+				{errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}{' '}
 			</Container>
 		</div>
 	);
