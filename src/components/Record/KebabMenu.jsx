@@ -6,7 +6,9 @@ const KebabMenu = ({onModalOpen, onDetailOpen}) => {
     const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
 
     return (
-        <Container>
+        <Container
+          onMouseLeave={() => setIsKebabMenuOpen(false)}
+        >
           <IconButton onClick={() => setIsKebabMenuOpen(!isKebabMenuOpen)}>
             <SvgIcon name="kebab" />
           </IconButton>
