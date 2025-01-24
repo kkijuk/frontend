@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import AgreementImage from './Agreement.png';
+import AgreementImage from './Agree.svg';
 
 const StyledModal = styled.div`
 	display: ${(props) => (props.show ? 'block' : 'none')};
@@ -77,9 +77,9 @@ const AgreementModal = ({ show, handleModal }) => (
 		<span className="close" onClick={handleModal}>
 		  &times;
 		</span>
-		<h2>개인정보 수집 및 이용 동의</h2>
+		<h2>개인정보처리방침</h2> 
 		<p>
-		  제 1 조 (목적)
+		  
 		  <br />
 		  끼적 서비스 이용을 위해 아래와 같이 개인정보를 수집 및 이용합니다. 동의를 거부할 권리가 있으며, 동의 거부 시
 		  끼적 회원서비스 이용이 불가합니다.
