@@ -36,6 +36,29 @@
     <path d="M9.65997 10.5V10.29C9.65997 9.61004 10.08 9.25002 10.5 8.96002C10.91 8.68002 11.3199 8.32003 11.3199 7.66003C11.3199 6.74003 10.58 6 9.65997 6C8.73997 6 8 6.74003 8 7.66003" stroke="#707070" stroke-linecap="round" stroke-linejoin="round"></path>
     <path d="M9.65566 12.8896H9.66466" stroke="#707070" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path>
   </symbol>
+
+<!-- kebab menu -->
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="kebab">
+    <g id="More horiz" clip-path="url(#clip0_7540_3747)">
+      <path id="Vector" d="M6 10C4.9 10 4 10.9 4 12C4 13.1 4.9 14 6 14C7.1 14 8 13.1 8 12C8 10.9 7.1 10 6 10ZM18 10C16.9 10 16 10.9 16 12C16 13.1 16.9 14 18 14C19.1 14 20 13.1 20 12C20 10.9 19.1 10 18 10ZM12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10Z" fill="black"></path>
+    </g>
+    <defs>
+      <clipPath id="clip0_7540_3747">
+        <rect width="24" height="24" fill="white"></rect>
+      </clipPath>
+    </defs>
+  </symbol>
+
+<!-- job link -->
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" id="jobLink">
+  <g id="vuesax/linear/export">
+    <g id="export">
+      <path id="Vector" d="M8.125 7.20312L13.25 2.07812" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path id="Vector_2" d="M13.75 4.57813V1.57812H10.75" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path id="Vector_3" d="M6.875 1.57812H5.625C2.5 1.57812 1.25 2.82812 1.25 5.95312V9.70312C1.25 12.8281 2.5 14.0781 5.625 14.0781H9.375C12.5 14.0781 13.75 12.8281 13.75 9.70312V8.45312" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+    </g>
+  </g>
+  </symbol>
 </svg>
 
 
