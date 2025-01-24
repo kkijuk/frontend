@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import CustomCalendarPicker from "../CustomCalendarPicker";
 
-const AddAwardForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData }) => {
+const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
     awardDate: "",
     competitionName: "",
@@ -90,40 +90,53 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
           style={{width:'195px'}}
         />
         <ButtonRow>
-          {mode === "edit" ? (
-                <Button
-                  onClick={()=>onDelete(id)}
-                  style={{
-                    border: "1px solid var(--sub-bu, #FA7C79)",
-                    background: "var(--white, #FFF)",
-                    color: "#FA7C79",
-                  }}
-                >
-                  삭제
-                </Button>
-              ) : (
-                <Button
-                  onClick={onClose}
-                  style={{
-                    border: "1px solid var(--sub-bu, #77AFF2)",
-                    background: "var(--white, #FFF)",
-                    color: "#77AFF2",
-                  }}
-                >
-                  취소
-                </Button>
+            {mode === "edit" ? (
+              <Button
+                onClick={()=>{
+                  onDelete();
+                  onClose();
+                }}
+                style={{
+                  border: "1px solid var(--sub-bu, #FA7C79)",
+                  background: "var(--white, #FFF)",
+                  color: "#FA7C79",
+                }}
+              >
+                삭제
+              </Button>
+            ) : (
+              <Button
+                onClick={onClose}
+                style={{
+                  border: "1px solid var(--sub-bu, #77AFF2)",
+                  background: "var(--white, #FFF)",
+                  color: "#77AFF2",
+                }}
+              >
+                취소
+              </Button>
           )}
-          <Button
-            primary
-            onClick={()=>onSave(formData)}
-            style={{
-              border: "1px solid var(--sub-bu, #3AAF85)",
-              background: "var(--white, #3AAF85)",
-              color: "#FFFFFF",
-            }}
-          >
-            추가
-          </Button>
+          {mode === "edit" ? (
+            <Button 
+              primary 
+              onClick={() => {
+                onUpdate(formData);
+                onClose();
+              }}
+              style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+              저장
+            </Button>
+            ) : (
+            <Button 
+              primary 
+              onClick={() => {
+                onSave(formData);
+                onClose();
+              }}
+              style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+              추가
+            </Button>
+          )}
         </ButtonRow>
       </Row>
     </Container>

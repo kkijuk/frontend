@@ -1,34 +1,118 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { editCareer } from '../../api/Mycareer/Career';
+import KebabMenu from './KebabMenu';
+import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
 
-const CareerItem = ({ data, isLastItem, onEdit }) => {
+const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 	// const today = new Date();
 	// const formattedToday = today.toISOString().slice(0,7).replace('-','.');
 	// const isPastDue = data.endDate < formattedToday; //true: 기한 경과, false: 기한 내
 
+	// 상태 관리
+	const [careerData, setCareerData] = useState(data);
+	const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
+	const [isCareerModalOpen, setIsCareerModalOpen] = useState(false);
+	const [isSummaryEditMode, setIsSummaryEditMode] = useState(false);
+	const [detail, setDetail] = useState(data.summary);
+
+	// 활동 내역 수정
+	const handleDetailSave = async () => {
+		try{
+			const updatedData = {...data, summary: detail};
+			await editCareer(data.id, updatedData);
+			setIsSummaryEditMode(false);
+			setIsKebabMenuOpen(false);
+			window.location.reload();
+		} catch (error) {
+			console.error('Edit Career Error: ', error);
+		}
+	}
+
+	// 활동 기간 계산
+	const calculateMonths = (start, end) => {
+		if (!end) return null; // endDate가 null이면 null 반환
+	
+		const startDate = new Date(start);
+		const endDate = new Date(end);
+		const yearDiff = endDate.getFullYear() - startDate.getFullYear();
+		const monthDiff = endDate.getMonth() - startDate.getMonth();
+	
+		return yearDiff * 12 + monthDiff + 1; // 총 개월 수 계산
+	};
+	const activityMonths = calculateMonths(data.startdate, data.enddate);
+
+	// 경력인 경우, 태그에는 categoryKoName이 아닌 type으로 표시
+	const getEmploymentsType = (type) => {
+		switch(type) {
+			case 'PART_TIME':
+				return '아르바이트';
+			case 'INTERNSHIP':
+				return '인턴';
+			case 'FULL_TIME':
+				return '정규직';
+			case 'CONTRACT':
+				return '계약직';
+			case 'FREELANCE':
+				return '프리랜서';
+			default:
+				return '기타';
+		}
+	};
+	const displayCategory = data.category.categoryKoName === '경력' ? getEmploymentsType(data.type) : data.category.categoryKoName;
+
+	// 활동내역 placeholder (아래 들여쓰기 상태 고정!)
+	const detailPlaceHolder = `· 핵심적인 활동 내용과 담당했던 역할, 주요 성과를 요약해서 작성해 주세요.
+· 서술식보다는 개조식으로 간결하게 작성하는 것이 좋아요.
+· 이곳에 작성한 내용은 [서류준비-이력서]에 자동으로 삽입됩니다.`
+
 	return (
 		<div style={{ display: 'flex', width: '100%' }}>	
+			{isCareerModalOpen && 
+				<AddCareerModal 
+					mode='edit'
+					initialData={careerData} 
+					// onClose={() => setIsCareerModalOpen(false)} 
+					onClose={() => setIsOpen(false)}
+			/>}
 			<TimeLine>
-				{/* <Oval category={data.category.categoryKoName} isPastDue={data.isCurrent}></Oval> */}
-				{/* <Line category={data.category.categoryKoName} isLastItem={isLastItem} isPastDue={data.isCurrent}></Line> */}
+				<Oval category={data.category.categoryKoName} isPastDue={data.isCurrent}></Oval>
+				<Line category={data.category.categoryKoName} isLastItem={isLastItem} isPastDue={data.isCurrent} isSummaryEditMode={isSummaryEditMode}></Line>
 			</TimeLine>
 			<Container>
 				<div>
-					<LevelTag category={data.category.categoryKoName}>{data.category.categoryKoName}</LevelTag>
+					<LevelTag category={data.category.categoryKoName}>{displayCategory}</LevelTag>
 					<SchoolInfo>
 						<SchoolName>{data.name}</SchoolName>
 						<Dates>
-							{data.startDate} ~ {data.endDate} <Status>(n개월)</Status>
+							{data.startdate ? data.startdate : '시작 날짜 없음'} ~ {data.enddate ? data.enddate : '종료 날짜 없음'}
+							{activityMonths ? <Status>({activityMonths}개월)</Status> : <Status>(진행 중)</Status>}
 						</Dates>
-						<p>
-							<span style={{ fontWeight: '600', marginRight: '30px' }}>활동내역</span>
-							{data.summary}
-						</p>
+						<DetailContainer>
+							<div style={{ width:'58px',fontWeight: '600', marginRight: '30px', lineHeight:'14px' }}>활동내역</div>
+							{isSummaryEditMode ? (
+								<DetailWrapper>
+									<DetailTextArea placeholder={detailPlaceHolder}></DetailTextArea>
+									<DetailSaveButton
+										onClick={handleDetailSave}
+									>확인</DetailSaveButton>
+								</DetailWrapper>
+							) : (
+								<>
+									{data.summary}
+								</>
+							)}
+						</DetailContainer>
 					</SchoolInfo>
 				</div>
-				<EditButton id="edit" onClick={onEdit}>
-					수정
+				<EditButton>
+					<KebabMenu
+						// onModalOpen={() => setIsCareerModalOpen(true)}
+						onModalOpen={() => setIsOpen(true)}
+						onDetailOpen={() => setIsSummaryEditMode(true)}
+					/>
 				</EditButton>
+
 			</Container>
 		</div>
 	);
@@ -61,7 +145,7 @@ const Oval = styled.div`
 							? '#C48DEF'
 							: props.category === '프로젝트'
 								? '#78D333'
-								: props.category === '아르바이트/인턴'
+								: props.category === '경력'
 									? '#FA7C79'
 									: props.category === '교육'
 										? '#F99538'
@@ -77,7 +161,7 @@ const Oval = styled.div`
 						? '3px solid #C48DEF'
 						: props.category === '프로젝트'
 							? '3px solid #78D333'
-							: props.category === '아르바이트/인턴'
+							: props.category === '경력'
 								? '3px solid #FA7C79'
 								: props.category === '교육'
 									? '3px solid #F99538'
@@ -89,7 +173,7 @@ const Oval = styled.div`
 
 const Line = styled.div`
 	width: 2px;
-	height: 166px;
+	height: ${(props) => (props.isSummaryEditMode ? '220px' : '166px')};
 	border-top: none;
 	border-right: none;
 	border-bottom: none;
@@ -105,7 +189,7 @@ const Line = styled.div`
 						? '2px solid #C48DEF'
 						: props.category === '프로젝트' && props.isPastDue
 							? '2px solid #78D333'
-							: props.category === '아르바이트/인턴' && props.isPastDue
+							: props.category === '경력' && props.isPastDue
 								? '2px solid #FA7C79'
 								: props.category === '교육' && props.isPastDue
 									? '2px solid #F99538'
@@ -119,7 +203,7 @@ const Line = styled.div`
 													? '2px dashed #C48DEF'
 													: props.category === '프로젝트' && !props.isPastDue
 														? '2px dashed #78D333'
-														: props.category === '아르바이트/인턴' && !props.isPastDue
+														: props.category === '경력' && !props.isPastDue
 															? '2px dashed #FA7C79'
 															: props.category === '교육' && !props.isPastDue
 																? '2px dashed #F99538'
@@ -129,17 +213,12 @@ const Line = styled.div`
 `;
 
 const EditButton = styled.button`
-	width: 65px;
-	background-color: #f5f5f5;
-	color: #707070;
 	border: none;
-	border-radius: 10px;
 	padding: 5px 10px;
-	opacity: 0;
-	transition: opacity 0.2s ease-in-out;
 	position: absolute;
 	right: -450px;
 	top:0;
+	background-color: #FFF;
 `;
 
 const Container = styled.div`
@@ -167,16 +246,16 @@ const LevelTag = styled.div`
 					? '#C48DEF'
 					: props.category === '프로젝트'
 						? '#78D333'
-						: props.category === '아르바이트/인턴'
+						: props.category === '경력'
 							? '#FA7C79'
 							: props.category === '교육'
 								? '#F99538'
 								: '#707070'};
 	color: white;
-	padding: 2px 5px;
 	border-radius: 5px;
 	font-size: 14px;
 	font-family: 'Regular';
+	font-weight: 700;
 	margin-bottom: 10px;
 	display: flex;
 	align-items: center;
@@ -203,9 +282,58 @@ const Department = styled.div`
 
 const Dates = styled.div`
 	font-size: 16px;
-	color: #666;
 `;
 
 const Status = styled.span`
-	color: #999;
+	margin-left: 10px;
+	font-family: 'Regular';
 `;
+
+const DetailContainer = styled.div`
+	display: flex;
+	flex-direction: row;
+	margin-top: 10px;
+`;
+
+const DetailWrapper = styled.div`
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	// margin-top: 10px;
+`
+
+const DetailTextArea = styled.textarea`
+	width: 519px;
+	height: 76px;
+	padding: 10px;
+	border-radius: 7px;
+	border: none;
+	background: var(--gray-05, #F1F1F1);
+	font-family: 'Regular';
+	font-size: 16px;
+	resize: none;
+	:: plcaeholder {
+		color: #707070;
+		font-family: 'Regular';
+		font-size: 16px;
+		white-space: pre-line;
+	}
+`
+
+const DetailSaveButton = styled.button`
+	width: 67px;
+	height: 96px;
+	margin-left: 10px;
+	flex-shrink: 0;
+	border-radius: 7px;
+	border: none;
+	background: var(--main-01, #3AAF85);	
+	cursor = pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-family: 'Regular';
+	font-size: 12px;
+	color: white;
+	cursor: pointer;
+`

@@ -146,7 +146,10 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialDa
               )}
               <Button
                 primary
-                onClick={()=>onSave(formData)}
+                onClick={() => {
+                  onSave(formData);
+                  onClose();
+                }}
                 style={{
                     border: "1px solid var(--main-01, #3AAF85)",
                     background: "var(--main-01, #3AAF85)",
