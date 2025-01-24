@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import SubNav from '../../components/Mypage/SubNav';
+import QuitMember from '../../components/Modal/QuitMember';
 import styled from 'styled-components';
 import axios from 'axios';
-import { fetchMyinfo, changeMyinfo } from '../../api/Mypage/Myinformation';
+import { fetchUserInfo, changeUserInfo } from '../../api/Mypage/mypage';
 
 const ContentBox = styled.div`
 	width: 450px;
@@ -384,11 +385,106 @@ const Button = styled.button`
 	line-height: normal;
 `;
 
+// 모달 배경 (뒤 어둡게 처리)
+const ModalOverlay = styled.div`
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5); /* 반투명 어두운 배경 */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000; /* 다른 요소들 위에 표시되도록 설정 */
+`;
+
+// QuitMember 모달을 가운데 정렬
+const ModalContainer = styled.div`
+	position: relative;
+	width: auto;
+	height: auto;
+	z-index: 1010; /* ModalOverlay보다 위에 위치 */
+`;
+
+const DeleteAccount = styled.div`
+	color: var(--gray-02, #707070);
+	font-family: Pretendard;
+	font-size: 16px;
+	font-weight: 400;
+	text-decoration: line-through;
+	cursor: pointer;
+	margin-top: 20px;
+`;
+
 export default function MyInformation() {
 	const [isEditingEmail, setIsEditingEmail] = useState(false);
 	const [isVerificationRequested, setIsVerificationRequested] = useState(false);
 	const [isEditingPhone, setIsEditingPhone] = useState(false);
 	const [isEditingBirth, setIsEditingBirth] = useState(false); // 생년월일 수정 상태 추가
+	const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+
+	const [emailInput, setEmailInput] = useState('');
+	const [phoneInputs, setPhoneInputs] = useState({ part1: '', part2: '', part3: '' });
+	const [birthInputs, setBirthInputs] = useState({ year: '', month: '', day: '' });
+
+	//수정 상태
+	const handleEditEmail = () => setIsEditingEmail(true);
+	const handleCancelEditEmail = () => setIsEditingEmail(false);
+
+	const handleEditPhone = () => setIsEditingPhone(true);
+	const handleCancelEditPhone = () => setIsEditingPhone(false);
+
+	const handleEditBirth = () => setIsEditingBirth(true);
+	const handleCancelEditBirth = () => setIsEditingBirth(false);
+
+	//개인정보 가져오기
+	useEffect(() => {
+		const fetchUserData = async () => {
+			try {
+				const data = await fetchUserInfo();
+				setEmail(data.email);
+				setName(data.name);
+				setPhoneNumber(data.phoneNumber);
+				setBirthDate(data.birthDate);
+
+				// Set initial values for inputs
+				setEmailInput(data.email);
+				const [part1, part2, part3] = data.phoneNumber.split('-');
+				setPhoneInputs({ part1, part2, part3 });
+
+				const [year, month, day] = data.birthDate.split('-');
+				setBirthInputs({ year, month, day });
+
+				handleMarketingAgreement(data.marketingAgree);
+			} catch (error) {
+				console.error('사용자 정보를 가져오는 중 오류 발생:', error);
+			}
+		};
+		fetchUserData();
+	}, []);
+
+	const handleMarketingAgreement = (marketingAgree) => {
+		switch (marketingAgree) {
+			case 'BOTH':
+				setAgreements({ snsAgreed: true, emailAgreed: true });
+				setAllAgreed(true);
+				break;
+			case 'EMAIL':
+				setAgreements({ snsAgreed: false, emailAgreed: true });
+				setAllAgreed(true);
+				break;
+			case 'SMS':
+				setAgreements({ snsAgreed: true, emailAgreed: false });
+				setAllAgreed(true);
+				break;
+			case 'NONE':
+			default:
+				setAgreements({ snsAgreed: false, emailAgreed: false });
+				setAllAgreed(false);
+				break;
+		}
+	};
 
 	const handleEditClick = () => {
 		setIsEditingEmail(true);
@@ -419,6 +515,15 @@ export default function MyInformation() {
 	const handleBirthCancelClick = () => {
 		setIsEditingBirth(false);
 	};
+
+	const handleOpenModal = () => {
+		setIsModalOpen(true); // 모달 열기
+	};
+
+	const handleCloseModal = () => {
+		setIsModalOpen(false); // 모달 닫기
+	};
+
 	const [email, setEmail] = useState('');
 	const [name, setName] = useState('');
 	const [phoneNumber, setPhoneNumber] = useState('');
@@ -440,35 +545,9 @@ export default function MyInformation() {
 
 	const handleAllAgreementChange = (event) => {
 		const { checked } = event.target;
-		setAgreements((prevAgreements) =>
-			Object.keys(prevAgreements).reduce(
-				(newAgreements, agreementKey) => ({
-					...newAgreements,
-					[agreementKey]: checked,
-				}),
-				{},
-			),
-		);
 		setAllAgreed(checked);
+		setAgreements({ snsAgreed: checked, emailAgreed: checked });
 	};
-
-	useEffect(() => {
-		// API 호출을 통해 사용자 정보 가져오기
-		const fetchUserInfo = async () => {
-			try {
-				const data = await fetchMyinfo();
-				setEmail(data.email);
-				setName(data.name);
-				setPhoneNumber(data.phoneNumber);
-				setBirthDate(data.birthDate);
-				console.log('정보 가져오기 완료: ', data);
-			} catch (error) {
-				console.error('사용자 정보를 가져오는 중 오류 발생:', error);
-			}
-		};
-
-		fetchUserInfo();
-	}, []);
 
 	const handleBirthDateChange = (e) => {
 		const input = e.target.value.replace(/-/g, '');
@@ -485,6 +564,7 @@ export default function MyInformation() {
 		setBirthDate(formattedInput);
 	};
 
+	//저장 버튼 눌렀을때 수정된 정보 백엔드로 전달
 	const handleSave = async () => {
 		// Determine the marketing agreement value based on the checkboxes
 		let marketingAgree;
@@ -498,13 +578,14 @@ export default function MyInformation() {
 			marketingAgree = 'NONE';
 		}
 
+		const formattedPhoneNumber = `${phoneInputs.part1}-${phoneInputs.part2}-${phoneInputs.part3}`;
+		const formattedBirthDate = `${birthInputs.year}-${birthInputs.month}-${birthInputs.day}`;
+
 		try {
-			const response = await changeMyinfo(name, phoneNumber, birthDate, marketingAgree);
-			console.log('Response from server:', response);
-			alert('수정이 완료되었습니다.'); // Alert message for success
+			await changeUserInfo(formattedPhoneNumber, formattedBirthDate, marketingAgree);
+			alert('저장이 완료되었습니다.');
 		} catch (error) {
-			console.error('Failed to save information:', error);
-			alert('수정에 실패했습니다. 다시 시도해주세요.'); // Alert message for failure
+			alert('저장 중 오류가 발생했습니다.');
 		}
 	};
 
@@ -517,7 +598,7 @@ export default function MyInformation() {
 					{isEditingEmail ? (
 						<EmailEditBox>
 							<InputContainer>
-								<EmailInput placeholder="이메일을 입력하세요" />
+								<EmailInput value={emailInput} onChange={(e) => setEmailInput(e.target.value)} />
 								<RequestButton onClick={handleRequestVerification}>
 									{isVerificationRequested ? '다시 전송' : '인증요청'}
 								</RequestButton>
@@ -532,7 +613,7 @@ export default function MyInformation() {
 						</EmailEditBox>
 					) : (
 						<Box>
-							<Content>siusy2618@naver.com</Content>
+							<Content>{email}</Content>
 							<EditButton onClick={handleEditClick}>수정</EditButton>
 						</Box>
 					)}
@@ -541,7 +622,7 @@ export default function MyInformation() {
 				<ContentBox>
 					<ContentName>이름</ContentName>
 					<Box>
-						<Content>임세연</Content>
+						<Content>{name}</Content>
 					</Box>
 				</ContentBox>
 
@@ -550,16 +631,27 @@ export default function MyInformation() {
 					{isEditingPhone ? (
 						<ContentBox>
 							<PhoneBox>
-								<PhoneInput placeholder="010" />
-								<PhoneInput placeholder="1234" />
-								<PhoneInput placeholder="5678" />
+								<div>
+									<PhoneInput
+										value={phoneInputs.part1}
+										onChange={(e) => setPhoneInputs({ ...phoneInputs, part1: e.target.value })}
+									/>
+									<PhoneInput
+										value={phoneInputs.part2}
+										onChange={(e) => setPhoneInputs({ ...phoneInputs, part2: e.target.value })}
+									/>
+									<PhoneInput
+										value={phoneInputs.part3}
+										onChange={(e) => setPhoneInputs({ ...phoneInputs, part3: e.target.value })}
+									/>
+								</div>
 								<ConfirmButton>확인</ConfirmButton>
 								<CancelButton2 onClick={handlePhoneCancelClick}>취소</CancelButton2>
 							</PhoneBox>
 						</ContentBox>
 					) : (
 						<Box>
-							<Content>010-3112-4483</Content>
+							<Content>{phoneNumber}</Content>
 							<EditButton onClick={handlePhoneEditClick}>수정</EditButton>
 						</Box>
 					)}
@@ -570,16 +662,27 @@ export default function MyInformation() {
 					{isEditingBirth ? (
 						<ContentBox>
 							<PhoneBox>
-								<PhoneInput placeholder="YYYY" />
-								<PhoneInput placeholder="MM" />
-								<PhoneInput placeholder="DD" />
+								<div>
+									<PhoneInput
+										value={birthInputs.year}
+										onChange={(e) => setBirthInputs({ ...birthInputs, year: e.target.value })}
+									/>
+									<PhoneInput
+										value={birthInputs.month}
+										onChange={(e) => setBirthInputs({ ...birthInputs, month: e.target.value })}
+									/>
+									<PhoneInput
+										value={birthInputs.day}
+										onChange={(e) => setBirthInputs({ ...birthInputs, day: e.target.value })}
+									/>
+								</div>
 								<ConfirmButton>확인</ConfirmButton>
 								<CancelButton2 onClick={handleBirthCancelClick}>취소</CancelButton2>
 							</PhoneBox>
 						</ContentBox>
 					) : (
 						<Box>
-							<Content>2002-12-02</Content>
+							<Content>{birthDate}</Content>
 							<EditButton onClick={handleBirthEditClick}>수정</EditButton>
 						</Box>
 					)}
@@ -617,7 +720,16 @@ export default function MyInformation() {
 					</CheckBoxContainer3>
 				</CheckBoxContainer>
 				<Button onClick={handleSave}>저장</Button> {/* 저장 버튼 클릭 시 handleSave 호출 */}
+				<DeleteAccount onClick={handleOpenModal}>회원탈퇴</DeleteAccount>
 			</Bottom>
+			{/* 회원탈퇴 모달 */}
+			{isModalOpen && (
+				<ModalOverlay>
+					<ModalContainer>
+						<QuitMember onClose={handleCloseModal} />
+					</ModalContainer>
+				</ModalOverlay>
+			)}
 		</Container1>
 	);
 }
