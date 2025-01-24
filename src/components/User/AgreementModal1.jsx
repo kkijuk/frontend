@@ -61,7 +61,7 @@ const AgreementModal = ({ show, handleModal }) => (
 			<span className="close" onClick={handleModal}>
 				&times;
 			</span>
-			<h2>이용약관(필수)</h2>
+			<h2>이용약관</h2>
 			<p>
 				제 1 조 (목적)
 				<br />본 약관은 팀 끼적(이하 "회사")이 운영하는 "서비스"를 이용함에 있어 "회사"와 회원간의 이용 조건 및 제반
