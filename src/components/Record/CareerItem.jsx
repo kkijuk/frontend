@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { editCareer } from '../../api/Mycareer/Career';
-import KebabMenu from './KebabMenu';
+import { KebabMenu1 } from './KebabMenu';
 import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
 
 const CareerItem = ({ data, isLastItem, setIsOpen }) => {
@@ -107,7 +107,7 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 				</div>
 			</Container>
 			<EditButton>
-				<KebabMenu
+				<KebabMenu1
 					onModalOpen={() => setIsCareerModalOpen(true)}
 					onDetailOpen={() => setIsSummaryEditMode(true)}
 				/>

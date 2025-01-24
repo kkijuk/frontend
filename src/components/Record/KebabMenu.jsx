@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import SvgIcon from '../shared/SvgIcon';
 
-const KebabMenu = ({onModalOpen, onDetailOpen}) => {
+const KebabMenu1 = ({onModalOpen, onDetailOpen}) => {
     const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
 
     return (
@@ -22,8 +22,28 @@ const KebabMenu = ({onModalOpen, onDetailOpen}) => {
       );
 
 }
+export { KebabMenu1}
 
-export default KebabMenu;
+const KebabMenu2 = ({onModalOpen}) => {
+  const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
+
+  return (
+      <Container
+        onMouseLeave={() => setIsKebabMenuOpen(false)}
+      >
+        <IconButton onClick={() => setIsKebabMenuOpen(!isKebabMenuOpen)}>
+          <SvgIcon name="kebab" />
+        </IconButton>
+        {isKebabMenuOpen && (
+          <DropDown style={{height:'34px'}}>
+            <MenuItem onClick={onModalOpen}>활동 수정하기</MenuItem>
+          </DropDown>
+        )}
+      </Container>
+    );
+
+}
+export { KebabMenu2 };
 
 const Container = styled.div`
     position: relative;
