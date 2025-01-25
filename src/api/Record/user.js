@@ -1,8 +1,9 @@
-import axios from "axios";
+import api from "axios";
 
 const updateUserData = async (data) => {
     try{
-        const response = await axios.patch("/history/resume", data);
+        console.log("Data to update: ", data);
+        const response = await api.patch("/history/resume", data);
         console.log("User data updated successfully: ", response.data);
         return response.data;
     } catch (error) {
