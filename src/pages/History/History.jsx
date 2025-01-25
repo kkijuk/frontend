@@ -127,7 +127,7 @@ const History = () => {
 
 		return ()=>observer.disconnect();
 
-	}, [fetchRecord, recordId, error, sections]);
+	}, [fetchRecord, recordId, error]);
 
 	useEffect(() => {
 		// 사용자 정보 업데이트
