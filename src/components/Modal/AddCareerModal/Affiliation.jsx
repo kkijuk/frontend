@@ -55,13 +55,13 @@ const Affiliation2 = ({ onAffiliationChange }) => {
 export { Affiliation1, Affiliation2 };
 
 const Container = styled.div`
-	width: 300px;
+	// width: 300px;
 	// height: 60px;
 	display: flex;
-	// flex-direction: row; /* 버튼을 가로로 배치 */
-	justify-content: flex-start;
+	flex-direction: row;
+	gap: 10px;
+	// justify-content: flex-start;
 	// align-items: center;
-	// gap: 10px;
 	text-align: center;
 `;
 
