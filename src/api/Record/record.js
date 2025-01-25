@@ -26,12 +26,7 @@ const createRecord = async (data) => {
 // 이력서 페이지 접속 시에 호출합니다.
 const readRecord = async () => {
 	try {
-		const response = await api.get('/history/resume', {
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			withCredentials: true,
-		});
+		const response = await api.get('/history/resume');
 		console.log('Success - readRecord: ', response.data);
 		return response.data;
 	} catch (error) {
