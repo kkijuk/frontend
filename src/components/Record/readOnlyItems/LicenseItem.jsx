@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import AddLicenseForm from '../addForms/AddLicenseForm';
 import { KebabMenu2 } from '../KebabMenu';
 
-const LicenseItem = ({ data, isSecondColumn, onEdit }) => {
+const LicenseItem = ({ data, isSecondColumn, onSave, onUpdate, onDelete }) => {
   const [isEditMode, setIsEditMode] = useState(false);
 
   return (
@@ -26,6 +26,8 @@ const LicenseItem = ({ data, isSecondColumn, onEdit }) => {
             <AddLicenseForm
               mode = "edit"
               initialData = {data}
+              onUpdate = {(FormData) => onUpdate(FormData)}
+              onDelete = {onDelete}
             />
           </EditContainer>
         </>
