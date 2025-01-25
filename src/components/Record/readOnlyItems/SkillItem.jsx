@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import AddSkillForm from '../addForms/AddSkillForm';
 import { KebabMenu2 } from '../KebabMenu';
 
-const SkillItem = ({ data, onEdit }) => {
+const SkillItem = ({ data, isSecondColumn, onSave, onUpdate, onDelete }) => {
   const [isEditMode, setIsEditMode] = useState(false);
 
   return (
@@ -23,6 +23,8 @@ const SkillItem = ({ data, onEdit }) => {
             <AddSkillForm
               mode = "edit"
               initialData = {data}
+              onUpdate = {(FormData) => onUpdate(FormData)}
+              onDelete={onDelete}
             />
           </EditContainer>
         </>
