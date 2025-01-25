@@ -154,7 +154,7 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
         "address": "string",
         "profileImageUrl": "string"
       })
-      console.log('이력서 생성 성공:', createRecordResponse.data);
+      console.log('이력서 생성 성공:', createRecordResponse);
 
       // 자기소개서 생성
       const createIntroResponse = await createIntro({
@@ -178,7 +178,7 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
         ],
         "state": 0
       })
-      console.log('소개 생성 성공:', createIntroResponse.data);
+      console.log('마스터 자소서 생성 성공:', createIntroResponse);
 
       handleSignup();
     } catch (error) {
