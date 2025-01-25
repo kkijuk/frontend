@@ -248,7 +248,7 @@ const History = () => {
 						{/* <AddCareerModal></AddCareerModal> */}
 						{isAddCareerModalOpen &&
 							<AddCareerModal
-								onClose={() => setIsAddCareerModalOpen(null)}
+								onClose={() => setIsAddCareerModalOpen(false)}
 							/>
 						}
 						<div style={{display:'flex', marginBlock:'30px'}}>
