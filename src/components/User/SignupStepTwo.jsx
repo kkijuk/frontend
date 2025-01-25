@@ -171,10 +171,7 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
         console.error('응답 데이터가 없습니다.');
         alert('서버 응답이 비어 있습니다.');
       }
-    } catch (error) {
-      console.error('회원가입 실패:', error.response?.data || error.message);
-      alert('회원가입 중 오류가 발생했습니다. 다시 시도해주세요.');
-    }
+
   };
 
   return (
