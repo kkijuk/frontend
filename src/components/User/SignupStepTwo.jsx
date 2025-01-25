@@ -125,54 +125,53 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
       alert('최소 1개를 선택해주세요.');
       return;
     }
-
-    try {
-      const payload = {
-        isTermsAgreed: agreements.isTermsAgreed,
-        isPrivacyAgreed: agreements.isPrivacyAgreed,
-        isMarketingAgreed: agreements.isMarketingAgreed ? 'BOTH' : 'NONE',
-        memberJob: selectedStatuses,
-      };
-
-      console.log('요청 데이터:', payload);
-
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/member/profile`,
-        payload,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response?.data) {
-        console.log('회원가입 성공:', response.data);
-
-        const createRecordResponse = await createRecord({
-          address: 'string',
-          profileImageUrl: 'string',
-        });
-        console.log('이력서 생성 성공:', createRecordResponse.data);
-
-        const createIntroResponse = await createIntro({
-          questionList: [
-            { title: 'string', content: 'string', number: 0 },
-            { title: 'string', content: 'string', number: 1 },
-            { title: 'string', content: 'string', number: 2 },
-          ],
-          state: 0,
-        });
-        console.log('소개 생성 성공:', createIntroResponse.data);
-
-        handleSignup();
-      } else {
-        console.error('응답 데이터가 없습니다.');
-        alert('서버 응답이 비어 있습니다.');
+  
+    const payload = {
+      isTermsAgreed: agreements.isTermsAgreed,
+      isPrivacyAgreed: agreements.isPrivacyAgreed,
+      isMarketingAgreed: agreements.isMarketingAgreed ? 'BOTH' : 'NONE',
+      memberJob: selectedStatuses,
+    };
+  
+    console.log('요청 데이터:', payload);
+  
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}/member/profile`,
+      payload,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
       }
-
+    );
+  
+    if (response?.data) {
+      console.log('회원가입 성공:', response.data);
+  
+      const createRecordResponse = await createRecord({
+        address: 'string',
+        profileImageUrl: 'string',
+      });
+      console.log('이력서 생성 성공:', createRecordResponse.data);
+  
+      const createIntroResponse = await createIntro({
+        questionList: [
+          { title: 'string', content: 'string', number: 0 },
+          { title: 'string', content: 'string', number: 1 },
+          { title: 'string', content: 'string', number: 2 },
+        ],
+        state: 0,
+      });
+      console.log('소개 생성 성공:', createIntroResponse.data);
+  
+      handleSignup();
+    } else {
+      console.error('응답 데이터가 없습니다.');
+      alert('서버 응답이 비어 있습니다.');
+    }
   };
+  
 
   return (
     <StepTwoContainer>
