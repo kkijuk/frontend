@@ -43,6 +43,16 @@ const AwardItem = ({ data, onSave, onUpdate, onDelete, onClose }) => {
 export default AwardItem;
 
 // Styled Components
+const EditButton = styled.button`
+	border: none;
+	position: absolute;
+	right: 0;
+	top:10px;
+	background-color: transparent;
+	opacity: 0;
+	padding: 0px 50px 70px 0px;
+`;
+
 const Container = styled.div`
   display: flex;
   width:100%;
@@ -54,6 +64,7 @@ const Container = styled.div`
 		cursor: pointer;
 	}
 `;
+
 const TimeLine = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -84,15 +95,7 @@ const AwardDetails = styled.div`
   margin-top: 5px;
 `;
 
-const EditButton = styled.button`
-	border: none;
-	position: absolute;
-	right: 0;
-	top:10px;
-	background-color: transparent;
-	opacity: 0;
-	padding: 0px 50px 70px 0px;
-`;
+
 
 const EditContainer = styled.div`
 	width: 820px;
