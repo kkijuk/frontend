@@ -109,21 +109,20 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
     { label: '기타', value: 'OTHER' },
   ];
   
-// 나중에 2개로 수정하기 에러 메세지도 
   const handleStatusClick = (status) => {
     if (selectedStatuses.includes(status)) {
       setSelectedStatuses(selectedStatuses.filter((s) => s !== status)); // 선택 해제
-    } else if (selectedStatuses.length < 1) {
+    } else if (selectedStatuses.length < 2) {
       setSelectedStatuses([...selectedStatuses, status]); // 상태 추가
     } else {
       setShowErrorMessage(true); // 에러 메시지 표시
       setTimeout(() => setShowErrorMessage(false), 2000);
     }
   };
-
+  
   const handleSubmit = async () => {
     if (selectedStatuses.length === 0) {
-      alert('직업을 선택해주세요.');
+      alert('직업을 최소 1개 선택해주세요.');
       return;
     }
   
@@ -132,7 +131,7 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
         isTermsAgreed: agreements.isTermsAgreed,
         isPrivacyAgreed: agreements.isPrivacyAgreed,
         isMarketingAgreed: agreements.isMarketingAgreed ? 'BOTH' : 'NONE',
-        memberJob: selectedStatuses[0], // 단일 선택
+        memberJob: selectedStatuses, // 최대 2개의 상태를 배열로 전송
       };
   
       console.log('요청 데이터:', payload);
@@ -148,45 +147,44 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
         }
       );
       console.log('회원가입 성공:', response.data);
-
+  
       // 이력서 생성
       const createRecordResponse = await createRecord({
-        "address": "string",
-        "profileImageUrl": "string"
-      })
+        address: 'string',
+        profileImageUrl: 'string',
+      });
       console.log('이력서 생성 성공:', createRecordResponse.data);
-
+  
       // 자기소개서 생성
       const createIntroResponse = await createIntro({
-        "questionList": [
+        questionList: [
           {
-            "title": "string",
-            "content": "string",
-            "number": 0
+            title: 'string',
+            content: 'string',
+            number: 0,
           },
           {
-            "title": "string",
-            "content": "string",
-            "number": 1
-          }
-          ,
+            title: 'string',
+            content: 'string',
+            number: 1,
+          },
           {
-            "title": "string",
-            "content": "string",
-            "number": 2
-          }
+            title: 'string',
+            content: 'string',
+            number: 2,
+          },
         ],
-        "state": 0
-      })
+        state: 0,
+      });
       console.log('소개 생성 성공:', createIntroResponse.data);
-
+  
       handleSignup();
     } catch (error) {
       console.error('회원가입 실패:', error.message);
       alert('회원가입 중 오류가 발생했습니다. 다시 시도해주세요.');
     }
   };
-
+  
   return (
     <StepTwoContainer>
       <Title>마지막 단계예요! 당신은 지금 어떤 상태인가요?</Title>
@@ -203,12 +201,12 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
           </button>
         ))}
       </div>
-      {showErrorMessage && <ErrorMessage>최대 1개까지 선택 가능해요</ErrorMessage>}
+      {showErrorMessage && <ErrorMessage>최대 2개까지 선택 가능해요</ErrorMessage>}
       <ButtonContainer>
         <CompleteButton onClick={handleSubmit}>완료</CompleteButton>
       </ButtonContainer>
     </StepTwoContainer>
   );
-};
+} 
 
 export default SignupStepTwo;
