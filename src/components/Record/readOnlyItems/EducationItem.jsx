@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import AddEducationForm from '../addForms/AddEducationForm';
+import { KebabMenu2 } from '../KebabMenu';
 
 const EducationItem = ({ data, isLastItem, onSave, onUpdate, onDelete, onClose }) => {
 	const [isEditMode, setIsEditMode] = useState(false);
@@ -8,7 +9,7 @@ const EducationItem = ({ data, isLastItem, onSave, onUpdate, onDelete, onClose }
 	console.log('EducationItem: ', data);
 
 	return (
-		<div style={{ display: 'flex', width:'100%'}}>
+		<FirstContainer>
 			{isEditMode ? (
 				<EditContainer>
 					<AddEducationForm
@@ -36,14 +37,13 @@ const EducationItem = ({ data, isLastItem, onSave, onUpdate, onDelete, onClose }
 							</Dates>
 						</SchoolInfo>
 					</div>
-					<EditButton id="edit" onClick={() => setIsEditMode(true)}>
-						수정
-					</EditButton>
 				</Container>
+				<EditButton id="edit">
+					<KebabMenu2 onModalOpen={() => setIsEditMode(true)} />
+				</EditButton>
 				</>
 			)}
-
-		</div>
+	</FirstContainer>
 	);
 };
 
@@ -87,18 +87,15 @@ const Line = styled.div`
 `;
 
 const EditButton = styled.button`
-  width:65px;
-  margin-left: auto;
-  background-color: #F5F5F5;
-  color: #707070;
-  border: none;
-  border-radius: 10px;
-  padding: 5px 10px;
-  opacity:0;
-  transition: opacity 0.2s ease-in-out;
-  position:absolute;
-  right:260px;
+	border: none;
+	position: absolute;
+	right: 0;
+	top:40px;
+	background-color: transparent;
+	opacity: 0;
+	padding: 0px 50px 70px 0px;
 `;
+
 const EditContainer = styled.div`
 	width: 820px;
 	display: flex;
@@ -113,13 +110,18 @@ const Container = styled.div`
 	display: flex;
 	align-items: flex-start;
 	margin-bottom: 45px;
+	font-family: 'Regular';
+	positon: relative;
+`;
 
+const FirstContainer = styled.div`
+	width: 100%;
+	display: flex;
+	position:relative;
 	&:hover ${EditButton} {
 		opacity: 1;
 		cursor: pointer;
 	}
-	font-family: 'Regular';
-	positon: relative;
 `;
 
 const LevelTag = styled.div`
