@@ -44,7 +44,7 @@ const useRecordStore = create((set, get) => ({
 			const data = response.data;
 			console.log('Fetch Record Data:', data);
 
-			if (resdata.message === '해당 유저의 이력서가 존재하지 않습니다.') {
+			if (response.message === '해당 유저의 이력서가 존재하지 않습니다.') {
 				throw new Error('not created');
 			}
 			
