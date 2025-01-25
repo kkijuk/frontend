@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { editCareer } from '../../api/Mycareer/Career';
-import KebabMenu from './KebabMenu';
+import { KebabMenu1 } from './KebabMenu';
 import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
 
 const CareerItem = ({ data, isLastItem, setIsOpen }) => {
@@ -67,7 +67,7 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 · 이곳에 작성한 내용은 [서류준비-이력서]에 자동으로 삽입됩니다.`
 
 	return (
-		<div style={{ display: 'flex', width: '100%' }}>	
+		<FirstContainer>
 			{isCareerModalOpen && 
 				<AddCareerModal 
 					mode='edit'
@@ -80,7 +80,7 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 				<Line category={data.category.categoryKoName} isLastItem={isLastItem} isPastDue={data.isCurrent} isSummaryEditMode={isSummaryEditMode}></Line>
 			</TimeLine>
 			<Container>
-				<div>
+				<div style={{width:'100%'}}>
 					<LevelTag category={data.category.categoryKoName}>{displayCategory}</LevelTag>
 					<SchoolInfo>
 						<SchoolName>{data.name}</SchoolName>
@@ -89,7 +89,7 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 							{activityMonths ? <Status>({activityMonths}개월)</Status> : <Status>(진행 중)</Status>}
 						</Dates>
 						<DetailContainer>
-							<div style={{ width:'58px',fontWeight: '600', marginRight: '30px', lineHeight:'14px' }}>활동내역</div>
+							<div style={{ width:'58px',fontWeight: '600', marginRight: '30px'}}>활동내역</div>
 							{isSummaryEditMode ? (
 								<DetailWrapper>
 									<DetailTextArea placeholder={detailPlaceHolder}></DetailTextArea>
@@ -105,16 +105,14 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 						</DetailContainer>
 					</SchoolInfo>
 				</div>
-				<EditButton>
-					<KebabMenu
-						// onModalOpen={() => setIsCareerModalOpen(true)}
-						onModalOpen={() => setIsOpen(true)}
-						onDetailOpen={() => setIsSummaryEditMode(true)}
-					/>
-				</EditButton>
-
 			</Container>
-		</div>
+			<EditButton>
+				<KebabMenu1
+					onModalOpen={() => setIsCareerModalOpen(true)}
+					onDetailOpen={() => setIsSummaryEditMode(true)}
+				/>
+			</EditButton>
+		</FirstContainer>
 	);
 };
 
@@ -214,20 +212,32 @@ const Line = styled.div`
 
 const EditButton = styled.button`
 	border: none;
-	padding: 5px 10px;
 	position: absolute;
-	right: -450px;
-	top:0;
-	background-color: #FFF;
+	right: 0;
+	top:40px;
+	background-color: transparent;
+	opacity: 0;
+	// transition: opacity 0.2s ease;
+	padding: 0px 50px 70px 0px;
 `;
 
 const Container = styled.div`
-	width: 100%
+	width: 100%;
 	display: flex;
-	align-items: flex-start;
+	flex-direction: row;
 	margin-bottom: 45px;
 	font-family: 'Regular';
 	position: relative;
+	&:hover ${EditButton} {
+		opacity: 1;
+		cursor: pointer;
+	}
+`;
+
+const FirstContainer = styled.div`
+	width: 100%;
+	display: flex;
+	position:relative;
 	&:hover ${EditButton} {
 		opacity: 1;
 		cursor: pointer;
