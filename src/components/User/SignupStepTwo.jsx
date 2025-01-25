@@ -93,7 +93,7 @@ const ErrorMessage = styled.div`
 `;
 
 const SignupStepTwo = ({ agreements, handleSignup }) => {
-  const [selectedStatuses, setSelectedStatuses] = useState([]); // 복수 선택 상태로 수정
+  const [selectedStatuses, setSelectedStatuses] = useState([]);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const navigate = useNavigate();
   const token = useAuthStore((state) => state.token);
@@ -108,48 +108,47 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
     { label: '창업/사업 중', value: 'ENTREPRENEUR' },
     { label: '기타', value: 'OTHER' },
   ];
-  
-// 나중에 2개로 수정하기 에러 메세지도 
+
   const handleStatusClick = (status) => {
     if (selectedStatuses.includes(status)) {
-      setSelectedStatuses(selectedStatuses.filter((s) => s !== status)); // 선택 해제
-    } else if (selectedStatuses.length < 1) {
-      setSelectedStatuses([...selectedStatuses, status]); // 상태 추가
+      setSelectedStatuses(selectedStatuses.filter((s) => s !== status));
+    } else if (selectedStatuses.length < 2) {
+      setSelectedStatuses([...selectedStatuses, status]);
     } else {
-      setShowErrorMessage(true); // 에러 메시지 표시
+      setShowErrorMessage(true);
       setTimeout(() => setShowErrorMessage(false), 2000);
     }
   };
 
   const handleSubmit = async () => {
     if (selectedStatuses.length === 0) {
-      alert('직업을 선택해주세요.');
+      alert('최소 1개를 선택해주세요.');
       return;
     }
   
-    try {
-      const payload = {
-        isTermsAgreed: agreements.isTermsAgreed,
-        isPrivacyAgreed: agreements.isPrivacyAgreed,
-        isMarketingAgreed: agreements.isMarketingAgreed ? 'BOTH' : 'NONE',
-        memberJob: selectedStatuses[0], // 단일 선택
-      };
+    const payload = {
+      isTermsAgreed: agreements.isTermsAgreed,
+      isPrivacyAgreed: agreements.isPrivacyAgreed,
+      isMarketingAgreed: agreements.isMarketingAgreed ? 'BOTH' : 'NONE',
+      memberJob: selectedStatuses,
+    };
   
-      console.log('요청 데이터:', payload);
+    console.log('요청 데이터:', payload);
   
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/member/profile`,
-        payload,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}/member/profile`,
+      payload,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  
+    if (response?.data) {
       console.log('회원가입 성공:', response.data);
-
-      // 이력서 생성
+  
       const createRecordResponse = await createRecord({
         "address": "string",
         "profileImageUrl": "string"
@@ -158,34 +157,22 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
 
       // 자기소개서 생성
       const createIntroResponse = await createIntro({
-        "questionList": [
-          {
-            "title": "string",
-            "content": "string",
-            "number": 0
-          },
-          {
-            "title": "string",
-            "content": "string",
-            "number": 1
-          }
-          ,
-          {
-            "title": "string",
-            "content": "string",
-            "number": 2
-          }
+        questionList: [
+          { title: 'string', content: 'string', number: 0 },
+          { title: 'string', content: 'string', number: 1 },
+          { title: 'string', content: 'string', number: 2 },
         ],
         "state": 0
       })
       console.log('마스터 자소서 생성 성공:', createIntroResponse);
 
       handleSignup();
-    } catch (error) {
-      console.error('회원가입 실패:', error.message);
-      alert('회원가입 중 오류가 발생했습니다. 다시 시도해주세요.');
+    } else {
+      console.error('응답 데이터가 없습니다.');
+      alert('서버 응답이 비어 있습니다.');
     }
   };
+  
 
   return (
     <StepTwoContainer>
@@ -203,7 +190,7 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
           </button>
         ))}
       </div>
-      {showErrorMessage && <ErrorMessage>최대 1개까지 선택 가능해요</ErrorMessage>}
+      {showErrorMessage && <ErrorMessage>최대 2개까지 선택 가능해요</ErrorMessage>}
       <ButtonContainer>
         <CompleteButton onClick={handleSubmit}>완료</CompleteButton>
       </ButtonContainer>
