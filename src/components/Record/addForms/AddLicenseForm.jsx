@@ -111,14 +111,14 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialDa
                 placeholder="수험번호/자격번호"
                 value={formData.licenseNumber}
                 onChange={(e) => handleInputChange("licenseNumber", e.target.value)}
-                style={{ width: "195px" }}
+                style={{ width: "175px" }}
             />
             <Input
                 type="text"
                 placeholder="주관처(선택)"
                 value={formData.administer}
                 onChange={(e) => handleInputChange("administer", e.target.value)}
-                style={{ width: "195px" }}
+                style={{ width: "175px" }}
             />
             <ButtonRow>
               {mode === "edit" ? (
@@ -180,12 +180,12 @@ const FirstContainer = styled.div`
 `
 
 const TypeWrapper = styled.div`
-width: 224px;
-height: 45px;
-flex-shrink: 0;
-border-radius: 10px 10px 0px 0px;
-background: var(--gray-06, #F5F5F5);
-position: relative;
+  width: 224px;
+  height: 45px;
+  flex-shrink: 0;
+  border-radius: 10px 10px 0px 0px;
+  background: var(--gray-06, #F5F5F5);
+  position: relative;
 `
 
 const Container = styled.div`
@@ -244,7 +244,7 @@ const Input = styled.input`
   font-size: 16px;
   font-weight: 400;
   color: black;
-  padding-left: 10px;
+  padding: 0px 20px;
 
   &::placeholder {
     color: #d9d9d9;

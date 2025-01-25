@@ -1,6 +1,7 @@
 import React, { useState }from 'react';
 import styled from 'styled-components';
 import AddAwardForm from '../addForms/AddAwardForm';
+import { KebabMenu2 } from '../KebabMenu';
 
 const AwardItem = ({ data, onSave, onUpdate, onDelete, onClose }) => {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -30,8 +31,8 @@ const AwardItem = ({ data, onSave, onUpdate, onDelete, onClose }) => {
               {data.acquireDate} ・ {data.administer}
             </AwardDetails>
           </AwardInfo>
-          <EditButton id="edit" onClick={() => setIsEditMode(true)}>
-						수정
+          <EditButton id="edit">
+            <KebabMenu2 onModalOpen={()=>setIsEditMode(true)} />
 					</EditButton>
           </>
         )}
@@ -47,14 +48,15 @@ const Container = styled.div`
   width:100%;
   padding: 10px;
   font-family:Regular;
-  &:hover button {
-    visibility: visible;
-  }
+  margin-bottom: 20px;
+	&:hover ${EditButton} {
+		opacity: 1;
+		cursor: pointer;
+	}
 `;
 const TimeLine = styled.div`
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	margin: 0px 70px 0px 30px;
 `;
 
@@ -83,14 +85,13 @@ const AwardDetails = styled.div`
 `;
 
 const EditButton = styled.button`
-  visibility: hidden;
-  background: var(--sub-bu, #77aff2);
-  color: var(--white, #FFF);
-  border: none;
-  border-radius: 10px;
-  padding: 5px 10px;
-  cursor: pointer;
-  transition: visibility 0.2s ease-in-out;
+	border: none;
+	position: absolute;
+	right: 0;
+	top:10px;
+	background-color: transparent;
+	opacity: 0;
+	padding: 0px 50px 70px 0px;
 `;
 
 const EditContainer = styled.div`
