@@ -122,8 +122,8 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
   
   const handleSubmit = async () => {
     if (selectedStatuses.length === 0) {
-      alert('직업을 최소 1개 선택해주세요.');
-      return;
+      alert('최소 1개를 선택해주세요.'); 
+      return; 
     }
   
     try {
