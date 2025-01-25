@@ -8,7 +8,7 @@ const EmailAndAddress = ({type, data, onSave}) => {
     return (
         <>
         {/* 주소가 NULL 인 경우 */}
-        {!data && !isEditingMode && (
+        {(!data || data === "string")&& !isEditingMode && (
             <NullModeAddress onClick={()=>setIsEditingMode(true)}>
                 {type === "address" ? "주소를 입력하세요" : "이메일을 입력하세요"}
             </NullModeAddress>
