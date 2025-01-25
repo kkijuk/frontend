@@ -4,7 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
 
 import queryClient from './api/queryClient/queryClient';
-import api, {setupApiInterceptors} from './Axios'
+import api, { setupApiInterceptors } from './Axios';
 import SocialRedirect from './components/Redirect';
 import Home from './pages/Home';
 import MyPage from './pages/Mypage/Mypage';
@@ -34,6 +34,7 @@ import Select from './pages/History/Select';
 import AddApply from './pages/History/AddApply';
 import Portfolio from './pages/History/Portfolio';
 import ApplyDetail from './pages/Apply/ApplyDetail';
+import Confirm from './pages/Mypage/Confirm';
 import AuthenticationAccount from './pages/Mypage/AuthenticationAccount';
 import AccountMangement from './pages/Mypage/AccountManagement';
 import MyInformation from './pages/Mypage/Myinformation';
@@ -65,7 +66,7 @@ const App = () => {
 	const navigate = useNavigate();
 
 	// 헤더를 숨길 경로 설정
-	const hideHeaderRoutes = ['/commingsoon', '/', '/signup', '/signupinterest', '/signupsuccess']; 
+	const hideHeaderRoutes = ['/commingsoon', '/', '/signup', '/signupinterest', '/signupsuccess'];
 	const hideHeader = hideHeaderRoutes.includes(location.pathname);
 
 	// GA4 초기화
@@ -111,7 +112,8 @@ const App = () => {
 					<Route path="/apply-detail/:id" element={<ApplyDetail />} />
 					<Route path="/filter" element={<FilterPage />} />
 					<Route path="/community" element={<Community />} />
-					<Route path="/mypage/authentication" element={<AuthenticationAccount />} />
+
+					<Route path="/mypage/authentication" element={<Confirm />} />
 					<Route path="/mypage/myinformation" element={<MyInformation />} />
 					<Route path="/mypage/accountmanagement" element={<AccountMangement />} />
 					<Route path="/mypage/field" element={<Field />} />
