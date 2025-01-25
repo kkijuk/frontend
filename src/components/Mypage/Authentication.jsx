@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { verifyPassword } from '../../api/Mypage/MyinformationVerify';
+import { fetchEmail, verifyPassword } from '../../api/Mypage/MyinformationVerify';
 
 const Container = styled.div`
 	display: flex;
