@@ -165,14 +165,13 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
       });
       console.log('소개 생성 성공:', createIntroResponse.data);
   
-      handleSignup();
+      handleSignup(); 
     } else {
       console.error('응답 데이터가 없습니다.');
       alert('서버 응답이 비어 있습니다.');
     }
   };
   
-
   return (
     <StepTwoContainer>
       <Title>마지막 단계예요! 당신은 지금 어떤 상태인가요?</Title>
