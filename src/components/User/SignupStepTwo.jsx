@@ -150,28 +150,30 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
       console.log('회원가입 성공:', response.data);
   
       const createRecordResponse = await createRecord({
-        address: 'string',
-        profileImageUrl: 'string',
-      });
-      console.log('이력서 생성 성공:', createRecordResponse.data);
-  
+        "address": "string",
+        "profileImageUrl": "string"
+      })
+      console.log('이력서 생성 성공:', createRecordResponse);
+
+      // 자기소개서 생성
       const createIntroResponse = await createIntro({
         questionList: [
           { title: 'string', content: 'string', number: 0 },
           { title: 'string', content: 'string', number: 1 },
           { title: 'string', content: 'string', number: 2 },
         ],
-        state: 0,
-      });
-      console.log('소개 생성 성공:', createIntroResponse.data);
-  
-      handleSignup(); 
+        "state": 0
+      })
+      console.log('마스터 자소서 생성 성공:', createIntroResponse);
+
+      handleSignup();
     } else {
       console.error('응답 데이터가 없습니다.');
       alert('서버 응답이 비어 있습니다.');
     }
   };
   
+
   return (
     <StepTwoContainer>
       <Title>마지막 단계예요! 당신은 지금 어떤 상태인가요?</Title>

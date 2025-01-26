@@ -1,12 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import AddSkillForm from '../addForms/AddSkillForm';
+import { KebabMenu2 } from '../KebabMenu';
 
-const SkillItem = ({ data, onEdit }) => {
+const SkillItem = ({ data, isSecondColumn, onSave, onUpdate, onDelete }) => {
+  const [isEditMode, setIsEditMode] = useState(false);
+
   return (
     <Container>
-      <SkillInfo>
-        <SkillName>{data.skillName} · {data.workmanship}</SkillName>
-      </SkillInfo>
+      <>
+        <SkillInfo>
+          <SkillName>{data.skillName} · {data.workmanship}</SkillName>
+        </SkillInfo>
+        <EditButton>
+          <KebabMenu2 onModalOpen={()=>setIsEditMode(true)} />
+        </EditButton>
+      </>
+      {isEditMode && (
+        <>
+          <div style={{height:'20px'}}/>
+          <EditContainer isSecondColumn={isSecondColumn}>
+            <AddSkillForm
+              mode = "edit"
+              initialData = {data}
+              onUpdate = {(FormData) => onUpdate(FormData)}
+              onDelete={onDelete}
+            />
+          </EditContainer>
+        </>
+      )}
     </Container>
   );
 };
@@ -14,14 +36,40 @@ const SkillItem = ({ data, onEdit }) => {
 export default SkillItem;
 
 // Styled Components
+const EditButton = styled.button`
+	border: none;
+	position: absolute;
+	right: 0;
+	top:10px;
+	background-color: transparent;
+	opacity: 0;
+	padding: 0px 50px 70px 0px;
+  z-index: 1000;
+`;
+
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
   width:100%;
+  padding: 10px;
   font-family:Regular;
-  &:hover button {
-    visibility: visible;
-  }
+  margin-bottom: 20px;
+  position: relative;
+	&:hover ${EditButton} {
+		opacity: 1;
+		cursor: pointer;
+	}
 `;
+
+const EditContainer = styled.div`
+	width: 820px;
+	display: flex;
+	// justify-content: center;
+	align-items: flex-start;
+	// margin-bottom: 45px;
+	font-family: 'Regular';
+  margin-left: ${({ isSecondColumn }) => (isSecondColumn ? '-345px' : '0')};
+`
 
 const SkillInfo = styled.div`
   flex: 1;

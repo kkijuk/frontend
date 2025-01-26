@@ -1,8 +1,14 @@
-import axios from "axios";
+import api from "axios";
 
 const updateUserData = async (data) => {
     try{
-        const response = await axios.patch("/history/resume", data);
+        // Ensure data fields are not undefined or null
+        data.address = data.address ?? "string";
+        data.profileImageUrl = data.profileImageUrl ?? "string";
+        data.email = data.email ?? "string";
+        
+        console.log("Data to update: ", data);
+        const response = await api.patch("/history/resume", data);
         console.log("User data updated successfully: ", response.data);
         return response.data;
     } catch (error) {

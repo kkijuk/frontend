@@ -41,13 +41,13 @@ const useRecordStore = create((set, get) => ({
 		set({ status: 'loading' });
 		try {
 			const response = await readRecord();
-
+			const data = response.data;
 			console.log('Fetch Record Data:', data);
 
-			if (data.message === '해당 유저의 이력서가 존재하지 않습니다.') {
+			if (response.message === '해당 유저의 이력서가 존재하지 않습니다.') {
 				throw new Error('not created');
 			}
-			const data = response.data;
+			
 
 			// 임시
 			const normalizeData = (items, idField) => items.map((item) => ({ ...item, id: item[idField] }));
@@ -57,12 +57,12 @@ const useRecordStore = create((set, get) => ({
                     userId:data.userId,
 					profile: data.profile,
                     name:data.name,
-                    birth:data.birth,
-                    mobile:data.mobile,
+                    birth:data.birthday,
+                    mobile:data.phone,
                     email:data.email,
                     address:data.address
                 },
-                updated_at:data.updated_at,
+                updated_at:data.updatedAt,
 				recordId: data.record_id,
 				educations: data.educationList,
 				licenses: data.licenses,

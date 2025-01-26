@@ -86,7 +86,7 @@ const History = () => {
 	const [editableUserData, setEditableUserData] = useState({	// 사용자 정보 수정
 		profileImageUrl: profile,
 		address: address,
-		//email: email,
+		email: email,
 	});
 	const [profileBlob, setProfileBlob] = useState(profile);	// 프로필 이미지
 
@@ -127,7 +127,7 @@ const History = () => {
 
 		return ()=>observer.disconnect();
 
-	}, [fetchRecord, recordId, error, sections]);
+	}, [fetchRecord, recordId, error]);
 
 	useEffect(() => {
 		// 사용자 정보 업데이트
@@ -173,7 +173,7 @@ const History = () => {
 		return names[type] || '기타';
     };
 
-		// 인디케이터 관련 로직
+	// 인디케이터 관련 로직
 	//(1) section, activeSection
 	const sections = [
 		{id: "user", name: "인적사항"},
@@ -210,12 +210,12 @@ const History = () => {
 
 	//(2) 이메일 또는 주소 변경 시
 	const handleEmailOrAddressChange = (data) => {
-		// if(data.type === 'email'){
-		// 	setEditableUserData((prev) => ({
-		// 		...prev,
-		// 		email: data.data
-		// 	}));
-		// } 
+		if(data.type === 'email'){
+			setEditableUserData((prev) => ({
+				...prev,
+				email: data.data
+			}));
+		} 
 		
 		if(data.type === 'address'){
 			setEditableUserData((prev) => ({
@@ -248,7 +248,7 @@ const History = () => {
 						{/* <AddCareerModal></AddCareerModal> */}
 						{isAddCareerModalOpen &&
 							<AddCareerModal
-								onClose={() => setIsAddCareerModalOpen(null)}
+								onClose={() => setIsAddCareerModalOpen(false)}
 							/>
 						}
 						<div style={{display:'flex', marginBlock:'30px'}}>
@@ -272,7 +272,13 @@ const History = () => {
 								<InfoValue>{mobile}</InfoValue>
 
 								<InfoLabel>이메일</InfoLabel>
-								<InfoValue>{email}</InfoValue>
+								<InfoValue>
+									<EmailAndAddress
+										type="email"
+										data={email}
+										onSave={(data) => handleEmailOrAddressChange(data)}
+									/>
+								</InfoValue>
 
 								<InfoLabel>주소</InfoLabel>
 								<InfoValue>
@@ -300,7 +306,6 @@ const History = () => {
 									onClose={() => toggleAddForm('educations')}
 									onSave={(updates) => updateItem('educations', recordId, updates)}
 								/>}
-								<div style={{height:'50px'}}></div>
 								{educations.map((education, index) => (
 									<EducationItem
 										key={education.id}
@@ -412,7 +417,6 @@ const History = () => {
 									onSave={(updates) => addItem('awards', recordId, updates)}
 									onClose={() => toggleAddForm('awards')}
 								/>}
-								<div style={{height:'50px'}}></div>
 								{awards.map((award, index) => (
 									<AwardItem 
 										key={award.id} 
@@ -433,12 +437,12 @@ const History = () => {
 								<h2>자격증 · 외국어</h2>
 								<AddButton onClick={() => toggleAddForm('licenses')}>+</AddButton>
 							</SectionHeader>
-							<ContentWrapper>
+							<ContentWrapper style={{gap:'50px'}}>
 								{openedForms.add.licenses &&
 								<AddLicenseForm
+									onSave={(updates) => addItem('licenses', recordId, updates)}
 									onClose={() => toggleAddForm('licenses')}
 								/>}
-								<div style={{height:'50px'}}></div>
 								<Section>
 									<Tag>자격증</Tag>
 									<ItemsWrapper>
@@ -446,12 +450,14 @@ const History = () => {
 											<LicenseItem 
 												key={license.id} 
 												data={license} 
-												// onEdit={() => toggleEditForm('licenses', license.id)} 
+												isSecondColumn={index % 2 === 1}
+												onUpdate = {(updates) => updateItem('licenses', license.id, updates)}
+												onDelete={() => deleteItem('licenses', license.id)}
 											/>
 										))}
 									</ItemsWrapper>
 								</Section>
-								<div style={{height:'50px'}}></div>
+
 								<Section>
 									<Tag>외국어</Tag>
 									<ItemsWrapper>
@@ -459,7 +465,9 @@ const History = () => {
 											<LicenseItem 
 												key={foreign.id} 
 												data={foreign} 
-												// onEdit={() => toggleEditForm('licenses', license.id)} 
+												isSecondColumn={index % 2 === 1}
+												onUpdate = {(updates) => updateItem('licenses', foreign.id, updates)}
+												onDelete={() => deleteItem('licenses', foreign.id)}
 											/>
 										))}
 									</ItemsWrapper>
@@ -479,9 +487,9 @@ const History = () => {
 							<ContentWrapper>
 								{openedForms.add.skills &&
 								<AddSkillForm
+									onSave={(updates) => addItem('skills', recordId, updates)}
 									onClose={() => toggleAddForm('skills')}
 								/>}
-								<div style={{height:'50px'}}></div>
 								{Object.entries(skillSections).map(([sectionType, sectionSkills]) => 
 									sectionSkills.length > 0 ? (
 									<Section key={sectionType}>
@@ -491,7 +499,8 @@ const History = () => {
 											<SkillItem
 												key={skill.id}
 												data={skill}
-												// onEdit={() => console.log(`Edit Skill: ${skill.id}`)}
+												onUpdate={(updates) => updateItem('skills', skill.id, updates)}
+												onDelete={() => deleteItem('skills', skill.id)}
 											/>
 											))}
 										</ItemsWrapper>
@@ -517,7 +526,6 @@ const History = () => {
 										onSave={(data) => addEtcItem(data)}
 										
 								/>}
-								<div style={{height:'50px'}}></div>
 								{files.map((file, index)=>{
 									<FileItem
 										data={file}
@@ -622,8 +630,9 @@ const Section = styled.div`
 `;
 
 const ItemsWrapper = styled.div`
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2열 배치 */
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* 2열 배치 */
   gap: 25px;
 `;
 
