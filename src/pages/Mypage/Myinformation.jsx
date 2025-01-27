@@ -10,6 +10,7 @@ const ContentBox = styled.div`
 	height: auto;
 
 	border: 1px solid black;
+	margin-bottom: 20px;
 `;
 
 const ContentName = styled.div`
