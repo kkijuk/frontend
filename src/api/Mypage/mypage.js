@@ -26,14 +26,13 @@ export const fetchLogindata = async () => {
 	}
 };
 
-//이메일 일치하는지 확인
 export const fetchEmail = async (inputEmail) => {
 	try {
 		const response = await fetch(`${apiUrl}/member/checkEmail`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
-				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
+				'Authorization': `Bearer ${localStorage.getItem('token')}`,
 			},
 			credentials: 'include',
 			body: JSON.stringify({ email: inputEmail }),
@@ -43,12 +42,13 @@ export const fetchEmail = async (inputEmail) => {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
 
+		// 단순 true/false 반환 처리
 		const data = await response.json();
-		console.log('이메일 확인 결과:', data); // true 또는 false
-		return data.isEmailMatched; // 백엔드에서 반환한 boolean 값
+		console.log('fetchEmail 응답 데이터:', data); // true 또는 false
+		return data; // true 또는 false 그대로 반환
 	} catch (error) {
 		console.log('Error:', error.message);
-		throw error; // 오류를 호출한 쪽에서 처리하도록 던짐
+		throw error;
 	}
 };
 
