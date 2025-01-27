@@ -8,6 +8,7 @@ export const fetchLogindata = async () => {
 		const response = await axios.get(`${apiUrl}/member/getEmail`, {
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 			},
 			withCredentials: true, // 쿠키와 인증 정보를 함께 보냄
 		});
@@ -32,6 +33,7 @@ export const fetchEmail = async () => {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 			},
 			credentials: 'include',
 		});
@@ -54,6 +56,7 @@ export const fetchUserInfo = async () => {
 		const response = await axios.get(`${apiUrl}/member/myPage/info`, {
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 			},
 			withCredentials: true,
 		});
@@ -69,6 +72,7 @@ export const changeUserInfo = async () => {
 		const response = await axios.put(`${apiUrl}/member/myPage/info`, {
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 			},
 			withCredentials: true,
 		});
@@ -84,6 +88,7 @@ export const quitUser = async () => {
 		const response = await axios.post(`${apiUrl}/member/inactive`, {
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 			},
 			withCredentials: true,
 		});
