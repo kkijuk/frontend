@@ -87,13 +87,17 @@ export const changeUserInfo = async () => {
 
 export const quitUser = async () => {
 	try {
-		const response = await axios.post(`${apiUrl}/member/inactive`, {
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
+		const response = await axios.post(
+			`${apiUrl}/member/inactive`,
+			{},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
+				},
+				withCredentials: true,
 			},
-			withCredentials: true,
-		});
+		);
 		return response.data;
 	} catch (error) {
 		console.error('사용자 정보를 가져오는 중 오류 발생:', error);
