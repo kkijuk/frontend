@@ -1,27 +1,16 @@
+import api from '../../Axios'; 
+
 export const getRecruitRemind = async () => {
-	const apiUrl = `${process.env.REACT_APP_API_URL}/dashboard/remind/recruit`;
+    try {
+        const response = await api.get('/dashboard/remind/recruit'); 
+        console.log('Recruit reminders:', response.data);
 
-	try {
-		const response = await fetch(apiUrl, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json; charset=utf-8',
-				'Accept': '*/*',
-			},
-			credentials: 'include', // 쿠키와 인증 정보를 함께 보냄
-		});
-
-		if (!response.ok) {
-			const errorData = await response.json();
-			throw new Error(errorData.message || 'Something went wrong');
-		}
-
-		const responseData = await response.json();
-		console.log('Recruit reminders:', responseData);
-
-		return responseData.recruits;
-	} catch (error) {
-		console.error('Error fetching recruit reminders:', error.message);
-		return [];
-	}
+        return response.data.recruits; // recruits 데이터를 반환
+    } catch (error) {
+        if (error.response) {
+            console.error('Error message from server:', error.response.data.message); // 서버 에러 메시지
+        }
+        console.error('Error fetching recruit reminders:', error.message);
+        return []; // 에러 발생 시 빈 배열 반환
+    }
 };
