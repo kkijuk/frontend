@@ -1,24 +1,32 @@
-import api from '../../Axios'; 
-
 export const getRecruitListEndDate = async (date) => {
-  if (!date) {
-    console.error('No date provided for API request');
-    throw new Error('Date parameter is required');
-  }
+	if (!date) {
+		console.error('No date provided for API request');
+		throw new Error('Date parameter is required');
+	}
 
-  console.log('Fetching recruit list for end date:', date);
+	console.log('Fetching recruit list for end date:', date);
 
-  try {
-    // Axios로 GET 요청
-    const response = await api.get(`/recruit/list/end`, {
-      params: { date }, // 쿼리 파라미터 전달
-    });
+	try {
+		const response = await fetch(`${process.env.REACT_APP_API_URL}/recruit/list/end?date=${encodeURIComponent(date)}`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json; charset=utf-8',
+				'accept': '*/*',
+			},
+			credentials: 'include',
+		});
 
-    console.log('Recruit list fetched:', response.data);
+		if (!response.ok) {
+			console.error('API response error:', response.status, response.statusText);
+			throw new Error('Failed to fetch recruit list for end date');
+		}
 
-    return response.data.recruits; // 응답 데이터의 recruits 반환
-  } catch (error) {
-    console.error('Error fetching recruit list for end date:', error.message);
-    throw error;
-  }
+		const data = await response.json();
+		console.log('Recruit list fetched:', data);
+
+		return data.recruits;
+	} catch (error) {
+		console.error('Error fetching recruit list for end date:', error.message);
+		throw error;
+	}
 };

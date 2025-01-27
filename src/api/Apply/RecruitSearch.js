@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+
 export const fetchRecruitList = async (keyword) => {
   try {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/recruit`, {

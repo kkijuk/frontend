@@ -1,25 +1,30 @@
-import api from '../../Axios'; 
-
 export const getValidRecruitList = async (date) => {
-  if (!date) {
-    console.error('Date parameter is required for fetching valid recruit list');
-    throw new Error('Date parameter is required');
-  }
-
   try {
     console.log('Fetching valid recruit list after date:', date); // 디버깅용 로그 추가
 
-    // Axios GET 요청
-    const response = await api.get(`/recruit/list/valid`, {
-      params: { time: encodeURIComponent(date) }, // 쿼리 파라미터 전달
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/recruit/list/valid?time=${encodeURIComponent(date)}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          accept: '*/*',
+        },
+        credentials: 'include',
+      },
+    );
 
-    console.log('Valid recruit list fetched:', response.data); // 디버깅용 로그 추가
+    if (!response.ok) {
+      throw new Error('Failed to fetch valid recruit list');
+    }
 
-    // API 응답 데이터 반환
-    return response.data;
+    const data = await response.json();
+    console.log('Valid recruit list fetched:', data); // 디버깅용 로그 추가
+
+    // 데이터 구조 확인 및 반환
+    return data;
   } catch (error) {
-    console.error('Error fetching valid recruit list:', error.message);
+    console.error('Error fetching valid recruit list:', error);
     throw error;
   }
 };
