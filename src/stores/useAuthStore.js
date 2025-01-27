@@ -1,14 +1,26 @@
 import { create } from 'zustand';
 
 const useAuthStore = create((set) => ({
-    token: localStorage.getItem('token') || null,
-    refreshToken: localStorage.getItem('refreshToken') || null,
-    isLoggedIn: !!localStorage.getItem('token'),
+    token: null,
+    refreshToken: null,
+    isLoggedIn: false,
+
+    // 초기 상태 복원
+    restoreState: () => {
+        const token = localStorage.getItem('token');
+        const refreshToken = localStorage.getItem('refreshToken');
+        set({
+            token: token || null,
+            refreshToken: refreshToken || null,
+            isLoggedIn: !!token,
+        });
+    },
 
     // 로그인 시 토큰 저장
     login: (token, refreshToken) => {
-        localStorage.setItem('token', token);
-        localStorage.setItem('refreshToken', refreshToken);
+        if (token) localStorage.setItem('token', token);
+        if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
+
         set({
             token: token,
             refreshToken: refreshToken,
@@ -42,3 +54,13 @@ const useAuthStore = create((set) => ({
 }));
 
 export default useAuthStore;
+
+// **앱 초기화 시 상태 복원**
+useAuthStore.getState().restoreState();
+
+// **localStorage 변경 감지 추가**
+if (typeof window !== 'undefined') {
+    window.addEventListener('storage', () => {
+        useAuthStore.getState().restoreState();
+    });
+}
