@@ -1,5 +1,5 @@
-import useAuthStore from '../stores/useAuthStore';
-import { refreshAccessToken } from './refreshAccessToken'; // refreshAccessToken 경로는 적절히 설정
+import useAuthStore from '../../stores/useAuthStore';
+import { refreshAccessToken } from '../../services/refreshToken'; 
 
 export const getRecruitCalendar = async (year, month) => {
     const { accessToken, logout } = useAuthStore.getState();

@@ -1,5 +1,5 @@
-import useAuthStore from '../stores/useAuthStore';
-import { refreshAccessToken } from './refreshAccessToken'; // refreshAccessToken 경로를 적절히 설정
+import useAuthStore from '../../stores/useAuthStore';
+import { refreshAccessToken } from '../../services/refreshToken'; 
 
 export const createRecruit = async (data) => {
     const { accessToken, logout } = useAuthStore.getState();
