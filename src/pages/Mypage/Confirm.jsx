@@ -155,8 +155,11 @@ export default function Confirm() {
 
 	const handleSubmit = async () => {
 		try {
-			// 백엔드로 입력한 이메일을 보내고 결과를 확인
+			// API 호출로 입력한 이메일 확인
 			const isMatched = await fetchEmail(inputEmail);
+
+			// 디버깅 로그 추가
+			console.log('isMatched 값:', isMatched, '타입:', typeof isMatched);
 
 			// boolean(true) 또는 문자열("true")인 경우 처리
 			if (isMatched === true || isMatched === 'true') {
@@ -165,7 +168,6 @@ export default function Confirm() {
 				setErrorMessage('입력한 이메일이 일치하지 않습니다. 다시 확인해주세요.');
 			}
 		} catch (error) {
-			// API 요청 중 오류가 발생한 경우
 			setErrorMessage('이메일을 확인하는 중 오류가 발생했습니다.');
 			console.error('Error:', error);
 		}
