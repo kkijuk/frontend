@@ -89,7 +89,7 @@ const Tag = styled.div`
 `;
 
 export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
-  const [tags, setTags] = useState(initialTags);
+  const [tags, setTags] = useState(Array.isArray(initialTags) ? initialTags : []);
   const [inputValue, setInputValue] = useState('');
   const [isTagBoxVisible, setIsTagBoxVisible] = useState(false);
   const tagBoxRef = useRef(null);
@@ -107,10 +107,11 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        const fetchedTags = await fetchModalTags();  // 공고 태그 API 호출
-        setTags(fetchedTags);
+        const fetchedTags = await fetchModalTags();
+        setTags(Array.isArray(fetchedTags) ? fetchedTags : []); // 배열인지 확인
       } catch (error) {
         console.error('태그 불러오기 오류:', error);
+        setTags([]); // 오류 시 빈 배열 설정
       }
     };
     fetchTags();
@@ -127,23 +128,16 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
       const newTag = inputValue.trim();
       if (!tags.includes(newTag)) {
         try {
-          const createdTag = await addModalTag(newTag); // 공고 태그 추가 API 호출
-          console.log('API Response:', createdTag); // API 응답 로그 출력
-  
-          // createdTag의 형식을 확인하고 적절한 데이터 구조로 태그명을 가져오기
-          const tagName = createdTag?.tagName || 
-                          createdTag?.data?.tag?.tagName || 
-                          createdTag?.data?.tagName || 
-                          (Array.isArray(createdTag.tags) && createdTag.tags.includes(newTag) ? newTag : null);
-          
+          const createdTag = await addModalTag(newTag);
+          const tagName = createdTag?.tagName || newTag; // 기본적으로 입력값 사용
           if (tagName) {
             const updatedTags = [...tags, tagName];
-            setTags(updatedTags); // 상태 업데이트 후
-            onTagListChange(updatedTags); // 변경된 태그 전달
+            setTags(updatedTags);
+            onTagListChange(updatedTags);
           } else {
             console.error('Invalid tag data:', createdTag);
           }
-          setInputValue(''); // 입력 필드 초기화
+          setInputValue('');
         } catch (error) {
           console.error('태그 추가 오류:', error);
         }
@@ -154,12 +148,10 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
   // 태그 삭제 (DELETE 요청)
   const handleTagRemove = async (tagName) => {
     try {
-      await deleteModalTag(tagName);  // 공고 태그 삭제 API 호출
+      await deleteModalTag(tagName);
       const updatedTags = tags.filter((tag) => tag !== tagName);
-      setTags(updatedTags);  // 상태 업데이트 후
-      if (typeof onTagListChange === 'function') {
-        onTagListChange(updatedTags);  // 변경된 태그 전달
-      }
+      setTags(updatedTags);
+      onTagListChange(updatedTags);
     } catch (error) {
       console.error('태그 삭제 오류:', error);
     }
@@ -183,25 +175,24 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
     <Box ref={tagBoxRef}>
       <Row>
         <TagInputContainer onClick={() => setIsTagBoxVisible(true)}>
-          {tags.map((tag) => (
+          {(Array.isArray(tags) ? tags : []).map((tag) => (
             <Tag key={tag}>
               {tag}
               <CloseButton onClick={() => handleTagRemove(tag)}>x</CloseButton>
             </Tag>
           ))}
-          {/* 리뷰 제목이 태그로 변환되는 부분 주석 처리 */}
-          {/* <TagInput
+          <TagInput
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             placeholder="태그 입력"
-          /> */}
+          />
         </TagInputContainer>
       </Row>
       {isTagBoxVisible && (
         <TagBoxList>
           <TagBoxListContainer>
-            {tags.map((tag) => (
+            {(Array.isArray(tags) ? tags : []).map((tag) => (
               <Tag key={tag} onClick={() => handleTagRemove(tag)}>
                 {tag}
               </Tag>
