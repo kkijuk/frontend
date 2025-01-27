@@ -14,12 +14,16 @@ import { fetchLogindata, fetchEmail } from '../../api/Mypage/mypage';
 
 const Container = styled.div`
 	width: 820px;
-	border: 1px solid black;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	margin: 0 auto;
+	margin-top: 0;
+	margin-right: auto;
+	margin-bottom: 50px;
+	margin-left: auto;
+
+	border: 1px solid black;
 `;
 
 const Text = styled.div`
@@ -150,18 +154,20 @@ export default function Confirm() {
 	};
 
 	const handleSubmit = async () => {
-		const userEmail = await fetchEmail();
+		try {
+			// 백엔드로 입력한 이메일을 보내고 결과를 확인
+			const isMatched = await fetchEmail(inputEmail);
 
-		if (!userEmail) {
+			if (isMatched) {
+				// 이메일이 일치하는 경우
+				navigate('/mypage/myinformation');
+			} else {
+				// 이메일이 일치하지 않는 경우
+				setErrorMessage('입력한 이메일이 일치하지 않습니다. 다시 확인해주세요.');
+			}
+		} catch (error) {
+			// API 요청 중 오류가 발생한 경우
 			setErrorMessage('이메일을 확인하는 중 오류가 발생했습니다.');
-			return;
-		}
-
-		if (inputEmail === userEmail) {
-			//다음 페이지로 이동하는 코드 작성
-			navigate('/mypage/myinformation');
-		} else {
-			setErrorMessage('입력한 이메일이 일치하지 않습니다. 다시 확인해주세요.');
 		}
 	};
 	return (
@@ -176,7 +182,11 @@ export default function Confirm() {
 						<Email>{maskedEmail}</Email>
 						<Tag socialType={socialType}>{socialType}</Tag>
 					</EmailTextBox>
-					<Input placeholder="이메일을 입력하세요" />
+					<Input
+						placeholder="이메일을 입력하세요"
+						value={inputEmail} // 상태값 바인딩
+						onChange={handleInputChange} // 입력값 변경 시 호출
+					/>
 				</EmailBox>
 				<Button onClick={handleSubmit}>확인</Button>
 				{errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}{' '}
