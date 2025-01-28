@@ -2,6 +2,7 @@ import api from '../../Axios';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { readMaster, updateMaster } from '../../api/Intro/master';
 
 const MasterRewrite = () => {
 	const navigate = useNavigate();
