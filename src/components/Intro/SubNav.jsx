@@ -71,3 +71,7 @@ const Linear = styled.div`
 	margin-top: 12px;
 	margin-bottom: 28px;
 `;
+
+const Section = styled.div`
+	height: 100%;
+`
