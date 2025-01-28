@@ -61,7 +61,7 @@ const Master = () => {
 				"state": 0
 			  });
 			console.log('생성: ', response);
-			navigate('/history/master');
+			window.location.reload();
 		} catch (error) {
 			console.error('Error:', error);
 		}

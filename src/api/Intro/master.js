@@ -30,7 +30,7 @@ const readMaster = async () => {
 	try {
 		const response = await api.get(`/history/intro/master`);
 		console.log('Success-readMaster:', response.data);
-		return response.data;
+		return response.data.data;
 	} catch (error) {
 		console.error('Error-readMaster: ', error);
 		if (error.response) {
