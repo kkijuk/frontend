@@ -6,28 +6,38 @@ import SvgIcon from "../../components/shared/SvgIcon";
 import { getValidRecruitList } from "../../api/Apply/RecruitValid";
 import { createIntro } from "../../api/Intro/intro";
 import AddApplyModal from "../../components/Modal/AddApplyModal";
+import LoadingSpinner from "../../components/shared/LoadingSpinner";
 
 
 const Select = () => {
   const navigate = useNavigate();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+  // useState
+  const [isModalOpen, setIsModalOpen] = useState(false); // 공고 추가 모달 보이기기
   const [recruitList, setRecruitList] = useState([]);
+  const [selectedJob, setSelectedJob] = useState(recruitList.length > 0 ? recruitList[0].id : null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // USEEFFECT
+  // 미지원 공고 리스트 불러오기
   useEffect(() => {
     const fetchRecruitList = async () => {
       try {
         const response = await getValidRecruitList();
         setRecruitList(response.data.unapplied.recruits);
+        if(response.data.unapplied.recruits.length > 0) {
+          setSelectedJob(response.data.unapplied.recruits[0].id);
+        }
       } catch (error) {
         console.error("Failed to fetch recruit list:", error);
       }
     };
     fetchRecruitList();
   }, []);
+
+  // useEffect(() => {console.log("현재 선택:", selectedJob)}, [selectedJob]);
   
   // 공고 선택 상태
-  const [selectedJob, setSelectedJob] = useState(recruitList.length > 0 ? recruitList[0].id : null);
   const handleSelectJob = (id) => {
     if (selectedJob === id) {
       setSelectedJob(null); // 선택 해제
@@ -35,9 +45,6 @@ const Select = () => {
       setSelectedJob(id); // 새로운 선택
     }
   }
-
-  useEffect(() => {console.log("현재 선택:", selectedJob)}, [selectedJob]);
-
 
   //기한 계산
   const calculateDaysLeft = (endTime) => {
@@ -48,7 +55,35 @@ const Select = () => {
     return `D-${daysLeft}`;
   };
 
+  // 공고 추가하기
+  const handleAddApply = async (newRecruitId) => {
+    try{
+      const newRecruitList = await getValidRecruitList();
+      const newRecruit = newRecruitList.data.unapplied.recruits.find(
+        (recruit) => recruit.id === newRecruitId
+      );
+
+      if(!newRecruit) {
+        console.error("Failed to find the newly created recruit");
+        return;
+      }
+
+      // 마감일 적게 남은 순으로 재정렬
+      const updatedRecruitList = [...recruitList, newRecruit].sort(
+        (a, b) => new Date(a.endTime) - new Date(b.endTime)
+      )
+
+      setRecruitList(updatedRecruitList);
+      setSelectedJob(newRecruitId); // 새 공고를 선택된 상태로 설정
+    } catch (error) {
+      console.error("Failed to fetch the newly created recruit:", error);
+    }
+  }
+
+  
+  // 다음 버튼 클릭(공고 별 자소서 생성)
   const handleNextClick = async () => {
+    setIsLoading(true); //Loading Start
     try{
       const response = await createIntro(selectedJob, {
         // 자소서 생성 기본 데이터
@@ -65,12 +100,15 @@ const Select = () => {
       navigate(`/history/others/${response.data.id}`);
     } catch (error) {
       console.error("Failed to create intro:", error);
+    } finally {
+      setIsLoading(false); //Loading End
     }
   }
 
   return (
     <Layout title="서류준비">
       {isModalOpen && <AddApplyModal onClose={setIsModalOpen(!isModalOpen)} />}
+      {isLoading && <LoadingSpinner message="자기소개서 생성 중 ..."/>}
       <ContentWrapper>
         {/* <div style={{height:'100px'}}/> */}
         <h2>자기소개서를 작성할 공고를 선택해주세요.</h2>
@@ -112,7 +150,13 @@ const Select = () => {
             ))}
           </ListSection>
         </ListBox>
-        <AddNewJob>+ 새로운 공고 추가</AddNewJob>
+        <AddNewJob
+          onClick = {() => setIsModalOpen(true)}
+          onClose = {() => setIsModalOpen(false)}
+          onSave = {handleAddApply}
+        >
+          + 새로운 공고 추가
+        </AddNewJob>
         <NextButton
           onClick={handleNextClick}
           disabled = {!selectedJob}>
