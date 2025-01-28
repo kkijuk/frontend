@@ -72,7 +72,7 @@ const Select = () => {
     <Layout title="이력관리">
       {isModalOpen && <AddApplyModal onClose={setIsModalOpen(!isModalOpen)} />}
       <ContentWrapper>
-        <div style={{height:'100px'}}/>
+        {/* <div style={{height:'100px'}}/> */}
         <h2>자기소개서를 작성할 공고를 선택해주세요.</h2>
         <ListBox>
           <ColumnHeaderSection>
@@ -119,7 +119,7 @@ const Select = () => {
           다음
         </NextButton>
       </ContentWrapper>
-      <div style={{height:'500px'}}>dfawe</div>
+      {/* <div style={{height:'500px'}}>dfawe</div> */}
     </Layout>
   )
 }
