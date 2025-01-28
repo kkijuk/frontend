@@ -108,24 +108,24 @@ const History = () => {
 		fetchData();
 
 		// 인디케이터 관련 로직 - 화면 영역 계산
-		const observer = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry)=>{
-					if(entry.isIntersecting){
-						setActiveSection(entry.target.id);
-					}
-				})
-			},
-			{ rootMargin: "-50% 0px -50% 0px" }
-		)
+		// const observer = new IntersectionObserver(
+		// 	(entries) => {
+		// 		entries.forEach((entry)=>{
+		// 			if(entry.isIntersecting){
+		// 				setActiveSection(entry.target.id);
+		// 			}
+		// 		})
+		// 	},
+		// 	{ rootMargin: "-50% 0px -50% 0px" }
+		// )
 
-		sections.forEach((section) => {
-			const element = document.getElementById(section.id);
-			if (element) observer.observe(element);
+		// sections.forEach((section) => {
+		// 	const element = document.getElementById(section.id);
+		// 	if (element) observer.observe(element);
 
-		});
+		// });
 
-		return ()=>observer.disconnect();
+		// return ()=>observer.disconnect();
 
 	}, [fetchRecord, recordId, error]);
 
