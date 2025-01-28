@@ -96,7 +96,7 @@ const History = () => {
 		const fetchData = async () => {
 			try{
 				await fetchRecord();
-				if(error === 'not created'){
+				if(error === "Record not created"){
 					setShowCreateButton(true);
 				}
 				console.log('Record Id:', recordId);
