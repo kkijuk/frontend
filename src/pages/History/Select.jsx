@@ -80,7 +80,7 @@ const Select = () => {
     }
   }
 
-  
+
   // 다음 버튼 클릭(공고 별 자소서 생성)
   const handleNextClick = async () => {
     setIsLoading(true); //Loading Start
@@ -107,7 +107,11 @@ const Select = () => {
 
   return (
     <Layout title="서류준비">
-      {isModalOpen && <AddApplyModal onClose={setIsModalOpen(!isModalOpen)} />}
+      {isModalOpen && 
+        <AddApplyModal 
+          onClose={setIsModalOpen(false)} 
+          onSave = {handleAddApply}
+      />}
       {isLoading && <LoadingSpinner message="자기소개서 생성 중 ..."/>}
       <ContentWrapper>
         {/* <div style={{height:'100px'}}/> */}
@@ -150,11 +154,7 @@ const Select = () => {
             ))}
           </ListSection>
         </ListBox>
-        <AddNewJob
-          onClick = {() => setIsModalOpen(true)}
-          onClose = {() => setIsModalOpen(false)}
-          onSave = {handleAddApply}
-        >
+        <AddNewJob onClick = {() => setIsModalOpen(true)}>
           + 새로운 공고 추가
         </AddNewJob>
         <NextButton

@@ -7,10 +7,8 @@ import SubNav from '../../components/Intro/SubNav';
 import Convert from '../../components/Intro/Convert';
 import Toggle from '../../components/Intro/Toggle';
 import ButtonOptions from '../../components/Intro/AddButton';
-
-// Todo
-// - 마스터 생성 요청 드리기
-// - 소제목 받아오기
+import { createMaster, readMaster } from '../../api/Intro/master';
+import { set } from 'react-hook-form';
 
 const Master = () => {
 	const navigate = useNavigate();
@@ -26,36 +24,57 @@ const Master = () => {
 		job_fit: '',
 		updated_at: '',
 	});
+	const [showCreateButton, setShowCreateButton] = useState(false); // 자소서 생성 여부
 
 	//(API) 마스터 조회
 	useEffect(() => {
-		api
-			.get('/history/intro/master')
-			.then((response) => {
-				const Data = response.data.data;
-				console.log('내용조회: ', Data);
+		const fetchIntro = async () => {
+			try{
+				const response = await readMaster();
+				console.log('내용조회: ', response);
 				setQuestions({
-					oneLiner: Data.oneLiner,
-					motive_title: Data.motiveTitle,
-					motive: Data.motive,
-					prosAndCons_title: Data.prosAndConsTitle,
-					prosAndCons: Data.prosAndCons,
-					job_fit_title: Data.jobSuitabilityTitle,
-					job_fit: Data.jobSuitability,
-					updated_at: Data.updatedAt,
+					oneLiner: response.oneLiner,
+					motive_title: response.motiveTitle,
+					motive: response.motive,
+					prosAndCons_title: response.prosAndConsTitle,
+					prosAndCons: response.prosAndCons,
+					job_fit_title: response.jobSuitabilityTitle,
+					job_fit: response.jobSuitability,
+					updated_at: response.updatedAt,
 				});
-			})
-			.catch((error) => {
-				console.log('Error:', error);
-			});
-	}, []);
+			} catch (error) {
+				console.error('Error:', error);
+				setShowCreateButton(true);
+			}
+		}
+		fetchIntro();
+	}, []);	
 
-	useEffect(() => {
-		console.log(questions);
-	}, [questions]);
+	handleCreateIntro = async () => {	
+		try {
+			const response = await createMaster({
+				questionList: [
+				  { title: 'string', content: 'string', number: 0 },
+				  { title: 'string', content: 'string', number: 1 },
+				  { title: 'string', content: 'string', number: 2 },
+				],
+				"state": 0
+			  });
+			console.log('생성: ', response);
+			navigate('/history/master');
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	}
+
 
 	return (
 		<BackgroundDiv>
+		{showCreateButton ? (
+			<CreateIntroButton onClick={handleCreateIntro}>
+				마스터 자기소개서 생성하기
+			</CreateIntroButton>
+		):(
 			<BaseDiv>
 				<ContentTitle>
 					<h1 style={{ display: 'inline-block' }}>
@@ -85,6 +104,8 @@ const Master = () => {
 					</svg>
 				</EditButton>
 			</BaseDiv>
+		)
+		}
 		</BackgroundDiv>
 	);
 };
@@ -155,3 +176,10 @@ const EditButton = styled.button`
 	cursor: pointer;
 	z-index: 10;
 `;
+
+const CreateIntroButton = styled.button`
+	width: 200px;
+	height: 130px;
+	font-size: 24px;
+	font-family: 'Regular'
+`
