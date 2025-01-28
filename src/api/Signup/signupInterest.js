@@ -1,22 +1,16 @@
+import api from '../../Axios'; 
+
 export const saveInterests = async (interestingList) => {
 	try {
 		console.log('Sending data to server:', { field: interestingList });
-		const response = await fetch(`${process.env.REACT_APP_API_URL}/member/field`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			credentials: 'include', // 쿠키와 인증 정보를 함께 보냄
 
-			body: JSON.stringify({ field: interestingList }),
-		});
-		if (!response.ok) {
-			const errorData = await response.json();
-			throw new Error(errorData.message || 'Failed to save interests');
-		}
+		const response = await api.post('/member/field', { field: interestingList }); // POST 요청
 
-		return await response.json();
+		return response.data; // 서버 응답 데이터 반환
 	} catch (error) {
+		if (error.response) {
+			console.error('Error message from server:', error.response.data.message || 'Unknown error');
+		}
 		console.error('Error saving interests:', error);
 		console.log('Interest list being sent:', interestingList);
 		throw error;
