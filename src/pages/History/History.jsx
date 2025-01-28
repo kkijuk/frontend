@@ -312,6 +312,10 @@ const History = () => {
 									onClose={() => toggleAddForm('educations')}
 									onSave={(updates) => updateItem('educations', recordId, updates)}
 								/>}
+								{educations.length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
 								{educations.map((education, index) => (
 									<EducationItem
 										key={education.id}
@@ -334,6 +338,10 @@ const History = () => {
 								<AddButton onClick={()=>setIsAddCareerModalOpen(true)}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
+								{employments.length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
 								{employments.map((employment, index) => (
 									<CareerItem
 										key={employment.id}
@@ -355,14 +363,18 @@ const History = () => {
 								<AddButton onClick={()=>setIsAddCareerModalOpen(true)}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
-							{activitiesAndExperiences.map((activity, index) => (
-									<CareerItem
-										key={activity.id}
-										data={activity}
-										isLastItem={index === activitiesAndExperiences.length - 1}
-										setIsOpen={(isOpen) => setIsAddCareerModalOpen(isOpen)}
-									/>
-							))}
+								{activitiesAndExperiences.length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
+								{activitiesAndExperiences.map((activity, index) => (
+										<CareerItem
+											key={activity.id}
+											data={activity}
+											isLastItem={index === activitiesAndExperiences.length - 1}
+											setIsOpen={(isOpen) => setIsAddCareerModalOpen(isOpen)}
+										/>
+								))}
 							</ContentWrapper>
 						</SectionWrapper>
 						<Line></Line>
@@ -376,6 +388,10 @@ const History = () => {
 								<AddButton onClick={()=>setIsAddCareerModalOpen(true)}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
+								{projects.length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
 								{projects.map((project, index) => (
 									<CareerItem
 										key={project.id}
@@ -397,6 +413,10 @@ const History = () => {
 								<AddButton onClick={()=>setIsAddCareerModalOpen(true)}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
+								{eduCareers.length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
 								{eduCareers.map((eduCareer, index) => (
 									<CareerItem
 										key={eduCareer.id}
@@ -423,6 +443,10 @@ const History = () => {
 									onSave={(updates) => addItem('awards', recordId, updates)}
 									onClose={() => toggleAddForm('awards')}
 								/>}
+								{awards.length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
 								{awards.map((award, index) => (
 									<AwardItem 
 										key={award.id} 
@@ -449,6 +473,10 @@ const History = () => {
 									onSave={(updates) => addItem('licenses', recordId, updates)}
 									onClose={() => toggleAddForm('licenses')}
 								/>}
+								{licenseSection.length === 0 && foreignSection.length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
 								<Section>
 									<Tag>자격증</Tag>
 									<ItemsWrapper>
@@ -496,6 +524,10 @@ const History = () => {
 									onSave={(updates) => addItem('skills', recordId, updates)}
 									onClose={() => toggleAddForm('skills')}
 								/>}
+								{Object.entries(skillSections).length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
 								{Object.entries(skillSections).map(([sectionType, sectionSkills]) => 
 									sectionSkills.length > 0 ? (
 									<Section key={sectionType}>
@@ -532,6 +564,10 @@ const History = () => {
 										onSave={(data) => addEtcItem(data)}
 										
 								/>}
+								{files.length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
 								{files.map((file, index)=>{
 									<FileItem
 										data={file}
@@ -541,7 +577,6 @@ const History = () => {
 								})}
 							</ContentWrapper>
 						</SectionWrapper>
-						<Line></Line>
 					</div>
 				// </Layout>
 			)}
@@ -768,3 +803,11 @@ const CancelButton = styled.button`
 	display:flex;
 	justify-content:center;
 `;
+
+const NoneContentBox = styled.div`
+	font-family: Regular;
+	height: 200px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`
