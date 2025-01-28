@@ -524,7 +524,7 @@ const History = () => {
 									onSave={(updates) => addItem('skills', recordId, updates)}
 									onClose={() => toggleAddForm('skills')}
 								/>}
-								{skill.length === 0 && 
+								{skills.length === 0 && 
 								<NoneContentBox>
 									새로운 활동을 추가해주세요!
 								</NoneContentBox>}
