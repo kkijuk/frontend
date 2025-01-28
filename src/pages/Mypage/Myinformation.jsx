@@ -10,6 +10,7 @@ const ContentBox = styled.div`
 	height: auto;
 
 	border: 1px solid black;
+	margin-bottom: 20px;
 `;
 
 const ContentName = styled.div`
@@ -272,6 +273,9 @@ const Container1 = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+
+	border: 1px solid black;
+	margin-bottom: 30px;
 `;
 
 const Top = styled.div`

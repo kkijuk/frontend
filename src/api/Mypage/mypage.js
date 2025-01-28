@@ -8,6 +8,7 @@ export const fetchLogindata = async () => {
 		const response = await axios.get(`${apiUrl}/member/getEmail`, {
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 			},
 			withCredentials: true, // 쿠키와 인증 정보를 함께 보냄
 		});
@@ -25,26 +26,29 @@ export const fetchLogindata = async () => {
 	}
 };
 
-//이메일 일치하는지 확인
-export const fetchEmail = async () => {
+export const fetchEmail = async (inputEmail) => {
 	try {
 		const response = await fetch(`${apiUrl}/member/checkEmail`, {
-			method: 'GET',
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`,
 			},
 			credentials: 'include',
+			body: JSON.stringify({ email: inputEmail }),
 		});
 
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
 
+		// 단순 true/false 반환 처리
 		const data = await response.json();
-		console.log('이메일 가져오기 완료 : ', data);
-		return data.email;
+		console.log('fetchEmail 응답 데이터:', data); // true 또는 false
+		return data; // true 또는 false 그대로 반환
 	} catch (error) {
-		console.log('Error', error.message);
+		console.log('Error:', error.message);
+		throw error;
 	}
 };
 
@@ -54,6 +58,7 @@ export const fetchUserInfo = async () => {
 		const response = await axios.get(`${apiUrl}/member/myPage/info`, {
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 			},
 			withCredentials: true,
 		});
@@ -69,6 +74,7 @@ export const changeUserInfo = async () => {
 		const response = await axios.put(`${apiUrl}/member/myPage/info`, {
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
 			},
 			withCredentials: true,
 		});
@@ -81,12 +87,17 @@ export const changeUserInfo = async () => {
 
 export const quitUser = async () => {
 	try {
-		const response = await axios.post(`${apiUrl}/member/inactive`, {
-			headers: {
-				'Content-Type': 'application/json',
+		const response = await axios.post(
+			`${apiUrl}/member/inactive`,
+			{},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
+				},
+				withCredentials: true,
 			},
-			withCredentials: true,
-		});
+		);
 		return response.data;
 	} catch (error) {
 		console.error('사용자 정보를 가져오는 중 오류 발생:', error);

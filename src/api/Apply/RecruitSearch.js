@@ -1,19 +1,13 @@
-import axios from 'axios';
+import api from '../../Axios';
 
 export const fetchRecruitList = async (keyword) => {
-  try {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/recruit`, {
-        withCredentials: true, // 쿠키 인증을 사용하는 경우 필요
-      params: { keyword },
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-      
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching recruit list:', error);
-    throw error;
-  }
+    try {
+        const response = await api.get('/recruit', {
+            params: { keyword }, // 쿼리 파라미터 전달
+        });
+        return response.data; // 응답 데이터 반환
+    } catch (error) {
+        console.error('Error fetching recruit list:', error);
+        throw error;
+    }
 };

@@ -1,27 +1,21 @@
-import api from '../../Axios'; 
+import api from '../../Axios';
 
 export const createRecruit = async (data) => {
-  if (!data) {
-    console.error('Recruit data is required for creation');
-    throw new Error('Recruit data is required');
-  }
+    try {
+        const response = await api.post('/recruit', data, {
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+            },
+        });
 
-  try {
-    console.log('Creating recruit with data:', data); // 디버깅용 로그 추가
+        // 응답 데이터 형식 확인
+        if (!response.data || !response.data.id) {
+            throw new Error('Invalid response format');
+        }
 
-    // Axios POST 요청
-    const response = await api.post('/recruit', data);
-
-    console.log('Recruit created successfully:', response.data); // 디버깅용 로그 추가
-
-    // 응답 데이터 확인
-    if (!response.data || !response.data.id) {
-      throw new Error('Invalid response format');
+        return response.data; // 성공적으로 생성된 데이터 반환
+    } catch (error) {
+        console.error('Error creating recruit:', error.message);
+        throw error; // 에러는 호출한 곳에서 처리
     }
-
-    return response.data; // 생성된 Recruit 데이터 반환
-  } catch (error) {
-    console.error('Error creating recruit:', error.message);
-    throw error;
-  }
 };
