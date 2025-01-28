@@ -232,18 +232,17 @@ const History = () => {
 					이력서 생성하기
 				</CreateRecordButton>
 			) : (
-				<Layout 
-					id = {sections[0].id}
-					key = {sections[0].id}
-					title="서류준비"
-					leftAsideContent={
-						<ScrollNavigator
-							sections = {sections}
-							activeSection={activeSection}
-							onClick={scrollToSection}
-						/>
-					}
-				>
+				// <Layout 
+				// 	id = {sections[0].id}
+				// 	key = {sections[0].id}
+				// 	leftAsideContent={
+				// 		<ScrollNavigator
+				// 			sections = {sections}
+				// 			activeSection={activeSection}
+				// 			onClick={scrollToSection}
+				// 		/>
+				// 	}
+				// >
 					<div>
 						{/* <AddCareerModal></AddCareerModal> */}
 						{isAddCareerModalOpen &&
@@ -254,6 +253,8 @@ const History = () => {
 						<div style={{display:'flex', marginBlock:'30px'}}>
 						{/* <ProfileBox/> */}
 						<Profile
+							id = {sections[0].id}	
+							key = {sections[0].id}	
 							profileBlob={profileBlob}
 							onProfileChange={handleProfileChange}
 						/>
@@ -537,7 +538,7 @@ const History = () => {
 						</SectionWrapper>
 						<Line></Line>
 					</div>
-				</Layout>
+				// </Layout>
 			)}
 		</>
 	);
