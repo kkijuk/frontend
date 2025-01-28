@@ -23,6 +23,7 @@ import ScrollNavigator from '../../components/Record/ScrollNavigator';
 import FileItem from '../../components/Record/readOnlyItems/FileItem';
 import Profile from '../../components/Record/Profile';
 import EmailAndAddress from '../../components/Record/EmailAndAddress';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
 
 const History = () => {
 	// useRecordStore 호출
