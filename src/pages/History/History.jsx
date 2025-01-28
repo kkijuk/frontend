@@ -243,7 +243,7 @@ const History = () => {
 				// 		/>
 				// 	}
 				// >
-					<div>
+					<div style={{width:'100%', height:'100%'}}>
 						{/* <AddCareerModal></AddCareerModal> */}
 						{isAddCareerModalOpen &&
 							<AddCareerModal

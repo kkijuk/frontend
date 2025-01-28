@@ -15,19 +15,21 @@ const SubNav = () => {
 
 	return (
 		<Layout title="서류준비">
-			<Nav>
-				<NavItems onClick={() => navigate('/history')} active={isResumeActive}>
-					이력서
-				</NavItems>
-				<NavItems onClick={() => navigate('/history/master')} active={!isResumeActive && !isPortfolioActive}>
-					자기소개서
-				</NavItems>
-				<NavItems onClick={() => navigate('/history/portfolio')} active={isPortfolioActive}>
-					포트폴리오
-				</NavItems>
-				<Linear />
-				<Outlet />
-			</Nav>
+			<BaseDiv>
+				<Nav>
+					<NavItems onClick={() => navigate('/history')} active={isResumeActive}>
+						이력서
+					</NavItems>
+					<NavItems onClick={() => navigate('/history/master')} active={!isResumeActive && !isPortfolioActive}>
+						자기소개서
+					</NavItems>
+					<NavItems onClick={() => navigate('/history/portfolio')} active={isPortfolioActive}>
+						포트폴리오
+					</NavItems>
+					<Linear />
+					<Outlet />
+				</Nav>		
+			</BaseDiv>
 		</Layout>
 	);
 };
@@ -44,11 +46,12 @@ const BackgroundDiv = styled.div`
 `;
 
 const BaseDiv = styled.div`
-	width: 820px;
+	width: 100%;
 	// display:flex;
 	// margin-left:400px;
-	max-width: 820px;
+	// max-width: 820px;
 	// background-color:#D9D9D9
+	margin-top: 40px;
 	position: relative;
 `;
 const Nav = styled.ul`
