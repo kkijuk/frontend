@@ -31,6 +31,7 @@ const Others = () => {
 	});
 	const [isCompleted, setIsCompleted] = useState(0); //작성중or작성완료
 
+	// 자소서 조회
 	useEffect(() => {
 		api
 			.get(`/history/intro/detail/${id}`)

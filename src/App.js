@@ -92,7 +92,6 @@ const App = () => {
 					<Route path="/signupinterest" element={<SignupInterest />} />
 					<Route path="/login/oauth2/code/kakao" element={<SocialRedirect provider="kakao" />} />
 					<Route path="/login/oauth2/code/naver" element={<SocialRedirect provider="naver" />} />
-					<Route path="/history2" element={<History />} />
 					<Route element={<SubNav />}>
 						<Route path="/history" element={<History />} />
 						<Route element={<ViewOptions />}>
