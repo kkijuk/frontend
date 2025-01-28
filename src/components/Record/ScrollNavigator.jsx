@@ -31,7 +31,8 @@ export default ScrollNavigator;
 
 const Container = styled.nav`
     position: fixed;
-    top: 100px;
+    top: 30px;
+    left: 0;
     padding: 25px 15px;
     width: 121px;
     border: none;
