@@ -50,7 +50,7 @@ const Master = () => {
 		fetchIntro();
 	}, []);	
 
-	handleCreateIntro = async () => {	
+	const handleCreateIntro = async () => {	
 		try {
 			const response = await createMaster({
 				questionList: [
