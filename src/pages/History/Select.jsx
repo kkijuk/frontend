@@ -69,7 +69,7 @@ const Select = () => {
   }
 
   return (
-    <Layout title="이력관리">
+    <Layout title="서류준비">
       {isModalOpen && <AddApplyModal onClose={setIsModalOpen(!isModalOpen)} />}
       <ContentWrapper>
         {/* <div style={{height:'100px'}}/> */}

@@ -15,7 +15,7 @@ const EmailAndAddress = ({type, data, onSave}) => {
         )}
 
         {/* 주소가 NULL이 아닌데 편집 모드가 아닐 때 */}
-        {data && !isEditingMode && (
+        {data && data !== "string" && !isEditingMode && (
             <HoverWrapper>
                 <span>{address}</span>
                 <EditButton onClick={()=>setIsEditingMode(true)}>수정</EditButton>

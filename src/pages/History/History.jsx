@@ -478,7 +478,7 @@ const History = () => {
 									새로운 활동을 추가해주세요!
 								</NoneContentBox>}
 								<Section>
-									<Tag>자격증</Tag>
+									{licenseSection.length !== 0 && <Tag>자격증</Tag>}
 									<ItemsWrapper>
 										{licenseSection.map((license, index) => (
 											<LicenseItem 
@@ -493,7 +493,7 @@ const History = () => {
 								</Section>
 
 								<Section>
-									<Tag>외국어</Tag>
+									{foreignSection.length!==0 && <Tag>외국어</Tag>}
 									<ItemsWrapper>
 										{foreignSection.map((foreign, index) => (
 											<LicenseItem 
@@ -524,7 +524,7 @@ const History = () => {
 									onSave={(updates) => addItem('skills', recordId, updates)}
 									onClose={() => toggleAddForm('skills')}
 								/>}
-								{Object.entries(skillSections).length === 0 && 
+								{skill.length === 0 && 
 								<NoneContentBox>
 									새로운 활동을 추가해주세요!
 								</NoneContentBox>}
