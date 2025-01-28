@@ -170,7 +170,7 @@ export default function Header() {
 							<li
 								onClick={() => handleNavigation('/history')}
 								className={location.pathname === '/history' ? 'active' : ''}>
-								이력관리
+								서류준비
 							</li>
 							<li
 								onClick={() => handleNavigation('/apply-schedule')}
