@@ -13,7 +13,7 @@ const Select = () => {
   const navigate = useNavigate();
 
   // useState
-  const [isModalOpen, setIsModalOpen] = useState(false); // 공고 추가 모달 보이기기
+  const [isModalOpen, setIsModalOpen] = useState(false); // 공고 추가 모달 보이기
   const [recruitList, setRecruitList] = useState([]);
   const [selectedJob, setSelectedJob] = useState(recruitList.length > 0 ? recruitList[0].id : null);
   const [isLoading, setIsLoading] = useState(false);
@@ -109,7 +109,7 @@ const Select = () => {
     <Layout title="서류준비">
       {isModalOpen && 
         <AddApplyModal 
-          onClose={setIsModalOpen(false)} 
+          onClose={()=>setIsModalOpen(false)} 
           onSave = {handleAddApply}
       />}
       {isLoading && <LoadingSpinner message="자기소개서 생성 중 ..."/>}
