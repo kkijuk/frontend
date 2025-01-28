@@ -16,6 +16,11 @@ const SubNav = () => {
 	return (
 		<Layout title="서류준비">
 			<BaseDiv>
+				{isResumeActive && (
+					<ExportButton onClick = {()=>navigate('/history/resumeExport')}>
+						문서로 내보내기
+					</ExportButton>
+				)}
 				<Nav>
 					<NavItems onClick={() => navigate('/history')} active={isResumeActive}>
 						이력서
@@ -74,4 +79,23 @@ const Linear = styled.div`
 
 const Section = styled.div`
 	height: 100%;
+`
+const ExportButton = styled.button`
+	width: 150px;
+	height: 35px;
+	flex-shrink: 0;
+	border-radius: 10px;
+	border: none;
+	background: var(--main-01, #3AAF85);
+	position: absolute;
+	right: 0;
+	top: -50px;
+	color: var(--white, #FFF);
+	text-align: center;
+	font-family: Regular;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	cursor: pointer;
 `
