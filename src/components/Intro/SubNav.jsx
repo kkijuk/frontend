@@ -27,7 +27,10 @@ const SubNav = () => {
 						포트폴리오
 					</NavItems>
 					<Linear />
-					<Outlet />
+					<Section>
+						<Outlet />
+					</Section>
+					
 				</Nav>		
 			</BaseDiv>
 		</Layout>
@@ -35,15 +38,6 @@ const SubNav = () => {
 };
 
 export default SubNav;
-
-const BackgroundDiv = styled.div`
-	width: 100%;
-	height: 100%;
-	margin-top: 40px;
-	display: flex;
-	// align-items:center;
-	justify-content: center;
-`;
 
 const BaseDiv = styled.div`
 	width: 100%;
@@ -77,3 +71,7 @@ const Linear = styled.div`
 	margin-top: 12px;
 	margin-bottom: 28px;
 `;
+
+const Section = styled.div`
+	height: 100%;
+`
