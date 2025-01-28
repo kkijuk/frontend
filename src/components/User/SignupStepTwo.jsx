@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../../stores/useAuthStore';
 import { createRecord } from '../../api/Record/record';
-import { createIntro } from '../../api/Intro/intro';
+import { createMaster } from '../../api/Intro/master';
 
 const StepTwoContainer = styled.div`
   max-width: 600px;
@@ -156,7 +156,7 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
       console.log('이력서 생성 성공:', createRecordResponse);
 
       // 자기소개서 생성
-      const createIntroResponse = await createIntro({
+      const createMasterResponse = await createMaster({
         questionList: [
           { title: 'string', content: 'string', number: 0 },
           { title: 'string', content: 'string', number: 1 },
@@ -164,7 +164,7 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
         ],
         "state": 0
       })
-      console.log('마스터 자소서 생성 성공:', createIntroResponse);
+      console.log('마스터 자소서 생성 성공:', createMasterResponse);
 
       handleSignup();
     } else {
