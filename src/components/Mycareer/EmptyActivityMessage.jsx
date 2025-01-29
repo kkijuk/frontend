@@ -5,7 +5,7 @@ const MessageContainer = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	margin-top: 80px;
+	margin-top: 40px;
 	color: var(--gray-01, #424242);
 	text-align: center;
 `;
