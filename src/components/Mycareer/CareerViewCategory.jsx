@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import CareerCategoryCircle from './CareerCategoryCircle';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
+import EmptyActivityMessage from './EmptyActivityMessage';
 
 const BackgroundSection = styled.div`
 	width: 100vw;
@@ -112,7 +113,7 @@ const CareerViewCategory = ({ data }) => {
 	if (!data || typeof data !== 'object') {
 		return (
 			<BackgroundSection>
-				<div>데이터가 없습니다.</div>
+				<EmptyActivityMessage />
 			</BackgroundSection>
 		);
 	}
@@ -125,7 +126,7 @@ const CareerViewCategory = ({ data }) => {
 	if (!hasData) {
 		return (
 			<BackgroundSection>
-				<div>데이터가 없습니다.</div>
+				<EmptyActivityMessage />
 			</BackgroundSection>
 		);
 	}
