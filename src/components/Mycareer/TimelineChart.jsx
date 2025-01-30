@@ -11,12 +11,11 @@ const TimelineChart = () => {
 	const { data: rawData, isLoading, error } = useFetchTimeline();
 	const navigate = useNavigate();
 
-	// useState는 항상 컴포넌트의 최상단에서 호출
 	const [options] = useState({
 		chart: {
 			height: 350,
 			type: 'rangeBar',
-			offsetX: 0,
+			offsetX: -50,
 			background: 'transparent',
 			zoom: {
 				enabled: false,
@@ -95,20 +94,44 @@ const TimelineChart = () => {
 		},
 	});
 
-	if (isLoading) return <div>Loading...</div>;
+	if (isLoading) return <div>타임라인을 불러오는 중이에요...</div>;
 
 	if (error) {
 		console.error('Error fetching timeline data:', error);
-		return <div>Error loading timeline data.</div>;
+		return <div>타임라인을 불러오는 도중에 오류가 발생했어요...!</div>;
 	}
 
-	const formattedData = rawData?.data.map((item) => ({
+	let formattedData = rawData?.data.map((item) => ({
 		careerId: item.careerId,
 		category: item.category,
 		y: [new Date(item.startdate).getTime(), new Date(item.enddate).getTime()],
 		name: item.title,
 		fillColor: getColorByCategory(item.category.categoryKoName) || '#707070',
 	}));
+
+	// 만약 데이터가 없다면 현재로부터 6개월 전 x축 제공
+	if (!formattedData || formattedData.length === 0) {
+		const today = new Date();
+		const sixMonthsAgo = new Date();
+		sixMonthsAgo.setMonth(today.getMonth() - 6);
+
+		formattedData = [
+			{
+				careerId: 0, // 가상의 ID
+				category: { categoryKoName: '기본 데이터' },
+				y: [sixMonthsAgo.getTime(), sixMonthsAgo.getTime()], // 6개월 전
+				name: '6개월 전 기록',
+				fillColor: '#909090',
+			},
+			{
+				careerId: 1, // 가상의 ID
+				category: { categoryKoName: '기본 데이터' },
+				y: [today.getTime(), today.getTime()], // 오늘 날짜
+				name: '오늘',
+				fillColor: '#ff9900',
+			},
+		];
+	}
 
 	const distributedData = distributeTimelinePositions(formattedData);
 
