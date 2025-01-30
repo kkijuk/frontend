@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import TimelineChart from '../Mycareer/TimelineChart'; // 추가
 
 const TimelineBox = styled.div`
-ㄹ	height: 160px;
+	height: 160px;
 	max-width: 820px;
 	border-radius: 10px;
 	border: 1px solid var(--gray-03, #d9d9d9);
