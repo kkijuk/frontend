@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import AgreementModal1 from '../components/User/AgreementModal1';
 import AgreementModal2 from '../components/User/AgreementModal2';
 import logo from '../assets/logo.png';
 import instagramLogo from '../assets/instagramLogo.png';
 import paperplaneicon from '../assets/paperplaneicon.png';
+
 
 const FooterStyle = styled.div`
   width: 100%;
@@ -90,6 +92,7 @@ const FooterStyle = styled.div`
 `;
 
 export default function Footer() {
+  const navigate = useNavigate();
   const [isModal1Open, setModal1Open] = useState(false);
   const [isModal2Open, setModal2Open] = useState(false);
 
@@ -107,7 +110,7 @@ export default function Footer() {
         <div className="left">
           <div className="links">
             <span onClick={() => setModal1Open(true)}>서비스 이용약관</span>
-            <span onClick={() => setModal2Open(true)}>개인정보 처리방침</span>
+            <span onClick={() => navigate('/agree')}>개인정보 처리방침</span>
           </div>
           <div className="logo">
             <img src={logo} alt="끼적 로고" />
@@ -133,7 +136,6 @@ export default function Footer() {
 
       {/* 모달 상태와 prop 통일 */}
       <AgreementModal1 show={isModal1Open} handleModal={() => setModal1Open(false)} />
-      <AgreementModal2 show={isModal2Open} handleModal={() => setModal2Open(false)} />
     </>
   );
 }
