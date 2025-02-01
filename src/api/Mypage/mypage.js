@@ -104,3 +104,24 @@ export const quitUser = async () => {
 		throw error;
 	}
 };
+
+// 이메일 인증 코드 전송 API
+export const sendCode = async (email) => {
+	try {
+		const response = await axios.post(
+			`${apiUrl}/member/sendCode`,
+			{ email },
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${localStorage.getItem('token')}`,
+				},
+				withCredentials: true,
+			},
+		);
+		return response.data;
+	} catch (error) {
+		console.error('인증번호 전송 중 오류 발생:', error);
+		throw error;
+	}
+};
