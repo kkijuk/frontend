@@ -44,7 +44,7 @@ import PasswordResetEmail from './pages/Mypage/PasswordResetEmail';
 import PasswordResetEmailConfirm from './pages/Mypage/PasswordResetEmailConfirm';
 import PasswordReset from './pages/Mypage/PasswordReset';
 import SignupInterest from './pages/SignupInterest';
-
+import PrivacyAgreed from './pages/PrivacyAgreed';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FilterPage from './components/Apply/FilterPage';
@@ -66,7 +66,7 @@ const App = () => {
 	const navigate = useNavigate();
 
 	// 헤더를 숨길 경로 설정
-	const hideHeaderRoutes = ['/commingsoon', '/', '/signup', '/signupinterest', '/signupsuccess'];
+	const hideHeaderRoutes = ['/commingsoon', '/', '/signup', '/signupinterest', '/signupsuccess', '/agree'];
 	const hideHeader = hideHeaderRoutes.includes(location.pathname);
 
 	// GA4 초기화
@@ -90,6 +90,8 @@ const App = () => {
 					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/mycareer" element={<MyCareer />} />
 					<Route path="/signupinterest" element={<SignupInterest />} />
+					
+					<Route path="/agree" element={<PrivacyAgreed />} />
 					<Route path="/login/oauth2/code/kakao" element={<SocialRedirect provider="kakao" />} />
 					<Route path="/login/oauth2/code/naver" element={<SocialRedirect provider="naver" />} />
 					<Route element={<SubNav />}>
