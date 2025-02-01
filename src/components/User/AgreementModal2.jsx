@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import AgreementImage from './Agree.svg';
+import AgreementImage from './Agree1.svg';
 
 const StyledModal = styled.div`
 	display: ${(props) => (props.show ? 'block' : 'none')};
