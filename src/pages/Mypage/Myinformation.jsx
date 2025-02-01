@@ -3,7 +3,7 @@ import SubNav from '../../components/Mypage/SubNav';
 import QuitMember from '../../components/Modal/QuitMember';
 import styled from 'styled-components';
 import axios from 'axios';
-import { fetchUserInfo, changeUserInfo } from '../../api/Mypage/mypage';
+import { fetchUserInfo, changeUserInfo, sendCode } from '../../api/Mypage/mypage';
 
 const ContentBox = styled.div`
 	width: 450px;
@@ -432,15 +432,11 @@ export default function MyInformation() {
 	const [phoneInputs, setPhoneInputs] = useState({ part1: '', part2: '', part3: '' });
 	const [birthInputs, setBirthInputs] = useState({ year: '', month: '', day: '' });
 
-	//수정 상태
-	const handleEditEmail = () => setIsEditingEmail(true);
-	const handleCancelEditEmail = () => setIsEditingEmail(false);
+	const [prevEmail, setPrevEmail] = useState('');
+	const [prevPhoneInputs, setPrevPhoneInputs] = useState({ part1: '', part2: '', part3: '' });
+	const [prevBirthInputs, setPrevBirthInputs] = useState({ year: '', month: '', day: '' });
 
-	const handleEditPhone = () => setIsEditingPhone(true);
-	const handleCancelEditPhone = () => setIsEditingPhone(false);
-
-	const handleEditBirth = () => setIsEditingBirth(true);
-	const handleCancelEditBirth = () => setIsEditingBirth(false);
+	const [marketingAgreed, setMarketingAgreed] = useState(false);
 
 	//개인정보 가져오기
 	useEffect(() => {
@@ -460,7 +456,7 @@ export default function MyInformation() {
 				const [year, month, day] = data.birthDate.split('-');
 				setBirthInputs({ year, month, day });
 
-				handleMarketingAgreement(data.marketingAgree);
+				setMarketingAgreed(data.marketingAgree === 'BOTH');
 			} catch (error) {
 				console.error('사용자 정보를 가져오는 중 오류 발생:', error);
 			}
@@ -500,8 +496,15 @@ export default function MyInformation() {
 		setIsVerificationRequested(false); // 초기화
 	};
 
-	const handleRequestVerification = () => {
-		setIsVerificationRequested(true);
+	// 이메일 인증 요청
+	const handleRequestVerification = async () => {
+		try {
+			await sendCode(emailInput);
+			setIsVerificationRequested(true);
+			alert('인증번호가 전송되었습니다.');
+		} catch (error) {
+			alert('인증번호 전송에 실패했습니다.');
+		}
 	};
 
 	const handlePhoneEditClick = () => {
@@ -568,19 +571,14 @@ export default function MyInformation() {
 		setBirthDate(formattedInput);
 	};
 
+	// '광고성 정보 수신 동의' 체크 변경
+	const handleMarketingAgreementChange = (event) => {
+		setMarketingAgreed(event.target.checked);
+	};
+
 	//저장 버튼 눌렀을때 수정된 정보 백엔드로 전달
 	const handleSave = async () => {
-		// Determine the marketing agreement value based on the checkboxes
-		let marketingAgree;
-		if (agreements.snsAgreed && agreements.emailAgreed) {
-			marketingAgree = 'BOTH';
-		} else if (agreements.snsAgreed) {
-			marketingAgree = 'SMS';
-		} else if (agreements.emailAgreed) {
-			marketingAgree = 'EMAIL';
-		} else {
-			marketingAgree = 'NONE';
-		}
+		const marketingAgree = marketingAgreed ? 'BOTH' : 'NONE';
 
 		const formattedPhoneNumber = `${phoneInputs.part1}-${phoneInputs.part2}-${phoneInputs.part3}`;
 		const formattedBirthDate = `${birthInputs.year}-${birthInputs.month}-${birthInputs.day}`;
@@ -591,6 +589,41 @@ export default function MyInformation() {
 		} catch (error) {
 			alert('저장 중 오류가 발생했습니다.');
 		}
+	};
+
+	// 이메일 수정 기능
+	const handleEditEmail = () => {
+		setPrevEmail(emailInput);
+		setIsEditingEmail(true);
+		setIsVerificationRequested(false);
+	};
+
+	const handleCancelEditEmail = () => {
+		setEmailInput(prevEmail);
+		setIsEditingEmail(false);
+		setIsVerificationRequested(false);
+	};
+
+	//  핸드폰 번호 수정
+	const handleEditPhone = () => {
+		setPrevPhoneInputs(phoneInputs); // 기존 값 백업
+		setIsEditingPhone(true);
+	};
+
+	const handleCancelEditPhone = () => {
+		setPhoneInputs(prevPhoneInputs); // 기존 값 복원
+		setIsEditingPhone(false);
+	};
+
+	// 📌 생년월일 수정
+	const handleEditBirth = () => {
+		setPrevBirthInputs(birthInputs); // 기존 값 백업
+		setIsEditingBirth(true);
+	};
+
+	const handleCancelEditBirth = () => {
+		setBirthInputs(prevBirthInputs); // 기존 값 복원
+		setIsEditingBirth(false);
 	};
 
 	return (
@@ -606,7 +639,7 @@ export default function MyInformation() {
 								<RequestButton onClick={handleRequestVerification}>
 									{isVerificationRequested ? '다시 전송' : '인증요청'}
 								</RequestButton>
-								<CancelButton onClick={handleCancelClick}>취소</CancelButton>
+								<CancelButton onClick={handleCancelEditEmail}>취소</CancelButton>
 							</InputContainer>
 							{isVerificationRequested && (
 								<InputContainer>
@@ -618,7 +651,7 @@ export default function MyInformation() {
 					) : (
 						<Box>
 							<Content>{email}</Content>
-							<EditButton onClick={handleEditClick}>수정</EditButton>
+							<EditButton onClick={handleEditEmail}>수정</EditButton>
 						</Box>
 					)}
 				</ContentBox>
@@ -650,13 +683,13 @@ export default function MyInformation() {
 									/>
 								</div>
 								<ConfirmButton>확인</ConfirmButton>
-								<CancelButton2 onClick={handlePhoneCancelClick}>취소</CancelButton2>
+								<CancelButton2 onClick={handleCancelEditPhone}>취소</CancelButton2>
 							</PhoneBox>
 						</ContentBox>
 					) : (
 						<Box>
 							<Content>{phoneNumber}</Content>
-							<EditButton onClick={handlePhoneEditClick}>수정</EditButton>
+							<EditButton onClick={handleEditPhone}>수정</EditButton>
 						</Box>
 					)}
 				</ContentBox>
@@ -681,13 +714,13 @@ export default function MyInformation() {
 									/>
 								</div>
 								<ConfirmButton>확인</ConfirmButton>
-								<CancelButton2 onClick={handleBirthCancelClick}>취소</CancelButton2>
+								<CancelButton2 onClick={handleCancelEditBirth}>취소</CancelButton2>
 							</PhoneBox>
 						</ContentBox>
 					) : (
 						<Box>
 							<Content>{birthDate}</Content>
-							<EditButton onClick={handleBirthEditClick}>수정</EditButton>
+							<EditButton onClick={handleEditBirth}>수정</EditButton>
 						</Box>
 					)}
 				</ContentBox>
@@ -698,31 +731,11 @@ export default function MyInformation() {
 					<CustomCheckBox
 						id="agree_check_all"
 						name="agree_check_all"
-						checked={allAgreed}
+						checked={marketingAgreed}
 						onChange={handleAllAgreementChange}
 					/>
 					<label htmlFor="agree_check_all">광고성 정보 수신 동의</label>
 				</CheckBoxContainer1>
-				<CheckBoxContainer>
-					<CheckBoxContainer2>
-						<CustomCheckBox
-							id="agree_check_sns"
-							name="snsAgreed"
-							checked={agreements.snsAgreed}
-							onChange={handleAgreementChange}
-						/>
-						<label htmlFor="agree_check_sns">SMS</label>
-					</CheckBoxContainer2>
-					<CheckBoxContainer3>
-						<CustomCheckBox
-							id="agree_check_email"
-							name="emailAgreed"
-							checked={agreements.emailAgreed}
-							onChange={handleAgreementChange}
-						/>
-						<label htmlFor="agree_check_email">EMAIL</label>
-					</CheckBoxContainer3>
-				</CheckBoxContainer>
 				<Button onClick={handleSave}>저장</Button> {/* 저장 버튼 클릭 시 handleSave 호출 */}
 				<DeleteAccount onClick={handleOpenModal}>회원탈퇴</DeleteAccount>
 			</Bottom>
