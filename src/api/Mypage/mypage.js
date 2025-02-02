@@ -69,15 +69,23 @@ export const fetchUserInfo = async () => {
 	}
 };
 
-export const changeUserInfo = async () => {
+export const changeUserInfo = async (phoneNumber, birthDate, marketingAgree) => {
 	try {
-		const response = await axios.put(`${apiUrl}/member/myPage/info`, {
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
+		const response = await axios.put(
+			`${apiUrl}/member/myPage/info`,
+			{
+				phoneNumber,
+				birthDate,
+				marketingAgree,
 			},
-			withCredentials: true,
-		});
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
+				},
+				withCredentials: true,
+			},
+		);
 		return response.data;
 	} catch (error) {
 		console.error('사용자 정보를 가져오는 중 오류 발생:', error);
@@ -109,7 +117,28 @@ export const quitUser = async () => {
 export const sendCode = async (email) => {
 	try {
 		const response = await axios.post(
-			`${apiUrl}/member/sendCode`,
+			`${apiUrl}/auth`,
+			{ email },
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${localStorage.getItem('token')}`,
+				},
+				withCredentials: true,
+			},
+		);
+		return response.data;
+	} catch (error) {
+		console.error('인증번호 전송 중 오류 발생:', error);
+		throw error;
+	}
+};
+
+//인증번호 확인
+export const verifyCode = async (email) => {
+	try {
+		const response = await axios.post(
+			`${apiUrl}/auth/confirm`,
 			{ email },
 			{
 				headers: {
