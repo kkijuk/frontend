@@ -83,7 +83,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialDa
                     onClick={handleDatePickerToggle}
                 />
                 {showDatePicker && (
-                    <DatePickerWrapper style={calculatePickerPosition(dateInputRef)}>
+                    <DatePickerWrapper>
                     <CustomCalendarPicker
                         value={formData.acquireDate}
                         onChange={handleDateChange}
