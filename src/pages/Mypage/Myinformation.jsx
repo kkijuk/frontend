@@ -324,20 +324,6 @@ const CheckBoxContainer1 = styled.div`
 	margin-left: 52px;
 `;
 
-const CheckBoxContainer2 = styled.div`
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin-top: 10px;
-`;
-
-const CheckBoxContainer3 = styled.div`
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin-top: 10px;
-`;
-
 const CustomCheckBox = styled.input.attrs({ type: 'checkbox' })`
 	width: 19px;
 	height: 19px;
@@ -398,6 +384,12 @@ const DeleteAccount = styled.div`
 	text-decoration: underline; /* 밑줄 스타일 적용 */
 	cursor: pointer;
 	margin-top: 20px;
+`;
+
+const Bottom = styled.div`
+	width: 464px;
+	height: 196px;
+	margin-top: 47px;
 `;
 
 export default function MyInformation() {
