@@ -1,8 +1,8 @@
 import api from '../../Axios';
 
-const createAward = async (recordId, data) => {
+const createAward = async (data) => {
 	try {
-		const response = await api.post(`/history/resume/award?recordId=${recordId}`, data);
+		const response = await api.post(`/history/resume/award`, data);
 		console.log('Success-createAward:', response.data);
 		return response.data;
 	} catch (error) {

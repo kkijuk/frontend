@@ -92,16 +92,16 @@ const useRecordStore = create((set, get) => ({
 			let response;
 			switch (category) {
 				case 'educations':
-					response = await createEducation(recordId, item);
+					response = await createEducation(item);
 					break;
 				case 'licenses':
-					response = await createLicense(recordId, item);
+					response = await createLicense(item);
 					break;
 				case 'awards':
-					response = await createAward(recordId, item);
+					response = await createAward(item);
 					break;
 				case 'skills':
-					response = await createSkill(recordId, item);
+					response = await createSkill(item);
 					break;
 				case 'activitiesAndExperiences':
 				case 'employments':

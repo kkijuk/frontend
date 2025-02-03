@@ -31,7 +31,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
   };
 
   const handleDateChange = (value) => {
-    handleInputChange("awardDate", value);
+    handleInputChange("awardDate", new Date(value).getTime());
     setShowDatePicker(false);
   };
 
@@ -44,6 +44,14 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
   //   };
   // };
 
+  // Log formData whenever it changes
+  useEffect(() => {
+    console.log("formData changed:", formData);
+    Object.keys(formData).forEach(key => {
+      console.log(`${key} (${typeof formData[key]}):`, formData[key]);
+    });
+  }, [formData]);
+
   return (
     <Container>
       <Row>
@@ -53,7 +61,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
             readOnly
             type="text"
             placeholder="수상일자"
-            value={formData.awardDate}
+            value={formData.awardDate ? new Date(formData.awardDate).toISOString().split('T')[0] : ""}
             onClick={handleDatePickerToggle}
           />
           {showDatePicker && (
