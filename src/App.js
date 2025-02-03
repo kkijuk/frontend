@@ -35,8 +35,6 @@ import AddApply from './pages/History/AddApply';
 import Portfolio from './pages/History/Portfolio';
 import ApplyDetail from './pages/Apply/ApplyDetail';
 import Confirm from './pages/Mypage/Confirm';
-import AuthenticationAccount from './pages/Mypage/AuthenticationAccount';
-import AccountMangement from './pages/Mypage/AccountManagement';
 import MyInformation from './pages/Mypage/Myinformation';
 import Field from './pages/Mypage/Field';
 import FieldEdit from './pages/Mypage/FieldEdit';
@@ -90,7 +88,7 @@ const App = () => {
 					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/mycareer" element={<MyCareer />} />
 					<Route path="/signupinterest" element={<SignupInterest />} />
-					
+
 					<Route path="/agree" element={<PrivacyAgreed />} />
 					<Route path="/login/oauth2/code/kakao" element={<SocialRedirect provider="kakao" />} />
 					<Route path="/login/oauth2/code/naver" element={<SocialRedirect provider="naver" />} />
@@ -116,7 +114,6 @@ const App = () => {
 
 					<Route path="/mypage/authentication" element={<Confirm />} />
 					<Route path="/mypage/myinformation" element={<MyInformation />} />
-					<Route path="/mypage/accountmanagement" element={<AccountMangement />} />
 					<Route path="/mypage/field" element={<Field />} />
 					<Route path="/mypage/fieldedit" element={<FieldEdit />} />
 					<Route path="/mypage/passwordresetemail" element={<PasswordResetEmail />} />
