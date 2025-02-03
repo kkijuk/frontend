@@ -14,7 +14,7 @@ import { fetchLogindata, fetchEmail } from '../../api/Mypage/mypage';
 
 const Container = styled.div`
 	width: 820px;
-	height: 800px;
+	height: 600px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

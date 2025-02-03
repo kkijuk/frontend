@@ -73,7 +73,7 @@ const CheckBox = styled.div`
 	height: 19px;
 	flex-shrink: 0;
 	border-radius: 2px;
-	border: 1px solid #707070;
+	border: ${(props) => (props.checked ? 'none' : '1px solid #707070')}; /* 체크되면 border 제거 */
 	background: #fff;
 	display: flex;
 	justify-content: center;

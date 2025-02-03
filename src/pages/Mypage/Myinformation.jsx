@@ -9,7 +9,7 @@ const ContentBox = styled.div`
 	width: 450px;
 	height: auto;
 
-	margin-bottom: 20px;
+	margin-bottom: 30px;
 `;
 
 const ContentName = styled.div`
@@ -89,7 +89,7 @@ const EmailInput = styled.input`
 	flex-shrink: 0;
 	border-radius: 10px;
 	background: #f5f5f5;
-	color: var(--gray-03, #d9d9d9);
+	color: #000;
 	font-family: Pretendard;
 	font-size: 15px;
 	font-style: normal;
@@ -274,26 +274,6 @@ const Container1 = styled.div`
 	margin-bottom: 30px;
 `;
 
-const Top = styled.div`
-	width: 464px;
-	margin-top: 7px;
-	margin-bottim: 31px;
-`;
-const Container2 = styled.div`
-	width: 400px;
-	margin: 0 auto;
-`;
-
-const Middle = styled.div`
-	width: 400px;
-`;
-
-const Bottom = styled.div`
-	width: 464px;
-	height: 196px;
-	margin-top: 47px;
-`;
-
 const Text1 = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
@@ -408,11 +388,14 @@ const ModalContainer = styled.div`
 `;
 
 const DeleteAccount = styled.div`
+	display: flex;
+	justify-content: center; /* 가운데 정렬 */
+	align-items: center;
 	color: var(--gray-02, #707070);
 	font-family: Pretendard;
 	font-size: 16px;
 	font-weight: 400;
-	text-decoration: line-through;
+	text-decoration: underline; /* 밑줄 스타일 적용 */
 	cursor: pointer;
 	margin-top: 20px;
 `;
