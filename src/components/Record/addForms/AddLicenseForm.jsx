@@ -73,23 +73,25 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialDa
         <Container>
         <FormContent>
             <Row>
-            <DatePickerInput
-                ref={dateInputRef}
-                readOnly
-                type="text"
-                placeholder="응시일자"
-                value={formData.acquireDate}
-                onClick={handleDatePickerToggle}
-            />
-            {showDatePicker && (
-                <DatePickerWrapper style={calculatePickerPosition(dateInputRef)}>
-                <CustomCalendarPicker
+              <DatePickerContainer>
+                <DatePickerInput
+                    ref={dateInputRef}
+                    readOnly
+                    type="text"
+                    placeholder="응시일자"
                     value={formData.acquireDate}
-                    onChange={handleDateChange}
-                    onClose={() => setShowDatePicker(false)}
+                    onClick={handleDatePickerToggle}
                 />
-                </DatePickerWrapper>
-            )}
+                {showDatePicker && (
+                    <DatePickerWrapper style={calculatePickerPosition(dateInputRef)}>
+                    <CustomCalendarPicker
+                        value={formData.acquireDate}
+                        onChange={handleDateChange}
+                        onClose={() => setShowDatePicker(false)}
+                    />
+                    </DatePickerWrapper>
+                )}
+              </DatePickerContainer>
             <Input
                 type="text"
                 placeholder="자격증 or 어학 시험명(ex. OPIc 영어)"
@@ -289,4 +291,8 @@ const DatePickerInput = styled.input.attrs({ type: "text" })`
   color: black;
   border: ${(props) => (props.isActive ? "1px solid var(--gray-02, #707070)" : "none")};
   cursor: pointer;
+`;
+
+const DatePickerContainer = styled.div`
+	position: relative;
 `;

@@ -223,6 +223,7 @@ const Container = styled.div`
   flex-direction: column;
   gap: 10px;
   position: relative;
+  margin-bottom: 50px;
 `;
 
 const Row = styled.div`
