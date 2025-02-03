@@ -14,6 +14,7 @@ import { fetchLogindata, fetchEmail } from '../../api/Mypage/mypage';
 
 const Container = styled.div`
 	width: 820px;
+	height: 800px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -124,6 +125,7 @@ const Button = styled.button`
 	line-height: normal;
 
 	margin-top: 50px;
+	margin-bottom: 300px;
 `;
 
 export default function Confirm() {

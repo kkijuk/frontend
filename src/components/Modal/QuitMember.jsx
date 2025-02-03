@@ -40,7 +40,7 @@ const Title = styled.div`
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
-	margin-top: 30px;
+	margin-top: 10px;
 `;
 
 const TextContainer = styled.div`
@@ -131,7 +131,7 @@ export default function QuitMember({ onClose }) {
 
 	return (
 		<Container>
-			<CloseButton>
+			<CloseButton onClick={onClose}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 24 24"
