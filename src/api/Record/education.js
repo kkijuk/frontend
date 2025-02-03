@@ -2,10 +2,10 @@ import api from '../../Axios';
 
 // [학력 항목 생성]
 // 새로운 학력 정보를 생성합니다.
-const createEducation = async (recordId, data) => {
+const createEducation = async (data) => {
 	try {
 		// console.log("전송할 데이터: ", data); (data 잘 들어왔는 지.. 확인용)
-		const response = await api.post(`/history/resume/education?recordId=${recordId}`, data);
+		const response = await api.post(`/history/resume/education`, data);
 		console.log('Success - createEducation: ', response.data.data);
 
 		return response.data.data;

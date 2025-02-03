@@ -311,7 +311,7 @@ const History = () => {
 								{openedForms.add.educations && 
 								<AddEducationForm 
 									onClose={() => toggleAddForm('educations')}
-									onSave={(updates) => updateItem('educations', recordId, updates)}
+									onSave={(updates) => addItem('educations', recordId, updates)}
 								/>}
 								{educations.length === 0 && 
 								<NoneContentBox>

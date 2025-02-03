@@ -1,8 +1,8 @@
 import api from '../../Axios';
 
-const createSkill = async (recordId, data) => {
+const createSkill = async (data) => {
 	try {
-		const response = await api.post(`/history/resume/skill?recordId=${recordId}`, data);
+		const response = await api.post(`/history/resume/skill`, data);
 		console.log('Success-createSkill: ', data);
 		return response.data;
 	} catch (error) {

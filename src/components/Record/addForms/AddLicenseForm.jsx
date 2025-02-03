@@ -34,7 +34,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialDa
   };
 
   const handleDateChange = (value) => {
-    handleInputChange("acquireDate", value);
+    handleInputChange("acquireDate", new Date(value).getTime());
     setShowDatePicker(false);
   };
 
@@ -47,9 +47,14 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialDa
     };
   };
 
-//    useEffect(() => {
-//     console.log("formData changed:", formData);
-//     }, [formData]);
+  // Log formData whenever it changes
+  useEffect(() => {
+    console.log("formData changed:", formData);
+    Object.keys(formData).forEach(key => {
+      console.log(`${key} (${typeof formData[key]}):`, formData[key]);
+    });
+
+  }, [formData]);
 
   return (
     <RealFirstContainer>
@@ -79,7 +84,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialDa
                     readOnly
                     type="text"
                     placeholder="응시일자"
-                    value={formData.acquireDate}
+                    value={formData.acquireDate ? new Date(formData.acquireDate).toISOString().split('T')[0] : ""}
                     onClick={handleDatePickerToggle}
                 />
                 {showDatePicker && (
