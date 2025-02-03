@@ -66,7 +66,7 @@ const Container = styled.div`
 `;
 
 const SelectButton = styled.div`
-	width: 125px;
+	width: 120px;
 	height: 50px;
 	font-size: 16px;
 	font-weight: 400;
