@@ -16,7 +16,6 @@ const Box = styled.div`
 
 const Top = styled.div`
 	width: 464px;
-	height: 600px;
 	margin-top: 17px;
 	margin-bottim: 32px;
 	display: flex;
