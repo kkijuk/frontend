@@ -14,7 +14,12 @@ const ContentBox = styled.div`
 `;
 
 const TitleBox = styled.div`
+	width: 540px;
+	display: flex;
+	align-items: center; /* 수직 정렬 */
+
 	gap: 10px;
+	border: 1px solid black;
 `;
 
 const Tag = styled.div`
