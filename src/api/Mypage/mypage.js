@@ -117,7 +117,7 @@ export const quitUser = async () => {
 export const sendCode = async (email) => {
 	try {
 		const response = await axios.post(
-			`${apiUrl}/auth`,
+			`${apiUrl}/password/confirm`,
 			{ email },
 			{
 				headers: {
