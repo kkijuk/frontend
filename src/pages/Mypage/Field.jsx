@@ -1,3 +1,4 @@
+//관심분야 페이지
 import styled from 'styled-components';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';

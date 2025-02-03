@@ -8,6 +8,7 @@ export const mypageInterestEdit = async (interestsData) => {
 			withCredentials: true,
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`,
 			},
 		});
 		console.log('관심 분야 저장 완료:', response.data);

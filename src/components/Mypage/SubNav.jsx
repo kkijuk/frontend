@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import Convert from './Convert';
 
 const SubNav = () => {
 	const navigate = useNavigate();
@@ -9,7 +8,6 @@ const SubNav = () => {
 
 	const myInformation = location.pathname === '/mypage/myinformation';
 	const Field = location.pathname.startsWith('/mypage/field') || location.pathname.startsWith('/Mypage/FieldEdit');
-	const myAccountMangement = location.pathname.startsWith('/mypage/accountmanagement');
 
 	return (
 		<BackgroundDiv>
@@ -25,9 +23,7 @@ const SubNav = () => {
 					<NavItems onClick={() => navigate('/mypage/field')} active={Field}>
 						관심분야 설정
 					</NavItems>
-					<NavItems onClick={() => navigate('/mypage/accountmanagement')} active={myAccountMangement}>
-						계정관리
-					</NavItems>
+
 					<Linear />
 					<Outlet />
 				</Nav>
