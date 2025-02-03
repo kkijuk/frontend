@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import SubNav from '../../components/Mypage/SubNav';
 import QuitMember from '../../components/Modal/QuitMember';
 import styled from 'styled-components';
@@ -10,6 +11,24 @@ const ContentBox = styled.div`
 	height: auto;
 
 	margin-bottom: 30px;
+`;
+
+const TitleBox = styled.div`
+	gap: 10px;
+`;
+
+const Tag = styled.div`
+	width: 65px;
+	height: 25px;
+	border-radius: 10px;
+	background: ${(props) => (props.socialType === 'KAKAO' ? 'var(--sub-ye, #fcc400)' : '#03C75A')};
+	color: var(--white, #fff);
+	text-align: center;
+	font-family: Pretendard;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 25px;
 `;
 
 const ContentName = styled.div`
@@ -409,6 +428,14 @@ export default function MyInformation() {
 
 	const [marketingAgreed, setMarketingAgreed] = useState(false);
 
+	//Tag 가져오기
+	const location = useLocation();
+	const receivedSocialType = location.state?.socialType || '';
+	const socialTypeMap = {
+		KAKAO: '카카오',
+		NAVER: '네이버',
+	};
+
 	//개인정보 가져오기
 	useEffect(() => {
 		const fetchUserData = async () => {
@@ -618,6 +645,11 @@ export default function MyInformation() {
 		<Container1>
 			<SubNav></SubNav>
 			<Container>
+				<TitleBox>
+					<Text1>선택약관 동의 변경</Text1>
+					<Tag socialType={receivedSocialType}>{socialTypeMap[receivedSocialType] || receivedSocialType}</Tag>
+				</TitleBox>
+
 				<ContentBox>
 					<ContentName>이메일</ContentName>
 					{isEditingEmail ? (
