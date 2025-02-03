@@ -6,6 +6,7 @@ export const mypageInterest = async () => {
 			withCredentials: true,
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`,
 			},
 		});
 		return response.data.field;
