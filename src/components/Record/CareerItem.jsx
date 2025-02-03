@@ -95,7 +95,11 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 							<div style={{ width:'58px',fontWeight: '600', marginRight: '30px'}}>활동내역</div>
 							{isSummaryEditMode ? (
 								<DetailWrapper>
-									<DetailTextArea placeholder={detailPlaceHolder}></DetailTextArea>
+									<DetailTextArea 
+										placeholder={detailPlaceHolder}
+										value = {detail}
+										onChange={(e) => setDetail(e.target.value)}
+										></DetailTextArea>
 									<DetailSaveButton
 										onClick={handleDetailSave}>
 										확인
