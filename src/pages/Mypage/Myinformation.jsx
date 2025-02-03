@@ -9,7 +9,6 @@ const ContentBox = styled.div`
 	width: 450px;
 	height: auto;
 
-	border: 1px solid black;
 	margin-bottom: 20px;
 `;
 
@@ -68,8 +67,6 @@ const Container = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-
-	border: 1px solid black;
 `;
 
 //이메일 수정 클릭 시 나오는 컴포넌트
@@ -84,9 +81,8 @@ const InputContainer = styled.div`
 	/*가로 배치*/
 	display: flex;
 	align-items: center;
-
-	border: 1px solid black;
 `;
+
 const EmailInput = styled.input`
 	width: 280px;
 	height: 50px;
@@ -615,7 +611,7 @@ export default function MyInformation() {
 		setIsEditingPhone(false);
 	};
 
-	// 📌 생년월일 수정
+	// 생년월일 수정
 	const handleEditBirth = () => {
 		setPrevBirthInputs(birthInputs); // 기존 값 백업
 		setIsEditingBirth(true);
@@ -623,6 +619,23 @@ export default function MyInformation() {
 
 	const handleCancelEditBirth = () => {
 		setBirthInputs(prevBirthInputs); // 기존 값 복원
+		setIsEditingBirth(false);
+	};
+
+	const handleSaveEmail = () => {
+		setEmail(emailInput);
+		setIsEditingEmail(false);
+	};
+
+	const handleSavePhone = () => {
+		const formattedPhone = `${phoneInputs.part1}-${phoneInputs.part2}-${phoneInputs.part3}`;
+		setPhoneNumber(formattedPhone);
+		setIsEditingPhone(false);
+	};
+
+	const handleSaveBirth = () => {
+		const formattedBirth = `${birthInputs.year}-${birthInputs.month}-${birthInputs.day}`;
+		setBirthDate(formattedBirth);
 		setIsEditingBirth(false);
 	};
 
@@ -644,7 +657,7 @@ export default function MyInformation() {
 							{isVerificationRequested && (
 								<InputContainer>
 									<NumInput placeholder="인증번호를 입력하세요" />
-									<VerifyButton>확인</VerifyButton>
+									<ConfirmButton onClick={handleSaveEmail}>확인</ConfirmButton>
 								</InputContainer>
 							)}
 						</EmailEditBox>
@@ -682,7 +695,7 @@ export default function MyInformation() {
 										onChange={(e) => setPhoneInputs({ ...phoneInputs, part3: e.target.value })}
 									/>
 								</div>
-								<ConfirmButton>확인</ConfirmButton>
+								<ConfirmButton onClick={handleSavePhone}>확인</ConfirmButton>
 								<CancelButton2 onClick={handleCancelEditPhone}>취소</CancelButton2>
 							</PhoneBox>
 						</ContentBox>
@@ -713,7 +726,7 @@ export default function MyInformation() {
 										onChange={(e) => setBirthInputs({ ...birthInputs, day: e.target.value })}
 									/>
 								</div>
-								<ConfirmButton>확인</ConfirmButton>
+								<ConfirmButton onClick={handleSaveBirth}>확인</ConfirmButton>
 								<CancelButton2 onClick={handleCancelEditBirth}>취소</CancelButton2>
 							</PhoneBox>
 						</ContentBox>
@@ -732,7 +745,7 @@ export default function MyInformation() {
 						id="agree_check_all"
 						name="agree_check_all"
 						checked={marketingAgreed}
-						onChange={handleAllAgreementChange}
+						onChange={handleMarketingAgreementChange}
 					/>
 					<label htmlFor="agree_check_all">광고성 정보 수신 동의</label>
 				</CheckBoxContainer1>
