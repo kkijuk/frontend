@@ -34,15 +34,6 @@ const Contents = styled.div`
 	}
 `;
 
-const DocumentReview = styled.div`
-	color: var(--gray-02, #707070);
-	font-family: Pretendard;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: normal;
-`;
-
 const Date = styled.div`
 	color: var(--gray-02, #707070);
 	text-align: right;
@@ -106,9 +97,11 @@ export default function ReviewList({ recruitId, reviews = [], introduceState, on
 						<Date>{review.date}</Date>
 					</TitleDateContainer>
 
-					{/* "서류" 리뷰는 별도 스타일 적용 */}
+					{/* "서류" 리뷰인지 확인 */}
 					{review.reviewId === 'introduce' ? (
-						<DocumentReview>{review.content}</DocumentReview>
+						<Contents style={{ color: '#707070', fontSize: '14px', fontWeight: '400' }}>
+							{review.content}
+						</Contents>
 					) : (
 						<Contents>
 							{review.content.split('\n').map((line, index) => (
@@ -124,7 +117,7 @@ export default function ReviewList({ recruitId, reviews = [], introduceState, on
 				</Box>
 			))}
 
-			{/* ReviewDetailAddEdit 추가 (기존 코드 유지) */}
+			{/* 기존 ReviewDetailAddEdit 유지 */}
 			{isDetailAddVisible && selectedReview && (
 				<ReviewDetailAddEdit
 					recruitId={recruitId} // recruitId 전달
