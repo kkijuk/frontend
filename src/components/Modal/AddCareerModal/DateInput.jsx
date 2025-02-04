@@ -8,8 +8,17 @@ const DateInput = ({ value, onChange, disabled }) => {
 	const [showCalendar, setShowCalendar] = useState(false);
 	const calendarRef = useRef(null);
 
+	const formatToInputValue = (timestamp) => {
+		// value: 숫자(타임스탬프) 혹은 null
+  		// 내부 input에는 'YYYY-MM-DD' 형태로 표시
+		if (!timestamp) return '';
+		const dateObj = new Date(timestamp);
+		if (isNaN(dateObj)) return '';
+		return dateObj.toISOString().slice(0, 10); // 'YYYY-MM-DD'
+	};
+
 	const handleDateChange = (date) => {
-		onChange(moment(date).format('YYYY-MM-DD')); // 부모 컴포넌트에 날짜 전달
+		onChange(new Date(date).getTime()); // 부모 컴포넌트에 날짜 전달
 		setShowCalendar(false);
 	};
 
@@ -31,7 +40,7 @@ const DateInput = ({ value, onChange, disabled }) => {
 			<InputDate
 				type="text"
 				placeholder="YYYY-MM-DD"
-				value={value}
+				value={formatToInputValue(value)}
 				onClick={() => setShowCalendar(!showCalendar)}
 				readOnly
 				disabled={disabled}
@@ -40,7 +49,7 @@ const DateInput = ({ value, onChange, disabled }) => {
 				<CalendarWrapper ref={calendarRef}>
 					{/* <ReactCalendar onChange={handleDateChange} /> */}
 					<CustomCalendarPicker
-						value={value}
+						value={formatToInputValue(value)}
 						onChange={handleDateChange}/>
 				</CalendarWrapper>
 			)}
