@@ -100,11 +100,11 @@ const CalendarTag = styled.span`
 
 const ReviewTag = styled.span`
   background: ${({ status }) => {
-    if (status === '미지원') return '#D9D9D9';
-    if (status === '지원 예정') return '#B0B0B0';
-    if (status === '진행 중') return '#707070';
-    if (status === '합격') return '#78D333';
-    if (status === '불합격') return '#FA7C79';
+	if (status === 'UNAPPLIED') return '#D9D9D9';
+    if (status === 'PLANNED') return '#B0B0B0';
+    if (status === 'APPLYING') return '#707070';
+    if (status === 'ACCEPTED') return '#78D333';
+    if (status === 'REJECTED') return '#FA7C79';
     return '#D9D9D9';
   }};
   border-radius: 10px;
