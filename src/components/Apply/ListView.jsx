@@ -141,34 +141,38 @@ const ListView = ({ data, onJobClick }) => {
           {data.map((item, index) => (
             <AdDateSection key={index}>
               <AdDate>{item.endDate}</AdDate>
-              {item.recruits.map((ad, idx) => (
-                <AdItem
-                  key={idx}
-                  onClick={() => {
-                    window.scrollTo(0, 0);
-                    onJobClick(ad);
-                  }}
-                >
-                  <TagContainer>
-                    {ad.reviewTag && <ReviewTag>{ad.reviewTag}</ReviewTag>}
-                    {(ad.tag || []).map((tag, tagIdx) => (
-                      <DefaultTag key={tagIdx}>{tag}</DefaultTag>
-                    ))}
-                  </TagContainer>
-                  <AdDetails>
-                    <AdTitleContainer>
-                      <StatusCircle status={ad.status} />
-                      <AdTitle>{ad.title}</AdTitle>
-                    </AdTitleContainer>
-                  </AdDetails>
-                </AdItem>
-              ))}
+              {item.recruits && item.recruits.length > 0 ? ( // recruits가 존재할 때만 실행
+                item.recruits.map((ad, idx) => (
+                  <AdItem
+                    key={idx}
+                    onClick={() => {
+                      window.scrollTo(0, 0);
+                      onJobClick(ad);
+                    }}
+                  >
+                    <TagContainer>
+                      {ad.reviewTag && <ReviewTag>{ad.reviewTag}</ReviewTag>}
+                      {(ad.tag || []).map((tag, tagIdx) => (
+                        <DefaultTag key={tagIdx}>{tag}</DefaultTag>
+                      ))}
+                    </TagContainer>
+                    <AdDetails>
+                      <AdTitleContainer>
+                        <StatusCircle status={ad.status} />
+                        <AdTitle>{ad.title}</AdTitle>
+                      </AdTitleContainer>
+                    </AdDetails>
+                  </AdItem>
+                ))
+              ) : (
+                <p style={{ textAlign: 'center', color: '#707070' }}>공고가 없습니다.</p> // recruits가 없는 경우 메시지 출력
+              )}
             </AdDateSection>
           ))}
         </AdListStyled>
       </ContentSection>
     </BackgroundSection>
   );
-};
+}
 
 export default ListView;
