@@ -320,8 +320,9 @@ export default function MycareerDetail() {
 		setIsAdding(true); // DetailAdd 표시
 	};
 
-	const handleCancelAdd = () => {
+	const handleCancelAdd = async () => {
 		setIsAdding(false); // DetailAdd 숨기기
+		await fetchCareerDetails(careerId, categoryToTypeMap[category]); // 데이터 새로고침
 	};
 
 	const handleSaveAdd = async () => {
@@ -334,12 +335,10 @@ export default function MycareerDetail() {
 			setIsEditing(false); // 편집 모드 종료
 		}
 
-		const mappedType = categoryToTypeMap[type] || type;
-		setSelectedCareer({ id, type: mappedType });
+		setSelectedCareer({ id, type });
 		setIsAdding(false);
 	};
 
-	// ✅ useEffect 추가: selectedCareer 변경 감지 후 fetch 실행
 	useEffect(() => {
 		if (selectedCareer.id && selectedCareer.type) {
 			fetchCareerDetails(selectedCareer.id, selectedCareer.type);
@@ -400,8 +399,8 @@ export default function MycareerDetail() {
 							enddate={career.endDate}
 							careerName={career.name}
 							category={career.category.categoryKoName}
-							selected={career.id === selectedCareer.id && categoryToTypeMap[career.category] === selectedCareer.type}
-							onClick={() => handleCareerBoxClick(career.id, career.category)}
+							selected={career.id === selectedCareer.id && career.category.categoryKoName === selectedCareer.type}
+							onClick={() => handleCareerBoxClick(career.id, career.category.categoryKoName)}
 						/>
 					))}
 				</CareerBoxContainer>
@@ -436,13 +435,20 @@ export default function MycareerDetail() {
 							<Content style={{ textDecoration: details?.summary ? 'none' : 'underline' }}>
 								{details?.summary || '활동내역을 작성해주세요.'}
 							</Content>
-							<EditTag onClick={handleEditClick}>수정</EditTag> {/* ✅ 클릭 시 수정 모드로 변경 */}
+							<EditTag onClick={handleEditClick}>수정</EditTag>
 						</ContentWrapper>
 					)}
 				</CareerContentContainer>
 				<Line></Line>
 				<CareerListBox>
-					{details?.detailList?.length > 0 ? (
+					{isAdding ? ( // ✅ 활동 추가 중이면 무조건 DetailAdd 보여주기
+						<DetailAdd
+							onCancel={handleCancelAdd}
+							onSave={handleSaveAdd}
+							careerId={careerId}
+							careerType={categoryToTypeMap[category]}
+						/>
+					) : details?.detailList?.length > 0 ? ( // ✅ 활동 내역이 존재하면 리스트 보여주기
 						details.detailList.map((detail) =>
 							editingDetailId === detail.detailId ? (
 								<DetailAddEdit
@@ -472,13 +478,6 @@ export default function MycareerDetail() {
 								/>
 							),
 						)
-					) : isAdding ? (
-						<DetailAdd
-							onCancel={handleCancelAdd}
-							onSave={handleSaveAdd}
-							careerId={careerId}
-							careerType={categoryToTypeMap[category]}
-						/>
 					) : (
 						<NoContents>
 							등록된 활동 기록이 없습니다. <br />
