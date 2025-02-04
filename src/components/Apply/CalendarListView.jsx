@@ -99,16 +99,24 @@ const CalendarTag = styled.span`
 `;
 
 const ReviewTag = styled.span`
-  background: #FFD700;
+  background: ${({ status }) => {
+    if (status === '미지원') return '#D9D9D9';
+    if (status === '지원 예정') return '#B0B0B0';
+    if (status === '진행 중') return '#707070';
+    if (status === '합격') return '#78D333';
+    if (status === '불합격') return '#FA7C79';
+    return '#D9D9D9';
+  }};
   border-radius: 10px;
   padding: 4px 8px;
-  color: var(--black, #000);
+  color: var(--white, #FFF);
   text-align: center;
   font-family: Light;
   font-size: 12px;
   font-weight: 400;
   margin-right: 8px;
 `;
+
 
 const CalendarStatusCircle = styled.span`
   display: inline-block;
