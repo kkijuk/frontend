@@ -169,7 +169,7 @@ const CalendarListView = ({ date, data, count, onJobClick }) => {
           {data.map((ad, idx) => (
             <CalendarAdItem key={idx} onClick={() => handleJobClick(ad)}>
               <CalendarTagContainer>
-                {ad.reviewTag && <ReviewTag>{ad.reviewTag}</ReviewTag>}
+			  {ad.reviewTag && <ReviewTag status={ad.status}>{ad.reviewTag}</ReviewTag>}
                 {(ad.tag || ad.tags || []).map((tag, tagIdx) => (
                   <CalendarTag key={tagIdx}>{tag}</CalendarTag>
                 ))}
