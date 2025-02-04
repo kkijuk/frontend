@@ -2,6 +2,7 @@ import api from '../../Axios';
 
 const createAward = async (data) => {
 	try {
+		console.log('award Data: ', data);
 		const response = await api.post(`/history/resume/award`, data);
 		console.log('Success-createAward:', response.data);
 		return response.data;
