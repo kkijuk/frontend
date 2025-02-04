@@ -4,7 +4,7 @@ import CustomCalendarPicker from "../CustomCalendarPicker";
 
 const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
-    licenseTag: "자격증", // 기본 값
+    licenseTag: "LICENSE", // 기본 값
     acquireDate: "",
     licenseName: "",
     licenseGrade: "",
@@ -62,14 +62,14 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialDa
         <TypeWrapper>
             <TypeToggle>
                 <TypeButton
-                active={formData.licenseTag === "자격증"}
-                onClick={() => handleInputChange("licenseTag", "자격증")}
+                active={formData.licenseTag === "LICENSE"}
+                onClick={() => handleInputChange("licenseTag", "LICENSE")}
                 >
                 자격증
                 </TypeButton>
                 <TypeButton
-                active={formData.licenseTag === "외국어"}
-                onClick={() => handleInputChange("licenseTag", "외국어")}
+                active={formData.licenseTag === "FOREIGN"}
+                onClick={() => handleInputChange("licenseTag", "FOREIGN")}
                 >
                 외국어
                 </TypeButton>
