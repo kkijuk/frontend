@@ -9,6 +9,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
     skillName: "",
     workmanship: "",
   });
+  const [isGuideVisible, setIsGuideVisible] = useState(false);
 
   // 수정 모드일 경우 formData 기존 내용으로 초기화
   useEffect(() => {
@@ -44,6 +45,22 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
     "EXPERT" : "전문가"
   }
 
+  const skillTypeMapping = {
+    "IT" : "IT",
+    "OA" : "OA",
+    "그래픽" : "GRAPHIC",
+    "외국어" : "FOREIGNLANGUAGE",
+    "기타" : "ETC"
+  }
+
+  const skillTypeReverseMapping = {
+    "IT" : "IT",
+    "OA" : "OA",
+    "GRAPHIC" : "그래픽",
+    "FOREIGNLANGUAGE" : "외국어",
+    "ETC" : "기타"
+  }
+
   const handleDropdownToggle = (type) => {
     if (type === "skillType") {
       setShowSkillTypes((prev) => !prev);
@@ -54,11 +71,13 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
     }
   }
 
-//    useEffect(() => {
-//     console.log("formData changed:", formData);
-//     }, [formData]);
-
-  const [isGuideVisible, setIsGuideVisible] = useState(false);
+  // Log formData whenever it changes
+  useEffect(() => {
+    console.log("formData changed:", formData);
+    Object.keys(formData).forEach(key => {
+      console.log(`${key} (${typeof formData[key]}):`, formData[key]);
+    });
+  }, [formData]);
 
   return (
     <Container>
@@ -66,8 +85,8 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
         <CustomDropdown
           options={skillTypes}
           placeholder="유형"
-          value={formData.skillType}
-          onChange={(value) => handleInputChange("skillType", value)}
+          value={skillTypeReverseMapping[formData.skillType] || ""}
+          onChange={(value) => handleInputChange("skillType", skillTypeMapping[value])}
           onToggle={() => handleDropdownToggle("skillType")}
           isOpen={showSkillTypes}
           style={{width: "170px"}}
@@ -84,7 +103,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
           options={skillLevels}
           placeholder="숙련도"
           value={skillLevelsReverseMapping[formData.workmanship] || ""}
-          onChange={(value) => handleInputChange("skillLevel", value)}
+          onChange={(value) => handleInputChange("workmanship", skillLevelsMapping[value])}
           onToggle={() => handleDropdownToggle("skillLevel")}
           isOpen={showSkillLevels}
           style={{width: "170px"}}
