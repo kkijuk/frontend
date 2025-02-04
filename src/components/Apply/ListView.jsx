@@ -121,10 +121,21 @@ const ReviewTag = styled.span`
   margin-right: 8px;
 `;
 
+const groupByDate = (data) => {
+  return data.reduce((acc, current) => {
+    if (current.endTime) {
+      const date = current.endTime.split(' ')[0];
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(current);
+    }
+    return acc;
+  }, {});
+};
 
 const ListView = ({ data, onJobClick }) => {
-  // 데이터가 비어있는지 확인
-  if (!data || !data.outputs || data.outputs.length === 0) {
+  if (!data || data.length === 0) {
     return (
       <BackgroundSection>
         <ContentSection>
@@ -134,31 +145,34 @@ const ListView = ({ data, onJobClick }) => {
     );
   }
 
+  const groupedData = groupByDate(data);
+
   return (
     <BackgroundSection>
       <ContentSection>
         <AdListStyled>
-          {/* 각 endDate 그룹별로 렌더링 */}
-          {data.outputs.map((output, index) => (
+          {Object.keys(groupedData).map((date, index) => (
             <AdDateSection key={index}>
-              <AdDate>{output.endDate}</AdDate>
-              {/* 해당 endDate의 모든 공고 표시 */}
-              {output.recruits.map((ad, idx) => (
-                <AdItem key={idx} onClick={() => {
-                  window.scrollTo(0, 0);
-                  onJobClick(ad);
-                }}>
+              <AdDate>{date}</AdDate>
+              {(groupedData[date] || []).map((ad, idx) => (
+                <AdItem
+                  key={idx}
+                  onClick={() => {
+                    window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
+                    onJobClick(ad);
+                  }}
+                >
                   <TagContainer>
-                    {/* 리뷰 태그 표시 */}
-                    {ad.reviewTag && ad.reviewTag.trim() !== "" && (
-                      <ReviewTag status={ad.status}>{ad.reviewTag}</ReviewTag>
-                    )}
+  {/* 리뷰 태그 추가 */}
+  {ad.reviewTag && ad.reviewTag.trim() !== "" && (
+    <ReviewTag status={ad.status}>{ad.reviewTag}</ReviewTag>
+  )}
 
-                    {/* 일반 태그 표시 */}
-                    {(ad.tag || []).map((tag, tagIdx) => (
-                      <DefaultTag key={tagIdx}>{tag}</DefaultTag>
-                    ))}
-                  </TagContainer>
+  {/* 기존 태그 유지 */}
+  {(ad.tag || ad.tags || []).map((tag, tagIdx) => (
+    <DefaultTag key={tagIdx}>{tag}</DefaultTag>
+  ))}
+</TagContainer>
                   <AdDetails>
                     <AdTitleContainer>
                       <StatusCircle status={ad.status} />
@@ -174,6 +188,5 @@ const ListView = ({ data, onJobClick }) => {
     </BackgroundSection>
   );
 };
-
 
 export default ListView;
