@@ -150,13 +150,19 @@ const CalendarListView = ({ date, data, count, onJobClick }) => {
     console.log('Selected ad:', ad);
     try {
       const response = await api.get(`/recruit/${ad.recruitId}`);
-      const fullAdDetails = { ...response.data, id: ad.recruitId };
-      console.log('Full ad details:', fullAdDetails);
+      const fullAdDetails = { 
+          ...response.data, 
+          id: ad.recruitId, 
+          introduceId: response.data.introduceId ?? 0 // ✅ introduceId 추가 (없으면 0 설정)
+      };
+
+      console.log('Full ad details with introduceId:', fullAdDetails);
       navigate(`/apply-detail/${ad.recruitId}`, { state: { job: fullAdDetails } });
     } catch (error) {
       console.error('Failed to fetch recruit details:', error);
     }
-  };
+};
+
 
   const adjustedDate = new Date(date);
   adjustedDate.setDate(adjustedDate.getDate() + 1);
