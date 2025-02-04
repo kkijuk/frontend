@@ -47,6 +47,12 @@ const TitleContainer = styled.div`
 	align-items: center; /* 세로 가운데 정렬 */
 `;
 
+const TitleBox = styled.div`
+	height: 30px;
+	display: flex; /* 요소를 가로로 배치 */
+	gap: 23px;
+`;
+
 const IconWrapper = styled.div`
 	width: 30px;
 	height: 30px;
@@ -251,6 +257,32 @@ const EditTag = styled.div`
 	cursor: pointer;
 `;
 
+const categoryToColorMap = {
+	'동아리': '#FCC400',
+	'대외활동': '#77AFF2',
+	'공모전/대회': '#BB7AEF',
+	'프로젝트': '#78D333',
+	'경력': '#FA7C79',
+	'교육': '#F99538',
+	'기타': '#707070',
+	'default': '#707070',
+};
+
+const AliasTag = styled.div`
+	display: inline-flex;
+	height: 20px;
+	padding: 2px 16px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	flex-shrink: 0;
+	border-radius: 10px;
+	background-color: ${(props) => props.bgColor || categoryToColorMap['default']};
+	color: white;
+	font-size: 14px;
+	font-weight: bold;
+`;
+
 export default function MycareerDetail() {
 	const location = useLocation();
 	const { careerId, category } = location.state || {};
@@ -363,7 +395,7 @@ export default function MycareerDetail() {
 			alert('활동 내역이 성공적으로 저장되었습니다.');
 			setIsEditing(false); // 편집 모드 종료
 
-			// ✅ 수정 후 바로 데이터 새로고침
+			// 수정 후 바로 데이터 새로고침
 			await fetchCareerDetails(careerId, selectedCareer.type);
 		} catch (error) {
 			alert('활동 내역 저장에 실패했습니다.');
@@ -410,7 +442,13 @@ export default function MycareerDetail() {
 				</CareerBoxContainer>
 				<CareerContentContainer isEditing={isEditing}>
 					<TitleContainer>
-						<Title>{details?.alias || '제목 없음'}</Title>
+						<TitleBox>
+							<Title>{details?.alias || '제목 없음'}</Title>
+							<AliasTag
+								bgColor={categoryToColorMap[details?.category?.categoryKoName] || categoryToColorMap['default']}>
+								{details?.alias || 'No Alias'}
+							</AliasTag>
+						</TitleBox>
 						<IconWrapper onClick={openModal}>
 							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
 								<path
@@ -445,7 +483,7 @@ export default function MycareerDetail() {
 				</CareerContentContainer>
 				<Line></Line>
 				<CareerListBox>
-					{details?.detailList?.length > 0 ? ( // ✅ 활동 내역이 존재하면 리스트 보여주기
+					{details?.detailList?.length > 0 ? ( // 활동 내역이 존재하면 리스트 보여주기
 						<>
 							{details.detailList.map((detail) =>
 								editingDetailId === detail.detailId ? (
@@ -482,7 +520,7 @@ export default function MycareerDetail() {
 									/>
 								),
 							)}
-							{isAdding && ( // ✅ 기존 활동 아래에 추가 입력창 띄우기
+							{isAdding && ( // 기존 활동 아래에 추가 입력창 띄우기
 								<DetailAdd
 									onCancel={handleCancelAdd}
 									onSave={handleSaveAdd}
@@ -491,7 +529,7 @@ export default function MycareerDetail() {
 								/>
 							)}
 						</>
-					) : isAdding ? ( // ✅ 활동이 없을 때 추가 입력창 띄우기
+					) : isAdding ? ( // 활동이 없을 때 추가 입력창 띄우기
 						<DetailAdd
 							onCancel={handleCancelAdd}
 							onSave={handleSaveAdd}
