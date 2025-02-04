@@ -131,7 +131,7 @@ const NumInput = styled.input`
 	background: #f5f5f5;
 
 	border: none;
-	color: var(--gray-03, #d9d9d9);
+	color: #000;
 	font-family: Pretendard;
 	font-size: 15px;
 	font-style: normal;
