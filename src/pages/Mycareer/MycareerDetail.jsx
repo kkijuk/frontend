@@ -274,6 +274,9 @@ export default function MycareerDetail() {
 
 	const fetchCareerDetails = async (id, type) => {
 		try {
+			// 한글 타입을 영어 타입으로 변환
+			const convertedType = categoryToTypeMap[type] || type;
+
 			const response = await ViewCareerDetail(id, type);
 			console.log('가져온 Career Details:', response.data); // 데이터 확인
 
@@ -373,6 +376,7 @@ export default function MycareerDetail() {
 
 	const handleCloseEdit = async () => {
 		setEditingDetailId(null); // DetailAddEdit 닫기
+		const convertedType = categoryToTypeMap[selectedCareer.type] || selectedCareer.type;
 		await fetchCareerDetails(careerId, selectedCareer.type);
 	};
 
@@ -454,7 +458,10 @@ export default function MycareerDetail() {
 										careerId={careerId}
 										detailId={detail.detailId}
 										onClose={handleCloseEdit}
-										onUpdate={() => fetchCareerDetails(careerId, selectedCareer.type)}
+										onUpdate={() => {
+											const convertedType = categoryToTypeMap[selectedCareer.type] || selectedCareer.type;
+											fetchCareerDetails(careerId, convertedType);
+										}}
 									/>
 								) : (
 									<CareerList
@@ -467,7 +474,10 @@ export default function MycareerDetail() {
 										detailId={detail.detailId}
 										categoryEnName={details?.category?.categoryEnName}
 										onClose={handleCloseEdit}
-										onUpdate={() => fetchCareerDetails(careerId, selectedCareer.type)}
+										onUpdate={() => {
+											const convertedType = categoryToTypeMap[selectedCareer.type] || selectedCareer.type;
+											fetchCareerDetails(careerId, convertedType);
+										}}
 										onEditClick={() => handleEditClick(detail.detailId)}
 									/>
 								),
