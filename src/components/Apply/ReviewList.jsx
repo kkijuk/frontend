@@ -125,7 +125,7 @@ export default function ReviewList({ recruitId, reviewId, title, date, content =
 			title: "서류",
 			date: new Date().toISOString().split("T")[0], // 오늘 날짜
 			introduceState: 1,
-			introduceId: introduceId ?? 0, // ✅ introduceId 추가
+			introduceId: introduceId ?? 0, //  introduceId 추가
 		};
 	
 		try {
@@ -151,7 +151,7 @@ export default function ReviewList({ recruitId, reviewId, title, date, content =
 
 	const handleLinkClick = () => {
 	if (introduceId && introduceId !== 0) {
-		navigate(`/history/others/${introduceId}`); // ✅ introduceId 포함하여 이동
+		navigate(`/history/others/${introduceId}`); //  introduceId 포함하여 이동
 	} else {
 		console.warn("유효한 introduceId가 없습니다."); // introduceId가 없을 경우 로그 출력
 	}
@@ -188,19 +188,20 @@ export default function ReviewList({ recruitId, reviewId, title, date, content =
 
 			{isDetailAddVisible && (
 				<ReviewDetailAddEdit
-					recruitId={recruitId}
-					reviewId={reviewId}
-					initialTitle={title}
-					initialDate={date}
-					initialContent={content}
-					onDelete={handleDeleteClick}
-					onSave={() => {
-						setIsDetailAddVisible(false);
-						fetchData();
-					}}
-					fetchData={fetchData}
-					disableTitleEdit={introduceState === 1 && title === '서류' && introduceId !== 0} // ✅ introduceId 반영
-				/>
+				recruitId={recruitId}
+				reviewId={reviewId}
+				initialTitle={title}
+				initialDate={date}
+				initialContent={content}
+				onDelete={introduceState === 1 && title === '서류' ? null : handleDeleteClick} // ✅ 서류 리뷰는 삭제 비활성화
+				onSave={() => {
+					setIsDetailAddVisible(false);
+					fetchData();
+				}}
+				fetchData={fetchData}
+				disableTitleEdit={introduceState === 1 && title === '서류'} // ✅ 서류 리뷰 제목 수정 비활성화
+			/>
+			
 			)}
 			<Line></Line>
 		</div>
