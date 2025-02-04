@@ -880,7 +880,7 @@ const ApplyDetail = () => {
 					reviewId: 'temp-doc-review', // 임시 ID (실제 저장될 때 변경됨)
 					title: '서류',
 					date: new Date().toISOString().split("T")[0], // 오늘 날짜
-					contents: '서류 리뷰입니다.',
+					contents: '', // ✅ 내용 제거
 					introduceState: 1,
 				});
 			}
@@ -900,7 +900,7 @@ const ApplyDetail = () => {
 						reviewId={review.reviewId}
 						title={review.title}
 						date={review.date}
-						contents={review.content}
+						contents={review.contents} // ✅ 내용이 빈 문자열로 전달됨
 						introduceState={review.introduceState}
 						onDelete={() => handleReviewDelete(review.reviewId)}
 						fetchData={fetchJobDetails}
@@ -909,6 +909,7 @@ const ApplyDetail = () => {
 		})()}
 	</>
 )}
+
 
 
 

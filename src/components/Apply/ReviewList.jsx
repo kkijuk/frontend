@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ReviewDetailAddEdit from './ReviewDetailAddEdit';
 import editIcon from '../../assets/edit.svg';
+import linkIcon from '../../assets/link.svg';
 import { ReviewAdd } from '../../api/Apply/ReviewAdd'; 
 
 const Box = styled.div`
@@ -12,6 +13,12 @@ const Box = styled.div`
 	gap: 14px;
 	padding: 24px 40px;
 	position: relative;
+`;
+
+const TitleWrapper = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 10px; /* 버튼과 제목 간격 */
 `;
 
 const Title = styled.div`
@@ -65,6 +72,31 @@ const EditIconStyled = styled.img`
 	cursor: pointer;
 `;
 
+const LinkButton = styled.button`
+	display: flex;
+	align-items: center;
+	gap: 6px; /* 아이콘과 텍스트 간격 */
+	justify-content: center;
+	border-radius: 10px;
+	border: 1px solid var(--black, #000);
+	width: 120px;
+	height: 28px;
+	flex-shrink: 0;
+	background: white;
+	cursor: pointer;
+	font-size: 14px;
+	font-family: Pretendard;
+	
+	&:hover {
+		background: #f5f5f5;
+	}
+`;
+
+const LinkIcon = styled.img`
+	width: 14px;
+	height: 14px;
+`;
+
 export default function ReviewList({ recruitId, reviewId, title, date, contents = '', introduceState, onDelete, fetchData }) {
 	const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
 	const [documentReviewAdded, setDocumentReviewAdded] = useState(false); // 서류 리뷰 추가 여부 확인
@@ -80,11 +112,10 @@ export default function ReviewList({ recruitId, reviewId, title, date, contents 
 	const saveDocumentReview = async () => {
 		const newReview = {
 			title: "서류",
-			contents: "서류 리뷰입니다.",
-			introduceState: 1,
 			date: new Date().toISOString().split("T")[0], // 오늘 날짜
+			introduceState: 1, // introduceState 유지
 		};
-
+	
 		try {
 			await ReviewAdd(recruitId, newReview);
 			console.log("서류 리뷰 저장 완료");
@@ -93,6 +124,7 @@ export default function ReviewList({ recruitId, reviewId, title, date, contents 
 			console.error("서류 리뷰 저장 실패", error);
 		}
 	};
+	
 
 	const handleEditClick = () => {
 		console.log(`Editing review with ID: ${reviewId}`);
@@ -105,13 +137,27 @@ export default function ReviewList({ recruitId, reviewId, title, date, contents 
 		}
 	};
 
+	const handleLinkClick = () => {
+		console.log("자기소개서 버튼 클릭됨!");
+		
+	};
+
 	return (
 		<div>
 			<Box>
-				<TitleDateContainer>
-					<Title>{title}</Title>
-					<Date>{date}</Date>
-				</TitleDateContainer>
+			<TitleDateContainer>
+	<TitleWrapper>
+		<Title>{title}</Title>
+		{introduceState === 1 && title === '서류' && (
+			<LinkButton onClick={handleLinkClick}>
+				<LinkIcon src={linkIcon} alt="link icon" />
+				자기소개서
+			</LinkButton>
+		)}
+	</TitleWrapper>
+	<Date>{date}</Date>
+</TitleDateContainer>
+
 				<Contents>
 					{contents.split('\n').map((line, index) => (
 						<p key={index}>{line}</p>
