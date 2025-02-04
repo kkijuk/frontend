@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import SubNav from '../../components/Mypage/SubNav';
 import QuitMember from '../../components/Modal/QuitMember';
 import styled from 'styled-components';
@@ -9,8 +10,30 @@ const ContentBox = styled.div`
 	width: 450px;
 	height: auto;
 
-	border: 1px solid black;
-	margin-bottom: 20px;
+	margin-bottom: 30px;
+`;
+
+const TitleBox = styled.div`
+	width: 540px;
+	display: flex;
+	align-items: center; /* 수직 정렬 */
+
+	gap: 10px;
+	margin-bottom: 32px;
+`;
+
+const Tag = styled.div`
+	width: 65px;
+	height: 25px;
+	border-radius: 10px;
+	background: ${(props) => (props.socialType === 'KAKAO' ? 'var(--sub-ye, #fcc400)' : '#03C75A')};
+	color: var(--white, #fff);
+	text-align: center;
+	font-family: Pretendard;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 25px;
 `;
 
 const ContentName = styled.div`
@@ -68,8 +91,6 @@ const Container = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-
-	border: 1px solid black;
 `;
 
 //이메일 수정 클릭 시 나오는 컴포넌트
@@ -84,16 +105,15 @@ const InputContainer = styled.div`
 	/*가로 배치*/
 	display: flex;
 	align-items: center;
-
-	border: 1px solid black;
 `;
+
 const EmailInput = styled.input`
 	width: 280px;
 	height: 50px;
 	flex-shrink: 0;
 	border-radius: 10px;
 	background: #f5f5f5;
-	color: var(--gray-03, #d9d9d9);
+	color: #000;
 	font-family: Pretendard;
 	font-size: 15px;
 	font-style: normal;
@@ -278,26 +298,6 @@ const Container1 = styled.div`
 	margin-bottom: 30px;
 `;
 
-const Top = styled.div`
-	width: 464px;
-	margin-top: 7px;
-	margin-bottim: 31px;
-`;
-const Container2 = styled.div`
-	width: 400px;
-	margin: 0 auto;
-`;
-
-const Middle = styled.div`
-	width: 400px;
-`;
-
-const Bottom = styled.div`
-	width: 464px;
-	height: 196px;
-	margin-top: 47px;
-`;
-
 const Text1 = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
@@ -346,20 +346,6 @@ const CheckBoxContainer1 = styled.div`
 	gap: 8px;
 	margin-top: 20px;
 	margin-left: 52px;
-`;
-
-const CheckBoxContainer2 = styled.div`
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin-top: 10px;
-`;
-
-const CheckBoxContainer3 = styled.div`
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin-top: 10px;
 `;
 
 const CustomCheckBox = styled.input.attrs({ type: 'checkbox' })`
@@ -412,13 +398,22 @@ const ModalContainer = styled.div`
 `;
 
 const DeleteAccount = styled.div`
+	display: flex;
+	justify-content: center; /* 가운데 정렬 */
+	align-items: center;
 	color: var(--gray-02, #707070);
 	font-family: Pretendard;
 	font-size: 16px;
 	font-weight: 400;
-	text-decoration: line-through;
+	text-decoration: underline; /* 밑줄 스타일 적용 */
 	cursor: pointer;
 	margin-top: 20px;
+`;
+
+const Bottom = styled.div`
+	width: 464px;
+	height: 196px;
+	margin-top: 47px;
 `;
 
 export default function MyInformation() {
@@ -437,6 +432,14 @@ export default function MyInformation() {
 	const [prevBirthInputs, setPrevBirthInputs] = useState({ year: '', month: '', day: '' });
 
 	const [marketingAgreed, setMarketingAgreed] = useState(false);
+
+	//Tag 가져오기
+	const location = useLocation();
+	const receivedSocialType = location.state?.socialType || '';
+	const socialTypeMap = {
+		KAKAO: '카카오',
+		NAVER: '네이버',
+	};
 
 	//개인정보 가져오기
 	useEffect(() => {
@@ -615,7 +618,7 @@ export default function MyInformation() {
 		setIsEditingPhone(false);
 	};
 
-	// 📌 생년월일 수정
+	// 생년월일 수정
 	const handleEditBirth = () => {
 		setPrevBirthInputs(birthInputs); // 기존 값 백업
 		setIsEditingBirth(true);
@@ -626,10 +629,32 @@ export default function MyInformation() {
 		setIsEditingBirth(false);
 	};
 
+	const handleSaveEmail = () => {
+		setEmail(emailInput);
+		setIsEditingEmail(false);
+	};
+
+	const handleSavePhone = () => {
+		const formattedPhone = `${phoneInputs.part1}-${phoneInputs.part2}-${phoneInputs.part3}`;
+		setPhoneNumber(formattedPhone);
+		setIsEditingPhone(false);
+	};
+
+	const handleSaveBirth = () => {
+		const formattedBirth = `${birthInputs.year}-${birthInputs.month}-${birthInputs.day}`;
+		setBirthDate(formattedBirth);
+		setIsEditingBirth(false);
+	};
+
 	return (
 		<Container1>
 			<SubNav></SubNav>
 			<Container>
+				<TitleBox>
+					<Text1>개인정보 수정</Text1>
+					<Tag socialType={receivedSocialType}>{socialTypeMap[receivedSocialType] || receivedSocialType}</Tag>
+				</TitleBox>
+
 				<ContentBox>
 					<ContentName>이메일</ContentName>
 					{isEditingEmail ? (
@@ -644,7 +669,7 @@ export default function MyInformation() {
 							{isVerificationRequested && (
 								<InputContainer>
 									<NumInput placeholder="인증번호를 입력하세요" />
-									<VerifyButton>확인</VerifyButton>
+									<ConfirmButton onClick={handleSaveEmail}>확인</ConfirmButton>
 								</InputContainer>
 							)}
 						</EmailEditBox>
@@ -682,7 +707,7 @@ export default function MyInformation() {
 										onChange={(e) => setPhoneInputs({ ...phoneInputs, part3: e.target.value })}
 									/>
 								</div>
-								<ConfirmButton>확인</ConfirmButton>
+								<ConfirmButton onClick={handleSavePhone}>확인</ConfirmButton>
 								<CancelButton2 onClick={handleCancelEditPhone}>취소</CancelButton2>
 							</PhoneBox>
 						</ContentBox>
@@ -713,7 +738,7 @@ export default function MyInformation() {
 										onChange={(e) => setBirthInputs({ ...birthInputs, day: e.target.value })}
 									/>
 								</div>
-								<ConfirmButton>확인</ConfirmButton>
+								<ConfirmButton onClick={handleSaveBirth}>확인</ConfirmButton>
 								<CancelButton2 onClick={handleCancelEditBirth}>취소</CancelButton2>
 							</PhoneBox>
 						</ContentBox>
@@ -726,13 +751,15 @@ export default function MyInformation() {
 				</ContentBox>
 			</Container>
 			<Bottom>
-				<Text1>선택약관 동의 변경</Text1>
+				<TitleBox>
+					<Text1>선택약관 동의 변경</Text1>
+				</TitleBox>
 				<CheckBoxContainer1>
 					<CustomCheckBox
 						id="agree_check_all"
 						name="agree_check_all"
 						checked={marketingAgreed}
-						onChange={handleAllAgreementChange}
+						onChange={handleMarketingAgreementChange}
 					/>
 					<label htmlFor="agree_check_all">광고성 정보 수신 동의</label>
 				</CheckBoxContainer1>

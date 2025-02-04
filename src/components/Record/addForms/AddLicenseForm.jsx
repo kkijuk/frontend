@@ -4,7 +4,7 @@ import CustomCalendarPicker from "../CustomCalendarPicker";
 
 const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
-    licenseTag: "자격증", // 기본 값
+    licenseTag: "LICENSE", // 기본 값
     acquireDate: "",
     licenseName: "",
     licenseGrade: "",
@@ -34,7 +34,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialDa
   };
 
   const handleDateChange = (value) => {
-    handleInputChange("acquireDate", value);
+    handleInputChange("acquireDate", new Date(value).getTime());
     setShowDatePicker(false);
   };
 
@@ -47,9 +47,14 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialDa
     };
   };
 
-//    useEffect(() => {
-//     console.log("formData changed:", formData);
-//     }, [formData]);
+  // Log formData whenever it changes
+  useEffect(() => {
+    console.log("formData changed:", formData);
+    Object.keys(formData).forEach(key => {
+      console.log(`${key} (${typeof formData[key]}):`, formData[key]);
+    });
+
+  }, [formData]);
 
   return (
     <RealFirstContainer>
@@ -57,14 +62,14 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialDa
         <TypeWrapper>
             <TypeToggle>
                 <TypeButton
-                active={formData.licenseTag === "자격증"}
-                onClick={() => handleInputChange("licenseTag", "자격증")}
+                active={formData.licenseTag === "LICENSE"}
+                onClick={() => handleInputChange("licenseTag", "LICENSE")}
                 >
                 자격증
                 </TypeButton>
                 <TypeButton
-                active={formData.licenseTag === "외국어"}
-                onClick={() => handleInputChange("licenseTag", "외국어")}
+                active={formData.licenseTag === "FOREIGN"}
+                onClick={() => handleInputChange("licenseTag", "FOREIGN")}
                 >
                 외국어
                 </TypeButton>
@@ -73,23 +78,25 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialDa
         <Container>
         <FormContent>
             <Row>
-            <DatePickerInput
-                ref={dateInputRef}
-                readOnly
-                type="text"
-                placeholder="응시일자"
-                value={formData.acquireDate}
-                onClick={handleDatePickerToggle}
-            />
-            {showDatePicker && (
-                <DatePickerWrapper style={calculatePickerPosition(dateInputRef)}>
-                <CustomCalendarPicker
-                    value={formData.acquireDate}
-                    onChange={handleDateChange}
-                    onClose={() => setShowDatePicker(false)}
+              <DatePickerContainer>
+                <DatePickerInput
+                    ref={dateInputRef}
+                    readOnly
+                    type="text"
+                    placeholder="응시일자"
+                    value={formData.acquireDate ? new Date(formData.acquireDate).toISOString().split('T')[0] : ""}
+                    onClick={handleDatePickerToggle}
                 />
-                </DatePickerWrapper>
-            )}
+                {showDatePicker && (
+                    <DatePickerWrapper>
+                    <CustomCalendarPicker
+                        value={formData.acquireDate}
+                        onChange={handleDateChange}
+                        onClose={() => setShowDatePicker(false)}
+                    />
+                    </DatePickerWrapper>
+                )}
+              </DatePickerContainer>
             <Input
                 type="text"
                 placeholder="자격증 or 어학 시험명(ex. OPIc 영어)"
@@ -289,4 +296,8 @@ const DatePickerInput = styled.input.attrs({ type: "text" })`
   color: black;
   border: ${(props) => (props.isActive ? "1px solid var(--gray-02, #707070)" : "none")};
   cursor: pointer;
+`;
+
+const DatePickerContainer = styled.div`
+	position: relative;
 `;

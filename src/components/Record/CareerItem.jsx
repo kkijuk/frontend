@@ -19,13 +19,16 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 	// 활동 내역 수정
 	const handleDetailSave = async () => {
 		try{
+			console.log('활동내역수정: ', detail);
 			const updatedData = {...data, summary: detail};
 			await editCareer(data.id, updatedData);
 			setIsSummaryEditMode(false);
 			setIsKebabMenuOpen(false);
-			window.location.reload();
+			
+			// 수정된 데이터로 상태 업데이트
+			setDetail(updatedData.summary);
 		} catch (error) {
-			console.error('Edit Career Error: ', error);
+			console.error('활동내역 수정 실패: ', error);
 		}
 	}
 
@@ -92,10 +95,15 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 							<div style={{ width:'58px',fontWeight: '600', marginRight: '30px'}}>활동내역</div>
 							{isSummaryEditMode ? (
 								<DetailWrapper>
-									<DetailTextArea placeholder={detailPlaceHolder}></DetailTextArea>
+									<DetailTextArea 
+										placeholder={detailPlaceHolder}
+										value = {detail}
+										onChange={(e) => setDetail(e.target.value)}
+										></DetailTextArea>
 									<DetailSaveButton
-										onClick={handleDetailSave}
-									>확인</DetailSaveButton>
+										onClick={handleDetailSave}>
+										확인
+									</DetailSaveButton>
 								</DetailWrapper>
 							) : (
 								<>

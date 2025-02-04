@@ -128,7 +128,7 @@ const History = () => {
 
 		// return ()=>observer.disconnect();
 
-	}, [fetchRecord, recordId, error]);
+	}, [fetchRecord]);
 
 	useEffect(() => {
 		// 사용자 정보 업데이트
@@ -311,7 +311,7 @@ const History = () => {
 								{openedForms.add.educations && 
 								<AddEducationForm 
 									onClose={() => toggleAddForm('educations')}
-									onSave={(updates) => updateItem('educations', recordId, updates)}
+									onSave={(updates) => addItem('educations', recordId, updates)}
 								/>}
 								{educations.length === 0 && 
 								<NoneContentBox>

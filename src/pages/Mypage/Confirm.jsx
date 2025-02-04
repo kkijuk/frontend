@@ -14,6 +14,7 @@ import { fetchLogindata, fetchEmail } from '../../api/Mypage/mypage';
 
 const Container = styled.div`
 	width: 820px;
+	height: auto;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -90,6 +91,7 @@ const Tag = styled.div`
 	font-weight: 500;
 	line-height: 25px;
 `;
+
 const Input = styled.input`
 	width: 400px;
 	height: 50px;
@@ -124,6 +126,7 @@ const Button = styled.button`
 	line-height: normal;
 
 	margin-top: 50px;
+	margin-bottom: 300px;
 `;
 
 export default function Confirm() {
@@ -132,6 +135,11 @@ export default function Confirm() {
 	const [socialType, setSocialType] = useState(''); // 로그인 방식 상태
 	const [errorMessage, setErrorMessage] = useState('');
 	const navigate = useNavigate(); // useNavigate 훅 사용
+
+	const socialTypeMap = {
+		KAKAO: '카카오',
+		NAVER: '네이버',
+	};
 
 	useEffect(() => {
 		// API 호출하여 가려진 이메일 및 로그인 방식 가져오기
@@ -163,7 +171,7 @@ export default function Confirm() {
 
 			// boolean(true) 또는 문자열("true")인 경우 처리
 			if (isMatched === true || isMatched === 'true') {
-				navigate('/mypage/myinformation'); // 페이지 이동
+				navigate('/mypage/myinformation', { state: { socialType } }); // 페이지 이동,socialType 전달
 			} else {
 				setErrorMessage('입력한 이메일이 일치하지 않습니다. 다시 확인해주세요.');
 			}
@@ -183,7 +191,7 @@ export default function Confirm() {
 					<EmailTextBox>
 						<EmailText>이메일</EmailText>
 						<Email>{maskedEmail}</Email>
-						<Tag socialType={socialType}>{socialType}</Tag>
+						<Tag socialType={socialType}>{socialTypeMap[socialType] || socialType}</Tag>
 					</EmailTextBox>
 					<Input
 						placeholder="이메일을 입력하세요"

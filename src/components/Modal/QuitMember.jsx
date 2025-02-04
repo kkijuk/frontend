@@ -40,7 +40,7 @@ const Title = styled.div`
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
-	margin-top: 30px;
+	margin-top: 10px;
 `;
 
 const TextContainer = styled.div`
@@ -73,7 +73,7 @@ const CheckBox = styled.div`
 	height: 19px;
 	flex-shrink: 0;
 	border-radius: 2px;
-	border: 1px solid #707070;
+	border: ${(props) => (props.checked ? 'none' : '1px solid #707070')}; /* 체크되면 border 제거 */
 	background: #fff;
 	display: flex;
 	justify-content: center;
@@ -131,7 +131,7 @@ export default function QuitMember({ onClose }) {
 
 	return (
 		<Container>
-			<CloseButton>
+			<CloseButton onClick={onClose}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 24 24"

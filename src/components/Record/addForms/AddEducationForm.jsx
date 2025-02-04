@@ -6,10 +6,10 @@ import CustomDatePicker from "../CustomDatePicker";
 
 const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
-    educationType: "",
+    category: "",
     schoolName: "",
     major: "",
-    educationStatus: "",
+    state: "",
     admissionDate: "",
     graduationDate: "",
   });
@@ -40,10 +40,10 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
   const graduationInputRef = useRef(null);
 
   const handleDropdownToggle = (type) => {
-    if (type === "educationType") {
+    if (type === "category") {
       setShowEducationTypeDropdown((prev) => !prev);
       setShowEducationStatusDropdown(false); // 다른 드롭다운 닫기
-    } else if (type === "educationStatus") {
+    } else if (type === "state") {
       setShowEducationStatusDropdown((prev) => !prev);
       setShowEducationTypeDropdown(false); // 다른 드롭다운 닫기
     }
@@ -89,8 +89,8 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
           options={optionsEducationType}
           placeholder="학력구분"
           value={formData.educationType}
-          onChange={(value) => handleInputChange("educationType", value)}
-          onToggle={() => handleDropdownToggle("educationType")}
+          onChange={(value) => handleInputChange("category", value)}
+          onToggle={() => handleDropdownToggle("category")}
           isOpen={showEducationTypeDropdown}
         />
 
@@ -115,8 +115,8 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
           options={optionsEducationStatus}
           placeholder="학력상태"
           value={formData.educationStatus}
-          onChange={(value) => handleInputChange("educationStatus", value)}
-          onToggle={() => handleDropdownToggle("educationStatus")}
+          onChange={(value) => handleInputChange("state", value)}
+          onToggle={() => handleDropdownToggle("state")}
           isOpen={showEducationStatusDropdown}
         />
         <DatePickerContainer>
@@ -223,6 +223,7 @@ const Container = styled.div`
   flex-direction: column;
   gap: 10px;
   position: relative;
+  margin-bottom: 50px;
 `;
 
 const Row = styled.div`

@@ -32,6 +32,7 @@ const Master = () => {
 			try{
 				const response = await readMaster();
 				console.log('내용조회: ', response);
+
 				setQuestions({
 					oneLiner: response.oneLiner,
 					motive_title: response.motiveTitle,

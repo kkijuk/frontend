@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 import { Affiliation1 } from './Affiliation';
 import { Affiliation2 } from './Affiliation';
@@ -14,6 +15,8 @@ import { Form } from 'react-router-dom';
 import moment from 'moment'; // moment 라이브러리 임포트(세연)
 
 const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
+	const navigate = useNavigate();
+
 	//카테고리 정보
 	const categoryMap = {
 		1: '동아리',
@@ -70,6 +73,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const [contribution, setContribution] = useState(0);
 
 	//각 폼 별 상태 모니터링
+	/*
 	useEffect(() => {
 		console.log({
 			name,
@@ -105,6 +109,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		teamSize,
 		contribution,
 	]);
+*/
 
 	// 초기 데이터 설정
 	useEffect(() => {
@@ -711,13 +716,13 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				const response = await deleteCareer(selectedCategory, careerId);
 				console.log('Success - 활동 삭제: ', response);
 				// onClose();
-				window.location.reload();
+				navigate('/mycareer');
 			} catch (error) {
 				console.error('deleteCareer 호출 중 오류 발생: ', error.response ? error.response.data : error.message);
 			}
 		}
 		onClose();
-	}
+	};
 
 	return (
 		<ModalBackground>
@@ -741,27 +746,18 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				<div style={{ height: '18px' }} />
 				<ModalForm>{renderFormByCategory()}</ModalForm>
 				{isEditMode ? (
-				<div style={{display:'flex', flexDirection:'row',alignItems:'center', width:'100%'}}>
-					<DeleteButton
-						type="button"
-						onClick={handleDeleteCareer}>
-						삭제
-					</DeleteButton>
-					<SaveButton
-						type="button"
-						onClick={handleAddCareer} 
-						style={{width:'425px'}}
-					>
+					<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+						<DeleteButton type="button" onClick={handleDeleteCareer}>
+							삭제
+						</DeleteButton>
+						<SaveButton type="button" onClick={handleAddCareer} style={{ width: '425px' }}>
+							저장
+						</SaveButton>
+					</div>
+				) : (
+					<SaveButton type="button" onClick={handleAddCareer}>
 						저장
 					</SaveButton>
-				</div>
-				):(
-				<SaveButton
-					type="button"
-					onClick={handleAddCareer} 
-				>
-					저장
-				</SaveButton>
 				)}
 			</ModalContainer>
 		</ModalBackground>
@@ -903,10 +899,10 @@ const SaveButton = styled.button`
 const DeleteButton = styled.button`
 	width: 140px;
 	height: 50px;
-	background-color: #FFF;
+	background-color: #fff;
 	border-radius: 10px;
-	border: 1.5px solid var(--sub-rd, #FA7C79);
-	color: #FA7C79;
+	border: 1.5px solid var(--sub-rd, #fa7c79);
+	color: #fa7c79;
 	cursor: pointer;
 	display: flex;
 	justify-content: center;
@@ -914,8 +910,8 @@ const DeleteButton = styled.button`
 	margin-top: 30px;
 	margin-right: 15px;
 	font-size: 18px;
-	font-family:'Regular';
-`
+	font-family: 'Regular';
+`;
 
 const CloseButton = styled.button`
 	position: absolute;
