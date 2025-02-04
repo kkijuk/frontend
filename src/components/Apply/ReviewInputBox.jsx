@@ -15,8 +15,9 @@ const Input = styled.input`
 	box-sizing: border-box;
 	z-index: 1;
 	position: relative;
+	${(props) => props.disabled && 'cursor: not-allowed; background: #e0e0e0;'}
 `;
 
-export default function InputBox({ height, width, value, onChange }) {
-	return <Input height={height} width={width} value={value} onChange={onChange} />;
+export default function InputBox({ height, width, value, onChange, disabled = false }) {
+	return <Input height={height} width={width} value={value} onChange={onChange} disabled={disabled} />;
 }
