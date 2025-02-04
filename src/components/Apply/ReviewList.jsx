@@ -18,7 +18,7 @@ const Box = styled.div`
 const TitleWrapper = styled.div`
 	display: flex;
 	align-items: center;
-	gap: 10px; /* 버튼과 제목 간격 */
+	gap: 14px; /* 버튼과 제목 간격 */
 `;
 
 const Title = styled.div`
@@ -40,6 +40,15 @@ const Contents = styled.div`
 	p {
 		margin: 0;
 	}
+`;
+
+const NoContentText = styled.p`
+	color: var(--gray-02, #707070);
+	font-family: Pretendard;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
 `;
 
 const Date = styled.div`
@@ -75,11 +84,11 @@ const EditIconStyled = styled.img`
 const LinkButton = styled.button`
 	display: flex;
 	align-items: center;
-	gap: 6px; /* 아이콘과 텍스트 간격 */
+	gap: 7px; /* 아이콘과 텍스트 간격 */
 	justify-content: center;
 	border-radius: 10px;
 	border: 1px solid var(--black, #000);
-	width: 120px;
+	width: 110px;
 	height: 28px;
 	flex-shrink: 0;
 	background: white;
@@ -93,11 +102,11 @@ const LinkButton = styled.button`
 `;
 
 const LinkIcon = styled.img`
-	width: 14px;
-	height: 14px;
+	width: 15px;
+	height: 15px;
 `;
 
-export default function ReviewList({ recruitId, reviewId, title, date, contents = '', introduceState, onDelete, fetchData }) {
+export default function ReviewList({ recruitId, reviewId, title, date, contents = '', introduceState, introduceId, onDelete, fetchData }) {
 	const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
 	const [documentReviewAdded, setDocumentReviewAdded] = useState(false); // 서류 리뷰 추가 여부 확인
 
@@ -113,7 +122,8 @@ export default function ReviewList({ recruitId, reviewId, title, date, contents 
 		const newReview = {
 			title: "서류",
 			date: new Date().toISOString().split("T")[0], // 오늘 날짜
-			introduceState: 1, // introduceState 유지
+			introduceState: 1,
+			introduceId: introduceId ?? 0, // ✅ introduceId 추가
 		};
 	
 		try {
@@ -125,7 +135,7 @@ export default function ReviewList({ recruitId, reviewId, title, date, contents 
 		}
 	};
 	
-
+	
 	const handleEditClick = () => {
 		console.log(`Editing review with ID: ${reviewId}`);
 		setIsDetailAddVisible(!isDetailAddVisible);
@@ -139,35 +149,35 @@ export default function ReviewList({ recruitId, reviewId, title, date, contents 
 
 	const handleLinkClick = () => {
 		console.log("자기소개서 버튼 클릭됨!");
-		
 	};
 
 	return (
 		<div>
 			<Box>
-			<TitleDateContainer>
-	<TitleWrapper>
-		<Title>{title}</Title>
-		{introduceState === 1 && title === '서류' && (
-			<LinkButton onClick={handleLinkClick}>
-				<LinkIcon src={linkIcon} alt="link icon" />
-				자기소개서
-			</LinkButton>
-		)}
-	</TitleWrapper>
-	<Date>{date}</Date>
-</TitleDateContainer>
+				<TitleDateContainer>
+					<TitleWrapper>
+						<Title>{title}</Title>
+						{introduceState === 1 && title === '서류' && (
+							<LinkButton onClick={handleLinkClick}>
+								<LinkIcon src={linkIcon} alt="link icon" />
+								자기소개서
+							</LinkButton>
+						)}
+					</TitleWrapper>
+					<Date>{date}</Date>
+				</TitleDateContainer>
 
+				{/* ✅ "서류" 리뷰도 포함하여 모든 리뷰의 내용 표시 */}
 				<Contents>
-					{contents.split('\n').map((line, index) => (
-						<p key={index}>{line}</p>
-					))}
+					{contents ? (
+						contents.split('\n').map((line, index) => <p key={index}>{line}</p>)
+					) : (
+						<NoContentText>전형 후기가 없습니다</NoContentText> // ✅ 내용이 없으면 표시
+					)}
 				</Contents>
 
-				{/* introduceState가 1이고 제목이 "서류"이면 수정 아이콘 비활성화 */}
-				{!(introduceState === 1 && title === '서류') && (
-					<EditIconStyled src={editIcon} alt="Edit" title="Edit" onClick={handleEditClick} />
-				)}
+				{/* ✅ "서류" 리뷰도 수정 버튼 활성화 */}
+				<EditIconStyled src={editIcon} alt="Edit" title="Edit" onClick={handleEditClick} />
 			</Box>
 
 			{isDetailAddVisible && (
@@ -183,6 +193,7 @@ export default function ReviewList({ recruitId, reviewId, title, date, contents 
 						fetchData();
 					}}
 					fetchData={fetchData}
+					disableTitleEdit={introduceState === 1 && title === '서류' && introduceId !== 0} // ✅ introduceId 반영
 				/>
 			)}
 			<Line></Line>
