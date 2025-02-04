@@ -121,46 +121,44 @@ const ReviewTag = styled.span`
   margin-right: 8px;
 `;
 
-  const ListView = ({ data, onJobClick }) => {
-    if (!data || data.length === 0) {
-      return (
-        <BackgroundSection>
-          <ContentSection>
-            <p style={{ textAlign: 'center', color: '#707070' }}>데이터가 없습니다.</p>
-          </ContentSection>
-        </BackgroundSection>
-      );
-    }
-  
-    // API 응답 구조에 맞게 데이터 추출
-    const formattedData = data.outputs?.flatMap(output => 
-      output.recruits.map(recruit => ({
-        ...recruit,
-        endDate: output.endDate // 공고 날짜 유지
-      }))
-    ) || [];
-  
+
+const ListView = ({ data, onJobClick }) => {
+  // 데이터가 비어있는지 확인
+  if (!data || !data.outputs || data.outputs.length === 0) {
     return (
       <BackgroundSection>
         <ContentSection>
-          <AdListStyled>
-            {formattedData.map((ad, idx) => (
-              <AdDateSection key={idx}>
-                <AdDate>{ad.endDate}</AdDate>
-                <AdItem
-                  onClick={() => {
-                    window.scrollTo(0, 0);
-                    onJobClick(ad);
-                  }}
-                >
-                  <TagContainer>
-  {ad.reviewTag && <ReviewTag status={ad.status}>{ad.reviewTag}</ReviewTag>}
-  
-  {(ad.tag || []).map((tag, tagIdx) => (
-    <DefaultTag key={tagIdx}>{tag}</DefaultTag>
-  ))}
-</TagContainer>
+          <p style={{ textAlign: 'center', color: '#707070' }}>데이터가 없습니다.</p>
+        </ContentSection>
+      </BackgroundSection>
+    );
+  }
 
+  return (
+    <BackgroundSection>
+      <ContentSection>
+        <AdListStyled>
+          {/* 각 endDate 그룹별로 렌더링 */}
+          {data.outputs.map((output, index) => (
+            <AdDateSection key={index}>
+              <AdDate>{output.endDate}</AdDate>
+              {/* 해당 endDate의 모든 공고 표시 */}
+              {output.recruits.map((ad, idx) => (
+                <AdItem key={idx} onClick={() => {
+                  window.scrollTo(0, 0);
+                  onJobClick(ad);
+                }}>
+                  <TagContainer>
+                    {/* 리뷰 태그 표시 */}
+                    {ad.reviewTag && ad.reviewTag.trim() !== "" && (
+                      <ReviewTag status={ad.status}>{ad.reviewTag}</ReviewTag>
+                    )}
+
+                    {/* 일반 태그 표시 */}
+                    {(ad.tag || []).map((tag, tagIdx) => (
+                      <DefaultTag key={tagIdx}>{tag}</DefaultTag>
+                    ))}
+                  </TagContainer>
                   <AdDetails>
                     <AdTitleContainer>
                       <StatusCircle status={ad.status} />
@@ -168,13 +166,14 @@ const ReviewTag = styled.span`
                     </AdTitleContainer>
                   </AdDetails>
                 </AdItem>
-              </AdDateSection>
-            ))}
-          </AdListStyled>
-        </ContentSection>
-      </BackgroundSection>
-    );
-  };
-  
+              ))}
+            </AdDateSection>
+          ))}
+        </AdListStyled>
+      </ContentSection>
+    </BackgroundSection>
+  );
+};
+
 
 export default ListView;
