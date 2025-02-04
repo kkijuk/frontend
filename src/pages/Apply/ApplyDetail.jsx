@@ -891,7 +891,7 @@ const ApplyDetail = () => {
 					reviewId: 'temp-doc-review',
 					title: '서류',
 					date: new Date().toISOString().split("T")[0],
-					contents: '',
+					content: '',
 					introduceState: job.introduceState ?? 0, // ✅ 기본값 처리
 					introduceId: job.introduceId ?? 0, // ✅ introduceId 추가
 				});
@@ -914,7 +914,7 @@ const ApplyDetail = () => {
 	reviewId={review.reviewId}
 	title={review.title}
 	date={review.date}
-	contents={review.contents}
+	content={review.content}
 	introduceState={review.introduceState}
 	introduceId={review.introduceId ?? 0} // ✅ introduceId 추가
 	onDelete={() => handleReviewDelete(review.reviewId)}
