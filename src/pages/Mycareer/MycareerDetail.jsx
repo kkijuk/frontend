@@ -268,7 +268,7 @@ const categoryToColorMap = {
 	'default': '#707070',
 };
 
-const AliasTag = styled.div`
+const NameTag = styled.div`
 	display: inline-flex;
 	height: 20px;
 	padding: 2px 16px;
@@ -444,11 +444,11 @@ export default function MycareerDetail() {
 					<TitleContainer>
 						<TitleBox>
 							<Title>{details?.alias || '제목 없음'}</Title>
-							<AliasTag
-								bgColor={categoryToColorMap[details?.category?.categoryKoName] || categoryToColorMap['default']}>
-								{details?.alias || 'No Alias'}
-							</AliasTag>
+							<NameTag bgColor={categoryToColorMap[details?.category?.categoryKoName] || categoryToColorMap['default']}>
+								{details?.name || 'No Name'}
+							</NameTag>
 						</TitleBox>
+
 						<IconWrapper onClick={openModal}>
 							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
 								<path
