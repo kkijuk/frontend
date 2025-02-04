@@ -869,25 +869,16 @@ const ApplyDetail = () => {
 </SubHeader>
 			</Header>
 
-			{job?.reviews && job.reviews.length > 0 && (
-	<>
-		{/* introduceState === 1이면 맨 위에 "서류" 후기 추가 */}
-		{job.introduceState === 1 && (
-			<ReviewList
-				key="introduce"
-				recruitId={job.id}
-				reviewId="introduce"
-				title="서류"
-				date=""
-				contents="전형 후기가 없습니다"
-				onDelete={null} // 삭제 불가
-				onSave={null} // 저장 불가
-				fetchData={fetchJobDetails}
-			/>
-		)}
-
-		{/* 기존 리뷰 리스트 유지 */}
-		{job.reviews.map((review, index) => (
+			{job?.reviews &&
+	job.reviews.length > 0 &&
+	job.reviews
+		.slice() // 원본 배열 유지
+		.sort((a, b) => {
+			if (a.introduceState === 1 && a.title === '서류') return -1;
+			if (b.introduceState === 1 && b.title === '서류') return 1;
+			return 0;
+		})
+		.map((review, index) => (
 			<ReviewList
 				key={index}
 				recruitId={job.id}
@@ -895,23 +886,21 @@ const ApplyDetail = () => {
 				title={review.title}
 				date={review.date}
 				contents={review.content}
+				introduceState={review.introduceState}
 				onDelete={() => handleReviewDelete(review.reviewId)}
-				onSave={handleReviewSave}
 				fetchData={fetchJobDetails}
 			/>
 		))}
-	</>
-)}
 
-{showReviewAdd && (
-	<ReviewDetailAdd
-		recruitId={job?.id}
-		onSave={handleReviewSave}
-		onCancel={handleCancelReviewAdd}
-		fetchData={fetchJobDetails}
-	/>
-)}
 
+			{showReviewAdd && (
+				<ReviewDetailAdd
+					recruitId={job?.id}
+					onSave={handleReviewSave}
+					onCancel={handleCancelReviewAdd}
+					fetchData={fetchJobDetails} // fetchData 전달
+				/>
+			)}
 
 			<ButtonContainer>
 				<Button onClick={handleAddReviewClick}>전형 후기 추가</Button>
