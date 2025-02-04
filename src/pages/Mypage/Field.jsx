@@ -12,6 +12,7 @@ const Box = styled.div`
 	align-items: center;
 	justify-content: center;
 	padding-bottom: 100px;
+	margin-bottom: 50px;
 `;
 
 const Top = styled.div`

@@ -19,7 +19,7 @@ const TitleBox = styled.div`
 	align-items: center; /* 수직 정렬 */
 
 	gap: 10px;
-	border: 1px solid black;
+	margin-bottom: 32px;
 `;
 
 const Tag = styled.div`
@@ -651,7 +651,7 @@ export default function MyInformation() {
 			<SubNav></SubNav>
 			<Container>
 				<TitleBox>
-					<Text1>선택약관 동의 변경</Text1>
+					<Text1>개인정보 수정</Text1>
 					<Tag socialType={receivedSocialType}>{socialTypeMap[receivedSocialType] || receivedSocialType}</Tag>
 				</TitleBox>
 
@@ -751,7 +751,9 @@ export default function MyInformation() {
 				</ContentBox>
 			</Container>
 			<Bottom>
-				<Text1>선택약관 동의 변경</Text1>
+				<TitleBox>
+					<Text1>선택약관 동의 변경</Text1>
+				</TitleBox>
 				<CheckBoxContainer1>
 					<CustomCheckBox
 						id="agree_check_all"
