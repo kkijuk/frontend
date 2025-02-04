@@ -248,6 +248,7 @@ const EditTag = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 `;
 
 export default function MycareerDetail() {
@@ -336,8 +337,14 @@ export default function MycareerDetail() {
 		const mappedType = categoryToTypeMap[type] || type;
 		setSelectedCareer({ id, type: mappedType });
 		setIsAdding(false);
-		fetchCareerDetails(id, mappedType);
 	};
+
+	// ✅ useEffect 추가: selectedCareer 변경 감지 후 fetch 실행
+	useEffect(() => {
+		if (selectedCareer.id && selectedCareer.type) {
+			fetchCareerDetails(selectedCareer.id, selectedCareer.type);
+		}
+	}, [selectedCareer]);
 
 	const handleEditClick = () => {
 		setIsEditing(true); // 편집 모드로 변경
@@ -345,8 +352,6 @@ export default function MycareerDetail() {
 
 	const handleSaveClick = async () => {
 		try {
-			// ✅ 빈 내용도 저장 가능하도록 alert 삭제
-			// API 호출
 			await CareertextEdit(
 				careerId, // 현재 활동 ID
 				details?.category?.categoryEnName, // 카테고리 이름
@@ -355,6 +360,9 @@ export default function MycareerDetail() {
 
 			alert('활동 내역이 성공적으로 저장되었습니다.');
 			setIsEditing(false); // 편집 모드 종료
+
+			// ✅ 수정 후 바로 데이터 새로고침
+			await fetchCareerDetails(careerId, selectedCareer.type);
 		} catch (error) {
 			alert('활동 내역 저장에 실패했습니다.');
 		}
@@ -364,9 +372,10 @@ export default function MycareerDetail() {
 		setIsEditing(false); // 편집 모드 종료
 	};
 
-	const handleCloseEdit = () => {
+	const handleCloseEdit = async () => {
 		setEditingDetailId(null); // DetailAddEdit 닫기
-	}; //추가
+		await fetchCareerDetails(careerId, selectedCareer.type);
+	};
 
 	const openModal = () => {
 		// 모달 열기 + 데이터 설정, 데이터 다보내기
@@ -463,19 +472,18 @@ export default function MycareerDetail() {
 								/>
 							),
 						)
-					) : (
-						<NoContents>
-							등록된 활동 기록이 없습니다. <br />
-							아래 버튼을 눌러 활동 기록을 추가해주세요!
-						</NoContents>
-					)}
-					{isAdding && (
+					) : isAdding ? (
 						<DetailAdd
 							onCancel={handleCancelAdd}
 							onSave={handleSaveAdd}
 							careerId={careerId}
 							careerType={categoryToTypeMap[category]}
 						/>
+					) : (
+						<NoContents>
+							등록된 활동 기록이 없습니다. <br />
+							아래 버튼을 눌러 활동 기록을 추가해주세요!
+						</NoContents>
 					)}
 				</CareerListBox>
 
