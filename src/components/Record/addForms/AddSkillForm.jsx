@@ -7,7 +7,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
   const [formData, setFormData] = useState({
     skillType: "",
     skillName: "",
-    skillLevel: "",
+    workmanship: "",
   });
 
   // 수정 모드일 경우 formData 기존 내용으로 초기화
@@ -28,6 +28,21 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
 
   const [showSkillTypes, setShowSkillTypes] = useState(false);
   const [showSkillLevels, setShowSkillLevels] = useState(false);
+  const skillLevelsMapping = {
+    "기초" : "BASIC",
+    "초급" : "BEGINNER",
+    "중급" : "INTERMEDIATE",
+    "고급" : "ADVANCED",
+    "전문가" : "EXPERT"
+  }
+
+  const skillLevelsReverseMapping = {
+    "BASIC" : "기초",
+    "BEGINNER" : "초급",
+    "INTERMEDIATE" : "중급",
+    "ADVANCED" : "고급",
+    "EXPERT" : "전문가"
+  }
 
   const handleDropdownToggle = (type) => {
     if (type === "skillType") {
@@ -68,7 +83,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
         <CustomDropdown
           options={skillLevels}
           placeholder="숙련도"
-          value={formData.skillLevel}
+          value={skillLevelsReverseMapping[formData.workmanship] || ""}
           onChange={(value) => handleInputChange("skillLevel", value)}
           onToggle={() => handleDropdownToggle("skillLevel")}
           isOpen={showSkillLevels}
