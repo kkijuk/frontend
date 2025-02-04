@@ -123,20 +123,6 @@ const StatusCircle = styled.span`
   margin-top: 5px;
 `;
 
-const groupByDate = (data) => {
-  return data.reduce((acc, current) => {
-    if (current.endDate) { // endTime 대신 endDate 사용
-      const date = current.endDate;
-      if (!acc[date]) {
-        acc[date] = [];
-      }
-      acc[date].push(current);
-    }
-    return acc;
-  }, {});
-};
-
-
 const ListView = ({ data, onJobClick }) => {
   if (!data || data.length === 0) {
     return (
@@ -148,30 +134,27 @@ const ListView = ({ data, onJobClick }) => {
     );
   }
 
-  const groupedData = groupByDate(data);
-
   return (
     <BackgroundSection>
       <ContentSection>
         <AdListStyled>
-          {Object.keys(groupedData).map((date, index) => (
+          {data.map((item, index) => (
             <AdDateSection key={index}>
-              <AdDate>{date}</AdDate>
-              {(groupedData[date] || []).map((ad, idx) => (
+              <AdDate>{item.endDate}</AdDate>
+              {item.recruits.map((ad, idx) => (
                 <AdItem
                   key={idx}
                   onClick={() => {
-                    window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
+                    window.scrollTo(0, 0);
                     onJobClick(ad);
                   }}
                 >
                   <TagContainer>
-  {ad.reviewTag && <ReviewTag>{ad.reviewTag}</ReviewTag>} {/* reviewTag 표시 */}
-  {(ad.tag || []).map((tag, tagIdx) => (
-    <DefaultTag key={tagIdx}>{tag}</DefaultTag>
-  ))}
-</TagContainer>
-
+                    {ad.reviewTag && <ReviewTag>{ad.reviewTag}</ReviewTag>}
+                    {(ad.tag || []).map((tag, tagIdx) => (
+                      <DefaultTag key={tagIdx}>{tag}</DefaultTag>
+                    ))}
+                  </TagContainer>
                   <AdDetails>
                     <AdTitleContainer>
                       <StatusCircle status={ad.status} />
