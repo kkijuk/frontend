@@ -4,10 +4,10 @@ import CustomCalendarPicker from "../CustomCalendarPicker";
 
 const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
-    awardDate: "",
+    acquireDate: "",
     competitionName: "",
     awardName: "",
-    awardingInstitution: "",
+    administer: "",
   });
 
   // 수정 모드일 경우 formData 기존 내용으로 초기화
@@ -31,7 +31,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
   };
 
   const handleDateChange = (value) => {
-    handleInputChange("awardDate", new Date(value).getTime());
+    handleInputChange("acquireDate", new Date(value).getTime());
     setShowDatePicker(false);
   };
 
@@ -94,7 +94,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           type="text"
           placeholder="수여기관"
           value={formData.awardingInstitution}
-          onChange={(e) => handleInputChange("awardingInstitution", e.target.value)}
+          onChange={(e) => handleInputChange("administer", e.target.value)}
           style={{width:'195px'}}
         />
         <ButtonRow>
