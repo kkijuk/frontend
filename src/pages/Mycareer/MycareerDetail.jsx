@@ -92,8 +92,6 @@ const Content = styled.div`
 	text-decoration-thickness: auto;
 	text-underline-offset: auto;
 	text-underline-position: from-font;
-
-	border: 1px solid black;
 `;
 
 const Line = styled.div`
@@ -136,7 +134,6 @@ const CareerPlus = styled.button`
 `;
 
 const EditActivityContent = styled.div`
-	border: 1px solid black;
 	width: 720px;
 	height: 106px;
 	box-sizing: border-box;
@@ -157,8 +154,6 @@ const Textbox = styled.textarea`
 
 	border-radius: 10px;
 	background: #f5f5f5;
-
-	border: 1px solid black;
 `;
 
 const EditBoxContainer = styled.div`
@@ -212,14 +207,13 @@ const PageContainer = styled.div`
 `;
 
 const NoContents = styled.div`
-	border: 1px solid black;
-
 	width: 600px;
 	height: 300px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	margin: 0 auto;
 	color: #707070;
 	font-family: Pretendard;
 	font-size: 18px;
@@ -232,7 +226,7 @@ const NoContents = styled.div`
 
 const ContentWrapper = styled.div`
 	display: flex;
-	align-items: center; /* ✅ 세로 가운데 정렬 */
+	align-items: center;
 	width: 100%; /* 부모 컨테이너 전체 너비 */
 `;
 
@@ -426,10 +420,10 @@ export default function MycareerDetail() {
 						</EditActivityContent>
 					) : (
 						<ContentWrapper>
-							<Content onClick={handleEditClick} style={{ textDecoration: details?.summary ? 'none' : 'underline' }}>
+							<Content style={{ textDecoration: details?.summary ? 'none' : 'underline' }}>
 								{details?.summary || '활동내역을 작성해주세요.'}
 							</Content>
-							<EditTag>수정</EditTag>
+							<EditTag onClick={handleEditClick}>수정</EditTag> {/* ✅ 클릭 시 수정 모드로 변경 */}
 						</ContentWrapper>
 					)}
 				</CareerContentContainer>

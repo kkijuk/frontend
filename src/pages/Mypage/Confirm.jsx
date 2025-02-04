@@ -23,8 +23,6 @@ const Container = styled.div`
 	margin-right: auto;
 	margin-bottom: 50px;
 	margin-left: auto;
-
-	border: 1px solid black;
 `;
 
 const Text = styled.div`
@@ -125,8 +123,10 @@ const Button = styled.button`
 	font-weight: 500;
 	line-height: normal;
 
-	margin-top: 50px;
-	margin-bottom: 300px;
+	margin: 50px auto 200px auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;
 
 export default function Confirm() {
