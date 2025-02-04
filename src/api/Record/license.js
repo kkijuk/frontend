@@ -2,6 +2,7 @@ import api from '../../Axios';
 
 const createLicense = async (data) => {
 	try {
+		console.log('license Data: ', data);
 		const response = await api.post(`/history/resume/license`, data);
 		console.log('Success-createLicense:', response.data);
 		return response.data;
