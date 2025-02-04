@@ -31,7 +31,11 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
   };
 
   const handleDateChange = (value) => {
-    handleInputChange("acquireDate", new Date(value).getTime());
+    const dateObj = new Date(value);
+    const year = dateObj.getFullYear();
+    const month = (`0${dateObj.getMonth() + 1}`).slice(-2);
+    const formattedDate = `${year}-${month}`;
+    handleInputChange("acquireDate", formattedDate);
     setShowDatePicker(false);
   };
 
@@ -61,7 +65,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
             readOnly
             type="text"
             placeholder="수상일자"
-            value={formData.awardDate ? new Date(formData.awardDate).toISOString().split('T')[0] : ""}
+            value={formData.acquireDate || ""}
             onClick={handleDatePickerToggle}
           />
           {showDatePicker && (
