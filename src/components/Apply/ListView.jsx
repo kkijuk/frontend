@@ -102,52 +102,65 @@ const StatusCircle = styled.span`
   margin-top: 5px;
 `;
 
-const groupByDate = (data) => {
-  return data.reduce((acc, current) => {
-    if (current.endTime) {
-      const date = current.endTime.split(' ')[0];
-      if (!acc[date]) {
-        acc[date] = [];
-      }
-      acc[date].push(current);
-    }
-    return acc;
-  }, {});
-};
+const ReviewTag = styled.span`
+  background: ${({ status }) => {
+    if (status === 'UNAPPLIED') return '#D9D9D9';
+    if (status === 'PLANNED') return '#B0B0B0';
+    if (status === 'APPLYING') return '#707070';
+    if (status === 'ACCEPTED') return '#78D333';
+    if (status === 'REJECTED') return '#FA7C79';
+    return '#D9D9D9';
+  }};
+  border-radius: 10px;
+  padding: 4px 8px;
+  color: var(--white, #FFF);
+  text-align: center;
+  font-family: Light;
+  font-size: 12px;
+  font-weight: 400;
+  margin-right: 8px;
+`;
 
-const ListView = ({ data, onJobClick }) => {
-  if (!data || data.length === 0) {
+  const ListView = ({ data, onJobClick }) => {
+    if (!data || data.length === 0) {
+      return (
+        <BackgroundSection>
+          <ContentSection>
+            <p style={{ textAlign: 'center', color: '#707070' }}>데이터가 없습니다.</p>
+          </ContentSection>
+        </BackgroundSection>
+      );
+    }
+  
+    // API 응답 구조에 맞게 데이터 추출
+    const formattedData = data.outputs?.flatMap(output => 
+      output.recruits.map(recruit => ({
+        ...recruit,
+        endDate: output.endDate // 공고 날짜 유지
+      }))
+    ) || [];
+  
     return (
       <BackgroundSection>
         <ContentSection>
-          <p style={{ textAlign: 'center', color: '#707070' }}>데이터가 없습니다.</p>
-        </ContentSection>
-      </BackgroundSection>
-    );
-  }
-
-  const groupedData = groupByDate(data);
-
-  return (
-    <BackgroundSection>
-      <ContentSection>
-        <AdListStyled>
-          {Object.keys(groupedData).map((date, index) => (
-            <AdDateSection key={index}>
-              <AdDate>{date}</AdDate>
-              {(groupedData[date] || []).map((ad, idx) => (
+          <AdListStyled>
+            {formattedData.map((ad, idx) => (
+              <AdDateSection key={idx}>
+                <AdDate>{ad.endDate}</AdDate>
                 <AdItem
-                  key={idx}
                   onClick={() => {
-                    window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
+                    window.scrollTo(0, 0);
                     onJobClick(ad);
                   }}
                 >
                   <TagContainer>
-                    {(ad.tag || ad.tags || []).map((tag, tagIdx) => (
-                      <DefaultTag key={tagIdx}>{tag}</DefaultTag>
-                    ))}
-                  </TagContainer>
+  {ad.reviewTag && <ReviewTag status={ad.status}>{ad.reviewTag}</ReviewTag>}
+  
+  {(ad.tag || []).map((tag, tagIdx) => (
+    <DefaultTag key={tagIdx}>{tag}</DefaultTag>
+  ))}
+</TagContainer>
+
                   <AdDetails>
                     <AdTitleContainer>
                       <StatusCircle status={ad.status} />
@@ -155,13 +168,13 @@ const ListView = ({ data, onJobClick }) => {
                     </AdTitleContainer>
                   </AdDetails>
                 </AdItem>
-              ))}
-            </AdDateSection>
-          ))}
-        </AdListStyled>
-      </ContentSection>
-    </BackgroundSection>
-  );
-};
+              </AdDateSection>
+            ))}
+          </AdListStyled>
+        </ContentSection>
+      </BackgroundSection>
+    );
+  };
+  
 
 export default ListView;
