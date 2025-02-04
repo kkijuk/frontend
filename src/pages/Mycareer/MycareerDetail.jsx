@@ -441,43 +441,53 @@ export default function MycareerDetail() {
 				</CareerContentContainer>
 				<Line></Line>
 				<CareerListBox>
-					{isAdding ? ( // ✅ 활동 추가 중이면 무조건 DetailAdd 보여주기
+					{details?.detailList?.length > 0 ? ( // ✅ 활동 내역이 존재하면 리스트 보여주기
+						<>
+							{details.detailList.map((detail) =>
+								editingDetailId === detail.detailId ? (
+									<DetailAddEdit
+										key={detail.detailId}
+										initialTitle={detail.title}
+										initialDate={detail.startDate}
+										initialContents={detail.content}
+										initialTags={detail.detailTag || []}
+										careerId={careerId}
+										detailId={detail.detailId}
+										onClose={handleCloseEdit}
+										onUpdate={() => fetchCareerDetails(careerId, selectedCareer.type)}
+									/>
+								) : (
+									<CareerList
+										key={detail.detailId}
+										title={detail.title}
+										date={`${detail.startDate} ~ ${detail.endDate || '진행중'}`}
+										contents={detail.content}
+										detailTag={detail.detailTag || []}
+										careerId={careerId}
+										detailId={detail.detailId}
+										categoryEnName={details?.category?.categoryEnName}
+										onClose={handleCloseEdit}
+										onUpdate={() => fetchCareerDetails(careerId, selectedCareer.type)}
+										onEditClick={() => handleEditClick(detail.detailId)}
+									/>
+								),
+							)}
+							{isAdding && ( // ✅ 기존 활동 아래에 추가 입력창 띄우기
+								<DetailAdd
+									onCancel={handleCancelAdd}
+									onSave={handleSaveAdd}
+									careerId={careerId}
+									careerType={categoryToTypeMap[category]}
+								/>
+							)}
+						</>
+					) : isAdding ? ( // ✅ 활동이 없을 때 추가 입력창 띄우기
 						<DetailAdd
 							onCancel={handleCancelAdd}
 							onSave={handleSaveAdd}
 							careerId={careerId}
 							careerType={categoryToTypeMap[category]}
 						/>
-					) : details?.detailList?.length > 0 ? ( // ✅ 활동 내역이 존재하면 리스트 보여주기
-						details.detailList.map((detail) =>
-							editingDetailId === detail.detailId ? (
-								<DetailAddEdit
-									key={detail.detailId}
-									initialTitle={detail.title}
-									initialDate={detail.startDate}
-									initialContents={detail.content}
-									initialTags={detail.detailTag || []}
-									careerId={careerId}
-									detailId={detail.detailId}
-									onClose={handleCloseEdit}
-									onUpdate={() => fetchCareerDetails(careerId, selectedCareer.type)}
-								/>
-							) : (
-								<CareerList
-									key={detail.detailId}
-									title={detail.title}
-									date={`${detail.startDate} ~ ${detail.endDate || '진행중'}`}
-									contents={detail.content}
-									detailTag={detail.detailTag || []}
-									careerId={careerId}
-									detailId={detail.detailId}
-									categoryEnName={details?.category?.categoryEnName}
-									onClose={handleCloseEdit}
-									onUpdate={() => fetchCareerDetails(careerId, selectedCareer.type)}
-									onEditClick={() => handleEditClick(detail.detailId)}
-								/>
-							),
-						)
 					) : (
 						<NoContents>
 							등록된 활동 기록이 없습니다. <br />
