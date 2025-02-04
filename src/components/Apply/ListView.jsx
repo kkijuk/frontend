@@ -125,8 +125,8 @@ const StatusCircle = styled.span`
 
 const groupByDate = (data) => {
   return data.reduce((acc, current) => {
-    if (current.endTime) {
-      const date = current.endTime.split(' ')[0];
+    if (current.endDate) { // endTime 대신 endDate 사용
+      const date = current.endDate;
       if (!acc[date]) {
         acc[date] = [];
       }
@@ -135,6 +135,7 @@ const groupByDate = (data) => {
     return acc;
   }, {});
 };
+
 
 const ListView = ({ data, onJobClick }) => {
   if (!data || data.length === 0) {
@@ -165,12 +166,12 @@ const ListView = ({ data, onJobClick }) => {
                   }}
                 >
                   <TagContainer>
-                    {/* 리뷰 태그 추가 */}
-                    {ad.reviewTag && <ReviewTag status={ad.status}>{ad.reviewTag}</ReviewTag>}
-                    {(ad.tag || ad.tags || []).map((tag, tagIdx) => (
-                      <DefaultTag key={tagIdx}>{tag}</DefaultTag>
-                    ))}
-                  </TagContainer>
+  {ad.reviewTag && <ReviewTag>{ad.reviewTag}</ReviewTag>} {/* reviewTag 표시 */}
+  {(ad.tag || []).map((tag, tagIdx) => (
+    <DefaultTag key={tagIdx}>{tag}</DefaultTag>
+  ))}
+</TagContainer>
+
                   <AdDetails>
                     <AdTitleContainer>
                       <StatusCircle status={ad.status} />
