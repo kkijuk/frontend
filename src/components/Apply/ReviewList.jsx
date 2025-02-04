@@ -34,6 +34,15 @@ const Contents = styled.div`
 	}
 `;
 
+const DocumentReview = styled.div`
+	color: var(--gray-02, #707070);
+	font-family: Pretendard;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+`;
+
 const Date = styled.div`
 	color: var(--gray-02, #707070);
 	text-align: right;
@@ -64,52 +73,53 @@ const EditIconStyled = styled.img`
 	cursor: pointer;
 `;
 
-export default function ReviewList({ recruitId, reviewId, title, date, contents = '', onDelete, fetchData }) {
+export default function ReviewList({ recruitId, reviews = [], introduceState, onDelete, fetchData }) {
 	const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
 
-	const handleEditClick = () => {
+	const handleEditClick = (reviewId) => {
 		console.log(`Editing review with ID: ${reviewId}`); // Review ID 로그 출력
 		setIsDetailAddVisible(!isDetailAddVisible);
 	};
 
-	const handleDeleteClick = () => {
+	const handleDeleteClick = (reviewId) => {
 		if (onDelete) {
 			onDelete(reviewId); // 삭제 핸들러 호출
 		}
 	};
 
+	// introduceState가 1이면 "서류" 리뷰 추가
+	const updatedReviews = introduceState === 1
+		? [{ reviewId: 'introduce', title: '서류', content: '전형 후기가 없습니다', date: '' }, ...reviews]
+		: reviews;
+
 	return (
 		<div>
-			<Box>
-				<TitleDateContainer>
-					<Title>{title}</Title>
-					<Date>{date}</Date>
-				</TitleDateContainer>
-				<Contents>
-					{contents.split('\n').map((line, index) => (
-						<p key={index}>{line}</p>
-					))}
-				</Contents>
+			{updatedReviews.map((review, idx) => (
+				<Box key={idx}>
+					<TitleDateContainer>
+						<Title>{review.title}</Title>
+						<Date>{review.date}</Date>
+					</TitleDateContainer>
 
-				<EditIconStyled src={editIcon} alt="Edit" title="Edit" onClick={handleEditClick} />
-				{/* <EditIconStyled titleAccess="Edit" onClick={handleEditClick} /> */}
-			</Box>
-			{isDetailAddVisible && (
-				<ReviewDetailAddEdit
-					recruitId={recruitId} // recruitId 전달
-					reviewId={reviewId} // 리뷰 ID 전달
-					initialTitle={title}
-					initialDate={date}
-					initialContents={contents}
-					onDelete={handleDeleteClick} // ReviewDetailAddEdit에서 삭제가 완료되면 호출
-					onSave={() => {
-						setIsDetailAddVisible(false);
-						fetchData(); // 저장 후 최신 데이터를 다시 불러옴
-					}}
-					fetchData={fetchData} // fetchData 전달
-				/>
-			)}
-			<Line></Line>
+					{/* "서류" 리뷰는 별도 스타일 적용 */}
+					{review.reviewId === 'introduce' ? (
+						<DocumentReview>{review.content}</DocumentReview>
+					) : (
+						<Contents>
+							{review.content.split('\n').map((line, index) => (
+								<p key={index}>{line}</p>
+							))}
+						</Contents>
+					)}
+
+					{/* "서류" 후기는 수정 불가, 나머지 리뷰는 수정 가능 */}
+					{review.reviewId !== 'introduce' && (
+						<EditIconStyled src={editIcon} alt="Edit" title="Edit" onClick={() => handleEditClick(review.reviewId)} />
+					)}
+				</Box>
+			))}
+
+			<Line />
 		</div>
 	);
 }
