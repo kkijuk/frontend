@@ -98,80 +98,86 @@ const CalendarTag = styled.span`
 	font-family: Light;
 `;
 
+const ReviewTag = styled.span`
+  background: #FFD700;
+  border-radius: 10px;
+  padding: 4px 8px;
+  color: var(--black, #000);
+  text-align: center;
+  font-family: Light;
+  font-size: 12px;
+  font-weight: 400;
+  margin-right: 8px;
+`;
+
 const CalendarStatusCircle = styled.span`
-	display: inline-block;
-	width: 15px;
-	height: 15px;
-	border-radius: 50%;
-	background-color: ${({ status }) => {
-		if (status === 'UNAPPLIED') return '#D9D9D9';
-		if (status === 'PLANNED') return '#B0B0B0';
-		if (status === 'APPLYING') return '#707070';
-		if (status === 'ACCEPTED') return '#78D333';
-		if (status === 'REJECTED') return '#FA7C79';
-		return '#707070';
-	}};
-	margin-right: 10px;
-	margin-top: 5px;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: ${({ status }) => {
+    if (status === 'UNAPPLIED') return '#D9D9D9';
+    if (status === 'PLANNED') return '#B0B0B0';
+    if (status === 'APPLYING') return '#707070';
+    if (status === 'ACCEPTED') return '#78D333';
+    if (status === 'REJECTED') return '#FA7C79';
+    return '#707070';
+  }};
+  margin-right: 10px;
+  margin-top: 5px;
 `;
 
 const CalendarListView = ({ date, data, count, onJobClick }) => {
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	if (count === 0) {
-		return (
-			<CalendarBackgroundSection>
-				<CalendarContentSection background="#f0f0f0">{/* 날짜에 공고가 없을 때의 처리 */}</CalendarContentSection>
-			</CalendarBackgroundSection>
-		);
-	}
+  if (count === 0) {
+    return (
+      <CalendarBackgroundSection>
+        <CalendarContentSection />
+      </CalendarBackgroundSection>
+    );
+  }
 
-	const handleJobClick = async (ad) => {
-		console.log('Selected ad:', ad); // 선택된 공고 로그 출력
-		try {
-		  const response = await api.get(`/recruit/${ad.recruitId}`); // Axios를 통해 API 호출
-		  const fullAdDetails = { ...response.data, id: ad.recruitId }; // 응답 데이터와 ID를 결합
-		  console.log('Full ad details:', fullAdDetails); // 전체 데이터 로그 출력
-	
-		  // 상세 페이지로 이동하며 데이터 전달
-		  navigate(`/apply-detail/${ad.recruitId}`, { state: { job: fullAdDetails } });
-		} catch (error) {
-		  console.error('Failed to fetch recruit details:', error);
-		}
-	  };
+  const handleJobClick = async (ad) => {
+    console.log('Selected ad:', ad);
+    try {
+      const response = await api.get(`/recruit/${ad.recruitId}`);
+      const fullAdDetails = { ...response.data, id: ad.recruitId };
+      console.log('Full ad details:', fullAdDetails);
+      navigate(`/apply-detail/${ad.recruitId}`, { state: { job: fullAdDetails } });
+    } catch (error) {
+      console.error('Failed to fetch recruit details:', error);
+    }
+  };
 
-	// 날짜를 하루 뒤로 조정하여 표시
-	const adjustedDate = new Date(date);
-	adjustedDate.setDate(adjustedDate.getDate() + 1);
+  const adjustedDate = new Date(date);
+  adjustedDate.setDate(adjustedDate.getDate() + 1);
 
-	return (
-		<CalendarBackgroundSection>
-			<CalendarContentSection background="#f0f0f0">
-				{/* 조정된 날짜를 화면에 표시 */}
-				<CalendarAdDate>{adjustedDate.toISOString().split('T')[0]}</CalendarAdDate>
-				<CalendarAdListStyled>
-					{data.map((ad, idx) => (
-						<CalendarAdItem
-							key={idx}
-							onClick={() => handleJobClick(ad)} // 클릭 시 상세 페이지로 이동
-						>
-							<CalendarTagContainer>
-								{(ad.tag || ad.tags || []).map((tag, tagIdx) => (
-									<CalendarTag key={tagIdx}>{tag}</CalendarTag>
-								))}
-							</CalendarTagContainer>
-							<CalendarAdDetails>
-								<CalendarAdTitleContainer>
-									<CalendarStatusCircle status={ad.status} />
-									<CalendarAdTitle>{ad.title}</CalendarAdTitle>
-								</CalendarAdTitleContainer>
-							</CalendarAdDetails>
-						</CalendarAdItem>
-					))}
-				</CalendarAdListStyled>
-			</CalendarContentSection>
-		</CalendarBackgroundSection>
-	);
+  return (
+    <CalendarBackgroundSection>
+      <CalendarContentSection>
+        <CalendarAdDate>{adjustedDate.toISOString().split('T')[0]}</CalendarAdDate>
+        <CalendarAdListStyled>
+          {data.map((ad, idx) => (
+            <CalendarAdItem key={idx} onClick={() => handleJobClick(ad)}>
+              <CalendarTagContainer>
+                {ad.reviewTag && <ReviewTag>{ad.reviewTag}</ReviewTag>}
+                {(ad.tag || ad.tags || []).map((tag, tagIdx) => (
+                  <CalendarTag key={tagIdx}>{tag}</CalendarTag>
+                ))}
+              </CalendarTagContainer>
+              <CalendarAdDetails>
+                <CalendarAdTitleContainer>
+                  <CalendarStatusCircle status={ad.status} />
+                  <CalendarAdTitle>{ad.title}</CalendarAdTitle>
+                </CalendarAdTitleContainer>
+              </CalendarAdDetails>
+            </CalendarAdItem>
+          ))}
+        </CalendarAdListStyled>
+      </CalendarContentSection>
+    </CalendarBackgroundSection>
+  );
 };
 
 export default CalendarListView;
