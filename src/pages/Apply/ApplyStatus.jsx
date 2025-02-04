@@ -30,7 +30,10 @@ export default function ApplyStatus() {
 		try {
 			const newRecruit = await getRecruitDetails(newRecruitId);
 			if (newRecruit) {
-				const updatedJobs = [...jobs, newRecruit].sort((a, b) => new Date(a.endTime) - new Date(b.endTime));
+				// introduceId가 없으면 기본값을 0으로 설정
+				const updatedRecruit = { ...newRecruit, introduceId: newRecruit.introduceId ?? 0 };
+	
+				const updatedJobs = [...jobs, updatedRecruit].sort((a, b) => new Date(a.endTime) - new Date(b.endTime));
 				setJobs(updatedJobs);
 	
 				// 현재 활성 상태에 따라 filteredJobs 업데이트
@@ -46,6 +49,7 @@ export default function ApplyStatus() {
 			console.error('Error fetching new recruit:', error);
 		}
 	};
+	
 	
 
 	useEffect(() => {
@@ -97,12 +101,18 @@ export default function ApplyStatus() {
 		if (jobId) {
 			try {
 				const jobDetails = await getRecruitDetails(jobId);
-				navigate(`/apply-detail/${jobId}`, { state: { job: jobDetails } });
+				if (jobDetails) {
+					const updatedJobDetails = { ...jobDetails, introduceId: jobDetails.introduceId ?? 0 }; // ✅ introduceId 추가
+					navigate(`/apply-detail/${jobId}`, { state: { job: updatedJobDetails } });
+				} else {
+					console.error('Job details not found');
+				}
 			} catch (error) {
 				console.error('Failed to fetch job details:', error);
 			}
 		}
-	};   
+	};
+	  
 
 	return (
 		<Layout title="지원관리">
