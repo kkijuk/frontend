@@ -90,7 +90,7 @@ export default function Careerbox({ id, startdate, enddate, careerName, category
 
 	const handleClick = () => {
 		window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
-		if (onClick) onClick(); // onClick이 정의되어 있다면 호출
+		if (onClick) onClick(id, category); // onClick이 정의되어 있다면 호출
 
 		console.log('Navigating to:', `/mycareer/${category}/${id}`);
 		console.log('State being passed:', { careerId: id, category });

@@ -274,6 +274,9 @@ export default function MycareerDetail() {
 
 	const fetchCareerDetails = async (id, type) => {
 		try {
+			// 한글 타입을 영어 타입으로 변환
+			const convertedType = categoryToTypeMap[type] || type;
+
 			const response = await ViewCareerDetail(id, type);
 			console.log('가져온 Career Details:', response.data); // 데이터 확인
 
@@ -320,8 +323,9 @@ export default function MycareerDetail() {
 		setIsAdding(true); // DetailAdd 표시
 	};
 
-	const handleCancelAdd = () => {
+	const handleCancelAdd = async () => {
 		setIsAdding(false); // DetailAdd 숨기기
+		await fetchCareerDetails(careerId, categoryToTypeMap[category]); // 데이터 새로고침
 	};
 
 	const handleSaveAdd = async () => {
@@ -334,12 +338,10 @@ export default function MycareerDetail() {
 			setIsEditing(false); // 편집 모드 종료
 		}
 
-		const mappedType = categoryToTypeMap[type] || type;
-		setSelectedCareer({ id, type: mappedType });
+		setSelectedCareer({ id, type });
 		setIsAdding(false);
 	};
 
-	// ✅ useEffect 추가: selectedCareer 변경 감지 후 fetch 실행
 	useEffect(() => {
 		if (selectedCareer.id && selectedCareer.type) {
 			fetchCareerDetails(selectedCareer.id, selectedCareer.type);
@@ -374,6 +376,7 @@ export default function MycareerDetail() {
 
 	const handleCloseEdit = async () => {
 		setEditingDetailId(null); // DetailAddEdit 닫기
+		const convertedType = categoryToTypeMap[selectedCareer.type] || selectedCareer.type;
 		await fetchCareerDetails(careerId, selectedCareer.type);
 	};
 
@@ -400,8 +403,8 @@ export default function MycareerDetail() {
 							enddate={career.endDate}
 							careerName={career.name}
 							category={career.category.categoryKoName}
-							selected={career.id === selectedCareer.id && categoryToTypeMap[career.category] === selectedCareer.type}
-							onClick={() => handleCareerBoxClick(career.id, career.category)}
+							selected={career.id === selectedCareer.id && career.category.categoryKoName === selectedCareer.type}
+							onClick={() => handleCareerBoxClick(career.id, career.category.categoryKoName)}
 						/>
 					))}
 				</CareerBoxContainer>
@@ -436,43 +439,59 @@ export default function MycareerDetail() {
 							<Content style={{ textDecoration: details?.summary ? 'none' : 'underline' }}>
 								{details?.summary || '활동내역을 작성해주세요.'}
 							</Content>
-							<EditTag onClick={handleEditClick}>수정</EditTag> {/* ✅ 클릭 시 수정 모드로 변경 */}
+							<EditTag onClick={handleEditClick}>수정</EditTag>
 						</ContentWrapper>
 					)}
 				</CareerContentContainer>
 				<Line></Line>
 				<CareerListBox>
-					{details?.detailList?.length > 0 ? (
-						details.detailList.map((detail) =>
-							editingDetailId === detail.detailId ? (
-								<DetailAddEdit
-									key={detail.detailId}
-									initialTitle={detail.title}
-									initialDate={detail.startDate}
-									initialContents={detail.content}
-									initialTags={detail.detailTag || []}
+					{details?.detailList?.length > 0 ? ( // ✅ 활동 내역이 존재하면 리스트 보여주기
+						<>
+							{details.detailList.map((detail) =>
+								editingDetailId === detail.detailId ? (
+									<DetailAddEdit
+										key={detail.detailId}
+										initialTitle={detail.title}
+										initialDate={detail.startDate}
+										initialContents={detail.content}
+										initialTags={detail.detailTag || []}
+										careerId={careerId}
+										detailId={detail.detailId}
+										onClose={handleCloseEdit}
+										onUpdate={() => {
+											const convertedType = categoryToTypeMap[selectedCareer.type] || selectedCareer.type;
+											fetchCareerDetails(careerId, convertedType);
+										}}
+									/>
+								) : (
+									<CareerList
+										key={detail.detailId}
+										title={detail.title}
+										date={`${detail.startDate} ~ ${detail.endDate || '진행중'}`}
+										contents={detail.content}
+										detailTag={detail.detailTag || []}
+										careerId={careerId}
+										detailId={detail.detailId}
+										categoryEnName={details?.category?.categoryEnName}
+										onClose={handleCloseEdit}
+										onUpdate={() => {
+											const convertedType = categoryToTypeMap[selectedCareer.type] || selectedCareer.type;
+											fetchCareerDetails(careerId, convertedType);
+										}}
+										onEditClick={() => handleEditClick(detail.detailId)}
+									/>
+								),
+							)}
+							{isAdding && ( // ✅ 기존 활동 아래에 추가 입력창 띄우기
+								<DetailAdd
+									onCancel={handleCancelAdd}
+									onSave={handleSaveAdd}
 									careerId={careerId}
-									detailId={detail.detailId}
-									onClose={handleCloseEdit}
-									onUpdate={() => fetchCareerDetails(careerId, selectedCareer.type)}
+									careerType={categoryToTypeMap[category]}
 								/>
-							) : (
-								<CareerList
-									key={detail.detailId}
-									title={detail.title}
-									date={`${detail.startDate} ~ ${detail.endDate || '진행중'}`}
-									contents={detail.content}
-									detailTag={detail.detailTag || []}
-									careerId={careerId}
-									detailId={detail.detailId}
-									categoryEnName={details?.category?.categoryEnName}
-									onClose={handleCloseEdit}
-									onUpdate={() => fetchCareerDetails(careerId, selectedCareer.type)}
-									onEditClick={() => handleEditClick(detail.detailId)}
-								/>
-							),
-						)
-					) : isAdding ? (
+							)}
+						</>
+					) : isAdding ? ( // ✅ 활동이 없을 때 추가 입력창 띄우기
 						<DetailAdd
 							onCancel={handleCancelAdd}
 							onSave={handleSaveAdd}
