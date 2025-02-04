@@ -4,6 +4,7 @@ import ReviewDetailAddEdit from './ReviewDetailAddEdit';
 import editIcon from '../../assets/edit.svg';
 import linkIcon from '../../assets/link.svg';
 import { ReviewAdd } from '../../api/Apply/ReviewAdd'; 
+import { useNavigate } from 'react-router-dom';
 
 const Box = styled.div`
 	display: flex;
@@ -109,6 +110,7 @@ const LinkIcon = styled.img`
 export default function ReviewList({ recruitId, reviewId, title, date, content = '', introduceState, introduceId, onDelete, fetchData }) {
 	const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
 	const [documentReviewAdded, setDocumentReviewAdded] = useState(false); // 서류 리뷰 추가 여부 확인
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		// introduceState === 1이면 "서류" 리뷰 자동 생성 및 저장
@@ -148,8 +150,12 @@ export default function ReviewList({ recruitId, reviewId, title, date, content =
 	};
 
 	const handleLinkClick = () => {
-		console.log("자기소개서 버튼 클릭됨!");
-	};
+	if (introduceId && introduceId !== 0) {
+		navigate(`/history/others/${introduceId}`); // ✅ introduceId 포함하여 이동
+	} else {
+		console.warn("유효한 introduceId가 없습니다."); // introduceId가 없을 경우 로그 출력
+	}
+};
 
 	return (
 		<div>
