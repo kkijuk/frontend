@@ -869,28 +869,47 @@ const ApplyDetail = () => {
 </SubHeader>
 			</Header>
 
-			{job?.reviews &&
-	job.reviews.length > 0 &&
-	job.reviews
-		.slice() // 원본 배열 유지
-		.sort((a, b) => {
-			if (a.introduceState === 1 && a.title === '서류') return -1;
-			if (b.introduceState === 1 && b.title === '서류') return 1;
-			return 0;
-		})
-		.map((review, index) => (
-			<ReviewList
-				key={index}
-				recruitId={job.id}
-				reviewId={review.reviewId}
-				title={review.title}
-				date={review.date}
-				contents={review.content}
-				introduceState={review.introduceState}
-				onDelete={() => handleReviewDelete(review.reviewId)}
-				fetchData={fetchJobDetails}
-			/>
-		))}
+			{job && (
+	<>
+		{(() => {
+			let updatedReviews = job.reviews ? [...job.reviews] : [];
+
+			// introduceState === 1이면 "서류" 리뷰가 있는지 체크 후 추가
+			if (job.introduceState === 1 && !updatedReviews.some(review => review.title === '서류')) {
+				updatedReviews.unshift({
+					reviewId: 'temp-doc-review', // 임시 ID (실제 저장될 때 변경됨)
+					title: '서류',
+					date: new Date().toISOString().split("T")[0], // 오늘 날짜
+					contents: '서류 리뷰입니다.',
+					introduceState: 1,
+				});
+			}
+
+			// "서류" 리뷰를 항상 상단에 정렬
+			return updatedReviews
+				.slice()
+				.sort((a, b) => {
+					if (a.title === '서류') return -1;
+					if (b.title === '서류') return 1;
+					return 0;
+				})
+				.map((review, index) => (
+					<ReviewList
+						key={index}
+						recruitId={job.id}
+						reviewId={review.reviewId}
+						title={review.title}
+						date={review.date}
+						contents={review.content}
+						introduceState={review.introduceState}
+						onDelete={() => handleReviewDelete(review.reviewId)}
+						fetchData={fetchJobDetails}
+					/>
+				));
+		})()}
+	</>
+)}
+
 
 
 			{showReviewAdd && (

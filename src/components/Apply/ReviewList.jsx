@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ReviewDetailAddEdit from './ReviewDetailAddEdit';
 import editIcon from '../../assets/edit.svg';
+import { ReviewAdd } from '../../api/Apply/ReviewAdd'; 
 
 const Box = styled.div`
 	display: flex;
@@ -66,6 +67,32 @@ const EditIconStyled = styled.img`
 
 export default function ReviewList({ recruitId, reviewId, title, date, contents = '', introduceState, onDelete, fetchData }) {
 	const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
+	const [documentReviewAdded, setDocumentReviewAdded] = useState(false); // 서류 리뷰 추가 여부 확인
+
+	useEffect(() => {
+		// introduceState === 1이면 "서류" 리뷰 자동 생성 및 저장
+		if (introduceState === 1 && !documentReviewAdded) {
+			saveDocumentReview();
+			setDocumentReviewAdded(true); // 중복 요청 방지
+		}
+	}, [introduceState, documentReviewAdded]);
+
+	const saveDocumentReview = async () => {
+		const newReview = {
+			title: "서류",
+			contents: "서류 리뷰입니다.",
+			introduceState: 1,
+			date: new Date().toISOString().split("T")[0], // 오늘 날짜
+		};
+
+		try {
+			await ReviewAdd(recruitId, newReview);
+			console.log("서류 리뷰 저장 완료");
+			fetchData(); // 저장 후 최신 데이터 다시 불러오기
+		} catch (error) {
+			console.error("서류 리뷰 저장 실패", error);
+		}
+	};
 
 	const handleEditClick = () => {
 		console.log(`Editing review with ID: ${reviewId}`);
@@ -116,4 +143,3 @@ export default function ReviewList({ recruitId, reviewId, title, date, contents 
 		</div>
 	);
 }
-
