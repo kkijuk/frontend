@@ -92,6 +92,8 @@ const Content = styled.div`
 	text-decoration-thickness: auto;
 	text-underline-offset: auto;
 	text-underline-position: from-font;
+
+	border: 1px solid black;
 `;
 
 const Line = styled.div`
@@ -136,7 +138,6 @@ const CareerPlus = styled.button`
 const EditActivityContent = styled.div`
 	width: 720px;
 	height: 106px;
-	border: 1px solid black;
 	box-sizing: border-box;
 
 	display: flex; /* 가로 배치 */
@@ -155,15 +156,50 @@ const Textbox = styled.textarea`
 
 	border-radius: 10px;
 	background: #f5f5f5;
+
+	border: 1px solid black;
 `;
 
-const EditBox = styled.button`
+const EditBoxContainer = styled.div`
 	width: 80px;
 	height: 106px;
-	flex-shrink: 0;
+	gap: 6px;
+	display: flex;
+	flex-direction: column; /* 세로 배치 */
+	align-items: center; /* 버튼 가운데 정렬 */
+`;
 
+const CancelButton = styled.button`
+	width: 80px;
+	height: 40px;
+	flex-shrink: 0;
+	border-radius: 10px;
+	border: 1px solid var(--sub-bu, #77aff2);
+
+	color: var(--sub-bu, #77aff2);
+	text-align: center;
+	font-family: Pretendard;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+`;
+
+const EditButton = styled.button`
+	width: 80px;
+	height: 60px;
+	flex-shrink: 0;
 	border-radius: 10px;
 	background: var(--main-01, #3aaf85);
+
+	color: #fff;
+
+	text-align: center;
+	font-family: Pretendard;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
 `;
 
 const PageContainer = styled.div`
@@ -171,6 +207,23 @@ const PageContainer = styled.div`
 	flex-direction: column; /* 위에서 아래로 배치 */
 	align-items: center; /* 필요하면 가운데 정렬 */
 	width: 100%; /* 전체 너비 */
+`;
+
+const NoContents = styled.div`
+	width: 600px;
+	height: 300px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	color: #707070;
+	font-family: Pretendard;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	text-align: center;
+	position: relative;
 `;
 
 export default function MycareerDetail() {
@@ -211,13 +264,16 @@ export default function MycareerDetail() {
 			fetchCareerDetails(careerId, type);
 		}
 	}, [careerId, category]);
-
 	useEffect(() => {
 		const fetchAllCareers = async () => {
 			try {
 				const response = await CareerViewSelect('all');
 				if (Array.isArray(response.data)) {
-					setCareerList(response.data);
+					const formattedData = response.data.map((career) => ({
+						...career,
+						startdate: career.startdate || career.startDate, // startDate가 있으면 startdate로 변환
+					}));
+					setCareerList(formattedData);
 				}
 			} catch (error) {
 				console.error('Error fetching all careers:', error);
@@ -270,6 +326,10 @@ export default function MycareerDetail() {
 		} catch (error) {
 			alert('활동 내역 저장에 실패했습니다.');
 		}
+	};
+
+	const handleCancelClick = () => {
+		setIsEditing(false); // 편집 모드 종료
 	};
 
 	const handleCloseEdit = () => {
@@ -325,7 +385,10 @@ export default function MycareerDetail() {
 								defaultValue={details?.summary || ''}
 								onChange={(e) => setDetails({ ...details, summary: e.target.value })}
 							/>
-							<EditBox onClick={handleSaveClick}>저장</EditBox>
+							<EditBoxContainer>
+								<CancelButton onClick={handleCancelClick}>취소</CancelButton>
+								<EditButton onClick={handleSaveClick}>저장</EditButton>
+							</EditBoxContainer>
 						</EditActivityContent>
 					) : (
 						<Content onClick={handleEditClick}>{details?.summary || '활동내역을 작성해주세요.'}</Content>
@@ -364,7 +427,10 @@ export default function MycareerDetail() {
 							),
 						)
 					) : (
-						<div>세부사항이 없습니다.</div>
+						<NoContents>
+							등록된 활동 기록이 없습니다. <br />
+							아래 버튼을 눌러 활동 기록을 추가해주세요!
+						</NoContents>
 					)}
 					{isAdding && (
 						<DetailAdd
