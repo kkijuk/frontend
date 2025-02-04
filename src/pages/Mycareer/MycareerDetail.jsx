@@ -136,6 +136,7 @@ const CareerPlus = styled.button`
 `;
 
 const EditActivityContent = styled.div`
+	border: 1px solid black;
 	width: 720px;
 	height: 106px;
 	box-sizing: border-box;
@@ -191,6 +192,7 @@ const EditButton = styled.button`
 	flex-shrink: 0;
 	border-radius: 10px;
 	background: var(--main-01, #3aaf85);
+	border: none;
 
 	color: #fff;
 
@@ -210,6 +212,8 @@ const PageContainer = styled.div`
 `;
 
 const NoContents = styled.div`
+	border: 1px solid black;
+
 	width: 600px;
 	height: 300px;
 	display: flex;
@@ -224,6 +228,32 @@ const NoContents = styled.div`
 	line-height: normal;
 	text-align: center;
 	position: relative;
+`;
+
+const ContentWrapper = styled.div`
+	display: flex;
+	align-items: center; /* ✅ 세로 가운데 정렬 */
+	width: 100%; /* 부모 컨테이너 전체 너비 */
+`;
+
+const EditTag = styled.div`
+	width: 65px;
+	height: 25px;
+	flex-shrink: 0;
+	border-radius: 10px;
+	background: var(--gray-06, #f5f5f5);
+
+	margin-left: auto; /* ✅ 오른쪽 정렬 */
+	color: var(--gray-02, #707070);
+	text-align: center;
+	font-family: Pretendard;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;
 
 export default function MycareerDetail() {
@@ -252,7 +282,14 @@ export default function MycareerDetail() {
 			const response = await ViewCareerDetail(id, type);
 			console.log('가져온 Career Details:', response.data); // 데이터 확인
 
-			setDetails(response.data);
+			// startDate -> startdate로 변환
+			const formattedData = {
+				...response.data,
+				startdate: response.data.startdate || response.data.startDate, // startDate가 있으면 startdate로 변환
+				endDate: response.data.endDate || response.data.enddate, // enddate도 일관성 유지
+			};
+
+			setDetails(formattedData);
 		} catch (error) {
 			console.error('Error fetching career details:', error);
 		}
@@ -264,6 +301,7 @@ export default function MycareerDetail() {
 			fetchCareerDetails(careerId, type);
 		}
 	}, [careerId, category]);
+
 	useEffect(() => {
 		const fetchAllCareers = async () => {
 			try {
@@ -309,16 +347,12 @@ export default function MycareerDetail() {
 
 	const handleSaveClick = async () => {
 		try {
-			if (!details?.summary) {
-				alert('활동 내역을 입력하세요.');
-				return;
-			}
-
+			// ✅ 빈 내용도 저장 가능하도록 alert 삭제
 			// API 호출
 			await CareertextEdit(
 				careerId, // 현재 활동 ID
 				details?.category?.categoryEnName, // 카테고리 이름
-				details?.summary, // 작성한 활동 내역
+				details?.summary || '', // 빈 문자열도 저장 가능하게 수정
 			);
 
 			alert('활동 내역이 성공적으로 저장되었습니다.');
@@ -391,7 +425,12 @@ export default function MycareerDetail() {
 							</EditBoxContainer>
 						</EditActivityContent>
 					) : (
-						<Content onClick={handleEditClick}>{details?.summary || '활동내역을 작성해주세요.'}</Content>
+						<ContentWrapper>
+							<Content onClick={handleEditClick} style={{ textDecoration: details?.summary ? 'none' : 'underline' }}>
+								{details?.summary || '활동내역을 작성해주세요.'}
+							</Content>
+							<EditTag>수정</EditTag>
+						</ContentWrapper>
 					)}
 				</CareerContentContainer>
 				<Line></Line>
