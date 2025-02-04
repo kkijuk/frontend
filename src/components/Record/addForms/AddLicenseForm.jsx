@@ -34,12 +34,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialDa
   };
 
   const handleDateChange = (value) => {
-    const dateObj = new Date(value);
-    const year = dateObj.getFullYear();
-    const month = (`0${dateObj.getMonth() + 1}`).slice(-2);
-    const formattedDate = `${year}-${month}`;
-    
-    handleInputChange("acquireDate", formattedDate);
+    handleInputChange("acquireDate", new Date(value).getTime());
     setShowDatePicker(false);
   };
 
@@ -89,7 +84,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialDa
                     readOnly
                     type="text"
                     placeholder="응시일자"
-                    value={formData.acquireDate || ""}
+                    value={formData.acquireDate ? new Date(formData.acquireDate).toISOString().split('T')[0] : ""}
                     onClick={handleDatePickerToggle}
                 />
                 {showDatePicker && (

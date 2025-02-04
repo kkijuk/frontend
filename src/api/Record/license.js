@@ -7,7 +7,7 @@ const createLicense = async (data) => {
 		console.log('Success-createLicense:', response.data);
 		return response.data;
 	} catch (error) {
-		console.error('Error create license:', error);
+		console.error('Error deleting education:', error);
 		if (error.response) {
 			// 서버 응답이 있는 경우
 			console.error('Server responded with status code:', error.response.status);
