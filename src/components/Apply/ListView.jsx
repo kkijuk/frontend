@@ -85,27 +85,6 @@ const DefaultTag = styled.span`
   font-family: Light;
 `;
 
-const ReviewTag = styled.span`
-  background: ${({ status }) => {
-    if (status === 'UNAPPLIED') return '#D9D9D9';
-    if (status === 'PLANNED') return '#B0B0B0';
-    if (status === 'APPLYING') return '#707070';
-    if (status === 'ACCEPTED') return '#78D333';
-    if (status === 'REJECTED') return '#FA7C79';
-    return '#D9D9D9';
-  }};
-  border-radius: 10px;
-  padding: 4px 8px;
-  color: var(--white, #FFF);
-  text-align: center;
-  font-family: Light;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  margin-right: 8px;
-`;
-
 const StatusCircle = styled.span`
   display: inline-block;
   width: 15px;
@@ -123,6 +102,19 @@ const StatusCircle = styled.span`
   margin-top: 5px;
 `;
 
+const groupByDate = (data) => {
+  return data.reduce((acc, current) => {
+    if (current.endTime) {
+      const date = current.endTime.split(' ')[0];
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(current);
+    }
+    return acc;
+  }, {});
+};
+
 const ListView = ({ data, onJobClick }) => {
   if (!data || data.length === 0) {
     return (
@@ -134,45 +126,42 @@ const ListView = ({ data, onJobClick }) => {
     );
   }
 
+  const groupedData = groupByDate(data);
+
   return (
     <BackgroundSection>
       <ContentSection>
         <AdListStyled>
-          {data.map((item, index) => (
+          {Object.keys(groupedData).map((date, index) => (
             <AdDateSection key={index}>
-              <AdDate>{item.endDate}</AdDate>
-              {item.recruits && item.recruits.length > 0 ? ( // recruits가 존재할 때만 실행
-                item.recruits.map((ad, idx) => (
-                  <AdItem
-                    key={idx}
-                    onClick={() => {
-                      window.scrollTo(0, 0);
-                      onJobClick(ad);
-                    }}
-                  >
-                    <TagContainer>
-                      {ad.reviewTag && <ReviewTag>{ad.reviewTag}</ReviewTag>}
-                      {(ad.tag || []).map((tag, tagIdx) => (
-                        <DefaultTag key={tagIdx}>{tag}</DefaultTag>
-                      ))}
-                    </TagContainer>
-                    <AdDetails>
-                      <AdTitleContainer>
-                        <StatusCircle status={ad.status} />
-                        <AdTitle>{ad.title}</AdTitle>
-                      </AdTitleContainer>
-                    </AdDetails>
-                  </AdItem>
-                ))
-              ) : (
-                <p style={{ textAlign: 'center', color: '#707070' }}>공고가 없습니다.</p> // recruits가 없는 경우 메시지 출력
-              )}
+              <AdDate>{date}</AdDate>
+              {(groupedData[date] || []).map((ad, idx) => (
+                <AdItem
+                  key={idx}
+                  onClick={() => {
+                    window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
+                    onJobClick(ad);
+                  }}
+                >
+                  <TagContainer>
+                    {(ad.tag || ad.tags || []).map((tag, tagIdx) => (
+                      <DefaultTag key={tagIdx}>{tag}</DefaultTag>
+                    ))}
+                  </TagContainer>
+                  <AdDetails>
+                    <AdTitleContainer>
+                      <StatusCircle status={ad.status} />
+                      <AdTitle>{ad.title}</AdTitle>
+                    </AdTitleContainer>
+                  </AdDetails>
+                </AdItem>
+              ))}
             </AdDateSection>
           ))}
         </AdListStyled>
       </ContentSection>
     </BackgroundSection>
   );
-}
+};
 
 export default ListView;
