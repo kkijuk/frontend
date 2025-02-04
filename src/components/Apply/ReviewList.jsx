@@ -80,11 +80,10 @@ export default function ReviewList({ recruitId, reviewId, title, date, contents 
 	const saveDocumentReview = async () => {
 		const newReview = {
 			title: "서류",
-			contents: "서류 리뷰입니다.",
-			introduceState: 1,
 			date: new Date().toISOString().split("T")[0], // 오늘 날짜
+			introduceState: 1, // introduceState 유지
 		};
-
+	
 		try {
 			await ReviewAdd(recruitId, newReview);
 			console.log("서류 리뷰 저장 완료");
@@ -93,6 +92,7 @@ export default function ReviewList({ recruitId, reviewId, title, date, contents 
 			console.error("서류 리뷰 저장 실패", error);
 		}
 	};
+	
 
 	const handleEditClick = () => {
 		console.log(`Editing review with ID: ${reviewId}`);
