@@ -6,11 +6,12 @@ import { set } from 'react-hook-form';
 import useRecordStore from '../../stores/useRecordStore';
 import { createRecord, readRecord, updateRecord } from '../../api/Record/record';
 // components
-import Layout from '../../components/Layout'
+import Layout from '../../components/Layout';
 import AddEducationForm from '../../components/Record/addForms/AddEducationForm';
 import AddAwardForm from '../../components/Record/addForms/AddAwardForm';
 import AddSkillForm from '../../components/Record/addForms/AddSkillForm';
 import AddLicenseForm from '../../components/Record/addForms/AddLicenseForm';
+import AddFileForm from '../../components/Record/addForms/AddFileForm';
 import EducationItem from '../../components/Record/readOnlyItems/EducationItem';
 // import ActivityItem from '../../components/Record/readOnlyItems/ActivityItem';
 import CareerItem from '../../components/Record/CareerItem';
@@ -18,8 +19,14 @@ import AwardItem from '../../components/Record/readOnlyItems/AwardItem';
 import LicenseItem from '../../components/Record/readOnlyItems/LicenseItem';
 import SkillItem from '../../components/Record/readOnlyItems/SkillItem';
 import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
+import ScrollNavigator from '../../components/Record/ScrollNavigator';
+import FileItem from '../../components/Record/readOnlyItems/FileItem';
+import Profile from '../../components/Record/Profile';
+import EmailAndAddress from '../../components/Record/EmailAndAddress';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
 
 const History = () => {
+	// useRecordStore 호출
 	const store = useRecordStore();
 	const {
 		// api call
@@ -28,6 +35,12 @@ const History = () => {
 		updateItem,
 		deleteItem,
 		recordId,
+		addEtcItem,
+		deleteEtcItem,
+		updateEtcItem,
+		updateUserData,
+		//사용자 정보
+		userData,
 		// ** 학력
 		educations,
 		// ** 내 커리어 카테고리
@@ -39,20 +52,95 @@ const History = () => {
 		licenses, // 자격증
 		awards, // 수상
 		skills, // 스킬
+		files,
+		// 업데이트 날짜
+		updated_at,
 		status,
 		error,
 	} = store;
 
-	const [userData, setUserData] = useState({
-		updatedAt: '',
-		name: '',
-		birthday: '',
-		phone: '',
-		email: '',
-		address: '',
-	});
+	// DATA
+	const {profile, name, birth, mobile, email, address} = userData;
+	const licenseSection = licenses.filter(item => item.licenseTag === 'LICENSE');
+	const foreignSection = licenses.filter(item => item.licenseTag === 'FOREIGN');
+	const skillSections = {
+		IT: skills.filter(skill => skill.skillTag === 'IT'),
+		OA: skills.filter(skill => skill.skillTag === 'OA'),
+		GRAPHIC: skills.filter(skill => skill.skillTag === 'GRAPHIC'),
+		FOREIGNLANGUAGE: skills.filter(skill => skill.skillTag === 'FOREIGNLANGUAGE'),
+		ETC: skills.filter(skill => skill.skillTag === 'ETC'),
+	};
 
-	const [showCreateButton, setShowCreateButton] = useState(false);
+	// useState
+	const [showCreateButton, setShowCreateButton] = useState(false); // 이력서 생성 여부
+	const [openedForms, setOpenedForms] = useState({ // 폼 오픈 상태 관리
+		add: { // 추가 폼 관리
+			educations: false,
+			licenses: false,
+			awards: false,
+			skills: false,
+			files: false,
+		},
+	});
+	const [isAddCareerModalOpen, setIsAddCareerModalOpen] = useState(false); // 내 커리어 관련 활동 추가 모달 관리
+	const [activeSection, setActiveSection] = useState("");	// 인디케이터 활성화 섹션
+	const [editableUserData, setEditableUserData] = useState({	// 사용자 정보 수정
+		profileImageUrl: profile,
+		address: address,
+		email: email,
+	});
+	const [profileBlob, setProfileBlob] = useState(profile);	// 프로필 이미지
+
+	// useEffect
+	// 이력서 불러오기
+	useEffect(() => {
+		const fetchData = async () => {
+			try{
+				await fetchRecord();
+				if(error === "Record not created"){
+					setShowCreateButton(true);
+				}
+				console.log('Record Id:', recordId);
+			} catch (error) {
+				console.error('Error: fetchRecord: ', error);
+				setShowCreateButton(true);
+			}
+		}
+		fetchData();
+
+		// 인디케이터 관련 로직 - 화면 영역 계산
+		// const observer = new IntersectionObserver(
+		// 	(entries) => {
+		// 		entries.forEach((entry)=>{
+		// 			if(entry.isIntersecting){
+		// 				setActiveSection(entry.target.id);
+		// 			}
+		// 		})
+		// 	},
+		// 	{ rootMargin: "-50% 0px -50% 0px" }
+		// )
+
+		// sections.forEach((section) => {
+		// 	const element = document.getElementById(section.id);
+		// 	if (element) observer.observe(element);
+
+		// });
+
+		// return ()=>observer.disconnect();
+
+	}, [fetchRecord]);
+
+	useEffect(() => {
+		// 사용자 정보 업데이트
+		updateUserData(editableUserData);
+	}, [editableUserData]);
+
+
+	// LOGIC
+	if (status === 'loading') return <p>Loading...</p>;
+	if (status === 'failed') return <p>Error: {error}</p>;
+
+	// 이력서 생성
 	const handleCreateRecord = async () => {
 		try {
 			const response = await createRecord();
@@ -62,71 +150,6 @@ const History = () => {
 			console.error('Error: createRecord: ', error);
 		}
 	}
-	
-	// 이력서 불러오기
-	useEffect(() => {
-		const fetchData = async () => {
-			await fetchRecord();
-			if(error === 'not created'){
-				setShowCreateButton(true);
-			}
-			console.log('Record Id:', recordId);
-		}
-		fetchData();
-	}, [fetchRecord, recordId, error]);
-
-	// 사용자 정보 불러오기
-	useEffect(() => {
-		async function getUserData() {
-		  const response = await readRecord(); 
-		  const result = response.data;
-		  if (result) {
-			const { updatedAt, name, birthday, phone, email, address, profileImageUrl } = result;
-			setUserData({
-			  updatedAt: updatedAt || '',
-			  name: name || '',
-			  birthday: birthday || '',
-			  phone: phone || '',
-			  email: email || '',
-			  address: address || '',
-			  profileImageUrl: profileImageUrl || '',
-			});
-		  }
-		}
-		getUserData();
-	  }, []);
-
-	// 주소 편집 모드 관리 State
-	const [isEditingAddress, setIsEditingAddress] = useState(false);
-	// input에 임시로 입력되는 주소
-	const [tempAddress, setTempAddress] = useState('');	
-
-	//폼 오픈 상태 관리
-	const [openedForms, setOpenedForms] = useState({
-		edit: { // 수정 폼 관리
-			educations: null,
-			licenses: null,
-			awards: null,
-			skills: null,
-		},
-		add: { // 추가 폼 관리
-			educations: false,
-			licenses: false,
-			awards: false,
-			skills: false,
-		},
-	});
-
-	//수정 폼 토글
-	const toggleEditForm = (category, id = null) => {
-		setOpenedForms((prev) => ({
-			...prev,
-			edit: {
-				...prev.edit,
-				[category]: prev.edit[category] === id ? null : id,
-			},
-		}));
-	};
 
 	//추가 폼 토글
 	const toggleAddForm = (category) => {
@@ -139,17 +162,6 @@ const History = () => {
 		}));
 	};
 
-	// 데이터 분류
-	const licenseSection = licenses.filter(item => item.licenseTag === 'LICENSE');
-	const foreignSection = licenses.filter(item => item.licenseTag === 'FOREIGN');
-	const skillSections = {
-		IT: skills.filter(skill => skill.skillTag === 'IT'),
-		OA: skills.filter(skill => skill.skillTag === 'OA'),
-		GRAPHIC: skills.filter(skill => skill.skillTag === 'GRAPHIC'),
-		FOREIGNLANGUAGE: skills.filter(skill => skill.skillTag === 'FOREIGNLANGUAGE'),
-		ETC: skills.filter(skill => skill.skillTag === 'ETC'),
-	  };
-
 	// 섹션 이름 변환 함수
 	const getSectionName = (type) => {
 		const names = {
@@ -161,58 +173,57 @@ const History = () => {
 		};
 		return names[type] || '기타';
     };
-	
-	if (status === 'loading') return <p>Loading...</p>;
-	if (status === 'failed') return <p>Error: {error}</p>;
 
-	//주소 관련 로직
-	// (1) '주소를 입력하세요' 클릭 -> 편집 모드로 전환
-	const handleAddressPlaceholderClick = () => {
-		setIsEditingAddress(true);
-		setTempAddress(''); // input 초기화
+	// 인디케이터 관련 로직
+	//(1) section, activeSection
+	const sections = [
+		{id: "user", name: "인적사항"},
+		{id: "educations", name: "학력"},
+		{id: "employments", name: "경력"},
+		{id: "activitiesAndExperiences", name: "활동 및 경험"},
+		{id: "projects", name: "프로젝트"},
+		{id: "eduCareers", name: "교육"},
+		{id: "awards", name: "수상"},
+		{id: "licenses", name: "자격증 · 외국어"},
+		{id: "skills", name: "스킬"},
+		{id:"etc", name: "추가자료"}
+	];
+	
+
+	//(2) 인디케이터 메뉴 클릭
+	const scrollToSection = (id) => {
+		const element = document.getElementById(id);
+		if(element) {
+			element.scrollIntoView({behavior: "smooth", block: "start"});
+		}
 	}
 
-	// (2) 이미 주소가 있는 상태에서 '수정' 버튼 클릭 -> 편집 모드로 전환
-	const handleEditAddressClick = () => {
-		setIsEditingAddress(true);
-		setTempAddress(userData.address || ''); // 기존 주소값을 input에 넣음
-	};
-	
-	// (3) input에서 변경값 반영
-	const handleAddressInputChange = (e) => {
-		setTempAddress(e.target.value);
-	};
-	
-	// (4) 수정 완료 시 호출
-	const handleUpdateAddress = async () => {
-		try {
-		// updateRecord API 호출
-		const responseData = await updateRecord(recordId, 
-		{
-			address: tempAddress,
-			profileImageUrl: "string",
-		});
-
-		// 서버에서 수정된 address를 받아온 경우
-		if (responseData && responseData.address) {
-			// userData에 반영
-			setUserData((prev) => ({
+	// 인적사항 변경 관련 로직
+	//(1) 프로필 사진 변경 관련 로직
+	const handleProfileChange = (file) => {
+		setProfileBlob(file);
+		setEditableUserData((prev) => ({
 			...prev,
-			address: responseData.address,
+			profileImageUrl: file,
+		}));
+		console.log('Profile Image changed:', file);
+	}
+
+	//(2) 이메일 또는 주소 변경 시
+	const handleEmailOrAddressChange = (data) => {
+		if(data.type === 'email'){
+			setEditableUserData((prev) => ({
+				...prev,
+				email: data.data
+			}));
+		} 
+		
+		if(data.type === 'address'){
+			setEditableUserData((prev) => ({
+				...prev,
+				address: data.data
 			}));
 		}
-
-		// 편집 모드 종료
-		setIsEditingAddress(false);
-		} catch (err) {
-		console.error('주소 업데이트 실패:', err);
-		}
-	};
-
-	// (5) 취소
-	const handleCancelEdit = () => {
-		setIsEditingAddress(false);
-		setTempAddress('');
 	};
 
 	return (
@@ -222,67 +233,77 @@ const History = () => {
 					이력서 생성하기
 				</CreateRecordButton>
 			) : (
-				<Layout title="서류준비">
-					<div>
+				// <Layout 
+				// 	id = {sections[0].id}
+				// 	key = {sections[0].id}
+				// 	leftAsideContent={
+				// 		<ScrollNavigator
+				// 			sections = {sections}
+				// 			activeSection={activeSection}
+				// 			onClick={scrollToSection}
+				// 		/>
+				// 	}
+				// >
+					<div style={{width:'100%', minHeight:'100vh'}}>
 						{/* <AddCareerModal></AddCareerModal> */}
+						<ScrollNavigator
+							sections = {sections}
+							activeSection={activeSection}
+							onClick={scrollToSection}
+						/>
+						{isAddCareerModalOpen &&
+							<AddCareerModal
+								onClose={() => setIsAddCareerModalOpen(false)}
+							/>
+						}
 						<div style={{display:'flex', marginBlock:'30px'}}>
-						<ProfileBox/>
+						{/* <ProfileBox/> */}
+						<Profile
+							id = {sections[0].id}	
+							key = {sections[0].id}	
+							profileBlob={profileBlob}
+							onProfileChange={handleProfileChange}
+						/>
 						<UserInfoWrapper>
 							<div style={{width:'100%'}}>
-								<UpdatedAt>마지막 수정 일시: {userData.updatedAt}</UpdatedAt>
+								<UpdatedAt>마지막 수정 일시: {updated_at}</UpdatedAt>
 							</div>
 							<InfoTable>
 								<InfoLabel>이름</InfoLabel>
-								<InfoValue>{userData.name}</InfoValue>
+								<InfoValue>{name}</InfoValue>
 
 								<InfoLabel>생년월일</InfoLabel>
-								<InfoValue>{userData.birthday}</InfoValue>
+								<InfoValue>{birth}</InfoValue>
 
 								<InfoLabel>전화번호</InfoLabel>
-								<InfoValue>{userData.phone}</InfoValue>
+								<InfoValue>{mobile}</InfoValue>
 
 								<InfoLabel>이메일</InfoLabel>
-								<InfoValue>{userData.email}</InfoValue>
+								<InfoValue>
+									<EmailAndAddress
+										type="email"
+										data={email}
+										onSave={(data) => handleEmailOrAddressChange(data)}
+									/>
+								</InfoValue>
 
 								<InfoLabel>주소</InfoLabel>
 								<InfoValue>
-									{/* 주소가 NULL 인 경우 */}
-									{!userData.address && !isEditingAddress && (
-										<NullModeAddress onClick={handleAddressPlaceholderClick}>
-											주소를 입력하세요
-										</NullModeAddress>
-										)}
-
-										{/* 주소가 NULL이 아닌데 편집 모드가 아닐 때 */}
-										{userData.address && !isEditingAddress && (
-										<HoverWrapper>
-											<span>{userData.address}</span>
-											<EditButton onClick={handleEditAddressClick}>수정</EditButton>
-										</HoverWrapper>
-										)}
-
-										{/* 편집 모드일 때 */}
-										{isEditingAddress && (
-										<EditAddressContainer>
-											<AddressInput
-											type="text"
-											value={tempAddress}
-											onChange={handleAddressInputChange}
-											placeholder="주소를 입력하세요"
-											/>
-											<ButtonGroup>
-												<SaveButton onClick={handleUpdateAddress}>수정</SaveButton>
-												<CancelButton onClick={handleCancelEdit}>취소</CancelButton>
-											</ButtonGroup>
-										</EditAddressContainer>
-										)}
+									<EmailAndAddress
+										type="address"
+										data={address}
+										onSave={(data) => handleEmailOrAddressChange(data)}
+									/>
 								</InfoValue>
 							</InfoTable>
 						</UserInfoWrapper>
 						</div>
 						<Line></Line>
 						<SectionWrapper>
-							<SectionHeader>
+							<SectionHeader
+								id = {sections[1].id}
+								key = {sections[1].id}
+							>
 								<h2>학력</h2>
 								<AddButton onClick={() => toggleAddForm('educations')}>+</AddButton>
 							</SectionHeader>
@@ -290,14 +311,19 @@ const History = () => {
 								{openedForms.add.educations && 
 								<AddEducationForm 
 									onClose={() => toggleAddForm('educations')}
+									onSave={(updates) => addItem('educations', recordId, updates)}
 								/>}
-								<div style={{height:'50px'}}></div>
+								{educations.length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
 								{educations.map((education, index) => (
 									<EducationItem
 										key={education.id}
 										data={education}
 										isLastItem={index === educations.length - 1}
-										// onEdit={() => toggleEditForm('educations', education.id)}
+										onUpdate = {(updates) => updateItem('educations', education.id, updates)}
+										onDelete={() => deleteItem('educations', education.id)}
 									/>
 								))}
 							</ContentWrapper>
@@ -305,16 +331,24 @@ const History = () => {
 						<Line></Line>
 
 						<SectionWrapper>
-							<SectionHeader>
+							<SectionHeader
+								id = {sections[2].id}
+								key = {sections[2].id}
+							>
 								<h2>경력</h2>
-								{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+								<AddButton onClick={()=>setIsAddCareerModalOpen(true)}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
+								{employments.length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
 								{employments.map((employment, index) => (
-										<CareerItem
-											key={employment.id}
-											data={employment}
-											isLastItem={index === employments.length - 1}
+									<CareerItem
+										key={employment.id}
+										data={employment}
+										isLastItem={index === employments.length - 1}
+										setIsOpen={(isOpen) => setIsAddCareerModalOpen(isOpen)}
 									/>
 								))}
 							</ContentWrapper>
@@ -322,33 +356,49 @@ const History = () => {
 						<Line></Line>
 
 						<SectionWrapper>
-							<SectionHeader>
+							<SectionHeader						
+								id = {sections[3].id}
+								key = {sections[3].id}
+							>
 								<h2>활동 및 경험</h2>
-								{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+								<AddButton onClick={()=>setIsAddCareerModalOpen(true)}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
-							{activitiesAndExperiences.map((activity, index) => (
-									<CareerItem
-										key={activity.id}
-										data={activity}
-										isLastItem={index === activitiesAndExperiences.length - 1}
-									/>
-							))}
+								{activitiesAndExperiences.length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
+								{activitiesAndExperiences.map((activity, index) => (
+										<CareerItem
+											key={activity.id}
+											data={activity}
+											isLastItem={index === activitiesAndExperiences.length - 1}
+											setIsOpen={(isOpen) => setIsAddCareerModalOpen(isOpen)}
+										/>
+								))}
 							</ContentWrapper>
 						</SectionWrapper>
 						<Line></Line>
 
 						<SectionWrapper>
-							<SectionHeader>
+							<SectionHeader
+								id = {sections[4].id}
+								key = {sections[4].id}
+							>
 								<h2>프로젝트</h2>
-								{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+								<AddButton onClick={()=>setIsAddCareerModalOpen(true)}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
+								{projects.length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
 								{projects.map((project, index) => (
 									<CareerItem
 										key={project.id}
 										data={project}
 										isLastItem={index === projects.length - 1}
+										setIsOpen={(isOpen) => setIsAddCareerModalOpen(isOpen)}
 									/>
 								))}
 							</ContentWrapper>
@@ -356,16 +406,24 @@ const History = () => {
 						<Line></Line>
 
 						<SectionWrapper>
-							<SectionHeader>
+							<SectionHeader
+								id = {sections[5].id}
+								key = {sections[5].id}
+							>
 								<h2>교육</h2>
-								{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+								<AddButton onClick={()=>setIsAddCareerModalOpen(true)}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
+								{eduCareers.length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
 								{eduCareers.map((eduCareer, index) => (
 									<CareerItem
 										key={eduCareer.id}
 										data={eduCareer}
 										isLastItem={index === eduCareers.length - 1}	
+										setIsOpen={(isOpen) => setIsAddCareerModalOpen(isOpen)}
 									/>
 								))}
 							</ContentWrapper>
@@ -373,21 +431,29 @@ const History = () => {
 						<Line></Line>
 
 						<SectionWrapper>
-							<SectionHeader>
+							<SectionHeader
+								id = {sections[6].id}
+								key = {sections[6].id}
+							>
 								<h2>수상</h2>
 								<AddButton onClick={() => toggleAddForm('awards')}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{openedForms.add.awards &&
 								<AddAwardForm
+									onSave={(updates) => addItem('awards', recordId, updates)}
 									onClose={() => toggleAddForm('awards')}
 								/>}
-								<div style={{height:'50px'}}></div>
+								{awards.length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
 								{awards.map((award, index) => (
 									<AwardItem 
 										key={award.id} 
 										data={award} 
-										onEdit={() => toggleEditForm('awards', award.id)} 
+										onUpdate = {(updates) => updateItem('awards', award.id, updates)}
+										onDelete={() => deleteItem('awards', award.id)}
 									/>
 								))}
 							</ContentWrapper>
@@ -395,37 +461,48 @@ const History = () => {
 						<Line></Line>
 
 						<SectionWrapper>
-							<SectionHeader>
+							<SectionHeader
+								id = {sections[7].id}
+								key = {sections[7].id}
+							>
 								<h2>자격증 · 외국어</h2>
 								<AddButton onClick={() => toggleAddForm('licenses')}>+</AddButton>
 							</SectionHeader>
-							<ContentWrapper>
+							<ContentWrapper style={{gap:'50px'}}>
 								{openedForms.add.licenses &&
 								<AddLicenseForm
+									onSave={(updates) => addItem('licenses', recordId, updates)}
 									onClose={() => toggleAddForm('licenses')}
 								/>}
-								<div style={{height:'50px'}}></div>
+								{licenseSection.length === 0 && foreignSection.length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
 								<Section>
-									<Tag>자격증</Tag>
+									{licenseSection.length !== 0 && <Tag>자격증</Tag>}
 									<ItemsWrapper>
 										{licenseSection.map((license, index) => (
 											<LicenseItem 
 												key={license.id} 
 												data={license} 
-												// onEdit={() => toggleEditForm('licenses', license.id)} 
+												isSecondColumn={index % 2 === 1}
+												onUpdate = {(updates) => updateItem('licenses', license.id, updates)}
+												onDelete={() => deleteItem('licenses', license.id)}
 											/>
 										))}
 									</ItemsWrapper>
 								</Section>
-								<div style={{height:'50px'}}></div>
+
 								<Section>
-									<Tag>외국어</Tag>
+									{foreignSection.length!==0 && <Tag>외국어</Tag>}
 									<ItemsWrapper>
 										{foreignSection.map((foreign, index) => (
 											<LicenseItem 
 												key={foreign.id} 
 												data={foreign} 
-												// onEdit={() => toggleEditForm('licenses', license.id)} 
+												isSecondColumn={index % 2 === 1}
+												onUpdate = {(updates) => updateItem('licenses', foreign.id, updates)}
+												onDelete={() => deleteItem('licenses', foreign.id)}
 											/>
 										))}
 									</ItemsWrapper>
@@ -435,16 +512,23 @@ const History = () => {
 						<Line></Line>
 
 						<SectionWrapper>
-							<SectionHeader>
+							<SectionHeader
+								id = {sections[8].id}
+								key = {sections[8].id}
+							>
 								<h2>스킬</h2>
 								<AddButton onClick={() => toggleAddForm('skills')}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{openedForms.add.skills &&
 								<AddSkillForm
+									onSave={(updates) => addItem('skills', recordId, updates)}
 									onClose={() => toggleAddForm('skills')}
 								/>}
-								<div style={{height:'50px'}}></div>
+								{skills.length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
 								{Object.entries(skillSections).map(([sectionType, sectionSkills]) => 
 									sectionSkills.length > 0 ? (
 									<Section key={sectionType}>
@@ -454,7 +538,8 @@ const History = () => {
 											<SkillItem
 												key={skill.id}
 												data={skill}
-												// onEdit={() => console.log(`Edit Skill: ${skill.id}`)}
+												onUpdate={(updates) => updateItem('skills', skill.id, updates)}
+												onDelete={() => deleteItem('skills', skill.id)}
 											/>
 											))}
 										</ItemsWrapper>
@@ -466,17 +551,35 @@ const History = () => {
 						<Line></Line>
 
 						<SectionWrapper>
-							<SectionHeader>
-								<h2>추가자료</h2>
-								{/* <AddButton onClick={()=>toggleForm('educations')}>+</AddButton> */}
+						<SectionHeader
+							id = {sections[9].id}
+							key = {sections[9].id}
+						>
+							<h2>추가자료</h2>
+							<AddButton onClick={() => toggleAddForm('files')}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
-								
+								{openedForms.add.files &&
+									<AddFileForm
+										onClose={() => toggleAddForm('files')}
+										onSave={(data) => addEtcItem(data)}
+										
+								/>}
+								{files.length === 0 && 
+								<NoneContentBox>
+									새로운 활동을 추가해주세요!
+								</NoneContentBox>}
+								{files.map((file, index)=>{
+									<FileItem
+										data={file}
+										onDelete={(data) => deleteEtcItem(data)}
+										onUpdate={(data) => updateEtcItem(data)}
+									/>
+								})}
 							</ContentWrapper>
 						</SectionWrapper>
-						<Line></Line>
 					</div>
-				</Layout>
+				// </Layout>
 			)}
 		</>
 	);
@@ -569,8 +672,9 @@ const Section = styled.div`
 `;
 
 const ItemsWrapper = styled.div`
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2열 배치 */
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* 2열 배치 */
   gap: 25px;
 `;
 
@@ -700,3 +804,11 @@ const CancelButton = styled.button`
 	display:flex;
 	justify-content:center;
 `;
+
+const NoneContentBox = styled.div`
+	font-family: Regular;
+	height: 200px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`

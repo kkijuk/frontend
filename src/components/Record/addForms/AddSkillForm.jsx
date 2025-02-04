@@ -7,8 +7,9 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
   const [formData, setFormData] = useState({
     skillType: "",
     skillName: "",
-    skillLevel: "",
+    workmanship: "",
   });
+  const [isGuideVisible, setIsGuideVisible] = useState(false);
 
   // 수정 모드일 경우 formData 기존 내용으로 초기화
   useEffect(() => {
@@ -28,6 +29,37 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
 
   const [showSkillTypes, setShowSkillTypes] = useState(false);
   const [showSkillLevels, setShowSkillLevels] = useState(false);
+  const skillLevelsMapping = {
+    "기초" : "BASIC",
+    "초급" : "BEGINNER",
+    "중급" : "INTERMEDIATE",
+    "고급" : "ADVANCED",
+    "전문가" : "EXPERT"
+  }
+
+  const skillLevelsReverseMapping = {
+    "BASIC" : "기초",
+    "BEGINNER" : "초급",
+    "INTERMEDIATE" : "중급",
+    "ADVANCED" : "고급",
+    "EXPERT" : "전문가"
+  }
+
+  const skillTypeMapping = {
+    "IT" : "IT",
+    "OA" : "OA",
+    "그래픽" : "GRAPHIC",
+    "외국어" : "FOREIGNLANGUAGE",
+    "기타" : "ETC"
+  }
+
+  const skillTypeReverseMapping = {
+    "IT" : "IT",
+    "OA" : "OA",
+    "GRAPHIC" : "그래픽",
+    "FOREIGNLANGUAGE" : "외국어",
+    "ETC" : "기타"
+  }
 
   const handleDropdownToggle = (type) => {
     if (type === "skillType") {
@@ -39,11 +71,13 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
     }
   }
 
-//    useEffect(() => {
-//     console.log("formData changed:", formData);
-//     }, [formData]);
-
-  const [isGuideVisible, setIsGuideVisible] = useState(false);
+  // Log formData whenever it changes
+  useEffect(() => {
+    console.log("formData changed:", formData);
+    Object.keys(formData).forEach(key => {
+      console.log(`${key} (${typeof formData[key]}):`, formData[key]);
+    });
+  }, [formData]);
 
   return (
     <Container>
@@ -51,8 +85,8 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
         <CustomDropdown
           options={skillTypes}
           placeholder="유형"
-          value={formData.skillType}
-          onChange={(value) => handleInputChange("skillType", value)}
+          value={skillTypeReverseMapping[formData.skillType] || ""}
+          onChange={(value) => handleInputChange("skillType", skillTypeMapping[value])}
           onToggle={() => handleDropdownToggle("skillType")}
           isOpen={showSkillTypes}
           style={{width: "170px"}}
@@ -68,8 +102,8 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
         <CustomDropdown
           options={skillLevels}
           placeholder="숙련도"
-          value={formData.skillLevel}
-          onChange={(value) => handleInputChange("skillLevel", value)}
+          value={skillLevelsReverseMapping[formData.workmanship] || ""}
+          onChange={(value) => handleInputChange("workmanship", skillLevelsMapping[value])}
           onToggle={() => handleDropdownToggle("skillLevel")}
           isOpen={showSkillLevels}
           style={{width: "170px"}}
@@ -121,7 +155,10 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
             )}
             <Button
             primary
-            onClick={()=>onSave(formData)}
+            onClick={() => {
+              onSave(formData);
+              onClose();
+            }}
             style={{
                 border: "1px solid var(--main-01, #3AAF85)",
                 background: "var(--main-01, #3AAF85)",
@@ -150,6 +187,7 @@ const Container = styled.div`
   flex-direction: column;
   gap: 20px;
   position: relative;
+  margin-bottom: 50px;
 `;
 
 const Row = styled.div`

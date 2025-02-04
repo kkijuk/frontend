@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SignupStepOne from '../components/User/SignupStepOne';
 import SignupStepTwo from '../components/User/SignupStepTwo';
 import styled from 'styled-components';
-import { ReactComponent as BackButtonSVG } from '../assets/main/backbutton.svg';
 
 const Container = styled.div`
   max-width: 500px;
@@ -14,7 +13,7 @@ const Container = styled.div`
 
 const TitleContainer = styled.div`
   position: relative;
-  display: inline-block; 
+  display: inline-block;
   text-align: center;
 `;
 
@@ -34,98 +33,67 @@ const StepBarContainer = styled.div`
 `;
 
 const StepBar = styled.div`
+  position: relative; 
   width: 163px;
   height: 6px;
   border-radius: 6px;
   background-color: ${(props) => (props.active ? '#88D1B6' : '#e0e0e0')};
   margin: 0 5px;
   transition: background-color 0.7s;
+  cursor: pointer;
+
+  /* 클릭 범위 확장을 위한 pseudo-element */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -10px; /* 위로 확장 */
+    left: 0;
+    width: 100%;
+    height: 26px; /* 6px의 기존 높이 + 10px 위 + 10px 아래 */
+    background-color: transparent; /* 시각적으로는 보이지 않음 */
+    cursor: pointer; /* 터치 가능하도록 설정 */
+  }
 `;
 
-const BackButton = styled(BackButtonSVG)`
-  position: absolute;
-  left: -126px; /* 제목 기준 왼쪽으로 50px 떨어지도록 설정 */
-  top: 48%; 
-  transform: translateY(-50%); 
-  cursor: pointer;
-`;
 
 const NewSignup = () => {
   const [step, setStep] = useState(1);
-  const [agreements1, setAgreements1] = useState(false);
-  const [agreements2, setAgreements2] = useState(false);
-  const [agreements3, setAgreements3] = useState(false);
-  const [modalType, setModalType] = useState(null);
+
+  const [agreements, setAgreements] = useState({
+    isTermsAgreed: false,
+    isPrivacyAgreed: false,
+    isMarketingAgreed: false,
+  });
 
   const navigate = useNavigate();
 
-  const handleNextStep = () => {
-    if (step === 1) {
-      setStep(2);
-    } else if (step === 2) {
-      handleSignup();
-    }
-  };
-
-  const handlePrevStep = () => {
-    setStep(1); // Step 1로 돌아가기
+  const handleAgreementChange = (key, value) => {
+    setAgreements((prev) => ({ ...prev, [key]: value }));
   };
 
   const handleSignup = () => {
-    navigate('/signupsuccess'); // 회원가입 성공 페이지로 이동
+    console.log('회원가입 완료');
+    navigate('/signupsuccess');
   };
-
-  const handleModal = (type) => {
-    setModalType(type);
-  };
-
-  const closeModal = () => {
-    setModalType(null);
-  };
-
-  useEffect(() => {
-    const preventScroll = (e) => {
-      e.preventDefault();
-    };
-
-    const $body = document.querySelector('body');
-    $body.style.overflow = 'hidden'; // 스크롤바 숨기기
-    $body.addEventListener('wheel', preventScroll, { passive: false });
-    $body.addEventListener('touchmove', preventScroll, { passive: false });
-
-    return () => {
-      $body.removeEventListener('wheel', preventScroll);
-      $body.removeEventListener('touchmove', preventScroll);
-      $body.style.overflow = '';
-    };
-  }, []);
 
   return (
     <Container>
       <TitleContainer>
-      {step === 2 && <BackButton onClick={handlePrevStep} />}
-      <Title>회원가입</Title>
-    </TitleContainer>
+        <Title>회원가입</Title>
+      </TitleContainer>
       <StepBarContainer>
-        <StepBar active={step === 1} />
-        <StepBar active={step === 2} />
+        <StepBar active={step === 1} onClick={() => setStep(1)} />
+        <StepBar active={step === 2} onClick={() => setStep(2)} />
       </StepBarContainer>
       {step === 1 && (
         <SignupStepOne
-          agreements1={agreements1}
-          setAgreements1={setAgreements1}
-          agreements2={agreements2}
-          setAgreements2={setAgreements2}
-          agreements3={agreements3}
-          setAgreements3={setAgreements3}
-          handleNextStep={handleNextStep}
+          agreements={agreements}
+          setAgreements={handleAgreementChange}
+          handleNextStep={() => setStep(2)} // 다음 단계로 넘어가는 버튼
         />
       )}
       {step === 2 && (
-        <SignupStepTwo 
-          handleSignup={handleSignup} 
-          handlePrevStep={handlePrevStep} // 이전 단계로 이동
-        />
+        <SignupStepTwo handleSignup={handleSignup} agreements={agreements} />
       )}
     </Container>
   );

@@ -1,18 +1,41 @@
-import React from 'react';
+import React, { useState }from 'react';
 import styled from 'styled-components';
+import AddAwardForm from '../addForms/AddAwardForm';
+import { KebabMenu2 } from '../KebabMenu';
 
-const AwardItem = ({ data, onEdit }) => {
+const AwardItem = ({ data, onSave, onUpdate, onDelete, onClose }) => {
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  console.log('AwardItem: ', data);
+
   return (
     <Container>
-      <TimeLine>
-				<Oval></Oval>
-			</TimeLine>
-      <AwardInfo>
-        <AwardName>{data.competitionName} / {data.awardName}</AwardName>
-        <AwardDetails>
-          {data.acquireDate} ・ {data.administer}
-        </AwardDetails>
-      </AwardInfo>
+      {isEditMode ? (
+        <EditContainer>
+          <AddAwardForm
+            mode='edit'
+            initialData={data}
+            onClose={() => setIsEditMode(false)}
+            onUpdate = {(FormData) => onUpdate(FormData)}
+            onDelete={onDelete}
+          />
+        </EditContainer>
+        ):(
+          <>
+          <TimeLine>
+            <Oval></Oval>
+          </TimeLine>
+          <AwardInfo>
+            <AwardName>{data.competitionName} / {data.awardName}</AwardName>
+            <AwardDetails>
+              {data.acquireDate} ・ {data.administer}
+            </AwardDetails>
+          </AwardInfo>
+          <EditButton id="edit">
+            <KebabMenu2 onModalOpen={()=>setIsEditMode(true)} />
+					</EditButton>
+          </>
+        )}
     </Container>
   );
 };
@@ -20,19 +43,31 @@ const AwardItem = ({ data, onEdit }) => {
 export default AwardItem;
 
 // Styled Components
+const EditButton = styled.button`
+	border: none;
+	position: absolute;
+	right: 0;
+	top:10px;
+	background-color: transparent;
+	opacity: 0;
+	padding: 0px 50px 70px 0px;
+`;
+
 const Container = styled.div`
   display: flex;
   width:100%;
   padding: 10px;
   font-family:Regular;
-  &:hover button {
-    visibility: visible;
-  }
+  margin-bottom: 20px;
+	&:hover ${EditButton} {
+		opacity: 1;
+		cursor: pointer;
+	}
 `;
+
 const TimeLine = styled.div`
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	margin: 0px 70px 0px 30px;
 `;
 
@@ -60,13 +95,13 @@ const AwardDetails = styled.div`
   margin-top: 5px;
 `;
 
-// const EditButton = styled.button`
-//   visibility: hidden;
-//   background: var(--sub-bu, #77aff2);
-//   color: var(--white, #FFF);
-//   border: none;
-//   border-radius: 10px;
-//   padding: 5px 10px;
-//   cursor: pointer;
-//   transition: visibility 0.2s ease-in-out;
-// `;
+
+
+const EditContainer = styled.div`
+	width: 820px;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	margin-bottom: 45px;
+	font-family: 'Regular';
+`

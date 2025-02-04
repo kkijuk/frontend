@@ -1,90 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReactApexChart from 'react-apexcharts';
 import moment from 'moment';
 
 import distributeTimelinePositions from '../../utils/distributeTimelinePositions';
 import getColorByCategory from '../../utils/getColorByCategory';
+import { useFetchTimeline } from '../../hooks/Timeline/useFetchTimeline';
 
 const TimelineChart = () => {
-	const [rawData, setRawData] = useState([]);
-
+	const { data: rawData, isLoading, error } = useFetchTimeline();
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const res = await fetch(`${process.env.REACT_APP_API_URL}/career/timeline`, {
-					method: 'GET',
-					credentials: 'include', // 쿠키와 인증 정보를 함께 보냄
-					headers: {
-						'Content-Type': 'application/json; charset=utf-8',
-					},
-				});
-				const data = await res.json();
-				console.log(data);
-				setRawData(data.data);
-			} catch (error) {
-				console.error('Error fetching data:', error);
-			}
-		};
-		fetchData();
-	}, []);
-
-	const formattedData = rawData.map((item, idx) => ({
-		careerId: item.careerId,
-		category: item.category,
-		y: [new Date(item.startdate).getTime(), new Date(item.enddate).getTime()],
-		name: item.title,
-		fillColor: getColorByCategory(item.category.categoryKoName) || '#707070', // 기본 색상은 검정색
-	}));
-
-	const distributedData = distributeTimelinePositions(formattedData);
-
-	// TODO: 임의로 네칸에 배치하는 로직 짰는데 컨펌이 필요할 듯
-	// 기간이 짧아서 Bar 짧을 떄, 텍스트 어떻게 처리할지
-
-	const series = [
-		{
-			data: distributedData.map((item) => ({
-				careerId: item.careerId,
-				category: item.category,
-				x: item.x,
-				y: item.y,
-				name: item.name,
-				fillColor: item.fillColor,
-			})),
-		},
-	];
-
-	const handleChartClick = (event, chartContext, config) => {
-		const dataPointIndex = config.dataPointIndex;
-		const seriesIndex = config.seriesIndex;
-		console.log(dataPointIndex, seriesIndex);
-		if (dataPointIndex == -1 || seriesIndex == -1) return;
-		const data = chartContext.w.config.series[seriesIndex].data[dataPointIndex];
-
-		if (data && data.careerId) {
-			navigate(`/mycareer/${data.category.categoryKoName}/${data.careerId}`);
-		} else {
-			console.error('Invalid data or careerId not found');
-		}
-	};
 
 	const [options] = useState({
 		chart: {
 			height: 350,
 			type: 'rangeBar',
-			offsetX: 0,
+			offsetX: -50,
 			background: 'transparent',
 			zoom: {
-				enabled: false, // 줌 기능 비활성화
+				enabled: false,
 			},
 			toolbar: {
 				show: false,
 			},
 			events: {
-				click: handleChartClick,
+				click: (event, chartContext, config) => {
+					const dataPointIndex = config.dataPointIndex;
+					const seriesIndex = config.seriesIndex;
+					if (dataPointIndex === -1 || seriesIndex === -1) return;
+
+					const data = chartContext.w.config.series[seriesIndex].data[dataPointIndex];
+					if (data && data.careerId) {
+						navigate(`/mycareer/${data.category.categoryKoName}/${data.careerId}`, {
+							state: { careerId: data.careerId, category: data.category.categoryKoName },
+						});
+					} else {
+						console.error('Invalid data or careerId not found');
+					}
+				},
 			},
 		},
 		plotOptions: {
@@ -94,34 +47,18 @@ const TimelineChart = () => {
 				rangeBarOverlap: false,
 				barHeight: '16.5px',
 				borderRadius: 8,
-				offsetX: 0,
-				states: {
-					hover: {
-						filter: {
-							type: 'none',
-						},
-					},
-					active: {
-						allowMultipleDataPointsSelection: false,
-						filter: {
-							type: 'none',
-						},
-					},
-				},
 			},
 		},
 		dataLabels: {
 			enabled: true,
-			formatter: function (val, opts) {
-				return opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].name;
-			},
+			formatter: (val, opts) => opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].name,
 			style: {
 				colors: ['#fff'],
 			},
 		},
 		tooltip: {
-			custom: function ({ seriesIndex, dataPointIndex, w }) {
-				const data = w.config.series[0].data[dataPointIndex];
+			custom: ({ seriesIndex, dataPointIndex, w }) => {
+				const data = w.config.series[seriesIndex].data[dataPointIndex];
 				const name = data.name;
 				const startDate = moment(data.y[0]).format('YYYY.MM.DD');
 				const endDate = moment(data.y[1]).format('YYYY.MM.DD');
@@ -144,35 +81,72 @@ const TimelineChart = () => {
 			type: 'datetime',
 			labels: {
 				offsetX: 25,
-				formatter: function (val) {
-					return moment(val).format('YYYY.MM'); // 년월 포맷
-				},
+				formatter: (val) => moment(val).format('YYYY.MM'),
 			},
-			axisBorder: {
-				show: false, // x축 경계 숨김
-			},
-			axisTicks: {
-				show: false, // x축 눈금 숨김
-			},
+			axisBorder: { show: false },
+			axisTicks: { show: false },
 		},
 		yaxis: {
 			show: false,
-
-			labels: {
-				show: false,
-			},
-			axisBorder: {
-				show: false,
-			},
-			axisTicks: {
-				show: false,
-			},
 		},
 		grid: {
-			show: false, // 전체 그리드를 숨기려면 이 옵션 사용
-			borderColor: 'transparent', // y축 선을 투명하게 설정
+			show: false,
 		},
 	});
+
+	if (isLoading) return <div>타임라인을 불러오는 중이에요...</div>;
+
+	if (error) {
+		console.error('Error fetching timeline data:', error);
+		return <div>타임라인을 불러오는 도중에 오류가 발생했어요...!</div>;
+	}
+
+	let formattedData = rawData?.data.map((item) => ({
+		careerId: item.careerId,
+		category: item.category,
+		y: [new Date(item.startdate).getTime(), new Date(item.enddate).getTime()],
+		name: item.title,
+		fillColor: getColorByCategory(item.category.categoryKoName) || '#707070',
+	}));
+
+	// 만약 데이터가 없다면 현재로부터 6개월 전 x축 제공
+	if (!formattedData || formattedData.length === 0) {
+		const today = new Date();
+		const sixMonthsAgo = new Date();
+		sixMonthsAgo.setMonth(today.getMonth() - 6);
+
+		formattedData = [
+			{
+				careerId: 0, // 가상의 ID
+				category: { categoryKoName: '기본 데이터' },
+				y: [sixMonthsAgo.getTime(), sixMonthsAgo.getTime()], // 6개월 전
+				name: '6개월 전 기록',
+				fillColor: '#909090',
+			},
+			{
+				careerId: 1, // 가상의 ID
+				category: { categoryKoName: '기본 데이터' },
+				y: [today.getTime(), today.getTime()], // 오늘 날짜
+				name: '오늘',
+				fillColor: '#ff9900',
+			},
+		];
+	}
+
+	const distributedData = distributeTimelinePositions(formattedData);
+
+	const series = [
+		{
+			data: distributedData.map((item) => ({
+				careerId: item.careerId,
+				category: item.category,
+				x: item.x,
+				y: item.y,
+				name: item.name,
+				fillColor: item.fillColor,
+			})),
+		},
+	];
 
 	return <ReactApexChart options={options} series={series} type="rangeBar" height={150} />;
 };

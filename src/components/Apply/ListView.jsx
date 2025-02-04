@@ -102,6 +102,25 @@ const StatusCircle = styled.span`
   margin-top: 5px;
 `;
 
+const ReviewTag = styled.span`
+  background: ${({ status }) => {
+    if (status === 'UNAPPLIED') return '#D9D9D9';
+    if (status === 'PLANNED') return '#B0B0B0';
+    if (status === 'APPLYING') return '#707070';
+    if (status === 'ACCEPTED') return '#78D333';
+    if (status === 'REJECTED') return '#FA7C79';
+    return '#D9D9D9';
+  }};
+  border-radius: 10px;
+  padding: 4px 8px;
+  color: var(--white, #FFF);
+  text-align: center;
+  font-family: Light;
+  font-size: 12px;
+  font-weight: 400;
+  margin-right: 8px;
+`;
+
 const groupByDate = (data) => {
   return data.reduce((acc, current) => {
     if (current.endTime) {
@@ -144,10 +163,16 @@ const ListView = ({ data, onJobClick }) => {
                   }}
                 >
                   <TagContainer>
-                    {(ad.tag || ad.tags || []).map((tag, tagIdx) => (
-                      <DefaultTag key={tagIdx}>{tag}</DefaultTag>
-                    ))}
-                  </TagContainer>
+  {/* 리뷰 태그 추가 */}
+  {ad.reviewTag && ad.reviewTag.trim() !== "" && (
+    <ReviewTag status={ad.status}>{ad.reviewTag}</ReviewTag>
+  )}
+
+  {/* 기존 태그 유지 */}
+  {(ad.tag || ad.tags || []).map((tag, tagIdx) => (
+    <DefaultTag key={tagIdx}>{tag}</DefaultTag>
+  ))}
+</TagContainer>
                   <AdDetails>
                     <AdTitleContainer>
                       <StatusCircle status={ad.status} />

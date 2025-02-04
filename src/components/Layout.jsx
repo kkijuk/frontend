@@ -6,7 +6,7 @@ const Wrapper = styled.div`
 	justify-content: center;
 	align-items: center;
 	width: 100vw;
-	height: 100vh;
+	// height: 100vh;
 `;
 
 const Container = styled.div`
@@ -81,18 +81,22 @@ const TitleText = styled.div`
     margin-top: 35px;
 '`;
 
-export default function Layout({ title, children }) {
+export default function Layout({ title, children, leftAsideContent, rightAsideContent }) {
 	return (
 		<Wrapper>
 			<Container>
-				<LeftAside></LeftAside>
+				<LeftAside>
+					{leftAsideContent}
+				</LeftAside>
 				<Section>
 					<Top>
 						<TitleText>{title}</TitleText>
 					</Top>
 					{children}
 				</Section>
-				<RightAside></RightAside>
+				<RightAside>
+					{rightAsideContent}
+				</RightAside>
 			</Container>
 		</Wrapper>
 	);

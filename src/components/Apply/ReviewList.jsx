@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ReviewDetailAddEdit from './ReviewDetailAddEdit';
 import editIcon from '../../assets/edit.svg';
+import linkIcon from '../../assets/link.svg';
+import { ReviewAdd } from '../../api/Apply/ReviewAdd'; 
+import { useNavigate } from 'react-router-dom';
 
 const Box = styled.div`
 	display: flex;
@@ -11,6 +14,12 @@ const Box = styled.div`
 	gap: 14px;
 	padding: 24px 40px;
 	position: relative;
+`;
+
+const TitleWrapper = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 14px; /* 버튼과 제목 간격 */
 `;
 
 const Title = styled.div`
@@ -32,6 +41,15 @@ const Contents = styled.div`
 	p {
 		margin: 0;
 	}
+`;
+
+const NoContentText = styled.p`
+	color: var(--gray-02, #707070);
+	font-family: Pretendard;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
 `;
 
 const Date = styled.div`
@@ -64,50 +82,126 @@ const EditIconStyled = styled.img`
 	cursor: pointer;
 `;
 
-export default function ReviewList({ recruitId, reviewId, title, date, contents = '', onDelete, fetchData }) {
-	const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
+const LinkButton = styled.button`
+	display: flex;
+	align-items: center;
+	gap: 7px; /* 아이콘과 텍스트 간격 */
+	justify-content: center;
+	border-radius: 10px;
+	border: 1px solid var(--black, #000);
+	width: 110px;
+	height: 28px;
+	flex-shrink: 0;
+	background: white;
+	cursor: pointer;
+	font-size: 14px;
+	font-family: Pretendard;
+	
+	&:hover {
+		background: #f5f5f5;
+	}
+`;
 
+const LinkIcon = styled.img`
+	width: 15px;
+	height: 15px;
+`;
+
+export default function ReviewList({ recruitId, reviewId, title, date, content = '', introduceState, introduceId, onDelete, fetchData }) {
+	const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
+	const [documentReviewAdded, setDocumentReviewAdded] = useState(false); // 서류 리뷰 추가 여부 확인
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		// introduceState === 1이면 "서류" 리뷰 자동 생성 및 저장
+		if (introduceState === 1 && !documentReviewAdded) {
+			saveDocumentReview();
+			setDocumentReviewAdded(true); // 중복 요청 방지
+		}
+	}, [introduceState, documentReviewAdded]);
+
+	const saveDocumentReview = async () => {
+		const newReview = {
+			title: "서류",
+			date: new Date().toISOString().split("T")[0], // 오늘 날짜
+			introduceState: 1,
+			introduceId: introduceId ?? 0, //  introduceId 추가
+		};
+	
+		try {
+			await ReviewAdd(recruitId, newReview);
+			console.log("서류 리뷰 저장 완료");
+			fetchData(); // 저장 후 최신 데이터 다시 불러오기
+		} catch (error) {
+			console.error("서류 리뷰 저장 실패", error);
+		}
+	};
+	
+	
 	const handleEditClick = () => {
-		console.log(`Editing review with ID: ${reviewId}`); // Review ID 로그 출력
+		console.log(`Editing review with ID: ${reviewId}`);
 		setIsDetailAddVisible(!isDetailAddVisible);
 	};
 
 	const handleDeleteClick = () => {
 		if (onDelete) {
-			onDelete(reviewId); // 삭제 핸들러 호출
+			onDelete(reviewId);
 		}
 	};
+
+	const handleLinkClick = () => {
+	if (introduceId && introduceId !== 0) {
+		navigate(`/history/others/${introduceId}`); //  introduceId 포함하여 이동
+	} else {
+		console.warn("유효한 introduceId가 없습니다."); // introduceId가 없을 경우 로그 출력
+	}
+};
 
 	return (
 		<div>
 			<Box>
 				<TitleDateContainer>
-					<Title>{title}</Title>
+					<TitleWrapper>
+						<Title>{title}</Title>
+						{introduceState === 1 && title === '서류' && (
+							<LinkButton onClick={handleLinkClick}>
+								<LinkIcon src={linkIcon} alt="link icon" />
+								자기소개서
+							</LinkButton>
+						)}
+					</TitleWrapper>
 					<Date>{date}</Date>
 				</TitleDateContainer>
+
+				{/* ✅ "서류" 리뷰도 포함하여 모든 리뷰의 내용 표시 */}
 				<Contents>
-					{contents.split('\n').map((line, index) => (
-						<p key={index}>{line}</p>
-					))}
+					{content ? (
+						content.split('\n').map((line, index) => <p key={index}>{line}</p>)
+					) : (
+						<NoContentText>전형 후기가 없습니다</NoContentText> // ✅ 내용이 없으면 표시
+					)}
 				</Contents>
 
+				{/* ✅ "서류" 리뷰도 수정 버튼 활성화 */}
 				<EditIconStyled src={editIcon} alt="Edit" title="Edit" onClick={handleEditClick} />
-				{/* <EditIconStyled titleAccess="Edit" onClick={handleEditClick} /> */}
 			</Box>
+
 			{isDetailAddVisible && (
 				<ReviewDetailAddEdit
-					recruitId={recruitId} // recruitId 전달
-					reviewId={reviewId} // 리뷰 ID 전달
-					initialTitle={title}
-					initialDate={date}
-					initialContents={contents}
-					onDelete={handleDeleteClick} // ReviewDetailAddEdit에서 삭제가 완료되면 호출
-					onSave={() => {
-						setIsDetailAddVisible(false);
-						fetchData(); // 저장 후 최신 데이터를 다시 불러옴
-					}}
-					fetchData={fetchData} // fetchData 전달
-				/>
+				recruitId={recruitId}
+				reviewId={reviewId}
+				initialTitle={title}
+				initialDate={date}
+				initialContent={content}
+				onDelete={introduceState === 1 && title === '서류' ? null : handleDeleteClick} // ✅ 서류 리뷰는 삭제 비활성화
+				onSave={() => {
+					setIsDetailAddVisible(false);
+					fetchData();
+				}}
+				fetchData={fetchData}
+				disableTitleEdit={introduceState === 1 && title === '서류'} // ✅ 서류 리뷰 제목 수정 비활성화
+			/>
+			
 			)}
 			<Line></Line>
 		</div>

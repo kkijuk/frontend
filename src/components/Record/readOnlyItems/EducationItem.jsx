@@ -1,31 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import AddEducationForm from '../addForms/AddEducationForm';
+import { KebabMenu2 } from '../KebabMenu';
 
-const EducationItem = ({ data, onEdit, isLastItem }) => {
+const EducationItem = ({ data, isLastItem, onSave, onUpdate, onDelete, onClose }) => {
+	const [isEditMode, setIsEditMode] = useState(false);
+
 	console.log('EducationItem: ', data);
 
 	return (
-		<div style={{ display: 'flex', width:'100%'}}>
-			<TimeLine>
-				<Oval status={data.state}></Oval>
-				<Line isLastItem={isLastItem} status={data.state}></Line>
-			</TimeLine>
-			<Container>
-				<div>
-					<LevelTag status={data.state}>{data.category}</LevelTag>
-					<SchoolInfo>
-						<SchoolName>{data.schoolName}</SchoolName>
-						{data.major && <Department>{data.major}</Department>}
-						<Dates>
-							{data.admissionDate} ~ {data.graduationDate} <Status>({data.state})</Status>
-						</Dates>
-					</SchoolInfo>
-				</div>
-				<EditButton id="edit" onClick={onEdit}>
-					수정
+		<FirstContainer>
+			{isEditMode ? (
+				<EditContainer>
+					<AddEducationForm
+						mode='edit'
+						initialData={data}
+						onClose={() => setIsEditMode(false)}
+						onUpdate = {(FormData) => onUpdate(FormData)}
+						onDelete={onDelete}
+					/>
+				</EditContainer>
+			) : (
+				<>
+				<TimeLine>
+					<Oval status={data.state}></Oval>
+					<Line isLastItem={isLastItem} status={data.state}></Line>
+				</TimeLine>
+				<Container>
+					<div>
+						<LevelTag status={data.state}>{data.category}</LevelTag>
+						<SchoolInfo>
+							<SchoolName>{data.schoolName}</SchoolName>
+							{data.major && <Department>{data.major}</Department>}
+							<Dates>
+								{data.admissionDate} ~ {data.graduationDate} <Status>({data.state})</Status>
+							</Dates>
+						</SchoolInfo>
+					</div>
+				</Container>
+				<EditButton id="edit">
+					<KebabMenu2 onModalOpen={() => setIsEditMode(true)} />
 				</EditButton>
-			</Container>
-		</div>
+				</>
+			)}
+	</FirstContainer>
 	);
 };
 
@@ -69,31 +87,41 @@ const Line = styled.div`
 `;
 
 const EditButton = styled.button`
-  width:65px;q
-  margin-left: auto;
-  background-color: #F5F5F5;
-  color: #707070;
-  border: none;
-  border-radius: 10px;
-  padding: 5px 10px;
-  opacity:0;
-  transition: opacity 0.2s ease-in-out;
-  position:absolute;
-  right:150px;
+	border: none;
+	position: absolute;
+	right: 0;
+	top:40px;
+	background-color: transparent;
+	opacity: 0;
+	padding: 0px 50px 70px 0px;
 `;
+
+const EditContainer = styled.div`
+	width: 820px;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	margin-bottom: 45px;
+	font-family: 'Regular';
+`
 
 const Container = styled.div`
 	width: 820px;
 	display: flex;
 	align-items: flex-start;
 	margin-bottom: 45px;
+	font-family: 'Regular';
+	positon: relative;
+`;
 
+const FirstContainer = styled.div`
+	width: 100%;
+	display: flex;
+	position:relative;
 	&:hover ${EditButton} {
 		opacity: 1;
 		cursor: pointer;
 	}
-	font-family: 'Regular';
-	positon: relative;
 `;
 
 const LevelTag = styled.div`

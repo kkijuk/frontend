@@ -1,25 +1,33 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // react-router-dom의 useNavigate 훅 추가
+
 import SubNav2 from '../../components/Mypage/SubNav2';
 import Layout from '../../components/Layout';
 import styled from 'styled-components';
+import { fetchLogindata, fetchEmail } from '../../api/Mypage/mypage';
 
 //마이페이지 변경 이후 !!필요!! 한 부분
+//베타 테스트에 사용
+
 //내 정보 이메일 재입력
 
 const Container = styled.div`
 	width: 820px;
-	height: 300px;
-`;
-
-const Box = styled.div`
-	/* props로 height 설정 */
-	width: 820px;
-	height: ${(props) => props.height || '100px'}; /* 기본값은 100px */
+	height: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-top: 0;
+	margin-right: auto;
+	margin-bottom: 50px;
+	margin-left: auto;
 `;
 
 const Text = styled.div`
 	/*설명 텍스트*/
-	width: 420px;
+	width: 500px;
 	height: 19px;
 	color: var(--black, #000);
 	text-align: center;
@@ -28,20 +36,28 @@ const Text = styled.div`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+
+	margin-top: 100px;
 `;
 
 const EmailBox = styled.div`
 	width: 400px;
 	height: 81px;
+
+	margin-top: 56px;
 `;
 
 const EmailTextBox = styled.div`
 	width: 400px;
 	height: 31px;
 	gap: 20px;
+
+	display: flex;
+	align-items: center;
 `;
 
 const EmailText = styled.div`
+	/*이메일 글씨*/
 	color: var(--main-01, #3aaf85);
 	font-family: Pretendard;
 	font-size: 18px;
@@ -51,6 +67,7 @@ const EmailText = styled.div`
 `;
 
 const Email = styled.div`
+	/*이메일 가린거 보여주기*/
 	color: var(--gray-02, #707070);
 	font-family: Pretendard;
 	font-size: 16px;
@@ -59,25 +76,26 @@ const Email = styled.div`
 	line-height: normal;
 `;
 
-const KakaoTag = styled.div`
+const Tag = styled.div`
 	width: 65px;
 	height: 25px;
 	border-radius: 10px;
-	background: var(--sub-ye, #fcc400);
-
+	background: ${(props) => (props.socialType === 'KAKAO' ? 'var(--sub-ye, #fcc400)' : '#03C75A')};
 	color: var(--white, #fff);
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 14px;
 	font-style: normal;
 	font-weight: 500;
-	line-height: normal;
+	line-height: 25px;
 `;
 
 const Input = styled.input`
 	width: 400px;
 	height: 50px;
-
+	padding-left: 20px;
+	border: none; /* 테두리 제거 */
+	outline: none; /* 포커스 시 라인 제거 */
 	border-radius: 10px;
 	background: #f5f5f5;
 
@@ -88,24 +106,102 @@ const Input = styled.input`
 	font-weight: 400;
 	line-height: normal;
 `;
-export default function AuthenticationAccount() {
+
+const Button = styled.button`
+	width: 400px;
+	height: 50px;
+	border-radius: 10px;
+	background: var(--main-01, #3aaf85);
+
+	border: none; /* 테두리 제거 */
+	outline: none; /* 포커스 시 라인 제거 */
+	color: #fff;
+	text-align: center;
+	font-family: Pretendard;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+
+	margin: 50px auto 200px auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+
+export default function Confirm() {
+	const [inputEmail, setInputEmail] = useState('');
+	const [maskedEmail, setMaskedEmail] = useState(''); // 가려진 이메일 상태
+	const [socialType, setSocialType] = useState(''); // 로그인 방식 상태
+	const [errorMessage, setErrorMessage] = useState('');
+	const navigate = useNavigate(); // useNavigate 훅 사용
+
+	const socialTypeMap = {
+		KAKAO: '카카오',
+		NAVER: '네이버',
+	};
+
+	useEffect(() => {
+		// API 호출하여 가려진 이메일 및 로그인 방식 가져오기
+		const fetchLoginData = async () => {
+			try {
+				const data = await fetchLogindata();
+				setMaskedEmail(data.email);
+				setSocialType(data.socialType);
+			} catch (error) {
+				console.error('로그인 데이터 가져오기 오류:', error);
+			}
+		};
+
+		fetchLoginData();
+	}, []);
+
+	const handleInputChange = (e) => {
+		setInputEmail(e.target.value);
+		setErrorMessage('');
+	};
+
+	const handleSubmit = async () => {
+		try {
+			// API 호출로 입력한 이메일 확인
+			const isMatched = await fetchEmail(inputEmail);
+
+			// 디버깅 로그 추가
+			console.log('isMatched 값:', isMatched, '타입:', typeof isMatched);
+
+			// boolean(true) 또는 문자열("true")인 경우 처리
+			if (isMatched === true || isMatched === 'true') {
+				navigate('/mypage/myinformation', { state: { socialType } }); // 페이지 이동,socialType 전달
+			} else {
+				setErrorMessage('입력한 이메일이 일치하지 않습니다. 다시 확인해주세요.');
+			}
+		} catch (error) {
+			setErrorMessage('이메일을 확인하는 중 오류가 발생했습니다.');
+			console.error('Error:', error);
+		}
+	};
+
 	return (
-		<Layout title="마이페이지">
+		<div>
 			<SubNav2></SubNav2>
+
 			<Container>
-				<Box height={100}></Box>
 				<Text>회원님의 정보를 보호하기 위해 가입한 이메일 재입력이 필요합니다.</Text>
-				<Box height={56}></Box>
 				<EmailBox>
 					<EmailTextBox>
 						<EmailText>이메일</EmailText>
-						<Email></Email>
-						<KakaoTag>카카오</KakaoTag>
+						<Email>{maskedEmail}</Email>
+						<Tag socialType={socialType}>{socialTypeMap[socialType] || socialType}</Tag>
 					</EmailTextBox>
-					<Input>이메일을 입력하세요</Input>
+					<Input
+						placeholder="이메일을 입력하세요"
+						value={inputEmail} // 상태값 바인딩
+						onChange={handleInputChange} // 입력값 변경 시 호출
+					/>
 				</EmailBox>
-				<Box height={50}></Box>
+				<Button onClick={handleSubmit}>확인</Button>
+				{errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}{' '}
 			</Container>
-		</Layout>
+		</div>
 	);
 }

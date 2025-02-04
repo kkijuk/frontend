@@ -1,12 +1,13 @@
 import api from '../../Axios';
 
-const createLicense = async (recordId, data) => {
+const createLicense = async (data) => {
 	try {
-		const response = await api.post(`/history/resume/license/recordId=${recordId}`);
+		console.log('license Data: ', data);
+		const response = await api.post(`/history/resume/license`, data);
 		console.log('Success-createLicense:', response.data);
 		return response.data;
 	} catch (error) {
-		console.error('Error deleting education:', error);
+		console.error('Error create license:', error);
 		if (error.response) {
 			// 서버 응답이 있는 경우
 			console.error('Server responded with status code:', error.response.status);
@@ -23,7 +24,7 @@ const createLicense = async (recordId, data) => {
 
 const updateLicense = async (licenseId, data) => {
 	try {
-		const response = api.patch(`/history/resume/licence/licenseId=${licenseId}`);
+		const response = api.patch(`/history/resume/licence?licenseId=${licenseId}`, data);
 		console.log('Success-createing license: ', response.data);
 		return response.data;
 	} catch (error) {
@@ -43,7 +44,7 @@ const updateLicense = async (licenseId, data) => {
 
 const deleteLicense = async (licenseId, data) => {
 	try {
-		const response = api.delete(`/history/resume/license=${licenseId}`);
+		const response = api.delete(`/history/resume/license?licenseId=${licenseId}`);
 		console.log('Success-deleteing license:', response.data);
 		return (await response).data;
 	} catch (error) {}

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import api from '../../Axios';
 import { getRecruitDetails } from '../../api/Apply/RecruitDetails'; // API 호출을 위해 import
 
 const CalendarBackgroundSection = styled.div`
@@ -97,79 +98,100 @@ const CalendarTag = styled.span`
 	font-family: Light;
 `;
 
+const ReviewTag = styled.span`
+  background: ${({ status }) => {
+	if (status === 'UNAPPLIED') return '#D9D9D9';
+    if (status === 'PLANNED') return '#B0B0B0';
+    if (status === 'APPLYING') return '#707070';
+    if (status === 'ACCEPTED') return '#78D333';
+    if (status === 'REJECTED') return '#FA7C79';
+    return '#D9D9D9';
+  }};
+  border-radius: 10px;
+  padding: 4px 8px;
+  color: var(--white, #FFF);
+  text-align: center;
+  font-family: Light;
+  font-size: 12px;
+  font-weight: 400;
+  margin-right: 8px;
+`;
+
+
 const CalendarStatusCircle = styled.span`
-	display: inline-block;
-	width: 15px;
-	height: 15px;
-	border-radius: 50%;
-	background-color: ${({ status }) => {
-		if (status === 'UNAPPLIED') return '#D9D9D9';
-		if (status === 'PLANNED') return '#B0B0B0';
-		if (status === 'APPLYING') return '#707070';
-		if (status === 'ACCEPTED') return '#78D333';
-		if (status === 'REJECTED') return '#FA7C79';
-		return '#707070';
-	}};
-	margin-right: 10px;
-	margin-top: 5px;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: ${({ status }) => {
+    if (status === 'UNAPPLIED') return '#D9D9D9';
+    if (status === 'PLANNED') return '#B0B0B0';
+    if (status === 'APPLYING') return '#707070';
+    if (status === 'ACCEPTED') return '#78D333';
+    if (status === 'REJECTED') return '#FA7C79';
+    return '#707070';
+  }};
+  margin-right: 10px;
+  margin-top: 5px;
 `;
 
 const CalendarListView = ({ date, data, count, onJobClick }) => {
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	if (count === 0) {
-		return (
-			<CalendarBackgroundSection>
-				<CalendarContentSection background="#f0f0f0">{/* 날짜에 공고가 없을 때의 처리 */}</CalendarContentSection>
-			</CalendarBackgroundSection>
-		);
-	}
+  if (count === 0) {
+    return (
+      <CalendarBackgroundSection>
+        <CalendarContentSection />
+      </CalendarBackgroundSection>
+    );
+  }
 
-	const handleJobClick = async (ad) => {
-		console.log('Selected ad:', ad); // ad 객체를 로그로 출력하여 확인
-		try {
-			// API를 호출하여 전체 데이터를 가져옵니다.
-			const fullAdDetails = await getRecruitDetails(ad.recruitId);
-			console.log('Full ad details:', fullAdDetails); // 가져온 데이터 로그 출력
-			// 상세 페이지로 이동하면서, 가져온 전체 데이터를 전달합니다.
-			navigate(`/apply-detail/${ad.recruitId}`, { state: { job: fullAdDetails } });
-		} catch (error) {
-			console.error('Failed to fetch recruit details:', error);
-		}
-	};
+  const handleJobClick = async (ad) => {
+    console.log('Selected ad:', ad);
+    try {
+      const response = await api.get(`/recruit/${ad.recruitId}`);
+      const fullAdDetails = { 
+          ...response.data, 
+          id: ad.recruitId, 
+          introduceId: response.data.introduceId ?? 0 // ✅ introduceId 추가 (없으면 0 설정)
+      };
 
-	// 날짜를 하루 뒤로 조정하여 표시
-	const adjustedDate = new Date(date);
-	adjustedDate.setDate(adjustedDate.getDate() + 1);
+      console.log('Full ad details with introduceId:', fullAdDetails);
+      navigate(`/apply-detail/${ad.recruitId}`, { state: { job: fullAdDetails } });
+    } catch (error) {
+      console.error('Failed to fetch recruit details:', error);
+    }
+};
 
-	return (
-		<CalendarBackgroundSection>
-			<CalendarContentSection background="#f0f0f0">
-				{/* 조정된 날짜를 화면에 표시 */}
-				<CalendarAdDate>{adjustedDate.toISOString().split('T')[0]}</CalendarAdDate>
-				<CalendarAdListStyled>
-					{data.map((ad, idx) => (
-						<CalendarAdItem
-							key={idx}
-							onClick={() => handleJobClick(ad)} // 클릭 시 상세 페이지로 이동
-						>
-							<CalendarTagContainer>
-								{(ad.tag || ad.tags || []).map((tag, tagIdx) => (
-									<CalendarTag key={tagIdx}>{tag}</CalendarTag>
-								))}
-							</CalendarTagContainer>
-							<CalendarAdDetails>
-								<CalendarAdTitleContainer>
-									<CalendarStatusCircle status={ad.status} />
-									<CalendarAdTitle>{ad.title}</CalendarAdTitle>
-								</CalendarAdTitleContainer>
-							</CalendarAdDetails>
-						</CalendarAdItem>
-					))}
-				</CalendarAdListStyled>
-			</CalendarContentSection>
-		</CalendarBackgroundSection>
-	);
+
+  const adjustedDate = new Date(date);
+  adjustedDate.setDate(adjustedDate.getDate() + 1);
+
+  return (
+    <CalendarBackgroundSection>
+      <CalendarContentSection>
+        <CalendarAdDate>{adjustedDate.toISOString().split('T')[0]}</CalendarAdDate>
+        <CalendarAdListStyled>
+          {data.map((ad, idx) => (
+            <CalendarAdItem key={idx} onClick={() => handleJobClick(ad)}>
+              <CalendarTagContainer>
+			  {ad.reviewTag && <ReviewTag status={ad.status}>{ad.reviewTag}</ReviewTag>}
+                {(ad.tag || ad.tags || []).map((tag, tagIdx) => (
+                  <CalendarTag key={tagIdx}>{tag}</CalendarTag>
+                ))}
+              </CalendarTagContainer>
+              <CalendarAdDetails>
+                <CalendarAdTitleContainer>
+                  <CalendarStatusCircle status={ad.status} />
+                  <CalendarAdTitle>{ad.title}</CalendarAdTitle>
+                </CalendarAdTitleContainer>
+              </CalendarAdDetails>
+            </CalendarAdItem>
+          ))}
+        </CalendarAdListStyled>
+      </CalendarContentSection>
+    </CalendarBackgroundSection>
+  );
 };
 
 export default CalendarListView;

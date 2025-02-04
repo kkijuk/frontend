@@ -161,32 +161,31 @@ const AllAgreementContainer = styled.div`
 `;
 
 
-const SignupStepOne = ({
-  agreements1,
-  setAgreements1,
-  agreements2,
-  setAgreements2,
-  agreements3,
-  setAgreements3,
-  handleNextStep,
-}) => {
+const SignupStepOne = ({ agreements, setAgreements, handleNextStep }) => {
   const [modalType, setModalType] = useState(null);
-  const [allChecked, setAllChecked] = useState(false);
 
+  // 모두 동의 상태 계산
+  const allChecked =
+    agreements.isTermsAgreed &&
+    agreements.isPrivacyAgreed &&
+    agreements.isMarketingAgreed;
+
+  // 모두 동의 클릭 시 처리
+  const handleAllChecked = () => {
+    const newCheckedState = !allChecked;
+    setAgreements('isTermsAgreed', newCheckedState);
+    setAgreements('isPrivacyAgreed', newCheckedState);
+    setAgreements('isMarketingAgreed', newCheckedState);
+  };
+
+  // 모달 열기
   const handleModal = (type) => {
     setModalType(type);
   };
 
+  // 모달 닫기
   const closeModal = () => {
     setModalType(null);
-  };
-
-  const handleAllChecked = () => {
-    const newCheckedState = !allChecked;
-    setAllChecked(newCheckedState);
-    setAgreements1(newCheckedState);
-    setAgreements2(newCheckedState);
-    setAgreements3(newCheckedState);
   };
 
   return (
@@ -197,39 +196,36 @@ const SignupStepOne = ({
       </Title>
 
 
-      {/* 모두 동의 */}
-	  <AllAgreementContainer>
+       {/* 모두 동의 */}
+       <AllAgreementContainer>
         <input
           type="checkbox"
           checked={allChecked}
           onChange={handleAllChecked}
         />
-        <label>모두 동의</label>
+        <label onClick={handleAllChecked}>모두 동의</label>
       </AllAgreementContainer>
-	  <Divider />
-      {/* 개별 동의 항목 */}
+      <Divider />
+
       <Agreement
-        checked={agreements1}
-        setChecked={setAgreements1}
-        label="이용약관 동의(필수)"
+        checked={agreements.isTermsAgreed}
+        setChecked={(value) => setAgreements('isTermsAgreed', value)}
+        label="이용약관 동의 (필수)"
         handleModal={() => handleModal(1)}
       />
       <Agreement
-        checked={agreements2}
-        setChecked={setAgreements2}
-        label="개인정보 수집 및 이용동의(필수)"
+        checked={agreements.isPrivacyAgreed}
+        setChecked={(value) => setAgreements('isPrivacyAgreed', value)}
+        label="개인정보 동의 (필수)"
         handleModal={() => handleModal(2)}
       />
       <Agreement
-        checked={agreements3}
-        setChecked={setAgreements3}
-        label="마케팅 활용동의(선택)"
+        checked={agreements.isMarketingAgreed}
+        setChecked={(value) => setAgreements('isMarketingAgreed', value)}
+        label="마케팅 활용 동의 (선택)"
         handleModal={() => handleModal(3)}
       />
-
       <StyledButton onClick={handleNextStep}>다음</StyledButton>
-
-      {/* 모달 */}
       {modalType === 1 && <AgreementModal1 show={true} handleModal={closeModal} />}
       {modalType === 2 && <AgreementModal2 show={true} handleModal={closeModal} />}
       {modalType === 3 && <AgreementModal3 show={true} handleModal={closeModal} />}

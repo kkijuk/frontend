@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import TimelineChart from '../Mycareer/TimelineChart'; // 추가
 
 const TimelineBox = styled.div`
-	width: 95%;
+	width: 100%;
 	height: 160px;
 	max-width: 820px;
 	border-radius: 10px;
@@ -24,15 +24,15 @@ const TimelineBox = styled.div`
 
 const ChartWrapper = styled.div`
 	position: absolute;
-	left: 0px; // 차트를 왼쪽으로 이동
-	right: 0px; // 오른쪽 여백 조정
+	left: -5%; // 차트를 왼쪽으로 이동
+	right: -5%; // 오른쪽 여백 조정
 `;
 
-const CareerTimeline = ({ data }) => {
+const CareerTimeline = () => {
 	return (
 		<TimelineBox>
 			<ChartWrapper>
-				<TimelineChart data={data} />
+				<TimelineChart />
 			</ChartWrapper>
 		</TimelineBox>
 	);

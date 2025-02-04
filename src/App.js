@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react'; 
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
 
 import queryClient from './api/queryClient/queryClient';
+import api, { setupApiInterceptors } from './Axios';
 import SocialRedirect from './components/Redirect';
-import api, {setupApiInterceptors} from './Axios'
-
 import Home from './pages/Home';
 import MyPage from './pages/Mypage/Mypage';
 import MyCareer from './pages/Mycareer/Mycareer';
@@ -14,7 +13,7 @@ import MycareerSearch from './pages/Mycareer/Mycareer_search';
 import ApplySchedule from './pages/Apply/ApplySchedule';
 import ApplyStatus from './pages/Apply/ApplyStatus';
 import Community from './pages/Community';
-
+import useGA4 from './hooks/useGA4';
 import SocialLogin from './pages/SocialLogin';
 import NewSignup from './pages/NewSignup';
 import MycareerDetail from './pages/Mycareer/MycareerDetail';
@@ -35,8 +34,7 @@ import Select from './pages/History/Select';
 import AddApply from './pages/History/AddApply';
 import Portfolio from './pages/History/Portfolio';
 import ApplyDetail from './pages/Apply/ApplyDetail';
-import AuthenticationAccount from './pages/Mypage/AuthenticationAccount';
-import AccountMangement from './pages/Mypage/AccountManagement';
+import Confirm from './pages/Mypage/Confirm';
 import MyInformation from './pages/Mypage/Myinformation';
 import Field from './pages/Mypage/Field';
 import FieldEdit from './pages/Mypage/FieldEdit';
@@ -44,7 +42,7 @@ import PasswordResetEmail from './pages/Mypage/PasswordResetEmail';
 import PasswordResetEmailConfirm from './pages/Mypage/PasswordResetEmailConfirm';
 import PasswordReset from './pages/Mypage/PasswordReset';
 import SignupInterest from './pages/SignupInterest';
-
+import PrivacyAgreed from './pages/PrivacyAgreed';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FilterPage from './components/Apply/FilterPage';
@@ -65,39 +63,42 @@ const App = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const hideHeaderFooterRoutes = ['/commingsoon', '/', '/signup', '/signupinterest','/signupsuccess' ];
-	const hideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
+	// 헤더를 숨길 경로 설정
+	const hideHeaderRoutes = ['/commingsoon', '/', '/signup', '/signupinterest', '/signupsuccess', '/agree'];
+	const hideHeader = hideHeaderRoutes.includes(location.pathname);
 
-	useEffect(()=>{
+	// GA4 초기화
+	useGA4();
+
+	useEffect(() => {
 		setupApiInterceptors(navigate);
 	}, [navigate]);
 
 	return (
 		<AppContainer>
-			{!hideHeaderFooter && <Header />}
+			{!hideHeader && <Header />} {/* 헤더는 조건부 렌더링 */}
 			<MainContent>
 				<Routes>
 					<Route path="/mycareer/:careerId/:category" element={<MycareerDetail />} />
 					<Route path="/mycareer_search" element={<MycareerSearch />} />
 					<Route path="/home" element={<Home />} />
 					<Route path="/" element={<SocialLogin />} />
-					<Route path="/login/oauth2/code/kakao" element={<SocialRedirect provider="kakao" />} />
-<Route path="/login/oauth2/code/naver" element={<SocialRedirect provider="naver" />} />
 					<Route path="/signup" element={<NewSignup />} />
 					<Route path="/signupsuccess" element={<SignupSuccess />} />
 					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/mycareer" element={<MyCareer />} />
 					<Route path="/signupinterest" element={<SignupInterest />} />
 
-					<Route path="/history2" element={<History/>} />
+					<Route path="/agree" element={<PrivacyAgreed />} />
+					<Route path="/login/oauth2/code/kakao" element={<SocialRedirect provider="kakao" />} />
+					<Route path="/login/oauth2/code/naver" element={<SocialRedirect provider="naver" />} />
 					<Route element={<SubNav />}>
-						<Route path="/history" element={<History/>} />
+						<Route path="/history" element={<History />} />
 						<Route element={<ViewOptions />}>
 							<Route path="/history/master" element={<Master />} />
 							<Route path="/history/others/:id" element={<Others />} />
 							<Route path="/history/list/:state" element={<List />} />
 						</Route>
-						{/* <Route path="/history" element={<History/>} /> */}
 						<Route path="/history/portfolio" element={<Portfolio />} />
 					</Route>
 					<Route path="/history/master/rewrite" element={<MasterRewrite />} />
@@ -110,9 +111,9 @@ const App = () => {
 					<Route path="/apply-detail/:id" element={<ApplyDetail />} />
 					<Route path="/filter" element={<FilterPage />} />
 					<Route path="/community" element={<Community />} />
-					<Route path="/mypage/authentication" element={<AuthenticationAccount />} />
+
+					<Route path="/mypage/authentication" element={<Confirm />} />
 					<Route path="/mypage/myinformation" element={<MyInformation />} />
-					<Route path="/mypage/accountmanagement" element={<AccountMangement />} />
 					<Route path="/mypage/field" element={<Field />} />
 					<Route path="/mypage/fieldedit" element={<FieldEdit />} />
 					<Route path="/mypage/passwordresetemail" element={<PasswordResetEmail />} />
@@ -121,7 +122,7 @@ const App = () => {
 					<Route path="/mypage/resetsuccess" element={<ResetSuccess />} />
 				</Routes>
 			</MainContent>
-			{!hideHeaderFooter && <Footer />}
+			<Footer /> {/* 푸터는 항상 렌더링 */}
 		</AppContainer>
 	);
 };

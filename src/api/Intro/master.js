@@ -8,7 +8,7 @@ const createMaster = async (data) => {
 	try {
 		const response = await api.post(`/history/intro/master`, data);
 		console.log('Sucess-createMaster: ', response.data);
-		return response.data;
+		return response.data.data;
 	} catch (error) {
 		console.error('Error-createMaster: ', error);
 		if (error.response) {
@@ -30,7 +30,7 @@ const readMaster = async () => {
 	try {
 		const response = await api.get(`/history/intro/master`);
 		console.log('Success-readMaster:', response.data);
-		return response.data;
+		return response.data.data;
 	} catch (error) {
 		console.error('Error-readMaster: ', error);
 		if (error.response) {

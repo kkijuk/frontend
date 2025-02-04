@@ -9,18 +9,19 @@ const StyledModal = styled.div`
 	top: 0;
 	width: 100%;
 	height: 100%;
-	overflow: auto;
 	background-color: rgba(0, 0, 0, 0.4);
-	z-index: 2;
+	z-index: 1000;
 
 	.modal-content {
 		background-color: #fefefe;
-		margin: 5% auto; /* 모달이 화면 중앙에 오도록 조정 */
+		border-radius: 10px;
+		margin: 5% auto;
 		padding: 20px;
-		border: 1px solid #888;
-		width: 80%;
-		max-height: 80%; /* 모달의 최대 높이를 설정 */
-		overflow-y: auto; /* 모달 내에서 내용 스크롤 가능하도록 설정 */
+		border: 2px solid #FFF;
+		width: 540px;
+		max-height: 80vh; /* 변경: 모달 콘텐츠 최대 높이 */
+		overflow-y: auto; /* 변경: 내부 스크롤 활성화 */
+		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); 
 	}
 
 	.close {
@@ -28,21 +29,31 @@ const StyledModal = styled.div`
 		float: right;
 		font-size: 28px;
 		font-weight: bold;
+		cursor: pointer;
 	}
 
 	.close:hover,
 	.close:focus {
 		color: black;
 		text-decoration: none;
-		cursor: pointer;
 	}
 
 	h2 {
-		color: black;
-		margin-top: 20px;
-		text-align: center;
+		color: #000;
+		font-family: Pretendard;
+		font-size: 22px;
+		font-weight: 600;
+	}
+
+	p {
+		color: #707070;
+		font-family: Pretendard;
+		font-size: 14px;
+		font-weight: 400;
+		line-height: 1.5;
 	}
 `;
+
 
 const AgreementModal = ({ show, handleModal }) => (
 	<StyledModal show={show}>
@@ -50,7 +61,7 @@ const AgreementModal = ({ show, handleModal }) => (
 			<span className="close" onClick={handleModal}>
 				&times;
 			</span>
-			<h2>이용약관(필수)</h2>
+			<h2>이용약관</h2>
 			<p>
 				제 1 조 (목적)
 				<br />본 약관은 팀 끼적(이하 "회사")이 운영하는 "서비스"를 이용함에 있어 "회사"와 회원간의 이용 조건 및 제반

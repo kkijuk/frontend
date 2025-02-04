@@ -3,6 +3,7 @@ import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import Convert from './Convert';
 import Title from '../Apply/Title';
+import Layout from '../Layout';
 
 const SubNav = () => {
 	const navigate = useNavigate();
@@ -13,22 +14,13 @@ const SubNav = () => {
 	const shouldHideConvert = location.pathname.startsWith('/history/list');
 
 	return (
-		<BackgroundDiv>
+		<Layout title="서류준비">
 			<BaseDiv>
-				<div
-					style={{
-						width: '820px',
-						height: '36px',
-						display: 'flex',
-						alignItems: 'center',
-						justifyContent: 'space-between',
-						margin: '-5px 0px 30px 0px',
-					}}
-				>
-					<Title>이력관리</Title>
-					{!shouldHideConvert && <Convert></Convert>}
-				</div>
-
+				{isResumeActive && (
+					<ExportButton onClick = {()=>navigate('/history/resumeExport')}>
+						문서로 내보내기
+					</ExportButton>
+				)}
 				<Nav>
 					<NavItems onClick={() => navigate('/history')} active={isResumeActive}>
 						이력서
@@ -40,30 +32,25 @@ const SubNav = () => {
 						포트폴리오
 					</NavItems>
 					<Linear />
-					<Outlet />
-				</Nav>
+					<Section>
+						<Outlet />
+					</Section>
+					
+				</Nav>		
 			</BaseDiv>
-		</BackgroundDiv>
+		</Layout>
 	);
 };
 
 export default SubNav;
 
-const BackgroundDiv = styled.div`
-	width: 100%;
-	height: 100%;
-	margin-top: 40px;
-	display: flex;
-	// align-items:center;
-	justify-content: center;
-`;
-
 const BaseDiv = styled.div`
-	width: 820px;
+	width: 100%;
 	// display:flex;
 	// margin-left:400px;
-	max-width: 820px;
+	// max-width: 820px;
 	// background-color:#D9D9D9
+	margin-top: 40px;
 	position: relative;
 `;
 const Nav = styled.ul`
@@ -89,3 +76,26 @@ const Linear = styled.div`
 	margin-top: 12px;
 	margin-bottom: 28px;
 `;
+
+const Section = styled.div`
+	height: 100%;
+`
+const ExportButton = styled.button`
+	width: 150px;
+	height: 35px;
+	flex-shrink: 0;
+	border-radius: 10px;
+	border: none;
+	background: var(--main-01, #3AAF85);
+	position: absolute;
+	right: 0;
+	top: -50px;
+	color: var(--white, #FFF);
+	text-align: center;
+	font-family: Regular;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	cursor: pointer;
+`

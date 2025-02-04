@@ -1,334 +1,356 @@
-import api from '../../Axios';
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import './history.css';
-import styled from 'styled-components';
-import AddApplyModal from '../../components/Modal/AddApplyModal';
-import { createRecruit } from '../../api/Apply/Recruit';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import Layout from "../../components/Layout";
+import SvgIcon from "../../components/shared/SvgIcon";
+import { getValidRecruitList } from "../../api/Apply/RecruitValid";
+import { createIntro } from "../../api/Intro/intro";
+import AddApplyModal from "../../components/Modal/AddApplyModal";
+import LoadingSpinner from "../../components/shared/LoadingSpinner";
 
-// Todo
-// - 미지원 공고 api 연결
-// - 선택 공고 상세 api 연결
-// - 자소서 생성 api 연결
-// - 해당 공고 상태 변경 api 연결
-// - 다음 버튼 라우팅
-// - 공고 추가 모달 연결
 
 const Select = () => {
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	const [isModalOpen, setIsModalOpen] = useState(false);
+  // useState
+  const [isModalOpen, setIsModalOpen] = useState(false); // 공고 추가 모달 보이기
+  const [recruitList, setRecruitList] = useState([]);
+  const [selectedJob, setSelectedJob] = useState(recruitList.length > 0 ? recruitList[0].id : null);
+  const [isLoading, setIsLoading] = useState(false);
 
-	const formattedDate = (date) => {
-		const year = date.getFullYear();
-		const month = String(date.getMonth() + 1).padStart(2, '0');
-		const day = String(date.getDate()).padStart(2, '0');
-		const hours = String(date.getHours()).padStart(2, '0');
-		const minutes = String(date.getMinutes()).padStart(2, '0');
+  // USEEFFECT
+  // 미지원 공고 리스트 불러오기
+  useEffect(() => {
+    const fetchRecruitList = async () => {
+      try {
+        const response = await getValidRecruitList();
+        setRecruitList(response.data.unapplied.recruits);
+        if(response.data.unapplied.recruits.length > 0) {
+          setSelectedJob(response.data.unapplied.recruits[0].id);
+        }
+      } catch (error) {
+        console.error("Failed to fetch recruit list:", error);
+      }
+    };
+    fetchRecruitList();
+  }, []);
 
-		return `${year}-${month}-${day} ${hours}:${minutes}`;
-	};
+  // useEffect(() => {console.log("현재 선택:", selectedJob)}, [selectedJob]);
+  
+  // 공고 선택 상태
+  const handleSelectJob = (id) => {
+    if (selectedJob === id) {
+      setSelectedJob(null); // 선택 해제
+    } else {
+      setSelectedJob(id); // 새로운 선택
+    }
+  }
 
-	//(Data) 미지원 공고(id), 선택 공고 세부 정보, 생성된 자소서의 id
-	const [recruits, setRecruits] = useState([]);
-	const [currentApply, setCurrentApply] = useState(null); // 초기값을 null로 설정
-	const [detail, setDetail] = useState({
-		startTime: '',
-		endTime: '',
-		tag: [],
-	});
-	const [newId, setNewId] = useState(0);
+  //기한 계산
+  const calculateDaysLeft = (endTime) => {
+    const endDate = new Date(endTime);
+    const currentDate = new Date();
+    const timeDiff = endDate - currentDate;
+    const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    return `D-${daysLeft}`;
+  };
 
-	//1. 미지원 공고 불러오기
-	//(API) unapplied 공고 조회
-	useEffect(() => {
-		//오늘 날짜
-		const now = new Date();
-		const formattedTime = formattedDate(now);
-		const encodedTime = encodeURIComponent(formattedTime);
+  // 공고 추가하기
+  const handleAddApply = async (newRecruitId) => {
+    try{
+      const newRecruitList = await getValidRecruitList();
+      const newRecruit = newRecruitList.data.unapplied.recruits.find(
+        (recruit) => recruit.id === newRecruitId
+      );
 
-		api
-			.get(`/recruit/list/valid?time=${encodedTime}`)
-			.then((response) => {
-				const recruitsData = response.data.unapplied.recruits;
-				setRecruits(recruitsData);
-				if (recruitsData.length > 0) {
-					setCurrentApply(recruitsData[0].id);
-				}
-			})
-			.catch((error) => {
-				console.log('Error: ', error);
-			});
-	}, []);
+      if(!newRecruit) {
+        console.error("Failed to find the newly created recruit");
+        return;
+      }
 
-	useEffect(() => {
-		console.log('Recruits 목록: ', recruits);
-	}, [recruits]);
+      // 마감일 적게 남은 순으로 재정렬
+      const updatedRecruitList = [...recruitList, newRecruit].sort(
+        (a, b) => new Date(a.endTime) - new Date(b.endTime)
+      )
 
-	//2. 선택된 미지원 공고 세부정보 불러오기
-	const handleClickItem = (id) => {
-		setCurrentApply(id);
-	};
+      setRecruitList(updatedRecruitList);
+      setSelectedJob(newRecruitId); // 새 공고를 선택된 상태로 설정
+    } catch (error) {
+      console.error("Failed to fetch the newly created recruit:", error);
+    }
+  }
 
-	//(API) 공고 세부정보 조회
-	useEffect(() => {
-		if (currentApply !== null) {
-			// currentApply가 null이 아닐 때만 API 호출
-			api
-				.get(`/recruit/${currentApply}`)
-				.then((response) => {
-					const detailData = response.data;
-					setDetail({
-						startTime: detailData.startTime,
-						endTime: detailData.endTime,
-						tag: detailData.tags,
-					});
-				})
-				.catch((error) => {
-					console.log('Error: ', error);
-				});
-		}
-	}, [currentApply]);
 
-	//3. 해당 공고 자소서 생성하기
-	const handleNextClick = () => {
-		const postData = {
-			questionList: [
-				{ title: 'string', content: 'string', number: 0 },
-				{ title: 'string', content: 'string', number: 1 },
-				{ title: 'string', content: 'string', number: 2 },
-			],
-			state: 0,
-		};
+  // 다음 버튼 클릭(공고 별 자소서 생성)
+  const handleNextClick = async () => {
+    setIsLoading(true); //Loading Start
+    try{
+      const response = await createIntro(selectedJob, {
+        // 자소서 생성 기본 데이터
+        "questionList": [
+          {
+            "title": "string",
+            "content": "string",
+            "number": 0
+          }
+        ],
+        "state": 0
+      });
+      console.log("자기소개서 생성 결과:", response);
+      navigate(`/history/others/${response.data.id}`);
+    } catch (error) {
+      console.error("Failed to create intro:", error);
+    } finally {
+      setIsLoading(false); //Loading End
+    }
+  }
 
-		//(API) 자소서 생성
-		api
-			.post(`/history/intro/${currentApply}`, postData)
-			.then((response) => {
-				console.log('자소서생성: ', response.data);
-				setNewId(response.data.data.id);
-			})
-			.catch((error) => {
-				console.error('Error:', error);
-			});
+  return (
+    <Layout title="서류준비">
+      {isModalOpen && 
+        <AddApplyModal 
+          onClose={()=>setIsModalOpen(false)} 
+          onSave = {handleAddApply}
+      />}
+      {isLoading && <LoadingSpinner message="자기소개서 생성 중 ..."/>}
+      <ContentWrapper>
+        {/* <div style={{height:'100px'}}/> */}
+        <h2>자기소개서를 작성할 공고를 선택해주세요.</h2>
+        <ListBox>
+          <ColumnHeaderSection>
+            <ColumnHeader style={{marginRight:'80px'}}>공고 이름</ColumnHeader>
+            <ColumnHeader style={{marginRight:'136px'}}>접수 마감</ColumnHeader>
+            <ColumnHeader style={{marginRight:'184px'}}>태그</ColumnHeader>
+            <ColumnHeader>공고 링크</ColumnHeader>
+          </ColumnHeaderSection>
 
-		//(API) 해당 공고 상태 변경
-		api
-			.patch(`/recruit/${currentApply}`, { status: 'planned' })
-			.then((response) => {
-				console.log('상태 변경 결과: ', response.data);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	};
-
-	useEffect(() => {
-		if (newId) navigate(`/history/others/${newId}/rewrite`);
-	}, [newId]);
-
-	const handleSave = (id) => {
-		const now = new Date();
-		const formattedTime = formattedDate(now);
-		const encodedTime = encodeURIComponent(formattedTime);
-
-		api
-			.get(`/recruit/list/valid?time=${encodedTime}`)
-			.then((response) => {
-				const recruitsData = response.data.unapplied.recruits;
-				setRecruits(recruitsData);
-				setCurrentApply(id);
-			})
-			.catch((error) => {
-				console.log('Error: ', error);
-			});
-	};
-
-	return (
-		<BackgroundDiv>
-			<BaseDiv>
-				<div style={{ position: 'absolute', zIndex: 1000 }}>
-					{isModalOpen && <AddApplyModal onClose={() => setIsModalOpen(false)} onSave={handleSave} />}
-				</div>
-				<div style={{ height: '140px' }}></div>
-				<h1>자기소개서를 작성할 공고를 선택해주세요.</h1>
-				<div style={{ height: '50px' }}></div>
-				<ListDiv>
-					<ItemsDiv>
-						{recruits.map((recruit) => (
-							<ListItem
-								onClick={() => {
-									handleClickItem(recruit.id);
-								}}
-								style={{
-									backgroundColor: currentApply === recruit.id ? '#E1FAED' : '#F5F5F5',
-									color: currentApply === recruit.id ? 'black' : '#707070',
-									border: currentApply === recruit.id ? '2px solid var(--main-01, #3AAF85)' : 'none',
-								}}
-							>
-								{recruit.title}
-							</ListItem>
-						))}
-					</ItemsDiv>
-					<AddButton onClick={() => setIsModalOpen(true)}>공고 추가</AddButton>
-				</ListDiv>
-				<div style={{ height: '30px' }}></div>
-				<InfoDiv>
-					<Item style={{ top: '10px' }}>
-						<p style={{ fontWeight: 800 }}>접수시작</p>
-						<p>{detail.startTime}</p>
-					</Item>
-					<Item style={{ top: '10px', right: '150px' }}>
-						<p style={{ fontWeight: 800 }}>접수마감</p>
-						<p style={{ color: '#FC5555' }}>{detail.endTime}</p>
-					</Item>
-					<Item style={{ top: '50px' }}>
-						<p style={{ fontWeight: 800 }}>태그</p>
-						{detail.tag.map((tag) => (
-							<Tag style={{ background: '#FFF', color: '#3AAF85' }}>{tag}</Tag>
-						))}
-					</Item>
-				</InfoDiv>
-				<Button onClick={handleNextClick}>다음</Button>
-			</BaseDiv>
-		</BackgroundDiv>
-	);
-};
+          <ListSection>
+            {recruitList.map((recruit) => (
+              <ListItem
+                key={recruit.id}
+                onClick={() => handleSelectJob(recruit.id)}
+                isSelected={selectedJob === recruit.id}
+              >
+                  <Title>
+                    {recruit.title.length > 20 ? `${recruit.title.slice(0, 20)}...` : recruit.title}
+                  </Title>
+                  <DueDate isUrgent={parseInt(calculateDaysLeft(recruit.endTime).replace("D-", "")) <= 7}>
+                    {calculateDaysLeft(recruit.endTime)}
+                  </DueDate>
+                  <TagContainer>
+                    {recruit.tags.map((tag) => (
+                      <Tag key={tag}>{tag}</Tag>
+                    ))}
+                  </TagContainer>
+                  <JobLinkBox 
+                    onClick={
+                      (e) => { e.stopPropagation(); 
+                      window.open(recruit.link, '_blank'); 
+                    }}>
+                    공고 보러가기
+                    <SvgIcon name="jobLink" size={15} color="var(--gray-02, #707070)"/>
+                  </JobLinkBox>
+              </ListItem>
+            ))}
+          </ListSection>
+        </ListBox>
+        <AddNewJob onClick = {() => setIsModalOpen(true)}>
+          + 새로운 공고 추가
+        </AddNewJob>
+        <NextButton
+          onClick={handleNextClick}
+          disabled = {!selectedJob}>
+          다음
+        </NextButton>
+      </ContentWrapper>
+      {/* <div style={{height:'500px'}}>dfawe</div> */}
+    </Layout>
+  )
+}
 
 export default Select;
 
-const BackgroundDiv = styled.div`
-	width: 100%;
-	height: 100%;
-	margin-top: 40px;
-	display: flex;
-	justify-content: center;
-`;
+const ContentWrapper = styled.div`
+  width: 740px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
-const BaseDiv = styled.div`
-	width: 820px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	max-width: 820px;
-	position: relative;
-`;
+const ListBox = styled.div`
+  width: 100%;
+  height:409px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-top:30px;
+  border-radius: 12px;
+  border: 1px solid var(--gray-03, #D9D9D9);
+  font-family: Regular;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+`
+const ColumnHeaderSection = styled.div`
+  width: 100%;
+  display: flex;
+  padding-left: 95px;
+  margin-top:25px;
+`
 
-const ListDiv = styled.div`
-	width: 720px;
-	height: 84px;
-	flex-shrink: 0;
-	border-radius: 12px;
-	border: 1px solid var(--gray-02, #707070);
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	padding: 0px 10px;
-`;
+const ColumnHeader = styled.div`
+  font-family: Regular;
+  color: var(--gray-02, #707070);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 
-const ItemsDiv = styled.div`
-	display: flex;
-	overflow-x: auto;
-	gap: 10px;
-	flex: 1;
-	white-space: nowrap; /* 항목들이 한 줄에 배치되도록 설정 */
+  margin-bottom:20px;
+`
 
-	&::-webkit-scrollbar {
-		height: 0px;
-	}
-`;
+const ListSection = styled.div`
+  width: calc(100% - 10px);
+  margin-top: 10px;
+  padding-top: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap:20px;
+
+  //scroll
+  overflow-y: overlay; 
+  -ms-overflow-style: none; /* IE */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; 
+  }
+`
 
 const ListItem = styled.div`
-	display: inline-flex;
-	height: 60px;
-	padding: 0px 20px;
-	justify-content: center;
-	align-items: center;
-	gap: 10px;
-	border-radius: 10px;
-	text-align: center;
-	font-family: Regular;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: normal;
-	cursor: pointer;
-	white-space: nowrap; /* 줄바꿈 방지 */
-`;
+  height: 28px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: row;
+  // justify-content: center;
+  gap: 32px;
+  border-radius: 10px;
+  border: ${(props) => (props.isSelected ? '2px solid #3AAF85' : '2px solid #F5F5F5')};
+  background: var(--gray-06, #F5F5F5);
+  background: ${(props) => (props.isSelected ? '#E1FAED' : '#F5F5F5')};
+  font-family: Regular;
+  cursor: pointer;
 
-const InfoDiv = styled.div`
-	width: 720px;
-	height: 70px;
-	flex-shrink: 0;
-	border-radius: 12px;
-	background: var(--gray-06, #f5f5f5);
-	padding: 15px 10px;
-	position: relative;
-	z-index: 0;
-`;
+    & > div {
+    line-height: 28px; /* 텍스트가 높이 기준으로 수직 중앙 정렬 */
+  }
+`
 
-const Button = styled.div`
-	width: 620px;
-	height: 50px;
-	flex-shrink: 0;
-	border-radius: 10px;
-	background: var(--main-01, #3aaf85);
-	color: #fff;
-	text-align: center;
-	font-family: Regular;
-	font-size: 18px;
-	font-style: normal;
-	font-weight: 500;
-	line-height: normal;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
-	margin-top: 97px;
-`;
+const Title = styled.div`
+  width: 190px;
+  max-width: 190px;
+  height: 17px;
+  font-size: 14px;
+  color: var(--gray-02, #707070);
 
-const Item = styled.div`
-	width: 250px;
-	display: flex;
-	align-items: center;
-	gap: 20px;
-	position: absolute;
-`;
+  text-overflow: ellipsis; /* 넘치는 내용을 말줄임표(...)로 표시 */
+`
 
-const Tag = styled.div`
-	display: inline-flex;
-	height: 22px;
-	padding: 0px 16px;
-	justify-content: center;
-	align-items: center;
-	gap: 10px;
-	flex-shrink: 0;
+const DueDate = styled.div`
+  width: 35px;
+  height: 17px;
+  font-size: 14px;
+  color: ${(props) => (props.isUrgent ? "#FC5555" : "var(--gray-02, #707070)")};
+  font-family: Bold;
+  font-weight: 700;
+  // margin-right:50px;
+  
+`
 
-	border-radius: 20px;
-	background: #3aaf85;
-	font-family: 'Regular';
-	font-size: 12px;
-	text-align: center;
-	font-weight: 400;
-	line-height: normal;
-`;
+const TagContainer = styled.div`
+  width: 250px;
+  height: 22px;
+  padding-top:5px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
 
-const AddButton = styled.div`
-	width: 120px;
-	height: 60px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	border-radius: 10px;
-	background: var(--gray-04, #707070);
-	color: white;
-	cursor: pointer;
+    //scroll
+  overflow-x: overlay; 
+  overflow-y: hidden;
+  -ms-overflow-style: none; /* IE */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; 
+  }
 
-	color: #fff;
-	text-align: center;
-	font-family: Regular;
-	font-size: 16px;
-	font-style: normal;
-	font-weight: 700;
-	line-height: normal;
-`;
+`
+
+const Tag = styled.div` 
+  height: 22px;
+  padding: 0px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background: #FFF;
+  color: #3AAF85;
+  text-align: center;
+  font-size:12px;
+  white-space: nowrap;
+`
+
+const JobLinkBox = styled.div`
+  width: 120px;
+  height: 28px;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+  background: #FFFFFF;
+  border-radius: 12px;
+  border: 2.3px solid var(--gray-03, #707070);
+  font-size: 12px;
+  color: var(--gray-02, #707070);
+  cursor: pointer;
+`
+
+const AddNewJob = styled.div`
+  width: 700px;
+  height: 42px;
+  margin-top: 20px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 1px solid #D9D9D9;
+  background: #FFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #707070;
+  text-align: center;
+  font-family: Regular;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+`
+
+const NextButton = styled.div`
+  width: 700px;
+  height: 50px;
+  margin-top: 50px;
+  border-radius: 10px;
+  background: var(--main-01, #3AAF85);
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  color: #FFF;
+  text-align: center;
+  font-family: Regular;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+`

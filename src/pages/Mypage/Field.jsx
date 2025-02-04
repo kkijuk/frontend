@@ -1,3 +1,4 @@
+//관심분야 페이지
 import styled from 'styled-components';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -11,11 +12,12 @@ const Box = styled.div`
 	align-items: center;
 	justify-content: center;
 	padding-bottom: 100px;
+	margin-bottom: 50px;
 `;
 
 const Top = styled.div`
 	width: 464px;
-	margin-top: 7px;
+	margin-top: 17px;
 	margin-bottim: 32px;
 	display: flex;
 	justify-content: left;

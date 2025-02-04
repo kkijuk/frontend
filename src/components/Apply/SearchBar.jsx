@@ -50,7 +50,7 @@ const SearchBar = ({ initialSearchQuery }) => {
 
 	const handleSearch = () => {
 		if (searchValue.trim()) {
-			navigate(`/Mycareer_search?query=${encodeURIComponent(searchValue)}`);
+			navigate(`/filter`);
 		}
 	};
 
