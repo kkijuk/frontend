@@ -47,7 +47,10 @@ export default function ApplySchedule() {
 		try {
 			const newRecruit = await getRecruitDetails(newRecruitId);
 			if (newRecruit) {
-				const updatedJobs = [...jobs, newRecruit];
+				// introduceId가 없으면 기본값을 0으로 설정
+				const updatedRecruit = { ...newRecruit, introduceId: newRecruit.introduceId ?? 0 };
+	
+				const updatedJobs = [...jobs, updatedRecruit];
 				const sortedJobs = updatedJobs.sort((a, b) => new Date(a.endTime) - new Date(b.endTime));
 				setJobs(sortedJobs);
 			} else {
@@ -57,6 +60,7 @@ export default function ApplySchedule() {
 			console.error('Error fetching new recruit:', error);
 		}
 	};
+	
 
 	useEffect(() => {
 		const fetchJobs = async () => {
@@ -88,16 +92,18 @@ export default function ApplySchedule() {
 	const handleJobClick = async (job) => {
 		try {
 			let jobDetails = null;
-
+	
 			if (job && job.recruitId) {
 				jobDetails = await getRecruitDetails(job.recruitId);
 			} else if (job && job.id) {
 				jobDetails = await getRecruitDetails(job.id);
 			}
-
+	
 			if (jobDetails) {
 				const jobId = job.recruitId || job.id;
-				navigate(`/apply-detail/${jobId}`, { state: { job: jobDetails, from: 'list' } });
+				const updatedJobDetails = { ...jobDetails, introduceId: jobDetails.introduceId ?? 0 }; // ✅ introduceId 추가
+	
+				navigate(`/apply-detail/${jobId}`, { state: { job: updatedJobDetails, from: 'list' } });
 			} else {
 				console.error('Job details not found');
 			}
@@ -105,6 +111,7 @@ export default function ApplySchedule() {
 			console.error('Error fetching job details:', error);
 		}
 	};
+	
 
 	const waitingJobs = jobs.filter((job) => job.status === 'UNAPPLIED' || job.status === 'PLANNED');
 	const appliedJobs = jobs.filter((job) => job.status !== 'UNAPPLIED' && job.status !== 'PLANNED');
