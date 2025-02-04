@@ -329,6 +329,10 @@ export default function MycareerDetail() {
 	};
 
 	const handleCareerBoxClick = (id, type) => {
+		if (isEditing) {
+			setIsEditing(false); // 편집 모드 종료
+		}
+
 		const mappedType = categoryToTypeMap[type] || type;
 		setSelectedCareer({ id, type: mappedType });
 		setIsAdding(false);
