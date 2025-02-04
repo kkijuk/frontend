@@ -294,7 +294,6 @@ const Container1 = styled.div`
 	align-items: center;
 	justify-content: center;
 
-	border: 1px solid black;
 	margin-bottom: 30px;
 `;
 
