@@ -106,7 +106,7 @@ const LinkIcon = styled.img`
 	height: 15px;
 `;
 
-export default function ReviewList({ recruitId, reviewId, title, date, contents = '', introduceState, introduceId, onDelete, fetchData }) {
+export default function ReviewList({ recruitId, reviewId, title, date, content = '', introduceState, introduceId, onDelete, fetchData }) {
 	const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
 	const [documentReviewAdded, setDocumentReviewAdded] = useState(false); // 서류 리뷰 추가 여부 확인
 
@@ -169,8 +169,8 @@ export default function ReviewList({ recruitId, reviewId, title, date, contents 
 
 				{/* ✅ "서류" 리뷰도 포함하여 모든 리뷰의 내용 표시 */}
 				<Contents>
-					{contents ? (
-						contents.split('\n').map((line, index) => <p key={index}>{line}</p>)
+					{content ? (
+						content.split('\n').map((line, index) => <p key={index}>{line}</p>)
 					) : (
 						<NoContentText>전형 후기가 없습니다</NoContentText> // ✅ 내용이 없으면 표시
 					)}
@@ -186,7 +186,7 @@ export default function ReviewList({ recruitId, reviewId, title, date, contents 
 					reviewId={reviewId}
 					initialTitle={title}
 					initialDate={date}
-					initialContents={contents}
+					initialContent={content}
 					onDelete={handleDeleteClick}
 					onSave={() => {
 						setIsDetailAddVisible(false);
