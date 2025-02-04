@@ -125,6 +125,7 @@ export default function ReviewDetailAddEdit({
 	onSave,
 	onDelete,
 	fetchData,
+	disableTitleEdit
 }) {
 	const [showCalendar, setShowCalendar] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(initialDate);
@@ -198,7 +199,13 @@ export default function ReviewDetailAddEdit({
 			<Top>
 				<Title>
 					<Label>제목</Label>
-					<ReviewInputBox height="50px" width="460px" value={title} onChange={(e) => setTitle(e.target.value)} />
+					<ReviewInputBox 
+	height="50px" 
+	width="460px" 
+	value={title} 
+	onChange={(e) => setTitle(e.target.value)}
+	disabled={disableTitleEdit} //  서류 리뷰는 제목 수정 비활성화
+/>
 				</Title>
 				<Date>
 					<Label>날짜</Label>
@@ -212,7 +219,9 @@ export default function ReviewDetailAddEdit({
 			</Middle>
 
 			<Button>
-				<Cancel onClick={handleDeleteClick}>삭제</Cancel>
+			{onDelete && (
+	         <Cancel onClick={handleDeleteClick}>삭제</Cancel>
+            )}
 				<Save onClick={handleSaveClick}>저장</Save>
 			</Button>
 		</Box>
