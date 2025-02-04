@@ -561,13 +561,21 @@ const ApplyDetail = () => {
 	const fetchJobDetails = async () => {
 		try {
 			const jobDetails = await getRecruitDetails(id);
-			setJob(jobDetails);
-			setStatus(jobDetails.status);
-			setApplyDate(jobDetails.applyDate ? new Date(jobDetails.applyDate) : null);
+	
+			// introduceId가 없으면 기본값 설정
+			const updatedJobDetails = {
+				...jobDetails,
+				introduceId: jobDetails.introduceId ?? 0, // ✅ 기본값 설정
+			};
+	
+			setJob(updatedJobDetails);
+			setStatus(updatedJobDetails.status);
+			setApplyDate(updatedJobDetails.applyDate ? new Date(updatedJobDetails.applyDate) : null);
 		} catch (error) {
 			console.error('Error fetching job details:', error);
 		}
 	};
+	
 
 	useEffect(() => {
 		const updateJobState = async () => {
@@ -875,15 +883,21 @@ const ApplyDetail = () => {
 			let updatedReviews = job.reviews ? [...job.reviews] : [];
 
 			// introduceState === 1이면 "서류" 리뷰가 있는지 체크 후 추가
-			if (job.introduceState === 1 && !updatedReviews.some(review => review.title === '서류')) {
+			if (
+				(job.introduceState === 1 || job.introduceId !== 0) &&
+				!updatedReviews.some(review => review.title === '서류')
+			) {
 				updatedReviews.unshift({
-					reviewId: 'temp-doc-review', // 임시 ID (실제 저장될 때 변경됨)
+					reviewId: 'temp-doc-review',
 					title: '서류',
-					date: new Date().toISOString().split("T")[0], // 오늘 날짜
-					contents: '', // ✅ 내용 제거
-					introduceState: 1,
+					date: new Date().toISOString().split("T")[0],
+					contents: '',
+					introduceState: job.introduceState ?? 0, // ✅ 기본값 처리
+					introduceId: job.introduceId ?? 0, // ✅ introduceId 추가
 				});
 			}
+			
+			
 
 			// "서류" 리뷰를 항상 상단에 정렬
 			return updatedReviews
@@ -895,22 +909,22 @@ const ApplyDetail = () => {
 				})
 				.map((review, index) => (
 					<ReviewList
-						key={index}
-						recruitId={job.id}
-						reviewId={review.reviewId}
-						title={review.title}
-						date={review.date}
-						contents={review.contents} // ✅ 내용이 빈 문자열로 전달됨
-						introduceState={review.introduceState}
-						onDelete={() => handleReviewDelete(review.reviewId)}
-						fetchData={fetchJobDetails}
-					/>
+	key={index}
+	recruitId={job.id}
+	reviewId={review.reviewId}
+	title={review.title}
+	date={review.date}
+	contents={review.contents}
+	introduceState={review.introduceState}
+	introduceId={review.introduceId ?? 0} // ✅ introduceId 추가
+	onDelete={() => handleReviewDelete(review.reviewId)}
+	fetchData={fetchJobDetails}
+/>
+
 				));
 		})()}
 	</>
 )}
-
-
 
 
 			{showReviewAdd && (
