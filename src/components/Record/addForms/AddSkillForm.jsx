@@ -5,7 +5,7 @@ import SvgIcon from "../../shared/SvgIcon";
 
 const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
-    skillType: "",
+    skillTag: "",
     skillName: "",
     workmanship: "",
   });
@@ -24,10 +24,10 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
   };
 
   // Dropdown 관련
-  const skillTypes = ["IT", "OA", "그래픽", "외국어", "기타"];
+  const skillTags = ["IT", "OA", "그래픽", "외국어", "기타"];
   const skillLevels = ["기초", "초급", "중급", "고급", "전문가"];
 
-  const [showSkillTypes, setShowSkillTypes] = useState(false);
+  const [showSkillTags, setShowSkillTags] = useState(false);
   const [showSkillLevels, setShowSkillLevels] = useState(false);
   const skillLevelsMapping = {
     "기초" : "BASIC",
@@ -45,7 +45,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
     "EXPERT" : "전문가"
   }
 
-  const skillTypeMapping = {
+  const skillTagMapping = {
     "IT" : "IT",
     "OA" : "OA",
     "그래픽" : "GRAPHIC",
@@ -53,7 +53,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
     "기타" : "ETC"
   }
 
-  const skillTypeReverseMapping = {
+  const skillTagReverseMapping = {
     "IT" : "IT",
     "OA" : "OA",
     "GRAPHIC" : "그래픽",
@@ -62,12 +62,12 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
   }
 
   const handleDropdownToggle = (type) => {
-    if (type === "skillType") {
-      setShowSkillTypes((prev) => !prev);
+    if (type === "skillTag") {
+      setShowSkillTags((prev) => !prev);
       setShowSkillLevels(false);
     } else if (type === "skillLevel") {
       setShowSkillLevels((prev) => !prev);
-      setShowSkillTypes(false);
+      setShowSkillTags(false);
     }
   }
 
@@ -83,12 +83,12 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
     <Container>
       <Row>
         <CustomDropdown
-          options={skillTypes}
+          options={skillTags}
           placeholder="유형"
-          value={skillTypeReverseMapping[formData.skillType] || ""}
-          onChange={(value) => handleInputChange("skillType", skillTypeMapping[value])}
-          onToggle={() => handleDropdownToggle("skillType")}
-          isOpen={showSkillTypes}
+          value={skillTagReverseMapping[formData.skillTag] || ""}
+          onChange={(value) => handleInputChange("skillTag", skillTagMapping[value])}
+          onToggle={() => handleDropdownToggle("skillTag")}
+          isOpen={showSkillTags}
           style={{width: "170px"}}
         />
         <Input
