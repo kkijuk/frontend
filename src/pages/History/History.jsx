@@ -246,13 +246,13 @@ const History = () => {
 				// >
 					<div style={{width:'100%', minHeight:'100vh'}}>
 						{/* <AddCareerModal></AddCareerModal> */}
-						<ScrollnavigatorContainer>
+						<ScrollNavigatorContainer>
 							<ScrollNavigator
 								sections = {sections}
 								activeSection={activeSection}
 								onClick={scrollToSection}
 							/>
-						</ScrollnavigatorContainer>
+						</ScrollNavigatorContainer>
 						{isAddCareerModalOpen &&
 							<AddCareerModal
 								onClose={() => setIsAddCareerModalOpen(false)}
