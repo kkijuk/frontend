@@ -90,7 +90,7 @@ const UserProfileButton = styled.button`
 	flex-shrink: 0;
 	border: none;
 	border-radius: 10px;
-	background-color: #88d1b6;
+	background-color: #F1F1F1;
 	cursor: pointer;
 	margin-left: 70px;
 	display: flex;
@@ -135,7 +135,7 @@ const LogoContainer = styled.span`
 	display: flex;
 	align-items: center;
 	cursor: pointer;
-	margin-right: 0;
+	margin-right: 45px;
 `;
 
 export default function Header() {
@@ -179,28 +179,10 @@ export default function Header() {
 							</li>
 						</ul>
 						<UserProfileButton onClick={handleUserProfileButtonClick}>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="30"
-								height="30"
-								viewBox="0 0 30 30"
-								fill="none"
-								style={{ width: '30px', height: '30px', borderRadius: '10px' }}>
-								<path
-									d="M15 15C18.4518 15 21.25 12.2018 21.25 8.75C21.25 5.29822 18.4518 2.5 15 2.5C11.5482 2.5 8.75 5.29822 8.75 8.75C8.75 12.2018 11.5482 15 15 15Z"
-									stroke="white"
-									strokeWidth="2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-								<path
-									d="M25.7377 27.5C25.7377 22.6625 20.9252 18.75 15.0002 18.75C9.07519 18.75 4.2627 22.6625 4.2627 27.5"
-									stroke="white"
-									strokeWidth="2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-							</svg>
+						<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+  <path d="M15 15C18.4518 15 21.25 12.2018 21.25 8.75C21.25 5.29822 18.4518 2.5 15 2.5C11.5482 2.5 8.75 5.29822 8.75 8.75C8.75 12.2018 11.5482 15 15 15Z" stroke="#707070" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M25.7367 27.5C25.7367 22.6625 20.9242 18.75 14.9992 18.75C9.07421 18.75 4.26172 22.6625 4.26172 27.5" stroke="#707070" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
 							{isDropdownOpen && (
 								<DropdownMenu ref={dropdownRef}>
 									<a onClick={() => handleNavigation('/mypage/authentication')}>마이페이지</a>
