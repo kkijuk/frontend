@@ -59,6 +59,20 @@ const MainContent = styled.div`
 	flex-direction: column;
 `;
 
+const RestrictedRoutes = () => {
+	const location = useLocation();
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (location.pathname === '/history/portfolio') {
+			alert('이 페이지로 이동할 수 없습니다.');
+			navigate(-1); // 이전 페이지로 이동
+		}
+	}, [location, navigate]);
+
+	return null; // UI 요소가 필요 없으므로 null 반환
+};
+
 const App = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
