@@ -137,10 +137,12 @@ export const sendCode = async (email) => {
 
 //인증번호 확인
 export const verifyCode = async ({ email, authNumber }) => {
+	console.log('API 요청 데이터:', { email, authNumber });
+
 	try {
 		const response = await axios.post(
 			`${apiUrl}/auth/confirm`,
-			{ email, authNumber }, // 🔹 인증번호 추가
+			{ email, authNumber },
 			{
 				headers: {
 					'Content-Type': 'application/json',
