@@ -592,7 +592,6 @@ export default function MyInformation() {
 		setIsEditingBirth(false);
 	};
 
-	//인증번호 확인
 	const handleVerifyCode = async () => {
 		if (!verificationCode) {
 			alert('인증번호를 입력하세요.');
@@ -604,9 +603,12 @@ export default function MyInformation() {
 				authNumber: String(verificationCode),
 				email: emailInput,
 			});
-			console.log('서버 응답:', response); // 응답 로그 출력
 
-			if (response.data && response.data.success) {
+			console.log('서버 응답 데이터:', response); // 응답 전체 로그 출력
+			console.log('서버 응답 데이터 내용:', response?.data); // 응답 객체 내부 데이터 확인
+
+			// 응답이 예상과 다를 수 있으니 여러 값으로 체크
+			if (response?.data?.success || response?.data === true) {
 				alert('인증이 완료되었습니다.');
 				setIsVerified(true); // 인증 성공 상태 업데이트
 				setTimeout(() => setIsEditingEmail(false), 500); // 이메일 수정 창 닫기 (0.5초 후)
@@ -615,7 +617,7 @@ export default function MyInformation() {
 			}
 		} catch (error) {
 			console.error('인증번호 확인 중 오류 발생:', error.response?.data || error.message);
-			alert('인증번호 확인 중 오류가 발생했습니다.');
+			alert('인증번호 확인 중 오류가 발생했습니다. 서버 응답을 확인하세요.');
 		}
 	};
 

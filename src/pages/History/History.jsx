@@ -286,7 +286,7 @@ const History = () => {
 								<InfoValue>
 									<EmailAndAddress
 										type="email"
-										data={email}
+										userData={email}
 										onSave={(data) => handleEmailOrAddressChange(data)}
 									/>
 								</InfoValue>
@@ -295,7 +295,7 @@ const History = () => {
 								<InfoValue>
 									<EmailAndAddress
 										type="address"
-										data={address}
+										userData={address}
 										onSave={(data) => handleEmailOrAddressChange(data)}
 									/>
 								</InfoValue>
