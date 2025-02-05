@@ -384,6 +384,8 @@ const Bottom = styled.div`
 
 const NumInputWrapper = styled.div`
 	position: relative;
+	display: flex;
+	align-items: center;
 	width: 280px; /* 기존 Input과 동일한 너비 */
 `;
 
@@ -460,16 +462,6 @@ export default function MyInformation() {
 		fetchUserData();
 	}, []);
 
-	const handleEditClick = () => {
-		setIsEditingEmail(true);
-		setIsVerificationRequested(false); // 초기화
-	};
-
-	const handleCancelClick = () => {
-		setIsEditingEmail(false);
-		setIsVerificationRequested(false); // 초기화
-	};
-
 	// 이메일 인증 요청
 	const handleRequestVerification = async () => {
 		if (isRequesting) {
@@ -491,22 +483,6 @@ export default function MyInformation() {
 		} catch (error) {
 			alert('인증번호 전송에 실패했습니다.');
 		}
-	};
-
-	const handlePhoneEditClick = () => {
-		setIsEditingPhone(true);
-	};
-
-	const handlePhoneCancelClick = () => {
-		setIsEditingPhone(false);
-	};
-
-	const handleBirthEditClick = () => {
-		setIsEditingBirth(true);
-	};
-
-	const handleBirthCancelClick = () => {
-		setIsEditingBirth(false);
 	};
 
 	const handleOpenModal = () => {
@@ -684,9 +660,9 @@ export default function MyInformation() {
 										<TimerText>
 											{Math.floor(timer / 60)}:{String(timer % 60).padStart(2, '0')}
 										</TimerText>
-										<ConfirmButton onClick={handleVerifyCode} disabled={isTimerExpired}>
+										<VerifyButton onClick={handleVerifyCode} disabled={isTimerExpired}>
 											확인
-										</ConfirmButton>
+										</VerifyButton>
 									</NumInputWrapper>
 
 									{isTimerExpired && <ErrorText>시간이 초과되었습니다. 다시 요청해주세요.</ErrorText>}
