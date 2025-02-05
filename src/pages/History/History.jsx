@@ -246,11 +246,13 @@ const History = () => {
 				// >
 					<div style={{width:'100%', minHeight:'100vh'}}>
 						{/* <AddCareerModal></AddCareerModal> */}
-						<ScrollNavigator
-							sections = {sections}
-							activeSection={activeSection}
-							onClick={scrollToSection}
-						/>
+						<ScrollNavigatorContainer>
+							<ScrollNavigator
+								sections = {sections}
+								activeSection={activeSection}
+								onClick={scrollToSection}
+							/>
+						</ScrollNavigatorContainer>
 						{isAddCareerModalOpen &&
 							<AddCareerModal
 								onClose={() => setIsAddCareerModalOpen(false)}
@@ -812,3 +814,9 @@ const NoneContentBox = styled.div`
 	justify-content: center;
 	align-items: center;
 `
+
+const ScrollNavigatorContainer = styled.div`
+  @media (max-width: 1460px) {
+    display: none;
+  }
+`;

@@ -74,6 +74,7 @@ const MasterRewrite = () => {
 			questionList: data.questions,
 			state: data.state,
 		};
+		console.log('data to submit: ', dataToSubmit);
 		try{
 			const response = await updateMaster(dataToSubmit);
 			console.log('마스터 자소서 수정 완료: ', response);
@@ -133,6 +134,10 @@ const MasterRewrite = () => {
 						titlePlaceholder = '직무적합성 제목을 작성하세요';
 						contentPlaceholder = '직무적합성을 작성하세요';
 						}
+
+						const currentTitle = (question.title && question.title !== 'string') ? question.title : '';
+						const currentContent = (question.content && question.content !== 'string') ? question.content : '';
+
 						return (
 						<div key={index}>
 							<InputTitle
@@ -170,6 +175,7 @@ const MasterRewrite = () => {
 				>
 					저장하고 나가기
 				</Button>
+				<div style={{ height: '70px' }}></div>
 			</BaseDiv>
 		</BackgroundDiv>
 	);
