@@ -88,7 +88,7 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 					<SchoolInfo>
 						<SchoolName>{data.name}</SchoolName>
 						<Dates>
-							{data.startdate ? data.startdate : '시작 날짜 없음'} ~ {data.enddate ? data.enddate : '종료 날짜 없음'}
+							{data.startDate ? data.startDate : '시작 날짜 없음'} ~ {data.endDate ? data.endDate : '종료 날짜 없음'}
 							{activityMonths ? <Status>({activityMonths}개월)</Status> : <Status>(진행 중)</Status>}
 						</Dates>
 						<DetailContainer>
