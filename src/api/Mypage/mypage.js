@@ -69,11 +69,12 @@ export const fetchUserInfo = async () => {
 	}
 };
 
-export const changeUserInfo = async (phoneNumber, birthDate, marketingAgree) => {
+export const changeUserInfo = async (email, phoneNumber, birthDate, marketingAgree) => {
 	try {
 		const response = await axios.put(
 			`${apiUrl}/member/myPage/info`,
 			{
+				email,
 				phoneNumber,
 				birthDate,
 				marketingAgree,
@@ -135,11 +136,11 @@ export const sendCode = async (email) => {
 };
 
 //인증번호 확인
-export const verifyCode = async (email) => {
+export const verifyCode = async ({ email, authNumber }) => {
 	try {
 		const response = await axios.post(
 			`${apiUrl}/auth/confirm`,
-			{ email },
+			{ email, authNumber }, // 🔹 인증번호 추가
 			{
 				headers: {
 					'Content-Type': 'application/json',
@@ -150,7 +151,7 @@ export const verifyCode = async (email) => {
 		);
 		return response.data;
 	} catch (error) {
-		console.error('인증번호 전송 중 오류 발생:', error);
+		console.error('인증번호 확인 중 오류 발생:', error);
 		throw error;
 	}
 };
