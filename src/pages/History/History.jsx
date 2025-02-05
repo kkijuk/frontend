@@ -85,7 +85,7 @@ const History = () => {
 	const [isAddCareerModalOpen, setIsAddCareerModalOpen] = useState(false); // 내 커리어 관련 활동 추가 모달 관리
 	const [activeSection, setActiveSection] = useState("");	// 인디케이터 활성화 섹션
 	const [editableUserData, setEditableUserData] = useState({	// 사용자 정보 수정
-		profileImageUrl: profile,
+		profile: profile,
 		address: address,
 		email: email,
 	});
@@ -204,7 +204,7 @@ const History = () => {
 		setProfileBlob(file);
 		setEditableUserData((prev) => ({
 			...prev,
-			profileImageUrl: file,
+			profile: file,
 		}));
 		console.log('Profile Image changed:', file);
 	}

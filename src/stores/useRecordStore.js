@@ -115,6 +115,7 @@ const useRecordStore = create((set, get) => ({
 			set((state) => ({
 				[category]: [...state[category], response],
 			}));
+			window.location.reload();
 		} catch (error) {
 			console.error('Add Item Error:', error);
 		}

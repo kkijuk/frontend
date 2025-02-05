@@ -25,7 +25,6 @@ const Body = styled.div`
 	padding-bottom: 100px;
 	margin: 50px auto;
 	gap: 40px;
-	margin-top: -15px;
 `;
 
 const Container1 = styled.div`
@@ -54,7 +53,7 @@ const Label = styled.div`
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 `;
 
 const ContentBox = styled.div`
@@ -62,7 +61,7 @@ const ContentBox = styled.div`
 	max-width: 820px;
 	display: flex;
 	flex-direction: row;
-	gap: 15px;
+	gap: 20px;
 `;
 
 const dummyData = [
@@ -125,9 +124,9 @@ const dummyData = [
 ];
 
 const bannerDummy = [
-	{ image: require('../assets/banner/main.png'), url: 'https://www.instagram.com/kki.juk/' },
-	{ image: require('../assets/banner/beta_gift.png'), url: 'https://forms.gle/RuuoXu6DzMz9vpyk6' },
-	{ image: require('../assets/banner/beta_test.png'), url: 'https://forms.gle/RuuoXu6DzMz9vpyk6' },
+	{ image: Banner1SVG, url: 'https://www.instagram.com/kki.juk/' },
+	{ image: Banner2SVG, url: 'https://forms.gle/y3VPjQaWBbVyegwk7' },
+	{ image: Banner3SVG, url: '' },
 ];
 
 export default function Home() {
@@ -155,7 +154,7 @@ export default function Home() {
 				</ContentBox>
 			</Container2>
 
-			{/*} <Container3>
+			{/* <Container3>
 				<Label>추천 활동 공고</Label>
 				<ContentBox>
 					{dummyData.slice(0, 4).map((data, index) => (
@@ -171,7 +170,7 @@ export default function Home() {
 						<RecommendBox key={index} data={data} url={data.url} />
 					))}
 				</ContentBox>
-			</Container4> */}
+			</Container4> */} 
 		</Body>
 	);
 }
