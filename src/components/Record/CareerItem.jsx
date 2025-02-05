@@ -72,6 +72,10 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 · 서술식보다는 개조식으로 간결하게 작성하는 것이 좋아요.
 · 이곳에 작성한 내용은 [서류준비-이력서]에 자동으로 삽입됩니다.`
 
+	// unknown 값에 따른 분기 처리
+	const endDateToDisplay = careerData.unknown ? '종료 날짜 없음' : data.endData ? data.endDate : '종료 날짜 없음';
+	const statusToDisplay = careerData.unknown ? '(진행 중)' : activityMonths ? `(${activityMonths}개월)` : '(진행 중)';
+
 	return (
 		<FirstContainer>
 			{isCareerModalOpen && 
@@ -91,8 +95,8 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 					<SchoolInfo>
 						<SchoolName>{data.name}</SchoolName>
 						<Dates>
-							{data.startDate ? data.startDate : '시작 날짜 없음'} ~ {data.endDate ? data.endDate : '종료 날짜 없음'}
-							{activityMonths ? <Status>({activityMonths}개월)</Status> : <Status>(진행 중)</Status>}
+							{data.startDate ? data.startDate : '시작 날짜 없음'} ~ {endDateToDisplay}
+							<Status>{statusToDisplay}</Status>
 						</Dates>
 						{/* <DetailContainer>
 							<div style={{ width:'58px',fontWeight: '600', marginRight: '30px'}}>활동내역</div>

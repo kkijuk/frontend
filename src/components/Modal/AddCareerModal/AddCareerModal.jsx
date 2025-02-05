@@ -46,10 +46,25 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	useEffect(() => {
 		if (initialData?.category) {
 			// 한글 카테고리 이름을 숫자 키로 변환
-			const categoryNumber = Object.keys(categoryMap).find(
-				(key) => categoryMap[key] === initialData.category.categoryKoName, // 수정된 부분
-			);
-			setSelectedCategory(parseInt(categoryNumber, 10) || 1);
+			// const categoryNumber = Object.keys(categoryMap).find(
+			// 	(key) => categoryMap[key] === initialData.category.categoryKoName, // 수정된 부분
+			// );
+			// setSelectedCategory(parseInt(categoryNumber, 10) || 1);
+			if (initialData.category.categoryEnName === 'CIRCLE') {
+				setSelectedCategory(1);
+			} else if (initialData.category.categoryEnName === 'ACTIVITY') {
+				setSelectedCategory(2);
+			} else if (initialData.category.categoryEnName === 'EDU') {
+				setSelectedCategory(6);
+			} else if (initialData.category.categoryEnName === 'EMP') {
+				setSelectedCategory(5);
+			} else if (initialData.category.categoryEnName === 'PROJECT') {
+				setSelectedCategory(4);
+			} else if (initialData.category.categoryEnName === ' COM') {
+				setSelectedCategory(3);
+			} else if (initialData.category.categoryEnName === ' ETC') {
+				setSelectedCategory(7);
+			}
 		}
 	}, [initialData]);
 
