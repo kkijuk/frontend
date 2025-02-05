@@ -63,6 +63,13 @@ const App = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
+	useEffect(() => {
+		if (location.pathname === '/history/portfolio') {
+			alert('이 페이지는 준비중입니다.');
+			navigate(-1); // 이전 페이지로 이동
+		}
+	}, [location, navigate]);
+
 	// 헤더를 숨길 경로 설정
 	const hideHeaderRoutes = ['/commingsoon', '/', '/signup', '/signupinterest', '/signupsuccess', '/agree'];
 	const hideHeader = hideHeaderRoutes.includes(location.pathname);

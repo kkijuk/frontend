@@ -12,9 +12,9 @@ const StyledButton = styled.button`
   margin: 10px 0;
   border: none;
   border-radius: 10px;
-  background-color: #3aaf85;
+  background-color: ${({ disabled }) => (disabled ? '#D9D9D9' : '#3aaf85')};
   color: white;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   font-family: Regular;
   font-size: 17px;
   display: flex;
@@ -22,9 +22,10 @@ const StyledButton = styled.button`
   justify-content: center;
   margin-top: 40px;
   &:hover {
-    background: #2a9f72;
+    background: ${({ disabled }) => (disabled ? '#D9D9D9' : '#2a9f72')};
   }
 `;
+
 
 const FormContainer = styled.div`
   align-items: center;
@@ -225,7 +226,12 @@ const SignupStepOne = ({ agreements, setAgreements, handleNextStep }) => {
         label="마케팅 활용 동의 (선택)"
         handleModal={() => handleModal(3)}
       />
-      <StyledButton onClick={handleNextStep}>다음</StyledButton>
+     <StyledButton 
+  onClick={handleNextStep} 
+  disabled={!(agreements.isTermsAgreed && agreements.isPrivacyAgreed)}
+>
+  다음
+</StyledButton>
       {modalType === 1 && <AgreementModal1 show={true} handleModal={closeModal} />}
       {modalType === 2 && <AgreementModal2 show={true} handleModal={closeModal} />}
       {modalType === 3 && <AgreementModal3 show={true} handleModal={closeModal} />}

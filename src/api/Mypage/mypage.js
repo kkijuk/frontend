@@ -69,11 +69,12 @@ export const fetchUserInfo = async () => {
 	}
 };
 
-export const changeUserInfo = async (phoneNumber, birthDate, marketingAgree) => {
+export const changeUserInfo = async (email, phoneNumber, birthDate, marketingAgree) => {
 	try {
 		const response = await axios.put(
 			`${apiUrl}/member/myPage/info`,
 			{
+				email,
 				phoneNumber,
 				birthDate,
 				marketingAgree,
