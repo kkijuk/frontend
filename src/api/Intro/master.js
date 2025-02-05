@@ -48,7 +48,7 @@ const readMaster = async () => {
 };
 
 // [마스터 자기소개서 수정]
-const updateMaster = async (id, data) => {
+const updateMaster = async (data) => {
 	try {
 		const response = await api.patch(`/history/intro/master`, data);
 		console.log('Success-updateMaster:', response.data);
