@@ -46,7 +46,7 @@ export default function Mycareer() {
 	const [view, setView] = useState('year');
 	const [showModal, setShowModal] = useState(false);
 	const [careers, setCareers] = useState({});
-	const [triggerEffect, setTriggerEffect] = useState(false);
+	const [_, setTriggerEffect] = useState(false);
 	const navigate = useNavigate();
 
 	const fetchData = async () => {
