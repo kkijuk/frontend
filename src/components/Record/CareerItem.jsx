@@ -62,7 +62,10 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 				return '기타';
 		}
 	};
-	const displayCategory = data.category.categoryKoName === '경력' ? getEmploymentsType(data.type) : data.category.categoryKoName;
+
+	if (careerData.category.categoryKoName === '경력') {
+		careerData.category.categoryKoName = getEmploymentsType(data.type);
+	}
 
 	// 활동내역 placeholder (아래 들여쓰기 상태 고정!)
 	const detailPlaceHolder = `· 핵심적인 활동 내용과 담당했던 역할, 주요 성과를 요약해서 작성해 주세요.
@@ -79,12 +82,12 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 					onClose={() => setIsOpen(false)}
 			/>}
 			<TimeLine>
-				<Oval category={data.category.categoryKoName} isPastDue={data.isCurrent}></Oval>
-				<Line category={data.category.categoryKoName} isLastItem={isLastItem} isPastDue={data.isCurrent} isSummaryEditMode={isSummaryEditMode}></Line>
+				<Oval category={careerData.category.categoryKoName} isPastDue={data.isCurrent}></Oval>
+				<Line category={careerData.category.categoryKoName} isLastItem={isLastItem} isPastDue={data.isCurrent} isSummaryEditMode={isSummaryEditMode}></Line>
 			</TimeLine>
 			<Container>
 				<div style={{width:'100%'}}>
-					<LevelTag category={data.category.categoryKoName}>{displayCategory}</LevelTag>
+					<LevelTag category={careerData.category.categoryKoName}>{careerData.category.categoryKoName}</LevelTag>
 					<SchoolInfo>
 						<SchoolName>{data.name}</SchoolName>
 						<Dates>
