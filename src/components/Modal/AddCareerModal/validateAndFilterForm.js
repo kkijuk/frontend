@@ -8,7 +8,7 @@ export const validateAndFilterForm = (category, formData) => {
 		2: ['name', 'alias', 'startdate', 'enddate', 'unknown', 'organizer', 'role', 'isTeam', 'teamSize', 'contribution'], // 대외활동
 		3: ['name', 'alias', 'startdate', 'enddate', 'unknown', 'organizer', 'isTeam', 'teamSize', 'contribution'], // 공모전/대회
 		4: ['name', 'alias', 'startdate', 'enddate', 'unknown', 'location', 'isTeam', 'teamSize', 'contribution'], // 프로젝트
-		5: ['name', 'startdate', 'enddate', 'unknown', 'type', 'alias', 'position', 'jobField'], // 경력
+		5: ['name', 'startdate', 'enddate', 'unknown', 'type', 'alias', 'position', 'jobField', 'careerType'], // 경력
 		6: ['name', 'alias', 'startdate', 'enddate', 'unknown', 'organizer', 'time'], // 교육
 	};
 
@@ -18,7 +18,7 @@ export const validateAndFilterForm = (category, formData) => {
 		2: ['name', 'alias', 'startdate', 'organizer'],
 		3: ['name', 'alias', 'startdate', 'organizer'],
 		4: ['name', 'alias', 'startdate', 'location'],
-		5: ['name', 'startdate', 'type', 'alias'],
+		5: ['name', 'startdate', 'careerType', 'alias'],
 		6: ['name', 'alias', 'startdate', 'organizer', 'time'],
 	};
 
