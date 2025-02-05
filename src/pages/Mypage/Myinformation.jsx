@@ -197,7 +197,7 @@ const VerifyButton = styled.button`
 	align-items: center;
 	gap: 10px;
 	border: none;
-	margin-left: 13px;
+	margin-left: 7px;
 
 	border-radius: 10px;
 	background: #3aaf85;
@@ -386,7 +386,7 @@ const NumInputWrapper = styled.div`
 	position: relative;
 	display: flex;
 	align-items: center;
-	width: auto; /* 기존 Input과 동일한 너비 */
+	width: 280px; /* 기존 Input과 동일한 너비 */
 `;
 
 const TimerText = styled.div`
@@ -602,6 +602,7 @@ export default function MyInformation() {
 				authNumber: String(verificationCode),
 				email: emailInput,
 			});
+			console.log('서버 응답:', response); // 응답 로그 출력
 
 			if (response.success) {
 				alert('인증이 완료되었습니다.');
@@ -610,6 +611,7 @@ export default function MyInformation() {
 				alert('인증번호가 올바르지 않습니다. 다시 확인해주세요.');
 			}
 		} catch (error) {
+			console.error('인증번호 확인 중 오류 발생:', error.response?.data || error.message);
 			alert('인증번호 확인 중 오류가 발생했습니다.');
 		}
 	};
@@ -650,20 +652,22 @@ export default function MyInformation() {
 							</InputContainer>
 							{isVerificationRequested && (
 								<>
-									<NumInputWrapper>
-										<NumInput
-											placeholder="인증번호를 입력하세요"
-											value={verificationCode}
-											onChange={(e) => setVerificationCode(e.target.value)}
-											disabled={isTimerExpired}
-										/>
-										<TimerText>
-											{Math.floor(timer / 60)}:{String(timer % 60).padStart(2, '0')}
-										</TimerText>
+									<InputContainer>
+										<NumInputWrapper>
+											<NumInput
+												placeholder="인증번호를 입력하세요"
+												value={verificationCode}
+												onChange={(e) => setVerificationCode(e.target.value)}
+												disabled={isTimerExpired}
+											/>
+											<TimerText>
+												{Math.floor(timer / 60)}:{String(timer % 60).padStart(2, '0')}
+											</TimerText>
+										</NumInputWrapper>
 										<VerifyButton onClick={handleVerifyCode} disabled={isTimerExpired}>
 											확인
 										</VerifyButton>
-									</NumInputWrapper>
+									</InputContainer>
 
 									{isTimerExpired && <ErrorText>시간이 초과되었습니다. 다시 요청해주세요.</ErrorText>}
 								</>
