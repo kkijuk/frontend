@@ -197,7 +197,7 @@ const VerifyButton = styled.button`
 	align-items: center;
 	gap: 10px;
 	border: none;
-	margin-left: 6px;
+	margin-left: 13px;
 
 	border-radius: 10px;
 	background: #3aaf85;
@@ -386,7 +386,7 @@ const NumInputWrapper = styled.div`
 	position: relative;
 	display: flex;
 	align-items: center;
-	width: 280px; /* 기존 Input과 동일한 너비 */
+	width: auto; /* 기존 Input과 동일한 너비 */
 `;
 
 const TimerText = styled.div`
@@ -599,7 +599,7 @@ export default function MyInformation() {
 
 		try {
 			const response = await verifyCode({
-				authNumber: verificationCode,
+				authNumber: String(verificationCode),
 				email: emailInput,
 			});
 
