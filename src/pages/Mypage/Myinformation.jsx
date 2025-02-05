@@ -4,7 +4,7 @@ import SubNav from '../../components/Mypage/SubNav';
 import QuitMember from '../../components/Modal/QuitMember';
 import styled from 'styled-components';
 import axios from 'axios';
-import { fetchUserInfo, changeUserInfo, sendCode } from '../../api/Mypage/mypage';
+import { fetchUserInfo, changeUserInfo, sendCode, verifyCode } from '../../api/Mypage/mypage';
 
 const ContentBox = styled.div`
 	width: 450px;
@@ -614,6 +614,30 @@ export default function MyInformation() {
 		setIsEditingBirth(false);
 	};
 
+	//인증번호 확인
+	const handleVerifyCode = async () => {
+		if (!verificationCode) {
+			alert('인증번호를 입력하세요.');
+			return;
+		}
+
+		try {
+			const response = await verifyCode({
+				authNumber: verificationCode,
+				email: emailInput,
+			});
+
+			if (response.success) {
+				alert('인증이 완료되었습니다.');
+				setIsEditingEmail(false); // 이메일 수정 종료
+			} else {
+				alert('인증번호가 올바르지 않습니다. 다시 확인해주세요.');
+			}
+		} catch (error) {
+			alert('인증번호 확인 중 오류가 발생했습니다.');
+		}
+	};
+
 	//인증번호타이머
 	useEffect(() => {
 		if (isVerificationRequested && timer > 0) {
@@ -660,10 +684,10 @@ export default function MyInformation() {
 										<TimerText>
 											{Math.floor(timer / 60)}:{String(timer % 60).padStart(2, '0')}
 										</TimerText>
+										<ConfirmButton onClick={handleVerifyCode} disabled={isTimerExpired}>
+											확인
+										</ConfirmButton>
 									</NumInputWrapper>
-									<ConfirmButton onClick={handleSaveEmail} disabled={isTimerExpired}>
-										확인
-									</ConfirmButton>
 
 									{isTimerExpired && <ErrorText>시간이 초과되었습니다. 다시 요청해주세요.</ErrorText>}
 								</>
