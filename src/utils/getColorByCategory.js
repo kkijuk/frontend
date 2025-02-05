@@ -7,7 +7,7 @@ const getColorByCategory = (category) => {
 		case '대외활동':
 			color = '#77AFF2';
 			break;
-		case '공모전/대회':
+		case '공모전대회':
 			color = '#C48DEF';
 			break;
 		case '프로젝트':
