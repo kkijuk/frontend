@@ -59,7 +59,7 @@ const MainContent = styled.div`
 	flex-direction: column;
 `;
 
-const RestrictedRoutes = () => {
+const App = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -69,13 +69,6 @@ const RestrictedRoutes = () => {
 			navigate(-1); // 이전 페이지로 이동
 		}
 	}, [location, navigate]);
-
-	return null; // UI 요소가 필요 없으므로 null 반환
-};
-
-const App = () => {
-	const location = useLocation();
-	const navigate = useNavigate();
 
 	// 헤더를 숨길 경로 설정
 	const hideHeaderRoutes = ['/commingsoon', '/', '/signup', '/signupinterest', '/signupsuccess', '/agree'];
