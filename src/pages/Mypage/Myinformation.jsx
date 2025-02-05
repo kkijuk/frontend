@@ -604,9 +604,10 @@ export default function MyInformation() {
 			});
 			console.log('서버 응답:', response); // 응답 로그 출력
 
-			if (response.success) {
+			if (response.data && response.data.success) {
 				alert('인증이 완료되었습니다.');
-				setIsEditingEmail(false); // 이메일 수정 종료
+				setIsVerified(true); // 인증 성공 상태 업데이트
+				setTimeout(() => setIsEditingEmail(false), 500); // 이메일 수정 창 닫기 (0.5초 후)
 			} else {
 				alert('인증번호가 올바르지 않습니다. 다시 확인해주세요.');
 			}
