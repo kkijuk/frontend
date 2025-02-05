@@ -550,9 +550,9 @@ const History = () => {
 								):null)}
 							</ContentWrapper>
 						</SectionWrapper>
-						<Line></Line>
+						{/* <Line></Line> */}
 
-						<SectionWrapper>
+						{/* <SectionWrapper>
 						<SectionHeader
 							id = {sections[9].id}
 							key = {sections[9].id}
@@ -579,7 +579,7 @@ const History = () => {
 									/>
 								})}
 							</ContentWrapper>
-						</SectionWrapper>
+						</SectionWrapper> */}
 					</div>
 				// </Layout>
 			)}
