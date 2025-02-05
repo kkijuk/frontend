@@ -82,7 +82,6 @@ const Master = () => {
 				<ContentTitle>
 					<h1 style={{ display: 'inline-block' }}>
 						{data.oneLiner ? data.oneLiner : '한줄소개를 작성해주세요!'}
-						한줄소개를 작성해주세요!
 					</h1>
 					<p className="lastUpdated" style={{ display: 'inline-block', position: 'absolute', top: '10px', right: 0 }}>
 						{data.updated_at ? `마지막 수정일시: ${data.updated_at}` : '마지막 수정일시: unknown'}
@@ -108,9 +107,9 @@ const Master = () => {
 
 					return (
 						<div key={index}>
-						<h3>{question.title ? question.title : defaultTitle}</h3>
+						<h3>{question.title && question.title !== 'string' ? question.title : defaultTitle}</h3>
 						<ContentBox>
-							{question.content ? question.content : defaultContent}
+							{question.title && question.title !== 'string' ? question.content : defaultContent}
 						</ContentBox>
 						</div>
 					);
