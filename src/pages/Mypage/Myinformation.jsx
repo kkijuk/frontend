@@ -424,6 +424,7 @@ export default function MyInformation() {
 	const [verificationCode, setVerificationCode] = useState('');
 	const [timer, setTimer] = useState(0);
 	const [isTimerExpired, setIsTimerExpired] = useState(false);
+	const [isRequesting, setIsRequesting] = useState(false); // 🔹 인증번호 요청 중인지 상태 관리
 
 	//Tag 가져오기
 	const location = useLocation();
@@ -471,11 +472,17 @@ export default function MyInformation() {
 
 	// 이메일 인증 요청
 	const handleRequestVerification = async () => {
+		if (isRequesting) {
+			alert('전송 중입니다. 잠시만 기다려주세요.');
+			return;
+		}
+
 		if (timer > 0) {
 			alert('이미 인증번호가 전송되었습니다.');
 			return;
 		}
 		try {
+			setIsRequesting(true);
 			await sendCode(emailInput);
 			setIsVerificationRequested(true);
 			setTimer(300); // 5분 설정
@@ -654,6 +661,9 @@ export default function MyInformation() {
 											{Math.floor(timer / 60)}:{String(timer % 60).padStart(2, '0')}
 										</TimerText>
 									</NumInputWrapper>
+									<ConfirmButton onClick={handleSaveEmail} disabled={isTimerExpired}>
+										확인
+									</ConfirmButton>
 
 									{isTimerExpired && <ErrorText>시간이 초과되었습니다. 다시 요청해주세요.</ErrorText>}
 								</>
