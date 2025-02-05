@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import styled from "styled-components";
 
-const EmailAndAddress = ({type, data, onSave}) => {
-    const [data, setData] = useState(data);
+const EmailAndAddress = ({type, userData, onSave}) => {
+    const [data, setData] = useState(userData);
     const [isEditingMode, setIsEditingMode] = useState(false);
 
     return (
