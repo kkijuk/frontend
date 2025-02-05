@@ -74,6 +74,7 @@ const MasterRewrite = () => {
 			questionList: data.questions,
 			state: data.state,
 		};
+		console.log('data to submit: ', dataToSubmit);
 		try{
 			const response = await updateMaster(dataToSubmit);
 			console.log('마스터 자소서 수정 완료: ', response);
