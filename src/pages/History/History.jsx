@@ -132,7 +132,7 @@ const History = () => {
 
 	useEffect(() => {
 		// 사용자 정보 업데이트
-		updateUserData(editableUserData);
+		updateUserData(editableUserData); //in useRecordStore
 	}, [editableUserData]);
 
 
@@ -260,9 +260,11 @@ const History = () => {
 						}
 						<div style={{display:'flex', marginBlock:'30px'}}>
 						{/* <ProfileBox/> */}
-						<Profile
+						<div
 							id = {sections[0].id}	
 							key = {sections[0].id}	
+						/>
+						<Profile
 							profileBlob={profileBlob}
 							onProfileChange={handleProfileChange}
 						/>
