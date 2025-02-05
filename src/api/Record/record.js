@@ -56,7 +56,6 @@ const updateRecord = async (data) => {
 
 		return response.data;
 	} catch (error) {
-		console.log("recordId: ", recordId);
 		console.log(data);
 		console.error('Error-updateRecord:', error);
 		if (error.response) {
