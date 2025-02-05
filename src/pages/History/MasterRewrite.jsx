@@ -40,7 +40,6 @@ const MasterRewrite = () => {
 				});
 			} catch (error) {
 				console.error('Error:', error);
-				setShowCreateButton(true);
 			}
 		}
 		fetchIntro();
