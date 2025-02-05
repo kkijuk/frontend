@@ -428,6 +428,8 @@ export default function MyInformation() {
 	const [isTimerExpired, setIsTimerExpired] = useState(false);
 	const [isRequesting, setIsRequesting] = useState(false); // 🔹 인증번호 요청 중인지 상태 관리
 
+	const [isVerified, setIsVerified] = useState(false); // 🔹 인증 성공 여부 상태 추가
+
 	//Tag 가져오기
 	const location = useLocation();
 	const receivedSocialType = location.state?.socialType || '';
