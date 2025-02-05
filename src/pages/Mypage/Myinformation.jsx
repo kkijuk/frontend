@@ -306,39 +306,6 @@ const Text1 = styled.div`
 	line-height: normal;
 `;
 
-const Text2 = styled.div`
-	margin-bottom: ${(props) => props.marginBottom};
-	color: var(--main-01, #3aaf85);
-	font-family: regular;
-	font-size: 18px;
-	font-style: normal;
-	font-weight: 500;
-	line-height: normal;
-	margin-top: 32px;
-`;
-
-const Input = styled.input`
-	height: 50px;
-	border-radius: 10px;
-	width: 400px;
-	background-color: ${(props) => props.backgroundColor || '#F5F5F5'};
-	color: ${(props) => props.color || 'black'};
-	border: ${(props) => props.border || 'none'};
-	border-color: ${(props) => props.borderColor || 'black'};
-
-	fint-family: regular;
-	font-size: 15px;
-	padding-left: 20px; /* padding-left 속성 추가 */
-	box-sizing: border-box;
-`;
-
-const CheckBoxContainer = styled.div`
-	display: flex;
-	align-items: center;
-	gap: 129px;
-	margin-left: 102px;
-`;
-
 const CheckBoxContainer1 = styled.div`
 	display: flex;
 	align-items: center;
@@ -415,6 +382,28 @@ const Bottom = styled.div`
 	margin-top: 47px;
 `;
 
+const NumInputWrapper = styled.div`
+	position: relative;
+	width: 280px; /* 기존 Input과 동일한 너비 */
+`;
+
+const TimerText = styled.div`
+	position: absolute;
+	right: 20px;
+	top: 17px;
+	color: #fa7c79;
+	font-family: Pretendard;
+	font-size: 14px;
+	font-weight: 500;
+`;
+
+const ErrorText = styled.div`
+	color: #fa7c79;
+	font-family: Pretendard;
+	font-size: 14px;
+	margin-top: 5px;
+`;
+
 export default function MyInformation() {
 	const [isEditingEmail, setIsEditingEmail] = useState(false);
 	const [isVerificationRequested, setIsVerificationRequested] = useState(false);
@@ -431,6 +420,10 @@ export default function MyInformation() {
 	const [prevBirthInputs, setPrevBirthInputs] = useState({ year: '', month: '', day: '' });
 
 	const [marketingAgreed, setMarketingAgreed] = useState(false);
+
+	const [verificationCode, setVerificationCode] = useState('');
+	const [timer, setTimer] = useState(0);
+	const [isTimerExpired, setIsTimerExpired] = useState(false);
 
 	//Tag 가져오기
 	const location = useLocation();
@@ -466,28 +459,6 @@ export default function MyInformation() {
 		fetchUserData();
 	}, []);
 
-	const handleMarketingAgreement = (marketingAgree) => {
-		switch (marketingAgree) {
-			case 'BOTH':
-				setAgreements({ snsAgreed: true, emailAgreed: true });
-				setAllAgreed(true);
-				break;
-			case 'EMAIL':
-				setAgreements({ snsAgreed: false, emailAgreed: true });
-				setAllAgreed(true);
-				break;
-			case 'SMS':
-				setAgreements({ snsAgreed: true, emailAgreed: false });
-				setAllAgreed(true);
-				break;
-			case 'NONE':
-			default:
-				setAgreements({ snsAgreed: false, emailAgreed: false });
-				setAllAgreed(false);
-				break;
-		}
-	};
-
 	const handleEditClick = () => {
 		setIsEditingEmail(true);
 		setIsVerificationRequested(false); // 초기화
@@ -500,9 +471,15 @@ export default function MyInformation() {
 
 	// 이메일 인증 요청
 	const handleRequestVerification = async () => {
+		if (timer > 0) {
+			alert('이미 인증번호가 전송되었습니다.');
+			return;
+		}
 		try {
 			await sendCode(emailInput);
 			setIsVerificationRequested(true);
+			setTimer(300); // 5분 설정
+			setIsTimerExpired(false);
 			alert('인증번호가 전송되었습니다.');
 		} catch (error) {
 			alert('인증번호 전송에 실패했습니다.');
@@ -558,21 +535,6 @@ export default function MyInformation() {
 		setAgreements({ snsAgreed: checked, emailAgreed: checked });
 	};
 
-	const handleBirthDateChange = (e) => {
-		const input = e.target.value.replace(/-/g, '');
-		if (input.length > 8) return;
-
-		let formattedInput = input;
-		if (input.length > 4) {
-			formattedInput = `${input.slice(0, 4)}-${input.slice(4, 6)}`;
-		}
-		if (input.length > 6) {
-			formattedInput = `${formattedInput}-${input.slice(6, 8)}`;
-		}
-
-		setBirthDate(formattedInput);
-	};
-
 	// '광고성 정보 수신 동의' 체크 변경
 	const handleMarketingAgreementChange = (event) => {
 		setMarketingAgreed(event.target.checked);
@@ -586,7 +548,7 @@ export default function MyInformation() {
 		const formattedBirthDate = `${birthInputs.year}-${birthInputs.month}-${birthInputs.day}`;
 
 		try {
-			await changeUserInfo(formattedPhoneNumber, formattedBirthDate, marketingAgree);
+			await changeUserInfo(emailInput, formattedPhoneNumber, formattedBirthDate, marketingAgree);
 			alert('저장이 완료되었습니다.');
 		} catch (error) {
 			alert('저장 중 오류가 발생했습니다.');
@@ -645,6 +607,20 @@ export default function MyInformation() {
 		setIsEditingBirth(false);
 	};
 
+	//인증번호타이머
+	useEffect(() => {
+		if (isVerificationRequested && timer > 0) {
+			const interval = setInterval(() => {
+				setTimer((prev) => prev - 1);
+			}, 1000);
+
+			return () => clearInterval(interval);
+		}
+		if (timer === 0 && isVerificationRequested) {
+			setIsTimerExpired(true);
+		}
+	}, [timer, isVerificationRequested]);
+
 	return (
 		<Container1>
 			<SubNav></SubNav>
@@ -666,10 +642,21 @@ export default function MyInformation() {
 								<CancelButton onClick={handleCancelEditEmail}>취소</CancelButton>
 							</InputContainer>
 							{isVerificationRequested && (
-								<InputContainer>
-									<NumInput placeholder="인증번호를 입력하세요" />
-									<ConfirmButton onClick={handleSaveEmail}>확인</ConfirmButton>
-								</InputContainer>
+								<>
+									<NumInputWrapper>
+										<NumInput
+											placeholder="인증번호를 입력하세요"
+											value={verificationCode}
+											onChange={(e) => setVerificationCode(e.target.value)}
+											disabled={isTimerExpired}
+										/>
+										<TimerText>
+											{Math.floor(timer / 60)}:{String(timer % 60).padStart(2, '0')}
+										</TimerText>
+									</NumInputWrapper>
+
+									{isTimerExpired && <ErrorText>시간이 초과되었습니다. 다시 요청해주세요.</ErrorText>}
+								</>
 							)}
 						</EmailEditBox>
 					) : (
