@@ -30,14 +30,30 @@ export default CareerTypeDropdown;
 
 const CareerTypeDropdown2 = ({ options, placeholder, value, onChange, isOpen, onToggle, width="260px" }) => {
 	const handleOptionClick = (option) =>{
-		onChange(option);
+		onChange(optionMapping[option]);
 		onToggle();
 	}
+
+  const optionMapping = {
+    "아르바이트" : "PART_TIME",
+    "인턴" : "INTERNSHIP",
+    "정규직" : "FULL_TIME",
+    "계약직" : "CONTRACT",
+    "프리랜서" : "FREELANCE"
+  }
+
+  const optionReverseMapping = {
+    "PART_TIME" : "아르바이트",
+    "INTERNSHIP" : "인턴",
+    "FULL_TIME" : "정규직",
+    "CONTRACT" : "계약직",
+    "FREELANCE" : "프리랜서"
+  }
 
 	return(
 		<DropdownContainer width={width}>
 			<DropdownHeader onClick={onToggle} isActive={isOpen} isPlaceholder={!value}>
-				<Text>{value || placeholder}</Text>
+				<Text>{optionReverseMapping[value] || placeholder}</Text>
 				<Arrow isOpen={isOpen} />
 			</DropdownHeader>
 			{isOpen && (

@@ -132,7 +132,7 @@ const History = () => {
 
 	useEffect(() => {
 		// 사용자 정보 업데이트
-		updateUserData(editableUserData);
+		updateUserData(editableUserData); //in useRecordStore
 	}, [editableUserData]);
 
 
@@ -246,11 +246,13 @@ const History = () => {
 				// >
 					<div style={{width:'100%', minHeight:'100vh'}}>
 						{/* <AddCareerModal></AddCareerModal> */}
-						<ScrollNavigator
-							sections = {sections}
-							activeSection={activeSection}
-							onClick={scrollToSection}
-						/>
+						<ScrollNavigatorContainer>
+							<ScrollNavigator
+								sections = {sections}
+								activeSection={activeSection}
+								onClick={scrollToSection}
+							/>
+						</ScrollNavigatorContainer>
 						{isAddCareerModalOpen &&
 							<AddCareerModal
 								onClose={() => setIsAddCareerModalOpen(false)}
@@ -258,9 +260,11 @@ const History = () => {
 						}
 						<div style={{display:'flex', marginBlock:'30px'}}>
 						{/* <ProfileBox/> */}
-						<Profile
+						<div
 							id = {sections[0].id}	
 							key = {sections[0].id}	
+						/>
+						<Profile
 							profileBlob={profileBlob}
 							onProfileChange={handleProfileChange}
 						/>
@@ -548,9 +552,9 @@ const History = () => {
 								):null)}
 							</ContentWrapper>
 						</SectionWrapper>
-						<Line></Line>
+						{/* <Line></Line> */}
 
-						<SectionWrapper>
+						{/* <SectionWrapper>
 						<SectionHeader
 							id = {sections[9].id}
 							key = {sections[9].id}
@@ -577,7 +581,7 @@ const History = () => {
 									/>
 								})}
 							</ContentWrapper>
-						</SectionWrapper>
+						</SectionWrapper> */}
 					</div>
 				// </Layout>
 			)}
@@ -812,3 +816,9 @@ const NoneContentBox = styled.div`
 	justify-content: center;
 	align-items: center;
 `
+
+const ScrollNavigatorContainer = styled.div`
+  @media (max-width: 1460px) {
+    display: none;
+  }
+`;

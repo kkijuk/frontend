@@ -3,212 +3,179 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { readMaster, updateMaster } from '../../api/Intro/master';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
 
 const MasterRewrite = () => {
 	const navigate = useNavigate();
 
-	// 글자 수
-	const [charCounts, setCharCounts] = useState({
-		oneLiner: 0,
-		motiveTitle: 0,
-		motive: 0,
-		prosAndConsTitle: 0,
-		prosAndCons: 0,
-		jobSuitabilityTitle: 0,
-		jobSuitability: 0,
-	});
-
 	//(Data) 한줄소개, 지원동기및포부 제목 및 내용, 장단점 제목 및 내용, 직무적합성 제목 및 내용
-	const [questions, setQuestions] = useState({
-		id: 0,
-		memberId: 0,
+	const [data, setData] = useState({
 		oneLiner: '',
-		motiveTitle: '',
-		motive: '',
-		prosAndConsTitle: '',
-		prosAndCons: '',
-		jobSuitabilityTitle: '',
-		jobSuitability: '',
-		updatedAt: '',
+		questions:[],
+		updated_at: '',
+		state: 0,
 	});
+	// 글자 수
+	const [charCounts, setCharCounts] = useState([]);
+	const [showLoadingSpinner, setShowLoadingSpinner] = useState(false);
 
 	// 글자 수 계산
 	useEffect(() => {
-		setCharCounts({
-			oneLiner: questions.oneLiner.length,
-			motiveTitle: questions.motiveTitle.length,
-			motive: questions.motive.length,
-			prosAndConsTitle: questions.prosAndConsTitle.length,
-			prosAndCons: questions.prosAndCons.length,
-			jobSuitabilityTitle: questions.jobSuitabilityTitle.length,
-			jobSuitability: questions.jobSuitability.length,
-		});
-	}, [questions]);
+		setCharCounts(data.questions.map((question) => question.content.length));
+	}, [data.questions]);
 
 	//1. 마스터 저장 내용 불러오기
 	//(API) 마스터 조회
 	useEffect(() => {
-		api
-			.get('/history/intro/master')
-			.then((response) => {
-				console.log(response.data);
-				const Data = response.data.data;
-				console.log(Data.id);
-				setQuestions({
-					id: Data.id,
-					memberId: Data.memberId,
-					oneLiner: Data.oneLiner,
-					motiveTitle: Data.motiveTitle,
-					motive: Data.motive,
-					prosAndConsTitle: Data.prosAndConsTitle,
-					prosAndCons: Data.prosAndCons,
-					jobSuitabilityTitle: Data.jobSuitabilityTitle,
-					jobSuitability: Data.jobSuitability,
-					updatedAt: Data.updatedAt,
-				});
-			})
-			.catch((error) => {
-				console.log('Error:', error);
-			});
-	}, []);
+		const fetchIntro = async () => {
+			try{
+				const response = await readMaster();
+				console.log('내용조회: ', response);
 
-	//2. 마스터 변경 내용 수정(저장 버튼 + 정기 호출)
-	const handleOnChange = (id, value) => {
-		const updatedQuestions = { ...questions, [id]: value };
-		setQuestions(updatedQuestions);
+				setData({
+					oneLiner: response.oneLiner,
+					questions: response.questionList,
+					updated_at: response.updatedAt,
+					state: response.state,
+				});
+			} catch (error) {
+				console.error('Error:', error);
+			}
+		}
+		fetchIntro();
+	}, []);	
+
+	// 자동 저장
+	useEffect(() => {
+		const interval = setInterval(() => {
+			submitData();
+		}, 60000);
+		return () => clearInterval(interval);
+	}, [data]); 
+
+	// 변경 내용 onChange
+	const handleInputChange = (index, field, value) => {
+		const updatedQuestions = data.questions.map((q, i) =>
+			i === index ? { ...q, [field]: value } : q
+		);
+		setData({ ...data, questions: updatedQuestions });
 	};
+	// 한줄 소개 onChange
+	const handleOneLinerChange = (field, value) => {
+		setData({ ...data, [field]: value });
+	};
+
+
 
 	//(API) 마스터 수정
-	const submitData = () => {
-		api
-			.patch(`/history/intro/master?id=${questions.id}`, questions)
-			.then((response) => {
-				console.log('마스터자소서수정완료: ', response.data);
-			})
-			.catch((error) => {
-				console.log('Error: ', error);
-			});
+	const submitData = async () => {
+		const dataToSubmit = {
+			oneLiner: data.oneLiner,
+			questionList: data.questions,
+			state: data.state,
+		};
+		console.log('data to submit: ', dataToSubmit);
+		try{
+			const response = await updateMaster(dataToSubmit);
+			console.log('마스터 자소서 수정 완료: ', response);
+		} catch (error) {
+			console.error('Error:', error);
+		}
 	};
 
-	setInterval(submitData, 60000);
-
-	const handleSubmit = (event) => {
+	// 저장 버튼 클릭 시
+	const handleSubmit = async (event) => {
 		event.preventDefault();
-		submitData();
-		navigate('/history/master');
+		setShowLoadingSpinner(true);
+		try{
+			await submitData();
+		} catch (error) {
+			console.error('Error:', error);
+		} finally {
+			setShowLoadingSpinner(false);
+			navigate('/history/master');
+		}
+	};
+
+	// 질문 추가
+	const handleAddClick = () => {
+		setData((prevData) => ({
+		  ...prevData,
+		  questions: [...prevData.questions, { title: "", content: "" }],
+		}));
 	};
 
 	return (
 		<BackgroundDiv>
+			{showLoadingSpinner && <LoadingSpinner message = "마스터 자소서 수정 중..."/>}
 			<BaseDiv>
 				<div style={{ position: 'relative' }}>
 					<InputTitle
 						id="oneLiner"
 						placeholder="한줄소개를 작성하세요"
 						style={{ height: '20px', marginBottom: '12px' }}
-						value={questions.oneLiner || ''}
-						onChange={(e) => handleOnChange(e.target.id, e.target.value)}
+						value={data.oneLiner || ''}
+						onChange={(e) => handleOneLinerChange(e.target.id, e.target.value)}
 					/>
 
 					<Linear style={{ width: '820px' }} />
-					{/* <p className='lastUpdated' style={{marginTop:0}}>마지막 수정일시: {content.updated_at}</p>            */}
-					<InputTitle
-						id="motiveTitle"
-						placeholder="지원동기 제목을 작성하세요"
-						style={{ height: '20px', marginBottom: '12px' }}
-						value={questions.motiveTitle || ''}
-						onChange={(e) => handleOnChange(e.target.id, e.target.value)}
-					/>
+					<p className='lastUpdated' style={{marginTop:0}}>마지막 수정일시: {data.updated_at}</p>           
+					{data.questions.map((question, index) => {
+						// 첫번째, 두번째, 세번째 질문에 대해서만 특수한 placeholder를 설정
+						let titlePlaceholder = '질문 제목을 작성하세요';
+						let contentPlaceholder = '답변을 작성하세요';
+						if (index === 0) {
+						titlePlaceholder = '지원동기 제목을 작성하세요';
+						contentPlaceholder = '지원동기를 작성하세요';
+						} else if (index === 1) {
+						titlePlaceholder = '장단점 제목을 작성하세요';
+						contentPlaceholder = '장단점을 작성하세요';
+						} else if (index === 2) {
+						titlePlaceholder = '직무적합성 제목을 작성하세요';
+						contentPlaceholder = '직무적합성을 작성하세요';
+						}
 
-					<InputTitle
-						id="motive"
-						placeholder="지원동기를 작성하세요"
-						style={{ height: '150px', marginBottom: '12px' }}
-						value={questions.motive || ''}
-						onChange={(e) => handleOnChange(e.target.id, e.target.value)}
-					/>
-					<div style={{ height: '30px' }} />
-					<p
-						style={{
-							fontFamily: 'Regular',
-							fontSize: '16px',
-							color: '#707070',
-							textAlign: 'right',
-							marginRight: '20px',
-							position: 'absolute',
-							top: 360,
-							right: 0,
-						}}
-					>
-						{charCounts.motive} (공백 포함)
-					</p>
-					<InputTitle
-						id="prosAndConsTitle"
-						placeholder="장단점 제목을 작성하세요"
-						style={{ height: '20px', marginBottom: '12px' }}
-						value={questions.prosAndConsTitle || ''}
-						onChange={(e) => handleOnChange(e.target.id, e.target.value)}
-					/>
+						const currentTitle = (question.title && question.title !== 'string') ? question.title : '';
+						const currentContent = (question.content && question.content !== 'string') ? question.content : '';
 
-					<InputTitle
-						id="prosAndCons"
-						placeholder="장단점을 작성하세요"
-						style={{ height: '150px', marginBottom: '12px' }}
-						value={questions.prosAndCons || ''}
-						onChange={(e) => handleOnChange(e.target.id, e.target.value)}
-					/>
-					<div style={{ height: '30px' }} />
-					<p
-						style={{
-							fontFamily: 'Regular',
-							fontSize: '16px',
-							color: '#707070',
-							textAlign: 'right',
-							marginRight: '20px',
-							position: 'absolute',
-							top: 670,
-							right: 0,
-						}}
-					>
-						{charCounts.prosAndCons} (공백 포함)
-					</p>
-					<InputTitle
-						id="jobSuitabilityTitle"
-						placeholder="직무적합성 제목을 작성하세요"
-						style={{ height: '20px', marginBottom: '12px' }}
-						value={questions.jobSuitabilityTitle || ''}
-						onChange={(e) => handleOnChange(e.target.id, e.target.value)}
-					/>
-					<InputTitle
-						id="jobSuitability"
-						placeholder="직무적합성을 작성하세요"
-						style={{ height: '150px', marginBottom: '12px' }}
-						value={questions.jobSuitability || ''}
-						onChange={(e) => handleOnChange(e.target.id, e.target.value)}
-					/>
-					<div style={{ height: '70px' }}></div>
-					<p
-						style={{
-							fontFamily: 'Regular',
-							fontSize: '16px',
-							color: '#707070',
-							textAlign: 'right',
-							marginRight: '20px',
-							position: 'absolute',
-							top: 980,
-							right: 0,
-						}}
-					>
-						{charCounts.jobSuitability} (공백 포함)
-					</p>
+						return (
+						<div key={index}>
+							<InputTitle
+							placeholder={titlePlaceholder}
+							style={{ height: '20px', marginBottom: '12px' }}
+							value={question.title || ''}
+							onChange={(e) => handleInputChange(index, 'title', e.target.value)}
+							/>
+							<InputTitle
+							placeholder={contentPlaceholder}
+							style={{ height: '150px', marginBottom: '12px' }}
+							value={question.content || ''}
+							onChange={(e) => handleInputChange(index, 'content', e.target.value)}
+							/>
+							<p
+							style={{
+								fontFamily: 'Regular',
+								fontSize: '16px',
+								color: '#707070',
+								textAlign: 'right',
+								marginRight: '20px',
+							}}
+							>
+							{question.content.length} (공백 포함)
+							</p>
+						</div>
+						);
+					})}
 				</div>
-
+				<AddButton onClick={handleAddClick}>+</AddButton>
+				<div style={{ height: '70px' }}></div>
 				<Button
 					onClick={handleSubmit}
 					style={{ width: '820px', borderRadius: '10px', background: '#3AAF85', color: '#FFF' }}
 				>
 					저장하고 나가기
 				</Button>
+				<div style={{ height: '70px' }}></div>
 			</BaseDiv>
 		</BackgroundDiv>
 	);
@@ -262,4 +229,17 @@ const Button = styled.button`
 	cursor: pointer;
 	font-family: Regular;
 	font-size: 18px;
+`;
+
+const AddButton = styled.button`
+	width: 820px;
+	height: 50px;
+	flex-shrink: 0;
+	border-radius: 10px;
+	border: 1px solid var(--gray-03, #d9d9d9);
+	text-align: center;
+	background: #fff;
+	color: #d9d9d9;
+	font-size: 30px;
+	cursor: pointer;
 `;

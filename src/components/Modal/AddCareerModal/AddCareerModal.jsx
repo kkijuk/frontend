@@ -62,7 +62,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const [location, setLocation] = useState('ON_CAMPUS'); //소속(ON_CAMPUS: 교내, OFF_CAMPUS: 교외, OTHER: 기타)
 	const [role, setRole] = useState(''); //역할
 	const [organizer, setOrganizer] = useState(''); //주최
-	const [careerType, setCareerType] = useState(''); //경력분류
+	const [type, setType] = useState(''); //경력분류
 	const [workplace, setWorkplace] = useState(''); //근무처
 	const [position, setPosition] = useState(''); //직급/직위
 	const [jobField, setJobField] = useState(''); //직무/분야
@@ -84,7 +84,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 			location,
 			role,
 			organizer,
-			careerType,
+			type,
 			position,
 			jobField,
 			time,
@@ -101,7 +101,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		location,
 		role,
 		organizer,
-		careerType,
+		type,
 		position,
 		jobField,
 		time,
@@ -122,7 +122,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 			setLocation(initialData.location || 'ON_CAMPUS');
 			setRole(initialData.role || '');
 			setOrganizer(initialData.organizer || '');
-			setCareerType(initialData.careerType || '');
+			setType(initialData.type || '');
 			setWorkplace(initialData.workplace || '');
 			setPosition(initialData.position || '');
 			setJobField(initialData.jobField || '');
@@ -456,8 +456,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							<CareerTypeDropdown2
 								options={careerOptions}
 								placeholder="경력 구분을 선택해주세요."
-								value={careerType}
-								onChange={setCareerType}
+								value={type}
+								onChange={(type) => setType(type)}
 								isOpen={isCareerDropdownOpen}
 								onToggle={() => setIsCareerDropdownOpen(!isCareerDropdownOpen)}
 							/>
@@ -659,7 +659,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 			location,
 			role,
 			organizer,
-			careerType,
+			type,
 			position,
 			jobField,
 			time,

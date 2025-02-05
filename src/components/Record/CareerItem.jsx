@@ -43,7 +43,7 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 	
 		return yearDiff * 12 + monthDiff + 1; // 총 개월 수 계산
 	};
-	const activityMonths = calculateMonths(data.startdate, data.enddate);
+	const activityMonths = calculateMonths(data.startDate, data.endDate);
 
 	// 경력인 경우, 태그에는 categoryKoName이 아닌 type으로 표시
 	const getEmploymentsType = (type) => {
@@ -88,7 +88,7 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 					<SchoolInfo>
 						<SchoolName>{data.name}</SchoolName>
 						<Dates>
-							{data.startdate ? data.startdate : '시작 날짜 없음'} ~ {data.enddate ? data.enddate : '종료 날짜 없음'}
+							{data.startDate ? data.startDate : '시작 날짜 없음'} ~ {data.endDate ? data.endDate : '종료 날짜 없음'}
 							{activityMonths ? <Status>({activityMonths}개월)</Status> : <Status>(진행 중)</Status>}
 						</Dates>
 						<DetailContainer>
@@ -147,11 +147,11 @@ const Oval = styled.div`
 					? '#FCC400'
 					: props.category === '대외활동'
 						? '#77AFF2'
-						: props.category === '공모전/대회'
+						: props.category === '공모전대회'
 							? '#C48DEF'
 							: props.category === '프로젝트'
 								? '#78D333'
-								: props.category === '경력'
+								: props.category === '아르바이트'|| props.category === '인턴'|| props.category === '정규직'|| props.category === '계약직'|| props.category === '프리랜서'
 									? '#FA7C79'
 									: props.category === '교육'
 										? '#F99538'
@@ -163,11 +163,11 @@ const Oval = styled.div`
 				? '3px solid #FCC400'
 				: props.category === '대외활동'
 					? '3px solid #77AFF2'
-					: props.category === '공모전/대회'
+					: props.category === '공모전대회'
 						? '3px solid #C48DEF'
 						: props.category === '프로젝트'
 							? '3px solid #78D333'
-							: props.category === '경력'
+							: props.category === '아르바이트'|| props.category === '인턴'|| props.category === '정규직'|| props.category === '계약직'|| props.category === '프리랜서'
 								? '3px solid #FA7C79'
 								: props.category === '교육'
 									? '3px solid #F99538'
@@ -191,11 +191,11 @@ const Line = styled.div`
 				? '2px solid #FCC400'
 				: props.category === '대외활동' && props.isPastDue
 					? '2px solid #77AFF2'
-					: props.category === '공모전/대회' && props.isPastDue
+					: props.category === '공모전대회' && props.isPastDue
 						? '2px solid #C48DEF'
 						: props.category === '프로젝트' && props.isPastDue
 							? '2px solid #78D333'
-							: props.category === '경력' && props.isPastDue
+							: props.category === '아르바이트'|| props.category === '인턴'|| props.category === '정규직'|| props.category === '계약직'|| props.category === '프리랜서' && props.isPastDue
 								? '2px solid #FA7C79'
 								: props.category === '교육' && props.isPastDue
 									? '2px solid #F99538'
@@ -205,7 +205,7 @@ const Line = styled.div`
 											? '2px dashed #FCC400'
 											: props.category === '대외활동' && !props.isPastDue
 												? '2px dashed #77AFF2'
-												: props.category === '공모전/대회' && !props.isPastDue
+												: props.category === '공모전대회' && !props.isPastDue
 													? '2px dashed #C48DEF'
 													: props.category === '프로젝트' && !props.isPastDue
 														? '2px dashed #78D333'
@@ -260,11 +260,11 @@ const LevelTag = styled.div`
 			? '#FCC400'
 			: props.category === '대외활동'
 				? '#77AFF2'
-				: props.category === '공모전/대회'
+				: props.category === '공모전대회'
 					? '#C48DEF'
 					: props.category === '프로젝트'
 						? '#78D333'
-						: props.category === '경력'
+						: props.category === '아르바이트'|| props.category === '인턴'|| props.category === '정규직'|| props.category === '계약직'|| props.category === '프리랜서'
 							? '#FA7C79'
 							: props.category === '교육'
 								? '#F99538'

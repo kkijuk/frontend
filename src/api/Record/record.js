@@ -48,10 +48,9 @@ const readRecord = async () => {
 
 // [이력서 정보 수정]
 // 프로필 사진 또는 주소가 바뀔 때 해당 api가 호출됩니다.
-const updateRecord = async (recordId, data) => {
+const updateRecord = async (data) => {
 	try {
-		const response = await api.patch(`/history/resume/?recordId=${recordId}`, data);
-		console.log("recordId: ", recordId);
+		const response = await api.patch(`/history/resume`, data);
 		console.log(data);
 		console.log('Success - updateRecode:', response.data);
 

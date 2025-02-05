@@ -14,15 +14,21 @@ const Master = () => {
 	const navigate = useNavigate();
 
 	//(Data) 한줄소개, 지원동기및포부 제목 및 내용, 장단점 제목 및 내용, 직무적합성 제목 및 내용
-	const [questions, setQuestions] = useState({
+	// const [questions, setQuestions] = useState({
+	// 	oneLiner: '',
+	// 	motive_title: '',
+	// 	motive: '',
+	// 	prosAndCons_title: '',
+	// 	prosAndCons: '',
+	// 	job_fit_title: '',
+	// 	job_fit: '',
+	// 	updated_at: '',
+	// });
+	const [data, setData] = useState({
 		oneLiner: '',
-		motive_title: '',
-		motive: '',
-		prosAndCons_title: '',
-		prosAndCons: '',
-		job_fit_title: '',
-		job_fit: '',
+		questions:[],
 		updated_at: '',
+		state: 0,
 	});
 	const [showCreateButton, setShowCreateButton] = useState(false); // 자소서 생성 여부
 
@@ -33,15 +39,11 @@ const Master = () => {
 				const response = await readMaster();
 				console.log('내용조회: ', response);
 
-				setQuestions({
+				setData({
 					oneLiner: response.oneLiner,
-					motive_title: response.motiveTitle,
-					motive: response.motive,
-					prosAndCons_title: response.prosAndConsTitle,
-					prosAndCons: response.prosAndCons,
-					job_fit_title: response.jobSuitabilityTitle,
-					job_fit: response.jobSuitability,
+					questions: response.questionList,
 					updated_at: response.updatedAt,
+					state: response.state,
 				});
 			} catch (error) {
 				console.error('Error:', error);
@@ -79,21 +81,42 @@ const Master = () => {
 			<BaseDiv>
 				<ContentTitle>
 					<h1 style={{ display: 'inline-block' }}>
-						{questions.oneLiner ? questions.oneLiner : '한줄소개를 작성해주세요!'}
+						{data.oneLiner ? data.oneLiner : '한줄소개를 작성해주세요!'}
 					</h1>
 					<p className="lastUpdated" style={{ display: 'inline-block', position: 'absolute', top: '10px', right: 0 }}>
-						{questions.updated_at ? `마지막 수정일시: ${questions.updated_at}` : '마지막 수정일시: unknown'}
+						{data.updated_at ? `마지막 수정일시: ${data.updated_at}` : '마지막 수정일시: unknown'}
 					</p>
 				</ContentTitle>
 
-				<h3>{questions.motive_title ? questions.motive_title : '1. 지원동기 및 포부 [소제목]'}</h3>
-				<ContentBox>{questions.motive ? questions.motive : '아직 지원동기를 작성하지 않았어요.'}</ContentBox>
+				{data.questions.length > 0 ? (
+					data.questions.map((question, index) => {
+					// 인덱스에 따라 기본 제목과 내용을 설정
+					let defaultTitle = '질문 제목을 작성하세요';
+					let defaultContent = '아직 내용을 작성하지 않았어요.';
 
-				<h3>{questions.prosAndCons_title ? questions.prosAndCons_title : '2. 장단점 [소제목]'}</h3>
-				<ContentBox>{questions.prosAndCons ? questions.prosAndCons : '아직 장단점을 작성하지 않았어요..'}</ContentBox>
+					if (index === 0) {
+						defaultTitle = '1. 지원동기 및 포부 [소제목]';
+						defaultContent = '아직 지원동기를 작성하지 않았어요.';
+					} else if (index === 1) {
+						defaultTitle = '2. 장단점 [소제목]';
+						defaultContent = '아직 장단점을 작성하지 않았어요.';
+					} else if (index === 2) {
+						defaultTitle = '3. 직무적합성 [소제목]';
+						defaultContent = '아직 직무적합성을 작성하지 않았어요.';
+					}
 
-				<h3>{questions.job_fit_title ? questions.job_fit_title : '3. 직무적합성 [소제목]'}</h3>
-				<ContentBox>{questions.job_fit ? questions.job_fit : '아직 직무적합성을 작성하지 않았어요.'}</ContentBox>
+					return (
+						<div key={index}>
+						<h3>{question.title && question.title !== 'string' ? question.title : defaultTitle}</h3>
+						<ContentBox>
+							{question.title && question.title !== 'string' ? question.content : defaultContent}
+						</ContentBox>
+						</div>
+					);
+					})
+				) : (
+					<p>아직 질문이 없습니다.</p>
+				)}
 
 				<EditButton onClick={() => navigate('/history/master/rewrite')} style={{ right: '100px' }}>
 					<svg width="60" height="60" viewBox="2-2 80 70" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -105,8 +128,7 @@ const Master = () => {
 					</svg>
 				</EditButton>
 			</BaseDiv>
-		)
-		}
+		)}
 		</BackgroundDiv>
 	);
 };
