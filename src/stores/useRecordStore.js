@@ -9,7 +9,7 @@ import * as CareerEditAPI from '../api/Mycareer/CareerEdit.js';
 import { CareerEdit, CareerDelete } from '../api/Mycareer/CareerEdit.js';
 import { createPresignedUrl, saveKeyName, deleteS3File } from '../api/Record/s3File.js';
 import { addURL, deleteURL } from '../api/Record/url.js';
-import { updateUserData } from '../api/Record/user.js';
+import { updateRecord } from '../api/Record/record.js';
 
 // 기존 코드 유지
 const useRecordStore = create((set, get) => ({
@@ -258,9 +258,14 @@ const useRecordStore = create((set, get) => ({
 
 	updateUserData: async (data) => {
 		try {
-			const response = await updateUserData(data);
+			const response = await updateRecord(data);
 			set((state) => ({
-				userData: { ...state.userData, ...data },
+				userData: { 
+					...state.userData, 
+					profile: response.profile,
+					email: response.email, 
+					address: response.address
+				},
 			}));
 		} catch (error) {
 			console.error('Update User Data Error:', error);
