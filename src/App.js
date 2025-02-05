@@ -65,7 +65,7 @@ const App = () => {
 
 	useEffect(() => {
 		if (location.pathname === '/history/portfolio') {
-			alert('이 페이지로 이동할 수 없습니다.');
+			alert('이 페이지는 준비중입니다.');
 			navigate(-1); // 이전 페이지로 이동
 		}
 	}, [location, navigate]);
