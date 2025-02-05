@@ -47,6 +47,12 @@ const TitleContainer = styled.div`
 	align-items: center; /* 세로 가운데 정렬 */
 `;
 
+const TitleBox = styled.div`
+	height: 30px;
+	display: flex; /* 요소를 가로로 배치 */
+	gap: 23px;
+`;
+
 const IconWrapper = styled.div`
 	width: 30px;
 	height: 30px;
@@ -248,6 +254,33 @@ const EditTag = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
+`;
+
+const categoryToColorMap = {
+	'동아리': '#FCC400',
+	'대외활동': '#77AFF2',
+	'공모전/대회': '#BB7AEF',
+	'프로젝트': '#78D333',
+	'경력': '#FA7C79',
+	'교육': '#F99538',
+	'기타': '#707070',
+	'default': '#707070',
+};
+
+const NameTag = styled.div`
+	display: inline-flex;
+	height: 20px;
+	padding: 2px 16px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	flex-shrink: 0;
+	border-radius: 10px;
+	background-color: ${(props) => props.bgColor || categoryToColorMap['default']};
+	color: white;
+	font-size: 14px;
+	font-weight: bold;
 `;
 
 export default function MycareerDetail() {
@@ -273,6 +306,9 @@ export default function MycareerDetail() {
 
 	const fetchCareerDetails = async (id, type) => {
 		try {
+			// 한글 타입을 영어 타입으로 변환
+			const convertedType = categoryToTypeMap[type] || type;
+
 			const response = await ViewCareerDetail(id, type);
 			console.log('가져온 Career Details:', response.data); // 데이터 확인
 
@@ -319,8 +355,9 @@ export default function MycareerDetail() {
 		setIsAdding(true); // DetailAdd 표시
 	};
 
-	const handleCancelAdd = () => {
+	const handleCancelAdd = async () => {
 		setIsAdding(false); // DetailAdd 숨기기
+		await fetchCareerDetails(careerId, categoryToTypeMap[category]); // 데이터 새로고침
 	};
 
 	const handleSaveAdd = async () => {
@@ -333,11 +370,15 @@ export default function MycareerDetail() {
 			setIsEditing(false); // 편집 모드 종료
 		}
 
-		const mappedType = categoryToTypeMap[type] || type;
-		setSelectedCareer({ id, type: mappedType });
+		setSelectedCareer({ id, type });
 		setIsAdding(false);
-		fetchCareerDetails(id, mappedType);
 	};
+
+	useEffect(() => {
+		if (selectedCareer.id && selectedCareer.type) {
+			fetchCareerDetails(selectedCareer.id, selectedCareer.type);
+		}
+	}, [selectedCareer]);
 
 	const handleEditClick = () => {
 		setIsEditing(true); // 편집 모드로 변경
@@ -345,8 +386,6 @@ export default function MycareerDetail() {
 
 	const handleSaveClick = async () => {
 		try {
-			// ✅ 빈 내용도 저장 가능하도록 alert 삭제
-			// API 호출
 			await CareertextEdit(
 				careerId, // 현재 활동 ID
 				details?.category?.categoryEnName, // 카테고리 이름
@@ -355,6 +394,9 @@ export default function MycareerDetail() {
 
 			alert('활동 내역이 성공적으로 저장되었습니다.');
 			setIsEditing(false); // 편집 모드 종료
+
+			// 수정 후 바로 데이터 새로고침
+			await fetchCareerDetails(careerId, selectedCareer.type);
 		} catch (error) {
 			alert('활동 내역 저장에 실패했습니다.');
 		}
@@ -364,9 +406,11 @@ export default function MycareerDetail() {
 		setIsEditing(false); // 편집 모드 종료
 	};
 
-	const handleCloseEdit = () => {
+	const handleCloseEdit = async () => {
 		setEditingDetailId(null); // DetailAddEdit 닫기
-	}; //추가
+		const convertedType = categoryToTypeMap[selectedCareer.type] || selectedCareer.type;
+		await fetchCareerDetails(careerId, selectedCareer.type);
+	};
 
 	const openModal = () => {
 		// 모달 열기 + 데이터 설정, 데이터 다보내기
@@ -391,14 +435,20 @@ export default function MycareerDetail() {
 							enddate={career.endDate}
 							careerName={career.name}
 							category={career.category.categoryKoName}
-							selected={career.id === selectedCareer.id && categoryToTypeMap[career.category] === selectedCareer.type}
-							onClick={() => handleCareerBoxClick(career.id, career.category)}
+							selected={career.id === selectedCareer.id && career.category.categoryKoName === selectedCareer.type}
+							onClick={() => handleCareerBoxClick(career.id, career.category.categoryKoName)}
 						/>
 					))}
 				</CareerBoxContainer>
 				<CareerContentContainer isEditing={isEditing}>
 					<TitleContainer>
-						<Title>{details?.alias || '제목 없음'}</Title>
+						<TitleBox>
+							<Title>{details?.alias || '제목 없음'}</Title>
+							<NameTag bgColor={categoryToColorMap[details?.category?.categoryKoName] || categoryToColorMap['default']}>
+								{details?.name || 'No Name'}
+							</NameTag>
+						</TitleBox>
+
 						<IconWrapper onClick={openModal}>
 							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
 								<path
@@ -427,55 +477,70 @@ export default function MycareerDetail() {
 							<Content style={{ textDecoration: details?.summary ? 'none' : 'underline' }}>
 								{details?.summary || '활동내역을 작성해주세요.'}
 							</Content>
-							<EditTag onClick={handleEditClick}>수정</EditTag> {/* ✅ 클릭 시 수정 모드로 변경 */}
+							<EditTag onClick={handleEditClick}>수정</EditTag>
 						</ContentWrapper>
 					)}
 				</CareerContentContainer>
 				<Line></Line>
 				<CareerListBox>
-					{details?.detailList?.length > 0 ? (
-						details.detailList.map((detail) =>
-							editingDetailId === detail.detailId ? (
-								<DetailAddEdit
-									key={detail.detailId}
-									initialTitle={detail.title}
-									initialDate={detail.startDate}
-									initialContents={detail.content}
-									initialTags={detail.detailTag || []}
+					{details?.detailList?.length > 0 ? ( // 활동 내역이 존재하면 리스트 보여주기
+						<>
+							{details.detailList.map((detail) =>
+								editingDetailId === detail.detailId ? (
+									<DetailAddEdit
+										key={detail.detailId}
+										initialTitle={detail.title}
+										initialDate={detail.startDate}
+										initialContents={detail.content}
+										initialTags={detail.detailTag || []}
+										careerId={careerId}
+										detailId={detail.detailId}
+										onClose={handleCloseEdit}
+										onUpdate={() => {
+											const convertedType = categoryToTypeMap[selectedCareer.type] || selectedCareer.type;
+											fetchCareerDetails(careerId, convertedType);
+										}}
+									/>
+								) : (
+									<CareerList
+										key={detail.detailId}
+										title={detail.title}
+										date={`${detail.startDate} ~ ${detail.endDate || '진행중'}`}
+										contents={detail.content}
+										detailTag={detail.detailTag || []}
+										careerId={careerId}
+										detailId={detail.detailId}
+										categoryEnName={details?.category?.categoryEnName}
+										onClose={handleCloseEdit}
+										onUpdate={() => {
+											const convertedType = categoryToTypeMap[selectedCareer.type] || selectedCareer.type;
+											fetchCareerDetails(careerId, convertedType);
+										}}
+										onEditClick={() => handleEditClick(detail.detailId)}
+									/>
+								),
+							)}
+							{isAdding && ( // 기존 활동 아래에 추가 입력창 띄우기
+								<DetailAdd
+									onCancel={handleCancelAdd}
+									onSave={handleSaveAdd}
 									careerId={careerId}
-									detailId={detail.detailId}
-									onClose={handleCloseEdit}
-									onUpdate={() => fetchCareerDetails(careerId, selectedCareer.type)}
+									careerType={categoryToTypeMap[category]}
 								/>
-							) : (
-								<CareerList
-									key={detail.detailId}
-									title={detail.title}
-									date={`${detail.startDate} ~ ${detail.endDate || '진행중'}`}
-									contents={detail.content}
-									detailTag={detail.detailTag || []}
-									careerId={careerId}
-									detailId={detail.detailId}
-									categoryEnName={details?.category?.categoryEnName}
-									onClose={handleCloseEdit}
-									onUpdate={() => fetchCareerDetails(careerId, selectedCareer.type)}
-									onEditClick={() => handleEditClick(detail.detailId)}
-								/>
-							),
-						)
-					) : (
-						<NoContents>
-							등록된 활동 기록이 없습니다. <br />
-							아래 버튼을 눌러 활동 기록을 추가해주세요!
-						</NoContents>
-					)}
-					{isAdding && (
+							)}
+						</>
+					) : isAdding ? ( // 활동이 없을 때 추가 입력창 띄우기
 						<DetailAdd
 							onCancel={handleCancelAdd}
 							onSave={handleSaveAdd}
 							careerId={careerId}
 							careerType={categoryToTypeMap[category]}
 						/>
+					) : (
+						<NoContents>
+							등록된 활동 기록이 없습니다. <br />
+							아래 버튼을 눌러 활동 기록을 추가해주세요!
+						</NoContents>
 					)}
 				</CareerListBox>
 
