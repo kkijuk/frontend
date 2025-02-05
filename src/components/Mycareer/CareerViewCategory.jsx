@@ -160,7 +160,7 @@ const CareerViewCategory = ({ data }) => {
 										</CareerContainer>
 									</Name>
 									<Date>
-										{item.startDate} ~ {item.endDate}
+										{item.startDate === item.endDate ? item.startDate : `${item.startDate} ~ ${item.endDate}`}
 									</Date>
 								</ListBox>
 							))}
