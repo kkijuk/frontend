@@ -457,7 +457,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								options={careerOptions}
 								placeholder="경력 구분을 선택해주세요."
 								value={type}
-								onChange={type}
+								onChange={(type) => setType(type)}
 								isOpen={isCareerDropdownOpen}
 								onToggle={() => setIsCareerDropdownOpen(!isCareerDropdownOpen)}
 							/>

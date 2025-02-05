@@ -91,7 +91,7 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 							{data.startDate ? data.startDate : '시작 날짜 없음'} ~ {data.endDate ? data.endDate : '종료 날짜 없음'}
 							{activityMonths ? <Status>({activityMonths}개월)</Status> : <Status>(진행 중)</Status>}
 						</Dates>
-						<DetailContainer>
+						{/* <DetailContainer>
 							<div style={{ width:'58px',fontWeight: '600', marginRight: '30px'}}>활동내역</div>
 							{isSummaryEditMode ? (
 								<DetailWrapper>
@@ -110,7 +110,7 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 									{data.summary}
 								</>
 							)}
-						</DetailContainer>
+						</DetailContainer> */}
 					</SchoolInfo>
 				</div>
 			</Container>

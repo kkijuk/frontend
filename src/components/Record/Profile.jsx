@@ -5,12 +5,15 @@ const Profile = ({ profileBlob, onProfileChange }) => {
     const [profileUrl, setProfileUrl] = useState(null);
 
     useEffect(() => {
+        // profileBlob이 Blob 객체인 경우 URL.createObjectURL을 사용하여 Blob URL을 생성
         if (profileBlob instanceof Blob) {
             const newProfileUrl = URL.createObjectURL(profileBlob);
             setProfileUrl(newProfileUrl);
 
             // 메모리 누수를 방지하기 위해 URL.revokeObjectURL을 사용하여 URL을 해제
             return () => URL.revokeObjectURL(newProfileUrl);
+        } else if(typeof profileBlob === 'string') {
+            setProfileUrl(profileBlob);
         }
     }, [profileBlob]);
 
@@ -23,7 +26,7 @@ const Profile = ({ profileBlob, onProfileChange }) => {
         if (file && file.type.startsWith('image/')) {
             const newProfileUrl = URL.createObjectURL(file);
             setProfileUrl(newProfileUrl);
-            onProfileChange(file);
+            onProfileChange(newProfileUrl);
 
             // 메모리 누수를 방지하기 위해 URL.revokeObjectURL을 사용하여 URL을 해제
             return () => URL.revokeObjectURL(newProfileUrl);
