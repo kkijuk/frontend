@@ -1,14 +1,12 @@
-import api from '../../Axios'; 
+import api from '../../Axios';
 
 export const getUserInfo = async () => {
-  try {
-    // Axios GET 요청
-    const response = await api.get('/dashboard/user-info');
-
-    // 응답 데이터 반환
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching user info:', error.message);
-    return null;
-  }
+	try {
+		const response = await api.get('/dashboard/user-info', {
+			withCredentials: true, // 요청에 쿠키 포함
+		});
+	} catch (error) {
+		console.error('Error fetching user info:', error.message);
+		return null;
+	}
 };
