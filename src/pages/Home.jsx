@@ -25,6 +25,7 @@ const Body = styled.div`
 	padding-bottom: 100px;
 	margin: 50px auto;
 	gap: 40px;
+	margin-top: -15px;
 `;
 
 const Container1 = styled.div`
@@ -53,7 +54,7 @@ const Label = styled.div`
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 `;
 
 const ContentBox = styled.div`
@@ -124,9 +125,9 @@ const dummyData = [
 ];
 
 const bannerDummy = [
-	{ image: Banner1SVG, url: 'https://www.instagram.com/kki.juk/' },
-	{ image: Banner2SVG, url: 'https://forms.gle/y3VPjQaWBbVyegwk7' },
-	{ image: Banner3SVG, url: '' },
+	{ image: require('../assets/banner/beta_gift.png'), url: 'https://www.instagram.com/kki.juk/' },
+	{ image: require('../assets/banner/beta_test.png'), url: 'https://forms.gle/RuuoXu6DzMz9vpyk6' },
+	{ image: require('../assets/banner/main.png'), url: 'https://forms.gle/RuuoXu6DzMz9vpyk6' },
 ];
 
 export default function Home() {
@@ -155,6 +156,7 @@ export default function Home() {
 			</Container2>
 
 			{/* <Container3>
+
 				<Label>추천 활동 공고</Label>
 				<ContentBox>
 					{dummyData.slice(0, 4).map((data, index) => (
@@ -170,7 +172,8 @@ export default function Home() {
 						<RecommendBox key={index} data={data} url={data.url} />
 					))}
 				</ContentBox>
-			</Container4> */} 
+			</Container4> */}
+
 		</Body>
 	);
 }

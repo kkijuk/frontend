@@ -281,7 +281,6 @@ const NameTag = styled.div`
 	color: white;
 	font-size: 14px;
 	font-weight: bold;
-
 	color: #fff;
 	text-align: center;
 	font-family: Pretendard;
@@ -289,6 +288,7 @@ const NameTag = styled.div`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+
 `;
 
 export default function MycareerDetail() {

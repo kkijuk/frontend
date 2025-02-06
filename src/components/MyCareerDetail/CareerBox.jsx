@@ -11,7 +11,7 @@ const getBackgroundColor = (category, selected) => {
 		case '대외활동':
 			color = '#77AFF2';
 			break;
-		case '공모전/대회':
+		case '공모전대회':
 			color = '#BB7AEF';
 			break;
 		case '프로젝트':

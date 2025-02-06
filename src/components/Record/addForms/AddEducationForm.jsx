@@ -88,7 +88,7 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
         <CustomDropdown
           options={optionsEducationType}
           placeholder="학력구분"
-          value={formData.educationType}
+          value={formData.category}
           onChange={(value) => handleInputChange("category", value)}
           onToggle={() => handleDropdownToggle("category")}
           isOpen={showEducationTypeDropdown}
@@ -114,7 +114,7 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
         <CustomDropdown
           options={optionsEducationStatus}
           placeholder="학력상태"
-          value={formData.educationStatus}
+          value={formData.state}
           onChange={(value) => handleInputChange("state", value)}
           onToggle={() => handleDropdownToggle("state")}
           isOpen={showEducationStatusDropdown}
