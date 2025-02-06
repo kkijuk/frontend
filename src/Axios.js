@@ -5,9 +5,7 @@ import useAuthStore from './stores/useAuthStore';
 // Axios 인스턴스 생성
 const api = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
-    headers: {
-        'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     withCredentials: true,
 });
 
@@ -30,16 +28,14 @@ export const setupApiInterceptors = (navigate, location) => {
 
             // 🔹 토큰이 있는 사용자는 '/'로 이동 못하게 막음
             if (location.pathname === '/') {
-                navigate('/dashboard'); // 예시로 대시보드로 강제 이동
                 return Promise.reject(new Error('Authenticated users cannot access login page.'));
             }
 
+            // 🔹 Authorization 헤더에 토큰 추가
             config.headers['Authorization'] = `Bearer ${token}`;
             return config;
         },
-        (error) => {
-            return Promise.reject(error);
-        }
+        (error) => Promise.reject(error)
     );
 
     // 응답 인터셉터: 401 에러 처리 및 토큰 재발급
@@ -62,7 +58,7 @@ export const setupApiInterceptors = (navigate, location) => {
                         error.config.headers['Authorization'] = `Bearer ${newToken}`;
                         return api.request(error.config);
                     } else {
-                        // 🔹 로그아웃 및 토큰 삭제
+                        // 🔹 로그아웃 및 리디렉션
                         logout();
                         navigate('/');
                         setSnackbarOpen({
