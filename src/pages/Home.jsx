@@ -125,9 +125,9 @@ const dummyData = [
 ];
 
 const bannerDummy = [
-	{ image: Banner1SVG, url: 'https://www.instagram.com/kki.juk/' },
-	{ image: Banner2SVG, url: 'https://forms.gle/y3VPjQaWBbVyegwk7' },
-	{ image: Banner3SVG, url: '' },
+	{ image: require('../assets/banner/beta_gift.png'), url: 'https://www.instagram.com/kki.juk/' },
+	{ image: require('../assets/banner/beta_test.png'), url: 'https://forms.gle/RuuoXu6DzMz9vpyk6' },
+	{ image: require('../assets/banner/main.png'), url: 'https://forms.gle/RuuoXu6DzMz9vpyk6' },
 ];
 
 export default function Home() {
@@ -172,7 +172,7 @@ export default function Home() {
 						<RecommendBox key={index} data={data} url={data.url} />
 					))}
 				</ContentBox>
-			</Container4> */} 
+			</Container4> */}
 
 		</Body>
 	);
