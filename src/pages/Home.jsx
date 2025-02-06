@@ -61,7 +61,7 @@ const ContentBox = styled.div`
 	max-width: 820px;
 	display: flex;
 	flex-direction: row;
-	gap: 20px;
+	gap: 15px;
 `;
 
 const dummyData = [

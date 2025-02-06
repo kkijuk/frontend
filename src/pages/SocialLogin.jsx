@@ -257,10 +257,10 @@ const SocialLogin = () => {
             <KakaoIcon />
             카카오 로그인
           </SocialButton>
-          {/* <SocialButton className="naver" onClick={handleNaverLogin}>
+          <SocialButton className="naver" onClick={handleNaverLogin}>
             <NaverIcon />
             네이버 로그인
-          </SocialButton> */}
+          </SocialButton> 
         </ButtonContainer>
       </LoginScreen>
     </PageContainer>
