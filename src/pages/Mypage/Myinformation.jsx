@@ -608,10 +608,10 @@ export default function MyInformation() {
 			console.log('서버 응답 데이터 내용:', response?.data); // 응답 객체 내부 데이터 확인
 
 			// 응답이 예상과 다를 수 있으니 여러 값으로 체크
-			if (isVerified) {
+			if (response === true) {
 				alert('인증이 완료되었습니다.');
-				setIsVerified(true);
-				setTimeout(() => setIsEditingEmail(false), 500);
+				setIsVerified(true); // 인증 성공 상태 업데이트
+				setTimeout(() => setIsEditingEmail(false), 500); // 이메일 수정 창 닫기 (0.5초 후)
 			} else {
 				alert('인증번호가 올바르지 않습니다. 다시 확인해주세요.');
 			}
