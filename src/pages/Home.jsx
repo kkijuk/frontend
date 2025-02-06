@@ -25,6 +25,7 @@ const Body = styled.div`
 	padding-bottom: 100px;
 	margin: 50px auto;
 	gap: 40px;
+	margin-top: -15px;
 `;
 
 const Container1 = styled.div`
@@ -53,7 +54,7 @@ const Label = styled.div`
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 `;
 
 const ContentBox = styled.div`
@@ -155,6 +156,7 @@ export default function Home() {
 			</Container2>
 
 			{/* <Container3>
+
 				<Label>추천 활동 공고</Label>
 				<ContentBox>
 					{dummyData.slice(0, 4).map((data, index) => (
@@ -171,6 +173,7 @@ export default function Home() {
 					))}
 				</ContentBox>
 			</Container4> */}
+
 		</Body>
 	);
 }
