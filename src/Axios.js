@@ -13,22 +13,15 @@ const api = axios.create({
 let isRefreshing = false;
 
 // 요청 인터셉터: 토큰 검증 및 리디렉션 처리
-export const setupApiInterceptors = (navigate, location) => {
+export const setupApiInterceptors = (navigate) => {
     api.interceptors.request.use(
         (config) => {
-            const { token, logout } = useAuthStore.getState();
+            const { token } = useAuthStore.getState();
 
+            // 🔹 토큰이 없으면 무조건 '/'로 이동
             if (!token) {
-                // 🔹 토큰 없는 사용자는 무조건 '/'로 이동
-                if (location.pathname !== '/') {
-                    navigate('/');
-                }
+                navigate('/');
                 return Promise.reject(new Error('No authentication token. Redirecting to login.'));
-            }
-
-            // 🔹 토큰이 있는 사용자는 '/'로 이동 못하게 막음
-            if (location.pathname === '/') {
-                return Promise.reject(new Error('Authenticated users cannot access login page.'));
             }
 
             // 🔹 Authorization 헤더에 토큰 추가
@@ -54,11 +47,12 @@ export const setupApiInterceptors = (navigate, location) => {
                 try {
                     const success = await refreshAccessToken();
                     if (success) {
+                        // 🔹 새로운 토큰으로 요청 재시도
                         const newToken = useAuthStore.getState().token;
                         error.config.headers['Authorization'] = `Bearer ${newToken}`;
                         return api.request(error.config);
                     } else {
-                        // 🔹 로그아웃 및 리디렉션
+                        // 🔹 토큰 재발급 실패 시 로그아웃 후 리디렉션
                         logout();
                         navigate('/');
                         setSnackbarOpen({
