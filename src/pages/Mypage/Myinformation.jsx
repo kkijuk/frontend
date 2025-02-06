@@ -610,6 +610,7 @@ export default function MyInformation() {
 			// 응답이 예상과 다를 수 있으니 여러 값으로 체크
 			if (response === true) {
 				alert('인증이 완료되었습니다.');
+				setEmail(emailInput);
 				setIsVerified(true); // 인증 성공 상태 업데이트
 				setTimeout(() => setIsEditingEmail(false), 500); // 이메일 수정 창 닫기 (0.5초 후)
 			} else {
