@@ -151,6 +151,9 @@ export const verifyCode = async ({ email, authNumber }) => {
 				withCredentials: true,
 			},
 		);
+
+		console.log('API 응답 데이터 response.data:', response.data);
+
 		return response.data;
 	} catch (error) {
 		console.error('인증번호 확인 중 오류 발생:', error);
