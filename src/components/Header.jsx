@@ -156,10 +156,10 @@ export default function Header() {
 
 	const handleLogout = async () => {
 		try {
-			const success = await logout(); // ✅ 로그아웃 API 호출
+			sessionStorage.setItem('manualLogout', 'true');
+			const success = await logout(); //  로그아웃 API 호출
 			if (success) {
-				alert('로그아웃 되었습니다.');
-				navigate('/'); // ✅ 홈으로 이동
+				navigate('/'); //  홈으로 이동
 			} else {
 				alert('로그아웃에 실패했습니다. 다시 시도해주세요.');
 			}
