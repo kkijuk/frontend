@@ -18,11 +18,14 @@ export const logout = async () => {
             },
         });
 
-        if (response.status === 200 && response.data === 'logout success') {
+        console.log('API 응답 데이터:', response.data); // ✅ 응답 로그 추가
+
+        if (response.status === 200) {
             console.log('로그아웃 성공');
             
-            //  useAuthStore에서 상태 초기화
+            // ✅ useAuthStore에서 상태 초기화 (로컬 스토리지에서 토큰 삭제)
             logout();
+            console.log('스토어 로그아웃 실행 완료');
 
             return true;
         } else {
