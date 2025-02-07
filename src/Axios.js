@@ -2,7 +2,7 @@ import axios from 'axios';
 import { refreshAccessToken } from './services/refreshToken';
 import useAuthStore from './stores/useAuthStore';
 
-// Axios 인스턴스 생성
+// Axios 인스턴스 생성 
 const api = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
     headers: {
@@ -11,75 +11,68 @@ const api = axios.create({
     withCredentials: true,
 });
 
-// 무한 요청 방지 플래그
+// 무한 요청 방지를 위한 플래그
 let isRefreshing = false;
 
-// 요청 인터셉터: 토큰 검증 및 리디렉션 처리
-export const setupApiInterceptors = (navigate, location) => {
-    api.interceptors.request.use(
-        (config) => {
-            const { token, logout } = useAuthStore.getState();
+// **추가: 대기 중인 요청을 저장하는 큐**
+let refreshQueue = [];
 
-            if (!token) {
-                // 🔹 토큰 없는 사용자는 무조건 '/'로 이동
-                if (location.pathname !== '/') {
-                    navigate('/');
-                }
-                return Promise.reject(new Error('No authentication token. Redirecting to login.'));
-            }
-
-            // 🔹 토큰이 있는 사용자는 '/'로 이동 못하게 막음
-            if (location.pathname === '/') {
-                navigate('/dashboard'); // 예시로 대시보드로 강제 이동
-                return Promise.reject(new Error('Authenticated users cannot access login page.'));
-            }
-
+// 요청을 보내기 전 실행되는 인터셉터
+api.interceptors.request.use(
+    (config) => {
+        const token = useAuthStore.getState().token;
+        if (token) {
             config.headers['Authorization'] = `Bearer ${token}`;
-            return config;
-        },
-        (error) => {
-            return Promise.reject(error);
         }
-    );
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
-    // 응답 인터셉터: 401 에러 처리 및 토큰 재발급
+// 응답 인터셉터: 401 에러 처리 및 토큰 재발급
+export const setupApiInterceptors = (navigate) => {
     api.interceptors.response.use(
         (response) => response,
         async (error) => {
-            const { setSnackbarOpen, logout } = useAuthStore.getState();
+            const { logout } = useAuthStore.getState();
 
             if (error.response?.status === 401) {
                 if (isRefreshing) {
-                    return Promise.reject(error);
+                    // **추가: 기존 요청을 큐에 저장하고, 토큰 재발급 후 재시도**
+                    return new Promise((resolve) => {
+                        refreshQueue.push((newToken) => {
+                            error.config.headers['Authorization'] = `Bearer ${newToken}`;
+                            resolve(api.request(error.config));
+                        });
+                    });
                 }
 
-                isRefreshing = true;
+                isRefreshing = true; // 무한 요청 방지 플래그 설정
 
                 try {
                     const success = await refreshAccessToken();
                     if (success) {
                         const newToken = useAuthStore.getState().token;
                         error.config.headers['Authorization'] = `Bearer ${newToken}`;
+
+                        // **추가: 모든 대기 중인 요청을 재시도**
+                        refreshQueue.forEach((callback) => callback(newToken));
+                        refreshQueue = [];
+
                         return api.request(error.config);
                     } else {
-                        // 🔹 로그아웃 및 토큰 삭제
+                        // 재발급 실패 시 로그아웃 및 리디렉트
                         logout();
                         navigate('/');
-                        setSnackbarOpen({
-                            text: '세션이 만료되었습니다. 다시 로그인해주세요.',
-                            severity: 'warning',
-                        });
                     }
                 } catch (refreshError) {
                     console.error('Token refresh failed:', refreshError);
                     logout();
                     navigate('/');
-                    setSnackbarOpen({
-                        text: '세션이 만료되었습니다. 다시 로그인해주세요.',
-                        severity: 'warning',
-                    });
                 } finally {
-                    isRefreshing = false;
+                    isRefreshing = false; // 재발급 프로세스 종료
                 }
             }
 
