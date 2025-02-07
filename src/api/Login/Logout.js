@@ -11,7 +11,7 @@ export const logout = async () => {
         }
 
         //  로그아웃 API 요청 시 토큰 포함
-        const response = await api.post('/logout', null, {
+        const response = await api.post('/member/logout', null, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 accept: '*/*',
