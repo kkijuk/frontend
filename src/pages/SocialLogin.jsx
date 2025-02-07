@@ -3,9 +3,6 @@ import styled from 'styled-components';
 import logo from '../assets/logo.png';
 import useAuthStore from '../stores/useAuthStore';
 import { useNavigate } from 'react-router-dom';
-import background from '../assets/main/background.svg';
-import star1 from '../assets/main/star1.svg';
-import star2 from '../assets/main/star2.svg';
 
 const PageContainer = styled.div`
   background: var(--background, linear-gradient(180deg, #FFF 30%, #E1F4ED 100%));
