@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../assets/logo.png';
+import { logout } from '../api/Login/Logout'; 
 
 const HeaderWrapper = styled.div`
 	width: 100%;
@@ -153,6 +154,21 @@ export default function Header() {
 		navigate(path);
 	};
 
+	const handleLogout = async () => {
+		try {
+			const success = await logout(); // ✅ 로그아웃 API 호출
+			if (success) {
+				alert('로그아웃 되었습니다.');
+				navigate('/'); // ✅ 홈으로 이동
+			} else {
+				alert('로그아웃에 실패했습니다. 다시 시도해주세요.');
+			}
+		} catch (error) {
+			console.error('로그아웃 오류:', error);
+			alert('로그아웃 중 문제가 발생했습니다.');
+		}
+	};
+
 	return (
 		<HeaderWrapper>
 			<HeaderStyle>
@@ -186,7 +202,7 @@ export default function Header() {
 							{isDropdownOpen && (
 								<DropdownMenu ref={dropdownRef}>
 									<a onClick={() => handleNavigation('/mypage/authentication')}>마이페이지</a>
-									<a onClick={() => navigate('/')}>로그아웃</a>
+									<a onClick={handleLogout}>로그아웃</a>
 								</DropdownMenu>
 							)}
 						</UserProfileButton>
