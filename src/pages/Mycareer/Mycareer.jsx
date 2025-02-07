@@ -13,6 +13,7 @@ import AddJobButton from '../../components/shared/AddJobButton';
 import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
 import SearchBar from '../../components/Mycareer/shareSearchBar';
 import CareerTimeline from '../../components/Mycareer/CareerTimeline';
+import useAuthRedirect from '../../stores/useAuthRedirect'; 
 
 const Container = styled.div`
 	width: 100%;
@@ -43,6 +44,7 @@ const SearchBox = styled.div`
 `;
 
 export default function Mycareer() {
+	useAuthRedirect();
 	const [view, setView] = useState('year');
 	const [showModal, setShowModal] = useState(false);
 	const [careers, setCareers] = useState({});

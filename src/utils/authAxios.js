@@ -5,7 +5,6 @@ import { refreshAccessToken } from '../services/refreshToken'; // 토큰 재발�
 
 const useAuthAxios = () => {
     const navigate = useNavigate();
-    const { setSnackbarOpen } = useAuthStore.getState(); // 알림 설정 함수 가져오기
 
     const axiosInstance = axios.create({
         baseURL: process.env.REACT_APP_API_URL,
@@ -46,10 +45,6 @@ const useAuthAxios = () => {
                         // 재발급 실패 시 로그아웃 및 리디렉션
                         useAuthStore.getState().logout();
                         navigate('/');
-                        setSnackbarOpen({
-                            text: '세션이 만료되었습니다. 다시 로그인해주세요.',
-                            severity: 'warning',
-                        });
                     }
                 } catch (refreshError) {
                     console.error('Token refresh failed:', refreshError);

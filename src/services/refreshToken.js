@@ -3,29 +3,34 @@ import useAuthStore from '../stores/useAuthStore';
 export const refreshAccessToken = async () => {
     const { refreshToken, updateAccessToken, logout } = useAuthStore.getState();
 
+    if (!refreshToken) {
+        logout();
+        return false;
+    }
+
     try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/member/refreshToken`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ refreshToken: refreshToken }),
+            body: JSON.stringify({ refreshToken }),
         });
 
         if (response.ok) {
             const data = await response.json();
             const { accessToken, refreshToken: newRefreshToken } = data;
 
-            // 상태 업데이트
+            // 새 토큰 저장
             updateAccessToken(accessToken, newRefreshToken);
 
-            return true; // 성공적으로 토큰을 재발급받음
+            return true;
         } else {
             console.error('Failed to refresh token:', response.status);
-            logout(); // 토큰 갱신 실패 시 로그아웃 처리
+            logout();
             return false;
         }
     } catch (error) {
         console.error('Error refreshing token:', error);
-        logout(); // 네트워크 에러 발생 시 로그아웃 처리
+        logout();
         return false;
     }
 };
