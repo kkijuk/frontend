@@ -32,7 +32,7 @@ const EmailAndAddress = ({type, userData, onSave}) => {
             placeholder={type === "address" ? "주소를 입력하세요" : "이메일을 입력하세요"}
           />
           <ButtonGroup>
-            <SaveButton onClick={() => {onSave(type, data); setIsEditingMode(false)}}>수정</SaveButton>
+            <SaveButton onClick={() => {onSave({type, data}); setIsEditingMode(false)}}>수정</SaveButton>
             <CancelButton onClick={() => setIsEditingMode(false)}>취소</CancelButton>
           </ButtonGroup>
         </EditAddressContainer>

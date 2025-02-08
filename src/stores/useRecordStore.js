@@ -15,12 +15,13 @@ import { updateRecord } from '../api/Record/record.js';
 const useRecordStore = create((set, get) => ({
 	//초기 상태
     userData:{
-        userId:null,
+        // userId:null,
         name:null,
-        birth:null,
-        mobile:null,
+        birthday:null,
+        phone:null,
         email:null,
-        address:null
+        address:null,
+		profileImageUrl:null,
     },
     updated_at:null,
 	educations: [],
@@ -54,11 +55,11 @@ const useRecordStore = create((set, get) => ({
 
 			set({
                 userData:{
-                    userId:data.userId,
-					profile: data.profile,
+                    // userId:data.userId,
+					profileImageUrl: data.profileImageUrl,
                     name:data.name,
-                    birth:data.birthday,
-                    mobile:data.phone,
+                    birthday:data.birthday,
+                    phone:data.phone,
                     email:data.email,
                     address:data.address
                 },
@@ -263,7 +264,7 @@ const useRecordStore = create((set, get) => ({
 			set((state) => ({
 				userData: { 
 					...state.userData, 
-					profile: response.profile,
+					profileImageUrl: response.profileImageUrl,
 					email: response.email, 
 					address: response.address
 				},

@@ -60,7 +60,7 @@ const History = () => {
 	} = store;
 
 	// DATA
-	const {profile, name, birth, mobile, email, address} = userData;
+	const {profileImageUrl, name, birthday, phone, email, address} = userData;
 	const licenseSection = licenses.filter(item => item.licenseTag === 'LICENSE');
 	const foreignSection = licenses.filter(item => item.licenseTag === 'FOREIGN');
 	const skillSections = {
@@ -85,11 +85,11 @@ const History = () => {
 	const [isAddCareerModalOpen, setIsAddCareerModalOpen] = useState(false); // 내 커리어 관련 활동 추가 모달 관리
 	const [activeSection, setActiveSection] = useState("");	// 인디케이터 활성화 섹션
 	const [editableUserData, setEditableUserData] = useState({	// 사용자 정보 수정
-		profile: profile,
+		profileImageUrl: profileImageUrl,
 		address: address,
 		email: email,
 	});
-	const [profileBlob, setProfileBlob] = useState(profile);	// 프로필 이미지
+	const [profileURL, setProfileURL] = useState(profileImageUrl);	// 프로필 이미지
 
 	// useEffect
 	// 이력서 불러오기
@@ -201,10 +201,10 @@ const History = () => {
 	// 인적사항 변경 관련 로직
 	//(1) 프로필 사진 변경 관련 로직
 	const handleProfileChange = (file) => {
-		setProfileBlob(file);
+		setProfileURL(file);
 		setEditableUserData((prev) => ({
 			...prev,
-			profile: file,
+			profileImageUrl: file,
 		}));
 		console.log('Profile Image changed:', file);
 	}
@@ -233,17 +233,7 @@ const History = () => {
 					이력서 생성하기
 				</CreateRecordButton>
 			) : (
-				// <Layout 
-				// 	id = {sections[0].id}
-				// 	key = {sections[0].id}
-				// 	leftAsideContent={
-				// 		<ScrollNavigator
-				// 			sections = {sections}
-				// 			activeSection={activeSection}
-				// 			onClick={scrollToSection}
-				// 		/>
-				// 	}
-				// >
+
 					<div style={{width:'100%', minHeight:'100vh'}}>
 						{/* <AddCareerModal></AddCareerModal> */}
 						<ScrollNavigatorContainer>
@@ -265,7 +255,7 @@ const History = () => {
 							key = {sections[0].id}	
 						/>
 						<Profile
-							profileBlob={profileBlob}
+							profileBlob={profileURL}
 							onProfileChange={handleProfileChange}
 						/>
 						<UserInfoWrapper>
@@ -277,10 +267,10 @@ const History = () => {
 								<InfoValue>{name}</InfoValue>
 
 								<InfoLabel>생년월일</InfoLabel>
-								<InfoValue>{birth}</InfoValue>
+								<InfoValue>{birthday}</InfoValue>
 
 								<InfoLabel>전화번호</InfoLabel>
-								<InfoValue>{mobile}</InfoValue>
+								<InfoValue>{phone}</InfoValue>
 
 								<InfoLabel>이메일</InfoLabel>
 								<InfoValue>
