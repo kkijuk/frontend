@@ -60,9 +60,9 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				setSelectedCategory(5);
 			} else if (initialData.category.categoryEnName === 'PROJECT') {
 				setSelectedCategory(4);
-			} else if (initialData.category.categoryEnName === ' COM') {
+			} else if (initialData.category.categoryEnName === 'COM') {
 				setSelectedCategory(3);
-			} else if (initialData.category.categoryEnName === ' ETC') {
+			} else if (initialData.category.categoryEnName === 'ETC') {
 				setSelectedCategory(7);
 			}
 		}
@@ -753,7 +753,11 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							key={key}
 							isSelected={selectedCategory === parseInt(key)}
 							bgColor={categoryColors[key]}
-							onClick={() => setSelectedCategory(parseInt(key))}>
+							onClick={() => {
+								if(!isEditMode) { // 수정모드가 아닐 때만 카테고리 변경 가능
+									setSelectedCategory(parseInt(key));
+								}
+							}}>
 							{categoryMap[key]}
 						</CategoryButton>
 					))}
