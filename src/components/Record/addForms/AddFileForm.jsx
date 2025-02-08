@@ -9,7 +9,8 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
         fileTitle: "",
         keyName: "",
         urlTitle: "",
-        url: ""
+        url: "",
+        file: null,
     });
 
     const [isTypeURL, setIsTypeUrl] = useState(true);
@@ -77,7 +78,7 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                             style={{ width: "450px" }}
                         />
                     ) : (
-                        <FileSearch></FileSearch>
+                        <FileSearch/>
                     )}
                     <ButtonRow>
                     {mode === "edit" ? (

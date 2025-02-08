@@ -7,7 +7,7 @@ import { readRecord } from '../api/Record/record.js'; // default export
 import { createCareer } from '../api/Mycareer/Career.js';
 import * as CareerEditAPI from '../api/Mycareer/CareerEdit.js';
 import { CareerEdit, CareerDelete } from '../api/Mycareer/CareerEdit.js';
-import { createPresignedUrl, saveKeyName, deleteS3File } from '../api/Record/s3File.js';
+import { createPresignedUrl, saveKeyName, deleteS3File, uploadFileToS3 } from '../api/Record/s3File.js';
 import { addURL, deleteURL } from '../api/Record/url.js';
 import { updateRecord } from '../api/Record/record.js';
 
@@ -194,8 +194,14 @@ const useRecordStore = create((set, get) => ({
 		try{
 			let response;
 			if(data.fileType === 'File'){
+				// 1. presigned URL과 keyName 생성
 				const { keyName, presignedURL } = await createPresignedUrl(data);
-				const data = await saveKeyName(keyName, presignedURL)
+
+				// 2. s3에 파일 업로드
+				await uploadFileToS3(data.file, presignedURL);
+
+				// 3. 업로드 성공하면, keyName 백엔드에 저장
+				const data = await saveKeyName(keyName, data.fileTitle);
 			} else if(data.fileType === 'URL'){
 				const data = await addURL(data);
 			} else {
