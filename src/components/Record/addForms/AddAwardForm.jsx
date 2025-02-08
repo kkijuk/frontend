@@ -8,6 +8,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
     competitionName: "",
     awardName: "",
     administer: "",
+    id: 0,
   });
 
   // 수정 모드일 경우 formData 기존 내용으로 초기화

@@ -6,7 +6,7 @@ import { KebabMenu2 } from '../KebabMenu';
 const AwardItem = ({ data, onSave, onUpdate, onDelete, onClose }) => {
   const [isEditMode, setIsEditMode] = useState(false);
 
-  console.log('AwardItem: ', data);
+  // console.log('AwardItem: ', data);
 
   return (
     <Container>
@@ -47,7 +47,7 @@ const EditButton = styled.button`
 	border: none;
 	position: absolute;
 	right: 0;
-	top:10px;
+	// top:10px;
 	background-color: transparent;
 	opacity: 0;
 	padding: 0px 50px 70px 0px;
