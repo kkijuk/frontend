@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReactApexChart from 'react-apexcharts';
 import moment from 'moment';
@@ -20,15 +20,23 @@ const TimelineChart = () => {
 			fillColor: getColorByCategory(item.category.categoryKoName) || '#707070',
 		})) || [];
 
-	let minDate = Math.min(...formattedData.map((item) => item.y[0]));
-	let maxDate = Math.max(...formattedData.map((item) => item.y[1]));
+	const [minDate, setMinDate] = useState();
+	const [maxDate, setMaxDate] = useState();
 
-	// 활동 없는 경우 x축 6개월로 설정
-	if (minDate === Infinity || maxDate === -Infinity) {
-		const today = new Date();
-		minDate = today.getTime();
-		maxDate = today.setMonth(today.getMonth() - 6);
-	}
+	useEffect(() => {
+		if (formattedData.length > 0) {
+			setMinDate(Math.min(...formattedData.map((item) => item.y[0])));
+			setMaxDate(Math.max(...formattedData.map((item) => item.y[1])));
+		} else {
+			// 데이터가 없을 경우 현재 날짜 기준 6개월 전~현재를 설정
+			const today = new Date().getTime();
+			const sixMonthsAgo = new Date();
+			sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+			setMinDate(sixMonthsAgo.getTime());
+			setMaxDate(today);
+		}
+	}, [rawData]); // rawData가 변경될 때마다 실행
 
 	const [options] = useState({
 		chart: {
