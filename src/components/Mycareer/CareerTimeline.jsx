@@ -24,8 +24,8 @@ const TimelineBox = styled.div`
 
 const ChartWrapper = styled.div`
 	position: absolute;
-	left: -5%; // 차트를 왼쪽으로 이동
-	right: -5%; // 오른쪽 여백 조정
+	left: 5%; // 차트를 왼쪽으로 이동
+	right: 5%; // 오른쪽 여백 조정
 `;
 
 const CareerTimeline = () => {
