@@ -6,7 +6,7 @@ import { KebabMenu2 } from '../KebabMenu';
 const AwardItem = ({ data, onSave, onUpdate, onDelete, onClose }) => {
   const [isEditMode, setIsEditMode] = useState(false);
 
-  // console.log('AwardItem: ', data);
+  console.log('AwardItem: ', data);
 
   return (
     <Container>

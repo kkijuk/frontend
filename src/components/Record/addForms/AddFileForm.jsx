@@ -78,7 +78,9 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                             style={{ width: "450px" }}
                         />
                     ) : (
-                        <FileSearch/>
+                        <FileSearch
+                          onFileSelect = {(selectedFile) => handleInputChange("file", selectedFile)}
+                        />
                     )}
                     <ButtonRow>
                     {mode === "edit" ? (
