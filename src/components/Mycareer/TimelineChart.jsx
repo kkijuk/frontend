@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReactApexChart from 'react-apexcharts';
 import moment from 'moment';
@@ -11,11 +11,39 @@ const TimelineChart = () => {
 	const { data: rawData, isLoading, error } = useFetchTimeline();
 	const navigate = useNavigate();
 
+	let formattedData =
+		rawData?.data?.map((item) => ({
+			careerId: item.careerId,
+			category: item.category,
+			y: [new Date(item.startdate).getTime(), new Date(item.enddate).getTime()],
+			name: item.title,
+			fillColor: getColorByCategory(item.category.categoryKoName) || '#707070',
+		})) || [];
+
+	const [minDate, setMinDate] = useState();
+	const [maxDate, setMaxDate] = useState();
+
+	useEffect(() => {
+		if (formattedData.length > 0) {
+			setMinDate(Math.min(...formattedData.map((item) => item.y[0])));
+			setMaxDate(Math.max(...formattedData.map((item) => item.y[1])));
+		} else {
+			// 데이터가 없을 경우 현재 날짜 기준 6개월 전~현재를 설정
+			const today = new Date().getTime();
+			const sixMonthsAgo = new Date();
+			sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+			setMinDate(sixMonthsAgo.getTime());
+			setMaxDate(today);
+		}
+	}, [rawData]); // rawData가 변경될 때마다 실행
+
 	const [options] = useState({
 		chart: {
 			height: 350,
+			width: '100%',
 			type: 'rangeBar',
-			offsetX: -50,
+			offsetX: 0,
 			background: 'transparent',
 			zoom: {
 				enabled: false,
@@ -63,24 +91,28 @@ const TimelineChart = () => {
 				const startDate = moment(data.y[0]).format('YYYY.MM.DD');
 				const endDate = moment(data.y[1]).format('YYYY.MM.DD');
 				return `
-					<div style="
-						background: #333;
-						color: #fff;
-						padding: 10px;
-						border-radius: 8px;
-						font-size: 14px;
-						text-align: center;
-						box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-					">
-						<div>${name}</div>
-						<div style="font-size: 12px; margin-top: 4px;">${startDate} ~ ${endDate}</div>
-					</div>`;
+						<div style="
+							background: #333;
+							color: #fff;
+							padding: 10px;
+							border-radius: 8px;
+							font-size: 14px;
+							text-align: center;
+							box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+						">
+							<div>${name}</div>
+							<div style="font-size: 12px; margin-top: 4px;">${startDate} ~ ${endDate}</div>
+						</div>`;
 			},
 		},
 		xaxis: {
 			type: 'datetime',
+			// range: 365 * 24 * 60 * 60 * 1000,
+			tickAmount: 6,
+			min: minDate,
+			max: maxDate,
 			labels: {
-				offsetX: 25,
+				offsetX: 20,
 				formatter: (val) => moment(val).format('YYYY.MM'),
 			},
 			axisBorder: { show: false },
@@ -99,38 +131,6 @@ const TimelineChart = () => {
 	if (error) {
 		console.error('Error fetching timeline data:', error);
 		return <div>타임라인을 불러오는 도중에 오류가 발생했어요...!</div>;
-	}
-
-	let formattedData = rawData?.data.map((item) => ({
-		careerId: item.careerId,
-		category: item.category,
-		y: [new Date(item.startdate).getTime(), new Date(item.enddate).getTime()],
-		name: item.title,
-		fillColor: getColorByCategory(item.category.categoryKoName) || '#707070',
-	}));
-
-	// 만약 데이터가 없다면 현재로부터 6개월 전 x축 제공
-	if (!formattedData || formattedData.length === 0) {
-		const today = new Date();
-		const sixMonthsAgo = new Date();
-		sixMonthsAgo.setMonth(today.getMonth() - 6);
-
-		formattedData = [
-			{
-				careerId: 0, // 가상의 ID
-				category: { categoryKoName: '기본 데이터' },
-				y: [sixMonthsAgo.getTime(), sixMonthsAgo.getTime()], // 6개월 전
-				name: '6개월 전 기록',
-				fillColor: '#909090',
-			},
-			{
-				careerId: 1, // 가상의 ID
-				category: { categoryKoName: '기본 데이터' },
-				y: [today.getTime(), today.getTime()], // 오늘 날짜
-				name: '오늘',
-				fillColor: '#ff9900',
-			},
-		];
 	}
 
 	const distributedData = distributeTimelinePositions(formattedData);

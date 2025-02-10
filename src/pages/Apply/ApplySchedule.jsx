@@ -12,6 +12,7 @@ import WaitingList from '../../components/Apply/WaitingList';
 import ApplyList from '../../components/Apply/ApplyList';
 import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
 import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
+import useAuthRedirect from '../../stores/useAuthRedirect'; 
 
 const Title = styled.h1`
 	color: var(--black, #000);
@@ -36,6 +37,7 @@ const StatusContainer = styled.div`
 `;
 
 export default function ApplySchedule() {
+	useAuthRedirect();
 	const [view, setView] = useState('list');
 	const [date, setDate] = useState(new Date());
 	const [showModal, setShowModal] = useState(false);

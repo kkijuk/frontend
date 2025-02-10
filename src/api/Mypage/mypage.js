@@ -136,11 +136,13 @@ export const sendCode = async (email) => {
 };
 
 //인증번호 확인
-export const verifyCode = async (email) => {
+export const verifyCode = async ({ email, authNumber }) => {
+	console.log('API 요청 데이터:', { email, authNumber });
+
 	try {
 		const response = await axios.post(
 			`${apiUrl}/auth/confirm`,
-			{ email },
+			{ email, authNumber },
 			{
 				headers: {
 					'Content-Type': 'application/json',
@@ -149,9 +151,12 @@ export const verifyCode = async (email) => {
 				withCredentials: true,
 			},
 		);
+
+		console.log('API 응답 데이터 response.data:', response.data);
+
 		return response.data;
 	} catch (error) {
-		console.error('인증번호 전송 중 오류 발생:', error);
+		console.error('인증번호 확인 중 오류 발생:', error);
 		throw error;
 	}
 };

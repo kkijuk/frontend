@@ -24,8 +24,10 @@ import FileItem from '../../components/Record/readOnlyItems/FileItem';
 import Profile from '../../components/Record/Profile';
 import EmailAndAddress from '../../components/Record/EmailAndAddress';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import useAuthRedirect from '../../stores/useAuthRedirect'; 
 
 const History = () => {
+    useAuthRedirect();
 	// useRecordStore 호출
 	const store = useRecordStore();
 	const {

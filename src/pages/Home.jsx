@@ -13,6 +13,7 @@ import Banner2SVG from '../assets/banner2.svg';
 import Banner3SVG from '../assets/banner3.svg';
 import Box from '../components/Home/Box';
 import CareerTimeline from '../components/Mycareer/CareerTimeline';
+import useAuthRedirect from '../stores/useAuthRedirect'; 
 
 const Body = styled.div`
 	width: 820px;
@@ -25,6 +26,7 @@ const Body = styled.div`
 	padding-bottom: 100px;
 	margin: 50px auto;
 	gap: 40px;
+	margin-top: -15px;
 `;
 
 const Container1 = styled.div`
@@ -53,7 +55,7 @@ const Label = styled.div`
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 `;
 
 const ContentBox = styled.div`
@@ -61,7 +63,7 @@ const ContentBox = styled.div`
 	max-width: 820px;
 	display: flex;
 	flex-direction: row;
-	gap: 20px;
+	gap: 15px;
 `;
 
 const dummyData = [
@@ -124,13 +126,14 @@ const dummyData = [
 ];
 
 const bannerDummy = [
-	{ image: require('../assets/banner/main.png'), url: 'https://www.instagram.com/kki.juk/' },
-	{ image: require('../assets/banner/beta_gift.png'), url: 'https://forms.gle/RuuoXu6DzMz9vpyk6' },
+	{ image: require('../assets/banner/beta_gift.png'), url: 'https://www.instagram.com/kki.juk/' },
 	{ image: require('../assets/banner/beta_test.png'), url: 'https://forms.gle/RuuoXu6DzMz9vpyk6' },
+	{ image: require('../assets/banner/main.png'), url: 'https://forms.gle/RuuoXu6DzMz9vpyk6' },
 ];
 
 export default function Home() {
 	const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
+	useAuthRedirect(); // ✅ 추가: 로그인 상태에 따라 자동 리디렉트 수행
 
 	const handleTimelineClick = () => {
 		window.scrollTo(0, 0);
@@ -154,7 +157,8 @@ export default function Home() {
 				</ContentBox>
 			</Container2>
 
-			<Container3>
+			{/* <Container3>
+
 				<Label>추천 활동 공고</Label>
 				<ContentBox>
 					{dummyData.slice(0, 4).map((data, index) => (
@@ -170,7 +174,8 @@ export default function Home() {
 						<RecommendBox key={index} data={data} url={data.url} />
 					))}
 				</ContentBox>
-			</Container4>
+			</Container4> */}
+
 		</Body>
 	);
 }
