@@ -2,11 +2,15 @@ import axios from 'axios';
 import { refreshAccessToken } from './services/refreshToken';
 import useAuthStore from './stores/useAuthStore';
 
+
+axios.defaults.withCredentials = true;
+
 // Axios 인스턴스 생성 
 const api = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
     headers: {
         'Content-Type': 'application/json',
+        'Origin': window.location.origin,
     },
     withCredentials: true,
 });
@@ -39,7 +43,7 @@ export const setupApiInterceptors = (navigate) => {
             const { logout } = useAuthStore.getState();
 
             if (error.response?.status === 403) {
-                console.log(' 401 Unauthorized - 토큰 재발급 시작');
+                console.log(' Unauthorized - 토큰 재발급 시작');
                 
 
                 if (isRefreshing) {
