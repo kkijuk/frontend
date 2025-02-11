@@ -125,7 +125,7 @@ const bannerDummy = [
 
 export default function Home() {
 	const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
-	// useAuthRedirect(); // ✅ 추가: 로그인 상태에 따라 자동 리디렉트 수행
+	useAuthRedirect(); // ✅ 추가: 로그인 상태에 따라 자동 리디렉트 수행
 
 	const handleTimelineClick = () => {
 		window.scrollTo(0, 0);
