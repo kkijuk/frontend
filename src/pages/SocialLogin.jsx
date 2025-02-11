@@ -9,6 +9,7 @@ import leftStarSvg from '../assets/main/leftstar.svg';
 import postSvg from '../assets/main/post.svg';
 import rightSvg from '../assets/main/right.svg';
 import rightStarSvg from '../assets/main/rightstar.svg';
+import useAuthRedirect from '../stores/useAuthRedirect';
 
 const PageContainer = styled.div`
   background: var(--background, linear-gradient(180deg, #FFF 30%, #E1F4ED 100%));
@@ -255,6 +256,7 @@ const NaverIcon = () => (
 );
 
 const SocialLogin = () => {
+  useAuthRedirect();
   const { login } = useAuthStore();
   const navigate = useNavigate();
 
