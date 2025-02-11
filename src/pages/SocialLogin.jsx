@@ -266,7 +266,7 @@ const SocialLogin = () => {
     };
 
     const $body = document.querySelector('body');
-    $body.style.overflow = 'hidden'; // 스크롤바 숨김 
+    $body.style.overflow = 'hidden'; // 스크롤바 숨기기
     $body.addEventListener('wheel', preventScroll, { passive: false });
     $body.addEventListener('touchmove', preventScroll, { passive: false });
 

@@ -38,7 +38,7 @@ export const setupApiInterceptors = (navigate) => {
         async (error) => {
             const { logout } = useAuthStore.getState();
 
-            if (error.response?.status === 401) {
+            if (error.response?.status === 403) {
                 console.log(' 401 Unauthorized - 토큰 재발급 시작');
                 
 
