@@ -7,7 +7,7 @@ const useAuthRedirect = () => {
     const { isLoggedIn, restoreState } = useAuthStore();
 
     useEffect(() => {
-        restoreState(); // ✅ 초기 로그인 상태 복원
+        restoreState(); //  초기 로그인 상태 복원
         const path = window.location.pathname;
         const isManualLogout = sessionStorage.getItem('manualLogout');
 
@@ -20,7 +20,7 @@ const useAuthRedirect = () => {
         } else if (path === '/') {
             navigate('/home');
         }
-    }, [isLoggedIn, navigate, restoreState]); // ✅ `restoreState`를 의존성 배열에 추가
+    }, [isLoggedIn, navigate, restoreState]); //  `restoreState`를 의존성 배열에 추가
 };
 
 export default useAuthRedirect;
