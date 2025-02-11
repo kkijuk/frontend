@@ -14,7 +14,7 @@ const api = axios.create({
 // 무한 요청 방지를 위한 플래그
 let isRefreshing = false;
 
-// **추가: 대기 중인 요청을 저장하는 큐**
+// 추가: 대기 중인 요청을 저장하는 큐**
 let refreshQueue = [];
 
 // 요청을 보내기 전 실행되는 인터셉터
