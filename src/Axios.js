@@ -39,7 +39,8 @@ export const setupApiInterceptors = (navigate) => {
             const { logout } = useAuthStore.getState();
 
             if (error.response?.status === 401) {
-                console.log('🔹 401 Unauthorized - 토큰 재발급 시작');
+                console.log(' 401 Unauthorized - 토큰 재발급 시작');
+                
 
                 if (isRefreshing) {
                     // **기존 요청을 큐에 저장하고, 토큰 재발급 후 재시도**
@@ -61,7 +62,7 @@ export const setupApiInterceptors = (navigate) => {
                     const success = await refreshAccessToken();
                     if (success) {
                         const newToken = useAuthStore.getState().token;
-                        console.log('🔹 새로 받은 토큰:', newToken); // 확인 로그 추가
+                        console.log(' 새로 받은 토큰:', newToken); // 확인 로그 추가
 
                         if (newToken) {
                             error.config.headers['Authorization'] = `Bearer ${newToken}`;
@@ -74,18 +75,18 @@ export const setupApiInterceptors = (navigate) => {
                         }
                     }
 
-                    // 🔹 재발급 실패 시 refreshQueue 초기화
+                    //  재발급 실패 시 refreshQueue 초기화
                     refreshQueue.forEach((callback) => callback(null));
                     refreshQueue = [];
                     
-                    console.error('❌ 토큰 재발급 실패');
+                    console.error(' 토큰 재발급 실패');
                     logout();
                     navigate('/');
 
                 } catch (refreshError) {
-                    console.error('❌ Token refresh failed:', refreshError);
+                    console.error(' Token refresh failed:', refreshError);
                     
-                    // 🔹 재발급 실패 시 refreshQueue 초기화
+                    //  재발급 실패 시 refreshQueue 초기화
                     refreshQueue.forEach((callback) => callback(null));
                     refreshQueue = [];
 

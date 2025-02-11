@@ -13,7 +13,7 @@ const useAuthRedirect = () => {
 
         if (!isLoggedIn) {
             if (!isManualLogout) {
-                alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+                
             }
             sessionStorage.removeItem('manualLogout');
             navigate('/');
