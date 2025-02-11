@@ -3,15 +3,19 @@ import styled from 'styled-components';
 import logo from '../assets/logo.png';
 import useAuthStore from '../stores/useAuthStore';
 import { useNavigate } from 'react-router-dom';
-import background from '../assets/main/background.svg';
-import star1 from '../assets/main/star1.svg';
-import star2 from '../assets/main/star2.svg';
+import bottomSvg from '../assets/main/bottom.svg';
+import leftSvg from '../assets/main/left.svg';
+import leftStarSvg from '../assets/main/leftstar.svg';
+import postSvg from '../assets/main/post.svg';
+import rightSvg from '../assets/main/right.svg';
+import rightStarSvg from '../assets/main/rightstar.svg';
 
 const PageContainer = styled.div`
   background: var(--background, linear-gradient(180deg, #FFF 30%, #E1F4ED 100%));
   height: auto;
   flex: 1;
   position: relative;
+  padding-bottom: 418px; 
 `;
 
 const SvgContainer = styled.div` 
@@ -24,6 +28,72 @@ const SvgContainer = styled.div`
 
   img {
     position: absolute;
+  }
+`;
+
+const StarLeft = styled.img`
+  position: absolute;
+  top: 250px;
+  left: 310px; 
+  width: 140px;
+  @media (max-width: 768px) {
+   width: 100px;
+   
+  }
+`;
+
+const StarRight = styled.img`
+  position: absolute;
+  top: 130px;
+  right: 375px;
+  width: 180px;
+
+   @media (max-width: 768px) {
+   
+  }
+`;
+
+const LeftSvg = styled.img`
+  position: absolute;
+  top: 772px;
+  left: 315px;
+   width: 350px;
+  z-index: 1100;
+  @media (max-width: 768px) {
+   
+  }
+`;
+
+const RightSvg = styled.img`
+  position: absolute;
+  top: 670px;
+  right: 317px;
+  width: 350px;
+  z-index: 1100;
+  @media (max-width: 768px) {
+   
+  }
+`;
+
+const BottomSvg = styled.img`
+  position: absolute;
+   top: 536px;
+  left: 50%;
+   transform: translateX(-50%);
+  width: 1920px;
+  @media (max-width: 768px) {
+   
+  }
+`;
+
+const PostSvg = styled.img`
+  position: absolute;
+  top: 531px;
+  left: 50%;
+   transform: translateX(-50%);
+  width: 1200px;
+  @media (max-width: 768px) {
+   
   }
 `;
 
@@ -54,23 +124,6 @@ const LoginScreen = styled.div`
 
   * {
     box-sizing: border-box;
-  }
-`;
-
-const TextOverlay = styled.div`
-  position: absolute;
-  color: #000; 
-  font-size: 17px; 
-  z-index: 1100;
-
-  &.text1 {
-    top: 576px; 
-    left: 91px;
-  }
-
-  &.text2 {
-    top: 776px; 
-    right: 91px;
   }
 `;
 
@@ -222,6 +275,10 @@ const SocialLogin = () => {
     };
   }, []); */
 
+  const goEmail = () => {
+    window.open('mailto:kkijuk30@gmail.com', '_blank');
+  };
+
   const handleKakaoLogin = () => {
     const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&response_type=code&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`;
     window.location.href = kakaoLoginUrl;
@@ -238,13 +295,19 @@ const SocialLogin = () => {
 
   return (
     <PageContainer>
-      <SvgContainer>
+          <SvgContainer>
+        <StarLeft src={leftStarSvg} alt="Left Star" />
+        <StarRight src={rightStarSvg} alt="Right Star" />
+        <LeftSvg src={leftSvg} alt="Left" />
+        <RightSvg src={rightSvg} alt="Right" />
+        <BottomSvg src={bottomSvg} alt="Bottom" />
+        <PostSvg src={postSvg} alt="Post" />
       </SvgContainer>
       <TopButtonWrapper>
       <TopButton onClick={() => window.open('https://www.instagram.com/kki.juk/', '_blank')}>
     Instagram
   </TopButton>
-        <TopButton>문의</TopButton>
+  <TopButton onClick={goEmail}>문의</TopButton>
       </TopButtonWrapper>
       <Title>쉽고 빠르게 쌓아가는 나만의 커리어 아카이브</Title>
       <LoginScreen>
