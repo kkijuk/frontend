@@ -20,7 +20,7 @@ const useAuthRedirect = () => {
         } else if (path === '/') {
             navigate('/home');
         }
-    }, [isLoggedIn, navigate, restoreState]); //  `restoreState`를 의존성 배열에 추가
+    }, [isLoggedIn, navigate, restoreState]); 
 };
 
 export default useAuthRedirect;
