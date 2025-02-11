@@ -10,7 +10,7 @@ import paperplaneicon from '../assets/paperplaneicon.png';
 
 const FooterStyle = styled.div`
   width: 100%;
-  height: 200px;
+  height: 170px;
   background-color: #f5f5f5;
   display: flex;
   justify-content: space-between;

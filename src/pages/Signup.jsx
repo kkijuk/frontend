@@ -110,7 +110,7 @@ const SignupPage = () => {
 					password={password}
 					confirmPassword={confirmPassword}
 					name={name}
-					setName={setName}
+					setName={setName}  
 					contact={contact}
 					setContact={setContact}
 					birthdate={birthdate}

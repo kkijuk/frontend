@@ -39,12 +39,18 @@ export const setupApiInterceptors = (navigate) => {
             const { logout } = useAuthStore.getState();
 
             if (error.response?.status === 401) {
+                console.log('🔹 401 Unauthorized - 토큰 재발급 시작');
+
                 if (isRefreshing) {
-                    // **추가: 기존 요청을 큐에 저장하고, 토큰 재발급 후 재시도**
+                    // **기존 요청을 큐에 저장하고, 토큰 재발급 후 재시도**
                     return new Promise((resolve) => {
                         refreshQueue.push((newToken) => {
-                            error.config.headers['Authorization'] = `Bearer ${newToken}`;
-                            resolve(api.request(error.config));
+                            if (newToken) {
+                                error.config.headers['Authorization'] = `Bearer ${newToken}`;
+                                resolve(api.request(error.config));
+                            } else {
+                                resolve(Promise.reject(error)); // 재발급 실패 시 요청 거부
+                            }
                         });
                     });
                 }
@@ -55,20 +61,34 @@ export const setupApiInterceptors = (navigate) => {
                     const success = await refreshAccessToken();
                     if (success) {
                         const newToken = useAuthStore.getState().token;
-                        error.config.headers['Authorization'] = `Bearer ${newToken}`;
+                        console.log('🔹 새로 받은 토큰:', newToken); // 확인 로그 추가
 
-                        // **추가: 모든 대기 중인 요청을 재시도**
-                        refreshQueue.forEach((callback) => callback(newToken));
-                        refreshQueue = [];
+                        if (newToken) {
+                            error.config.headers['Authorization'] = `Bearer ${newToken}`;
 
-                        return api.request(error.config);
-                    } else {
-                        // 재발급 실패 시 로그아웃 및 리디렉트
-                        logout();
-                        navigate('/');
+                            // **모든 대기 중인 요청을 재시도**
+                            refreshQueue.forEach((callback) => callback(newToken));
+                            refreshQueue = [];
+
+                            return api.request(error.config);
+                        }
                     }
+
+                    // 🔹 재발급 실패 시 refreshQueue 초기화
+                    refreshQueue.forEach((callback) => callback(null));
+                    refreshQueue = [];
+                    
+                    console.error('❌ 토큰 재발급 실패');
+                    logout();
+                    navigate('/');
+
                 } catch (refreshError) {
-                    console.error('Token refresh failed:', refreshError);
+                    console.error('❌ Token refresh failed:', refreshError);
+                    
+                    // 🔹 재발급 실패 시 refreshQueue 초기화
+                    refreshQueue.forEach((callback) => callback(null));
+                    refreshQueue = [];
+
                     logout();
                     navigate('/');
                 } finally {
