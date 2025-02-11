@@ -24,9 +24,8 @@ const Body = styled.div`
 	flex-direction: column; /*Top이랑 CareerBox를 세로 방향 정렬*/
 	box-sizing: border-box; /* 추가 */
 	padding-bottom: 100px;
-	margin: 50px auto;
+	margin: 20px auto;
 	gap: 40px;
-	margin-top: -15px;
 `;
 
 const Container1 = styled.div`
@@ -40,13 +39,6 @@ const Container2 = styled.div`
 	width: 100%;
 `;
 
-const Container3 = styled.div`
-	width: 100%;
-`;
-
-const Container4 = styled.div`
-	width: 100%;
-`;
 
 const Label = styled.div`
 	color: var(--black, #000);
@@ -133,7 +125,7 @@ const bannerDummy = [
 
 export default function Home() {
 	const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
-	useAuthRedirect(); // ✅ 추가: 로그인 상태에 따라 자동 리디렉트 수행
+	// useAuthRedirect(); // ✅ 추가: 로그인 상태에 따라 자동 리디렉트 수행
 
 	const handleTimelineClick = () => {
 		window.scrollTo(0, 0);
@@ -157,24 +149,6 @@ export default function Home() {
 				</ContentBox>
 			</Container2>
 
-			{/* <Container3>
-
-				<Label>추천 활동 공고</Label>
-				<ContentBox>
-					{dummyData.slice(0, 4).map((data, index) => (
-						<RecommendBox key={index} data={data} url={data.url} />
-					))}
-				</ContentBox>
-			</Container3>
-
-			<Container4>
-				<Label>추천 채용 공고</Label>
-				<ContentBox>
-					{dummyData.slice(4, 8).map((data, index) => (
-						<RecommendBox key={index} data={data} url={data.url} />
-					))}
-				</ContentBox>
-			</Container4> */}
 
 		</Body>
 	);
