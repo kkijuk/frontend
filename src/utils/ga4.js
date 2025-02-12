@@ -1,11 +1,10 @@
 import ReactGA from 'react-ga4';
 
 // 커스텀 이벤트 트래킹 함수
-export const trackEvent = (action, category, label, value = 'default') => {
+export const trackEvent = (category, action, label) => {
 	ReactGA.event({
-		action: action,
 		category: category,
+		action: action,
 		label: label,
-		value: value,
 	});
 };
