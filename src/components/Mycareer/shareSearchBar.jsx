@@ -53,7 +53,8 @@ const SearchBar = ({ initialSearchQuery }) => {
 
 	const handleSearch = () => {
 		if (searchValue.trim()) {
-			trackEvent('click', 'mycareer', '내커리어/검색', searchValue.trim());
+			const gaLabel = '내커리어/검색-' + searchValue.trim();
+			trackEvent('mycareer', 'click', gaLabel);
 			navigate(`/Mycareer_search?query=${encodeURIComponent(searchValue)}`);
 		}
 	};
@@ -71,7 +72,7 @@ const SearchBar = ({ initialSearchQuery }) => {
 	return (
 		<SearchBarContainer>
 			<SearchInput
-				placeholder="공고 이름이나 태그를 검색하세요."
+				placeholder="활동 이름이나 태그를 검색하세요."
 				onChange={onChange}
 				onKeyPress={onKeyPress}
 				value={searchValue}
