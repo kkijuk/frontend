@@ -158,8 +158,6 @@ export default function MyCareerSearchActivity({ sortOrder, searchQuery, onViewT
 		error: activityDetailError,
 	} = useFetchActivityDetail(searchQuery, sortOrder);
 
-	console.log(activityDetail);
-
 	return (
 		<Container>
 			{isActivityDetailLoading ? (
