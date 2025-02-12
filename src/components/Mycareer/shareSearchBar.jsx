@@ -53,8 +53,10 @@ const SearchBar = ({ initialSearchQuery }) => {
 
 	const handleSearch = () => {
 		if (searchValue.trim()) {
-			const gaLabel = '내커리어/검색-' + searchValue.trim();
-			trackEvent('mycareer', 'click', gaLabel);
+			trackEvent('search_performed', {
+				category: 'mycareer',
+				search_query: searchValue.trim(),
+			});
 			navigate(`/Mycareer_search?query=${encodeURIComponent(searchValue)}`);
 		}
 	};
