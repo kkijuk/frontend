@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { trackEvent } from '../../utils/ga4';
 
 const SearchBarContainer = styled.div`
 	display: flex;
@@ -52,6 +53,7 @@ const SearchBar = ({ initialSearchQuery }) => {
 
 	const handleSearch = () => {
 		if (searchValue.trim()) {
+			trackEvent('click', 'mycareer', '내커리어/검색', searchValue.trim());
 			navigate(`/Mycareer_search?query=${encodeURIComponent(searchValue)}`);
 		}
 	};
