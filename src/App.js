@@ -17,6 +17,7 @@ import useGA4 from './hooks/useGA4';
 import SocialLogin from './pages/SocialLogin';
 import NewSignup from './pages/NewSignup';
 import MycareerDetail from './pages/Mycareer/MycareerDetail';
+import Browser from './pages/Error/Browser';
 
 import SignupSuccess from './pages/SignupSuccess';
 import ResetSuccess from './pages/Mypage/ResetSuccess';
@@ -73,7 +74,9 @@ const App = () => {
 	// 헤더를 숨길 경로 설정
 	const hideHeaderRoutes = ['/commingsoon', '/', '/signup', '/signupinterest', '/signupsuccess', '/agree'];
 	const hideHeader = hideHeaderRoutes.includes(location.pathname);
-
+	const hideHeaderFooterRoutes = ['/browser-error'];
+	const hideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
+	
 	// GA4 초기화
 	useGA4();
 
@@ -81,9 +84,18 @@ const App = () => {
 		setupApiInterceptors(navigate);
 	}, [navigate]);
 
+	useEffect(() => {
+		const userAgent = navigator.userAgent.toLowerCase();
+		
+		if (userAgent.includes("edg")) {  // Edge 브라우저 감지
+			navigate("/browser-error");  // Edge면 /browser-error로 이동
+		}
+	}, [navigate]);
+	
+
 	return (
 		<AppContainer>
-			{!hideHeader && <Header />} {/* 헤더는 조건부 렌더링 */}
+			{!hideHeader && !hideHeaderFooter && <Header />}{/* 헤더는 조건부 렌더링 */}
 			<MainContent>
 				<Routes>
 					<Route path="/mycareer/:careerId/:category" element={<MycareerDetail />} />
@@ -91,6 +103,7 @@ const App = () => {
 					<Route path="/home" element={<Home />} />
 					<Route path="/" element={<SocialLogin />} />
 					<Route path="/signup" element={<NewSignup />} />
+					<Route path="/browser-error" element={<Browser />} />
 					<Route path="/signupsuccess" element={<SignupSuccess />} />
 					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/mycareer" element={<MyCareer />} />
@@ -129,7 +142,7 @@ const App = () => {
 					<Route path="/mypage/resetsuccess" element={<ResetSuccess />} />
 				</Routes>
 			</MainContent>
-			<Footer /> {/* 푸터는 항상 렌더링 */}
+			{!hideHeaderFooter && <Footer />}
 		</AppContainer>
 	);
 };
