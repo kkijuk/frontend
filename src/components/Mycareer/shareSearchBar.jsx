@@ -55,6 +55,9 @@ const SearchBar = ({ initialSearchQuery }) => {
 		if (searchValue.trim()) {
 			trackEvent('search_performed', {
 				category: 'mycareer',
+				detail: 'search_career',
+				action_type: 'search',
+				label: '검색',
 				search_query: searchValue.trim(),
 			});
 			navigate(`/Mycareer_search?query=${encodeURIComponent(searchValue)}`);
