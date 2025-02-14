@@ -47,6 +47,10 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import FilterPage from './components/Apply/FilterPage';
 
+import Error from './pages/Error/Error';
+import NumError from './pages/Error/NumError';
+import BrowserError from './pages/Error/Browser';
+
 const AppContainer = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -127,6 +131,9 @@ const App = () => {
 					<Route path="/mypage/passwordresetemailconfirm" element={<PasswordResetEmailConfirm />} />
 					<Route path="/mypage/passwordreset" element={<PasswordReset />} />
 					<Route path="/mypage/resetsuccess" element={<ResetSuccess />} />
+					<Route path="/error" element={<Error />} />
+					<Route path="/numerror" element={<NumError />} />
+					<Route path="/browsererror" element={<BrowserError />} />
 				</Routes>
 			</MainContent>
 			<Footer /> {/* 푸터는 항상 렌더링 */}
