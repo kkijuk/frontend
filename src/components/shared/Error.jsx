@@ -25,6 +25,8 @@ const ErrorNum = styled.div`
 	font-style: normal;
 	font-weight: 600;
 	line-height: 140%; /* 67.2px */
+
+	margin-bottom: 24px;
 `;
 
 const Title = styled.div`
@@ -39,6 +41,8 @@ const Title = styled.div`
 	font-style: normal;
 	font-weight: 600;
 	line-height: 140%; /* 44.8px */
+
+	margin-bottom: 16px;
 `;
 
 const Content = styled.div`
@@ -53,13 +57,21 @@ const Content = styled.div`
 	font-style: normal;
 	font-weight: 400;
 	line-height: 150%; /* 24px */
+
+	margin-bottom: 40px;
 `;
 
 const ButtonBox = styled.div`
 	height: auto;
 	width: auto;
 	gap: 16px;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
 `;
+
 const BackButton = styled.button`
 	display: flex;
 	width: 160px;
@@ -77,6 +89,8 @@ const BackButton = styled.button`
 	font-style: normal;
 	font-weight: 500;
 	line-height: 100%; /* 18px */
+	border: none;
+	cursor: pointer;
 `;
 
 const HomeButton = styled.button`
@@ -96,6 +110,8 @@ const HomeButton = styled.button`
 	font-style: normal;
 	font-weight: 500;
 	line-height: 100%; /* 18px */
+	border: none;
+	cursor: pointer;
 `;
 
 export default function Error({ title, content, showErrorNum = true, showHomeButton = true }) {
