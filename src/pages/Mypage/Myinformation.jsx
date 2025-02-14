@@ -426,9 +426,9 @@ export default function MyInformation() {
 	const [verificationCode, setVerificationCode] = useState('');
 	const [timer, setTimer] = useState(0);
 	const [isTimerExpired, setIsTimerExpired] = useState(false);
-	const [isRequesting, setIsRequesting] = useState(false); // 🔹 인증번호 요청 중인지 상태 관리
+	const [isRequesting, setIsRequesting] = useState(false);
 
-	const [isVerified, setIsVerified] = useState(false); // 🔹 인증 성공 여부 상태 추가
+	const [isVerified, setIsVerified] = useState(false);
 
 	//Tag 가져오기
 	const location = useLocation();
@@ -505,20 +505,6 @@ export default function MyInformation() {
 		snsAgreed: false,
 		emailAgreed: false,
 	});
-
-	const handleAgreementChange = (event) => {
-		const { name, checked } = event.target;
-
-		setAgreements((prevAgreements) => ({ ...prevAgreements, [name]: checked }));
-		const allChecked = Object.values({ ...agreements, [name]: checked }).every((value) => value === true);
-		setAllAgreed(allChecked);
-	};
-
-	const handleAllAgreementChange = (event) => {
-		const { checked } = event.target;
-		setAllAgreed(checked);
-		setAgreements({ snsAgreed: checked, emailAgreed: checked });
-	};
 
 	// '광고성 정보 수신 동의' 체크 변경
 	const handleMarketingAgreementChange = (event) => {
