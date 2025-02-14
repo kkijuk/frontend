@@ -47,9 +47,9 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import FilterPage from './components/Apply/FilterPage';
 
-import Error from './pages/Error/Error';
+import Error from './pages/Error/BasicError';
 import NumError from './pages/Error/NumError';
-import BrowserError from './pages/Error/Browser';
+import BrowserError from './pages/Error/BrowserError';
 
 const AppContainer = styled.div`
 	display: flex;

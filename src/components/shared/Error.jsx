@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
 	width: auto;
@@ -98,14 +99,15 @@ const HomeButton = styled.button`
 `;
 
 export default function Error({ title, content, showErrorNum = true, showHomeButton = true }) {
+	const navigate = useNavigate();
 	return (
 		<Container>
 			{showErrorNum && <ErrorNum>404 ERROR</ErrorNum>}
 			<Title>{title}</Title>
 			<Content>{content}</Content>
 			<ButtonBox>
-				<BackButton>이전 화면으로</BackButton>
-				{showHomeButton && <HomeButton>홈으로</HomeButton>}
+				<BackButton onClick={() => window.history.back()}>이전 화면으로</BackButton>
+				{showHomeButton && <HomeButton onClick={() => navigate('/home')}>홈으로</HomeButton>}
 			</ButtonBox>
 		</Container>
 	);

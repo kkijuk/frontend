@@ -1,7 +1,7 @@
 import React from 'react';
 import Error from '../../components/shared/Error';
 
-export default function Error() {
+export default function BasicError() {
 	return (
 		<Error
 			title="예상치 못한 문제가 발생했습니다."
