@@ -47,10 +47,8 @@ import PrivacyAgreed from './pages/PrivacyAgreed';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FilterPage from './components/Apply/FilterPage';
-
 import Error from './pages/Error/BasicError';
 import NumError from './pages/Error/NumError';
-import BrowserError from './pages/Error/BrowserError';
 
 const AppContainer = styled.div`
 	display: flex;
@@ -146,7 +144,6 @@ const App = () => {
 					<Route path="/mypage/resetsuccess" element={<ResetSuccess />} />
 					<Route path="/error" element={<Error />} />
 					<Route path="/numerror" element={<NumError />} />
-					<Route path="/browsererror" element={<BrowserError />} />
 				</Routes>
 			</MainContent>
 			{!hideHeaderFooter && <Footer />}
