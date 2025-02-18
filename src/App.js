@@ -47,10 +47,8 @@ import PrivacyAgreed from './pages/PrivacyAgreed';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FilterPage from './components/Apply/FilterPage';
-
 import Error from './pages/Error/BasicError';
 import NumError from './pages/Error/NumError';
-import BrowserError from './pages/Error/BrowserError';
 
 const AppContainer = styled.div`
 	display: flex;
@@ -76,9 +74,9 @@ const App = () => {
 	}, [location, navigate]);
 
 	// 헤더를 숨길 경로 설정
-	const hideHeaderRoutes = ['/commingsoon', '/', '/signup', '/signupinterest', '/signupsuccess', '/agree'];
+	const hideHeaderRoutes = ['/commingsoon', '/signup', '/signupinterest', '/signupsuccess', '/agree'];
 	const hideHeader = hideHeaderRoutes.includes(location.pathname);
-	const hideHeaderFooterRoutes = ['/browser-error'];
+	const hideHeaderFooterRoutes = ['/browser-error', '/'];
 	const hideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
 	
 	// GA4 초기화
@@ -147,7 +145,6 @@ const App = () => {
 
 					<Route path="/error" element={<Error />} />
 					<Route path="/numerror" element={<NumError />} />
-					<Route path="/browsererror" element={<BrowserError />} />
 				</Routes>
 			</MainContent>
 			{!hideHeaderFooter && <Footer />}
