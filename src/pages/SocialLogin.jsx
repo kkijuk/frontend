@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import logo from '../assets/logo.png';
+import instagramLogo from '../assets/instagramLogo.png';
+import paperplaneicon from '../assets/paperplaneicon.png';
 import useAuthStore from '../stores/useAuthStore';
 import { useNavigate } from 'react-router-dom';
 import bottomSvg from '../assets/main/bottom.svg';
@@ -17,7 +19,8 @@ const PageContainer = styled.div`
 	height: auto;
 	flex: 1;
 	position: relative;
-	padding-bottom: 418px;
+
+	 overflow: hidden;
 `;
 
 const SvgContainer = styled.div`
@@ -26,7 +29,7 @@ const SvgContainer = styled.div`
 	height: auto;
 	top: 0;
 	left: 0;
-	z-index: 900;
+	z-index: 1000;
 
 	img {
 		position: absolute;
@@ -227,6 +230,98 @@ const ButtonContainer = styled.div`
 	gap: 8px;
 `;
 
+const StyledSVG = styled.svg`
+  position: absolute;
+  width: 100vw;
+  height: 100%; /* 강제로 화면 높이에 맞춤 */
+  min-height: 1080px; /* 최소 높이 설정 */
+  z-index: 900;
+`;
+
+const FooterStyle = styled.div`
+  width: 100%;
+  height: 170px;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 30px 50px;
+  box-sizing: border-box;
+  font-family: Pretendard;
+  color: #707070;
+
+  .left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .links {
+      font-size: 12px;
+      margin-bottom: 25px;
+      cursor: pointer;
+
+      span {
+        margin-right: 10px;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .logo {
+      margin-bottom: 15px;
+
+      img {
+        width: 80px;
+        height: auto;
+      }
+    }
+
+    .copyright {
+      font-size: 11px;
+      color: #424242;
+    }
+  }
+
+  .right {
+    text-align: right;
+
+    .contact-title {
+      font-size: 12px;
+      margin-bottom: 15px;
+      color: #424242;
+    }
+
+    .icons {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 15px;
+
+      img {
+        width: 18px;
+        height: 18px;
+        margin-left: 12px;
+        cursor: pointer;
+      }
+    }
+
+    .contact-info {
+      font-size: 12px;
+
+      .email {
+        margin-bottom: 10px;
+        cursor: pointer;
+        color: #707070;
+      }
+
+      div {
+        margin-bottom: 5px;
+      }
+    }
+  }
+`;
+
+
 const KakaoIcon = () => (
 	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="30px" height="30px">
 		<path d="M12,2C6.48,2,2,5.58,2,10.14c0,2.58,1.78,4.87,4.45,6.24C6.15,17.85,5.4,19.81,5.27,19.81c0,0,0,0,0,0c0.26,0.02,3.35-1.24,4.92-2.09c0.61,0.11,1.25,0.18,1.91,0.18c5.52,0,10-3.58,10-8.14S17.52,2,12,2z" />
@@ -244,7 +339,8 @@ const SocialLogin = () => {
 	useAuthRedirect();
 	const { login } = useAuthStore();
 	const navigate = useNavigate();
-
+	const [isModal1Open, setModal1Open] = useState(false);
+	const [isModal2Open, setModal2Open] = useState(false);
 	/* useEffect(() => {
     const preventScroll = (e) => {
       e.preventDefault();
@@ -262,9 +358,13 @@ const SocialLogin = () => {
     };
   }, []); */
 
-	const goEmail = () => {
-		window.open('mailto:kkijuk30@gmail.com', '_blank');
-	};
+  const goInsta = () => {
+    window.open('https://www.instagram.com/kki.juk/?utm_source=ig_web_button_share_sheet', '_blank');
+  };
+
+  const goEmail = () => {
+    window.open('mailto:kkijuk30@gmail.com', '_blank');
+  };
 
 	const handleKakaoLogin = () => {
 		const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&response_type=code&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`;
@@ -295,16 +395,20 @@ const SocialLogin = () => {
 		window.location.href = naverLoginUrl;
 	};
 
+	
+
 	return (
 		<PageContainer>
 			<SvgContainer>
-				<StarLeft src={leftStarSvg} alt="Left Star" />
-				<StarRight src={rightStarSvg} alt="Right Star" />
-				<LeftSvg src={leftSvg} alt="Left" />
-				<RightSvg src={rightSvg} alt="Right" />
-				<BottomSvg src={bottomSvg} alt="Bottom" />
-				<PostSvg src={postSvg} alt="Post" />
-			</SvgContainer>
+			<StyledSVG viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMin meet">
+    <image href={leftStarSvg} x="310" y="250" width="140" />
+    <image href={rightStarSvg} x="1400" y="130" width="180" />
+    <image href={bottomSvg} x="1" y="536" width="1920" transform="translate(-50%, 0)" />
+    <image href={postSvg} x="18%" y="531" width="1200" transform="translate(-50%, 0)" />
+	<image href={leftSvg} x="315" y="772" width="350" />
+    <image href={rightSvg} x="1200" y="670" width="350" />
+  </StyledSVG>
+</SvgContainer>
 			<TopButtonWrapper>
 				<TopButton onClick={() => window.open('https://www.instagram.com/kki.juk/', '_blank')}>Instagram</TopButton>
 				<TopButton onClick={goEmail}>문의</TopButton>
@@ -326,6 +430,34 @@ const SocialLogin = () => {
 					</SocialButton>
 				</ButtonContainer>
 			</LoginScreen>
+			
+			{/* <FooterStyle>
+        <div className="left">
+          <div className="links">
+            <span onClick={() => setModal1Open(true)}>서비스 이용약관</span>
+            <span onClick={() => navigate('/agree')}>개인정보 처리방침</span>
+          </div>
+          <div className="logo">
+            <img src={logo} alt="끼적 로고" />
+          </div>
+          <div className="copyright">COPYRIGHT © 끼적. All rights reserved.</div>
+        </div>
+
+        <div className="right">
+          <div className="contact-title">contact us</div>
+          <div className="icons">
+            <img src={instagramLogo} alt="Instagram" onClick={goInsta} />
+            <img src={paperplaneicon} alt="Paperplane" onClick={goEmail} />
+          </div>
+          <div className="contact-info">
+            <div className="email" onClick={goEmail}>
+              kkijuk30@gmail.com
+            </div>
+            <div>서울특별시 광진구 면목로15길 16</div>
+            <div>사업자등록번호 798-06-02922</div>
+          </div>
+        </div>
+      </FooterStyle> */}
 		</PageContainer>
 	);
 };

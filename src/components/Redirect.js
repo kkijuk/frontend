@@ -56,8 +56,9 @@ const SocialRedirect = ({ provider }) => {
         .then((data) => {
           console.log(`${provider} 로그인 성공:`, data);
 
-          if (data && data.Token) {
-            const { accessToken, refreshToken } = data.Token;
+          if (data && data.accessToken && data.refreshToken) {
+            const { accessToken, refreshToken } = data;
+          
 
             // 토큰 디코딩
             const decodedToken = decodeToken(accessToken);
