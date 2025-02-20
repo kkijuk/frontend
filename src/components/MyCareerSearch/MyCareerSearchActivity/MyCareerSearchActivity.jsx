@@ -4,6 +4,7 @@ import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
 import { useFetchActivityDetail } from '../../../hooks/MycareerSearch/useFetchActivityDetail';
 
 import { useNavigate } from 'react-router-dom';
+import { highlightMatch } from '../../../utils/highlightMatch';
 
 const Container = styled.div`
 	width: 100%;
@@ -182,7 +183,7 @@ export default function MyCareerSearchActivity({ sortOrder, searchQuery, onViewT
 							<TopLeft>
 								<CareerCategoryCircle category={activityDetail.category.categoryKoName} />
 								<DetailCareerTitle>
-									{activityDetail.careerTitle} / {activityDetail.careerAlias}
+									{highlightMatch(activityDetail.careerTitle, searchQuery)} / {highlightMatch(activityDetail.careerAlias, searchQuery)}
 								</DetailCareerTitle>
 							</TopLeft>
 						</TopWrapper>
@@ -190,15 +191,15 @@ export default function MyCareerSearchActivity({ sortOrder, searchQuery, onViewT
 							{activityDetail.detailList.map((detail, i) => (
 								<DetailWrapper>
 									<TopWrapper>
-										<DetailTitle>{detail.title}</DetailTitle>
+										<DetailTitle>{highlightMatch(detail.title, searchQuery)}</DetailTitle>
 										<DetailCareerDate>
 											{detail.startDate} ~ {detail.endDate}
 										</DetailCareerDate>
 									</TopWrapper>
-									<DetailContent>{detail.content}</DetailContent>
+									<DetailContent>{highlightMatch(detail.content, searchQuery)}</DetailContent>
 									<BottomWrapper>
 										{detail.detailTag.map((tag, j) => (
-											<DetailTag>{tag.tagName}</DetailTag>
+											<DetailTag>{highlightMatch(tag.tagName, searchQuery)}</DetailTag>
 										))}
 									</BottomWrapper>
 								</DetailWrapper>

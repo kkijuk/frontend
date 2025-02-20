@@ -6,6 +6,7 @@ import { useFetchTagList } from '../../../hooks/MycareerSearch/useFetchTagList';
 import { useFetchActivityByTag } from '../../../hooks/MycareerSearch/useFetchActivityByTag';
 
 import { useNavigate } from 'react-router-dom';
+import { highlightMatch } from '../../../utils/highlightMatch';
 
 const Container = styled.div`
 	width: 100%;
@@ -226,7 +227,7 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 				) : (
 					activityTagList?.data?.data.tagList.map((tag) => (
 						<Tag key={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => setSelectedTag(tag.tagId)}>
-							{tag.tagName}
+							{highlightMatch(tag.tagName, searchQuery)}
 						</Tag>
 					))
 				)}
@@ -245,7 +246,7 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 								<TopLeft>
 									<CareerCategoryCircle category={activityData.category.categoryKoName} />
 									<DetailCareerTitle>
-										{activityData.careerTitle} / {activityData.careerAlias}
+										{highlightMatch(activityData.careerTitle, searchQuery)} / {highlightMatch(activityData.careerAlias, searchQuery)}
 									</DetailCareerTitle>
 								</TopLeft>
 							</TopWrapper>
@@ -253,15 +254,15 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 								{activityData.detailList.map((detail, i) => (
 									<DetailWrapper>
 										<TopWrapper>
-											<DetailTitle>{detail.title}</DetailTitle>
+											<DetailTitle>{highlightMatch(detail.title, searchQuery)}</DetailTitle>
 											<DetailCareerDate>
 												{detail.startDate} ~ {detail.endDate}
 											</DetailCareerDate>
 										</TopWrapper>
-										<DetailContent>{detail.content}</DetailContent>
+										<DetailContent>{highlightMatch(detail.content, searchQuery)}</DetailContent>
 										<BottomWrapper>
 											{detail.detailTag.map((tag, j) => (
-												<DetailTag>{tag.tagName}</DetailTag>
+												<DetailTag>{highlightMatch(tag.tagName, highlightMatch)}</DetailTag>
 											))}
 										</BottomWrapper>
 									</DetailWrapper>

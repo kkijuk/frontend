@@ -60,7 +60,7 @@ const SearchBar = ({ initialSearchQuery }) => {
 				label: '검색',
 				search_query: searchValue.trim(),
 			});
-			navigate(`/Mycareer_search?query=${encodeURIComponent(searchValue)}`);
+			navigate(`/Mycareer_search?query=${encodeURIComponent(searchValue.trim())}`);
 		}
 	};
 
