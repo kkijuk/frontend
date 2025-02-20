@@ -11,6 +11,7 @@ const Container = styled.div`
 	flex-direction: column;
 	align-items: center; /* 내부 요소 가운데 정렬 */
 	text-align: center; /* 텍스트 가운데 정렬 */
+	margin-bottom: 200px;
 `;
 
 const ErrorNum = styled.div`

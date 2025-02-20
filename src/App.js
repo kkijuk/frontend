@@ -142,6 +142,7 @@ const App = () => {
 					<Route path="/mypage/passwordresetemailconfirm" element={<PasswordResetEmailConfirm />} />
 					<Route path="/mypage/passwordreset" element={<PasswordReset />} />
 					<Route path="/mypage/resetsuccess" element={<ResetSuccess />} />
+
 					<Route path="/error" element={<Error />} />
 					<Route path="/numerror" element={<NumError />} />
 				</Routes>
