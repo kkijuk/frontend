@@ -13,15 +13,17 @@ import rightSvg from '../assets/main/right.svg';
 import rightStarSvg from '../assets/main/rightstar.svg';
 import useAuthRedirect from '../stores/useAuthRedirect';
 import { trackEvent } from '../utils/ga4';
+import Footer from '../components/Footer';
 
 const PageContainer = styled.div`
-	background: var(--background, linear-gradient(180deg, #fff 30%, #e1f4ed 100%));
-	height: auto;
-	flex: 1;
-	position: relative;
-
-	 overflow: hidden;
+  background: var(--background, linear-gradient(180deg, #fff 30%, #e1f4ed 100%));
+  min-height: 100vh; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  position: relative;
 `;
+
 
 const SvgContainer = styled.div`
 	position: absolute;
@@ -233,92 +235,9 @@ const ButtonContainer = styled.div`
 const StyledSVG = styled.svg`
   position: absolute;
   width: 100vw;
-  height: 100%; /* 강제로 화면 높이에 맞춤 */
-  min-height: 1080px; /* 최소 높이 설정 */
-  z-index: 900;
-`;
-
-const FooterStyle = styled.div`
-  width: 100%;
-  height: 170px;
-  background-color: #f5f5f5;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 30px 50px;
-  box-sizing: border-box;
-  font-family: Pretendard;
-  color: #707070;
-
-  .left {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-
-    .links {
-      font-size: 12px;
-      margin-bottom: 25px;
-      cursor: pointer;
-
-      span {
-        margin-right: 10px;
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
-
-    .logo {
-      margin-bottom: 15px;
-
-      img {
-        width: 80px;
-        height: auto;
-      }
-    }
-
-    .copyright {
-      font-size: 11px;
-      color: #424242;
-    }
-  }
-
-  .right {
-    text-align: right;
-
-    .contact-title {
-      font-size: 12px;
-      margin-bottom: 15px;
-      color: #424242;
-    }
-
-    .icons {
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 15px;
-
-      img {
-        width: 18px;
-        height: 18px;
-        margin-left: 12px;
-        cursor: pointer;
-      }
-    }
-
-    .contact-info {
-      font-size: 12px;
-
-      .email {
-        margin-bottom: 10px;
-        cursor: pointer;
-        color: #707070;
-      }
-
-      div {
-        margin-bottom: 5px;
-      }
-    }
-  }
+  height: 100vh; 
+  min-height: 1080px; 
+  z-index: 1000;
 `;
 
 
@@ -398,9 +317,11 @@ const SocialLogin = () => {
 	
 
 	return (
+		<>
 		<PageContainer>
 			<SvgContainer>
-			<StyledSVG viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMin meet">
+			<StyledSVG viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+
     <image href={leftStarSvg} x="310" y="250" width="140" />
     <image href={rightStarSvg} x="1400" y="130" width="180" />
     <image href={bottomSvg} x="1" y="536" width="1920" transform="translate(-50%, 0)" />
@@ -430,35 +351,9 @@ const SocialLogin = () => {
 					</SocialButton>
 				</ButtonContainer>
 			</LoginScreen>
-			
-			{/* <FooterStyle>
-        <div className="left">
-          <div className="links">
-            <span onClick={() => setModal1Open(true)}>서비스 이용약관</span>
-            <span onClick={() => navigate('/agree')}>개인정보 처리방침</span>
-          </div>
-          <div className="logo">
-            <img src={logo} alt="끼적 로고" />
-          </div>
-          <div className="copyright">COPYRIGHT © 끼적. All rights reserved.</div>
-        </div>
-
-        <div className="right">
-          <div className="contact-title">contact us</div>
-          <div className="icons">
-            <img src={instagramLogo} alt="Instagram" onClick={goInsta} />
-            <img src={paperplaneicon} alt="Paperplane" onClick={goEmail} />
-          </div>
-          <div className="contact-info">
-            <div className="email" onClick={goEmail}>
-              kkijuk30@gmail.com
-            </div>
-            <div>서울특별시 광진구 면목로15길 16</div>
-            <div>사업자등록번호 798-06-02922</div>
-          </div>
-        </div>
-      </FooterStyle> */}
 		</PageContainer>
+		<Footer />
+		</>
 	);
 };
 
