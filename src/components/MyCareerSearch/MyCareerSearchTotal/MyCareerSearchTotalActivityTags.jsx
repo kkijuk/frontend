@@ -108,7 +108,7 @@ const NotExistSearch = styled.div`
 
 // TODO: API 데이터 형식 피그마와 대조하여 수정 필요
 
-export default function MyCareerSearchTotalActivityTags({ activityTagList, isActivityTagListLoading, sortOrder }) {
+export default function MyCareerSearchTotalActivityTags({ activityTagList, isActivityTagListLoading, sortOrder, searchQuery }) {
 	const [selectedTag, setSelectedTag] = useState(null); // 선택된 태그 상태
 
 	const navigate = useNavigate();
@@ -143,7 +143,7 @@ export default function MyCareerSearchTotalActivityTags({ activityTagList, isAct
 					<TagWrapper>
 						{activityTagList?.data?.data.tagList.map((tag) => (
 							<Tag key={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => setSelectedTag(tag.tagId)}>
-								{tag.tagName}
+								{highlightMatch(tag.tagName, searchQuery)}
 							</Tag>
 						))}
 					</TagWrapper>
@@ -176,12 +176,12 @@ export default function MyCareerSearchTotalActivityTags({ activityTagList, isAct
 											})
 										}>
 										<ActivityTop>
-											<ActivityTitle>{detail.title}</ActivityTitle>
+											<ActivityTitle>{highlightMatch(detail.title, searchQuery)}</ActivityTitle>
 											<ActivityDate>
 												{detail.startDate} ~ {detail.endDate}
 											</ActivityDate>
 										</ActivityTop>
-										<ActivityContent>{detail.content}</ActivityContent>
+										<ActivityContent>{highlightMatch(detail.content, searchQuery)}</ActivityContent>
 										<ActivityFooter>{detail.date}</ActivityFooter>
 									</ActivityItem>
 								));
