@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
 import { useNavigate } from 'react-router-dom';
+import { highlightMatch } from '../../../utils/highlightMatch';
 
 const Container = styled.div`
 	width: 100%;
@@ -118,7 +119,7 @@ const NotExistSearch = styled.div`
 
 // TODO: react query로부터 받아온 데이터로 loading, 데이터 바인딩
 
-export default function MyCareerSearchTotalActivityDetail({ activityDetail, isActivityDetailLoading }) {
+export default function MyCareerSearchTotalActivityDetail({ activityDetail, isActivityDetailLoading, searchQuery }) {
 	const navigate = useNavigate();
 
 	let totalDetailsRendered = 0; // 총 렌더링된 detail 개수를 추적
@@ -153,7 +154,7 @@ export default function MyCareerSearchTotalActivityDetail({ activityDetail, isAc
 								<TopLeft>
 									<CareerCategoryCircle category={activity.category.categoryKoName} />
 									<DetailCareerTitle>
-										{activity.careerTitle} / {activity.careerAlias}
+										{highlightMatch(activity.careerTitle, searchQuery)} / {highlightMatch(activity.careerAlias, searchQuery)}
 									</DetailCareerTitle>
 								</TopLeft>
 							</TopWrapper>
@@ -161,15 +162,15 @@ export default function MyCareerSearchTotalActivityDetail({ activityDetail, isAc
 								{detailsToRender.map((detail, i) => (
 									<DetailWrapper key={i}>
 										<TopWrapper>
-											<DetailTitle>{detail.title}</DetailTitle>
+											<DetailTitle>{highlightMatch(detail.title, searchQuery)}</DetailTitle>
 											<DetailCareerDate>
 												{detail.startDate} ~ {detail.endDate}
 											</DetailCareerDate>
 										</TopWrapper>
-										<DetailContent>{detail.content}</DetailContent>
+										<DetailContent>{highlightMatch(detail.content, searchQuery)}</DetailContent>
 										<BottomWrapper>
 											{detail.detailTag.map((tag, j) => (
-												<DetailTag key={j}>{tag.tagName}</DetailTag>
+												<DetailTag key={j}>{highlightMatch(tag.tagName, searchQuery)}</DetailTag>
 											))}
 										</BottomWrapper>
 									</DetailWrapper>
