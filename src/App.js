@@ -76,7 +76,7 @@ const App = () => {
 	// 헤더를 숨길 경로 설정
 	const hideHeaderRoutes = ['/commingsoon', '/signup', '/signupinterest', '/signupsuccess', '/agree'];
 	const hideHeader = hideHeaderRoutes.includes(location.pathname);
-	const hideHeaderFooterRoutes = ['/browser-error', '/'];
+	const hideHeaderFooterRoutes = ['/browser-error','/'];
 	const hideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
 	
 	// GA4 초기화
