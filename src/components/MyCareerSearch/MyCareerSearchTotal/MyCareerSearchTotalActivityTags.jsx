@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import React, { useState, useEffect } from 'react';
 import { useFetchActivityByTag } from '../../../hooks/MycareerSearch/useFetchActivityByTag';
+
 import { useNavigate } from 'react-router-dom';
+import { highlightMatch } from '../../../utils/highlightMatch';
 
 // 메인 컨테이너
 const Container = styled.div`
