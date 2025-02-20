@@ -20,7 +20,7 @@ const PageContainer = styled.div`
   min-height: 100vh; 
   display: flex;
   flex-direction: column;
-  justify-content: space-between; 
+  flex-start;
   position: relative;
 `;
 
@@ -181,6 +181,7 @@ const SocialButton = styled.button`
 	align-items: center;
 	justify-content: center;
 	position: relative;
+
 
 	&.kakao {
 		background-color: #ffe812;
