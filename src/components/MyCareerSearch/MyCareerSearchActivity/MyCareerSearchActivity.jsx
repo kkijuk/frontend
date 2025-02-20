@@ -4,6 +4,7 @@ import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
 import { useFetchActivityDetail } from '../../../hooks/MycareerSearch/useFetchActivityDetail';
 
 import { useNavigate } from 'react-router-dom';
+import { highlightMatch } from '../../../utils/highlightMatch';
 
 const Container = styled.div`
 	width: 100%;
@@ -195,7 +196,7 @@ export default function MyCareerSearchActivity({ sortOrder, searchQuery, onViewT
 											{detail.startDate} ~ {detail.endDate}
 										</DetailCareerDate>
 									</TopWrapper>
-									<DetailContent>{detail.content}</DetailContent>
+									<DetailContent>{highlightMatch(detail.content, searchQuery)}</DetailContent>
 									<BottomWrapper>
 										{detail.detailTag.map((tag, j) => (
 											<DetailTag>{tag.tagName}</DetailTag>
