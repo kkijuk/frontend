@@ -6,6 +6,7 @@ import { useFetchTagList } from '../../../hooks/MycareerSearch/useFetchTagList';
 import { useFetchActivityByTag } from '../../../hooks/MycareerSearch/useFetchActivityByTag';
 
 import { useNavigate } from 'react-router-dom';
+import { highlightMatch } from '../../../utils/highlightMatch';
 
 const Container = styled.div`
 	width: 100%;
