@@ -83,6 +83,7 @@ export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewTogg
 			<MyCareerSearchTotalActivityDetail
 				activityDetail={activityDetail}
 				isActivityDetailLoading={isActivityDetailLoading}
+				searchQuery={searchQuery}
 			/>
 
 			<Wrapper>
@@ -96,6 +97,7 @@ export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewTogg
 				activityTagList={activityTagList}
 				isActivityTagListLoading={isActivityTagListLoading}
 				sortOrder={sortOrder}
+				searchQuery={searchQuery}
 			/>
 		</Container>
 	);
