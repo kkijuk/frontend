@@ -705,7 +705,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				const response = await editCareer(selectedCategory, careerId, filteredData);
 				console.log('Success - 활동 수정: ', response);
 				// onClose();
-				window.location.reload();
+				// window.location.reload();
 			} catch (error) {
 				console.error('수정모드에서 id 추가 중 오류 발생: ', error);
 			}
@@ -716,7 +716,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				const response = await createCareer(selectedCategory, filteredData);
 				console.log('Success - 활동 추가: ', response);
 				// onClose();
-				window.location.reload();
+				// window.location.reload();
 			} catch (error) {
 				console.error('createCareer 호출 중 오류 발생: ', error.response ? error.response.data : error.message);
 			}
