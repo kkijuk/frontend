@@ -17,26 +17,75 @@ import Footer from '../components/Footer';
 
 const PageContainer = styled.div`
   background: var(--background, linear-gradient(180deg, #fff 30%, #e1f4ed 100%));
-  min-height: 100vh; 
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  flex-start;
   position: relative;
+  overflow-y: auto;  /* 전체 스크롤 가능 */
+
+   scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+
+  &::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, Opera */
+  }
+
+`;
+
+const MainContentWrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+
+   scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+
+  &::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, Opera */
+  }
+`;
+
+const ContentContainer = styled.div`
+  position: fixed;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+`;
+
+const BackgroundLayer = styled.div`
+  position: fixed;  /* 고정 위치 */
+  top: 0;
+  left: 0;
+  width: 100vw; /* 전체 화면 너비 */
+  height: 100vh; /* 전체 화면 높이 */
+  z-index: 1;
+ 
 `;
 
 
 const SvgContainer = styled.div`
-	position: absolute;
+	 position: relative; 
 	width: 100%;
 	height: auto;
 	top: 0;
 	left: 0;
-	z-index: 1000;
-
-	img {
-		position: absolute;
-	}
+	z-index: 1;
 `;
+
+const FooterWrapper = styled.div`
+  position: relative;
+  z-index: 3;
+  margin-top: 395px;  /* 항상 아래로 밀림 */
+  width: 100%;
+`;
+
+
 
 const StarLeft = styled.img`
 	position: absolute;
@@ -106,6 +155,7 @@ const LoginScreen = styled.div`
 	text-align: center;
 	margin: 150px auto 0;
 	height: auto;
+	z-index: 2;
 	overflow: hidden;
 
 	p {
@@ -234,12 +284,15 @@ const ButtonContainer = styled.div`
 `;
 
 const StyledSVG = styled.svg`
+  width: 1920px;  /* 고정된 가로 크기 */
+  height: 1080px; /* 고정된 세로 크기 */
   position: absolute;
-  width: 100vw;
-  height: 100vh; 
-  min-height: 1080px; 
-  z-index: 1000;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1; /* 다른 요소 아래에 위치 */
 `;
+
 
 
 const KakaoIcon = () => (
@@ -320,7 +373,7 @@ const SocialLogin = () => {
 	return (
 		<>
 		<PageContainer>
-			<SvgContainer>
+		<MainContentWrapper>
 			<StyledSVG viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
 
     <image href={leftStarSvg} x="310" y="250" width="140" />
@@ -330,12 +383,13 @@ const SocialLogin = () => {
 	<image href={leftSvg} x="315" y="772" width="350" />
     <image href={rightSvg} x="1200" y="670" width="350" />
   </StyledSVG>
-</SvgContainer>
+ 
 			<TopButtonWrapper>
 				<TopButton onClick={() => window.open('https://www.instagram.com/kki.juk/', '_blank')}>Instagram</TopButton>
 				<TopButton onClick={goEmail}>문의</TopButton>
 			</TopButtonWrapper>
 			<Title>쉽고 빠르게 쌓아가는 나만의 커리어 아카이브</Title>
+			
 			<LoginScreen>
 				<img src={logo} width="164px" height="80px" alt="Logo" />
 				<p>
@@ -352,8 +406,13 @@ const SocialLogin = () => {
 					</SocialButton>
 				</ButtonContainer>
 			</LoginScreen>
+			
+			</MainContentWrapper>
+			<FooterWrapper>
+        <Footer />
+      </FooterWrapper>
 		</PageContainer>
-		<Footer />
+	
 		</>
 	);
 };
