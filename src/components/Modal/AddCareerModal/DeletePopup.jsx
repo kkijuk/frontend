@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import styled from "styled-components";
 
 function DeletePopup({ onConfirm, onClose }) {
@@ -8,12 +9,10 @@ function DeletePopup({ onConfirm, onClose }) {
                     그래도 삭제하시겠습니까?
     `
 
-    return (
+    return ReactDOM.createPortal(
         <PopupOverlay>
             <PopupContainer>
-                <PopupMessage>
-                    {message}
-                </PopupMessage>
+                <PopupMessage>{message}</PopupMessage>
                 <div style={{height:'45px'}}></div>
                 <ButtonWrapper>
                     <CancelButton onClick={onClose}>취소</CancelButton>
@@ -21,6 +20,7 @@ function DeletePopup({ onConfirm, onClose }) {
                 </ButtonWrapper>
             </PopupContainer>
         </PopupOverlay>
+        ,document.body
     );
 }
 
@@ -33,6 +33,7 @@ const PopupOverlay = styled.div`
     justify-content: center;
     align-items: center;
     background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
 `;
 
 const PopupContainer = styled.div`
