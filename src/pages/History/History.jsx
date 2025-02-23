@@ -235,7 +235,7 @@ const History = () => {
 	// addCareerModal 오픈 (활동 추가 버튼 클릭 시)
 	const handleOpenCareerModal = (categoryEnName) => {
 		setModalMode('add');
-		setModalCategory({
+		setModalData({
 			category: {
 				categoryEnName: categoryEnName,
 			}
