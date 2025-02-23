@@ -97,7 +97,9 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 				<div style={{width:'100%'}}>
 					<LevelTag category={careerData.category.categoryKoName}>{careerData.category.categoryKoName}</LevelTag>
 					<SchoolInfo>
-						<SchoolName>{data.name}</SchoolName>
+						<SchoolName>{data.name} / 
+							<span style={{fontWeight:'normal'}}>{data.alias}</span>
+						</SchoolName>
 						<Dates>
 							{data.startDate ? data.startDate : '시작 날짜 없음'} ~ {endDateToDisplay}
 							<Status>{statusToDisplay}</Status>
@@ -166,7 +168,7 @@ const Oval = styled.div`
 									? '#FA7C79'
 									: props.category === '교육'
 										? '#F99538'
-										: props.category === '기타활동'
+										: props.category === '기타'
 											? '#707070'
 											: '#000000'};
     border: ${(props) =>
@@ -182,7 +184,7 @@ const Oval = styled.div`
 								? '3px solid #FA7C79'
 								: props.category === '교육'
 									? '3px solid #F99538'
-									: props.category === '기타활동'
+									: props.category === '기타'
 										? '3px solid #707070'
 										: '#000000'};
     }
@@ -210,7 +212,7 @@ const Line = styled.div`
 								? '2px solid #FA7C79'
 								: props.category === '교육' && props.isPastDue
 									? '2px solid #F99538'
-									: props.category === '기타활동' && props.isPastDue
+									: props.category === '기타' && props.isPastDue
 										? '2px solid #707070'
 										: props.category === '동아리' && !props.isPastDue
 											? '2px dashed #FCC400'
@@ -224,7 +226,7 @@ const Line = styled.div`
 															? '2px dashed #FA7C79'
 															: props.category === '교육' && !props.isPastDue
 																? '2px dashed #F99538'
-																: props.category === '기타활동' && !props.isPastDue
+																: props.category === '기타' && !props.isPastDue
 																	? '2px dashed #707070'
 																	: '#000000'};
 `;
