@@ -92,6 +92,7 @@ const History = () => {
 		email: email,
 	});
 	const [profileURL, setProfileURL] = useState(profileImageUrl);	// 프로필 이미지
+	const [modalCategory, setModalCategory] = useState('');	// 모달 카테고리(add mode)
 
 	// useEffect
 	// 이력서 불러오기
@@ -228,6 +229,12 @@ const History = () => {
 		}
 	};
 
+	// addCareerModal 오픈 시 카테고리 지정
+	const handleOpenCareerModal = (categoryEnName) => {
+		setModalCategory(categoryEnName);
+		setIsAddCareerModalOpen(true);
+	}
+
 	return (
 		<>
 			{showCreateButton ? (
@@ -247,6 +254,11 @@ const History = () => {
 						</ScrollNavigatorContainer>
 						{isAddCareerModalOpen &&
 							<AddCareerModal
+								initialData={{
+									category: {
+										categoryEnName: modalCategory,
+									}
+								}}
 								onClose={() => setIsAddCareerModalOpen(false)}
 							/>
 						}
@@ -332,7 +344,7 @@ const History = () => {
 								key = {sections[2].id}
 							>
 								<h2>경력</h2>
-								<AddButton onClick={()=>setIsAddCareerModalOpen(true)}>+</AddButton>
+								<AddButton onClick={()=> handleOpenCareerModal("EMP")}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{employments.length === 0 && 
@@ -357,7 +369,7 @@ const History = () => {
 								key = {sections[3].id}
 							>
 								<h2>활동 및 경험</h2>
-								<AddButton onClick={()=>setIsAddCareerModalOpen(true)}>+</AddButton>
+								<AddButton onClick={()=> handleOpenCareerModal("ACTIVITY")}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{activitiesAndExperiences.length === 0 && 
@@ -382,7 +394,7 @@ const History = () => {
 								key = {sections[4].id}
 							>
 								<h2>프로젝트</h2>
-								<AddButton onClick={()=>setIsAddCareerModalOpen(true)}>+</AddButton>
+								<AddButton onClick={()=> handleOpenCareerModal("PROJECT")}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{projects.length === 0 && 
@@ -407,7 +419,7 @@ const History = () => {
 								key = {sections[5].id}
 							>
 								<h2>교육</h2>
-								<AddButton onClick={()=>setIsAddCareerModalOpen(true)}>+</AddButton>
+								<AddButton onClick={()=> handleOpenCareerModal("EDU")}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{eduCareers.length === 0 && 
