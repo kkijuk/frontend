@@ -84,7 +84,7 @@ const History = () => {
 			files: false,
 		},
 	});
-
+	const [isAddCareerModalOpen, setIsAddCareerModalOpen] = useState(false); // 내 커리어 관련 활동 추가 모달 관리
 	const [activeSection, setActiveSection] = useState("");	// 인디케이터 활성화 섹션
 	const [editableUserData, setEditableUserData] = useState({	// 사용자 정보 수정
 		profileImageUrl: profileImageUrl,
@@ -92,10 +92,7 @@ const History = () => {
 		email: email,
 	});
 	const [profileURL, setProfileURL] = useState(profileImageUrl);	// 프로필 이미지
-
-	const [isCareerModalOpen, setIsCareerModalOpen] = useState(false); // 내 커리어 관련 활동 추가 모달 관리
-	const [modalMode, setModalMode] = useState('add');	// 모달 모드(add, edit)
-	const [modalData, setModalData] = useState(null);	// 모달 카테고리(add mode)
+	const [modalCategory, setModalCategory] = useState('');	// 모달 카테고리(add mode)
 
 	// useEffect
 	// 이력서 불러오기
@@ -232,22 +229,10 @@ const History = () => {
 		}
 	};
 
-	// addCareerModal 오픈 (활동 추가 버튼 클릭 시)
+	// addCareerModal 오픈 시 카테고리 지정
 	const handleOpenCareerModal = (categoryEnName) => {
-		setModalMode('add');
-		setModalCategory({
-			category: {
-				categoryEnName: categoryEnName,
-			}
-		});
-		setIsCareerModalOpen(true);
-	}
-
-	// addCareerModal 오픈 (커리어 아이템에서 수정 버튼 클릭 시)
-	const handleEditCareerModal = (careerData) => {
-		setModalMode('edit');
-		setModalData(careerData);
-		setIsCareerModalOpen(true);
+		setModalCategory(categoryEnName);
+		setIsAddCareerModalOpen(true);
 	}
 
 	return (
@@ -267,11 +252,14 @@ const History = () => {
 								onClick={scrollToSection}
 							/>
 						</ScrollNavigatorContainer>
-						{isCareerModalOpen &&
+						{isAddCareerModalOpen &&
 							<AddCareerModal
-								mode={modalMode}
-								initialData={modalData}
-								onClose={() => setIsCareerModalOpen(false)}
+								initialData={{
+									category: {
+										categoryEnName: modalCategory,
+									}
+								}}
+								onClose={() => setIsAddCareerModalOpen(false)}
 							/>
 						}
 						<div style={{display:'flex', marginBlock:'30px'}}>
@@ -368,7 +356,7 @@ const History = () => {
 										key={employment.id}
 										data={employment}
 										isLastItem={index === employments.length - 1}
-										onEditCareer={handleEditCareerModal}
+										setIsOpen={(isOpen) => setIsAddCareerModalOpen(isOpen)}
 									/>
 								))}
 							</ContentWrapper>
@@ -393,7 +381,7 @@ const History = () => {
 											key={activity.id}
 											data={activity}
 											isLastItem={index === activitiesAndExperiences.length - 1}
-											onEditCareer={handleEditCareerModal}
+											setIsOpen={(isOpen) => setIsAddCareerModalOpen(isOpen)}
 										/>
 								))}
 							</ContentWrapper>
@@ -418,7 +406,7 @@ const History = () => {
 										key={project.id}
 										data={project}
 										isLastItem={index === projects.length - 1}
-										onEditCareer={handleEditCareerModal}
+										setIsOpen={(isOpen) => setIsAddCareerModalOpen(isOpen)}
 									/>
 								))}
 							</ContentWrapper>
@@ -443,7 +431,7 @@ const History = () => {
 										key={eduCareer.id}
 										data={eduCareer}
 										isLastItem={index === eduCareers.length - 1}	
-										onEditCareer={handleEditCareerModal}
+										setIsOpen={(isOpen) => setIsAddCareerModalOpen(isOpen)}
 									/>
 								))}
 							</ContentWrapper>
