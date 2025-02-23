@@ -775,6 +775,16 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 
 	return (
 		<ModalBackground>
+			{/* 삭제 팝업 */}
+			{showDeletePopup && (
+				<DeletePopup
+					onClose={() => setShowDeletePopup(false)}
+					onConfirm={()=>{
+						handleDeleteCareer();
+						setShowDeletePopup(false);
+					}}
+				/>
+			)}
 			<ModalContainer>
 				<CloseButton onClick={onClose}>
 					<SvgIcon name="close" size={20} color="#999" />
@@ -811,17 +821,6 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 					<SaveButton type="button" onClick={handleAddCareer}>
 						저장
 					</SaveButton>
-				)}
-
-				{/* 삭제 팝업 */}
-				{showDeletePopup && (
-					<DeletePopup
-						onClose={() => setShowDeletePopup(false)}
-						onConfirm={()=>{
-							handleDeleteCareer();
-							setShowDeletePopup(false);
-						}}
-					/>
 				)}
 			</ModalContainer>
 		</ModalBackground>
