@@ -13,6 +13,7 @@ import CareerTypeDropdown, { CareerTypeDropdown2 } from './CareerTypeDropdown';
 import ParticipantType from './ParticipantType';
 import { Form } from 'react-router-dom';
 import moment from 'moment'; // moment 라이브러리 임포트(세연)
+import DeletePopup from './DeletePopup';
 
 const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const navigate = useNavigate();
@@ -88,6 +89,9 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const [isTeam, setIsTeam] = useState(false);
 	const [teamSize, setTeamSize] = useState(0);
 	const [contribution, setContribution] = useState(0);
+
+	// 삭제 팝업 모달 관리
+	const [showDeletePopup, setShowDeletePopup] = useState(false);
 
 	//각 폼 별 상태 모니터링
 	/*
@@ -796,7 +800,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				<ModalForm>{renderFormByCategory()}</ModalForm>
 				{isEditMode ? (
 					<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%' }}>
-						<DeleteButton type="button" onClick={handleDeleteCareer}>
+						<DeleteButton type="button" onClick={() => setShowDeletePopup(true)}>
 							삭제
 						</DeleteButton>
 						<SaveButton type="button" onClick={handleAddCareer} style={{ width: '425px' }}>
@@ -807,6 +811,17 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 					<SaveButton type="button" onClick={handleAddCareer}>
 						저장
 					</SaveButton>
+				)}
+
+				{/* 삭제 팝업 */}
+				{showDeletePopup && (
+					<DeletePopup
+						onClose={() => setShowDeletePopup(false)}
+						onConfirm={()=>{
+							handleDeleteCareer();
+							setShowDeletePopup(false);
+						}}
+					/>
 				)}
 			</ModalContainer>
 		</ModalBackground>
