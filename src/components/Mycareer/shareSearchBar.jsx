@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { trackEvent } from '../../utils/ga4';
 
 const SearchBarContainer = styled.div`
 	display: flex;
@@ -52,7 +53,14 @@ const SearchBar = ({ initialSearchQuery }) => {
 
 	const handleSearch = () => {
 		if (searchValue.trim()) {
-			navigate(`/Mycareer_search?query=${encodeURIComponent(searchValue)}`);
+			trackEvent('search_performed', {
+				category: 'mycareer',
+				detail: 'search_career',
+				action_type: 'search',
+				label: '검색',
+				search_query: searchValue.trim(),
+			});
+			navigate(`/Mycareer_search?query=${encodeURIComponent(searchValue.trim())}`);
 		}
 	};
 
@@ -69,7 +77,7 @@ const SearchBar = ({ initialSearchQuery }) => {
 	return (
 		<SearchBarContainer>
 			<SearchInput
-				placeholder="공고 이름이나 태그를 검색하세요."
+				placeholder="활동 이름이나 태그를 검색하세요."
 				onChange={onChange}
 				onKeyPress={onKeyPress}
 				value={searchValue}

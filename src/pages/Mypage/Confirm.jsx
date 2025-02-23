@@ -107,6 +107,14 @@ const Input = styled.input`
 	line-height: normal;
 `;
 
+const ErrorMessage = styled.p`
+	color: var(--error, #ff7979);
+	font-family: Pretendard;
+	font-size: 14px;
+	font-weight: 500;
+	margin-top: 8px;
+`;
+
 const Button = styled.button`
 	width: 400px;
 	height: 50px;
@@ -156,12 +164,23 @@ export default function Confirm() {
 		fetchLoginData();
 	}, []);
 
+	// 이메일 형식 검증 함수
+	const isValidEmail = (email) => {
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return emailRegex.test(email);
+	};
+
 	const handleInputChange = (e) => {
 		setInputEmail(e.target.value);
 		setErrorMessage('');
 	};
 
 	const handleSubmit = async () => {
+		if (!isValidEmail(inputEmail)) {
+			setErrorMessage('올바른 이메일 형식이 아닙니다.');
+			return;
+		}
+
 		try {
 			// API 호출로 입력한 이메일 확인
 			const isMatched = await fetchEmail(inputEmail);
@@ -173,7 +192,7 @@ export default function Confirm() {
 			if (isMatched === true || isMatched === 'true') {
 				navigate('/mypage/myinformation', { state: { socialType } }); // 페이지 이동,socialType 전달
 			} else {
-				setErrorMessage('입력한 이메일이 일치하지 않습니다. 다시 확인해주세요.');
+				setErrorMessage('등록된 이메일과 다릅니다. 다시 입력해 주세요.');
 			}
 		} catch (error) {
 			setErrorMessage('이메일을 확인하는 중 오류가 발생했습니다.');
@@ -198,6 +217,7 @@ export default function Confirm() {
 						value={inputEmail} // 상태값 바인딩
 						onChange={handleInputChange} // 입력값 변경 시 호출
 					/>
+					{errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
 				</EmailBox>
 				<Button onClick={handleSubmit}>확인</Button>
 				{errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}{' '}
