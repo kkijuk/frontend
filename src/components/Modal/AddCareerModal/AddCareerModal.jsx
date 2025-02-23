@@ -17,6 +17,8 @@ import moment from 'moment'; // moment 라이브러리 임포트(세연)
 const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const navigate = useNavigate();
 
+	console.log('initialData:', initialData);
+
 	//카테고리 정보
 	const categoryMap = {
 		1: '동아리',
