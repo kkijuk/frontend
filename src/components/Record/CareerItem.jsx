@@ -72,6 +72,14 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 · 서술식보다는 개조식으로 간결하게 작성하는 것이 좋아요.
 · 이곳에 작성한 내용은 [서류준비-이력서]에 자동으로 삽입됩니다.`
 
+	// unknown 값에 따른 분기 처리
+	const endDateToDisplay = careerData.unknown ? '종료 날짜 없음' : data.endData ? data.endDate : '종료 날짜 없음';
+	const statusToDisplay = careerData.unknown ? '(진행 중)' : activityMonths ? `(${activityMonths}개월)` : '(진행 중)';
+
+	// 활동 진행 중 여부 확인(Line 스타일 적용 방식 선택 위해)
+	const today = new Date();
+	const checkPastDue = data.endDate ? new Date(data.endDate) < today : false;
+
 	return (
 		<FirstContainer>
 			{isCareerModalOpen && 
@@ -82,8 +90,8 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 					onClose={() => setIsOpen(false)}
 			/>}
 			<TimeLine>
-				<Oval category={careerData.category.categoryKoName} isPastDue={data.isCurrent}></Oval>
-				<Line category={careerData.category.categoryKoName} isLastItem={isLastItem} isPastDue={data.isCurrent} isSummaryEditMode={isSummaryEditMode}></Line>
+				<Oval category={careerData.category.categoryKoName} isPastDue={checkPastDue}></Oval>
+				<Line category={careerData.category.categoryKoName} isLastItem={isLastItem} isPastDue={checkPastDue} isSummaryEditMode={isSummaryEditMode}></Line>
 			</TimeLine>
 			<Container>
 				<div style={{width:'100%'}}>
@@ -91,10 +99,10 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 					<SchoolInfo>
 						<SchoolName>{data.name}</SchoolName>
 						<Dates>
-							{data.startDate ? data.startDate : '시작 날짜 없음'} ~ {data.endDate ? data.endDate : '종료 날짜 없음'}
-							{activityMonths ? <Status>({activityMonths}개월)</Status> : <Status>(진행 중)</Status>}
+							{data.startDate ? data.startDate : '시작 날짜 없음'} ~ {endDateToDisplay}
+							<Status>{statusToDisplay}</Status>
 						</Dates>
-						{/* <DetailContainer>
+						<DetailContainer>
 							<div style={{ width:'58px',fontWeight: '600', marginRight: '30px'}}>활동내역</div>
 							{isSummaryEditMode ? (
 								<DetailWrapper>
@@ -113,7 +121,7 @@ const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 									{data.summary}
 								</>
 							)}
-						</DetailContainer> */}
+						</DetailContainer>
 					</SchoolInfo>
 				</div>
 			</Container>
@@ -212,7 +220,7 @@ const Line = styled.div`
 													? '2px dashed #C48DEF'
 													: props.category === '프로젝트' && !props.isPastDue
 														? '2px dashed #78D333'
-														: props.category === '경력' && !props.isPastDue
+														: props.category === '아르바이트'|| props.category === '인턴'|| props.category === '정규직'|| props.category === '계약직'|| props.category === '프리랜서' && props.isPastDue && !props.isPastDue
 															? '2px dashed #FA7C79'
 															: props.category === '교육' && !props.isPastDue
 																? '2px dashed #F99538'

@@ -17,6 +17,8 @@ import moment from 'moment'; // moment 라이브러리 임포트(세연)
 const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const navigate = useNavigate();
 
+	console.log('initialData:', initialData);
+
 	//카테고리 정보
 	const categoryMap = {
 		1: '동아리',
@@ -46,10 +48,25 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	useEffect(() => {
 		if (initialData?.category) {
 			// 한글 카테고리 이름을 숫자 키로 변환
-			const categoryNumber = Object.keys(categoryMap).find(
-				(key) => categoryMap[key] === initialData.category.categoryKoName, // 수정된 부분
-			);
-			setSelectedCategory(parseInt(categoryNumber, 10) || 1);
+			// const categoryNumber = Object.keys(categoryMap).find(
+			// 	(key) => categoryMap[key] === initialData.category.categoryKoName, // 수정된 부분
+			// );
+			// setSelectedCategory(parseInt(categoryNumber, 10) || 1);
+			if (initialData.category.categoryEnName === 'CIRCLE') {
+				setSelectedCategory(1);
+			} else if (initialData.category.categoryEnName === 'ACTIVITY') {
+				setSelectedCategory(2);
+			} else if (initialData.category.categoryEnName === 'EDU') {
+				setSelectedCategory(6);
+			} else if (initialData.category.categoryEnName === 'EMP') {
+				setSelectedCategory(5);
+			} else if (initialData.category.categoryEnName === 'PROJECT') {
+				setSelectedCategory(4);
+			} else if (initialData.category.categoryEnName === 'COM') {
+				setSelectedCategory(3);
+			} else if (initialData.category.categoryEnName === 'ETC') {
+				setSelectedCategory(7);
+			}
 		}
 	}, [initialData]);
 
@@ -738,7 +755,11 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							key={key}
 							isSelected={selectedCategory === parseInt(key)}
 							bgColor={categoryColors[key]}
-							onClick={() => setSelectedCategory(parseInt(key))}>
+							onClick={() => {
+								if(!isEditMode) { // 수정모드가 아닐 때만 카테고리 변경 가능
+									setSelectedCategory(parseInt(key));
+								}
+							}}>
 							{categoryMap[key]}
 						</CategoryButton>
 					))}
