@@ -4,7 +4,7 @@ import api from '../../Axios';
 
 // 활동 생성
 export const createCareer = async (category, data) => {
-	console.log('createCareer:', data);
+	console.log('createCareer:', category, data);
 	let endpoint = '';
 	switch (category) {
 		case 1: //동아리
