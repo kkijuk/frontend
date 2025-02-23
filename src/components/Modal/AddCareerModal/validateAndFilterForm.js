@@ -10,7 +10,7 @@ export const validateAndFilterForm = (category, formData) => {
 		4: ['name', 'alias', 'startdate', 'enddate', 'unknown', 'location', 'isTeam', 'teamSize', 'contribution'], // 프로젝트
 		5: ['name', 'startdate', 'enddate', 'unknown', 'type', 'alias', 'position', 'jobField', 'type'], // 경력
 		6: ['name', 'alias', 'startdate', 'enddate', 'unknown', 'organizer', 'time'], // 교육
-		7: ['name', 'alisa', 'startdate', 'enddate'] // 기타
+		7: ['name', 'alias', 'startdate', 'enddate'] // 기타
 	};
 
 	// 필수 필드 정의
