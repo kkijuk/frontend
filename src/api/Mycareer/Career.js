@@ -26,7 +26,7 @@ export const createCareer = async (category, data) => {
 			endpoint = '/career/educareer';
 			break;
 		case 7: //기타
-			endpoint = `/career/etc`;
+			endpoint = '/career/etc';
 			return;
 		default:
 			console.log('Unknown category');
