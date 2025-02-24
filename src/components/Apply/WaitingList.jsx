@@ -11,6 +11,7 @@ const StatusItem = styled.div`
 	justify-content: center;
 	width: 120px;
 	height: 15px;
+	cursor: pointer; 
 `;
 
 const StatusText = styled.span`
