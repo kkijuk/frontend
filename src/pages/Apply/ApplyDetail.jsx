@@ -713,8 +713,13 @@ const ApplyDetail = () => {
 
 	const clickGotoApply = () => {
 		if (job?.link) {
-			// link 값이 존재하면
-			window.open(job.link);
+			// URL이 http:// 또는 https://로 시작하지 않으면 https:// 추가
+			let url = job.link;
+			if (!/^https?:\/\//i.test(url)) {
+				url = `https://${url}`;
+			}
+			
+			window.open(url);
 		} else {
 			setGotoShow(true);
 			setTimeout(() => {
@@ -722,6 +727,7 @@ const ApplyDetail = () => {
 			}, 3000);
 		}
 	};
+	
 
 	const handleDateClick = () => {
 		setShowCalendar(!showCalendar);
