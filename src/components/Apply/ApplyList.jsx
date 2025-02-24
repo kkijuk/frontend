@@ -31,8 +31,9 @@ const ApplyList = ({ count }) => {
 	const handleClick = () => {
 		navigate('/apply-status'); 
 	};
+
 	return (
-		<StatusItem>
+		<StatusItem onClick={handleClick}>
 			<StatusText>지원한 공고 {count}</StatusText>
 		</StatusItem>
 	);
