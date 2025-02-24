@@ -38,7 +38,7 @@ const StatusContainer = styled.div`
 
 export default function ApplySchedule() {
 	useAuthRedirect();
-	const [view, setView] = useState('list');
+	const [view, setView] = useState('calendar');
 	const [date, setDate] = useState(new Date());
 	const [showModal, setShowModal] = useState(false);
 	const [jobs, setJobs] = useState([]);
