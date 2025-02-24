@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 
-const FileSearch = () => {
+const FileSearch = ({onFileSelect}) => {
   const fileInputRef = useRef(null); // 숨겨진 파일 입력 필드 참조
   const [fileName, setFileName] = useState(""); // 선택한 파일 이름 상태
 
@@ -19,6 +19,7 @@ const FileSearch = () => {
 
       if (fileExtension === 'pdf' && fileSizeMB <= 50) {
         setFileName(file.name); // 파일 이름 설정
+        onFileSelect(file); // 선택한 파일 전달
       } else {
         alert('pdf 파일만 첨부할 수 있으며, 파일 크기는 50MB 이하이어야 합니다.');
         fileInputRef.current.value = ""; // 파일 입력 필드 초기화

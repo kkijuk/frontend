@@ -47,7 +47,7 @@ const EditButton = styled.button`
 	border: none;
 	position: absolute;
 	right: 0;
-	top:10px;
+	// top:10px;
 	background-color: transparent;
 	opacity: 0;
 	padding: 0px 50px 70px 0px;
