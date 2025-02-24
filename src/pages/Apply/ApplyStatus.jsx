@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Layout from '../../components/Layout'; 
 import TabMenu from '../../components/Apply/TabMenu';
@@ -12,8 +13,11 @@ import ApplyStatusButton from '../../components/Apply/ApplyStatusButton';
 
 export default function ApplyStatus() {
 	const [jobs, setJobs] = useState([]);
+	const location = useLocation();
+	const queryParams = new URLSearchParams(location.search);
+	const initialStatus = queryParams.get('status') || 'all'; 
 	const [filteredJobs, setFilteredJobs] = useState([]);
-	const [activeStatus, setActiveStatus] = useState('all');
+	const [activeStatus, setActiveStatus] = useState(initialStatus);
 	const [showModal, setShowModal] = useState(false);
 	const navigate = useNavigate();
 
@@ -74,7 +78,7 @@ export default function ApplyStatus() {
 				combinedJobs.sort((a, b) => a.id - b.id);
 				console.log('Jobs data:', combinedJobs);
 				setJobs(combinedJobs);
-				setFilteredJobs(combinedJobs);
+				handleStatusClick(initialStatus);
 			  }
 			} catch (error) {
 			  console.error('Error fetching recruits:', error);
