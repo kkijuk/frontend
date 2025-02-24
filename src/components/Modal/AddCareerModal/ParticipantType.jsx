@@ -7,6 +7,40 @@ const ParticipantType = ({ isTeam, setIsTeam, teamSize, setTeamSize, contributio
 		setIsTeam(value === '팀');
 	};
 
+	// 2번 인풋 전용 에러 메세지 
+	const [errorMessage, setErrorMessage] = useState('');
+
+	// 1번 인풋 제한
+	const handleTeamSizeChange =(e)=>{
+		let {value} = e.target;
+		// 숫자만 필터
+		value = value.replace(/\D/g, '');
+		// 최대 두 자릿수
+		if(value.length > 2) {
+			value = value.slice(0, 2);
+		}
+		setTeamSize(value);
+	}
+
+	// 2번 인풋 제한
+	const handleContributionChange =(e)=>{
+		let {value} = e.target;
+		// 숫자만 필터
+		value = value.replace(/\D/g, '');
+		// 최대 세자릿수
+		if(value.length > 3) {
+			value = value.slice(0, 3);
+		}
+		setContribution(value);
+
+		// 100 초과시 에러 메세지
+		if(Number(value) > 100) {
+			setErrorMessage('100이하로 입력해주세요.');
+		} else {
+			setErrorMessage('');
+		}
+	}
+
 	return (
 		<Container>
 			<LabelGroup>
@@ -26,15 +60,22 @@ const ParticipantType = ({ isTeam, setIsTeam, teamSize, setTeamSize, contributio
 					</SelectButton>
 				</ButtonGroup>
 				<InputGroup>
-					<Input type="number" value={teamSize} onChange={(e) => setTeamSize(e.target.value)} disabled={!isTeam} />
+					{/* 1번 인풋 */}
+					<Input 
+						type="number" 
+						value={teamSize} 
+						onChange={handleTeamSizeChange} 
+						disabled={!isTeam} />
 					<span style={{marginRight:'10px'}}>명</span>
+					{/* 2번 인풋 */}
 					<Input
 						type="number"
 						value={contribution}
-						onChange={(e) => setContribution(e.target.value)}
+						onChange={handleContributionChange}
 						disabled={!isTeam}
 					/>
 					<span>%</span>
+					{errorMessage && <ErrorText>{errorMessage}</ErrorText>}
 				</InputGroup>
 			</ContentGroup>
 		</Container>
@@ -107,6 +148,7 @@ const InputGroup = styled.div`
 	width:260px;
 	// gap: 10px;
 	margin-left:15px;
+	position: relative;
 
 	span {
 		font-size: 14px;
@@ -130,3 +172,13 @@ const Input = styled.input`
 		outline: none;
 	}
 `;
+
+const ErrorText = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-family: 'Regular';
+	font-size: 13px;
+	color: #FF7979;
+	margin-left: 10px;
+`
