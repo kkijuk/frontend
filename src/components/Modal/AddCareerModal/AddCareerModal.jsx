@@ -97,42 +97,41 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const [showDeletePopup, setShowDeletePopup] = useState(false);
 
 	//각 폼 별 상태 모니터링
-	
-	// useEffect(() => {
-	// 	console.log({
-	// 		name,
-	// 		alias,
-	// 		startdate,
-	// 		enddate,
-	// 		unknown,
-	// 		location,
-	// 		role,
-	// 		organizer,
-	// 		type,
-	// 		position,
-	// 		jobField,
-	// 		time,
-	// 		isTeam,
-	// 		teamSize,
-	// 		contribution,
-	// 	});
-	// }, [
-	// 	name,
-	// 	alias,
-	// 	startdate,
-	// 	enddate,
-	// 	unknown,
-	// 	location,
-	// 	role,
-	// 	organizer,
-	// 	type,
-	// 	position,
-	// 	jobField,
-	// 	time,
-	// 	isTeam,
-	// 	teamSize,
-	// 	contribution,
-	// ]);
+	useEffect(() => {
+		console.log({
+			name,
+			alias,
+			startdate,
+			enddate,
+			unknown,
+			location,
+			role,
+			organizer,
+			type,
+			position,
+			jobField,
+			time,
+			isTeam,
+			teamSize,
+			contribution,
+		});
+	}, [
+		name,
+		alias,
+		startdate,
+		enddate,
+		unknown,
+		location,
+		role,
+		organizer,
+		type,
+		position,
+		jobField,
+		time,
+		isTeam,
+		teamSize,
+		contribution,
+	]);
 
 
 	// 초기 데이터 설정
@@ -223,6 +222,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
 							{formErrors.enddate && <ErrorText style={{top: '60px'}}>{formErrors.enddate}</ErrorText>}
+							{hasError && <ErrorText style={{top: '70px'}}>{formErrors.invalidPeriodError}</ErrorText>}
 						</FormItem>
 
 						{/* 소속 */}
@@ -767,6 +767,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 					errorsObj.startdate = err;
 				} else if (err === "종료 날짜를 선택해주세요." || err === "종료 날짜는 시작 날짜 이후로 설정해주세요") {
 					errorsObj.enddate = err;
+				} else if(err === "종료 날짜는 시작 날짜 이후로 설정해주세요") {
+					errorsObj.invalidPeriodError = err;
 				} else if (err === "소속을 선택해주세요.") {
 					errorsObj.location = err;
 				} else if (err === "주최를 입력해주세요.") {
