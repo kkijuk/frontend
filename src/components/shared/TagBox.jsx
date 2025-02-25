@@ -71,7 +71,7 @@ const TagBoxList = styled.div`
 	flex-shrink: 0;
 	border-radius: 10px;
 	background: var(--white, #fff);
-	box-shadow: 0px 5px 10px 0px #d9d9d9;
+	box-shadow: ${(props) => (props.isDeleteModalOpen ? '0px 5px 10px 0px #d9d9d9' : 'none')};
 	position: absolute; /* 절대 위치 */
 	top: 40px; /* Tag 컴포넌트 아래에 위치시키기 위한 값 조정 */
 	left: 0;
@@ -257,7 +257,13 @@ export default function TagBox({ externalTags, onTagListChange }) {
 	};
 
 	//TagBoxListContainer에서 태그 삭제하기
-	const handleTagDelete = async () => {
+
+	const handleTagDeleteClick = (tagId, tagName) => {
+		setDeleteTag({ id: tagId, name: tagName });
+		setIsDeleteModalOpen(true);
+	};
+
+	const handleTagDeleteConfirm = async () => {
 		if (deleteTag) {
 			try {
 				await TagBoxDeleteTag(deleteTag.id);
@@ -327,7 +333,7 @@ export default function TagBox({ externalTags, onTagListChange }) {
 								<CloseButton
 									onClick={(e) => {
 										e.stopPropagation();
-										handleTagDelete(tag.id, tag.tagName);
+										handleTagDeleteClick(tag.id, tag.tagName);
 									}}>
 									x
 								</CloseButton>
@@ -335,6 +341,9 @@ export default function TagBox({ externalTags, onTagListChange }) {
 						))}
 					</TagBoxListContainer>
 				</TagBoxList>
+			)}
+			{isDeleteModalOpen && (
+				<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={handleTagDeleteConfirm} />
 			)}
 		</Box>
 	);

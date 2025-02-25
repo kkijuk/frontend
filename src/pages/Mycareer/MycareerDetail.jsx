@@ -342,7 +342,7 @@ export default function MycareerDetail() {
 			// 한글 타입을 영어 타입으로 변환
 			const convertedType = categoryToTypeMap[type] || type;
 
-			const response = await ViewCareerDetail(id, type);
+			const response = await ViewCareerDetail(id, convertedType);
 			console.log('가져온 Career Details:', response.data); // 데이터 확인
 
 			// startDate -> startdate로 변환
