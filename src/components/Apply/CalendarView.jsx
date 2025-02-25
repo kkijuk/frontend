@@ -179,14 +179,12 @@ const DayIndicator = styled.div`
 
 const CustomCalendar = ({ onChange, value, marks }) => {
 	const renderDay = (date) => {
-		// 이 부분에서 UTC로 변환
-		const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-		const dateString = utcDate.toISOString().split('T')[0];
-		const dayMarks = marks.filter((mark) => mark.date === dateString).slice(0, 3);
+		const dateString = date.toISOString().split('T')[0];
+        const dayMarks = marks.filter((mark) => mark.date === dateString).slice(0, 3);
 
 		return (
 			<div>
-				{utcDate.getUTCDate()}
+				{date.getDate()}
 				<DayIndicatorContainer>
 					{dayMarks.map((mark, index) => (
 						<DayIndicator key={index} color={mark.color} />
@@ -333,47 +331,35 @@ const CalendarView = ({ date, setDate }) => {
 		fetchCalendarData();
 	}, [date]);
 
-	useEffect(() => {
-		const fetchTodayJobs = async () => {
-			const now = new Date(); //  이미 로컬 시간으로 생성됨
-			const todayDateStr = now.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 변환
-	
-			try {
-				// 오늘 날짜의 공고 리스트 불러오기
-				const jobs = await getRecruitListEndDate(todayDateStr);
-				if (jobs && jobs.length > 0) {
-					setJobsForSelectedDate(jobs); // 오늘 날짜 공고 업데이트
-					setDate(now); //  오늘 날짜로 설정 (오프셋 적용 X)
-				} else {
-					setJobsForSelectedDate([]); // 공고 없는 경우 초기화
-				}
-			} catch (error) {
-				console.error('Error fetching job details for today:', error);
-				setJobsForSelectedDate([]);
-			}
-		};
-	
-		fetchTodayJobs();
-	}, []); //  컴포넌트 마운트 시 한 번 실행
+	const fetchTodayJobs = async () => {
+		const now = new Date();
+		const todayDateStr = now.toISOString().split('T')[0]; // 그대로 유지
+	  
+		try {
+		  const jobs = await getRecruitListEndDate(todayDateStr);
+		  if (jobs && jobs.length > 0) {
+			setJobsForSelectedDate(jobs);
+			setDate(now); // 오프셋 없이 그대로 설정
+		  } else {
+			setJobsForSelectedDate([]);
+		  }
+		} catch (error) {
+		  console.error('Error fetching job details for today:', error);
+		  setJobsForSelectedDate([]);
+		}
+	  };
+	  
 	
 	
 	
 
 	const handleDateChange = async (selectedDate) => {
-		//  오프셋 보정
-		const timezoneOffset = selectedDate.getTimezoneOffset() * 60000;
-		const localDate = new Date(selectedDate.getTime() - timezoneOffset);
-		
-		setDate(localDate); // 로컬 시간 기준으로 날짜 설정
+		setDate(selectedDate); // 오프셋 보정 제거
 	  
-		// 날짜를 ISO 형식으로 변환
-		const selectedDateStr = localDate.toISOString().split('T')[0];
-	  
-		console.log(`Fetching recruit list for end date: ${selectedDateStr}`);
+		const selectedDateStr = selectedDate.toISOString().split('T')[0]; // 그대로 사용
 	  
 		try {
 		  const jobs = await getRecruitListEndDate(selectedDateStr);
-		  console.log('Recruit list fetched:', jobs);
 		  setJobsForSelectedDate(jobs);
 		} catch (error) {
 		  console.error('Error fetching job details:', error);
