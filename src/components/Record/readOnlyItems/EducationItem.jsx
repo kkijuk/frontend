@@ -6,7 +6,7 @@ import { KebabMenu2 } from '../KebabMenu';
 const EducationItem = ({ data, isLastItem, onSave, onUpdate, onDelete, onClose }) => {
 	const [isEditMode, setIsEditMode] = useState(false);
 
-	console.log('EducationItem: ', data);
+	// console.log('EducationItem: ', data);
 
 	return (
 		<FirstContainer>
