@@ -343,11 +343,11 @@ export default function TagBox({ externalTags, onTagListChange }) {
 							</Tag>
 						))}
 					</TagBoxListContainer>
-				</TagBoxList>
-			)}
 
-			{isDeleteModalOpen && (
-				<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDeleteTag} />
+					{isDeleteModalOpen && (
+						<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDeleteTag} />
+					)}
+				</TagBoxList>
 			)}
 		</Box>
 	);
