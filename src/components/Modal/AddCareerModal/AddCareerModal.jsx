@@ -829,7 +829,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				const response = await deleteCareer(selectedCategory, careerId);
 				console.log('Success - 활동 삭제: ', response);
 				// onClose();
-				navigate('/mycareer');
+				// navigate('/mycareer');
+				window.location.reload();
 			} catch (error) {
 				console.error('deleteCareer 호출 중 오류 발생: ', error.response ? error.response.data : error.message);
 			}

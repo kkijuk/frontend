@@ -331,6 +331,18 @@ const SocialLogin = () => {
     };
   }, []); */
 
+  useEffect(() => {
+	if(process.env.REACT_APP_USE_DUMMY_LOGIN === 'true') {
+		console.log('개발모드: Dummy 토큰으로 자동 로그인');	
+		login(
+			process.env.REACT_APP_DEV_TOKEN,
+			process.env.REACT_APP_DEV_REFRESH_TOKEN
+		);
+      	navigate('/home'); 
+	}
+  },
+  [login, navigate])
+
   const goInsta = () => {
     window.open('https://www.instagram.com/kki.juk/?utm_source=ig_web_button_share_sheet', '_blank');
   };
