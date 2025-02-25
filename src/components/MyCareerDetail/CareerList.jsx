@@ -78,6 +78,8 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
 				return;
 			}
 
+			const lowerCaseCategoryEnName = categoryEnName.toLowerCase();
+
 			// ViewCareerDetail 호출
 			const data = await ViewCareerDetail(careerId, categoryEnName);
 			console.log('API Response:', data);
