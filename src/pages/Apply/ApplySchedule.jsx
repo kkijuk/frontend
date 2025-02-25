@@ -44,7 +44,8 @@ export default function ApplySchedule() {
 	const [showModal, setShowModal] = useState(false);
 	const [jobs, setJobs] = useState([]);
 	const navigate = useNavigate();
-	const [appliedJobs, setAppliedJobs] = useState([]);
+	const [appliedCount, setAppliedCount] = useState(0); //  지원 완료 공고 수 상태 추가
+
 
 	// 새로운 공고를 저장하고 리스트를 정렬하는 함수
 	const handleSaveRecruit = async (newRecruitId) => {
@@ -64,38 +65,55 @@ export default function ApplySchedule() {
 			console.error('Error fetching new recruit:', error);
 		}
 	};
+
+	// 지원 완료 공고 개수를 계산하는 함수
+const countAppliedJobs = (recruitData) => {
+	if (!recruitData) return 0;
+
+	const { accepted, applying, rejected } = recruitData;
+
+	// 상태별 공고 수 합산
+	const acceptedCount = accepted ? accepted.count : 0;
+	const applyingCount = applying ? applying.count : 0;
+	const rejectedCount = rejected ? rejected.count : 0;
+
+	return acceptedCount + applyingCount + rejectedCount;
+};
+
 	
-	useEffect(() => {
-		const fetchAppliedJobs = async () => {
-			try {
-				const now = new Date();
-				const currentDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+useEffect(() => {
+	const fetchAppliedJobs = async () => {
+		try {
+			const now = new Date();
+			const currentDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(
+				now.getDate()
+			).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
-				// ✅ getValidRecruitList 사용하여 마감된 공고도 포함하여 가져옴
-				const recruitData = await getValidRecruitList(currentDate);
+			const recruitData = await getValidRecruitList(currentDate);
 
-				if (recruitData && recruitData.outputs && recruitData.outputs.length > 0) {
-					const validJobs = recruitData.outputs.flatMap((group) =>
-						group.recruits.map((recruit) => ({
-							...recruit,
-							endTime: `${group.endDate} 00:00:00`,
-						}))
-					);
-					// ✅ 미지원/지원예정이 아닌 공고들만 필터링
-					const appliedFiltered = validJobs.filter(
-						(job) => job.status !== 'UNAPPLIED' && job.status !== 'PLANNED'
-					);
-					setAppliedJobs(appliedFiltered); // ✅ 상태 업데이트
-				} else {
-					console.warn('No valid recruits found.');
-				}
-			} catch (error) {
-				console.error('Error fetching valid recruits:', error);
+			if (recruitData) {
+				const totalAppliedCount = countAppliedJobs(recruitData); //  총 공고 수 계산
+
+				// 각 상태별 공고 데이터 합산해서 배열로 변환
+				const combinedAppliedJobs = [
+					...(recruitData.accepted?.recruits || []),
+					...(recruitData.applying?.recruits || []),
+					...(recruitData.rejected?.recruits || []),
+				];
+
+				setAppliedJobs(combinedAppliedJobs); //  공고 리스트 업데이트
+				setAppliedCount(totalAppliedCount); //  카운트 상태 업데이트
+			} else {
+				console.warn('No valid recruits found.');
 			}
-		};
+		} catch (error) {
+			console.error('Error fetching valid recruits:', error);
+		}
+	};
 
-		fetchAppliedJobs();
-	}, []);
+	fetchAppliedJobs();
+}, []);
+
 
 	useEffect(() => {
 		const fetchJobs = async () => {
@@ -156,7 +174,7 @@ export default function ApplySchedule() {
 			<TopSection>
 				<StatusContainer>
 					<WaitingList count={waitingJobs.length} />
-					<ApplyList count={appliedJobs.length} />
+					<ApplyList count={appliedCount} />
 				</StatusContainer>
 				<ViewToggle view={view} onToggle={setView} />
 			</TopSection>
