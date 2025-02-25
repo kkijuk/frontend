@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { TagBoxFetchList, TagBoxCreateTag, TagBoxDeleteTag } from '../../api/Mycareer/TagBoxAPI';
+import TagDeleteModal from '../Modal/TagDeleteModal';
 
 const Box = styled.div`
 	width: 720px;
@@ -71,7 +72,7 @@ const TagBoxList = styled.div`
 	flex-shrink: 0;
 	border-radius: 10px;
 	background: var(--white, #fff);
-	box-shadow: 0px 5px 10px 0px #d9d9d9;
+	box-shadow: ${({ isDeleteModalOpen }) => (isDeleteModalOpen ? '0px 5px 10px 0px #D9D9D9' : 'none')};
 	position: absolute; /* 절대 위치 */
 	top: 40px; /* Tag 컴포넌트 아래에 위치시키기 위한 값 조정 */
 	left: 0;
@@ -144,6 +145,10 @@ export default function TagBox({ externalTags, onTagListChange }) {
 	const [isFocused, setIsFocused] = useState(false);
 
 	const [isTagBoxListVisible, setIsTagBoxListVisible] = useState(false); //TagBoxListContainer 상태 나타내기
+
+	const [deleteTag, setDeleteTag] = useState(null);
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
 	const tagBoxRef = useRef(null);
 
 	//아래 주석처리 날릴 예정 + 위에 externalTags도....
@@ -252,20 +257,27 @@ export default function TagBox({ externalTags, onTagListChange }) {
 		setTags(tags.filter((tag) => tag !== tagName)); //tags배열에서 필터링 해서 새로운 배열 만들기
 	};
 
-	//TagBoxListContainer에서 태그 삭제하기
-	const handleTagDelete = async (tagId, tagName) => {
+	// 삭제 모달 표시
+	const handleTagDelete = (tagId, tagName) => {
+		setDeleteTag({ id: tagId, name: tagName });
+		setIsDeleteModalOpen(true);
+	};
+
+	// 태그 삭제 확정
+	const confirmDeleteTag = async () => {
+		if (!deleteTag) return;
+
 		try {
-			await TagBoxDeleteTag(tagId);
-			console.log(`태그 ${tagId} 삭제 완료`);
+			await TagBoxDeleteTag(deleteTag.id);
 
-			// TagBoxListContainer에서 태그 삭제
-			setTagBoxTags(TagBoxTags.filter((tag) => tag.id !== tagId));
-
-			// TagInputContainer에서도 해당 태그 삭제
-			setTags(tags.filter((tag) => tag !== tagName));
+			setTagBoxTags(TagBoxTags.filter((tag) => tag.id !== deleteTag.id));
+			setTags(tags.filter((tag) => tag !== deleteTag.name));
 		} catch (error) {
-			console.log(`태그 ${tagId} 삭제 실패`, error);
+			console.error(`태그 ${deleteTag.id} 삭제 실패`, error);
 		}
+
+		setDeleteTag(null);
+		setIsDeleteModalOpen(false);
 	};
 
 	/*
@@ -316,7 +328,7 @@ export default function TagBox({ externalTags, onTagListChange }) {
 			</Row>
 
 			{isTagBoxListVisible && (
-				<TagBoxList>
+				<TagBoxList isDeleteModalOpen={isDeleteModalOpen}>
 					<TagBoxListContainer>
 						{TagBoxTags.map((tag) => (
 							<Tag key={tag.id} onClick={() => handleTagClick(tag.tagName)}>
@@ -331,6 +343,10 @@ export default function TagBox({ externalTags, onTagListChange }) {
 							</Tag>
 						))}
 					</TagBoxListContainer>
+
+					{isDeleteModalOpen && (
+						<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDeleteTag} />
+					)}
 				</TagBoxList>
 			)}
 		</Box>

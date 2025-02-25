@@ -250,16 +250,18 @@ const formatDateTimeToLocal = (dateString) => {
 	if (!dateString) return '';
 
 	const utcDate = new Date(dateString);
-	const localDate = new Date(utcDate.getTime() - utcDate.getTimezoneOffset() * 60000);
 
-	const year = localDate.getFullYear();
-	const month = String(localDate.getMonth() + 1).padStart(2, '0');
-	const day = String(localDate.getDate()).padStart(2, '0');
-	const hours = String(localDate.getHours()).padStart(2, '0');
-	const minutes = String(localDate.getMinutes()).padStart(2, '0');
+	// 브라우저의 로컬 타임존으로 자동 변환
+	const year = utcDate.getFullYear();
+	const month = String(utcDate.getMonth() + 1).padStart(2, '0');
+	const day = String(utcDate.getDate()).padStart(2, '0');
+	const hours = String(utcDate.getHours()).padStart(2, '0');
+	const minutes = String(utcDate.getMinutes()).padStart(2, '0');
 
 	return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
+
+
 
 const EditApplyModal = ({ onClose, onSave, job }) => {
 	const [title, setTitle] = useState('');

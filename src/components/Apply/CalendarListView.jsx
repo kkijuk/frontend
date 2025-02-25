@@ -164,13 +164,10 @@ const CalendarListView = ({ date, data, count, onJobClick }) => {
 };
 
 
-  const adjustedDate = new Date(date);
-  adjustedDate.setDate(adjustedDate.getDate() + 1);
-
   return (
     <CalendarBackgroundSection>
       <CalendarContentSection>
-        <CalendarAdDate>{adjustedDate.toISOString().split('T')[0]}</CalendarAdDate>
+      <CalendarAdDate>{new Date(date).toISOString().split('T')[0]}</CalendarAdDate>
         <CalendarAdListStyled>
           {data.map((ad, idx) => (
             <CalendarAdItem key={idx} onClick={() => handleJobClick(ad)}>

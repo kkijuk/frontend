@@ -281,14 +281,14 @@ const EditTag = styled.div`
 `;
 
 const categoryToColorMap = {
-	'동아리': '#FCC400',
-	'대외활동': '#77AFF2',
-	'공모전/대회': '#BB7AEF',
-	'프로젝트': '#78D333',
-	'경력': '#FA7C79',
-	'교육': '#F99538',
-	'기타': '#707070',
-	'default': '#707070',
+	동아리: '#FCC400',
+	대외활동: '#77AFF2',
+	공모전대회: '#BB7AEF',
+	프로젝트: '#78D333',
+	경력: '#FA7C79',
+	교육: '#F99538',
+	기타: '#707070',
+	default: '#707070',
 };
 
 const NameTag = styled.div`
@@ -342,7 +342,7 @@ export default function MycareerDetail() {
 			// 한글 타입을 영어 타입으로 변환
 			const convertedType = categoryToTypeMap[type] || type;
 
-			const response = await ViewCareerDetail(id, type);
+			const response = await ViewCareerDetail(id, convertedType);
 			console.log('가져온 Career Details:', response.data); // 데이터 확인
 
 			// startDate -> startdate로 변환
@@ -360,8 +360,12 @@ export default function MycareerDetail() {
 
 	useEffect(() => {
 		if (careerId && category) {
-			const type = categoryToTypeMap[category] || category;
-			fetchCareerDetails(careerId, type);
+			const type = categoryToTypeMap[category]; // 항상 영어로 변환
+			if (type) {
+				fetchCareerDetails(careerId, type);
+			} else {
+				console.error(`Invalid category: ${category}`);
+			}
 		}
 	}, [careerId, category]);
 

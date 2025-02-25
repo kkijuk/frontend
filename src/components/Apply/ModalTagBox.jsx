@@ -78,7 +78,7 @@ const CloseButton = styled.button`
 `;
 
 const Tag = styled.div`
-  background: #fff;
+  background: #F5F5F5;
   color: var(--main-01, #3aaf85);
   border-radius: 10px;
   padding: 4px 8px;

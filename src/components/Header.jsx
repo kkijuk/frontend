@@ -5,9 +5,16 @@ import logo from '../assets/logo.png';
 import { logout } from '../api/Login/Logout'; 
 
 const HeaderWrapper = styled.div`
+	position: fixed;  
+	top: 0;           
+	left: 0;
 	width: 100%;
 	border-bottom: 1px solid #ccc;
+	background-color: #ffffff; 
+	z-index: 1500;    
 `;
+
+
 
 const HeaderStyle = styled.div`
 	max-width: 820px;
