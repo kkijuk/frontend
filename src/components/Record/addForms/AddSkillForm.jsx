@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CustomDropdown from "../CustomDropdown";
 import SvgIcon from "../../shared/SvgIcon";
 
-const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData }) => {
+const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
     skillTag: "",
     skillName: "",
