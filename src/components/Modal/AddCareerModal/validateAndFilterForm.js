@@ -61,7 +61,7 @@ export const validateAndFilterForm = (category, formData) => {
 	});
 
 	// 종료날짜 필드 확인
-	if (formData.enddate && !formData.unknown) {
+	if (!formData.enddate && !formData.unknown) {
 		console.log("필드 확인: ", formData.enddate);
 		otherErrorCount ++;
 		errors.push(errorMessageMap.enddate);
