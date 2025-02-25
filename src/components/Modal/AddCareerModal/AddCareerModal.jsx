@@ -720,11 +720,11 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	// 활동 추가 함수
 	const handleAddCareer = async () => {
 		// 날짜 입력 유효성 검증
-		if (hasError) {
-			setFormErrors((prev) => ({ ...prev, startdate: !startdate ? "시작 날짜를 선택해주세요." : prev.startdate,
-				enddate: (!unknown && !enddate) ? "종료 날짜를 선택해주세요." : prev.enddate }));
-			return;
-		}
+		// if (hasError) {
+		// 	setFormErrors((prev) => ({ ...prev, startdate: !startdate ? "시작 날짜를 선택해주세요." : prev.startdate,
+		// 		enddate: (!unknown && !enddate) ? "종료 날짜를 선택해주세요." : prev.enddate }));
+		// 	return;
+		// }
 
 		// startdate와 enddate를 YYYY-MM-DD 형식으로 변환하기 위해 추가 (에러)
 		const formattedStartdate = moment(startdate).format('YYYY-MM-DD');
