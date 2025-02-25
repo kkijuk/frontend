@@ -393,7 +393,7 @@ const CalendarView = ({ date, setDate }) => {
 				<CustomCalendar onChange={handleDateChange} value={date} marks={marks} />
 			</div>
 			<CalendarListView
-				date={new Date().toLocaleDateString('en-CA')} 
+				date={date.toISOString().split('T')[0]}
 				data={jobsForSelectedDate}
 				count={jobsForSelectedDate.length}
 				onJobClick={handleJobClick}
