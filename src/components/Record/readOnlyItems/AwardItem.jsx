@@ -13,7 +13,7 @@ const AwardItem = ({ data, onSave, onUpdate, onDelete, onClose }) => {
       {isEditMode ? (
         <EditContainer>
           <AddAwardForm
-            mode='edit'
+            mode="edit"
             initialData={data}
             onClose={() => setIsEditMode(false)}
             onUpdate = {(FormData) => onUpdate(FormData)}
