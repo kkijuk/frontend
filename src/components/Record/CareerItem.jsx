@@ -99,7 +99,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 				<Oval category={displayKoName} isPastDue={checkPastDue}></Oval>
 				<Line category={displayKoName} isLastItem={isLastItem} isPastDue={checkPastDue} isSummaryEditMode={isSummaryEditMode}></Line>
 			</TimeLine>
-			<Container onClick = {handleNavigate}>
+			<Container onClick = {!isSummaryEditMode ? handleNavigate : null}>
 				<div style={{width:'100%'}}>
 					<LevelTag category={displayKoName}>{displayKoName}</LevelTag>
 					<SchoolInfo>
@@ -249,12 +249,12 @@ const EditButton = styled.button`
 `;
 
 const Container = styled.div`
-	width: 100%;
 	display: flex;
 	flex-direction: row;
 	margin-bottom: 45px;
 	font-family: 'Regular';
 	position: relative;
+	cursor: pointer;
 	&:hover ${EditButton} {
 		opacity: 1;
 		cursor: pointer;
