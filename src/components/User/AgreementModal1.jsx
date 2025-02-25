@@ -30,6 +30,11 @@ const StyledModal = styled.div`
 		font-size: 28px;
 		font-weight: bold;
 		cursor: pointer;
+		position: sticky;  
+		top: -20px; 
+		z-index: 10; 
+		background-color: #fefefe;
+		padding: 3px;
 	}
 
 	.close:hover,
@@ -43,7 +48,13 @@ const StyledModal = styled.div`
 		font-family: Pretendard;
 		font-size: 22px;
 		font-weight: 600;
+		position: sticky;  
+		top: -20px;  
+		background-color: #fefefe;
+		padding: 8px 0;
+		z-index: 5;
 	}
+
 
 	p {
 		color: #707070;

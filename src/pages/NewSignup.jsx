@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SignupStepOne from '../components/User/SignupStepOne';
 import SignupStepTwo from '../components/User/SignupStepTwo';
 import styled from 'styled-components';
+import signupLogo from '../assets/signuplogo.svg';
 
 const Container = styled.div`
   max-width: 500px;
   margin: 50px auto;
   text-align: center;
   margin-top: 120px;
+`;
+
+const Logo = styled.img`
+  width: 80px; 
+  height: auto;
+  margin-top: -70px; 
+  margin-bottom: 70px;
+  cursor: pointer;
 `;
 
 const TitleContainer = styled.div`
@@ -65,6 +74,21 @@ const NewSignup = () => {
     isMarketingAgreed: false,
   });
 
+  useEffect(() => {
+    const preventScroll = (e) => {
+      e.preventDefault();
+    };
+    const $body = document.querySelector('body');
+    $body.style.overflow = 'hidden'; // 스크롤바 숨기기
+    $body.addEventListener('wheel', preventScroll, { passive: false });
+    $body.addEventListener('touchmove', preventScroll, { passive: false });
+    return () => {
+      $body.removeEventListener('wheel', preventScroll);
+      $body.removeEventListener('touchmove', preventScroll);
+      $body.style.overflow = '';
+    };
+  }, []);
+
   const navigate = useNavigate();
 
   const handleAgreementChange = (key, value) => {
@@ -76,9 +100,14 @@ const NewSignup = () => {
     navigate('/signupsuccess');
   };
 
+  const handleLogoClick = () => {
+    navigate('/'); 
+  };
+
   return (
     <Container>
       <TitleContainer>
+      <Logo src={signupLogo} alt="Signup Logo" onClick={handleLogoClick} />
         <Title>회원가입</Title>
       </TitleContainer>
       <StepBarContainer>
