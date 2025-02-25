@@ -249,17 +249,19 @@ const LabelContainer = styled.div`
 const formatDateTimeToLocal = (dateString) => {
 	if (!dateString) return '';
 
+	// 디비에서 받은 시간을 그대로 사용 (UTC+0 기준)
 	const utcDate = new Date(dateString);
-	const localDate = new Date(utcDate.getTime() - utcDate.getTimezoneOffset() * 60000);
 
-	const year = localDate.getFullYear();
-	const month = String(localDate.getMonth() + 1).padStart(2, '0');
-	const day = String(localDate.getDate()).padStart(2, '0');
-	const hours = String(localDate.getHours()).padStart(2, '0');
-	const minutes = String(localDate.getMinutes()).padStart(2, '0');
+	// UTC 시간을 직접 사용해서 한국 시간으로의 자동 변환 방지
+	const year = utcDate.getUTCFullYear();
+	const month = String(utcDate.getUTCMonth() + 1).padStart(2, '0');
+	const day = String(utcDate.getUTCDate()).padStart(2, '0');
+	const hours = String(utcDate.getUTCHours()).padStart(2, '0');
+	const minutes = String(utcDate.getUTCMinutes()).padStart(2, '0');
 
 	return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
+
 
 const EditApplyModal = ({ onClose, onSave, job }) => {
 	const [title, setTitle] = useState('');
