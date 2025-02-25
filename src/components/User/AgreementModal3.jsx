@@ -21,7 +21,7 @@ const StyledModal = styled.div`
 		padding: 20px;
 		border: 2px solid #FFF;
 		width: 540px;
-        height: 650px;
+        height: 350px; 
         flex-shrink: 0;
 		 overflow-y: auto; /* 세로 스크롤 기능 활성화 */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
