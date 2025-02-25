@@ -360,24 +360,27 @@ const CalendarView = ({ date, setDate }) => {
 	
 
 	const handleDateChange = async (selectedDate) => {
-		setDate(selectedDate);
-
-		// 날짜를 ISO 형식으로 변환하면서, 로컬 시간대로 날짜를 맞추기 위해 UTC 오프셋을 조정합니다.
-		const selectedDateStr = new Date(selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000)
-			.toISOString()
-			.split('T')[0];
-
+		//  오프셋 보정
+		const timezoneOffset = selectedDate.getTimezoneOffset() * 60000;
+		const localDate = new Date(selectedDate.getTime() - timezoneOffset);
+		
+		setDate(localDate); // 로컬 시간 기준으로 날짜 설정
+	  
+		// 날짜를 ISO 형식으로 변환
+		const selectedDateStr = localDate.toISOString().split('T')[0];
+	  
 		console.log(`Fetching recruit list for end date: ${selectedDateStr}`);
-
+	  
 		try {
-			const jobs = await getRecruitListEndDate(selectedDateStr);
-			console.log('Recruit list fetched:', jobs);
-			setJobsForSelectedDate(jobs);
+		  const jobs = await getRecruitListEndDate(selectedDateStr);
+		  console.log('Recruit list fetched:', jobs);
+		  setJobsForSelectedDate(jobs);
 		} catch (error) {
-			console.error('Error fetching job details:', error);
-			setJobsForSelectedDate([]);
+		  console.error('Error fetching job details:', error);
+		  setJobsForSelectedDate([]);
 		}
-	};
+	  };
+	  
 
 	const handleJobClick = (job) => {
 		navigate(`/apply-detail/${job.recruitId}`, { state: { job } });
