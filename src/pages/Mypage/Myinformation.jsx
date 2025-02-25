@@ -406,6 +406,16 @@ const ErrorText = styled.div`
 	margin-top: 5px;
 `;
 
+const ErrorMessage = styled.p`
+	color: var(--sub-rd, #fa7c79);
+	font-family: Pretendard;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	margin-top: 5px;
+`;
+
 export default function MyInformation() {
 	const [isEditingEmail, setIsEditingEmail] = useState(false);
 	const [isVerificationRequested, setIsVerificationRequested] = useState(false);
@@ -430,6 +440,7 @@ export default function MyInformation() {
 	const [socialType, setSocialType] = useState('');
 
 	const [isVerified, setIsVerified] = useState(false);
+	const [phoneError, setPhoneError] = useState(''); // 에러 메시지 상태 추가
 
 	//Tag 가져오기
 	const location = useLocation();
@@ -569,8 +580,30 @@ export default function MyInformation() {
 	};
 
 	const handleSavePhone = () => {
-		const formattedPhone = `${phoneInputs.part1}-${phoneInputs.part2}-${phoneInputs.part3}`;
-		setPhoneNumber(formattedPhone);
+		const validPrefixes = ['010', '011', '012', '013', '014', '015', '016', '017', '018', '019'];
+
+		//모든 입력값이 비어있다면
+		if (!phoneInputs.part1 && !phoneInputs.part2 && !phoneInputs.part3) {
+			setPhoneError('연락처를 입력해주세요.');
+			return;
+		}
+
+		//앞자리 유효성 검사 후 에러 메시지 표시
+		if (!validPrefixes.includes(phoneInputs.part1)) {
+			setPhoneError('올바른 연락처를 입력해주세요.');
+			return;
+		}
+
+		//길이 검사 (3-4-4 형식 체크)
+		if (phoneInputs.part1.length !== 3 || phoneInputs.part2.length !== 4 || phoneInputs.part3.length !== 4) {
+			setPhoneError('올바른 연락처를 입력해주세요.');
+			return;
+		}
+
+		//에러가 없으면 저장 진행
+		setPhoneError('');
+		// 저장 로직 실행
+		console.log('연락처 저장:', phoneInputs);
 		setIsEditingPhone(false);
 	};
 
@@ -704,6 +737,7 @@ export default function MyInformation() {
 								<ConfirmButton onClick={handleSavePhone}>확인</ConfirmButton>
 								<CancelButton2 onClick={handleCancelEditPhone}>취소</CancelButton2>
 							</PhoneBox>
+							{phoneError && <ErrorMessage>{phoneError}</ErrorMessage>} {/* 에러 메시지 표시 */}
 						</ContentBox>
 					) : (
 						<Box>
