@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import TagDeleteModal from '../Modal/TagDeleteModal';
 
 const Box = styled.div`
 	width: 230px;
