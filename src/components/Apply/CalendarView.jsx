@@ -335,18 +335,15 @@ const CalendarView = ({ date, setDate }) => {
 
 	useEffect(() => {
 		const fetchTodayJobs = async () => {
-			const now = new Date();
-			// 한국 시간 기준 날짜 설정
-			const timezoneOffset = now.getTimezoneOffset() * 60000; // 오프셋 (밀리초)
-			const koreanDate = new Date(now.getTime() - timezoneOffset + 9 * 60 * 60000); // ✅ 한국 시간 (UTC+9)
-			const todayDateStr = koreanDate.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 변환
+			const now = new Date(); //  이미 로컬 시간으로 생성됨
+			const todayDateStr = now.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 변환
 	
 			try {
 				// 오늘 날짜의 공고 리스트 불러오기
 				const jobs = await getRecruitListEndDate(todayDateStr);
 				if (jobs && jobs.length > 0) {
 					setJobsForSelectedDate(jobs); // 오늘 날짜 공고 업데이트
-					setDate(koreanDate); // 오늘 날짜로 설정
+					setDate(now); //  오늘 날짜로 설정 (오프셋 적용 X)
 				} else {
 					setJobsForSelectedDate([]); // 공고 없는 경우 초기화
 				}
@@ -357,7 +354,8 @@ const CalendarView = ({ date, setDate }) => {
 		};
 	
 		fetchTodayJobs();
-	}, []); // 컴포넌트 마운트 시 한 번 실행
+	}, []); //  컴포넌트 마운트 시 한 번 실행
+	
 	
 	
 
