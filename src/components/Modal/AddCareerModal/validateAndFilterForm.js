@@ -46,9 +46,14 @@ export const validateAndFilterForm = (category, formData) => {
 	// 필수 필드 확인 및 필터링
 	requiredFields[category].forEach((field) => {
 		if (field === 'enddate' && formData.unknown) return; //enddate는 unknown이 true이면 검사하지 않음
+		if (field === 'enddate' && !formData.enddate) {
+			otherErrorCount ++;
+			errors.push(errorMessageMap.enddate);
+		}
 		if (field === 'isTeam') return; // isTeam은 직접 처리하므로 여기서는 검사하지 않음
 		if (!formData[field] && formData[field] !== 0){
 			if(errorMessageMap[field]){
+				otherErrorCount
 				errors.push(errorMessageMap[field]);
 			} else {
 				otherErrorCount ++;

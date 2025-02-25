@@ -98,41 +98,41 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 
 	//각 폼 별 상태 모니터링
 	
-	useEffect(() => {
-		console.log({
-			name,
-			alias,
-			startdate,
-			enddate,
-			unknown,
-			location,
-			role,
-			organizer,
-			type,
-			position,
-			jobField,
-			time,
-			isTeam,
-			teamSize,
-			contribution,
-		});
-	}, [
-		name,
-		alias,
-		startdate,
-		enddate,
-		unknown,
-		location,
-		role,
-		organizer,
-		type,
-		position,
-		jobField,
-		time,
-		isTeam,
-		teamSize,
-		contribution,
-	]);
+	// useEffect(() => {
+	// 	console.log({
+	// 		name,
+	// 		alias,
+	// 		startdate,
+	// 		enddate,
+	// 		unknown,
+	// 		location,
+	// 		role,
+	// 		organizer,
+	// 		type,
+	// 		position,
+	// 		jobField,
+	// 		time,
+	// 		isTeam,
+	// 		teamSize,
+	// 		contribution,
+	// 	});
+	// }, [
+	// 	name,
+	// 	alias,
+	// 	startdate,
+	// 	enddate,
+	// 	unknown,
+	// 	location,
+	// 	role,
+	// 	organizer,
+	// 	type,
+	// 	position,
+	// 	jobField,
+	// 	time,
+	// 	isTeam,
+	// 	teamSize,
+	// 	contribution,
+	// ]);
 
 
 	// 초기 데이터 설정
@@ -720,11 +720,11 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	// 활동 추가 함수
 	const handleAddCareer = async () => {
 		// 날짜 입력 유효성 검증
-		if (hasError) {
-			setFormErrors((prev) => ({ ...prev, startdate: !startdate ? "시작 날짜를 선택해주세요." : prev.startdate,
-				enddate: (!unknown && !enddate) ? "종료 날짜를 선택해주세요." : prev.enddate }));
-			return;
-		}
+		// if (hasError) {
+		// 	setFormErrors((prev) => ({ ...prev, startdate: !startdate ? "시작 날짜를 선택해주세요." : prev.startdate,
+		// 		enddate: (!unknown && !enddate) ? "종료 날짜를 선택해주세요." : prev.enddate }));
+		// 	return;
+		// }
 
 		// startdate와 enddate를 YYYY-MM-DD 형식으로 변환하기 위해 추가 (에러)
 		const formattedStartdate = moment(startdate).format('YYYY-MM-DD');
