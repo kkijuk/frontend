@@ -752,6 +752,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		// 날짜 외 입력 데이터 검증 및 필터링 실행
 		// 잘 수행되면 isValid:true와 filteredDate를, 오류가 있으면 isValid:false와 errors를 반환
 		const { isValid, errors, filteredData } = validateAndFilterForm(selectedCategory, allFormData);
+		console.log("errors: ", errors);
 
 		//오류 생길 경우
 		if (!isValid) {
@@ -770,12 +771,10 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 					errorsObj.location = err;
 				} else if (err === "주최를 입력해주세요.") {
 					errorsObj.organizer = err;
+				} else if (err === "인원을 선택해주세요.") {
+					errorsObj.teamSize = err;
 				} else if (err === "분류를 선택해주세요.") {
 					errorsObj.type = err;
-				} else if (err === "teamSize은(는) 필수 항목입니다.") {
-					errorsObj.teamSize = err;
-				} else if (err === "contribution은(는) 필수 항목입니다.") {
-					errorsObj.contribution = err;
 				} else {
 					errorsObj.general = err;
 				}
@@ -1051,6 +1050,7 @@ const CloseButton = styled.button`
 
 const ErrorText = styled.div`
 	position: absolute;
+	top: 80px;
 	font-family: 'Regular';
 	font-size: 13px;
 	color: #FF7979;
