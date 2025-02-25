@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import CustomCalendarPicker from "../CustomCalendarPicker";
 
-const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData }) => {
+const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
     licenseTag: "LICENSE", // 기본 값
     acquireDate: "",
