@@ -153,20 +153,27 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onDelete, initialData
               취소
             </Button>
             )}
-            <Button
-            primary
-            onClick={() => {
-              onSave(formData);
-              onClose();
-            }}
-            style={{
-                border: "1px solid var(--main-01, #3AAF85)",
-                background: "var(--main-01, #3AAF85)",
-                color: "#FFFFFF",
-            }}
-            >
-            추가
-            </Button>
+            {mode === "edit" ? (
+              <Button 
+                primary 
+                onClick={() => {
+                  onUpdate(formData);
+                  onClose();
+                }}
+                style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+                저장
+              </Button>
+              ) : (
+              <Button 
+                primary 
+                onClick={() => {
+                  onSave(formData);
+                  onClose();
+                }}
+                style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+                추가
+              </Button>
+            )}
         </ButtonRow>
       
       </Row>
