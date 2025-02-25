@@ -341,7 +341,12 @@ const CalendarView = ({ date, setDate }) => {
 
 	useEffect(() => {
 		const fetchTodayJobs = async () => {
-			const todayDateStr = getLocalDateString(new Date()); // 로컬 시간 기준 날짜로 설정
+			const now = new Date();
+		const todayDateStr = new Date(
+			now.getTime() - now.getTimezoneOffset() * 60000
+		)
+			.toISOString()
+			.split('T')[0];
 	
 			try {
 				// 오늘 날짜의 공고 리스트 불러오기
