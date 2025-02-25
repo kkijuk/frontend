@@ -17,18 +17,21 @@ export const fetchModalTags = async () => {
 // 공고 태그 추가 (POST)
 export const addModalTag = async (tagName) => {
     try {
-        const response = await api.post(`/recruit/tag?tag=${tagName}`);
-        return response.data; // 서버에서 추가된 태그 반환
+        const encodedTag = encodeURIComponent(tagName); // ✅ 인코딩 추가
+        const response = await api.post(`/recruit/tag?tag=${encodedTag}`);
+        return response.data;
     } catch (error) {
-        console.error('Error adding tag:', error);
+        console.error('Error adding tag:', error.response ? error.response.data : error);
     }
 };
 
 // 공고 태그 삭제 (DELETE)
 export const deleteModalTag = async (tagName) => {
     try {
-        await api.delete(`/recruit/tag?tag=${tagName}`);
+        const encodedTag = encodeURIComponent(tagName); // ✅ 인코딩 추가
+        await api.delete(`/recruit/tag?tag=${encodedTag}`);
     } catch (error) {
-        console.error('Error deleting tag:', error);
+        console.error('Error deleting tag:', error.response ? error.response.data : error);
     }
 };
+
