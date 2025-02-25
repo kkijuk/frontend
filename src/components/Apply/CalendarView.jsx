@@ -398,7 +398,9 @@ const CalendarView = ({ date, setDate }) => {
 				<CustomCalendar onChange={handleDateChange} value={date} marks={marks} />
 			</div>
 			<CalendarListView
-				date={date.toISOString().split('T')[0]}
+				date={new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+					.toISOString()
+					.split('T')[0]}
 				data={jobsForSelectedDate}
 				count={jobsForSelectedDate.length}
 				onJobClick={handleJobClick}
