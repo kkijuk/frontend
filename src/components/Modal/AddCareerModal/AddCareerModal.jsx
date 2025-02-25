@@ -727,8 +727,12 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		// }
 
 		// startdate와 enddate를 YYYY-MM-DD 형식으로 변환하기 위해 추가 (에러)
-		const formattedStartdate = moment(startdate).format('YYYY-MM-DD');
-		const formattedEnddate = unknown ? null : moment(enddate).format('YYYY-MM-DD');
+		const formattedStartdate = (startdate !== '' && startdate != null)
+			? moment(startdate).format('YYYY-MM-DD')
+			: null;
+		const formattedEnddate = (unknown || enddate === '' || enddate == null)
+			? null
+			: moment(enddate).format('YYYY-MM-DD');
 
 		const allFormData = {
 			name,
