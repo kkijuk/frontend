@@ -335,27 +335,29 @@ const CalendarView = ({ date, setDate }) => {
 
 	useEffect(() => {
 		const fetchTodayJobs = async () => {
-			// 오늘 날짜 ISO 형식으로 변환
-			const todayDateStr = new Date().toISOString().split('T')[0];
+			//  로컬 시간 기준 오늘 날짜 설정
+			const now = new Date();
+			const timezoneOffset = now.getTimezoneOffset() * 60000; // 오프셋 계산
+			const localDate = new Date(now.getTime() - timezoneOffset); // 로컬 시간 보정
+			const todayDateStr = localDate.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 변환
 	
 			try {
 				// 오늘 날짜의 공고 리스트 불러오기
 				const jobs = await getRecruitListEndDate(todayDateStr);
 				if (jobs && jobs.length > 0) {
-					setJobsForSelectedDate(jobs); //  오늘 날짜 공고 업데이트
-					setDate(new Date()); //  선택된 날짜를 오늘 날짜로 설정
+					setJobsForSelectedDate(jobs); // 오늘 날짜 공고 업데이트
+					setDate(localDate); //  선택된 날짜를 오늘 날짜로 설정
 				} else {
-					setJobsForSelectedDate([]); //  오늘 공고가 없는 경우 초기화
+					setJobsForSelectedDate([]); //  공고 없는 경우 초기화
 				}
 			} catch (error) {
 				console.error('Error fetching job details for today:', error);
-				setJobsForSelectedDate([]); // 에러 발생 시 초기화
+				setJobsForSelectedDate([]);
 			}
 		};
 	
-		// 컴포넌트가 처음 렌더링될 때 실행
 		fetchTodayJobs();
-	}, []);
+	}, []); // 컴포넌트 마운트 시 한 번 실행
 	
 
 	const handleDateChange = async (selectedDate) => {
