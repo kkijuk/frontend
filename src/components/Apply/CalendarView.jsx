@@ -292,6 +292,12 @@ const CalendarView = ({ date, setDate }) => {
 	const [jobsForSelectedDate, setJobsForSelectedDate] = useState([]);
 	const navigate = useNavigate();
 
+	const getLocalDateString = (date) => {
+		const timezoneOffset = date.getTimezoneOffset() * 60000; // 오프셋 계산 (밀리초)
+		const localDate = new Date(date.getTime() - timezoneOffset); // 오프셋 보정
+		return localDate.toISOString().split('T')[0]; // YYYY-MM-DD 형식 반환
+	};	
+
 	useEffect(() => {
 		const fetchCalendarData = async () => {
 			try {
@@ -335,18 +341,14 @@ const CalendarView = ({ date, setDate }) => {
 
 	useEffect(() => {
 		const fetchTodayJobs = async () => {
-			//  로컬 시간 기준 오늘 날짜 설정
-			const now = new Date();
-			const timezoneOffset = now.getTimezoneOffset() * 60000; // 오프셋 계산
-			const localDate = new Date(now.getTime() - timezoneOffset); // 로컬 시간 보정
-			const todayDateStr = localDate.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 변환
+			const todayDateStr = getLocalDateString(new Date()); // 로컬 시간 기준 날짜로 설정
 	
 			try {
 				// 오늘 날짜의 공고 리스트 불러오기
 				const jobs = await getRecruitListEndDate(todayDateStr);
 				if (jobs && jobs.length > 0) {
-					setJobsForSelectedDate(jobs); // 오늘 날짜 공고 업데이트
-					setDate(localDate); //  선택된 날짜를 오늘 날짜로 설정
+					setJobsForSelectedDate(jobs); //  오늘 날짜 공고 업데이트
+					setDate(new Date()); // 선택된 날짜를 오늘 날짜로 설정
 				} else {
 					setJobsForSelectedDate([]); //  공고 없는 경우 초기화
 				}
@@ -391,7 +393,7 @@ const CalendarView = ({ date, setDate }) => {
 				<CustomCalendar onChange={handleDateChange} value={date} marks={marks} />
 			</div>
 			<CalendarListView
-				date={date.toISOString().split('T')[0]}
+				date={new Date().toLocaleDateString('en-CA')} 
 				data={jobsForSelectedDate}
 				count={jobsForSelectedDate.length}
 				onJobClick={handleJobClick}
