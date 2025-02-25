@@ -164,9 +164,6 @@ const CalendarListView = ({ date, data, count, onJobClick }) => {
 };
 
 
-  const adjustedDate = new Date(date);
-  adjustedDate.setDate(adjustedDate.getDate() + 1);
-
   return (
     <CalendarBackgroundSection>
       <CalendarContentSection>
