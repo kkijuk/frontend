@@ -5,11 +5,15 @@ import logo from '../assets/logo.png';
 import { logout } from '../api/Login/Logout'; 
 
 const HeaderWrapper = styled.div`
+	position: fixed;  
+	top: 0;           
+	left: 0;
 	width: 100%;
 	border-bottom: 1px solid #ccc;
-	position: fixed; 
-	z-index: 1500; 
+	background-color: #ffffff; 
+	z-index: 1500;    
 `;
+
 
 
 const HeaderStyle = styled.div`
