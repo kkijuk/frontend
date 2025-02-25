@@ -427,6 +427,7 @@ export default function MyInformation() {
 	const [timer, setTimer] = useState(0);
 	const [isTimerExpired, setIsTimerExpired] = useState(false);
 	const [isRequesting, setIsRequesting] = useState(false);
+	const [socialType, setSocialType] = useState('');
 
 	const [isVerified, setIsVerified] = useState(false);
 
@@ -447,6 +448,7 @@ export default function MyInformation() {
 				setName(data.name);
 				setPhoneNumber(data.phoneNumber);
 				setBirthDate(data.birthDate);
+				setSocialType(data.socialType);
 
 				// Set initial values for inputs
 				setEmailInput(data.email);
@@ -595,7 +597,6 @@ export default function MyInformation() {
 
 			// 응답이 예상과 다를 수 있으니 여러 값으로 체크
 			if (response === true) {
-
 				alert('인증이 완료되었습니다.');
 				setEmail(emailInput);
 				setIsVerified(true); // 인증 성공 상태 업데이트
@@ -629,7 +630,7 @@ export default function MyInformation() {
 			<Container>
 				<TitleBox>
 					<Text1>개인정보 수정</Text1>
-					<Tag socialType={receivedSocialType}>{socialTypeMap[receivedSocialType] || receivedSocialType}</Tag>
+					<Tag socialType={socialType}>{socialType}</Tag>
 				</TitleBox>
 
 				<ContentBox>

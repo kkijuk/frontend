@@ -187,7 +187,7 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 		}
 		const [startDate, endDate] = selectedDate.split(' ~ ');
 		const data = {
-			careerType: careerType.toUpperCase(),
+			careerType, // 받아온 careerType을 그대로 사용
 			title,
 			content,
 			startDate,
