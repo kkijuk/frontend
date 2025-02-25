@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigate import
 import styled from 'styled-components';
-
+import signupLogo from '../assets/signuplogo.svg';
 import InterestBox from '../components/shared/InterestBox';
 import InterestSkipModal from '../components/User/InterestSkipModal';
 import { saveInterests } from '../api/Signup/signupInterest';
@@ -97,6 +97,14 @@ const SaveButton = styled.button`
 	&:hover {
 		background-color: #35a576;
 	}
+
+`;
+
+const Logo = styled.img`
+  width: 80px; 
+  height: auto;
+  margin-bottom: 40px;
+  cursor: pointer;
 `;
 
 const SignupInterest = ({ onSave = () => {} }) => {
@@ -150,8 +158,13 @@ const SignupInterest = ({ onSave = () => {} }) => {
 		handleClose();
 	};
 
+	const handleLogoClick = () => {
+		navigate('/'); 
+	  };
+
 	return (
 		<ContentArea>
+			<Logo src={signupLogo} alt="Signup Logo" onClick={handleLogoClick} />
 			<Title>관심분야 등록</Title>
 			<Label>관심 있는 정보를 알려드려요</Label>
 			<InterestArea>
