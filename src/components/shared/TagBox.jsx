@@ -144,6 +144,10 @@ export default function TagBox({ externalTags, onTagListChange }) {
 	const [isFocused, setIsFocused] = useState(false);
 
 	const [isTagBoxListVisible, setIsTagBoxListVisible] = useState(false); //TagBoxListContainer 상태 나타내기
+
+	const [deleteTag, setDeleteTag] = useState(null);
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
 	const tagBoxRef = useRef(null);
 
 	//아래 주석처리 날릴 예정 + 위에 externalTags도....
@@ -253,19 +257,18 @@ export default function TagBox({ externalTags, onTagListChange }) {
 	};
 
 	//TagBoxListContainer에서 태그 삭제하기
-	const handleTagDelete = async (tagId, tagName) => {
-		try {
-			await TagBoxDeleteTag(tagId);
-			console.log(`태그 ${tagId} 삭제 완료`);
-
-			// TagBoxListContainer에서 태그 삭제
-			setTagBoxTags(TagBoxTags.filter((tag) => tag.id !== tagId));
-
-			// TagInputContainer에서도 해당 태그 삭제
-			setTags(tags.filter((tag) => tag !== tagName));
-		} catch (error) {
-			console.log(`태그 ${tagId} 삭제 실패`, error);
+	const handleTagDelete = async () => {
+		if (deleteTag) {
+			try {
+				await TagBoxDeleteTag(deleteTag.id);
+				setTagBoxTags(TagBoxTags.filter((tag) => tag.id !== deleteTag.id));
+				setTags(tags.filter((tag) => tag !== deleteTag.name));
+			} catch (error) {
+				console.log(`태그 삭제 실패`, error);
+			}
 		}
+		setIsDeleteModalOpen(false);
+		setDeleteTag(null);
 	};
 
 	/*
