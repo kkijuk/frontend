@@ -18,7 +18,7 @@ import DeletePopup from './DeletePopup';
 const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const navigate = useNavigate();
 
-	console.log('initialData:', initialData);
+	// console.log('initialData:', initialData);
 
 	//카테고리 정보
 	const categoryMap = {
@@ -45,6 +45,9 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 
 	// 현재 선택된 카테고리 (기본값은 1)
 	const [selectedCategory, setSelectedCategory] = useState(1);
+
+	// 폼 에러 상태 (필드명: 에러 메세지)
+	const [formErrors, setFormErrors] = useState({});
 
 	useEffect(() => {
 		if (initialData?.category) {
@@ -180,7 +183,9 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								value={name}
 								onChange={(e) => setName(e.target.value)}
 								placeholder="ex) 광고 기획 연합동아리, 교내 밴드 동아리 등(20자 이내)"
-								maxLength={20}></input>
+								maxLength={20}
+							/>
+							{formErrors.name && <ErrorText>{formErrors.name}</ErrorText>}
 						</FormItem>
 
 						{/* 별칭 */}
@@ -196,7 +201,9 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								value={alias}
 								onChange={(e) => setAlias(e.target.value)}
 								placeholder="ex) UMC, 멋쟁이사자처럼 등(20자 이내)"
-								maxLength={20}></input>
+								maxLength={20}
+							/>
+							{formErrors.alias && <ErrorText>{formErrors.alias}</ErrorText>}
 						</FormItem>
 
 						{/* 기간 */}
@@ -209,11 +216,13 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						{/* 시작날짜 */}
 						<FormItem>
 							<DateInput value={startdate} onChange={setStartdate} />
+							{formErrors.startdate && <ErrorText>{formErrors.startdate}</ErrorText>}
 						</FormItem>
 						{/* 종료날짜 */}
 						<FormItem>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
+							{formErrors.enddate && <ErrorText>{formErrors.enddate}</ErrorText>}
 						</FormItem>
 
 						{/* 소속 */}
@@ -227,6 +236,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 									setLocation(newLocation);
 								}}
 							/>
+							{formErrors.location && <ErrorText>{formErrors.location}</ErrorText>}
 						</FormItem>
 
 						{/* 역할 */}
@@ -711,7 +721,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const handleAddCareer = async () => {
 		// 날짜 입력 유효성 검증
 		if (hasError) {
-			alert('올바른 기간 입력이 아닙니다.');
+			setFormErrors((prev) => ({ ...prev, startdate: !startdate ? "시작 날짜를 선택해주세요." : prev.startdate,
+				enddate: (!unknown && !enddate) ? "종료 날짜를 선택해주세요." : prev.enddate }));
 			return;
 		}
 
@@ -744,10 +755,38 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 
 		//오류 생길 경우
 		if (!isValid) {
-			alert(errors.join('\n'));
+			// errors 배열을 필드별 에러 객체로 변환
+			let errorsObj = {};
+			errors.forEach((err) => {
+				if (err === "활동명을 입력해주세요.") {
+					errorsObj.name = err;
+				} else if (err === "별칭을 입력해주세요.") {
+					errorsObj.alias = err;
+				} else if (err === "시작 날짜를 선택해주세요.") {
+					errorsObj.startdate = err;
+				} else if (err === "종료 날짜를 선택해주세요." || err === "종료 날짜는 시작 날짜 이후로 설정해주세요") {
+					errorsObj.enddate = err;
+				} else if (err === "소속을 선택해주세요.") {
+					errorsObj.location = err;
+				} else if (err === "주최를 입력해주세요.") {
+					errorsObj.organizer = err;
+				} else if (err === "분류를 선택해주세요.") {
+					errorsObj.type = err;
+				} else if (err === "teamSize은(는) 필수 항목입니다.") {
+					errorsObj.teamSize = err;
+				} else if (err === "contribution은(는) 필수 항목입니다.") {
+					errorsObj.contribution = err;
+				} else {
+					errorsObj.general = err;
+				}
+			});
+			setFormErrors(errorsObj);
 			return;
+		} else {
+			setFormErrors({});
 		}
 
+		// api 호출
 		if (mode === 'edit') {
 			// 수정모드일 경우
 			try {
@@ -882,6 +921,8 @@ const FormItem = styled.div`
 	flex-direction: column;
 	grid-column: ${(props) => (props.spanTwoColumns ? 'span 2' : 'span 1')}; /* 열을 조건부로 설정 */
 	// width: 560px;
+	position: relative;
+
 	label {
 		margin-bottom: 8px;
 		margin-top: 22px;
@@ -1007,3 +1048,11 @@ const CloseButton = styled.button`
 	cursor: pointer;
 	color: #999999;
 `;
+
+const ErrorText = styled.div`
+	position: absolute;
+	font-family: 'Regular';
+	font-size: 13px;
+	color: #FF7979;
+	margin-left: 10px;
+`
