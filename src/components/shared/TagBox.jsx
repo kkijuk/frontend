@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { TagBoxFetchList, TagBoxCreateTag, TagBoxDeleteTag } from '../../api/Mycareer/TagBoxAPI';
+import TagDeleteModal from '../Modal/TagDeleteModal';
 
 const Box = styled.div`
 	width: 720px;
