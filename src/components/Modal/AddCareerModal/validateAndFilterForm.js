@@ -53,7 +53,7 @@ export const validateAndFilterForm = (category, formData) => {
 		if (field === 'isTeam') return; // isTeam은 직접 처리하므로 여기서는 검사하지 않음
 		if (!formData[field] && formData[field] !== 0){
 			if(errorMessageMap[field]){
-				otherErrorCount
+				otherErrorCount++;
 				errors.push(errorMessageMap[field]);
 			} else {
 				otherErrorCount ++;
