@@ -179,12 +179,14 @@ const DayIndicator = styled.div`
 
 const CustomCalendar = ({ onChange, value, marks }) => {
 	const renderDay = (date) => {
-		const dateString = date.toISOString().split('T')[0];
-        const dayMarks = marks.filter((mark) => mark.date === dateString).slice(0, 3);
+		// 이 부분에서 UTC로 변환
+		const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+		const dateString = utcDate.toISOString().split('T')[0];
+		const dayMarks = marks.filter((mark) => mark.date === dateString).slice(0, 3);
 
 		return (
 			<div>
-				{date.getDate()}
+				{utcDate.getDate()}
 				<DayIndicatorContainer>
 					{dayMarks.map((mark, index) => (
 						<DayIndicator key={index} color={mark.color} />
