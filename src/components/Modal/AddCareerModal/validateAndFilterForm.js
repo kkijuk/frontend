@@ -29,10 +29,12 @@ export const validateAndFilterForm = (category, formData) => {
 	// 필드별 에러 메세지 매핑
 	const errorMessageMap = {
 		name: "활동명을 입력해주세요.",
+		alias: "별칭을 입력해주세요.",
 		startdate: "시작 날짜를 선택해주세요.",
 		enddate: "종료 날짜를 선택해주세요.",
 		location: "소속을 선택해주세요.",
 		organizer: "주최를 입력해주세요.",
+		teamSize: "인원을 선택해주세요.",
 		type: "분류를 선택해주세요.",
 		invalidPeriodError: "종료 날짜는 시작 날짜 이후로 설정해주세요",
 		otherError: {}, // 기타 에러 메시지를 순차적으로 저장할 객체
