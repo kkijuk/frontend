@@ -23,7 +23,7 @@ const EducationItem = ({ data, isLastItem, onSave, onUpdate, onDelete, onClose }
 			) : (
 				<>
 				<TimeLine>
-					<Oval status={data.state}></Oval>
+					<Oval state={data.state}></Oval>
 					<Line isLastItem={isLastItem} status={data.state}></Line>
 				</TimeLine>
 				<Container>
@@ -63,9 +63,9 @@ const Oval = styled.div`
 	height: 19px;
 	flex-shrink: 0;
 	border-radius: 50%;
-	border: 3px solid #707070
+	border: 3px solid #707070;
 	background-color: ${(props) =>
-		props.status === '중퇴' || props.status === '편입' || props.status === '졸업' ? '#707070' : '#FFF'};
+		props.state === '중퇴' || props.status === '편입' || props.status === '졸업' ? '#707070' : '#FFF'};
 `;
 
 const Line = styled.div`
