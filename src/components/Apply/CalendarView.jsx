@@ -292,12 +292,6 @@ const CalendarView = ({ date, setDate }) => {
 	const [jobsForSelectedDate, setJobsForSelectedDate] = useState([]);
 	const navigate = useNavigate();
 
-	const getLocalDateString = (date) => {
-		const timezoneOffset = date.getTimezoneOffset() * 60000; // 오프셋 계산 (밀리초)
-		const localDate = new Date(date.getTime() - timezoneOffset); // 오프셋 보정
-		return localDate.toISOString().split('T')[0]; // YYYY-MM-DD 형식 반환
-	};	
-
 	useEffect(() => {
 		const fetchCalendarData = async () => {
 			try {
@@ -342,20 +336,19 @@ const CalendarView = ({ date, setDate }) => {
 	useEffect(() => {
 		const fetchTodayJobs = async () => {
 			const now = new Date();
-		const todayDateStr = new Date(
-			now.getTime() - now.getTimezoneOffset() * 60000
-		)
-			.toISOString()
-			.split('T')[0];
+			// 한국 시간 기준 날짜 설정
+			const timezoneOffset = now.getTimezoneOffset() * 60000; // 오프셋 (밀리초)
+			const koreanDate = new Date(now.getTime() - timezoneOffset + 9 * 60 * 60000); // ✅ 한국 시간 (UTC+9)
+			const todayDateStr = koreanDate.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 변환
 	
 			try {
 				// 오늘 날짜의 공고 리스트 불러오기
 				const jobs = await getRecruitListEndDate(todayDateStr);
 				if (jobs && jobs.length > 0) {
-					setJobsForSelectedDate(jobs); //  오늘 날짜 공고 업데이트
-					setDate(new Date()); // 선택된 날짜를 오늘 날짜로 설정
+					setJobsForSelectedDate(jobs); // 오늘 날짜 공고 업데이트
+					setDate(koreanDate); // 오늘 날짜로 설정
 				} else {
-					setJobsForSelectedDate([]); //  공고 없는 경우 초기화
+					setJobsForSelectedDate([]); // 공고 없는 경우 초기화
 				}
 			} catch (error) {
 				console.error('Error fetching job details for today:', error);
@@ -365,6 +358,7 @@ const CalendarView = ({ date, setDate }) => {
 	
 		fetchTodayJobs();
 	}, []); // 컴포넌트 마운트 시 한 번 실행
+	
 	
 
 	const handleDateChange = async (selectedDate) => {
@@ -398,9 +392,7 @@ const CalendarView = ({ date, setDate }) => {
 				<CustomCalendar onChange={handleDateChange} value={date} marks={marks} />
 			</div>
 			<CalendarListView
-				date={new Date(date.getTime() - date.getTimezoneOffset() * 60000)
-					.toISOString()
-					.split('T')[0]}
+				date={date.toISOString().split('T')[0]}
 				data={jobsForSelectedDate}
 				count={jobsForSelectedDate.length}
 				onJobClick={handleJobClick}
