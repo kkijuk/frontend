@@ -45,6 +45,7 @@ export default function ApplySchedule() {
 	const [jobs, setJobs] = useState([]);
 	const navigate = useNavigate();
 	const [appliedCount, setAppliedCount] = useState(0); //  지원 완료 공고 수 상태 추가
+	const [appliedJobs, setAppliedJobs] = useState([]); // 지원 완료된 공고 리스트 상태 추가
 
 
 	// 새로운 공고를 저장하고 리스트를 정렬하는 함수
