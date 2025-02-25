@@ -60,6 +60,7 @@ const MainContent = styled.div`
 	flex: 1;
 	display: flex;
 	flex-direction: column;
+	${(props) => props.hasHeader && 'padding-top: 70px;'}
 `;
 
 const App = () => {
@@ -98,7 +99,7 @@ const App = () => {
 	return (
 		<AppContainer>
 			{!hideHeader && !hideHeaderFooter && <Header />}{/* 헤더는 조건부 렌더링 */}
-			<MainContent>
+			<MainContent hasHeader={!hideHeader && !hideHeaderFooter}>
 				<Routes>
 					<Route path="/mycareer/:careerId/:category" element={<MycareerDetail />} />
 					<Route path="/mycareer_search" element={<MycareerSearch />} />
