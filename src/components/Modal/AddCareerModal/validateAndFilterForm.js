@@ -47,6 +47,7 @@ export const validateAndFilterForm = (category, formData) => {
 	requiredFields[category].forEach((field) => {
 		if (field === 'enddate' && formData.unknown) return; //enddate는 unknown이 true이면 검사하지 않음
 		if (field === 'enddate' && !formData.unknown) {
+			console.log("필드 확인: ", field, formData[field]);
 			otherErrorCount ++;
 			errors.push(errorMessageMap.enddate);
 		}
@@ -72,6 +73,7 @@ export const validateAndFilterForm = (category, formData) => {
 		formData.enddate &&
 		moment(formData.enddate).isBefore(moment(formData.startdate))
 	) {
+		console.log("시작날짜<종료날짜 확인: ", formData.enddate);
 		errors.push(errorMessageMap.invalidPeriodError);
 	}
 
