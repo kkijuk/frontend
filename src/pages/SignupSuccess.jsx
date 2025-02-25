@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import createMaster from '../api/Signup/createMaster';
 import createResume from '../api/Signup/createResume';
+import signupLogo from '../assets/signuplogo.svg';
 
 const SignupSuccessScreen = styled.div`
 	max-width: flex;
@@ -63,6 +64,13 @@ const SignupSuccessScreen = styled.div`
 		line-height: normal;
 	}
 `;
+const Logo = styled.img`
+  width: 80px; 
+  height: auto;
+  margin-top: -150px; 
+  margin-bottom: 100px;
+  cursor: pointer;
+`;
 
 const SignupSuccess = () => {
 	const navigate = useNavigate();
@@ -92,14 +100,19 @@ const SignupSuccess = () => {
 			$body.removeEventListener('touchmove', preventScroll);
 			$body.style.overflow = '';
 		};
-	}, [hasCalled]);
+	}, [hasCalled]); 
 
 	const handleButtonClick = () => {
 		navigate('/signupinterest'); // 관심분야 등록 페이지로 이동
-	};
+	}; 
+
+	const handleLogoClick = () => {
+		navigate('/'); 
+	  };
 
 	return (
 		<SignupSuccessScreen>
+			<Logo src={signupLogo} alt="Signup Logo" onClick={handleLogoClick} />
 			<p>회원가입이 완료되었습니다.</p>
 			<p className="Interests-text1">끼적에서의 더 나은 경험을 위해</p>
 			<p className="Interests-text2">요즘 관심 있는 분야를 알려주세요!</p>
