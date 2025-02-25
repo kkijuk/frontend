@@ -72,7 +72,7 @@ const TagBoxList = styled.div`
 	flex-shrink: 0;
 	border-radius: 10px;
 	background: var(--white, #fff);
-	box-shadow: ${(props) => (props.isDeleteModalOpen ? '0px 5px 10px 0px #d9d9d9' : 'none')};
+	box-shadow: ${({ isDeleteModalOpen }) => (isDeleteModalOpen ? '0px 5px 10px 0px #D9D9D9' : 'none')};
 	position: absolute; /* 절대 위치 */
 	top: 40px; /* Tag 컴포넌트 아래에 위치시키기 위한 값 조정 */
 	left: 0;
@@ -257,25 +257,27 @@ export default function TagBox({ externalTags, onTagListChange }) {
 		setTags(tags.filter((tag) => tag !== tagName)); //tags배열에서 필터링 해서 새로운 배열 만들기
 	};
 
-	//TagBoxListContainer에서 태그 삭제하기
-
-	const handleTagDeleteClick = (tagId, tagName) => {
+	// 삭제 모달 표시
+	const handleTagDelete = (tagId, tagName) => {
 		setDeleteTag({ id: tagId, name: tagName });
 		setIsDeleteModalOpen(true);
 	};
 
-	const handleTagDeleteConfirm = async () => {
-		if (deleteTag) {
-			try {
-				await TagBoxDeleteTag(deleteTag.id);
-				setTagBoxTags(TagBoxTags.filter((tag) => tag.id !== deleteTag.id));
-				setTags(tags.filter((tag) => tag !== deleteTag.name));
-			} catch (error) {
-				console.log(`태그 삭제 실패`, error);
-			}
+	// 태그 삭제 확정
+	const confirmDeleteTag = async () => {
+		if (!deleteTag) return;
+
+		try {
+			await TagBoxDeleteTag(deleteTag.id);
+
+			setTagBoxTags(TagBoxTags.filter((tag) => tag.id !== deleteTag.id));
+			setTags(tags.filter((tag) => tag !== deleteTag.name));
+		} catch (error) {
+			console.error(`태그 ${deleteTag.id} 삭제 실패`, error);
 		}
-		setIsDeleteModalOpen(false);
+
 		setDeleteTag(null);
+		setIsDeleteModalOpen(false);
 	};
 
 	/*
@@ -326,7 +328,7 @@ export default function TagBox({ externalTags, onTagListChange }) {
 			</Row>
 
 			{isTagBoxListVisible && (
-				<TagBoxList>
+				<TagBoxList isDeleteModalOpen={isDeleteModalOpen}>
 					<TagBoxListContainer>
 						{TagBoxTags.map((tag) => (
 							<Tag key={tag.id} onClick={() => handleTagClick(tag.tagName)}>
@@ -334,7 +336,7 @@ export default function TagBox({ externalTags, onTagListChange }) {
 								<CloseButton
 									onClick={(e) => {
 										e.stopPropagation();
-										handleTagDeleteClick(tag.id, tag.tagName);
+										handleTagDelete(tag.id, tag.tagName);
 									}}>
 									x
 								</CloseButton>
@@ -343,8 +345,9 @@ export default function TagBox({ externalTags, onTagListChange }) {
 					</TagBoxListContainer>
 				</TagBoxList>
 			)}
+
 			{isDeleteModalOpen && (
-				<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={handleTagDeleteConfirm} />
+				<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDeleteTag} />
 			)}
 		</Box>
 	);
