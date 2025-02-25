@@ -13,6 +13,7 @@ import ApplyList from '../../components/Apply/ApplyList';
 import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
 import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
 import useAuthRedirect from '../../stores/useAuthRedirect'; 
+import { getValidRecruitList } from '../../api/Apply/RecruitValid';
 
 const Title = styled.h1`
 	color: var(--black, #000);
@@ -43,6 +44,7 @@ export default function ApplySchedule() {
 	const [showModal, setShowModal] = useState(false);
 	const [jobs, setJobs] = useState([]);
 	const navigate = useNavigate();
+	const [appliedJobs, setAppliedJobs] = useState([]);
 
 	// 새로운 공고를 저장하고 리스트를 정렬하는 함수
 	const handleSaveRecruit = async (newRecruitId) => {
@@ -63,6 +65,37 @@ export default function ApplySchedule() {
 		}
 	};
 	
+	useEffect(() => {
+		const fetchAppliedJobs = async () => {
+			try {
+				const now = new Date();
+				const currentDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+				// ✅ getValidRecruitList 사용하여 마감된 공고도 포함하여 가져옴
+				const recruitData = await getValidRecruitList(currentDate);
+
+				if (recruitData && recruitData.outputs && recruitData.outputs.length > 0) {
+					const validJobs = recruitData.outputs.flatMap((group) =>
+						group.recruits.map((recruit) => ({
+							...recruit,
+							endTime: `${group.endDate} 00:00:00`,
+						}))
+					);
+					// ✅ 미지원/지원예정이 아닌 공고들만 필터링
+					const appliedFiltered = validJobs.filter(
+						(job) => job.status !== 'UNAPPLIED' && job.status !== 'PLANNED'
+					);
+					setAppliedJobs(appliedFiltered); // ✅ 상태 업데이트
+				} else {
+					console.warn('No valid recruits found.');
+				}
+			} catch (error) {
+				console.error('Error fetching valid recruits:', error);
+			}
+		};
+
+		fetchAppliedJobs();
+	}, []);
 
 	useEffect(() => {
 		const fetchJobs = async () => {
@@ -116,7 +149,6 @@ export default function ApplySchedule() {
 	
 
 	const waitingJobs = jobs.filter((job) => job.status === 'UNAPPLIED' || job.status === 'PLANNED');
-	const appliedJobs = jobs.filter((job) => job.status !== 'UNAPPLIED' && job.status !== 'PLANNED');
 
 	return (
 		<Layout title="지원관리">
