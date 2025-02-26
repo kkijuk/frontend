@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'; // useNavigate import
 import styled from 'styled-components';
 
 import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
-import { yearMockData, categoryMockData } from './mockData';
 
 import Title from '../../components/Apply/Title';
 import CareerView from '../../components/Mycareer/CareerView';
@@ -13,7 +12,7 @@ import AddJobButton from '../../components/shared/AddJobButton';
 import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
 import SearchBar from '../../components/Mycareer/shareSearchBar';
 import CareerTimeline from '../../components/Mycareer/CareerTimeline';
-import useAuthRedirect from '../../stores/useAuthRedirect'; 
+import useAuthRedirect from '../../stores/useAuthRedirect';
 
 const Container = styled.div`
 	width: 100%;
@@ -45,6 +44,7 @@ const SearchBox = styled.div`
 
 export default function Mycareer() {
 	useAuthRedirect();
+
 	const [view, setView] = useState('year');
 	const [showModal, setShowModal] = useState(false);
 	const [careers, setCareers] = useState({});
