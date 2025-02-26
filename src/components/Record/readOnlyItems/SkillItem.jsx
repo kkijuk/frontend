@@ -25,6 +25,7 @@ const SkillItem = ({ data, isSecondColumn, onSave, onUpdate, onDelete }) => {
               initialData = {data}
               onUpdate = {(FormData) => onUpdate(FormData)}
               onDelete={onDelete}
+              onClose={()=>setIsEditMode(false)}
             />
           </EditContainer>
         </>

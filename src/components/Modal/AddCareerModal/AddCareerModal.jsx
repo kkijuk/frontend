@@ -97,7 +97,6 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const [showDeletePopup, setShowDeletePopup] = useState(false);
 
 	//각 폼 별 상태 모니터링
-	/*
 	useEffect(() => {
 		console.log({
 			name,
@@ -133,7 +132,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		teamSize,
 		contribution,
 	]);
-*/
+
 
 	// 초기 데이터 설정
 	useEffect(() => {
@@ -185,7 +184,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								placeholder="ex) 광고 기획 연합동아리, 교내 밴드 동아리 등(20자 이내)"
 								maxLength={20}
 							/>
-							{formErrors.name && <ErrorText>{formErrors.name}</ErrorText>}
+							{formErrors.name && <ErrorText style={{top: '105px'}}>{formErrors.name}</ErrorText>}
 						</FormItem>
 
 						{/* 별칭 */}
@@ -203,7 +202,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								placeholder="ex) UMC, 멋쟁이사자처럼 등(20자 이내)"
 								maxLength={20}
 							/>
-							{formErrors.alias && <ErrorText>{formErrors.alias}</ErrorText>}
+							{formErrors.alias && <ErrorText style={{top: '105px'}}>{formErrors.alias}</ErrorText>}
 						</FormItem>
 
 						{/* 기간 */}
@@ -216,13 +215,14 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						{/* 시작날짜 */}
 						<FormItem>
 							<DateInput value={startdate} onChange={setStartdate} />
-							{formErrors.startdate && <ErrorText>{formErrors.startdate}</ErrorText>}
+							{formErrors.startdate && <ErrorText style={{top: '60px'}}>{formErrors.startdate}</ErrorText>}
 						</FormItem>
 						{/* 종료날짜 */}
 						<FormItem>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
-							{formErrors.enddate && <ErrorText>{formErrors.enddate}</ErrorText>}
+							{formErrors.enddate && <ErrorText style={{top: '60px'}}>{formErrors.enddate}</ErrorText>}
+							{hasError && <ErrorText style={{top: '70px'}}>{formErrors.invalidPeriodError}</ErrorText>}
 						</FormItem>
 
 						{/* 소속 */}
@@ -720,15 +720,19 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	// 활동 추가 함수
 	const handleAddCareer = async () => {
 		// 날짜 입력 유효성 검증
-		if (hasError) {
-			setFormErrors((prev) => ({ ...prev, startdate: !startdate ? "시작 날짜를 선택해주세요." : prev.startdate,
-				enddate: (!unknown && !enddate) ? "종료 날짜를 선택해주세요." : prev.enddate }));
-			return;
-		}
+		// if (hasError) {
+		// 	setFormErrors((prev) => ({ ...prev, startdate: !startdate ? "시작 날짜를 선택해주세요." : prev.startdate,
+		// 		enddate: (!unknown && !enddate) ? "종료 날짜를 선택해주세요." : prev.enddate }));
+		// 	return;
+		// }
 
 		// startdate와 enddate를 YYYY-MM-DD 형식으로 변환하기 위해 추가 (에러)
-		const formattedStartdate = moment(startdate).format('YYYY-MM-DD');
-		const formattedEnddate = unknown ? null : moment(enddate).format('YYYY-MM-DD');
+		const formattedStartdate = (startdate !== '' && startdate != null)
+			? moment(startdate).format('YYYY-MM-DD')
+			: null;
+		const formattedEnddate = (unknown || enddate === '' || enddate == null)
+			? null
+			: moment(enddate).format('YYYY-MM-DD');
 
 		const allFormData = {
 			name,
@@ -752,6 +756,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		// 날짜 외 입력 데이터 검증 및 필터링 실행
 		// 잘 수행되면 isValid:true와 filteredDate를, 오류가 있으면 isValid:false와 errors를 반환
 		const { isValid, errors, filteredData } = validateAndFilterForm(selectedCategory, allFormData);
+		console.log("errors: ", errors);
 
 		//오류 생길 경우
 		if (!isValid) {
@@ -766,16 +771,16 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 					errorsObj.startdate = err;
 				} else if (err === "종료 날짜를 선택해주세요." || err === "종료 날짜는 시작 날짜 이후로 설정해주세요") {
 					errorsObj.enddate = err;
+				} else if(err === "종료 날짜는 시작 날짜 이후로 설정해주세요") {
+					errorsObj.invalidPeriodError = err;
 				} else if (err === "소속을 선택해주세요.") {
 					errorsObj.location = err;
 				} else if (err === "주최를 입력해주세요.") {
 					errorsObj.organizer = err;
+				} else if (err === "인원을 선택해주세요.") {
+					errorsObj.teamSize = err;
 				} else if (err === "분류를 선택해주세요.") {
 					errorsObj.type = err;
-				} else if (err === "teamSize은(는) 필수 항목입니다.") {
-					errorsObj.teamSize = err;
-				} else if (err === "contribution은(는) 필수 항목입니다.") {
-					errorsObj.contribution = err;
 				} else {
 					errorsObj.general = err;
 				}
@@ -824,7 +829,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				const response = await deleteCareer(selectedCategory, careerId);
 				console.log('Success - 활동 삭제: ', response);
 				// onClose();
-				navigate('/mycareer');
+				// navigate('/mycareer');
+				window.location.reload();
 			} catch (error) {
 				console.error('deleteCareer 호출 중 오류 발생: ', error.response ? error.response.data : error.message);
 			}
@@ -1051,6 +1057,7 @@ const CloseButton = styled.button`
 
 const ErrorText = styled.div`
 	position: absolute;
+	top: 80px;
 	font-family: 'Regular';
 	font-size: 13px;
 	color: #FF7979;

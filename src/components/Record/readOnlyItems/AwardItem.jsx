@@ -6,14 +6,14 @@ import { KebabMenu2 } from '../KebabMenu';
 const AwardItem = ({ data, onSave, onUpdate, onDelete, onClose }) => {
   const [isEditMode, setIsEditMode] = useState(false);
 
-  console.log('AwardItem: ', data);
+  // console.log('AwardItem: ', data);
 
   return (
     <Container>
       {isEditMode ? (
         <EditContainer>
           <AddAwardForm
-            mode='edit'
+            mode="edit"
             initialData={data}
             onClose={() => setIsEditMode(false)}
             onUpdate = {(FormData) => onUpdate(FormData)}

@@ -29,10 +29,12 @@ export const validateAndFilterForm = (category, formData) => {
 	// 필드별 에러 메세지 매핑
 	const errorMessageMap = {
 		name: "활동명을 입력해주세요.",
+		alias: "별칭을 입력해주세요.",
 		startdate: "시작 날짜를 선택해주세요.",
 		enddate: "종료 날짜를 선택해주세요.",
 		location: "소속을 선택해주세요.",
 		organizer: "주최를 입력해주세요.",
+		teamSize: "인원을 선택해주세요.",
 		type: "분류를 선택해주세요.",
 		invalidPeriodError: "종료 날짜는 시작 날짜 이후로 설정해주세요",
 		otherError: {}, // 기타 에러 메시지를 순차적으로 저장할 객체
@@ -43,10 +45,11 @@ export const validateAndFilterForm = (category, formData) => {
 
 	// 필수 필드 확인 및 필터링
 	requiredFields[category].forEach((field) => {
-		if (field === 'enddate' && formData.unknown) return; //enddate는 unknown이 true이면 검사하지 않음
 		if (field === 'isTeam') return; // isTeam은 직접 처리하므로 여기서는 검사하지 않음
 		if (!formData[field] && formData[field] !== 0){
+			console.log("필드 확인: ", field, formData[field]);
 			if(errorMessageMap[field]){
+				otherErrorCount++;
 				errors.push(errorMessageMap[field]);
 			} else {
 				otherErrorCount ++;
@@ -57,6 +60,13 @@ export const validateAndFilterForm = (category, formData) => {
 		};
 	});
 
+	// 종료날짜 필드 확인
+	if (!formData.enddate && !formData.unknown) {
+		console.log("필드 확인: ", formData.enddate);
+		otherErrorCount ++;
+		errors.push(errorMessageMap.enddate);
+	}
+
 	// 종료날짜 < 시작날짜 비교
 	if(
 		!formData.unknown &&
@@ -64,6 +74,7 @@ export const validateAndFilterForm = (category, formData) => {
 		formData.enddate &&
 		moment(formData.enddate).isBefore(moment(formData.startdate))
 	) {
+		console.log("시작날짜<종료날짜 확인: ", formData.enddate);
 		errors.push(errorMessageMap.invalidPeriodError);
 	}
 

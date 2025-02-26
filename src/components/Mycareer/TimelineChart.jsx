@@ -9,6 +9,15 @@ import { useFetchTimeline } from '../../hooks/Timeline/useFetchTimeline';
 
 const TimelineChart = () => {
 	const { data: rawData, isLoading, error } = useFetchTimeline();
+
+	const [minDate, setMinDate] = useState(() => {
+		const sixMonthAgo = new Date();
+		sixMonthAgo.setMonth(sixMonthAgo.getMonth() - 6);
+		return sixMonthAgo.getTime();
+	});
+
+	const [maxDate, setMaxDate] = useState(() => new Date().getTime());
+
 	const navigate = useNavigate();
 
 	let formattedData =
@@ -20,10 +29,8 @@ const TimelineChart = () => {
 			fillColor: getColorByCategory(item.category.categoryKoName) || '#707070',
 		})) || [];
 
-	const [minDate, setMinDate] = useState();
-	const [maxDate, setMaxDate] = useState();
-
 	useEffect(() => {
+		console.log('formattedData:', formattedData);
 		if (formattedData.length > 0) {
 			setMinDate(Math.min(...formattedData.map((item) => item.y[0])));
 			setMaxDate(Math.max(...formattedData.map((item) => item.y[1])));
@@ -36,14 +43,14 @@ const TimelineChart = () => {
 			setMinDate(sixMonthsAgo.getTime());
 			setMaxDate(today);
 		}
-	}, [rawData]); // rawData가 변경될 때마다 실행
+	}, [formattedData]); // rawData가 변경될 때마다 실행
 
 	const [options] = useState({
 		chart: {
 			height: 350,
 			width: '100%',
 			type: 'rangeBar',
-			offsetX: 0,
+			offsetX: -40,
 			background: 'transparent',
 			zoom: {
 				enabled: false,

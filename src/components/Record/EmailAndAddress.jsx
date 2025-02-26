@@ -32,7 +32,7 @@ const EmailAndAddress = ({type, userData, onSave}) => {
             placeholder={type === "address" ? "주소를 입력하세요" : "이메일을 입력하세요"}
           />
           <ButtonGroup>
-            <SaveButton onClick={() => {onSave({type, data}); setIsEditingMode(false)}}>수정</SaveButton>
+            <SaveButton onClick={() => {onSave({type, data}); setIsEditingMode(false)}}>확인</SaveButton>
             <CancelButton onClick={() => setIsEditingMode(false)}>취소</CancelButton>
           </ButtonGroup>
         </EditAddressContainer>
@@ -89,9 +89,9 @@ const SaveButton = styled.button`
 	width: 42px;
 	height: 19px;
 	border-radius: 7px;
-	color: var(--gray-02, #707070);
+	color: var(--gray-02, #FFF);
 	font-size: 12px;
-	background: var(--gray-06, #F5F5F5);
+	background: var(--gray-06, #3AAF85);
 	cursor: pointer;
 	border:none;
 	display:flex;

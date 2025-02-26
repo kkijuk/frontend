@@ -249,6 +249,7 @@ const SocialLogin = () => {
       $body.style.overflow = '';
     };
   }, []); */
+
   const goInsta = () => {
     window.open('https://www.instagram.com/kki.juk/?utm_source=ig_web_button_share_sheet', '_blank');
   };
