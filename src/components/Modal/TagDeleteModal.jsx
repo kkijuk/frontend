@@ -16,7 +16,6 @@ const Box = styled.div`
 
 const TextContainer = styled.div`
 	width: 190px;
-	height: 100%;
 	gap: 12px;
 	display: flex;
 	flex-direction: column;

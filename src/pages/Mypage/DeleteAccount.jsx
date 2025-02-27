@@ -7,7 +7,6 @@ import logo from '../../assets/logo.png';
 const Wrapper = styled.div`
 	display: flex;
 	justify-content: center;
-	align-items: center;
 	width: 100vw;
 	height: 100vh;
 `;
@@ -33,6 +32,7 @@ const Container = styled.div`
 	height: 391px;
 	flex-shrink: 0;
 	align-items: center;
+	margin-top: 32px;
 `;
 
 const TitleText = styled.div`
