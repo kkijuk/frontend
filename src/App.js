@@ -70,6 +70,10 @@ const App = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [location.pathname]); // 경로가 변경될 때마다 실행
+
+	useEffect(() => {
 		if (location.pathname === '/history/portfolio') {
 			alert('이 페이지는 준비중입니다.');
 			navigate(-1); // 이전 페이지로 이동

@@ -79,7 +79,6 @@ const TagBoxList = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	border: 1px solid black;
 	z-index: 1000;
 `;
 
@@ -150,7 +149,7 @@ const CloseButton = styled.button`
 	padding: 0; /* 패딩 제거 */
 	margin-left: 4px; /* 왼쪽 여백 추가 */
 `;
-/* ✅ 모달 중앙 배치 */
+
 const ModalWrapper = styled.div`
 	position: absolute;
 	top: 50%;
