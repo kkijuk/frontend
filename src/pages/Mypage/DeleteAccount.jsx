@@ -2,8 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useAuthStore from '../../stores/useAuthStore';
-import logo from '../assets/logo.png';
-
+import logo from '../../assets/logo.png';
 const Logo = styled.div`
 	width: 80px;
 	height: 40px;
