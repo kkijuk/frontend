@@ -89,7 +89,7 @@ const TagBoxListContainer = styled.div`
 	gap: 8px; /* 태그 간 간격 추가 */
 
 	position: relative;
-	background: ${(props) => (props.isDeleteModalOpen ? 'var(--gray-04, #E0E0E0)' : 'transparent')};
+	background: ${(props) => (props.isDeleteModalOpen ? 'rgba(0, 0, 0, 0.40)' : 'transparent')};
 	border-radius: 10px;
 `;
 
@@ -138,18 +138,6 @@ const CloseButton = styled.button`
 	cursor: pointer;
 	padding: 0; /* 패딩 제거 */
 	margin-left: 4px; /* 왼쪽 여백 추가 */
-`;
-
-const ModalOverlay = styled.div`
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background: #fff;
-	border-radius: 10px;
-	z-index: 2000;
-	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-	padding: 20px;
 `;
 
 export default function TagBox({ externalTags, onTagListChange }) {
@@ -359,9 +347,7 @@ export default function TagBox({ externalTags, onTagListChange }) {
 						))}
 					</TagBoxListContainer>
 					{isDeleteModalOpen && (
-						<ModalOverlay>
-							<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDeleteTag} />
-						</ModalOverlay>
+						<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDeleteTag} />
 					)}
 				</TagBoxList>
 			)}
