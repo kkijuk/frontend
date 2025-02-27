@@ -3,14 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useAuthStore from '../../stores/useAuthStore';
 import logo from '../../assets/logo.png';
+
 const Logo = styled.div`
 	width: 80px;
 	height: 40px;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain; /* 비율 유지하며 맞춤 */
+	}
 `;
 
 const Container = styled.div`
 	display: flex;
-	width: 262px;
+	width: 267px;
+	height: 391px;
 	flex-direction: column;
 	align-items: center;
 	gap: 160px;
@@ -54,6 +62,15 @@ const MainButton = styled.button`
 	flex-shrink: 0;
 	border-radius: 10px;
 	background: var(--gray-02, #707070);
+	border: none;
+
+	color: #fff;
+	text-align: center;
+	font-family: Pretendard;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
 `;
 
 export default function DeleteAccount() {
