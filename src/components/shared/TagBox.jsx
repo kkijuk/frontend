@@ -80,6 +80,7 @@ const TagBoxList = styled.div`
 	flex-direction: column;
 	gap: 10px;
 	z-index: 1000;
+	box-shadow: 0px 5px 10px 0px #d9d9d9;
 `;
 
 const TagBoxListContainer = styled.div`
