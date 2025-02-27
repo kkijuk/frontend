@@ -19,6 +19,7 @@ const TextContainer = styled.div`
 	gap: 12px;
 	display: flex;
 	flex-direction: column;
+	margin-bottom: 20px;
 `;
 
 const TextNormal = styled.div`
@@ -54,8 +55,10 @@ const DeleteButton = styled.button`
 	height: 25px;
 	flex-shrink: 0;
 	border-radius: 10px;
+	border-radius: 10px;
+	background: var(--error, #ff7979);
 	border: 1px solid var(--sub-rd, #fa7c79);
-	color: var(--sub-rd, #fa7c79);
+	color: var(--white, #fff);
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 12px;
@@ -69,9 +72,10 @@ const CancelButton = styled.button`
 	height: 25px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	border: 1px solid var(--sub-bu, #77aff2);
+	border: 1px solid var(#e0e0e0);
+	background: #fff;
 
-	color: var(--sub-bu, #77aff2);
+	color: var(--gray-02, #707070);
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 12px;
