@@ -16,6 +16,12 @@ const Box = styled.div`
 	border: 1px solid black;
 `;
 
+const TextContainer = styled.div`
+	width: 178px;
+	height: 59px;
+	gap: 12px;
+`;
+
 const TextNormal = styled.div`
 	margin-top: 10px;
 
@@ -79,14 +85,14 @@ const CancelButton = styled.button`
 export default function TagDeleteModal({ onCancel, onConfirm }) {
 	return (
 		<Box>
-			<TextNormal>
-				태그를 삭제하시면 <TextBold>모든 활동 기록</TextBold>에서
-				<br />
-				해당 태그가 지워집니다. <br />
-				이 작업은 복구할 수 없습니다.
-				<br />
-				그래도 삭제하시겠습니까?
-			</TextNormal>
+			<TextContainer>
+				<TextNormal>
+					태그를 삭제하시면 <TextBold>모든 활동 기록</TextBold>에서
+					<br />
+					해당 태그가 지워집니다.
+				</TextNormal>
+				<TextNormal>그래도 삭제하시겠습니까?</TextNormal>
+			</TextContainer>
 			<ButtonContainer>
 				<CancelButton onClick={onCancel}>취소</CancelButton>
 				<DeleteButton onClick={onConfirm}>삭제</DeleteButton>

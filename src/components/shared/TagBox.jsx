@@ -89,8 +89,19 @@ const TagBoxListContainer = styled.div`
 	gap: 8px; /* 태그 간 간격 추가 */
 
 	position: relative;
-	background: ${(props) => (props.isDeleteModalOpen ? 'rgba(0, 0, 0, 0.40)' : 'transparent')};
 	border-radius: 10px;
+`;
+
+/* ✅ 배경 검정색 (모달 열릴 때 등장) */
+const TagBoxListContainerBack = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.4);
+	border-radius: 10px;
+	z-index: 1500; /* TagBoxListContainer 위 */
 `;
 
 const WhiteTag = styled.div`
@@ -139,20 +150,7 @@ const CloseButton = styled.button`
 	padding: 0; /* 패딩 제거 */
 	margin-left: 4px; /* 왼쪽 여백 추가 */
 `;
-
-const ModalOverlay = styled.div`
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background: #fff;
-	border-radius: 10px;
-	z-index: 2000;
-	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-	padding: 20px;
-`;
-
-/* ✅ 모달이 태그 리스트 위쪽에서 중앙에 위치하도록 설정 */
+/* ✅ 모달 중앙 배치 */
 const ModalWrapper = styled.div`
 	position: absolute;
 	top: 50%;
@@ -160,10 +158,10 @@ const ModalWrapper = styled.div`
 	transform: translate(-50%, -50%);
 	background: #fff;
 	border-radius: 10px;
-	z-index: 2000; /* 태그 리스트보다 위에 위치 */
+	z-index: 2000; /* TagBoxListContainerBack 위 */
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 	padding: 20px;
-	width: 250px; /* 모달 크기 조정 가능 */
+	width: 250px;
 	height: 150px;
 	display: flex;
 	align-items: center;
@@ -361,26 +359,21 @@ export default function TagBox({ externalTags, onTagListChange }) {
 			</Row>
 
 			{isTagBoxListVisible && (
-				<TagBoxList isDeleteModalOpen={isDeleteModalOpen}>
+				<TagBoxList>
+					{isDeleteModalOpen && <TagBoxListContainerBack />}
 					<TagBoxListContainer>
 						{TagBoxTags.map((tag) => (
 							<Tag key={tag.id} onClick={() => handleTagClick(tag.tagName)}>
 								{tag.tagName}
-								<CloseButton
-									onClick={(e) => {
-										e.stopPropagation();
-										handleTagDelete(tag.id, tag.tagName);
-									}}>
-									x
-								</CloseButton>
+								<CloseButton onClick={(e) => handleTagDelete(tag.id, tag.tagName)}>x</CloseButton>
 							</Tag>
 						))}
-						{isDeleteModalOpen && (
-							<ModalWrapper>
-								<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDeleteTag} />
-							</ModalWrapper>
-						)}
 					</TagBoxListContainer>
+					{isDeleteModalOpen && (
+						<ModalWrapper>
+							<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDeleteTag} />
+						</ModalWrapper>
+					)}
 				</TagBoxList>
 			)}
 		</Box>
