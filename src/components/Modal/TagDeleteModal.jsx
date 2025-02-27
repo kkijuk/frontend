@@ -12,19 +12,17 @@ const Box = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+`;
+
+const TextContainer = styled.div`
+	width: 190px;
+	height: 59px;
+	gap: 12px;
 
 	border: 1px solid black;
 `;
 
-const TextContainer = styled.div`
-	width: 178px;
-	height: 59px;
-	gap: 12px;
-`;
-
 const TextNormal = styled.div`
-	margin-top: 10px;
-
 	color: #333;
 	text-align: center;
 	font-family: Pretendard;
@@ -50,6 +48,8 @@ const ButtonContainer = styled.div`
 
 	display: flex;
 	justify-content: center;
+
+	border: 1px solid black;
 `;
 const DeleteButton = styled.button`
 	width: 75px;
