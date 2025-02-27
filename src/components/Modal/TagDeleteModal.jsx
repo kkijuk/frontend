@@ -87,7 +87,7 @@ export default function TagDeleteModal({ onCancel, onConfirm }) {
 		<Box>
 			<TextContainer>
 				<TextNormal>
-					태그를 삭제하시면 <TextBold>모든 활동 기록</TextBold>에서
+					태그를 삭제하시면 <TextBold as="span">모든 활동 기록</TextBold>에서
 					<br />
 					해당 태그가 지워집니다.
 				</TextNormal>
