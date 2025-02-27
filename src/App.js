@@ -50,6 +50,8 @@ import FilterPage from './components/Apply/FilterPage';
 import Error from './pages/Error/BasicError';
 import NumError from './pages/Error/NumError';
 
+import DeleteAccount from './pages/Mypage/DeleteAccount';
+
 const AppContainer = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -77,9 +79,9 @@ const App = () => {
 	// 헤더를 숨길 경로 설정
 	const hideHeaderRoutes = ['/commingsoon', '/signup', '/signupinterest', '/signupsuccess', '/agree'];
 	const hideHeader = hideHeaderRoutes.includes(location.pathname);
-	const hideHeaderFooterRoutes = ['/browser-error','/'];
+	const hideHeaderFooterRoutes = ['/browser-error', '/'];
 	const hideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
-	
+
 	// GA4 초기화
 	useGA4();
 
@@ -89,16 +91,17 @@ const App = () => {
 
 	useEffect(() => {
 		const userAgent = navigator.userAgent.toLowerCase();
-		
-		if (userAgent.includes("edg")) {  // Edge 브라우저 감지
-			navigate("/browser-error");  // Edge면 /browser-error로 이동
+
+		if (userAgent.includes('edg')) {
+			// Edge 브라우저 감지
+			navigate('/browser-error'); // Edge면 /browser-error로 이동
 		}
 	}, [navigate]);
-	
 
 	return (
 		<AppContainer>
-			{!hideHeader && !hideHeaderFooter && <Header />}{/* 헤더는 조건부 렌더링 */}
+			{!hideHeader && !hideHeaderFooter && <Header />}
+			{/* 헤더는 조건부 렌더링 */}
 			<MainContent hasHeader={!hideHeader && !hideHeaderFooter}>
 				<Routes>
 					<Route path="/mycareer/:careerId/:category" element={<MycareerDetail />} />
@@ -146,6 +149,7 @@ const App = () => {
 
 					<Route path="/error" element={<Error />} />
 					<Route path="/numerror" element={<NumError />} />
+					<Route path="/delete-account" element={<DeleteAccount />} />
 				</Routes>
 			</MainContent>
 			{!hideHeaderFooter && <Footer />}

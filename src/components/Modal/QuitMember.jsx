@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { quitUser } from '../../api/Mypage/mypage';
 
@@ -114,6 +115,7 @@ const Button = styled.button`
 
 export default function QuitMember({ onClose }) {
 	const [isChecked, setIsChecked] = useState(false);
+	const navigate = useNavigate(); // 네비게이션 함수
 
 	const toggleCheck = () => {
 		setIsChecked(!isChecked); // 체크박스 상태 토글
@@ -123,6 +125,8 @@ export default function QuitMember({ onClose }) {
 		try {
 			await quitUser();
 			alert('탈퇴 처리가 요청되었습니다. 계정은 7일 이내 삭제되며, 그 전에 로그인하면 취소됩니다.');
+			navigate('/delete-account'); // 탈퇴 완료 페이지로 이동
+
 			if (onClose) onClose(); // 모달 닫기 콜백
 		} catch (error) {
 			alert('탈퇴 요청 중 오류가 발생했습니다. 다시 시도해주세요.');
