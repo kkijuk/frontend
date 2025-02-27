@@ -160,9 +160,8 @@ const ModalWrapper = styled.div`
 	border-radius: 10px;
 	z-index: 2000; /* TagBoxListContainerBack 위 */
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-	padding: 20px;
-	width: 250px;
-	height: 150px;
+	width: 230px;
+	height: 167px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
