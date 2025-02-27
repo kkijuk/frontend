@@ -72,7 +72,6 @@ const TagBoxList = styled.div`
 	flex-shrink: 0;
 	border-radius: 10px;
 	background: var(--white, #fff);
-	box-shadow: ${({ isDeleteModalOpen }) => (isDeleteModalOpen ? '0px 5px 10px 0px #D9D9D9' : 'none')};
 	position: absolute; /* 절대 위치 */
 	top: 40px; /* Tag 컴포넌트 아래에 위치시키기 위한 값 조정 */
 	left: 0;
@@ -88,7 +87,10 @@ const TagBoxListContainer = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	gap: 8px; /* 태그 간 간격 추가 */
-	position: relative; /* 모달이 이 컨테이너 안에서 뜨도록 설정 */
+
+	position: relative;
+	background: ${(props) => (props.isDeleteModalOpen ? 'var(--gray-04, #E0E0E0)' : 'transparent')};
+	border-radius: 10px;
 `;
 
 const WhiteTag = styled.div`
@@ -138,17 +140,16 @@ const CloseButton = styled.button`
 	margin-left: 4px; /* 왼쪽 여백 추가 */
 `;
 
-const ModalContainer = styled.div`
-	position: relative; /* ✅ TagBoxListContainer 내부에서 정렬 */
-	background: white;
-	padding: 20px;
+const ModalOverlay = styled.div`
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #fff;
 	border-radius: 10px;
-	box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-	z-index: 1001;
-	width: 100%;
-	margin: auto;
-
-	border: 1px solid blue;
+	z-index: 2000;
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+	padding: 20px;
 `;
 
 export default function TagBox({ externalTags, onTagListChange }) {
@@ -357,13 +358,10 @@ export default function TagBox({ externalTags, onTagListChange }) {
 							</Tag>
 						))}
 					</TagBoxListContainer>
-
 					{isDeleteModalOpen && (
-						<>
-							<ModalContainer>
-								<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDeleteTag} />
-							</ModalContainer>
-						</>
+						<ModalOverlay>
+							<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDeleteTag} />
+						</ModalOverlay>
 					)}
 				</TagBoxList>
 			)}
