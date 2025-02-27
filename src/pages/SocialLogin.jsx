@@ -47,17 +47,14 @@ const StarLeft = styled.img`
 		width: 100px;
 	}
 `;
-
 const StarRight = styled.img`
 	position: absolute;
 	top: 130px;
 	right: 375px;
 	width: 180px;
-
 	@media (max-width: 768px) {
 	}
 `;
-
 const LeftSvg = styled.img`
 	position: absolute;
 	top: 772px;
@@ -67,7 +64,6 @@ const LeftSvg = styled.img`
 	@media (max-width: 768px) {
 	}
 `;
-
 const RightSvg = styled.img`
 	position: absolute;
 	top: 670px;
@@ -77,7 +73,6 @@ const RightSvg = styled.img`
 	@media (max-width: 768px) {
 	}
 `;
-
 const BottomSvg = styled.img`
 	position: absolute;
 	top: 536px;
@@ -87,7 +82,6 @@ const BottomSvg = styled.img`
 	@media (max-width: 768px) {
 	}
 `;
-
 const PostSvg = styled.img`
 	position: absolute;
 	top: 531px;
@@ -97,7 +91,6 @@ const PostSvg = styled.img`
 	@media (max-width: 768px) {
 	}
 `;
-
 const LoginScreen = styled.div`
 	max-width: 400px;
 	margin: 0 auto;
@@ -107,7 +100,6 @@ const LoginScreen = styled.div`
 	margin: 150px auto 0;
 	height: auto;
 	overflow: hidden;
-
 	p {
 		color: #424242;
 		font-family: light;
@@ -117,17 +109,14 @@ const LoginScreen = styled.div`
 		font-size: 21px;
 		font-weight: 800;
 		font-family: Light;
-
 		span.highlight {
 			color: var(--main-01, #3aaf85);
 		}
 	}
-
 	* {
 		box-sizing: border-box;
 	}
 `;
-
 const TopButton = styled.button`
 	display: flex;
 	justify-content: center;
@@ -144,7 +133,6 @@ const TopButton = styled.button`
 	line-height: normal;
 	cursor: pointer;
 `;
-
 const TopButtonWrapper = styled.div`
 	margin: 10px 0 20px;
 	display: flex;
@@ -152,7 +140,6 @@ const TopButtonWrapper = styled.div`
 	gap: 12px;
 	padding-right: 20px;
 `;
-
 const Title = styled.div`
 	color: var(--main-01, #3aaf85);
 	text-align: center;
@@ -166,7 +153,6 @@ const Title = styled.div`
 	z-index: 1000;
 	margin-top: 80px;
 `;
-
 const SocialButton = styled.button`
 	width: 350px;
 	height: 56px;
@@ -181,50 +167,40 @@ const SocialButton = styled.button`
 	align-items: center;
 	justify-content: center;
 	position: relative;
-
-
 	&.kakao {
 		background-color: #ffe812;
 		color: #000;
-
 		svg {
 			width: 28px;
 			height: 28px;
 			position: absolute;
 			left: 20px;
 		}
-
 		&:hover {
 			cursor: pointer;
 		}
-
 		&:active {
 			background-color: #e0cb10;
 			transform: scale(0.98);
 		}
 	}
-
 	&.naver {
 		background-color: #03c75a;
 		color: #fff;
-
 		svg {
 			width: 49px;
 			height: 49px;
 			position: absolute;
 			left: 3px;
 		}
-
 		&:hover {
 			cursor: pointer;
 		}
-
 		&:active {
 			transform: scale(0.98);
 		}
 	}
 `;
-
 const ButtonContainer = styled.div`
 	margin-top: -27px;
 	display: flex;
@@ -247,14 +223,12 @@ const KakaoIcon = () => (
 		<path d="M12,2C6.48,2,2,5.58,2,10.14c0,2.58,1.78,4.87,4.45,6.24C6.15,17.85,5.4,19.81,5.27,19.81c0,0,0,0,0,0c0.26,0.02,3.35-1.24,4.92-2.09c0.61,0.11,1.25,0.18,1.91,0.18c5.52,0,10-3.58,10-8.14S17.52,2,12,2z" />
 	</svg>
 );
-
 const NaverIcon = () => (
 	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
 		<circle cx="12" cy="12" r="12" fill="#03C75A" />
 		<path d="M9 16V8h2.5l3.5 4.666V8H18v8h-2.5L12 11.334V16H9Z" fill="#fff" />
 	</svg>
 );
-
 const SocialLogin = () => {
 	useAuthRedirect();
 	const { login } = useAuthStore();
@@ -265,12 +239,10 @@ const SocialLogin = () => {
     const preventScroll = (e) => {
       e.preventDefault();
     };
-
     const $body = document.querySelector('body');
     $body.style.overflow = 'hidden'; // 스크롤바 숨기기
     $body.addEventListener('wheel', preventScroll, { passive: false });
     $body.addEventListener('touchmove', preventScroll, { passive: false });
-
     return () => {
       $body.removeEventListener('wheel', preventScroll);
       $body.removeEventListener('touchmove', preventScroll);
@@ -281,42 +253,33 @@ const SocialLogin = () => {
   const goInsta = () => {
     window.open('https://www.instagram.com/kki.juk/?utm_source=ig_web_button_share_sheet', '_blank');
   };
-
   const goEmail = () => {
     window.open('mailto:kkijuk30@gmail.com', '_blank');
   };
-
 	const handleKakaoLogin = () => {
 		const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&response_type=code&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`;
-
 		trackEvent('btn_click', {
 			category: 'login',
 			detail: 'kakao',
 			action_type: 'click',
 			label: '카카오 로그인',
 		});
-
 		window.location.href = kakaoLoginUrl;
 	};
-
 	const handleNaverLogin = () => {
 		const clientId = process.env.REACT_APP_NAVER_CLIENT_ID;
 		const redirectUri = process.env.REACT_APP_NAVER_REDIRECT_URI;
 		const state = process.env.REACT_APP_NAVER_STATE;
 		const naverLoginUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&state=${state}&redirect_uri=${redirectUri}`;
-
 		trackEvent('btn_click', {
 			category: 'login',
 			detail: 'naver',
 			action_type: 'click',
 			label: '네이버 로그인',
 		});
-
 		window.location.href = naverLoginUrl;
 	};
-
 	
-
 	return (
 		<>
 		<PageContainer>
@@ -357,5 +320,4 @@ const SocialLogin = () => {
 		</>
 	);
 };
-
-export default SocialLogin;
+export default SocialLogin; 

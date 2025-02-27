@@ -190,7 +190,7 @@ export default function Confirm() {
 
 			// boolean(true) 또는 문자열("true")인 경우 처리
 			if (isMatched === true || isMatched === 'true') {
-				navigate('/mypage/myinformation', { state: { socialType } }); // 페이지 이동,socialType 전달
+				navigate('/mypage/myinformation'); // 페이지 이동,socialType 전달
 			} else {
 				setErrorMessage('등록된 이메일과 다릅니다. 다시 입력해 주세요.');
 			}

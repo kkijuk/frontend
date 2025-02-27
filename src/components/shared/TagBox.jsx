@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { TagBoxFetchList, TagBoxCreateTag, TagBoxDeleteTag } from '../../api/Mycareer/TagBoxAPI';
+import TagDeleteModal from '../Modal/TagDeleteModal';
 
 const Box = styled.div`
 	width: 720px;
@@ -71,22 +72,36 @@ const TagBoxList = styled.div`
 	flex-shrink: 0;
 	border-radius: 10px;
 	background: var(--white, #fff);
-	box-shadow: 0px 5px 10px 0px #d9d9d9;
 	position: absolute; /* 절대 위치 */
 	top: 40px; /* Tag 컴포넌트 아래에 위치시키기 위한 값 조정 */
 	left: 0;
-	z-index: 1000; /* 다른 요소 위에 표시되도록 */
 	padding: 10px; /* 패딩 추가 */
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	border: 1px solid black;
+	z-index: 1000;
+	box-shadow: 0px 5px 10px 0px #d9d9d9;
 `;
 
 const TagBoxListContainer = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	gap: 8px; /* 태그 간 간격 추가 */
+
+	position: relative;
+	border-radius: 10px;
+`;
+
+/* ✅ 배경 검정색 (모달 열릴 때 등장) */
+const TagBoxListContainerBack = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.4);
+	border-radius: 10px;
+	z-index: 1500; /* TagBoxListContainer 위 */
 `;
 
 const WhiteTag = styled.div`
@@ -136,6 +151,21 @@ const CloseButton = styled.button`
 	margin-left: 4px; /* 왼쪽 여백 추가 */
 `;
 
+const ModalWrapper = styled.div`
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #fff;
+	border-radius: 10px;
+	z-index: 2000; /* TagBoxListContainerBack 위 */
+	width: 230px;
+	height: 167px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`;
+
 export default function TagBox({ externalTags, onTagListChange }) {
 	const [tags, setTags] = useState([]); //TagInputContainer에 표시할 태그
 	const [TagBoxTags, setTagBoxTags] = useState([]); // TagBoxListContainer에 표시할 태그
@@ -144,6 +174,10 @@ export default function TagBox({ externalTags, onTagListChange }) {
 	const [isFocused, setIsFocused] = useState(false);
 
 	const [isTagBoxListVisible, setIsTagBoxListVisible] = useState(false); //TagBoxListContainer 상태 나타내기
+
+	const [deleteTag, setDeleteTag] = useState(null);
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
 	const tagBoxRef = useRef(null);
 
 	//아래 주석처리 날릴 예정 + 위에 externalTags도....
@@ -252,20 +286,27 @@ export default function TagBox({ externalTags, onTagListChange }) {
 		setTags(tags.filter((tag) => tag !== tagName)); //tags배열에서 필터링 해서 새로운 배열 만들기
 	};
 
-	//TagBoxListContainer에서 태그 삭제하기
-	const handleTagDelete = async (tagId, tagName) => {
+	// 삭제 모달 표시
+	const handleTagDelete = (tagId, tagName) => {
+		setDeleteTag({ id: tagId, name: tagName });
+		setIsDeleteModalOpen(true);
+	};
+
+	// 태그 삭제 확정
+	const confirmDeleteTag = async () => {
+		if (!deleteTag) return;
+
 		try {
-			await TagBoxDeleteTag(tagId);
-			console.log(`태그 ${tagId} 삭제 완료`);
+			await TagBoxDeleteTag(deleteTag.id);
 
-			// TagBoxListContainer에서 태그 삭제
-			setTagBoxTags(TagBoxTags.filter((tag) => tag.id !== tagId));
-
-			// TagInputContainer에서도 해당 태그 삭제
-			setTags(tags.filter((tag) => tag !== tagName));
+			setTagBoxTags(TagBoxTags.filter((tag) => tag.id !== deleteTag.id));
+			setTags(tags.filter((tag) => tag !== deleteTag.name));
 		} catch (error) {
-			console.log(`태그 ${tagId} 삭제 실패`, error);
+			console.error(`태그 ${deleteTag.id} 삭제 실패`, error);
 		}
+
+		setDeleteTag(null);
+		setIsDeleteModalOpen(false);
 	};
 
 	/*
@@ -317,20 +358,20 @@ export default function TagBox({ externalTags, onTagListChange }) {
 
 			{isTagBoxListVisible && (
 				<TagBoxList>
+					{isDeleteModalOpen && <TagBoxListContainerBack />}
 					<TagBoxListContainer>
 						{TagBoxTags.map((tag) => (
 							<Tag key={tag.id} onClick={() => handleTagClick(tag.tagName)}>
 								{tag.tagName}
-								<CloseButton
-									onClick={(e) => {
-										e.stopPropagation();
-										handleTagDelete(tag.id, tag.tagName);
-									}}>
-									x
-								</CloseButton>
+								<CloseButton onClick={(e) => handleTagDelete(tag.id, tag.tagName)}>x</CloseButton>
 							</Tag>
 						))}
 					</TagBoxListContainer>
+					{isDeleteModalOpen && (
+						<ModalWrapper>
+							<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDeleteTag} />
+						</ModalWrapper>
+					)}
 				</TagBoxList>
 			)}
 		</Box>

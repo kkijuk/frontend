@@ -20,7 +20,10 @@ const StatusButton = styled.button`
 	border: 2px solid ${(props) => props.borderColor};
 	border-radius: 13px;
 	padding: 9px 18px;
-	color: ${(props) => (props.active ? '#fff' : 'black')};
+	color: ${(props) =>
+		props.active && props.statusType !== 'unapplied' && props.statusType !== 'planned'
+			? '#fff'
+			: 'black'};
 	cursor: pointer;
 	background: ${(props) => (props.active ? props.borderColor : 'transparent')};
 	margin-bottom: -12px;
@@ -46,22 +49,52 @@ const ApplyStatusButton = ({ activeStatus, onStatusClick, statusCounts }) => {
 
 	return (
 		<StatusContainer>
-			<StatusButton active={activeStatus === 'all'} onClick={() => handleClick('all')} borderColor="#3AAF85">
+			<StatusButton
+				active={activeStatus === 'all'}
+				onClick={() => handleClick('all')}
+				borderColor="#3AAF85"
+				statusType="all"
+			>
 				전체보기 <StatusText>({statusCounts.all})</StatusText>
 			</StatusButton>
-			<StatusButton active={activeStatus === 'unapplied'} onClick={() => handleClick('unapplied')} borderColor="#D9D9D9">
+			<StatusButton
+				active={activeStatus === 'unapplied'}
+				onClick={() => handleClick('unapplied')}
+				borderColor="#D9D9D9"
+				statusType="unapplied"
+			>
 				미지원 <StatusText>({statusCounts.unapplied})</StatusText>
 			</StatusButton>
-			<StatusButton active={activeStatus === 'planned'} onClick={() => handleClick('planned')} borderColor="#B0B0B0">
+			<StatusButton
+				active={activeStatus === 'planned'}
+				onClick={() => handleClick('planned')}
+				borderColor="#B0B0B0"
+				statusType="planned"
+			>
 				지원 예정 <StatusText>({statusCounts.planned})</StatusText>
 			</StatusButton>
-			<StatusButton active={activeStatus === 'applying'} onClick={() => handleClick('applying')} borderColor="#707070">
+			<StatusButton
+				active={activeStatus === 'applying'}
+				onClick={() => handleClick('applying')}
+				borderColor="#707070"
+				statusType="applying"
+			>
 				진행 중 <StatusText>({statusCounts.applying})</StatusText>
 			</StatusButton>
-			<StatusButton active={activeStatus === 'accepted'} onClick={() => handleClick('accepted')} borderColor="#78D333">
+			<StatusButton
+				active={activeStatus === 'accepted'}
+				onClick={() => handleClick('accepted')}
+				borderColor="#78D333"
+				statusType="accepted"
+			>
 				합격 <StatusText>({statusCounts.accepted})</StatusText>
 			</StatusButton>
-			<StatusButton active={activeStatus === 'rejected'} onClick={() => handleClick('rejected')} borderColor="#FA7C79">
+			<StatusButton
+				active={activeStatus === 'rejected'}
+				onClick={() => handleClick('rejected')}
+				borderColor="#FA7C79"
+				statusType="rejected"
+			>
 				불합격 <StatusText>({statusCounts.rejected})</StatusText>
 			</StatusButton>
 		</StatusContainer>

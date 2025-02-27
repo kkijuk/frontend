@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
 import styled from 'styled-components';
 import { editCareer } from '../../api/Mycareer/Career';
 import { KebabMenu1 } from './KebabMenu';
 import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
 
-const CareerItem = ({ data, isLastItem, onEditCareer }) => {
+const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 	// const today = new Date();
 	// const formattedToday = today.toISOString().slice(0,7).replace('-','.');
 	// const isPastDue = data.endDate < formattedToday; //true: 기한 경과, false: 기한 내
-
-	const navigate = useNavigate();
 
 	// 상태 관리
 	const [careerData, setCareerData] = useState(data);
@@ -19,11 +15,6 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 	const [isCareerModalOpen, setIsCareerModalOpen] = useState(false);
 	const [isSummaryEditMode, setIsSummaryEditMode] = useState(false);
 	const [detail, setDetail] = useState(data.summary);
-
-	// 내커리어-상세페이지로 이동
-	const handleNavigate = () => {
-		navigate(`/mycareer/${data.category.categoryKoName}/${data.id}`);
-	}
 
 	// 활동 내역 수정
 	const handleDetailSave = async () => {
@@ -72,13 +63,9 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 		}
 	};
 
-	// if (careerData.category.categoryKoName === '경력') {
-	// 	careerData.category.categoryKoName = getEmploymentsType(data.type);
-	// }
-
-	const displayKoName = data.category.categoryKoName === '경력'
-	? getEmploymentsType(data.type)
-	: data.category.categoryKoName;
+	if (careerData.category.categoryKoName === '경력') {
+		careerData.category.categoryKoName = getEmploymentsType(data.type);
+	}
 
 	// 활동내역 placeholder (아래 들여쓰기 상태 고정!)
 	const detailPlaceHolder = `· 핵심적인 활동 내용과 담당했던 역할, 주요 성과를 요약해서 작성해 주세요.
@@ -86,7 +73,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 · 이곳에 작성한 내용은 [서류준비-이력서]에 자동으로 삽입됩니다.`
 
 	// unknown 값에 따른 분기 처리
-	const endDateToDisplay = careerData.unknown ? '종료 날짜 없음' : data.endDate ? data.endDate : '종료 날짜 없음';
+	const endDateToDisplay = careerData.unknown ? '종료 날짜 없음' : data.endData ? data.endDate : '종료 날짜 없음';
 	const statusToDisplay = careerData.unknown ? '(진행 중)' : activityMonths ? `(${activityMonths}개월)` : '(진행 중)';
 
 	// 활동 진행 중 여부 확인(Line 스타일 적용 방식 선택 위해)
@@ -95,16 +82,23 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 
 	return (
 		<FirstContainer>
+			{isCareerModalOpen && 
+				<AddCareerModal 
+					mode='edit'
+					initialData={careerData} 
+					// onClose={() => setIsCareerModalOpen(false)} 
+					onClose={() => setIsOpen(false)}
+			/>}
 			<TimeLine>
-				<Oval category={displayKoName} isPastDue={checkPastDue}></Oval>
-				<Line category={displayKoName} isLastItem={isLastItem} isPastDue={checkPastDue} isSummaryEditMode={isSummaryEditMode}></Line>
+				<Oval category={careerData.category.categoryKoName} isPastDue={checkPastDue}></Oval>
+				<Line category={careerData.category.categoryKoName} isLastItem={isLastItem} isPastDue={checkPastDue} isSummaryEditMode={isSummaryEditMode}></Line>
 			</TimeLine>
-			<Container onClick = {!isSummaryEditMode ? handleNavigate : null}>
+			<Container>
 				<div style={{width:'100%'}}>
-					<LevelTag category={displayKoName}>{displayKoName}</LevelTag>
+					<LevelTag category={careerData.category.categoryKoName}>{careerData.category.categoryKoName}</LevelTag>
 					<SchoolInfo>
-						<SchoolName>{data.name} 
-							<span style={{fontWeight:'normal'}}> / {data.alias}</span>
+						<SchoolName>{data.name} / 
+							<span style={{fontWeight:'normal'}}> {data.alias}</span>
 						</SchoolName>
 						<Dates>
 							{data.startDate ? data.startDate : '시작 날짜 없음'} ~ {endDateToDisplay}
@@ -135,7 +129,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 			</Container>
 			<EditButton>
 				<KebabMenu1
-					onModalOpen={() => onEditCareer(data)}
+					onModalOpen={() => setIsCareerModalOpen(true)}
 					onDetailOpen={() => setIsSummaryEditMode(true)}
 				/>
 			</EditButton>
@@ -249,12 +243,12 @@ const EditButton = styled.button`
 `;
 
 const Container = styled.div`
+	width: 100%;
 	display: flex;
 	flex-direction: row;
 	margin-bottom: 45px;
 	font-family: 'Regular';
 	position: relative;
-	cursor: pointer;
 	&:hover ${EditButton} {
 		opacity: 1;
 		cursor: pointer;

@@ -1,5 +1,6 @@
 import api from "../../Axios";
 
+// presigned URL 생성
 const createPresignedUrl = async (data) => {
     try{
         const fileTitle = data.fileTitle;
@@ -24,6 +25,32 @@ const createPresignedUrl = async (data) => {
     }
 };
 
+// s3에 파일 업로드 
+const uploadFileToS3 = async (file, presignedURL) => {
+    try{
+        const response = await api.put(presignedURL, file, {
+            headers: {
+                'Content-Type': file.type,
+                'x-amz-server-side-encryption' : 'AES256'
+            }
+        });
+        console.log("Success - uploadFileToS3: ", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error uploading file to S3: ", error);
+        if(error.response){
+            console.error('Server responded with status code:', error.response.status);
+            console.error('Server responded with:', error.response.data);
+        } else if(error.request){
+            console.error('No response received:', error.request);
+        } else {
+            console.error('Error setting up request:', error.message);
+        }
+        throw error;
+    }
+};
+
+// keyName 저장
 const saveKeyName = async(keyName, fileTitle) => {
     try{
         const response = await api.post("/history/file", { 
@@ -47,6 +74,7 @@ const saveKeyName = async(keyName, fileTitle) => {
     }
 };
 
+// S3 파일 삭제
 const deleteS3File = async (data) => {
     try{
         const fileTitle = data.fileTitle;
@@ -67,6 +95,7 @@ const deleteS3File = async (data) => {
     }
 };
 
+// S3 파일 다운로드
 const downS3File = async (data) => {
     try{
         // api 호출
@@ -95,4 +124,4 @@ const downS3File = async (data) => {
     }
 };
 
-export { createPresignedUrl, saveKeyName, deleteS3File, downS3File };
+export { createPresignedUrl, uploadFileToS3, saveKeyName, deleteS3File, downS3File };

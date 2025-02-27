@@ -13,9 +13,12 @@ import CareerTypeDropdown, { CareerTypeDropdown2 } from './CareerTypeDropdown';
 import ParticipantType from './ParticipantType';
 import { Form } from 'react-router-dom';
 import moment from 'moment'; // moment 라이브러리 임포트(세연)
+import DeletePopup from './DeletePopup';
 
 const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const navigate = useNavigate();
+
+	// console.log('initialData:', initialData);
 
 	//카테고리 정보
 	const categoryMap = {
@@ -43,13 +46,31 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	// 현재 선택된 카테고리 (기본값은 1)
 	const [selectedCategory, setSelectedCategory] = useState(1);
 
+	// 폼 에러 상태 (필드명: 에러 메세지)
+	const [formErrors, setFormErrors] = useState({});
+
 	useEffect(() => {
 		if (initialData?.category) {
 			// 한글 카테고리 이름을 숫자 키로 변환
-			const categoryNumber = Object.keys(categoryMap).find(
-				(key) => categoryMap[key] === initialData.category.categoryKoName, // 수정된 부분
-			);
-			setSelectedCategory(parseInt(categoryNumber, 10) || 1);
+			// const categoryNumber = Object.keys(categoryMap).find(
+			// 	(key) => categoryMap[key] === initialData.category.categoryKoName, // 수정된 부분
+			// );
+			// setSelectedCategory(parseInt(categoryNumber, 10) || 1);
+			if (initialData.category.categoryEnName === 'CIRCLE') {
+				setSelectedCategory(1);
+			} else if (initialData.category.categoryEnName === 'ACTIVITY') {
+				setSelectedCategory(2);
+			} else if (initialData.category.categoryEnName === 'EDU') {
+				setSelectedCategory(6);
+			} else if (initialData.category.categoryEnName === 'EMP') {
+				setSelectedCategory(5);
+			} else if (initialData.category.categoryEnName === 'PROJECT') {
+				setSelectedCategory(4);
+			} else if (initialData.category.categoryEnName === 'COM') {
+				setSelectedCategory(3);
+			} else if (initialData.category.categoryEnName === 'ETC') {
+				setSelectedCategory(7);
+			}
 		}
 	}, [initialData]);
 
@@ -72,8 +93,10 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const [teamSize, setTeamSize] = useState(0);
 	const [contribution, setContribution] = useState(0);
 
+	// 삭제 팝업 모달 관리
+	const [showDeletePopup, setShowDeletePopup] = useState(false);
+
 	//각 폼 별 상태 모니터링
-	/*
 	useEffect(() => {
 		console.log({
 			name,
@@ -109,14 +132,14 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		teamSize,
 		contribution,
 	]);
-*/
+
 
 	// 초기 데이터 설정
 	useEffect(() => {
 		if (initialData) {
 			setName(initialData.name || '');
 			setAlias(initialData.alias || '');
-			setStartdate(initialData.startdate || null);
+			setStartdate(initialData.startDate || null);
 			setEnddate(initialData.endDate || null);
 			setUnknown(initialData.unknown || false);
 			setLocation(initialData.location || 'ON_CAMPUS');
@@ -158,7 +181,10 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								type="text"
 								value={name}
 								onChange={(e) => setName(e.target.value)}
-								placeholder="ex) 광고 기획 동아리, 앱 개발 프로젝트 등(20자 이내)"></input>
+								placeholder="ex) 광고 기획 연합동아리, 교내 밴드 동아리 등(20자 이내)"
+								maxLength={20}
+							/>
+							{formErrors.name && <ErrorText style={{top: '105px'}}>{formErrors.name}</ErrorText>}
 						</FormItem>
 
 						{/* 별칭 */}
@@ -166,14 +192,17 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
 								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
-									활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
+									동아리의 정식 명칭을 작성해주세요.
 								</span>
 							</label>
 							<input
 								type="text"
 								value={alias}
 								onChange={(e) => setAlias(e.target.value)}
-								placeholder="ex) UMC, 멋쟁이사자처럼 등(20자 이내)"></input>
+								placeholder="ex) UMC, 멋쟁이사자처럼 등(20자 이내)"
+								maxLength={20}
+							/>
+							{formErrors.alias && <ErrorText style={{top: '105px'}}>{formErrors.alias}</ErrorText>}
 						</FormItem>
 
 						{/* 기간 */}
@@ -186,11 +215,14 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						{/* 시작날짜 */}
 						<FormItem>
 							<DateInput value={startdate} onChange={setStartdate} />
+							{formErrors.startdate && <ErrorText style={{top: '60px'}}>{formErrors.startdate}</ErrorText>}
 						</FormItem>
 						{/* 종료날짜 */}
 						<FormItem>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
+							{formErrors.enddate && <ErrorText style={{top: '60px'}}>{formErrors.enddate}</ErrorText>}
+							{hasError && <ErrorText style={{top: '70px'}}>{formErrors.invalidPeriodError}</ErrorText>}
 						</FormItem>
 
 						{/* 소속 */}
@@ -204,6 +236,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 									setLocation(newLocation);
 								}}
 							/>
+							{formErrors.location && <ErrorText>{formErrors.location}</ErrorText>}
 						</FormItem>
 
 						{/* 역할 */}
@@ -213,7 +246,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								type="text"
 								value={role}
 								onChange={(e) => setRole(e.target.value)}
-								placeholder="ex) 팀장, 부원, 기획자 등"></input>
+								placeholder="ex) 동아리장, 부원 등"
+								maxLength={15}></input>
 						</FormItem>
 					</>
 				);
@@ -232,7 +266,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								type="text"
 								value={name}
 								onChange={(e) => setName(e.target.value)}
-								placeholder="ex) 광고 기획 동아리, 앱 개발 프로젝트 등(20자 이내)"></input>
+								placeholder="ex) 00은행 홍보대사, 00공업 서포터즈 등(20자 이내)"
+								maxLength={20}></input>
 						</FormItem>
 
 						{/* 별칭 */}
@@ -240,14 +275,15 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
 								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
-									활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
+									대외활동의 정식 명칭을 작성해주세요.
 								</span>
 							</label>
 							<input
 								type="text"
 								value={alias}
 								onChange={(e) => setAlias(e.target.value)}
-								placeholder="ex) UMC, 멋쟁이사자처럼 등(20자 이내)"></input>
+								placeholder="ex) 00손해보험 대학생 서포터즈, 2025년 00부 정책기자단 등(20자 이내)"
+								maxLength={20}></input>
 						</FormItem>
 
 						{/* 기간 */}
@@ -272,7 +308,12 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							<label>
 								주최 <span style={{ color: '#FC5555' }}>*</span>
 							</label>
-							<input type="text" value={organizer} onChange={(e) => setOrganizer(e.target.value)}></input>
+							<input 
+								type="text" 
+								value={organizer} 
+								onChange={(e) => setOrganizer(e.target.value)}
+								placeholder="ex) 00여행사, 00도청 등"
+								maxLength={15}></input>
 						</FormItem>
 
 						{/* 역할 */}
@@ -282,7 +323,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								type="text"
 								value={role}
 								onChange={(e) => setRole(e.target.value)}
-								placeholder="ex) 팀장, 부원, 기획자 등"></input>
+								placeholder="ex) 팀장, 마케팅 팀원 등"
+								maxLength={15}></input>
 						</FormItem>
 
 						{/* 개인-팀 */}
@@ -313,7 +355,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								type="text"
 								value={name}
 								onChange={(e) => setName(e.target.value)}
-								placeholder="ex) 광고 기획 동아리, 앱 개발 프로젝트 등(20자 이내)"></input>
+								placeholder="ex) PR 아이디어 공모전, 모의투자대회, 해커톤 등(20자 이내)"
+								maxLength={20}></input>
 						</FormItem>
 
 						{/* 별칭 */}
@@ -321,14 +364,15 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
 								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
-									활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
+									공모전/대회의 정식 명칭을 작성해주세요.
 								</span>
 							</label>
 							<input
 								type="text"
 								value={alias}
 								onChange={(e) => setAlias(e.target.value)}
-								placeholder="ex) UMC, 멋쟁이사자처럼 등(20자 이내)"></input>
+								placeholder="ex) 2025 로레0 브랜드스톰 공모전, 기0 PBV 아이디어 공모전 등(20자 이내)"
+								maxLength={20}></input>
 						</FormItem>
 
 						{/* 기간 */}
@@ -353,7 +397,12 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							<label>
 								주최 <span style={{ color: '#FC5555' }}>*</span>
 							</label>
-							<input type="text" value={organizer} onChange={(e) => setOrganizer(e.target.value)}></input>
+							<input 
+								type="text" 
+								value={organizer} 
+								onChange={(e) => setOrganizer(e.target.value)}
+								placeholder = "ex) 00문화재단, 00증권 등"
+								maxLength={15}></input>
 						</FormItem>
 
 						{/* 개인-팀 */}
@@ -384,7 +433,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								type="text"
 								value={name}
 								onChange={(e) => setName(e.target.value)}
-								placeholder="ex) 광고 기획 동아리, 앱 개발 프로젝트 등(20자 이내)"></input>
+								placeholder="ex) 앱 개발 프로젝트, 시각디자인과 졸업 전시 등(20자 이내)"
+								maxLength={20}></input>
 						</FormItem>
 
 						{/* 별칭 */}
@@ -392,14 +442,15 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
 								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
-									활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
+									프로젝트의 이름을 작성해주세요.
 								</span>
 							</label>
 							<input
 								type="text"
 								value={alias}
 								onChange={(e) => setAlias(e.target.value)}
-								placeholder="ex) UMC, 멋쟁이사자처럼 등(20자 이내)"></input>
+								placeholder="ex) 끼적, DIMIVERSE 등(20자 이내)"
+								maxLength={20}></input>
 						</FormItem>
 
 						{/* 기간 */}
@@ -471,7 +522,11 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 									근무한 곳의 이름을 작성해주세요.
 								</span>
 							</label>
-							<input type="text" value={alias} onChange={(e) => setAlias(e.target.value)}></input>
+							<input 
+								type="text" 
+								value={alias} 
+								onChange={(e) => setAlias(e.target.value)}
+								placeholder="근무처 입력"></input>
 						</FormItem>
 
 						{/* 활동명 */}
@@ -482,7 +537,12 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 									경력의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
-							<input type="text" value={name} onChange={(e) => setName(e.target.value)}></input>
+							<input 
+								type="text" 
+								value={name} 
+								onChange={(e) => setName(e.target.value)}
+								placeholder = "ex) 학원 채점 아르바이트, 콘텐츠 에디터 인턴 등(20자 이내)"
+								maxLength={20}></input>
 						</FormItem>
 
 						{/* 기간 */}
@@ -505,13 +565,23 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						{/* 직급/직위 */}
 						<FormItem>
 							<label>직급/직위</label>
-							<input type="text" value={position} onChange={(e) => setPosition(e.target.value)}></input>
+							<input 
+								type="text" 
+								value={position} 
+								onChange={(e) => setPosition(e.target.value)}
+								placeholder="ex) 인턴, 보조강사 등"
+								maxLength={15}></input>
 						</FormItem>
 
 						{/* 직무/분야 */}
 						<FormItem>
 							<label>직무/분야</label>
-							<input type="text" value={jobField} onChange={(e) => setJobField(e.target.value)}></input>
+							<input 
+								type="text" 
+								value={jobField} 
+								onChange={(e) => setJobField(e.target.value)}
+								placeholder="ex) 서비스업, iOS 개발 등"
+								maxLength={15}></input>
 						</FormItem>
 					</>
 				);
@@ -530,7 +600,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								type="text"
 								value={name}
 								onChange={(e) => setName(e.target.value)}
-								placeholder="ex) 광고 기획 동아리, 앱 개발 프로젝트 등(20자 이내)"></input>
+								placeholder="ex) 데이터 분석 세미나, JAVA 개발 부트캠프 등(20자 이내)"
+								maxLength={20}></input>
 						</FormItem>
 
 						{/* 별칭 */}
@@ -538,14 +609,15 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
 								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
-									활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
+									교육의 정식 명칭을 작성해주세요.
 								</span>
 							</label>
 							<input
 								type="text"
 								value={alias}
 								onChange={(e) => setAlias(e.target.value)}
-								placeholder="ex) UMC, 멋쟁이사자처럼 등(20자 이내)"></input>
+								placeholder="ex) 000톤 정글 8기, 00시스템 BEYOND SW 캠프 등(20자 이내)"
+								maxLength={20}></input>
 						</FormItem>
 
 						{/* 기간 */}
@@ -570,7 +642,12 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							<label>
 								주최 <span style={{ color: '#FC5555' }}>*</span>
 							</label>
-							<input type="text" value={organizer} onChange={(e) => setOrganizer(e.target.value)}></input>
+							<input 
+								type="text" 
+								value={organizer} 
+								onChange={(e) => setOrganizer(e.target.value)}
+								placeholder="ex) 대한상공회의소, 코드0 등"
+								maxLength={15}></input>
 						</FormItem>
 
 						{/* 교육 시간 */}
@@ -597,7 +674,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								type="text"
 								value={name}
 								onChange={(e) => setName(e.target.value)}
-								placeholder="ex) 광고 기획 동아리, 앱 개발 프로젝트 등(20자 이내)"></input>
+								placeholder="ex) 필리핀 해외봉사, 캐나다 교환학생 등(20자 이내)"
+								maxLength={20}></input>
 						</FormItem>
 
 						{/* 별칭 */}
@@ -605,14 +683,15 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
 								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
-									활동(동아리, 프로젝트 등)의 이름을 작성해주세요.
+									활동의 정식 명칭을 작성해주세요.
 								</span>
 							</label>
 							<input
 								type="text"
 								value={alias}
 								onChange={(e) => setAlias(e.target.value)}
-								placeholder="ex) UMC, 멋쟁이사자처럼 등(20자 이내)"></input>
+								placeholder="ex) 000톤 정글 8기, 00시스템 BEYOND SW 캠프 등(20자 이내)"
+								maxLength={20}></input>
 						</FormItem>
 
 						{/* 기간 */}
@@ -641,14 +720,19 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	// 활동 추가 함수
 	const handleAddCareer = async () => {
 		// 날짜 입력 유효성 검증
-		if (hasError) {
-			alert('올바른 기간 입력이 아닙니다.');
-			return;
-		}
+		// if (hasError) {
+		// 	setFormErrors((prev) => ({ ...prev, startdate: !startdate ? "시작 날짜를 선택해주세요." : prev.startdate,
+		// 		enddate: (!unknown && !enddate) ? "종료 날짜를 선택해주세요." : prev.enddate }));
+		// 	return;
+		// }
 
 		// startdate와 enddate를 YYYY-MM-DD 형식으로 변환하기 위해 추가 (에러)
-		const formattedStartdate = moment(startdate).format('YYYY-MM-DD');
-		const formattedEnddate = unknown ? null : moment(enddate).format('YYYY-MM-DD');
+		const formattedStartdate = (startdate !== '' && startdate != null)
+			? moment(startdate).format('YYYY-MM-DD')
+			: null;
+		const formattedEnddate = (unknown || enddate === '' || enddate == null)
+			? null
+			: moment(enddate).format('YYYY-MM-DD');
 
 		const allFormData = {
 			name,
@@ -672,13 +756,42 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		// 날짜 외 입력 데이터 검증 및 필터링 실행
 		// 잘 수행되면 isValid:true와 filteredDate를, 오류가 있으면 isValid:false와 errors를 반환
 		const { isValid, errors, filteredData } = validateAndFilterForm(selectedCategory, allFormData);
+		console.log("errors: ", errors);
 
 		//오류 생길 경우
 		if (!isValid) {
-			alert(errors.join('\n'));
+			// errors 배열을 필드별 에러 객체로 변환
+			let errorsObj = {};
+			errors.forEach((err) => {
+				if (err === "활동명을 입력해주세요.") {
+					errorsObj.name = err;
+				} else if (err === "별칭을 입력해주세요.") {
+					errorsObj.alias = err;
+				} else if (err === "시작 날짜를 선택해주세요.") {
+					errorsObj.startdate = err;
+				} else if (err === "종료 날짜를 선택해주세요." || err === "종료 날짜는 시작 날짜 이후로 설정해주세요") {
+					errorsObj.enddate = err;
+				} else if(err === "종료 날짜는 시작 날짜 이후로 설정해주세요") {
+					errorsObj.invalidPeriodError = err;
+				} else if (err === "소속을 선택해주세요.") {
+					errorsObj.location = err;
+				} else if (err === "주최를 입력해주세요.") {
+					errorsObj.organizer = err;
+				} else if (err === "인원을 선택해주세요.") {
+					errorsObj.teamSize = err;
+				} else if (err === "분류를 선택해주세요.") {
+					errorsObj.type = err;
+				} else {
+					errorsObj.general = err;
+				}
+			});
+			setFormErrors(errorsObj);
 			return;
+		} else {
+			setFormErrors({});
 		}
 
+		// api 호출
 		if (mode === 'edit') {
 			// 수정모드일 경우
 			try {
@@ -716,7 +829,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				const response = await deleteCareer(selectedCategory, careerId);
 				console.log('Success - 활동 삭제: ', response);
 				// onClose();
-				navigate('/mycareer');
+				// navigate('/mycareer');
+				window.location.reload();
 			} catch (error) {
 				console.error('deleteCareer 호출 중 오류 발생: ', error.response ? error.response.data : error.message);
 			}
@@ -726,6 +840,16 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 
 	return (
 		<ModalBackground>
+			{/* 삭제 팝업 */}
+			{showDeletePopup && (
+				<DeletePopup
+					onClose={() => setShowDeletePopup(false)}
+					onConfirm={()=>{
+						handleDeleteCareer();
+						setShowDeletePopup(false);
+					}}
+				/>
+			)}
 			<ModalContainer>
 				<CloseButton onClick={onClose}>
 					<SvgIcon name="close" size={20} color="#999" />
@@ -738,7 +862,11 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							key={key}
 							isSelected={selectedCategory === parseInt(key)}
 							bgColor={categoryColors[key]}
-							onClick={() => setSelectedCategory(parseInt(key))}>
+							onClick={() => {
+								if(!isEditMode) { // 수정모드가 아닐 때만 카테고리 변경 가능
+									setSelectedCategory(parseInt(key));
+								}
+							}}>
 							{categoryMap[key]}
 						</CategoryButton>
 					))}
@@ -747,7 +875,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				<ModalForm>{renderFormByCategory()}</ModalForm>
 				{isEditMode ? (
 					<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%' }}>
-						<DeleteButton type="button" onClick={handleDeleteCareer}>
+						<DeleteButton type="button" onClick={() => setShowDeletePopup(true)}>
 							삭제
 						</DeleteButton>
 						<SaveButton type="button" onClick={handleAddCareer} style={{ width: '425px' }}>
@@ -799,6 +927,8 @@ const FormItem = styled.div`
 	flex-direction: column;
 	grid-column: ${(props) => (props.spanTwoColumns ? 'span 2' : 'span 1')}; /* 열을 조건부로 설정 */
 	// width: 560px;
+	position: relative;
+
 	label {
 		margin-bottom: 8px;
 		margin-top: 22px;
@@ -924,3 +1054,12 @@ const CloseButton = styled.button`
 	cursor: pointer;
 	color: #999999;
 `;
+
+const ErrorText = styled.div`
+	position: absolute;
+	top: 80px;
+	font-family: 'Regular';
+	font-size: 13px;
+	color: #FF7979;
+	margin-left: 10px;
+`

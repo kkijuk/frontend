@@ -6,14 +6,14 @@ import { KebabMenu2 } from '../KebabMenu';
 const AwardItem = ({ data, onSave, onUpdate, onDelete, onClose }) => {
   const [isEditMode, setIsEditMode] = useState(false);
 
-  console.log('AwardItem: ', data);
+  // console.log('AwardItem: ', data);
 
   return (
     <Container>
       {isEditMode ? (
         <EditContainer>
           <AddAwardForm
-            mode='edit'
+            mode="edit"
             initialData={data}
             onClose={() => setIsEditMode(false)}
             onUpdate = {(FormData) => onUpdate(FormData)}
@@ -47,7 +47,7 @@ const EditButton = styled.button`
 	border: none;
 	position: absolute;
 	right: 0;
-	top:10px;
+	// top:10px;
 	background-color: transparent;
 	opacity: 0;
 	padding: 0px 50px 70px 0px;

@@ -6,7 +6,7 @@ import { KebabMenu2 } from '../KebabMenu';
 const EducationItem = ({ data, isLastItem, onSave, onUpdate, onDelete, onClose }) => {
 	const [isEditMode, setIsEditMode] = useState(false);
 
-	console.log('EducationItem: ', data);
+	// console.log('EducationItem: ', data);
 
 	return (
 		<FirstContainer>
@@ -23,7 +23,7 @@ const EducationItem = ({ data, isLastItem, onSave, onUpdate, onDelete, onClose }
 			) : (
 				<>
 				<TimeLine>
-					<Oval status={data.state}></Oval>
+					<Oval state={data.state}></Oval>
 					<Line isLastItem={isLastItem} status={data.state}></Line>
 				</TimeLine>
 				<Container>
@@ -63,10 +63,9 @@ const Oval = styled.div`
 	height: 19px;
 	flex-shrink: 0;
 	border-radius: 50%;
-	border: ${(props) =>
-		props.status === '중퇴' || props.status === '편입' ? '3px solid #707070' : '3px solid #3AAF85'};
+	border: 3px solid #707070;
 	background-color: ${(props) =>
-		props.status === '중퇴' || props.status === '편입' ? '#707070' : props.status === '졸업' ? '#3AAF85' : '#FFF'};
+		props.state === '중퇴' || props.status === '편입' || props.status === '졸업' ? '#707070' : '#FFF'};
 `;
 
 const Line = styled.div`
@@ -78,11 +77,9 @@ const Line = styled.div`
 	border-left: ${(props) =>
 		props.isLastItem
 			? 'none'
-			: props.status === '중퇴' || props.status === '편입'
+			: props.status === '중퇴' || props.status === '편입' || props.status === '졸업'
 				? '2px solid #707070'
-				: props.status === '졸업'
-					? '2px solid #3AAF85'
-					: '2px dashed #3AAF85'};
+				: '2px dashed #707070'};
 	margin-left: 11px;
 `;
 
@@ -127,7 +124,7 @@ const FirstContainer = styled.div`
 const LevelTag = styled.div`
 	width:80px;
 	height: 20px;
-	background-color: ${(props) => (props.status === '중퇴' || props.status === '편입' ? '#707070' : '#3AAF85')};
+	background-color: #707070;
 	color: white;
 	padding: 5px 10px;
 	border-radius: 5px;

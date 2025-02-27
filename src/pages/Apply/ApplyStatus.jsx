@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Layout from '../../components/Layout'; 
 import TabMenu from '../../components/Apply/TabMenu';
@@ -12,8 +13,11 @@ import ApplyStatusButton from '../../components/Apply/ApplyStatusButton';
 
 export default function ApplyStatus() {
 	const [jobs, setJobs] = useState([]);
+	const location = useLocation();
+	const queryParams = new URLSearchParams(location.search);
+	const initialStatus = queryParams.get('status') || 'all'; 
 	const [filteredJobs, setFilteredJobs] = useState([]);
-	const [activeStatus, setActiveStatus] = useState('all');
+	const [activeStatus, setActiveStatus] = useState(initialStatus);
 	const [showModal, setShowModal] = useState(false);
 	const navigate = useNavigate();
 
@@ -26,22 +30,31 @@ export default function ApplyStatus() {
 		rejected: jobs.filter((job) => job.status === 'REJECTED').length,
 	};
 
+	const filterJobsByStatus = (status) => {
+		if (status === 'all') {
+			setFilteredJobs(jobs);
+		} else {
+			const filtered = jobs.filter(
+				(job) => job.status.trim().toUpperCase() === status.toUpperCase()
+			);
+			setFilteredJobs(filtered);
+		}
+	};
+
 	const handleSaveRecruit = async (newRecruitId) => {
 		try {
 			const newRecruit = await getRecruitDetails(newRecruitId);
 			if (newRecruit) {
-				// introduceId가 없으면 기본값을 0으로 설정
-				const updatedRecruit = { ...newRecruit, introduceId: newRecruit.introduceId ?? 0 };
-	
-				const updatedJobs = [...jobs, updatedRecruit].sort((a, b) => new Date(a.endTime) - new Date(b.endTime));
+				const updatedRecruit = {
+					...newRecruit,
+					introduceId: newRecruit.introduceId ?? 0,
+				};
+
+				const updatedJobs = [...jobs, updatedRecruit].sort(
+					(a, b) => new Date(a.endTime) - new Date(b.endTime)
+				);
 				setJobs(updatedJobs);
-	
-				// 현재 활성 상태에 따라 filteredJobs 업데이트
-				if (activeStatus === 'all') {
-					setFilteredJobs(updatedJobs);
-				} else {
-					setFilteredJobs(updatedJobs.filter((job) => job.status === activeStatus.toUpperCase()));
-				}
+				filterJobsByStatus(activeStatus); // ✅ 필터링 재적용
 			} else {
 				console.error('Failed to retrieve the newly created recruit');
 			}
@@ -55,55 +68,60 @@ export default function ApplyStatus() {
 	useEffect(() => {
 		const fetchJobs = async () => {
 			try {
-			  const now = new Date();
-			  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-			  const recruitData = await getValidRecruitList(today);
-		  
-			  if (recruitData) {
-				const combinedJobs = [];
-				['unapplied', 'planned', 'applying', 'accepted', 'rejected'].forEach((status) => {
-				  if (recruitData[status]?.recruits) {
-					combinedJobs.push(
-					  ...recruitData[status].recruits.map((recruit) => ({
-						...recruit,
-						status: status.toUpperCase(),
-					  }))
-					);
-				  }
-				});
-				combinedJobs.sort((a, b) => a.id - b.id);
-				console.log('Jobs data:', combinedJobs);
-				setJobs(combinedJobs);
-				setFilteredJobs(combinedJobs);
-			  }
+				const now = new Date();
+				const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(
+					now.getDate()
+				).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(
+					now.getMinutes()
+				).padStart(2, '0')}`;
+				const recruitData = await getValidRecruitList(today);
+
+				if (recruitData) {
+					const combinedJobs = [];
+					['unapplied', 'planned', 'applying', 'accepted', 'rejected'].forEach((status) => {
+						if (recruitData[status]?.recruits) {
+							combinedJobs.push(
+								...recruitData[status].recruits.map((recruit) => ({
+									...recruit,
+									status: status.toUpperCase(),
+								}))
+							);
+						}
+					});
+					combinedJobs.sort((a, b) => a.id - b.id);
+					setJobs(combinedJobs);
+				}
 			} catch (error) {
-			  console.error('Error fetching recruits:', error);
+				console.error('Error fetching recruits:', error);
 			}
-		  };
-		  
+		};
+
 		fetchJobs();
 	}, []);
 
+	useEffect(() => {
+		filterJobsByStatus(activeStatus);
+	}, [jobs, activeStatus]);
+
 	const handleStatusClick = (status) => {
 		setActiveStatus(status);
-		const formattedStatus = status.trim().toUpperCase(); 
-
-		if (formattedStatus === 'ALL') {
-		  setFilteredJobs(jobs);
-		} else {
-		  const filtered = jobs.filter((job) => job.status.trim().toUpperCase() === formattedStatus);
-		  setFilteredJobs(filtered);
-		}
+		filterJobsByStatus(status);
 	};
-	  
+
+	// ✅ 개별 공고 클릭 핸들러
 	const handleJobClick = async (job) => {
 		const jobId = job.recruitId || job.id;
 		if (jobId) {
 			try {
 				const jobDetails = await getRecruitDetails(jobId);
 				if (jobDetails) {
-					const updatedJobDetails = { ...jobDetails, introduceId: jobDetails.introduceId ?? 0 }; // ✅ introduceId 추가
-					navigate(`/apply-detail/${jobId}`, { state: { job: updatedJobDetails } });
+					const updatedJobDetails = {
+						...jobDetails,
+						introduceId: jobDetails.introduceId ?? 0,
+					};
+					navigate(`/apply-detail/${jobId}`, {
+						state: { job: updatedJobDetails },
+					});
 				} else {
 					console.error('Job details not found');
 				}

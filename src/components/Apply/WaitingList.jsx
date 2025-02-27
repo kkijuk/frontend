@@ -11,6 +11,7 @@ const StatusItem = styled.div`
 	justify-content: center;
 	width: 120px;
 	height: 15px;
+	cursor: pointer; 
 `;
 
 const StatusText = styled.span`
@@ -25,11 +26,17 @@ const StatusText = styled.span`
 `;
 
 const WaitingList = ({ count }) => {
+	const handleClick = () => {
+		// 지원현황 페이지로 이동하면서 쿼리 파라미터로 상태 전달
+		window.location.href = '/apply-status?status=unapplied';
+	};
+
 	return (
-		<StatusItem>
+		<StatusItem onClick={handleClick}>
 			<StatusText>기다리는 공고 {count}</StatusText>
 		</StatusItem>
 	);
 };
+
 
 export default WaitingList;
