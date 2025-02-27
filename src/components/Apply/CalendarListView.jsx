@@ -139,7 +139,6 @@ const CalendarListView = ({ date, data, count, onJobClick }) => {
   if (count === 0) {
     return (
       <CalendarBackgroundSection>
-        <CalendarContentSection />
       </CalendarBackgroundSection>
     );
   }
