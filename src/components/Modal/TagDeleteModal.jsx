@@ -16,10 +16,10 @@ const Box = styled.div`
 
 const TextContainer = styled.div`
 	width: 190px;
-	height: 59px;
+	height: 100%;
 	gap: 12px;
-
-	border: 1px solid black;
+	display: flex;
+	flex-direction: column;
 `;
 
 const TextNormal = styled.div`
@@ -48,9 +48,8 @@ const ButtonContainer = styled.div`
 
 	display: flex;
 	justify-content: center;
-
-	border: 1px solid black;
 `;
+
 const DeleteButton = styled.button`
 	width: 75px;
 	height: 25px;
