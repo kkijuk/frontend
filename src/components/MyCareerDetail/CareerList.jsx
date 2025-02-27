@@ -78,10 +78,20 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
 				return;
 			}
 
-			const lowerCaseCategoryEnName = categoryEnName.toLowerCase();
+			// ✅ categoryMapping을 직접 사용하여 변환
+			const categoryMapping = {
+				ACTIVITY: 'activity',
+				PROJECT: 'project',
+				EDU: 'edu',
+				EMP: 'employment',
+				CIRCLE: 'circle',
+				COM: 'competition',
+			};
 
-			// ViewCareerDetail 호출
-			const data = await ViewCareerDetail(careerId, categoryEnName);
+			const mappedCategory = categoryMapping[categoryEnName] || 'unknown'; // 변환 실패 시 "unknown"
+
+			// ViewCareerDetail 호출 (소문자로 변환된 값 전달)
+			const data = await ViewCareerDetail(careerId, mappedCategory);
 			console.log('API Response:', data);
 
 			const detailList = data?.data?.detailList;
