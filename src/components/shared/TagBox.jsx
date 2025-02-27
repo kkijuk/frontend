@@ -76,7 +76,7 @@ const TagBoxList = styled.div`
 	position: absolute; /* 절대 위치 */
 	top: 40px; /* Tag 컴포넌트 아래에 위치시키기 위한 값 조정 */
 	left: 0;
-	z-index: 1000; /* 다른 요소 위에 표시되도록 */
+	z-index: ${({ isDeleteModalOpen }) => (isDeleteModalOpen ? 1001 : 1000)};
 	padding: 10px; /* 패딩 추가 */
 	display: flex;
 	flex-direction: column;
@@ -135,6 +135,30 @@ const CloseButton = styled.button`
 	cursor: pointer;
 	padding: 0; /* 패딩 제거 */
 	margin-left: 4px; /* 왼쪽 여백 추가 */
+`;
+
+const ModalOverlay = styled.div`
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.3);
+	display: ${({ isDeleteModalOpen }) => (isDeleteModalOpen ? 'block' : 'none')};
+	z-index: 1000;
+`;
+
+const ModalContainer = styled.div`
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: white;
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+	z-index: 1001;
+	width: 300px;
 `;
 
 export default function TagBox({ externalTags, onTagListChange }) {
@@ -345,7 +369,12 @@ export default function TagBox({ externalTags, onTagListChange }) {
 					</TagBoxListContainer>
 
 					{isDeleteModalOpen && (
-						<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDeleteTag} />
+						<>
+							<ModalOverlay isDeleteModalOpen={isDeleteModalOpen} onClick={() => setIsDeleteModalOpen(false)} />
+							<ModalContainer>
+								<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDeleteTag} />
+							</ModalContainer>
+						</>
 					)}
 				</TagBoxList>
 			)}
