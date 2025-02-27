@@ -140,6 +140,36 @@ const CloseButton = styled.button`
 	margin-left: 4px; /* 왼쪽 여백 추가 */
 `;
 
+const ModalOverlay = styled.div`
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #fff;
+	border-radius: 10px;
+	z-index: 2000;
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+	padding: 20px;
+`;
+
+/* ✅ 모달이 태그 리스트 위쪽에서 중앙에 위치하도록 설정 */
+const ModalWrapper = styled.div`
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #fff;
+	border-radius: 10px;
+	z-index: 2000; /* 태그 리스트보다 위에 위치 */
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+	padding: 20px;
+	width: 250px; /* 모달 크기 조정 가능 */
+	height: 150px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`;
+
 export default function TagBox({ externalTags, onTagListChange }) {
 	const [tags, setTags] = useState([]); //TagInputContainer에 표시할 태그
 	const [TagBoxTags, setTagBoxTags] = useState([]); // TagBoxListContainer에 표시할 태그
@@ -345,10 +375,12 @@ export default function TagBox({ externalTags, onTagListChange }) {
 								</CloseButton>
 							</Tag>
 						))}
+						{isDeleteModalOpen && (
+							<ModalWrapper>
+								<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDeleteTag} />
+							</ModalWrapper>
+						)}
 					</TagBoxListContainer>
-					{isDeleteModalOpen && (
-						<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDeleteTag} />
-					)}
 				</TagBoxList>
 			)}
 		</Box>
