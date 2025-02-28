@@ -702,7 +702,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								type="text" 
 								value={time} 
 								onChange={(e) =>{
-									setTime(e.target.value);
+									const value = e.target.value;
 									if(/^\d*$/.test(value) && value.length <= 4){
 										setTime(value);
 									}
