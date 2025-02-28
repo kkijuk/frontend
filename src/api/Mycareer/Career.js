@@ -158,3 +158,23 @@ export const deleteCareer = async (category, careerId) => {
 		}
 	}
 };
+
+//활동 summary 수정
+export const editCareerSummary = async (id, type, summary) => {
+	console.log('editCareerSummary:', id, type, summary);
+	try{
+		const response = await api.patch(`/career/${id}`, { type, summary });
+		console.log('Success-editCareerSummary:', response.data);
+		return response.data;
+	} catch (error) {
+		console.error('Error-editCareerSummary:', error);
+		if (error.response) {
+			console.error('Server responded with status code:', error.response.status);
+			console.error('Server responded with:', error.response.data);
+		} else if (error.request) {
+			console.error('No response received:', error.request);
+		} else {
+			console.error('Error setting up request:', error.message);
+		}
+	}
+}
