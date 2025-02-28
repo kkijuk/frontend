@@ -112,6 +112,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 value={formData.licenseName}
                 onChange={(e) => handleInputChange("licenseName", e.target.value)}
                 style={{ width: "275px" }}
+                maxLength={30}
             />
             <Input
                 type="text"
@@ -129,7 +130,6 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 value={formData.licenseNumber}
                 onChange={(e) => handleInputChange("licenseNumber", e.target.value)}
                 style={{ width: "175px" }}
-                maxLength={30}
             />
             <Input
                 type="text"
