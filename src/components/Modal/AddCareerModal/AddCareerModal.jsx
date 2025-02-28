@@ -698,7 +698,16 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							<label>
 								교육 시간 <span style={{ color: '#FC5555' }}>*</span>
 							</label>
-							<input type="text" value={time} onChange={(e) => setTime(e.target.value)}></input>
+							<input>
+								type="text" 
+								value={time} 
+								onChange={(e) =>{
+									setTime(e.target.value);
+									if(/^\d*$/.test(value) && value.length <= 4){
+										setTime(value);
+									}
+								}}
+							</input>
 						</FormItem>
 					</>
 				);

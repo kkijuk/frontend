@@ -175,8 +175,8 @@ const Input = styled.input`
 
 const ErrorText = styled.div`
 	position: absolute;
-	top: 0;
-	left: 0;
+	top: 60px;
+	left: 110px;
 	font-family: 'Regular';
 	font-size: 13px;
 	color: #FF7979;
