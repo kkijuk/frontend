@@ -8,7 +8,6 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
     competitionName: "",
     awardName: "",
     administer: "",
-    id: 0,
   });
 
   // 수정 모드일 경우 formData 기존 내용으로 초기화
@@ -203,7 +202,6 @@ const Input = styled.input`
   color: black;
   padding-left: 10px;
   padding-right: 10px;
-  color: ${(props) => (props.hasValue ? "black" : "#D9D9D9")};
   &::placeholder {
     color: #d9d9d9; /* Placeholder는 회색 */
   }
