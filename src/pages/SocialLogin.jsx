@@ -13,146 +13,122 @@ import rightSvg from '../assets/main/right.svg';
 import rightStarSvg from '../assets/main/rightstar.svg';
 import useAuthRedirect from '../stores/useAuthRedirect';
 import { trackEvent } from '../utils/ga4';
-import Footer from '../components/Footer';
 
 const PageContainer = styled.div`
-  background: var(--background, linear-gradient(180deg, #fff 30%, #e1f4ed 100%));
-  min-height: 100vh; 
   display: flex;
   flex-direction: column;
-  flex-start;
-  position: relative;
+  min-height: 100vh;
+  justify-content: flex-end;
 `;
-
 
 const SvgContainer = styled.div`
-	position: absolute;
-	width: 100%;
-	height: auto;
-	top: 0;
-	left: 0;
-	z-index: 1000;
-
-	img {
-		position: absolute;
-	}
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  overflow: hidden;
 `;
 
-const StarLeft = styled.img`
-	position: absolute;
-	top: 250px;
-	left: 310px;
-	width: 140px;
-	@media (max-width: 768px) {
-		width: 100px;
-	}
+const StyledSVG = styled.svg`
+  width: 100%;
+  height: 100%;
+  display: block;
 `;
-const StarRight = styled.img`
-	position: absolute;
-	top: 130px;
-	right: 375px;
-	width: 180px;
-	@media (max-width: 768px) {
-	}
+
+const CustomFooter = styled.div`
+  width: 100%;
+  height: ${({ footerHeight }) => footerHeight}px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #333;
 `;
-const LeftSvg = styled.img`
-	position: absolute;
-	top: 772px;
-	left: 315px;
-	width: 350px;
-	z-index: 1100;
-	@media (max-width: 768px) {
-	}
+
+const FooterStyle = styled.div`
+  width: 100%;
+  height: 170px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 30px 50px;
+  box-sizing: border-box;
+  font-family: Pretendard;
+  color: #707070;
+
+  .left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .links {
+      font-size: 12px;
+      margin-bottom: 25px;
+      cursor: pointer;
+
+      span {
+        margin-right: 10px;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .logo {
+      margin-bottom: 15px;
+
+      img {
+        width: 80px;
+        height: auto;
+      }
+    }
+
+    .copyright {
+      font-size: 11px;
+      color: #424242;
+    }
+  }
+
+  .right {
+    text-align: right;
+
+    .contact-title {
+      font-size: 12px;
+      margin-bottom: 15px;
+      color: #424242;
+    }
+
+    .icons {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 15px;
+
+      img {
+        width: 18px;
+        height: 18px;
+        margin-left: 12px;
+        cursor: pointer;
+      }
+    }
+
+    .contact-info {
+      font-size: 12px;
+
+      .email {
+        margin-bottom: 10px;
+        cursor: pointer;
+        color: #707070;
+      }
+
+      div {
+        margin-bottom: 5px;
+      }
+    }
+  }
 `;
-const RightSvg = styled.img`
-	position: absolute;
-	top: 670px;
-	right: 317px;
-	width: 350px;
-	z-index: 1100;
-	@media (max-width: 768px) {
-	}
-`;
-const BottomSvg = styled.img`
-	position: absolute;
-	top: 536px;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 1920px;
-	@media (max-width: 768px) {
-	}
-`;
-const PostSvg = styled.img`
-	position: absolute;
-	top: 531px;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 1200px;
-	@media (max-width: 768px) {
-	}
-`;
-const LoginScreen = styled.div`
-	max-width: 400px;
-	margin: 0 auto;
-	padding: 20px;
-	border-radius: 10px;
-	text-align: center;
-	margin: 150px auto 0;
-	height: auto;
-	overflow: hidden;
-	p {
-		color: #424242;
-		font-family: light;
-		margin-bottom: 75px;
-		margin-top: 10px;
-		text-align: center;
-		font-size: 21px;
-		font-weight: 800;
-		font-family: Light;
-		span.highlight {
-			color: var(--main-01, #3aaf85);
-		}
-	}
-	* {
-		box-sizing: border-box;
-	}
-`;
-const TopButton = styled.button`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 4px 16px;
-	border-radius: 10px;
-	border: 1px solid var(--main-02, #88d1b6);
-	background: #fff;
-	color: var(--main-02, #88d1b6);
-	font-family: Pretendard;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: normal;
-	cursor: pointer;
-`;
-const TopButtonWrapper = styled.div`
-	margin: 10px 0 20px;
-	display: flex;
-	justify-content: flex-end;
-	gap: 12px;
-	padding-right: 20px;
-`;
-const Title = styled.div`
-	color: var(--main-01, #3aaf85);
-	text-align: center;
-	font-family: Pretendard;
-	font-size: 19px;
-	font-style: normal;
-	font-weight: 800;
-	font-family: Light;
-	line-height: normal;
-	margin-bottom: -150px;
-	z-index: 1000;
-	margin-top: 80px;
-`;
+
 const SocialButton = styled.button`
 	width: 350px;
 	height: 56px;
@@ -202,21 +178,83 @@ const SocialButton = styled.button`
 	}
 `;
 const ButtonContainer = styled.div`
-	margin-top: -27px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 8px;
-`;
-
-const StyledSVG = styled.svg`
   position: absolute;
-  width: 100vw;
-  height: 100vh; 
-  min-height: 1080px; 
-  z-index: 1000;
+  top: 40%; 
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 10; 
 `;
 
+const TopButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--main-02, #88d1b6);
+  background: #fff;
+  color: var(--main-02, #88d1b6);
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+`;
+
+const TopButtonWrapper = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 12px;
+  z-index: 10;
+`;
+
+const TextContainer = styled.div`
+  position: absolute;
+  top: calc(40% - 160px); 
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 10;
+`;
+
+
+const Title = styled.div`
+  color: var(--main-01, #3aaf85);
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 800;
+  font-family: Light;
+  line-height: normal;
+  margin-bottom: 20px;
+`;
+
+const Logo = styled.img`
+  width: 164px;
+  height: 80px;
+  margin-bottom: 0px;
+`;
+
+const Description = styled.p`
+  color: #424242;
+  font-family: Light;
+  font-size: 21px;
+  font-weight: 800;
+  margin-bottom: 30px;
+
+  .highlight {
+    color: var(--main-01, #3aaf85);
+  }
+`;
 
 const KakaoIcon = () => (
 	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="30px" height="30px">
@@ -229,83 +267,101 @@ const NaverIcon = () => (
 		<path d="M9 16V8h2.5l3.5 4.666V8H18v8h-2.5L12 11.334V16H9Z" fill="#fff" />
 	</svg>
 );
+
 const SocialLogin = () => {
 	useAuthRedirect();
 	const { login } = useAuthStore();
 	const navigate = useNavigate();
 	const [isModal1Open, setModal1Open] = useState(false);
 	const [isModal2Open, setModal2Open] = useState(false);
-	/* useEffect(() => {
-    const preventScroll = (e) => {
-      e.preventDefault();
+  const [footerHeight, setFooterHeight] = useState(0);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const svgElement = document.getElementById('main-svg');
+      const svgHeight = svgElement ? svgElement.clientHeight : 0;
+      const windowHeight = window.innerHeight;
+
+      // 푸터 높이 = 남는 공백 (최소값 0 보장)
+      const newFooterHeight = Math.max(0, windowHeight - svgHeight);
+      setFooterHeight(newFooterHeight);
     };
-    const $body = document.querySelector('body');
-    $body.style.overflow = 'hidden'; // 스크롤바 숨기기
-    $body.addEventListener('wheel', preventScroll, { passive: false });
-    $body.addEventListener('touchmove', preventScroll, { passive: false });
-    return () => {
-      $body.removeEventListener('wheel', preventScroll);
-      $body.removeEventListener('touchmove', preventScroll);
-      $body.style.overflow = '';
-    };
-  }, []); */
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // 초기 로드 시 실행
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const goInsta = () => {
     window.open('https://www.instagram.com/kki.juk/?utm_source=ig_web_button_share_sheet', '_blank');
   };
+
   const goEmail = () => {
     window.open('mailto:kkijuk30@gmail.com', '_blank');
   };
-	const handleKakaoLogin = () => {
-		const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&response_type=code&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`;
-		trackEvent('btn_click', {
-			category: 'login',
-			detail: 'kakao',
-			action_type: 'click',
-			label: '카카오 로그인',
-		});
-		window.location.href = kakaoLoginUrl;
-	};
-	const handleNaverLogin = () => {
-		const clientId = process.env.REACT_APP_NAVER_CLIENT_ID;
-		const redirectUri = process.env.REACT_APP_NAVER_REDIRECT_URI;
-		const state = process.env.REACT_APP_NAVER_STATE;
-		const naverLoginUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&state=${state}&redirect_uri=${redirectUri}`;
-		trackEvent('btn_click', {
-			category: 'login',
-			detail: 'naver',
-			action_type: 'click',
-			label: '네이버 로그인',
-		});
-		window.location.href = naverLoginUrl;
-	};
-	
-	return (
-		<>
-		<PageContainer>
-			<SvgContainer>
-			<StyledSVG viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
 
-    <image href={leftStarSvg} x="310" y="250" width="140" />
-    <image href={rightStarSvg} x="1400" y="130" width="180" />
-    <image href={bottomSvg} x="1" y="536" width="1920" transform="translate(-50%, 0)" />
-    <image href={postSvg} x="18%" y="531" width="1200" transform="translate(-50%, 0)" />
-	<image href={leftSvg} x="315" y="772" width="350" />
-    <image href={rightSvg} x="1200" y="670" width="350" />
-  </StyledSVG>
-</SvgContainer>
-			<TopButtonWrapper>
-				<TopButton onClick={() => window.open('https://www.instagram.com/kki.juk/', '_blank')}>Instagram</TopButton>
-				<TopButton onClick={goEmail}>문의</TopButton>
-			</TopButtonWrapper>
-			<Title>쉽고 빠르게 쌓아가는 나만의 커리어 아카이브</Title>
-			<LoginScreen>
-				<img src={logo} width="164px" height="80px" alt="Logo" />
-				<p>
-					당신의 <span className="highlight">끼</span>를 <span className="highlight">적</span>어두세요
-				</p>
-				<ButtonContainer>
-					<SocialButton className="kakao" onClick={handleKakaoLogin}>
+  const handleKakaoLogin = () => {
+	const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&response_type=code&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`;
+	trackEvent('btn_click', {
+		category: 'login',
+		detail: 'kakao',
+		action_type: 'click',
+		label: '카카오 로그인',
+	});
+	window.location.href = kakaoLoginUrl;
+};
+const handleNaverLogin = () => {
+	const clientId = process.env.REACT_APP_NAVER_CLIENT_ID;
+	const redirectUri = process.env.REACT_APP_NAVER_REDIRECT_URI;
+	const state = process.env.REACT_APP_NAVER_STATE;
+	const naverLoginUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&state=${state}&redirect_uri=${redirectUri}`;
+	trackEvent('btn_click', {
+		category: 'login',
+		detail: 'naver',
+		action_type: 'click',
+		label: '네이버 로그인',
+	});
+	window.location.href = naverLoginUrl;
+};
+
+  return (
+    <PageContainer>
+		
+      <SvgContainer>
+        <StyledSVG
+          id="main-svg"
+          viewBox="0 0 1920 1080"
+          preserveAspectRatio="xMidYMid slice"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <image href={leftStarSvg} x="310" y="250" width="140" />
+          <image href={rightStarSvg} x="1400" y="130" width="180" />
+          <image href={bottomSvg} x="1" y="536" width="1920" />
+          <image href={postSvg} x="18%" y="531" width="1200" />
+          <image href={leftSvg} x="315" y="772" width="350" />
+          <image href={rightSvg} x="1200" y="670" width="350" />
+        </StyledSVG>
+      </SvgContainer>
+
+	  <TopButtonWrapper>
+        <TopButton onClick={() => window.open('https://www.instagram.com/kki.juk/', '_blank')}>
+          Instagram
+        </TopButton>
+        <TopButton onClick={() => window.open('mailto:kkijuk30@gmail.com', '_blank')}>
+          문의
+        </TopButton>
+      </TopButtonWrapper>
+
+	  <TextContainer>
+        <Title>쉽고 빠르게 쌓아가는 나만의 커리어 아카이브</Title>
+        <Logo src={logo} alt="Logo" />
+        <Description>
+          당신의 <span className="highlight">끼</span>를 <span className="highlight">적</span>어두세요
+        </Description>
+		</TextContainer>
+        <ButtonContainer>
+		<SocialButton className="kakao" onClick={handleKakaoLogin}>
 						<KakaoIcon />
 						카카오 로그인
 					</SocialButton>
@@ -313,11 +369,42 @@ const SocialLogin = () => {
 						<NaverIcon />
 						네이버 로그인
 					</SocialButton>
-				</ButtonContainer>
-			</LoginScreen>
-		</PageContainer>
-		<Footer />
-		</>
-	);
+        </ButtonContainer>
+
+
+      <CustomFooter footerHeight={footerHeight}>
+        <FooterStyle>
+          <div className="left">
+            <div className="links">
+              <span onClick={() => setModal1Open(true)}>서비스 이용약관</span>
+              <span onClick={() => navigate('/agree')}>개인정보 처리방침</span>
+            </div>
+            <div className="logo">
+              <img src={logo} alt="끼적 로고" />
+            </div>
+            <div className="copyright">COPYRIGHT © 끼적. All rights reserved.</div>
+          </div>
+
+          <div className="right">
+            <div className="contact-title">contact us</div>
+            <div className="icons">
+              <img src={instagramLogo} alt="Instagram" onClick={goInsta} />
+              <img src={paperplaneicon} alt="Paperplane" onClick={goEmail} />
+            </div>
+            <div className="contact-info">
+              <div className="email" onClick={goEmail}>
+                kkijuk30@gmail.com
+              </div>
+              <div>서울특별시 광진구 면목로15길 16</div>
+              <div>사업자등록번호 798-06-02922</div>
+            </div>
+          </div>
+        </FooterStyle>
+      </CustomFooter>
+
+      
+    </PageContainer>
+  );
 };
-export default SocialLogin; 
+
+export default SocialLogin;
