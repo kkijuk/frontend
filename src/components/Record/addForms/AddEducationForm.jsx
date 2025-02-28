@@ -77,6 +77,10 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
     };
   };
 
+  const hasEmptyField =(data)=>{
+    return Object.values(data).some((value) => value.trim() === "");
+  }
+
   // Log formData whenever it changes
   // useEffect(() => {
   //   console.log("formData changed:", formData);
@@ -99,6 +103,7 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
             placeholder="학교명(ex.00대학교)"
             value={formData.schoolName}
             onChange={(e) => handleInputChange("schoolName", e.target.value)}
+            maxLength={20}
         />
       </Row>
       <Row>
@@ -107,6 +112,7 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
           placeholder="전공 및 계열(ex. 00학과 또는 인문계열)"
           value={formData.major}
           onChange={(e) => handleInputChange("major", e.target.value)}
+          maxLength={20}
           fullWidth
         />
       </Row>
@@ -189,6 +195,10 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
           <Button 
             primary 
             onClick={() => {
+              if(hasEmptyField(formData)){
+                alert("입력하지 않은 항목이 있습니다.");
+                return;
+              }
               onUpdate(formData);
               onClose();
             }}
@@ -199,6 +209,10 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
           <Button 
             primary 
             onClick={() => {
+              if(hasEmptyField(formData)){
+                alert("입력하지 않은 항목이 있습니다.");
+                return;
+              }
               onSave(formData);
               onClose();
             }}

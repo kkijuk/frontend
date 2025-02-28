@@ -57,6 +57,10 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
     });
   }, [formData]);
 
+  const hasEmptyField =(data)=>{
+    return Object.values(data).some((value) => value.trim() === "");
+  }
+
   return (
     <Container>
       <Row>
@@ -85,6 +89,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           value={formData.competitionName}
           onChange={(e) => handleInputChange("competitionName", e.target.value)}
           style={{width:'455px'}}
+          maxLength={30}
         />
       </Row>
       <Row>
@@ -94,6 +99,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           value={formData.awardName}
           onChange={(e) => handleInputChange("awardName", e.target.value)}
           style={{width:'195px'}}
+          maxLength={15}
         />
         <Input
           type="text"
@@ -101,6 +107,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           value={formData.awardingInstitution}
           onChange={(e) => handleInputChange("administer", e.target.value)}
           style={{width:'195px'}}
+          maxLength={15}
         />
         <ButtonRow>
             {mode === "edit" ? (
@@ -133,6 +140,10 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
             <Button 
               primary 
               onClick={() => {
+                if(hasEmptyField(formData)){
+                  alert('입력하지 않은 항목이 있습니다.');
+                  return;
+                }
                 onUpdate(formData);
                 onClose();
               }}
@@ -143,6 +154,10 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
             <Button 
               primary 
               onClick={() => {
+                if(hasEmptyField(formData)){
+                  alert('입력하지 않은 항목이 있습니다.');
+                  return;
+                }
                 onSave(formData);
                 onClose();
               }}

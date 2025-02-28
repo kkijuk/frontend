@@ -3,30 +3,31 @@ import styled from "styled-components";
 import FileSearch from "../FileSearch";
 
 const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialData}) => {
-    const [formData, setFormData] = useState({
-        fileId: "",
-        fileType: "URL", //기본값
-        fileTitle: "",
-        keyName: "",
-        urlTitle: "",
-        url: "",
-        file: null,
-    });
+  const [formData, setFormData] = useState({
+      fileId: "",
+      fileType: "URL", //기본값
+      fileTitle: "",
+      keyName: "",
+      urlTitle: "",
+      url: "",
+      file: null,
+  });
 
-    const [isTypeURL, setIsTypeUrl] = useState(true);
+  const [isTypeURL, setIsTypeUrl] = useState(true);
 
-    // 수정 모드일 경우 formData 기존 내용으로 초기화
-    useEffect(() => {
-      if (mode === "edit" && initialData) {
-        setFormData(initialData);
-      }
-    }, [mode, initialData]);
+  // 수정 모드일 경우 formData 기존 내용으로 초기화
+  useEffect(() => {
+    if (mode === "edit" && initialData) {
+      setFormData(initialData);
+    }
+  }, [mode, initialData]);
 
 
-    // 변경된 데이터 저장
-    const handleInputChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    };
+  // 변경된 데이터 저장
+  const handleInputChange = (field, value) => {
+  setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+    
 
   return (
     <RealFirstContainer>
