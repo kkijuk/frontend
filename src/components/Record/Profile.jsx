@@ -87,15 +87,15 @@ const Placeholder = styled.div`
     height: 200px;
     flex-shrink: 0;
     background: var(--gray-05, #F1F1F1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 const HiddenSymbolArea = styled.svg`
     width: 0;
     height: 0;
     display: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 `;
 
 const SvgPlaceholder = styled.svg`
