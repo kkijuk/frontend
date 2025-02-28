@@ -18,20 +18,6 @@ const Portfolio = () => {
 
 	return (
 		<>
-			<Affiliation1 onAffiliationChange={(value) => setAffiliation(value)} />
-			<br></br>
-			<br></br>
-			<br></br>
-			<br></br>
-			<Affiliation2 onAffiliationChange={(value) => setAffiliation(value)} />
-			<br></br>
-			<br></br>
-			<br></br>
-			<br></br>
-			<br></br>
-			<button onClick={toggleModal}>Add Career</button>
-			{isModalOpen && <AddCareerModal onClose={toggleModal}></AddCareerModal>}
-			<Helper></Helper>
 		</>
 	);
 };

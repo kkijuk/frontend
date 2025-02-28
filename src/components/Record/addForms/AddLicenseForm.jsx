@@ -61,6 +61,10 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
 
   }, [formData]);
 
+  const hasEmptyField = (data) => {
+    return Object.values(data).some((value) => value.trim() === "");
+  }
+
   return (
     <RealFirstContainer>
     <FirstContainer>
@@ -115,6 +119,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 value={formData.licenseGrade}
                 onChange={(e) => handleInputChange("licenseGrade", e.target.value)}
                 style={{ width: "120px" }}
+                maxLength={10}
             />
             </Row>
             <Row>
@@ -124,6 +129,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 value={formData.licenseNumber}
                 onChange={(e) => handleInputChange("licenseNumber", e.target.value)}
                 style={{ width: "175px" }}
+                maxLength={30}
             />
             <Input
                 type="text"
@@ -131,6 +137,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 value={formData.administer}
                 onChange={(e) => handleInputChange("administer", e.target.value)}
                 style={{ width: "175px" }}
+                maxLength={15}
             />
             <ButtonRow>
               {mode === "edit" ? (
@@ -160,6 +167,10 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 <Button 
                   primary 
                   onClick={() => {
+                    if (hasEmptyField(formData)) {
+                      alert("입력하지 않은 항목이 있습니다.");
+                      return;
+                    }
                     onUpdate(formData);
                     onClose();
                   }}
@@ -170,6 +181,10 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 <Button 
                   primary 
                   onClick={() => {
+                    if (hasEmptyField(formData)) {
+                      alert("입력하지 않은 항목이 있습니다.");
+                      return;
+                    }
                     onSave(formData);
                     onClose();
                   }}
