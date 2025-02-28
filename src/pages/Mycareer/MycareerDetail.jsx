@@ -5,7 +5,6 @@ import Layout from '../../components/Layout';
 import DetailAdd from '../../components/MyCareerDetail/DetailAdd';
 import DetailAddEdit from '../../components/MyCareerDetail/DetailAddEdit';
 import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
-import AddCareerModalEdit from '../../components/Modal/AddCareerModalEdit';
 import { useParams } from 'react-router-dom';
 
 import Careerbox from '../../components/MyCareerDetail/CareerBox';
@@ -311,7 +310,6 @@ const NameTag = styled.div`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
-
 `;
 
 export default function MycareerDetail() {
@@ -537,16 +535,31 @@ export default function MycareerDetail() {
 						</EditActivityContent>
 					) : (
 						<ContentWrapper>
-							<Content style={{ textDecoration: details?.summary ? 'none' : 'underline' }}>
-								{details?.summary || '활동내역을 작성해주세요.'}
-							</Content>
-							<EditTag onClick={handleEditClick}>수정</EditTag>
+							{details?.summary ? (
+								<>
+									<Content>{details.summary}</Content>
+									<EditTag onClick={handleEditClick}>수정</EditTag>
+								</>
+							) : (
+								<Content style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={handleEditClick}>
+									활동내역을 작성해주세요.
+								</Content>
+							)}
 						</ContentWrapper>
 					)}
 				</CareerContentContainer>
 				<Line></Line>
 				<CareerListBox>
-					{details?.detailList?.length > 0 ? ( // 활동 내역이 존재하면 리스트 보여주기
+					{isAdding && ( // ✅ 항상 맨 위에 DetailAdd를 추가
+						<DetailAdd
+							onCancel={handleCancelAdd}
+							onSave={handleSaveAdd}
+							careerId={careerId}
+							careerType={categoryToTypeMap[category]}
+						/>
+					)}
+
+					{details?.detailList?.length > 0 ? ( // ✅ 활동 내역이 존재하면 리스트 보여주기
 						<>
 							{details.detailList.map((detail) =>
 								editingDetailId === detail.detailId ? (
@@ -583,23 +596,9 @@ export default function MycareerDetail() {
 									/>
 								),
 							)}
-							{isAdding && ( // 기존 활동 아래에 추가 입력창 띄우기
-								<DetailAdd
-									onCancel={handleCancelAdd}
-									onSave={handleSaveAdd}
-									careerId={careerId}
-									careerType={categoryToTypeMap[category]}
-								/>
-							)}
 						</>
-					) : isAdding ? ( // 활동이 없을 때 추가 입력창 띄우기
-						<DetailAdd
-							onCancel={handleCancelAdd}
-							onSave={handleSaveAdd}
-							careerId={careerId}
-							careerType={categoryToTypeMap[category]}
-						/>
 					) : (
+						// ✅ 활동이 없을 때만 NoContents 표시 (DetailAdd 중복 방지)
 						<NoContents>
 							등록된 활동 기록이 없습니다. <br />
 							아래 버튼을 눌러 활동 기록을 추가해주세요!

@@ -14,9 +14,15 @@ const Box = styled.div`
 	justify-content: center;
 `;
 
-const TextNormal = styled.div`
-	margin-top: 10px;
+const TextContainer = styled.div`
+	width: 190px;
+	gap: 12px;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 20px;
+`;
 
+const TextNormal = styled.div`
 	color: #333;
 	text-align: center;
 	font-family: Pretendard;
@@ -43,13 +49,16 @@ const ButtonContainer = styled.div`
 	display: flex;
 	justify-content: center;
 `;
+
 const DeleteButton = styled.button`
 	width: 75px;
 	height: 25px;
 	flex-shrink: 0;
 	border-radius: 10px;
+	border-radius: 10px;
+	background: var(--error, #ff7979);
 	border: 1px solid var(--sub-rd, #fa7c79);
-	color: var(--sub-rd, #fa7c79);
+	color: var(--white, #fff);
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 12px;
@@ -63,9 +72,10 @@ const CancelButton = styled.button`
 	height: 25px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	border: 1px solid var(--sub-bu, #77aff2);
+	border: 1px solid var(#e0e0e0);
+	background: #fff;
 
-	color: var(--sub-bu, #77aff2);
+	color: var(--gray-02, #707070);
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 12px;
@@ -77,14 +87,14 @@ const CancelButton = styled.button`
 export default function TagDeleteModal({ onCancel, onConfirm }) {
 	return (
 		<Box>
-			<TextNormal>
-				태그를 삭제하시면 <TextBold>모든 활동 기록</TextBold>에서
-				<br />
-				해당 태그가 지워집니다. <br />
-				이 작업은 복구할 수 없습니다.
-				<br />
-				그래도 삭제하시겠습니까?
-			</TextNormal>
+			<TextContainer>
+				<TextNormal>
+					태그를 삭제하시면 <TextBold as="span">모든 활동 기록</TextBold>에서
+					<br />
+					해당 태그가 지워집니다.
+				</TextNormal>
+				<TextNormal>그래도 삭제하시겠습니까?</TextNormal>
+			</TextContainer>
 			<ButtonContainer>
 				<CancelButton onClick={onCancel}>취소</CancelButton>
 				<DeleteButton onClick={onConfirm}>삭제</DeleteButton>

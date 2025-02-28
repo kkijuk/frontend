@@ -72,22 +72,36 @@ const TagBoxList = styled.div`
 	flex-shrink: 0;
 	border-radius: 10px;
 	background: var(--white, #fff);
-	box-shadow: ${({ isDeleteModalOpen }) => (isDeleteModalOpen ? '0px 5px 10px 0px #D9D9D9' : 'none')};
 	position: absolute; /* 절대 위치 */
 	top: 40px; /* Tag 컴포넌트 아래에 위치시키기 위한 값 조정 */
 	left: 0;
-	z-index: 1000; /* 다른 요소 위에 표시되도록 */
 	padding: 10px; /* 패딩 추가 */
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	border: 1px solid black;
+	z-index: 1000;
+	box-shadow: 0px 5px 10px 0px #d9d9d9;
 `;
 
 const TagBoxListContainer = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	gap: 8px; /* 태그 간 간격 추가 */
+
+	position: relative;
+	border-radius: 10px;
+`;
+
+/* ✅ 배경 검정색 (모달 열릴 때 등장) */
+const TagBoxListContainerBack = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.4);
+	border-radius: 10px;
+	z-index: 1500; /* TagBoxListContainer 위 */
 `;
 
 const WhiteTag = styled.div`
@@ -135,6 +149,21 @@ const CloseButton = styled.button`
 	cursor: pointer;
 	padding: 0; /* 패딩 제거 */
 	margin-left: 4px; /* 왼쪽 여백 추가 */
+`;
+
+const ModalWrapper = styled.div`
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #fff;
+	border-radius: 10px;
+	z-index: 2000; /* TagBoxListContainerBack 위 */
+	width: 230px;
+	height: 167px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 `;
 
 export default function TagBox({ externalTags, onTagListChange }) {
@@ -328,24 +357,20 @@ export default function TagBox({ externalTags, onTagListChange }) {
 			</Row>
 
 			{isTagBoxListVisible && (
-				<TagBoxList isDeleteModalOpen={isDeleteModalOpen}>
+				<TagBoxList>
+					{isDeleteModalOpen && <TagBoxListContainerBack />}
 					<TagBoxListContainer>
 						{TagBoxTags.map((tag) => (
 							<Tag key={tag.id} onClick={() => handleTagClick(tag.tagName)}>
 								{tag.tagName}
-								<CloseButton
-									onClick={(e) => {
-										e.stopPropagation();
-										handleTagDelete(tag.id, tag.tagName);
-									}}>
-									x
-								</CloseButton>
+								<CloseButton onClick={(e) => handleTagDelete(tag.id, tag.tagName)}>x</CloseButton>
 							</Tag>
 						))}
 					</TagBoxListContainer>
-
 					{isDeleteModalOpen && (
-						<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDeleteTag} />
+						<ModalWrapper>
+							<TagDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={confirmDeleteTag} />
+						</ModalWrapper>
 					)}
 				</TagBoxList>
 			)}

@@ -5,49 +5,47 @@ import api from '../../Axios';
 import { getRecruitDetails } from '../../api/Apply/RecruitDetails'; // API 호출을 위해 import
 
 const CalendarBackgroundSection = styled.div`
-	width: 100vw;
-	left: 50%;
-	transform: translateX(-50%);
-	background-color: #f0f0f0;
-	margin-top: 20px;
-	position: relative;
-	padding: 20px 0;
-	box-sizing: border-box;
+  width: 100vw; 
+  background-color: #f0f0f0;
+  margin-top: 20px;
+  position: relative;
+  padding: 20px 0;
+  box-sizing: border-box;
+  display: flex;  // Flexbox 적용
+  justify-content: center;  // 수평 가운데 정렬
+  align-items: flex-start;  // 상단 정렬 (필요하면 center로 변경)
 `;
 
-const CalendarContentSection = styled.div`
-	max-width: 820px; // 너비 내커리어,이력관리와 통일 820으로
-	margin: 0 auto;
-	padding: 15px;
-	background-color: #f0f0f0;
-	border-radius: 15px;
-	position: relative;
-	margin-left: 505px;
-	@media (max-width: 1024px) {
-		margin-left: 0;
-	}
-`;
 
 const CalendarAdListStyled = styled.div`
-	padding: 20px;
-	border-radius: 10px;
-	margin-top: -10px;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 30px;
+   margin-left: -45px;
+  max-width: 820px;
+  width: 100%;  // 가로 너비 100% 설정
+  flex-direction: column;  // 수직 정렬
+  align-items: center;  // 내부 요소 가운데 정렬
 `;
+const CalendarAdDate = styled.div`
+  font-size: 14px;
+  color: var(--black, #000);
+  font-family: Regular;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+   margin-left: -680px;
+  margin-bottom: 10px;
+  text-align: center;
+  width: 100%;
+  position: absolute;  // ❗ 리스트 위로 고정
+  top: 30px;  // ❗ 리스트 위로 위치 조정
+`;
+
 
 const CalendarAdDateSection = styled.div`
 	margin-bottom: 50px;
-`;
-
-const CalendarAdDate = styled.div`
-	font-size: 14px;
-	color: var(--black, #000);
-	font-family: Regular;
-	font-size: 16px;
-	font-style: normal;
-	font-weight: 500;
-	line-height: normal;
-	margin-bottom: 5px;
-	margin-left: 68px;
 `;
 
 const CalendarAdItem = styled.div`
@@ -141,7 +139,6 @@ const CalendarListView = ({ date, data, count, onJobClick }) => {
   if (count === 0) {
     return (
       <CalendarBackgroundSection>
-        <CalendarContentSection />
       </CalendarBackgroundSection>
     );
   }
@@ -166,7 +163,7 @@ const CalendarListView = ({ date, data, count, onJobClick }) => {
 
   return (
     <CalendarBackgroundSection>
-      <CalendarContentSection>
+     
       <CalendarAdDate>{new Date(date).toISOString().split('T')[0]}</CalendarAdDate>
         <CalendarAdListStyled>
           {data.map((ad, idx) => (
@@ -186,7 +183,7 @@ const CalendarListView = ({ date, data, count, onJobClick }) => {
             </CalendarAdItem>
           ))}
         </CalendarAdListStyled>
-      </CalendarContentSection>
+
     </CalendarBackgroundSection>
   );
 };
