@@ -182,12 +182,12 @@ const CategoryTitle = styled.div`
     margin-top: 20px;
 `;
 
-const SearchList = ({ recruits, activeTab, searchTerm }) => {
+const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
     const navigate = useNavigate();
 
-    if (!recruits || recruits.length === 0) {
+    if (isSearchClicked && (!recruits || recruits.length === 0)) {
         return (
-             <BackgroundSection style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '200px' }}>
+            <BackgroundSection style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '200px' }}>
                 <p style={{ color: '#707070', fontSize: '16px' }}>
                     ‘{searchTerm}’의 검색 결과가 없어요
                 </p>
