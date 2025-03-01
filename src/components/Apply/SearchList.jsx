@@ -182,7 +182,7 @@ const CategoryTitle = styled.div`
     margin-top: 20px;
 `;
 
-const SearchList = ({ recruits, activeTab }) => {
+const SearchList = ({ recruits, activeTab, searchTerm }) => {
     const navigate = useNavigate();
 
     if (!recruits || recruits.length === 0) {
