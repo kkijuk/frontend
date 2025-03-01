@@ -4,7 +4,7 @@ import api from "../../Axios";
 const createPresignedUrl = async (data) => {
     try{
         const fileTitle = data.fileTitle;
-        const response = await api.get(`/history/file=fileName?=${fileTitle}`);
+        const response = await api.get(`/history/file?fileName=${fileTitle}`);
         const { keyName, presignedURL } = response.data;
 
         console.log("keyName: ", keyName);
