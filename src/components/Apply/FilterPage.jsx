@@ -248,14 +248,20 @@ const FilterPage = () => {
 					지원현황
 				</BackLink>
 				<SearchBarContainer>
-					<SearchInput
-						placeholder="공고 이름이나 태그를 검색하세요."
-						value={searchTerm}
-						onChange={(e) => setSearchTerm(e.target.value)}
-					/>
-					<SearchButton onClick={handleSearchClick}>
-						<img src={SearchIcon} alt="Search" width={20} height={20} />
-					</SearchButton>
+				<SearchInput
+    placeholder="공고 이름이나 태그를 검색하세요."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+            handleSearchClick();
+        }
+    }}
+/>
+<SearchButton onClick={handleSearchClick}>
+    <img src={SearchIcon} alt="Search" width={20} height={20} />
+</SearchButton>
+
 				</SearchBarContainer>
 			</div>
 			<TabContainer>
@@ -291,7 +297,7 @@ const FilterPage = () => {
 </TabContainer>
 
 			<ResultsContainer>
-			<SearchList recruits={recruits} activeTab={activeTab} />
+			<SearchList recruits={recruits} activeTab={activeTab} searchTerm={displayedTerm} />
 			</ResultsContainer>
 			</Layout> 
 		</Container>

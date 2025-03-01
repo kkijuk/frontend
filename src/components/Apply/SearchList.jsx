@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const BackgroundSection = styled.div`
     position: relative;
@@ -182,10 +183,28 @@ const CategoryTitle = styled.div`
 `;
 
 const SearchList = ({ recruits, activeTab }) => {
+    const navigate = useNavigate();
+
     if (!recruits || recruits.length === 0) {
         return (
-            <BackgroundSection>
-                {/* 검색 결과가 없을 때 UI 처리 없어도 될듯,,*/}
+             <BackgroundSection style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '200px' }}>
+                <p style={{ color: '#707070', fontSize: '16px' }}>
+                    ‘{searchTerm}’의 검색 결과가 없어요
+                </p>
+                <button 
+                    onClick={() => navigate('/apply-status')} 
+                    style={{ 
+                        backgroundColor: '#5BA87E', 
+                        color: 'white', 
+                        padding: '10px 20px', 
+                        borderRadius: '8px', 
+                        border: 'none', 
+                        cursor: 'pointer', 
+                        marginTop: '10px' 
+                    }}
+                >
+                    내 공고 보러가기
+                </button>
             </BackgroundSection>
         );
     }
