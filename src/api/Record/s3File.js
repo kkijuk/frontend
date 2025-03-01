@@ -6,7 +6,7 @@ const createPresignedUrl = async (data) => {
     try{
         const fileTitle = data.fileTitle;
         const response = await api.get(`/history/file?fileName=${fileTitle}`);
-        const { keyName, presignedURL } = response.data;
+        const { keyName, presignedURL } = response.data.data;
 
         console.log("Success - createPresignedUrl: ", response);
 
