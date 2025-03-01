@@ -202,12 +202,13 @@ const FilterPage = () => {
 	};
 	
 	
-		  const handleSearchClick = () => {
-			if (searchTerm.trim()) {
-				setDisplayedTerm(searchTerm);
-				fetchSearchResults(searchTerm);  // 검색어를 인자로 넘겨 즉시 실행
-			}
-		};
+	const handleSearchClick = () => {
+		if (searchTerm.trim()) {
+			setIsSearchClicked(true); // 검색 버튼을 눌렀을 때만 true로 변경
+			setDisplayedTerm(searchTerm);
+			fetchSearchResults(searchTerm);
+		}
+	};
 		
 	
 	const handleTabClick = (tab) => {
@@ -297,7 +298,7 @@ const FilterPage = () => {
 </TabContainer>
 
 			<ResultsContainer>
-			<SearchList recruits={recruits} activeTab={activeTab} searchTerm={displayedTerm} />
+			<SearchList recruits={recruits} activeTab={activeTab} searchTerm={displayedTerm} isSearchClicked={isSearchClicked} />
 			</ResultsContainer>
 			</Layout> 
 		</Container>
