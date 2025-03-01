@@ -195,10 +195,10 @@ const useRecordStore = create((set, get) => ({
 			let savedEtcData;
 			if(data.fileType === 'File'){
 				// 1. presigned URL과 keyName 생성
-				const { keyName, presignedURL } = await createPresignedUrl(data);
+				const { keyName, signedURL } = await createPresignedUrl(data);
 
 				// 2. s3에 파일 업로드
-				await uploadFileToS3(data.file, presignedURL);
+				await uploadFileToS3(data.file, signedURL);
 
 				// 3. 업로드 성공하면, keyName 백엔드에 저장
 				savedEtcData = await saveKeyName(keyName, data.fileTitle);
@@ -243,8 +243,8 @@ const useRecordStore = create((set, get) => ({
 			let savedEtcData;
 			if (oldData.fileType === 'File') {
 				await deleteS3File(oldData);
-				const { keyName, presignedURL } = await createPresignedUrl(newData);
-				await uploadFileToS3(newData.file, presignedURL);
+				const { keyName, signedURL } = await createPresignedUrl(newData);
+				await uploadFileToS3(newData.file, signedURL);
 				savedEtcData = await saveKeyName(keyName, newData.fileTitle);
 				set((state) => ({
 					files: state.files.map((item) =>
