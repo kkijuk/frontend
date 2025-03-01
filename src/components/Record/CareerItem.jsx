@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
-import { editCareer } from '../../api/Mycareer/Career';
+import { editCareerSummary } from '../../api/Mycareer/Career';
 import { KebabMenu1 } from './KebabMenu';
 import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
 
@@ -29,8 +29,12 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 	const handleDetailSave = async () => {
 		try{
 			console.log('활동내역수정: ', detail);
-			const updatedData = {...data, summary: detail};
-			await editCareer(data.id, updatedData);
+			const updatedData = {
+				id: data.id, 
+				type: data.category.categoryEnName,
+				summary: detail
+			};
+			await editCareerSummary(data.id, updatedData);
 			setIsSummaryEditMode(false);
 			setIsKebabMenuOpen(false);
 			
