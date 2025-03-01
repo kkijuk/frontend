@@ -76,7 +76,7 @@ const FileItem = ({ id, data, onSave, onUpdate, onDelete }) => {
           <ContentLink onClick={handleContentLinkClick}>
             {isTypeURL ? data.url : data.fileTitle}
           </ContentLink>
-          <DeleteButton onClick = {setIsEditMode(true)}>수정</DeleteButton>
+          <DeleteButton onClick = {()=>setIsEditMode(true)}>수정</DeleteButton>
         </Container>
       )}
     </div>

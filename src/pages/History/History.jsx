@@ -710,6 +710,7 @@ const Tag = styled.div`
 	justify-content: center;
 	align-items: center;
 	border-radius: 5px;
+	margin-top:10px;
 `
 
 const ProfileBox = styled.div`
