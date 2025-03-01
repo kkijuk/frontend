@@ -187,17 +187,17 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
 
     if (isSearchClicked && (!recruits || recruits.length === 0)) {
         return (
-            <BackgroundSection style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '200px' }}>
+            <BackgroundSection style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100px' }}>
                 <p style={{ color: '#707070', fontSize: '16px' }}>
                     ‘{searchTerm}’의 검색 결과가 없어요
                 </p>
                 <button 
                     onClick={() => navigate('/apply-status')} 
                     style={{ 
-                        backgroundColor: '#5BA87E', 
+                        backgroundColor: '#3AAF85', 
                         color: 'white', 
                         padding: '10px 20px', 
-                        borderRadius: '8px', 
+                        borderRadius: '10px', 
                         border: 'none', 
                         cursor: 'pointer', 
                         marginTop: '10px' 
