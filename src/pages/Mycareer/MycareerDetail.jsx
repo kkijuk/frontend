@@ -157,6 +157,7 @@ const CareerPlus = styled.button`
 	transition: bottom 0.2s ease-in-out; /* 부드러운 이동 효과 뭘까이건*/
 
 	margin-top: 20px;
+	margin-bottom: 20px;
 
 	z-index: 10;
 	color: #fff;
