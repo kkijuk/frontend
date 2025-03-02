@@ -392,7 +392,8 @@ const NumInputWrapper = styled.div`
 const TimerText = styled.div`
 	position: absolute;
 	right: 20px;
-	top: 50%; /* 세로 중앙 정렬 */
+	top: 50%; /* 부모 요소의 50% 위치 */
+	transform: translateY(-50%); /* 세로 중앙 정렬 */
 	color: #fa7c79;
 	font-family: Pretendard;
 	font-size: 14px;
@@ -638,14 +639,14 @@ export default function MyInformation() {
 				setTimeout(() => setIsEditingEmail(false), 500); // 이메일 수정 창 닫기 (0.5초 후)
 				setErrorMessage(''); // 에러 메시지 초기화
 			} else {
-				console.error('인증 실패:', response?.data?.message || '인증번호 확인 중 오류가 발생했습니다.');
-				setErrorMessage(response?.data?.message || '인증번호가 맞지 않습니다.');
+				const errorMsg = response?.data?.message || '인증번호 확인 중 오류가 발생했습니다.';
+				setErrorMessage(errorMsg);
 			}
 		} catch (error) {
 			console.error('인증번호 확인 중 오류 발생:', error?.response?.data || error?.message);
 
 			// 에러 메시지만 설정 (alert 없음)
-			setErrorMessage(error?.message);
+			setErrorMessage(error.response.data.message);
 		}
 	};
 
