@@ -148,9 +148,14 @@ const CareerPlus = styled.button`
 	cursor: pointer;
 	position: sticky; /* fixed → absolute */
 
-	left: 50%;
-	transform: translateX(-50%); /* 중앙 정렬 */
-	bottom: ${(props) => (props.isFixed ? '200px' : '30px')}; /* 🚀 기본적으로 30px, 남은 높이 200px 이하일 때는 200px */
+	/*left: 50%;
+	transform: translateX(-50%);  중앙 정렬 */
+
+	left: 0;
+	right: 0;
+	margin: auto;
+
+	bottom: ${(props) => (props.isFixed ? '220px' : '30px')}; /* 🚀 기본적으로 30px, 남은 높이 200px 이하일 때는 200px */
 	transition: bottom 0.2s ease-in-out; /* 부드러운 이동 효과 뭘까이건*/
 
 	z-index: 10;
