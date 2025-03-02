@@ -153,7 +153,7 @@ const CareerViewYear = ({ data }) => {
 											<AliasName>&nbsp;/ {item.alias}</AliasName>
 										</CareerContainer>
 										<Date>
-											{item.startDate === item.endDate ? item.startDate : `${item.startDate} ~ ${item.endDate}`}
+											{item.startdate === item.enddate ? item.startdate : `${item.startdate} ~ ${item.enddate}`}
 										</Date>
 									</ListBox>
 								);
