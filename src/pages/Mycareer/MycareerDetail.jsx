@@ -131,7 +131,7 @@ const Line = styled.div`
 
 const CareerListBox = styled.div`
 	width: 800px;
-	height: 595px;
+	height: 495px;
 	overflow-y: auto;
 	overflow-x: hidden;
 
@@ -146,9 +146,13 @@ const CareerPlus = styled.button`
 	border: none;
 	color: white;
 	cursor: pointer;
-	position: fixed;
-	z-index: 1;
+	position: absolute; /* fixed → absolute */
 
+	left: 50%;
+	transform: translateX(-50%); /* 중앙 정렬 */
+	bottom: max(30px, calc(100vh - 170px)); /* ✅ 푸터 침범 방지 */
+
+	z-index: 1;
 	color: #fff;
 
 	text-align: center;
