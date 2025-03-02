@@ -444,14 +444,6 @@ export default function MyInformation() {
 	const [phoneError, setPhoneError] = useState(''); // 에러 메시지 상태 추가
 	const [errorMessage, setErrorMessage] = useState(''); // 새로운 상태 추가
 
-	//Tag 가져오기
-	const location = useLocation();
-	const receivedSocialType = location.state?.socialType || '';
-	const socialTypeMap = {
-		KAKAO: '카카오',
-		NAVER: '네이버',
-	};
-
 	//개인정보 가져오기
 	useEffect(() => {
 		const fetchUserData = async () => {

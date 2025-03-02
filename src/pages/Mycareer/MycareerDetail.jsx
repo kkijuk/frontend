@@ -131,7 +131,7 @@ const Line = styled.div`
 
 const CareerListBox = styled.div`
 	width: 800px;
-	height: 495px;
+	height: 420px;
 	overflow-y: auto;
 	overflow-x: hidden;
 
