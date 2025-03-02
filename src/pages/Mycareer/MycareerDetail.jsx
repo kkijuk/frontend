@@ -146,13 +146,14 @@ const CareerPlus = styled.button`
 	border: none;
 	color: white;
 	cursor: pointer;
-	position: absolute; /* fixed → absolute */
+	position: fixed; /* fixed → absolute */
 
 	left: 50%;
 	transform: translateX(-50%); /* 중앙 정렬 */
-	bottom: max(30px, calc(100vh - 170px)); /* ✅ 푸터 침범 방지 */
+	bottom: ${(props) => (props.isFixed ? '200px' : '30px')}; /* 버튼 아래 여백이 200px 이하일 때 고정 */
+	transition: bottom 0.2s ease-in-out; /* 부드러운 이동 효과 뭘까이건*/
 
-	z-index: 1;
+	z-index: 10;
 	color: #fff;
 
 	text-align: center;
@@ -162,7 +163,6 @@ const CareerPlus = styled.button`
 	font-weight: 500;
 	line-height: normal;
 
-	bottom: 30px;
 	background: ${(props) => (props.disabled ? 'var(--gray-03, #D9D9D9)' : 'var(--main-01, #3AAF85)')};
 	cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
 `;
@@ -331,6 +331,22 @@ export default function MycareerDetail() {
 	const [modalData, setModalData] = useState(null); // 모달에 전달할 데이터
 	const [isAnyEditing, setIsAnyEditing] = useState(false); //편집 상태를 확인
 	const [isSearchOpen, setIsSearchOpen] = useState(false); // 검색창 상태 추가
+	const [isFixed, setIsFixed] = useState(false);
+
+	useEffect(() => {
+		const handleScroll = () => {
+			const scrollY = window.scrollY;
+			const viewportHeight = window.innerHeight;
+			const documentHeight = document.documentElement.scrollHeight;
+			const remainingHeight = documentHeight - (scrollY + viewportHeight);
+
+			// 버튼 아래 여백이 200px 이하가 되면 고정
+			setIsFixed(remainingHeight <= 200);
+		};
+
+		window.addEventListener('scroll', handleScroll);
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, []);
 
 	const categoryToTypeMap = {
 		대외활동: 'activity',
