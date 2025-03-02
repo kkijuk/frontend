@@ -131,11 +131,9 @@ const Line = styled.div`
 
 const CareerListBox = styled.div`
 	width: 800px;
-	height: 420px;
+	height: 560px;
 	overflow-y: auto;
 	overflow-x: hidden;
-
-	border: 1px solid black;
 `;
 
 const CareerPlus = styled.button`
@@ -157,6 +155,8 @@ const CareerPlus = styled.button`
 
 	bottom: ${(props) => (props.isFixed ? '220px' : '30px')}; /* 🚀 기본적으로 30px, 남은 높이 200px 이하일 때는 200px */
 	transition: bottom 0.2s ease-in-out; /* 부드러운 이동 효과 뭘까이건*/
+
+	margin-top: 20px;
 
 	z-index: 10;
 	color: #fff;
@@ -346,7 +346,7 @@ export default function MycareerDetail() {
 			const remainingHeight = documentHeight - (scrollY + viewportHeight);
 
 			// 남은 높이가 200px 이하일 때 푸터 위로 고정
-			setIsFixed(remainingHeight <= 200);
+			setIsFixed(remainingHeight <= 220);
 		};
 
 		window.addEventListener('scroll', handleScroll);
