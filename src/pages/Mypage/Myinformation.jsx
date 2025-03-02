@@ -488,7 +488,7 @@ export default function MyInformation() {
 			console.log('이메일 인증 요청 중:', emailInput); // ✅ 요청 전 확인
 
 			setIsRequesting(true);
-			await sendCode(emailInput);
+			const response = await sendCode(emailInput);
 			console.log('이메일 인증 요청 성공:', response); // ✅ 요청 성공 확인
 
 			setIsVerificationRequested(true);
@@ -638,12 +638,14 @@ export default function MyInformation() {
 				setTimeout(() => setIsEditingEmail(false), 500); // 이메일 수정 창 닫기 (0.5초 후)
 				setErrorMessage(''); // 에러 메시지 초기화
 			} else {
-				alert('인증번호가 올바르지 않습니다. 다시 확인해주세요.');
-				setErrorMessage(error.message || '인증번호 확인 중 오류가 발생했습니다.');
+				console.error('인증 실패:', response?.data?.message || '인증번호 확인 중 오류가 발생했습니다.');
+				setErrorMessage(response?.data?.message || '인증번호가 맞지 않습니다.');
 			}
 		} catch (error) {
-			console.error('인증번호 확인 중 오류 발생:', error.response?.data || error.message);
-			alert('인증번호 확인 중 오류가 발생했습니다. 서버 응답을 확인하세요.');
+			console.error('인증번호 확인 중 오류 발생:', error?.response?.data || error?.message);
+
+			// 에러 메시지만 설정 (alert 없음)
+			setErrorMessage(error?.response?.data?.message || error?.message || '인증번호 확인 중 오류가 발생했습니다.');
 		}
 	};
 
