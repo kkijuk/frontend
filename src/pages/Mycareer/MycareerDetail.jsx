@@ -134,6 +134,8 @@ const CareerListBox = styled.div`
 	height: 595px;
 	overflow-y: auto;
 	overflow-x: hidden;
+
+	border: 1px solid black;
 `;
 
 const CareerPlus = styled.button`
@@ -333,6 +335,7 @@ export default function MycareerDetail() {
 		교육: 'edu',
 		공모전대회: 'competition',
 		경력: 'employment',
+		기타: 'etc',
 	};
 
 	const fetchCareerDetails = async (id, type) => {
@@ -487,7 +490,7 @@ export default function MycareerDetail() {
 							key={career.id}
 							id={career.id}
 							startdate={career.startdate}
-							enddate={career.endDate}
+							enddate={career.enddate}
 							careerName={career.name}
 							category={career.category.categoryKoName}
 							selected={career.id === selectedCareer.id && career.category.categoryKoName === selectedCareer.type}
