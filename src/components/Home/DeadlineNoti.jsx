@@ -87,14 +87,17 @@ export default function DeadlineNoti() {
 	const [recruits, setRecruits] = useState([]);
 
 	useEffect(() => {
-		
 		async function fetchData() {
 			try {
 				const response = await getRecruitRemind();
 				if (!response) {
 					throw new Error('Failed to fetch data');
 				}
-				const filledRecruits = [...response.slice(0, 2)]; // 최대 2개의 데이터만 사용
+
+				// 마감 기한이 지난 항목 필터링 (D-1, D-2 같은 것 제외)
+				const validRecruits = response.filter((recruit) => recruit.dday >= 0);
+
+				const filledRecruits = [...validRecruits.slice(0, 2)];
 				// 데이터가 2개 미만일 경우 빈 박스를 추가
 				while (filledRecruits.length < 2) {
 					filledRecruits.push({});
@@ -126,6 +129,7 @@ export default function DeadlineNoti() {
 				const isEmpty = !recruit.title;
 				const fontColor = recruit.dday <= 7 ? '#FA7C79' : '#707070'; // 현재: 7일 이하면 글자색 빨간색
 				const fontB = recruit.dday <= 7 ? 'SemiBold' : 'Medium';
+				const dDayText = recruit.dday === 0 ? 'D-DAY' : `D-${recruit.dday}`; // ✅ D-0 대신 D-DAY
 
 				return (
 					<Box key={recruit.id} onClick={() => handleClick(isEmpty, recruit.id)}>
@@ -136,10 +140,7 @@ export default function DeadlineNoti() {
 								{recruit.title}
 								<DDayBox>
 									<DDayText fontColor={fontColor} font={fontB}>
-										D-
-									</DDayText>
-									<DDayText fontColor={fontColor} font={fontB}>
-										{recruit.dday}
+										{dDayText}
 									</DDayText>
 								</DDayBox>
 							</>
