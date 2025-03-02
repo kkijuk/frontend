@@ -135,6 +135,15 @@ const CareerViewCategory = ({ data }) => {
 		navigate(`/mycareer/${category}/${careerId}`, { state: { careerId, category } });
 	};
 
+	const formatCategoryName = (category) => {
+		//세연 추가
+		const categoryMap = {
+			공모전대회: '공모전/대회',
+		};
+
+		return categoryMap[category] || category; // 매핑된 값이 있으면 변환, 없으면 그대로 반환
+	};
+
 	return (
 		<BackgroundSection>
 			<CategoryBox>
@@ -146,8 +155,9 @@ const CareerViewCategory = ({ data }) => {
 						<React.Fragment key={category}>
 							<Category>
 								<CareerCategoryCircle category={category} />
-								<CategoryText>{category}</CategoryText>
+								<CategoryText>{formatCategoryName(category)}</CategoryText> {/* 세연 수정 */}
 							</Category>
+
 							{data[category].map((item) => (
 								<ListBox
 									key={`${item.id}_${item.category}`}

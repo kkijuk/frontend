@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { getUserInfo } from '../../api/Home/getUserInfo';
+import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
 
 const Container = styled.div`
 	flex-shrink: 0;
@@ -151,6 +152,7 @@ export default function LoginProfileBox() {
 	const [monthDuration, setMonthDuration] = useState(0);
 	const [careerCount, setCareerCount] = useState(0);
 	const [recruitCount, setRecruitCount] = useState(0);
+	const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
 
 	useEffect(() => {
 		const fetchUserInfo = async () => {
@@ -176,35 +178,43 @@ export default function LoginProfileBox() {
 		navigate('/mycareer');
 	};
 
-	const goCareerAdd = () => {
-		window.scrollTo(0, 0);
-		navigate('/mycareer', { state: { showModal: true } });
-	};
-
 	const goApply = () => {
 		window.scrollTo(0, 0);
 		navigate('/apply-status');
 	};
 
+	const handleOpenModal = () => {
+		setIsModalOpen(true); // 모달 열기
+	};
+
+	const handleCloseModal = () => {
+		setIsModalOpen(false); // 모달 닫기
+	};
+
 	return (
-		<Container>
-			<TextContainer>
-				안녕하세요 {userName} 님,
-				<BoldText>
-					<GreenSpan>끼적</GreenSpan>한 지 {monthDuration}개월이 지났어요!
-				</BoldText>
-			</TextContainer>
-			<BoxContainer>
-				<CountBox onClick={goCareer}>
-					내 활동
-					<BoldText fontSize="12px">{careerCount}</BoldText>
-				</CountBox>
-				<CountBox onClick={goApply}>
-					지원현황
-					<BoldText fontSize="12px">{recruitCount}</BoldText>
-				</CountBox>
-			</BoxContainer>
-			<OKButton onClick={goCareerAdd}>활동 추가하기</OKButton>
-		</Container>
+		<>
+			<Container>
+				<TextContainer>
+					안녕하세요 {userName} 님,
+					<BoldText>
+						<GreenSpan>끼적</GreenSpan>한 지 {monthDuration}개월이 지났어요!
+					</BoldText>
+				</TextContainer>
+				<BoxContainer>
+					<CountBox onClick={goCareer}>
+						내 활동
+						<BoldText fontSize="12px">{careerCount}</BoldText>
+					</CountBox>
+					<CountBox onClick={goApply}>
+						지원현황
+						<BoldText fontSize="12px">{recruitCount}</BoldText>
+					</CountBox>
+				</BoxContainer>
+				<OKButton onClick={handleOpenModal}>활동 추가하기</OKButton> {/* ✅ 버튼 클릭 시 모달 열기 */}
+			</Container>
+
+			{/* 모달이 열렸을 때만 렌더링 */}
+			{isModalOpen && <AddCareerModal onClose={handleCloseModal} />}
+		</>
 	);
 }

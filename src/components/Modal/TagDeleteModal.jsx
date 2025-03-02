@@ -72,7 +72,7 @@ const CancelButton = styled.button`
 	height: 25px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	border: 1px solid var(#e0e0e0);
+	border: 1px solid var(#707070);
 	background: #fff;
 
 	color: var(--gray-02, #707070);
