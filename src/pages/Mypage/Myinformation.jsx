@@ -441,6 +441,7 @@ export default function MyInformation() {
 
 	const [isVerified, setIsVerified] = useState(false);
 	const [phoneError, setPhoneError] = useState(''); // 에러 메시지 상태 추가
+	const [errorMessage, setErrorMessage] = useState(''); // 새로운 상태 추가
 
 	//Tag 가져오기
 	const location = useLocation();
@@ -483,20 +484,21 @@ export default function MyInformation() {
 			alert('전송 중입니다. 잠시만 기다려주세요.');
 			return;
 		}
-
-		if (timer > 0) {
-			alert('이미 인증번호가 전송되었습니다.');
-			return;
-		}
 		try {
+			console.log('이메일 인증 요청 중:', emailInput); // ✅ 요청 전 확인
+
 			setIsRequesting(true);
 			await sendCode(emailInput);
+			console.log('이메일 인증 요청 성공:', response); // ✅ 요청 성공 확인
+
 			setIsVerificationRequested(true);
 			setTimer(300); // 5분 설정
 			setIsTimerExpired(false);
 			alert('인증번호가 전송되었습니다.');
 		} catch (error) {
 			alert('인증번호 전송에 실패했습니다.');
+		} finally {
+			setIsRequesting(false);
 		}
 	};
 
@@ -634,8 +636,10 @@ export default function MyInformation() {
 				setEmail(emailInput);
 				setIsVerified(true); // 인증 성공 상태 업데이트
 				setTimeout(() => setIsEditingEmail(false), 500); // 이메일 수정 창 닫기 (0.5초 후)
+				setErrorMessage(''); // 에러 메시지 초기화
 			} else {
 				alert('인증번호가 올바르지 않습니다. 다시 확인해주세요.');
+				setErrorMessage(error.message || '인증번호 확인 중 오류가 발생했습니다.');
 			}
 		} catch (error) {
 			console.error('인증번호 확인 중 오류 발생:', error.response?.data || error.message);
@@ -673,7 +677,7 @@ export default function MyInformation() {
 							<InputContainer>
 								<EmailInput value={emailInput} onChange={(e) => setEmailInput(e.target.value)} />
 								<RequestButton onClick={handleRequestVerification}>
-									{isVerificationRequested ? '다시 전송' : '인증요청'}
+									{isVerificationRequested ? '재전송' : '인증요청'}
 								</RequestButton>
 								<CancelButton onClick={handleCancelEditEmail}>취소</CancelButton>
 							</InputContainer>
@@ -696,7 +700,9 @@ export default function MyInformation() {
 										</VerifyButton>
 									</InputContainer>
 
-									{isTimerExpired && <ErrorText>시간이 초과되었습니다. 다시 요청해주세요.</ErrorText>}
+									{isTimerExpired && (
+										<ErrorText>{errorMessage || '시간이 초과되었습니다. 다시 요청해주세요.'}</ErrorText>
+									)}
 								</>
 							)}
 						</EmailEditBox>
