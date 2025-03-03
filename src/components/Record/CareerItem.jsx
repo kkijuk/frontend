@@ -30,7 +30,6 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 		try{
 			console.log('활동내역수정: ', detail);
 			const updatedData = {
-				// id: data.id, 
 				type: data.category.categoryEnName,
 				summary: detail
 			};
