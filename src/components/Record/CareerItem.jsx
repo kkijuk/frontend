@@ -56,7 +56,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 	
 		return yearDiff * 12 + monthDiff + 1; // 총 개월 수 계산
 	};
-	const activityMonths = calculateMonths(data.startDate, data.endDate);
+	const activityMonths = calculateMonths(data.startdate, data.enddate);
 
 	// 경력인 경우, 태그에는 categoryKoName이 아닌 type으로 표시
 	const getEmploymentsType = (type) => {
@@ -95,7 +95,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 
 	// 활동 진행 중 여부 확인(Line 스타일 적용 방식 선택 위해)
 	const today = new Date();
-	const checkPastDue = data.endDate ? new Date(data.endDate) < today : false;
+	const checkPastDue = data.enddate ? new Date(data.enddate) < today : false;
 
 	return (
 		<FirstContainer>
@@ -111,7 +111,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 							<span style={{fontWeight:'normal'}}> / {data.alias}</span>
 						</SchoolName>
 						<Dates>
-							{data.startDate ? data.startDate : '시작 날짜 없음'} ~ {endDateToDisplay}
+							{data.startdate ? data.startdate : '시작 날짜 없음'} ~ {endDateToDisplay}
 							<Status>{statusToDisplay}</Status>
 						</Dates>
 						<DetailContainer>
