@@ -791,10 +791,10 @@ const ApplyDetail = () => {
 
 	return (
 		<Container>
-			<Title>지원공고 관리</Title>
+			<Title>지원현황</Title> 
 			<BackLink to="/apply-status">
 			<img src={SvgIconBefore} alt="Close" width={20} height={13} />
-                     지원현황
+                     지원공고 관리  
             </BackLink>
 			<Header>
 				<TitleContainer>
