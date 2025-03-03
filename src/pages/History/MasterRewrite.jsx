@@ -25,6 +25,11 @@ const MasterRewrite = () => {
 		setCharCounts(data.questions.map((question) => question.content.length));
 	}, [data.questions]);
 
+	// 기타 상태
+	const [dropdownOpened, setDropdownOpened] = useState(false); // 드롭다운 열림
+	const [showAutoSaveMessage, setShowAutoSaveMessage] = useState(false); // 자동 저장 메시지
+	const [autoSaveTime, setAutoSaveTime] = useState(''); // 자동 저장 시간
+
 	//1. 마스터 저장 내용 불러오기
 	//(API) 마스터 조회
 	useEffect(() => {
@@ -76,8 +81,16 @@ const MasterRewrite = () => {
 			state: data.state,
 		};
 		console.log('data to submit: ', dataToSubmit);
+
 		try{
 			const response = await updateMaster(dataToSubmit);
+
+			setAutoSaveTime(new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}));
+			setShowAutoSaveMessage(true);
+			setTimeout(() => {
+				setShowAutoSaveMessage(false);
+			}, 3000);
+
 			console.log('마스터 자소서 수정 완료: ', response);
 		} catch (error) {
 			console.error('Error:', error);
@@ -127,7 +140,7 @@ const MasterRewrite = () => {
 					Master 자기소개서
 				</p>
 				<Tag onClick={(value)=>{setDropdownOpened(!value)}} style={{ color: 'white', width: '60px', cursor: 'pointer' }}>
-						{isCompleted ? '작성 완료' : '작성 중'} ▼
+						{data.state ? '작성 완료' : '작성 중'} ▼
 						{dropdownOpened && (
 						<Dropdown>
 							<DropdownItem onClick={() => handleDropdownClick(0)}>작성 중</DropdownItem>
@@ -199,12 +212,21 @@ const MasterRewrite = () => {
 				</div>
 				<AddButton onClick={handleAddClick}>+</AddButton>
 				<div style={{ height: '70px' }}></div>
-				<Button
-					onClick={handleSubmit}
-					style={{ width: '820px', borderRadius: '10px', background: '#3AAF85', color: '#FFF' }}
-				>
-					저장하고 나가기
-				</Button>
+				<div style={{display: 'flex', justifyContent: 'flex-end'}}>
+					<div style={{display: 'flex', alignItems: 'center'}}>
+						{showAutoSaveMessage && (
+							<p style={{ fontFamily: 'pretendard', fontSize: '14px', color: '#707070', marginBottom: '10px'}}>
+								자동 저장을 완료했습니다. {autoSaveTime}
+							</p>
+						)}
+						<Button
+							onClick={handleSubmit}
+							style={{ width: '820px', borderRadius: '10px', background: '#3AAF85', color: '#FFF' }}
+						>
+							저장하고 나가기
+						</Button>
+					</div>
+				</div>
 				<div style={{ height: '70px' }}></div>
 			</BaseDiv>
 		</BackgroundDiv>
