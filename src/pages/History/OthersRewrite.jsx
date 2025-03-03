@@ -323,7 +323,7 @@ const OthersRewrite = () => {
 							<Delete
 								style={{
 									left: '10px',
-									top: '10px',
+									top: '15px',
 									color: '#707070',
 									fontSize: '24px',
 									lineHeight: 'normal',
@@ -526,6 +526,6 @@ const Delete = styled.div`
 	font-family: Regular;
 	cursor: pointer;
 	position: absolute;
-	top: 16px;
+	top: 20px;
 	right: 10px;
 `;
