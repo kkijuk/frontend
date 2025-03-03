@@ -28,7 +28,7 @@ const Select = () => {
         
         const response = await getValidRecruitList(formattedDate);
         
-        setRecruitList(response.data.unapplied.recruits);
+        setRecruitList(response.unapplied.recruits);
         if(response.data.unapplied.recruits.length > 0) {
           setSelectedJob(response.unapplied.recruits[0].id);
         }
