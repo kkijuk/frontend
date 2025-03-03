@@ -72,6 +72,24 @@ const Logo = styled.img`
   cursor: pointer;
 `;
 
+const HomeLink = styled.div`
+  color: var(--gray-02, #707070);
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+  cursor: pointer;
+  margin-top: 40px;
+`;
+
 const SignupSuccess = () => {
 	const navigate = useNavigate();
 	const [hasCalled, setHasCalled] = useState(false); // 호출 여부 상태 관리
@@ -110,6 +128,10 @@ const SignupSuccess = () => {
 		navigate('/'); 
 	  };
 
+	  const handleHomeClick = () => {
+		navigate('/');
+	  };
+
 	return (
 		<SignupSuccessScreen>
 			<Logo src={signupLogo} alt="Signup Logo" onClick={handleLogoClick} />
@@ -119,6 +141,7 @@ const SignupSuccess = () => {
 			<button className="button" onClick={handleButtonClick}>
 				관심분야 등록
 			</button>
+			<HomeLink onClick={handleHomeClick}>홈으로</HomeLink>
 		</SignupSuccessScreen>
 	);
 };
