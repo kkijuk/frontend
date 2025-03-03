@@ -274,7 +274,6 @@ const useRecordStore = create((set, get) => ({
 				userData: { 
 					...state.userData, 
 					profileImageUrl: response.profileImageUrl,
-					email: response.email, 
 					address: response.address
 				},
 			}));
