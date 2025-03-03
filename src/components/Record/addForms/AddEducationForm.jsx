@@ -78,7 +78,7 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
   };
 
   const hasEmptyField =(data)=>{
-    const { educationId, isCurrent, ...fields } = data; //id, isCurrent 제외
+    const { id, educationId, isCurrent, ...fields } = data; //id, isCurrent 제외
     return Object.values(fields).some((value) => {
       console.log('value:', value);
       if (typeof value !== "string") {return true;}
