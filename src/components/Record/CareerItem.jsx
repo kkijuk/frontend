@@ -90,7 +90,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 · 이곳에 작성한 내용은 [서류준비-이력서]에 자동으로 삽입됩니다.`
 
 	// unknown 값에 따른 분기 처리
-	const endDateToDisplay = careerData.unknown ? '종료 날짜 없음' : data.endDate ? data.endDate : '종료 날짜 없음';
+	const endDateToDisplay = careerData.unknown ? '종료 날짜 없음' : data.enddate ? data.enddate : '종료 날짜 없음';
 	const statusToDisplay = careerData.unknown ? '(진행 중)' : activityMonths ? `(${activityMonths}개월)` : '(진행 중)';
 
 	// 활동 진행 중 여부 확인(Line 스타일 적용 방식 선택 위해)
