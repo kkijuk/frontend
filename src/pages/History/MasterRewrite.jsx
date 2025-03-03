@@ -159,10 +159,10 @@ const MasterRewrite = () => {
 				<p style={{fontFamily: 'pretendard', fontSize: '28px', marginBottom: '20px', fontWeight: 700}}>
 					Master 자기소개서
 				</p>
-				<Tag onClick={(value)=>{setDropdownOpened(!value)}} style={{ color: 'white', width: '60px', cursor: 'pointer' }}>
+				<Tag onClick={()=>{setDropdownOpened(!dropdownOpened)}} style={{ position:'relative', color: 'white', width: '60px', cursor: 'pointer' }}>
 						{data.state ? '작성 완료' : '작성 중'} ▼
 						{dropdownOpened && (
-						<Dropdown>
+						<Dropdown style={{position:'absolute', top:'65px'}}>
 							<DropdownItem onClick={() => handleDropdownClick(0)}>작성 중</DropdownItem>
 							<DropdownItem onClick={() => handleDropdownClick(1)}>작성 완료</DropdownItem>
 						</Dropdown>
@@ -246,9 +246,9 @@ const MasterRewrite = () => {
 				<AddButton onClick={handleAddClick}>+</AddButton>
 				<div style={{ height: '70px' }}></div>
 				<div style={{display: 'flex', justifyContent: 'flex-end'}}>
-					<div style={{display: 'flex', flexDirection:'column', alignItems: 'center'}}>
+					<div style={{display: 'flex', flexDirection:'column', alignItems: 'center', position: 'relative'}}>
 						{showAutoSaveMessage && (
-							<p style={{ fontFamily: 'pretendard', fontSize: '14px', color: '#707070', marginBottom: '10px'}}>
+							<p style={{ fontFamily: 'pretendard', fontSize: '14px', color: '#707070', marginBottom: '10px', position:'absolute', top:'-40px' }}>
 								자동 저장을 완료했습니다. {autoSaveTime}
 							</p>
 						)}
