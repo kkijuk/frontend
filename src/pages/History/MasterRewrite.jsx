@@ -112,7 +112,7 @@ const MasterRewrite = () => {
 				<div style={{ position: 'relative' }}>
 					<InputTitle
 						id="oneLiner"
-						placeholder="한줄소개를 작성하세요"
+						placeholder="한줄소개를 입력하세요"
 						style={{ height: '20px', marginBottom: '12px' }}
 						value={data.oneLiner || ''}
 						onChange={(e) => handleOneLinerChange(e.target.id, e.target.value)}
@@ -125,14 +125,14 @@ const MasterRewrite = () => {
 						let titlePlaceholder = '질문 제목을 작성하세요';
 						let contentPlaceholder = '답변을 작성하세요';
 						if (index === 0) {
-						titlePlaceholder = '지원동기 제목을 작성하세요';
-						contentPlaceholder = '지원동기를 작성하세요';
+						titlePlaceholder = '지원동기 및 포부 [소제목]';
+						contentPlaceholder = '답변을 작성하세요';
 						} else if (index === 1) {
-						titlePlaceholder = '장단점 제목을 작성하세요';
-						contentPlaceholder = '장단점을 작성하세요';
+						titlePlaceholder = '장단점 [소제목]';
+						contentPlaceholder = '답변을 작성하세요';
 						} else if (index === 2) {
-						titlePlaceholder = '직무적합성 제목을 작성하세요';
-						contentPlaceholder = '직무적합성을 작성하세요';
+						titlePlaceholder = '직무적합성 [소제목]';
+						contentPlaceholder = '답변을 작성하세요';
 						}
 
 						const currentTitle = (question.title && question.title !== 'string') ? question.title : '';
@@ -143,13 +143,13 @@ const MasterRewrite = () => {
 							<InputTitle
 							placeholder={titlePlaceholder}
 							style={{ height: '20px', marginBottom: '12px' }}
-							value={question.title || ''}
+							value={currentTitle}
 							onChange={(e) => handleInputChange(index, 'title', e.target.value)}
 							/>
 							<InputTitle
 							placeholder={contentPlaceholder}
 							style={{ height: '150px', marginBottom: '12px' }}
-							value={question.content || ''}
+							value={currentContent}
 							onChange={(e) => handleInputChange(index, 'content', e.target.value)}
 							/>
 							<p
@@ -161,7 +161,7 @@ const MasterRewrite = () => {
 								marginRight: '20px',
 							}}
 							>
-							{question.content.length} (공백 포함)
+							{currentContent.length} (공백 포함)
 							</p>
 						</div>
 						);
