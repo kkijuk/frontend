@@ -25,10 +25,12 @@ const Select = () => {
       try {
         const currentDate = new Date();
         const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}`; 
+        
         const response = await getValidRecruitList(formattedDate);
+        
         setRecruitList(response.data.unapplied.recruits);
         if(response.data.unapplied.recruits.length > 0) {
-          setSelectedJob(response.data.unapplied.recruits[0].id);
+          setSelectedJob(response.unapplied.recruits[0].id);
         }
       } catch (error) {
         console.error("Failed to fetch recruit list:", error);
