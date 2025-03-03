@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { readMaster, updateMaster } from '../../api/Intro/master';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import { use } from 'react';
 
 const MasterRewrite = () => {
 	const navigate = useNavigate();
@@ -105,21 +106,47 @@ const MasterRewrite = () => {
 		}));
 	};
 
+	// 드롭다운 클릭
+	const handleDropdownClick = (isCompleted) => {
+		setDropdownOpened(true);
+		setData({ ...data, state: isCompleted });
+		setDropdownOpened(false);
+	};
+
+	// data 변경 시 로그
+	useEffect(() => {
+		console.log('data:', data);
+	}
+	, [data]);
+
 	return (
 		<BackgroundDiv>
 			{showLoadingSpinner && <LoadingSpinner message = "마스터 자소서 수정 중..."/>}
+			<div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+				<p style={{fontFamily: 'pretendard', fontSize: '28px', marginBottom: '20px', fontWeight: 700}}>
+					Master 자기소개서
+				</p>
+				<Tag onClick={(value)=>{setDropdownOpened(!value)}} style={{ color: 'white', width: '60px', cursor: 'pointer' }}>
+						{isCompleted ? '작성 완료' : '작성 중'} ▼
+						{dropdownOpened && (
+						<Dropdown>
+							<DropdownItem onClick={() => handleDropdownClick(0)}>작성 중</DropdownItem>
+							<DropdownItem onClick={() => handleDropdownClick(1)}>작성 완료</DropdownItem>
+						</Dropdown>
+						)}
+				</Tag>
+			</div>
+			<Linear style={{ width: '820px' }} />
 			<BaseDiv>
 				<div style={{ position: 'relative' }}>
 					<InputTitle
 						id="oneLiner"
 						placeholder="한줄소개를 입력하세요"
-						style={{ height: '20px', marginBottom: '12px' }}
+						style={{ height: '40px', marginBottom: '12px' }}
 						value={data.oneLiner || ''}
 						onChange={(e) => handleOneLinerChange(e.target.id, e.target.value)}
 					/>
 
-					<Linear style={{ width: '820px' }} />
-					<p className='lastUpdated' style={{marginTop:0}}>마지막 수정일시: {data.updated_at}</p>           
 					{data.questions.map((question, index) => {
 						// 첫번째, 두번째, 세번째 질문에 대해서만 특수한 placeholder를 설정
 						let titlePlaceholder = '질문 제목을 작성하세요';
@@ -139,7 +166,7 @@ const MasterRewrite = () => {
 						const currentContent = (question.content && question.content !== 'string') ? question.content : '';
 
 						return (
-						<div key={index}>
+						<div key={index} style={{position:'relative'}}>
 							<InputTitle
 							placeholder={titlePlaceholder}
 							style={{ height: '20px', marginBottom: '12px' }}
@@ -159,6 +186,9 @@ const MasterRewrite = () => {
 								color: '#707070',
 								textAlign: 'right',
 								marginRight: '20px',
+								position: 'absolute',
+								bottom: '35px',
+								right: '5px',
 							}}
 							>
 							{currentContent.length} (공백 포함)
@@ -242,4 +272,56 @@ const AddButton = styled.button`
 	color: #d9d9d9;
 	font-size: 30px;
 	cursor: pointer;
+`;
+
+const Tag = styled.div`
+	display: inline-flex;
+	height: 22px;
+	padding: 0px 16px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	flex-shrink: 0;
+	margin-right: 12px;
+	border-radius: 20px;
+	background: #3aaf85;
+	font-family: Regular;
+	font-size: 12px;
+	text-align: center;
+	font-weight: 400;
+	line-height: normal;
+`;
+
+const Dropdown = styled.div`
+	width: 90px;
+	height: 70px;
+	flex-shrink: 0;
+	border-radius: 13px;
+	border: 1px solid var(--gray-02, #707070);
+	background: #fff;
+	position: absolute;
+	top: 23px;
+	margin-top: 20px;
+	z-index: 1000;
+`;
+
+const DropdownItem = styled.p`
+	color: var(--gray-01, #424242);
+	text-align: center;
+	font-family: Regular;
+	font-size: 13px;
+	font-weight: 400;
+	cursor: pointer;
+`;
+
+const Delete = styled.div`
+	width: 30px;
+	height: 20px;
+	color: #707070;
+	font-size: 15px;
+	font-family: Regular;
+	cursor: pointer;
+	position: absolute;
+	top: 20px;
+	right: 10px;
 `;
