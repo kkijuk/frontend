@@ -215,7 +215,7 @@ const MasterRewrite = () => {
 							<Delete onClick={() => deleteItem(question.number)}>삭제</Delete>
 							<InputTitle
 							placeholder={titlePlaceholder}
-							style={{ width:'730px',height: '20px', marginBottom: '12px', paddingLeft: '50px' }}
+							style={{ width:'750px',height: '20px', marginBottom: '12px', paddingLeft: '50px' }}
 							value={currentTitle}
 							onChange={(e) => handleInputChange(index, 'title', e.target.value)}
 							/>
