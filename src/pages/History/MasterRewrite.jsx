@@ -133,7 +133,10 @@ const MasterRewrite = () => {
 	// 질문 삭제
 	const deleteItem = (number) => {
 		const updatedQuestions = data.questions.filter((q) => q.number !== number);
-		setData(updatedQuestions);
+		setData((prevData) => ({
+			...prevData,
+			questions: updatedQuestions,
+		}));
 	};
 
 	// 드롭다운 클릭
@@ -212,7 +215,7 @@ const MasterRewrite = () => {
 							<Delete onClick={() => deleteItem(question.number)}>삭제</Delete>
 							<InputTitle
 							placeholder={titlePlaceholder}
-							style={{ height: '20px', marginBottom: '12px' }}
+							style={{ width:'730px',height: '20px', marginBottom: '12px', paddingLeft: '50px' }}
 							value={currentTitle}
 							onChange={(e) => handleInputChange(index, 'title', e.target.value)}
 							/>
