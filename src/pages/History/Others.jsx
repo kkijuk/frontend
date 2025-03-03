@@ -91,7 +91,7 @@ const Others = () => {
 							</h3>
 							<div style={{ height: '100px' }}>
 								<p>
-									{question.content && question.content !== string
+									{question.content && question.content !== 'string'
 									? question.content
 									: '답변을 작성하세요.'}
 								</p>
