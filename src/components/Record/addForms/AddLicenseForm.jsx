@@ -37,7 +37,9 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
     const dateObj = new Date(value);
     const year = dateObj.getFullYear();
     const month = (`0${dateObj.getMonth() + 1}`).slice(-2);
-    const formattedDate = `${year}-${month}`;
+    const day = (`0${dateObj.getDate()}`).slice(-2);
+
+    const formattedDate = `${year}-${month}-${day}`;
     
     handleInputChange("acquireDate", formattedDate);
     setShowDatePicker(false);
@@ -62,7 +64,8 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
   }, [formData]);
 
   const hasEmptyField = (data) => {
-    return Object.values(data).some((value) => value.trim() === "");
+    // return Object.values(data).some((value) => value.trim() === "");
+    console.log('hasEmptyField:', hasEmptyField);
   }
 
   return (
