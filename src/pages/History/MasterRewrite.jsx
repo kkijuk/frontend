@@ -113,10 +113,27 @@ const MasterRewrite = () => {
 
 	// 질문 추가
 	const handleAddClick = () => {
+		// 새로 추가할 question 객체 생성
+		const maxNumber = data.questions.length
+		? Math.max(...data.questions.map((q) => q.number))
+		: -1;
+
+		const newQuestion = {
+			title: '',
+			content: '',
+			number: maxNumber + 1,
+		};
+
 		setData((prevData) => ({
 		  ...prevData,
-		  questions: [...prevData.questions, { title: "", content: "" }],
+		  questions: [...prevData.questions, newQuestion],
 		}));
+	};
+
+	// 질문 삭제
+	const deleteItem = (number) => {
+		const updatedQuestions = data.questions.filter((q) => q.number !== number);
+		setData(updatedQuestions);
 	};
 
 	// 드롭다운 클릭
@@ -181,6 +198,18 @@ const MasterRewrite = () => {
 
 						return (
 						<div key={index} style={{position:'relative'}}>
+							<Delete
+								style={{ 
+									left: '10px',
+									top: '15px',
+									color: '#707070',
+									fontSize: '24px',
+									lineHeight: 'normal',
+									cursor: 'default',
+								}}>
+								{index + 1}
+							</Delete>
+							<Delete onClick={() => deleteItem(question.number)}>삭제</Delete>
 							<InputTitle
 							placeholder={titlePlaceholder}
 							style={{ height: '20px', marginBottom: '12px' }}
@@ -201,7 +230,7 @@ const MasterRewrite = () => {
 								textAlign: 'right',
 								marginRight: '20px',
 								position: 'absolute',
-								bottom: '35px',
+								bottom: '20px',
 								right: '5px',
 							}}
 							>
@@ -214,7 +243,7 @@ const MasterRewrite = () => {
 				<AddButton onClick={handleAddClick}>+</AddButton>
 				<div style={{ height: '70px' }}></div>
 				<div style={{display: 'flex', justifyContent: 'flex-end'}}>
-					<div style={{display: 'flex', alignItems: 'center'}}>
+					<div style={{display: 'flex', flexDirection:'column', alignItems: 'center'}}>
 						{showAutoSaveMessage && (
 							<p style={{ fontFamily: 'pretendard', fontSize: '14px', color: '#707070', marginBottom: '10px'}}>
 								자동 저장을 완료했습니다. {autoSaveTime}
@@ -222,7 +251,7 @@ const MasterRewrite = () => {
 						)}
 						<Button
 							onClick={handleSubmit}
-							style={{ width: '820px', borderRadius: '10px', background: '#3AAF85', color: '#FFF' }}
+							style={{ width: '185px', borderRadius: '10px', background: '#3AAF85', color: '#FFF' }}
 						>
 							저장하고 나가기
 						</Button>
