@@ -87,9 +87,9 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
   }
 
   // Log formData whenever it changes
-  // useEffect(() => {
-  //   console.log("formData changed:", formData);
-  // }, [formData]);
+  useEffect(() => {
+    console.log("formData changed:", formData);
+  }, [formData]);
 
   return (
     <Container>
