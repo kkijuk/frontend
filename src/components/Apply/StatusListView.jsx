@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const BackgroundSection = styled.div`
   width: 100vw;
   background-color: #f0f0f0;
-  margin-top: 10px;
+  margin-top: 20px;
   position: relative;
   padding: 20px 0;
   box-sizing: border-box;
