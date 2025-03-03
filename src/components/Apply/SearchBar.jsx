@@ -15,7 +15,7 @@ const SearchBarContainer = styled.div`
 `;
 
 const SearchInput = styled.input`
-	width: 500px;
+	width: 350px;
 	border: none;
 	background: none;
 	outline: none;
