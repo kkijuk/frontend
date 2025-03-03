@@ -214,7 +214,7 @@ const ColumnHeader = styled.div`
 const ListSection = styled.div`
   width: calc(100% - 10px);
   margin-top: 10px;
-  padding-top: 280px;
+  // padding-top: 280px;
   display: flex;
   flex-direction: column;
   justify-content: center;
