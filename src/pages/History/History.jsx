@@ -590,13 +590,13 @@ const History = () => {
 								<NoneContentBox>
 									새로운 활동을 추가해주세요!
 								</NoneContentBox>}
-								{files.map((file, index)=>{
+								{files.map((file, index)=>(
 									<FileItem
 										data={file}
 										onDelete={(data) => deleteEtcItem(data)}
 										onUpdate={(data) => updateEtcItem(data)}
 									/>
-								})}
+								))}
 							</ContentWrapper>
 						</SectionWrapper>
 					</div>
