@@ -4,7 +4,7 @@ import api from '../../Axios';
 // [others 자기소개서 생성]
 const createIntro = async (recruitId, data) => {
 	try {
-		const response = await api.post(`/history/intro?recruitId=${recruitId}`, data);
+		const response = await api.post(`/history/intro/${recruitId}`, data);
 		console.log('Sucess-createIntro: ', response.data);
 		return response.data;
 	} catch (error) {
