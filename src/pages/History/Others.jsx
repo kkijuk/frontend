@@ -7,6 +7,7 @@ import SubNav from '../../components/Intro/SubNav';
 import Convert from '../../components/Intro/Convert';
 import Toggle from '../../components/Intro/Toggle';
 import ButtonOptions from '../../components/Intro/AddButton';
+import { string } from 'prop-types';
 // import { ContentCopySharp } from '@mui/icons-material'
 
 //Todo
@@ -82,10 +83,18 @@ const Others = () => {
 					{questions.map((question, index) => (
 						<div style={{ position: 'relative' }}>
 							<h3>
-								{index + 1}. {question.title || '질문 제목을 작성하세요'}
+								{index + 1}. {
+								question.title && question.title !== 'string'
+								? question.title
+								: '질문을 작성하세요.'
+								}
 							</h3>
 							<div style={{ height: '100px' }}>
-								<p>{question.content || ''}</p>
+								<p>
+									{question.content && question.content !== string
+									? question.content
+									: '답변을 작성하세요.'}
+								</p>
 							</div>
 						</div>
 					))}
