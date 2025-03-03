@@ -60,7 +60,8 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
   }, [formData]);
 
   const hasEmptyField =(data)=>{
-    return Object.values(data).some((value) => value.trim() === "");
+    // return Object.values(data).some((value) => value.trim() === "");
+    console.log('hasEmptyField:', hasEmptyField);
   }
 
   return (
