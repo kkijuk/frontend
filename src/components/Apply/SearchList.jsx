@@ -10,23 +10,16 @@ const BackgroundSection = styled.div`
     background-color: #f0f0f0;
     padding: 20px 0;
     box-sizing: border-box;
-    min-height: 100vh; /* 화면 전체를 최소한 채우도록 설정 */
-    display: flex;
-    flex-direction: column;
 `;
-
 
 const ContentSection = styled.div`
     max-width: 820px;
     margin: 0 auto;
+    padding: -40px;
     background-color: #f0f0f0;
     border-radius: 15px;
-    flex-grow: 1; /* 빈 공간이 있을 경우 자동 확장 */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    margin-top: -40px;
 `;
-
 
 const AdListStyled = styled.div`
     padding: 20px;
