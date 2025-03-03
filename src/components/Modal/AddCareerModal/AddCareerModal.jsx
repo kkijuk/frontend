@@ -138,8 +138,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		if (initialData) {
 			setName(initialData.name || '');
 			setAlias(initialData.alias || '');
-			setStartdate(initialData.startDate || null);
-			setEnddate(initialData.endDate || null);
+			setStartdate(initialData.startdate || null);
+			setEnddate(initialData.enddate || null);
 			setUnknown(initialData.unknown || false);
 			setLocation(initialData.location || 'ON_CAMPUS');
 			setRole(initialData.role || '');
