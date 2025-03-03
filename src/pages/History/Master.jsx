@@ -96,13 +96,13 @@ const Master = () => {
 
 					if (index === 0) {
 						defaultTitle = '1. 지원동기 및 포부 [소제목]';
-						defaultContent = '아직 지원동기를 작성하지 않았어요.';
+						defaultContent = '아직 내용을 작성하지 않았어요.';
 					} else if (index === 1) {
 						defaultTitle = '2. 장단점 [소제목]';
-						defaultContent = '아직 장단점을 작성하지 않았어요.';
+						defaultContent = '아직 내용을 작성하지 않았어요.';
 					} else if (index === 2) {
 						defaultTitle = '3. 직무적합성 [소제목]';
-						defaultContent = '아직 직무적합성을 작성하지 않았어요.';
+						defaultContent = '아직 내용을 작성하지 않았어요.';
 					}
 
 					return (
