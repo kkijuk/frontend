@@ -67,7 +67,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
     const { id, ...fields } = data; //id 제외
     return Object.values(fields).some((value) => {
       if (typeof value !== "string") return true;
-      value.trim() === ""
+      return value.trim() === ""
     });
     // console.log('hasEmptyField:', hasEmptyField);
   }
