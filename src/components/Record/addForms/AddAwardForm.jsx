@@ -62,10 +62,9 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
   const hasEmptyField =(data)=>{
     const { id, ...fields } = data; //id 제외
     return Object.values(fields).some((value) => {
-      if (typeof value !== "string") return true;
-      value.trim() === ""
+      if (typeof value !== "string") {return true;}
+      return value.trim() === ""
     });
-    // console.log('hasEmptyField:', hasEmptyField);
   }
 
   return (
@@ -111,7 +110,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
         <Input
           type="text"
           placeholder="수여기관"
-          value={formData.awardingInstitution}
+          value={formData.administer}
           onChange={(e) => handleInputChange("administer", e.target.value)}
           style={{width:'195px'}}
           maxLength={15}
