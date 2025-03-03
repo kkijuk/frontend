@@ -34,7 +34,10 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
     const dateObj = new Date(value);
     const year = dateObj.getFullYear();
     const month = (`0${dateObj.getMonth() + 1}`).slice(-2);
-    const formattedDate = `${year}-${month}`;
+    const day = (`0${dateObj.getDate()}`).slice(-2);
+
+    const formattedDate = `${year}-${month}-${day}`;
+    
     handleInputChange("acquireDate", formattedDate);
     setShowDatePicker(false);
   };
@@ -75,7 +78,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           {showDatePicker && (
               <DatePickerWrapper>
                 <CustomCalendarPicker
-                  value={formData.awardDate}
+                  value={formData.acquireDate}
                   onChange={handleDateChange}
                   onClose={() => setShowDatePicker(false)}
                 />
