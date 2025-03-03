@@ -336,13 +336,20 @@ const OthersRewrite = () => {
 							<InputTitle
 								placeholder={'질문을 작성하세요'}
 								style={{ height: '20px', marginBottom: '12px', paddingLeft: '50px', width: '750px' }}
-								value={question.title || ''}
+								value={
+									question.title && question.title !== 'string' 
+									? question.title
+									: '질문을 작성하세요.'
+								}
 								onChange={(e) => handleInputChange(question.number, 'title', e)}
 							/>
 							<InputTitle
 								placeholder={'답변을 작성하세요'}
 								style={{ height: '150px', marginBottom: '35px', width: '780px' }}
-								value={question.content || ''}
+								value={
+									question.content && question.content !== 'string' 
+									? question
+									: '답변을 작성하세요.'}
 								onChange={(e) => handleInputChange(question.number, 'content', e)}
 							/>
 							<p
