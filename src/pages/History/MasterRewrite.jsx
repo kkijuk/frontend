@@ -143,13 +143,13 @@ const MasterRewrite = () => {
 							<InputTitle
 							placeholder={titlePlaceholder}
 							style={{ height: '20px', marginBottom: '12px' }}
-							value={question.title || ''}
+							value={currentTitle}
 							onChange={(e) => handleInputChange(index, 'title', e.target.value)}
 							/>
 							<InputTitle
 							placeholder={contentPlaceholder}
 							style={{ height: '150px', marginBottom: '12px' }}
-							value={question.content || ''}
+							value={currentContent}
 							onChange={(e) => handleInputChange(index, 'content', e.target.value)}
 							/>
 							<p
@@ -161,7 +161,7 @@ const MasterRewrite = () => {
 								marginRight: '20px',
 							}}
 							>
-							{question.content.length} (공백 포함)
+							{currentContent.length} (공백 포함)
 							</p>
 						</div>
 						);
