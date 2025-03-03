@@ -160,10 +160,10 @@ export const deleteCareer = async (category, careerId) => {
 };
 
 //활동 summary 수정
-export const editCareerSummary = async (id, type, summary) => {
+export const editCareerSummary = async (id, payload) => {
 	console.log('editCareerSummary:', id, type, summary);
 	try{
-		const response = await api.patch(`/career/${id}`, { type, summary });
+		const response = await api.patch(`/career/${id}`, payload);
 		console.log('Success-editCareerSummary:', response.data);
 		return response.data;
 	} catch (error) {
