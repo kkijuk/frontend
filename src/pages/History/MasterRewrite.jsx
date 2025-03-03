@@ -135,7 +135,7 @@ const MasterRewrite = () => {
 	return (
 		<BackgroundDiv>
 			{showLoadingSpinner && <LoadingSpinner message = "마스터 자소서 수정 중..."/>}
-			<div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+			<div style={{ width: '820px', display: 'flex', gap: '20px', alignItems: 'center' }}>
 				<p style={{fontFamily: 'pretendard', fontSize: '28px', marginBottom: '20px', fontWeight: 700}}>
 					Master 자기소개서
 				</p>
@@ -149,6 +149,7 @@ const MasterRewrite = () => {
 						)}
 				</Tag>
 			</div>
+			<div></div>
 			<Linear style={{ width: '820px' }} />
 			<BaseDiv>
 				<div style={{ position: 'relative' }}>
@@ -239,8 +240,9 @@ const BackgroundDiv = styled.div`
 	height: 100%;
 	margin-top: 40px;
 	display: flex;
-	// align-items:center;
-	justify-content: center;
+	flex-direction: column;
+	align-items:center;
+
 `;
 
 const BaseDiv = styled.div`
@@ -275,6 +277,7 @@ const Linear = styled.div`
 	margin-bottom: 20px;
 `;
 const Button = styled.button`
+	width: 185px;
 	height: 50px;
 	border: none;
 	border-radius: 10px;
