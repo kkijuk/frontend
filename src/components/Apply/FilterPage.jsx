@@ -248,7 +248,7 @@ const FilterPage = () => {
 			setSearchTerm(tagFromURL);
 			handleSearchClick();
 		}
-	}, [tagFromURL]); // ✅ 태그 값이 변경될 때만 실행
+	}, [tagFromURL]); // 태그 값이 변경될 때만 실행
 	
 	return (
 		<Container>
