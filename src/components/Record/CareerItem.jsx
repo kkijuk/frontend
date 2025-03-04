@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
-import { editCareer } from '../../api/Mycareer/Career';
+import { editCareerSummary } from '../../api/Mycareer/Career';
 import { KebabMenu1 } from './KebabMenu';
 import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
 
@@ -29,8 +29,11 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 	const handleDetailSave = async () => {
 		try{
 			console.log('활동내역수정: ', detail);
-			const updatedData = {...data, summary: detail};
-			await editCareer(data.id, updatedData);
+			const updatedData = {
+				type: data.category.categoryEnName,
+				summary: detail
+			};
+			await editCareerSummary(data.id, updatedData);
 			setIsSummaryEditMode(false);
 			setIsKebabMenuOpen(false);
 			
@@ -52,7 +55,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 	
 		return yearDiff * 12 + monthDiff + 1; // 총 개월 수 계산
 	};
-	const activityMonths = calculateMonths(data.startDate, data.endDate);
+	const activityMonths = calculateMonths(data.startdate, data.enddate);
 
 	// 경력인 경우, 태그에는 categoryKoName이 아닌 type으로 표시
 	const getEmploymentsType = (type) => {
@@ -86,12 +89,12 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 · 이곳에 작성한 내용은 [서류준비-이력서]에 자동으로 삽입됩니다.`
 
 	// unknown 값에 따른 분기 처리
-	const endDateToDisplay = careerData.unknown ? '종료 날짜 없음' : data.endDate ? data.endDate : '종료 날짜 없음';
+	const endDateToDisplay = careerData.unknown ? '종료 날짜 없음' : data.enddate ? data.enddate : '종료 날짜 없음';
 	const statusToDisplay = careerData.unknown ? '(진행 중)' : activityMonths ? `(${activityMonths}개월)` : '(진행 중)';
 
 	// 활동 진행 중 여부 확인(Line 스타일 적용 방식 선택 위해)
 	const today = new Date();
-	const checkPastDue = data.endDate ? new Date(data.endDate) < today : false;
+	const checkPastDue = data.enddate ? new Date(data.enddate) < today : false;
 
 	return (
 		<FirstContainer>
@@ -107,7 +110,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 							<span style={{fontWeight:'normal'}}> / {data.alias}</span>
 						</SchoolName>
 						<Dates>
-							{data.startDate ? data.startDate : '시작 날짜 없음'} ~ {endDateToDisplay}
+							{data.startdate ? data.startdate : '시작 날짜 없음'} ~ {endDateToDisplay}
 							<Status>{statusToDisplay}</Status>
 						</Dates>
 						<DetailContainer>

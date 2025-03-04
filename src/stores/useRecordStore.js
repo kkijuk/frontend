@@ -10,6 +10,7 @@ import { CareerEdit, CareerDelete } from '../api/Mycareer/CareerEdit.js';
 import { createPresignedUrl, saveKeyName, deleteS3File, uploadFileToS3 } from '../api/Record/s3File.js';
 import { addURL, deleteURL } from '../api/Record/url.js';
 import { updateRecord } from '../api/Record/record.js';
+import { updateUserData } from '../api/Record/user.js';
 
 // 기존 코드 유지
 const useRecordStore = create((set, get) => ({
@@ -116,7 +117,7 @@ const useRecordStore = create((set, get) => ({
 			set((state) => ({
 				[category]: [...state[category], response],
 			}));
-			window.location.reload();
+			// window.location.reload();
 		} catch (error) {
 			console.error('Add Item Error:', error);
 		}
@@ -192,23 +193,23 @@ const useRecordStore = create((set, get) => ({
 	// 기타 항목 추가
 	addEtcItem: async(data) => {
 		try{
-			let response;
+			let savedEtcData;
 			if(data.fileType === 'File'){
 				// 1. presigned URL과 keyName 생성
-				const { keyName, presignedURL } = await createPresignedUrl(data);
+				const { keyName, signedURL } = await createPresignedUrl(data);
 
 				// 2. s3에 파일 업로드
-				await uploadFileToS3(data.file, presignedURL);
+				await uploadFileToS3(data.file, signedURL);
 
 				// 3. 업로드 성공하면, keyName 백엔드에 저장
-				const data = await saveKeyName(keyName, data.fileTitle);
+				savedEtcData = await saveKeyName(keyName, data.fileTitle);
 			} else if(data.fileType === 'URL'){
-				const data = await addURL(data);
+				savedEtcData = await addURL(data);
 			} else {
 				throw new Error('Invalid fileType');
 			}
 			set((state) => ({
-				files: [...state.files, data],
+				files: [...state.files, savedEtcData],
 			}));
 		} catch (error) {
 			console.error('Add Etc Item Error:', error);
@@ -218,15 +219,16 @@ const useRecordStore = create((set, get) => ({
 	// 기타 항목 삭제
 	deleteEtcItem: async(data) => {
 		try{
+			let deletedData;
 			if(data.fileType === 'File'){
-				const data = await deleteS3File(data);
+				deletedData = await deleteS3File(data);
 				set((state) => ({
-					files: state.files.filter((item) => item.fileTitle !== data.fileTitle && item.keyName !== data.keyName),
+					files: state.files.filter((item) => item.fileTitle !== deletedData.fileTitle && item.keyName !== deletedData.keyName),
 				}))
 			} else if(data.fileType === 'URL'){
-				const data = await deleteURL(data);
+				deletedData = await deleteURL(data);
 				set((state)=>({
-					files: state.files.filter((item) => item.urlTitle !== data.urlTitle && item.url !== data.url),
+					files: state.files.filter((item) => item.urlTitle !== deletedData.urlTitle && item.url !== deletedData.url),
 				}));
 			} else {
 				throw new Error('Invalid fileType');
@@ -239,21 +241,23 @@ const useRecordStore = create((set, get) => ({
 	// 기타 항목 수정
 	updateEtcItem: async (oldData, newData) => {
 		try {
+			let savedEtcData;
 			if (oldData.fileType === 'File') {
 				await deleteS3File(oldData);
-				const { keyName, presignedURL } = await createPresignedUrl(newData);
-				const savedData = await saveKeyName(keyName, presignedURL);
+				const { keyName, signedURL } = await createPresignedUrl(newData);
+				await uploadFileToS3(newData.file, signedURL);
+				savedEtcData = await saveKeyName(keyName, newData.fileTitle);
 				set((state) => ({
 					files: state.files.map((item) =>
-						item.keyName === oldData.keyName ? savedData : item
+						item.keyName === oldData.keyName ? savedEtcData : item
 					),
 				}));
 			} else if (oldData.fileType === 'URL') {
 				await deleteURL(oldData);
-				const savedData = await addURL(newData);
+				savedEtcData = await addURL(newData);
 				set((state) => ({
 					files: state.files.map((item) =>
-						item.url === oldData.url ? savedData : item
+						item.url === oldData.url ? savedEtcData : item
 					),
 				}));
 			} else {
@@ -266,12 +270,11 @@ const useRecordStore = create((set, get) => ({
 
 	updateUserData: async (data) => {
 		try {
-			const response = await updateRecord(data);
+			const response = await updateUserData(data);
 			set((state) => ({
 				userData: { 
 					...state.userData, 
 					profileImageUrl: response.profileImageUrl,
-					email: response.email, 
 					address: response.address
 				},
 			}));

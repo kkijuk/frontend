@@ -89,7 +89,7 @@ const History = () => {
 	const [editableUserData, setEditableUserData] = useState({	// 사용자 정보 수정
 		profileImageUrl: profileImageUrl,
 		address: address,
-		email: email,
+		// email: email,
 	});
 	const [profileURL, setProfileURL] = useState(profileImageUrl);	// 프로필 이미지
 
@@ -299,13 +299,14 @@ const History = () => {
 								<InfoValue>{phone}</InfoValue>
 
 								<InfoLabel>이메일</InfoLabel>
-								<InfoValue>
+								{/* <InfoValue>
 									<EmailAndAddress
 										type="email"
 										userData={email}
 										onSave={(data) => handleEmailOrAddressChange(data)}
 									/>
-								</InfoValue>
+								</InfoValue> */}
+								<InfoValue>{email}</InfoValue>
 
 								<InfoLabel>주소</InfoLabel>
 								<InfoValue>
@@ -589,13 +590,13 @@ const History = () => {
 								<NoneContentBox>
 									새로운 활동을 추가해주세요!
 								</NoneContentBox>}
-								{files.map((file, index)=>{
+								{files.map((file, index)=>(
 									<FileItem
 										data={file}
 										onDelete={(data) => deleteEtcItem(data)}
 										onUpdate={(data) => updateEtcItem(data)}
 									/>
-								})}
+								))}
 							</ContentWrapper>
 						</SectionWrapper>
 					</div>
@@ -710,6 +711,7 @@ const Tag = styled.div`
 	justify-content: center;
 	align-items: center;
 	border-radius: 5px;
+	margin-top:10px;
 `
 
 const ProfileBox = styled.div`

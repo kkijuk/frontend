@@ -8,7 +8,6 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
     competitionName: "",
     awardName: "",
     administer: "",
-    id: 0,
   });
 
   // 수정 모드일 경우 formData 기존 내용으로 초기화
@@ -35,7 +34,10 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
     const dateObj = new Date(value);
     const year = dateObj.getFullYear();
     const month = (`0${dateObj.getMonth() + 1}`).slice(-2);
-    const formattedDate = `${year}-${month}`;
+    const day = (`0${dateObj.getDate()}`).slice(-2);
+
+    const formattedDate = `${year}-${month}-${day}`;
+    
     handleInputChange("acquireDate", formattedDate);
     setShowDatePicker(false);
   };
@@ -57,6 +59,14 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
     });
   }, [formData]);
 
+  const hasEmptyField =(data)=>{
+    const { id, ...fields } = data; //id 제외
+    return Object.values(fields).some((value) => {
+      if (typeof value !== "string") {return true;}
+      return value.trim() === ""
+    });
+  }
+
   return (
     <Container>
       <Row>
@@ -72,7 +82,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           {showDatePicker && (
               <DatePickerWrapper>
                 <CustomCalendarPicker
-                  value={formData.awardDate}
+                  value={formData.acquireDate}
                   onChange={handleDateChange}
                   onClose={() => setShowDatePicker(false)}
                 />
@@ -85,6 +95,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           value={formData.competitionName}
           onChange={(e) => handleInputChange("competitionName", e.target.value)}
           style={{width:'455px'}}
+          maxLength={30}
         />
       </Row>
       <Row>
@@ -94,13 +105,15 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           value={formData.awardName}
           onChange={(e) => handleInputChange("awardName", e.target.value)}
           style={{width:'195px'}}
+          maxLength={15}
         />
         <Input
           type="text"
           placeholder="수여기관"
-          value={formData.awardingInstitution}
+          value={formData.administer}
           onChange={(e) => handleInputChange("administer", e.target.value)}
           style={{width:'195px'}}
+          maxLength={15}
         />
         <ButtonRow>
             {mode === "edit" ? (
@@ -133,6 +146,10 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
             <Button 
               primary 
               onClick={() => {
+                if(hasEmptyField(formData)){
+                  alert('입력하지 않은 항목이 있습니다.');
+                  return;
+                }
                 onUpdate(formData);
                 onClose();
               }}
@@ -143,6 +160,10 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
             <Button 
               primary 
               onClick={() => {
+                if(hasEmptyField(formData)){
+                  alert('입력하지 않은 항목이 있습니다.');
+                  return;
+                }
                 onSave(formData);
                 onClose();
               }}
@@ -188,7 +209,6 @@ const Input = styled.input`
   color: black;
   padding-left: 10px;
   padding-right: 10px;
-  color: ${(props) => (props.hasValue ? "black" : "#D9D9D9")};
   &::placeholder {
     color: #d9d9d9; /* Placeholder는 회색 */
   }

@@ -79,6 +79,14 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
     });
   }, [formData]);
 
+  const hasEmptyField =(data)=>{
+    const { id, ...fields } = data; //id 제외
+    return Object.values(fields).some((value) => {
+      if (typeof value !== "string") return true;
+      return value.trim() === ""
+    });
+  }
+
   return (
     <Container>
       <Row>
@@ -96,6 +104,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           placeholder="보유한 기술"
           value={formData.skillName}
           onChange={(e) => handleInputChange("skillName", e.target.value)}
+          maxLength={30}
         />
       </Row>
       <Row>
@@ -157,6 +166,10 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
               <Button 
                 primary 
                 onClick={() => {
+                  if (hasEmptyField(formData)) {
+                    alert("입력하지 않은 항목이 있습니다.");
+                    return;
+                  }
                   onUpdate(formData);
                   onClose();
                 }}
@@ -167,6 +180,10 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
               <Button 
                 primary 
                 onClick={() => {
+                  if (hasEmptyField(formData)) {
+                    alert("입력하지 않은 항목이 있습니다.");
+                    return;
+                  }
                   onSave(formData);
                   onClose();
                 }}

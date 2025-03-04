@@ -791,10 +791,10 @@ const ApplyDetail = () => {
 
 	return (
 		<Container>
-			<Title>지원공고 관리</Title>
+			<Title>지원현황</Title> 
 			<BackLink to="/apply-status">
 			<img src={SvgIconBefore} alt="Close" width={20} height={13} />
-                     지원현황
+                     지원공고 관리  
             </BackLink>
 			<Header>
 				<TitleContainer>
@@ -876,10 +876,15 @@ const ApplyDetail = () => {
         <div className="time">{timeLeft}</div>
       </CountdownBox>
     )}
-	<TagLabel>
-		태그
-		{job?.tags && job.tags.length > 0 && job.tags.map((tag, idx) => <Tag key={idx}>{tag}</Tag>)}
-	</TagLabel>
+	 <TagLabel>
+            태그
+            {job?.tags && job.tags.length > 0 &&
+                job.tags.map((tag, idx) => (
+                    <Tag key={idx} onClick={() => navigate(`/filter?tag=${encodeURIComponent(tag)}`)}>
+                        {tag}
+                    </Tag>
+                ))}
+        </TagLabel>
 </SubHeader>
 			</Header>
 

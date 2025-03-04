@@ -37,7 +37,9 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
     const dateObj = new Date(value);
     const year = dateObj.getFullYear();
     const month = (`0${dateObj.getMonth() + 1}`).slice(-2);
-    const formattedDate = `${year}-${month}`;
+    const day = (`0${dateObj.getDate()}`).slice(-2);
+
+    const formattedDate = `${year}-${month}-${day}`;
     
     handleInputChange("acquireDate", formattedDate);
     setShowDatePicker(false);
@@ -60,6 +62,14 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
     });
 
   }, [formData]);
+
+  const hasEmptyField =(data)=>{
+    const { id, ...fields } = data; //id 제외
+    return Object.values(fields).some((value) => {
+      if (typeof value !== "string") {return true;}
+      return value.trim() === ""
+    });
+  }
 
   return (
     <RealFirstContainer>
@@ -108,6 +118,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 value={formData.licenseName}
                 onChange={(e) => handleInputChange("licenseName", e.target.value)}
                 style={{ width: "275px" }}
+                maxLength={30}
             />
             <Input
                 type="text"
@@ -115,6 +126,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 value={formData.licenseGrade}
                 onChange={(e) => handleInputChange("licenseGrade", e.target.value)}
                 style={{ width: "120px" }}
+                maxLength={10}
             />
             </Row>
             <Row>
@@ -131,6 +143,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 value={formData.administer}
                 onChange={(e) => handleInputChange("administer", e.target.value)}
                 style={{ width: "175px" }}
+                maxLength={15}
             />
             <ButtonRow>
               {mode === "edit" ? (
@@ -160,6 +173,10 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 <Button 
                   primary 
                   onClick={() => {
+                    if (hasEmptyField(formData)) {
+                      alert("입력하지 않은 항목이 있습니다.");
+                      return;
+                    }
                     onUpdate(formData);
                     onClose();
                   }}
@@ -170,6 +187,10 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 <Button 
                   primary 
                   onClick={() => {
+                    if (hasEmptyField(formData)) {
+                      alert("입력하지 않은 항목이 있습니다.");
+                      return;
+                    }
                     onSave(formData);
                     onClose();
                   }}

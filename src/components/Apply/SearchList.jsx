@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const BackgroundSection = styled.div`
     position: relative;
@@ -8,6 +9,7 @@ const BackgroundSection = styled.div`
     transform: translateX(-50%);
     background-color: #f0f0f0;
     padding: 20px 0;
+    min-height: 100vh;
     box-sizing: border-box;
 `;
 
@@ -181,11 +183,29 @@ const CategoryTitle = styled.div`
     margin-top: 20px;
 `;
 
-const SearchList = ({ recruits, activeTab }) => {
-    if (!recruits || recruits.length === 0) {
+const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
+    const navigate = useNavigate();
+
+    if (isSearchClicked && (!recruits || recruits.length === 0)) {
         return (
-            <BackgroundSection>
-                {/* 검색 결과가 없을 때 UI 처리 없어도 될듯,,*/}
+            <BackgroundSection style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100px' }}>
+                <p style={{ color: '#707070', fontSize: '16px' }}>
+                    ‘{searchTerm}’의 검색 결과가 없어요
+                </p>
+                <button 
+                    onClick={() => navigate('/apply-status')} 
+                    style={{ 
+                        backgroundColor: '#3AAF85', 
+                        color: 'white', 
+                        padding: '10px 20px', 
+                        borderRadius: '10px', 
+                        border: 'none', 
+                        cursor: 'pointer', 
+                        marginTop: '10px' 
+                    }}
+                >
+                    내 공고 보러가기
+                </button>
             </BackgroundSection>
         );
     }

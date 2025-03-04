@@ -19,6 +19,9 @@ const getColorByCategory = (category) => {
 		case '교육':
 			color = '#F99538';
 			break;
+		case '인턴':
+			color = '#FF7979'; //세연 추가
+			break;
 		case '기타':
 			color = '#707070';
 			break;

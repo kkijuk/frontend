@@ -2,15 +2,15 @@ import api from "../../Axios";
 
 // presigned URL 생성
 const createPresignedUrl = async (data) => {
+    console.log('Creating presigned URL:', data);
     try{
         const fileTitle = data.fileTitle;
-        const response = await api.get(`/history/file=fileName?=${fileTitle}`);
-        const { keyName, presignedURL } = response.data;
+        const response = await api.get(`/history/file?fileName=${fileTitle}`);
+        const { keyName, signedURL } = response.data.data;
 
-        console.log("keyName: ", keyName);
-        console.log("presignedURL: ", presignedURL);
+        console.log("Success - createPresignedUrl: ", response);
 
-        return { keyName, presignedURL };
+        return { keyName, signedURL };
     } catch (error) {
         console.error("Error creating presigned URL: ", error);
         if(error.response){
@@ -27,6 +27,7 @@ const createPresignedUrl = async (data) => {
 
 // s3에 파일 업로드 
 const uploadFileToS3 = async (file, presignedURL) => {
+    console.log('Uploading file to S3:', file, presignedURL);
     try{
         const response = await api.put(presignedURL, file, {
             headers: {
@@ -52,6 +53,7 @@ const uploadFileToS3 = async (file, presignedURL) => {
 
 // keyName 저장
 const saveKeyName = async(keyName, fileTitle) => {
+    console.log('Saving key name:', keyName, fileTitle);
     try{
         const response = await api.post("/history/file", { 
             keyname: keyName,
@@ -76,6 +78,7 @@ const saveKeyName = async(keyName, fileTitle) => {
 
 // S3 파일 삭제
 const deleteS3File = async (data) => {
+    console.log('Deleting S3 file:', data);
     try{
         const fileTitle = data.fileTitle;
         const response = await api.delete(`/history/file?fileTitle=${fileTitle}`);
@@ -97,6 +100,7 @@ const deleteS3File = async (data) => {
 
 // S3 파일 다운로드
 const downS3File = async (data) => {
+    console.log('Downloading S3 file:', data);
     try{
         // api 호출
         const fileTitle = data.fileTitle;
@@ -104,6 +108,7 @@ const downS3File = async (data) => {
         
         // s3의 presendURL로 파일 다운로드
         if(response.status === 200 && response.data.signedURL){
+            console.log("Success - downS3File: ", response.data.signedURL);
             return response.data.signedURL;
         } else{
             console.error('Failed to get presigned URL:', response.statusText);

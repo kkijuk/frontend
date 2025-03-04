@@ -131,7 +131,7 @@ const Line = styled.div`
 
 const CareerListBox = styled.div`
 	width: 800px;
-	height: 595px;
+	height: 560px;
 	overflow-y: auto;
 	overflow-x: hidden;
 `;
@@ -144,9 +144,22 @@ const CareerPlus = styled.button`
 	border: none;
 	color: white;
 	cursor: pointer;
-	position: fixed;
-	z-index: 1;
+	position: sticky; /* fixed → absolute */
 
+	/*left: 50%;
+	transform: translateX(-50%);  중앙 정렬 */
+
+	left: 0;
+	right: 0;
+	margin: auto;
+
+	bottom: ${(props) => (props.isFixed ? '220px' : '30px')}; /* 🚀 기본적으로 30px, 남은 높이 200px 이하일 때는 200px */
+	transition: bottom 0.2s ease-in-out; /* 부드러운 이동 효과 뭘까이건*/
+
+	margin-top: 20px;
+	margin-bottom: 20px;
+
+	z-index: 10;
 	color: #fff;
 
 	text-align: center;
@@ -156,7 +169,6 @@ const CareerPlus = styled.button`
 	font-weight: 500;
 	line-height: normal;
 
-	bottom: 30px;
 	background: ${(props) => (props.disabled ? 'var(--gray-03, #D9D9D9)' : 'var(--main-01, #3AAF85)')};
 	cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
 `;
@@ -325,6 +337,22 @@ export default function MycareerDetail() {
 	const [modalData, setModalData] = useState(null); // 모달에 전달할 데이터
 	const [isAnyEditing, setIsAnyEditing] = useState(false); //편집 상태를 확인
 	const [isSearchOpen, setIsSearchOpen] = useState(false); // 검색창 상태 추가
+	const [isFixed, setIsFixed] = useState(false);
+
+	useEffect(() => {
+		const handleScroll = () => {
+			const scrollY = window.scrollY;
+			const viewportHeight = window.innerHeight;
+			const documentHeight = document.documentElement.scrollHeight;
+			const remainingHeight = documentHeight - (scrollY + viewportHeight);
+
+			// 남은 높이가 200px 이하일 때 푸터 위로 고정
+			setIsFixed(remainingHeight <= 220);
+		};
+
+		window.addEventListener('scroll', handleScroll);
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, []);
 
 	const categoryToTypeMap = {
 		대외활동: 'activity',
@@ -333,6 +361,7 @@ export default function MycareerDetail() {
 		교육: 'edu',
 		공모전대회: 'competition',
 		경력: 'employment',
+		기타: 'etc',
 	};
 
 	const fetchCareerDetails = async (id, type) => {
@@ -487,7 +516,7 @@ export default function MycareerDetail() {
 							key={career.id}
 							id={career.id}
 							startdate={career.startdate}
-							enddate={career.endDate}
+							enddate={career.enddate}
 							careerName={career.name}
 							category={career.category.categoryKoName}
 							selected={career.id === selectedCareer.id && career.category.categoryKoName === selectedCareer.type}

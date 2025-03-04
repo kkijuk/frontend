@@ -6,6 +6,7 @@ import SearchIcon from '../../assets/search.svg';
 import { Link } from 'react-router-dom';
 import SvgIconBefore from '../../assets/before.svg';
 import Layout from '../../components/Layout'; 
+import { useLocation } from 'react-router-dom';
 
 const Container = styled.div`
   padding: 24px 40px;
@@ -167,61 +168,53 @@ const FilterPage = () => {
     const [isSearchClicked, setIsSearchClicked] = useState(false);
 
 	const previousRecruits = useRef([]);
+	const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const tagFromURL = queryParams.get('tag');
+	const [isTagSearch, setIsTagSearch] = useState(false);
 
-	const fetchSearchResults = async () => {
-        if (!isSearchClicked || !displayedTerm.trim()) return; // 검색 버튼 클릭되지 않았거나 검색어가 비어있으면 종료
-        try {
-            const { recruitResult, reviewResult } = await fetchRecruitList(displayedTerm);
-
-            let filteredRecruits = recruitResult || [];
-            let filteredReviews = reviewResult || [];
+	const fetchSearchResults = async (term) => {
+		if (!term.trim()) return;  // 빈 검색어일 경우 실행 안 함
+	
+		try {
+			const { recruitResult, reviewResult } = await fetchRecruitList(term);
+	
+			let filteredRecruits = recruitResult || [];
+			let filteredReviews = reviewResult || [];
 	
 			if (activeTab === '공고') {
 				filteredRecruits = filteredRecruits.filter((recruit) => 
-					recruit.recruitTitle.includes(searchTerm)
+					recruit.recruitTitle.includes(term)
 				);
 				setRecruits(filteredRecruits);
 			} else if (activeTab === '공고후기') {
 				filteredReviews = filteredReviews.filter((review) => 
-					review.recruitTitle.includes(searchTerm)
+					review.recruitTitle.includes(term)
 				);
 				setRecruits(filteredReviews);
-			} else if (activeTab === '전체') {
+			} else {
 				filteredRecruits = filteredRecruits.filter((recruit) => 
-					recruit.recruitTitle.includes(searchTerm)
+					recruit.recruitTitle.includes(term)
 				);
 				filteredReviews = filteredReviews.filter((review) => 
-					review.recruitTitle.includes(searchTerm)
+					review.recruitTitle.includes(term)
 				);
 				setRecruits([...filteredRecruits, ...filteredReviews]);
 			}
+		} catch (error) {
+			console.error('Error fetching recruit list:', error);
+		}
+	};
 	
-			if (sortOrder === 'latest') {
-				filteredRecruits.sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
-				filteredReviews.sort((a, b) => new Date(b.startTime) - new Date(a.startTime));
-			  } else if (sortOrder === 'oldest') {
-				filteredRecruits.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
-				filteredReviews.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
-			  }
-		  
-			  // 정렬된 결과를 setRecruits로 설정
-			  if (activeTab === '공고') {
-				setRecruits(filteredRecruits);
-			  } else if (activeTab === '공고후기') {
-				setRecruits(filteredReviews);
-			  } else if (activeTab === '전체') {
-				setRecruits([...filteredRecruits, ...filteredReviews]);
-			  }
-			} catch (error) {
-			  console.error('Error fetching recruit list:', error);
-			}
-		  };
 	
-		  const handleSearchClick = () => {
-			setDisplayedTerm(searchTerm); // 검색 버튼 클릭 시에만 검색어를 갱신
-			setIsSearchClicked(true);
-			fetchSearchResults();
-		};
+	const handleSearchClick = () => {
+		if (searchTerm.trim()) {
+			setIsSearchClicked(true); // 검색 버튼을 눌렀을 때만 true로 변경
+			setDisplayedTerm(searchTerm);
+			fetchSearchResults(searchTerm);
+		}
+	};
+		
 	
 	const handleTabClick = (tab) => {
 		setActiveTab(tab);
@@ -252,6 +245,20 @@ const FilterPage = () => {
         }
     }, [recruits]);
 
+	useEffect(() => {
+		if (tagFromURL) {
+			setSearchTerm(tagFromURL);
+			handleSearchClick();
+		}
+	}, [tagFromURL]); // 태그 값이 변경될 때만 실행
+
+	 useEffect(() => {
+        if (isTagSearch && searchTerm) {
+            handleSearchClick();
+            setIsTagSearch(false); // 한 번 실행 후 다시 false로 설정 (중복 실행 방지)
+        }
+    }, [searchTerm]);
+
 	return (
 		<Container>
 			<Layout title="지원관리">
@@ -261,14 +268,20 @@ const FilterPage = () => {
 					지원현황
 				</BackLink>
 				<SearchBarContainer>
-					<SearchInput
-						placeholder="공고 이름이나 태그를 검색하세요."
-						value={searchTerm}
-						onChange={(e) => setSearchTerm(e.target.value)}
-					/>
-					<SearchButton onClick={handleSearchClick}>
-						<img src={SearchIcon} alt="Search" width={20} height={20} />
-					</SearchButton>
+				<SearchInput
+    placeholder="공고 이름이나 태그를 검색하세요."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+            handleSearchClick();
+        }
+    }}
+/>
+<SearchButton onClick={handleSearchClick}>
+    <img src={SearchIcon} alt="Search" width={20} height={20} />
+</SearchButton>
+
 				</SearchBarContainer>
 			</div>
 			<TabContainer>
@@ -304,7 +317,7 @@ const FilterPage = () => {
 </TabContainer>
 
 			<ResultsContainer>
-			<SearchList recruits={recruits} activeTab={activeTab} />
+			<SearchList recruits={recruits} activeTab={activeTab} searchTerm={displayedTerm} isSearchClicked={isSearchClicked} />
 			</ResultsContainer>
 			</Layout> 
 		</Container>
