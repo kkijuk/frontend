@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import SvgIconBefore from '../../assets/before.svg';
 import Layout from '../../components/Layout'; 
 import { useLocation } from 'react-router-dom';
+import { trackEvent } from '../../utils/ga4';
 
 const Container = styled.div`
   padding: 24px 40px;
@@ -209,6 +210,15 @@ const FilterPage = () => {
 	
 	const handleSearchClick = () => {
 		if (searchTerm.trim()) {
+			// GA 트래킹 추가 (검색 버튼 클릭)
+			trackEvent('search_performed', {
+				category: 'apply',
+				detail: 'search_recruit',
+				action_type: 'search',
+				label: '검색',
+				search_query: searchTerm, // 검색어 전달
+			});
+	
 			setIsSearchClicked(true); // 검색 버튼을 눌렀을 때만 true로 변경
 			setDisplayedTerm(searchTerm);
 			fetchSearchResults(searchTerm);

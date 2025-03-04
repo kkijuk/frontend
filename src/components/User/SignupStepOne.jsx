@@ -4,7 +4,7 @@ import Agreement from './Agreement';
 import AgreementModal1 from './AgreementModal1';
 import AgreementModal2 from './AgreementModal2';
 import AgreementModal3 from './AgreementModal3';
-import { trackEvent } from '../utils/ga4';
+import { trackEvent } from '../../utils/ga4';
 
 const StyledButton = styled.button`
   width: 400px;

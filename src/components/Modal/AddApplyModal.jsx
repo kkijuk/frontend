@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import ModalTagBox from '../Apply/ModalTagBox';  // 일관성 있게 사용
 import { createRecruit } from '../../api/Apply/Recruit';
-
+import { trackEvent } from '../../utils/ga4'; 
+ 
 const ModalBackdrop = styled.div`
 	position: fixed;
 	top: 0;
@@ -265,6 +266,14 @@ const AddApplyModal = ({ onClose, onSave }) => {
 			alert('필수 정보를 입력하세요!');
 			return;
 		}
+	
+		// GA 트래킹 수정 (공고 추가 "확인" 버튼 클릭)
+		trackEvent('add_confirm', {
+			category: 'apply',
+			detail: 'add_recruit',
+			action_type: 'confirm',
+			label: '확인',
+		});
 
 		const formatDateTime = (dateTime) => {
 			const date = new Date(dateTime);
