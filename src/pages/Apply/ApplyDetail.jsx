@@ -877,9 +877,14 @@ const ApplyDetail = () => {
       </CountdownBox>
     )}
 	<TagLabel>
-		태그
-		{job?.tags && job.tags.length > 0 && job.tags.map((tag, idx) => <Tag key={idx}>{tag}</Tag>)}
-	</TagLabel>
+            태그
+            {job?.tags && job.tags.length > 0 &&
+                job.tags.map((tag, idx) => (
+                    <Tag key={idx} onClick={() => navigate(`/search?tag=${encodeURIComponent(tag)}`)}>
+                        {tag}
+                    </Tag>
+                ))}
+        </TagLabel>
 </SubHeader>
 			</Header>
 

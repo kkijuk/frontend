@@ -6,6 +6,7 @@ import SearchIcon from '../../assets/search.svg';
 import { Link } from 'react-router-dom';
 import SvgIconBefore from '../../assets/before.svg';
 import Layout from '../../components/Layout'; 
+import { useLocation } from 'react-router-dom';
 
 const Container = styled.div`
   padding: 24px 40px;
@@ -167,6 +168,9 @@ const FilterPage = () => {
     const [isSearchClicked, setIsSearchClicked] = useState(false);
 
 	const previousRecruits = useRef([]);
+	const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const tagFromURL = queryParams.get('tag');
 
 	const fetchSearchResults = async (term) => {
 		if (!term.trim()) return;  // 빈 검색어일 경우 실행 안 함
@@ -239,7 +243,13 @@ const FilterPage = () => {
             console.log('Updated results:', changes);
         }
     }, [recruits]);
-
+	useEffect(() => {
+		if (tagFromURL) {
+			setSearchTerm(tagFromURL);
+			handleSearchClick();
+		}
+	}, [tagFromURL]); // ✅ 태그 값이 변경될 때만 실행
+	
 	return (
 		<Container>
 			<Layout title="지원관리">
