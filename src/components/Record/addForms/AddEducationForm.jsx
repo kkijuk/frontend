@@ -78,13 +78,18 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
   };
 
   const hasEmptyField =(data)=>{
-    return Object.values(data).some((value) => value.trim() === "");
+    const { id, educationId, isCurrent, ...fields } = data; //id, isCurrent 제외
+    return Object.values(fields).some((value) => {
+      console.log('value:', value);
+      if (typeof value !== "string") {return true;}
+      return value.trim() === ""
+    });
   }
 
   // Log formData whenever it changes
-  // useEffect(() => {
-  //   console.log("formData changed:", formData);
-  // }, [formData]);
+  useEffect(() => {
+    console.log("formData changed:", formData);
+  }, [formData]);
 
   return (
     <Container>

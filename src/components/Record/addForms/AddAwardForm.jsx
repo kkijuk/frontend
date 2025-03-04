@@ -34,7 +34,10 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
     const dateObj = new Date(value);
     const year = dateObj.getFullYear();
     const month = (`0${dateObj.getMonth() + 1}`).slice(-2);
-    const formattedDate = `${year}-${month}`;
+    const day = (`0${dateObj.getDate()}`).slice(-2);
+
+    const formattedDate = `${year}-${month}-${day}`;
+    
     handleInputChange("acquireDate", formattedDate);
     setShowDatePicker(false);
   };
@@ -57,7 +60,11 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
   }, [formData]);
 
   const hasEmptyField =(data)=>{
-    return Object.values(data).some((value) => value.trim() === "");
+    const { id, ...fields } = data; //id 제외
+    return Object.values(fields).some((value) => {
+      if (typeof value !== "string") {return true;}
+      return value.trim() === ""
+    });
   }
 
   return (
@@ -75,7 +82,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           {showDatePicker && (
               <DatePickerWrapper>
                 <CustomCalendarPicker
-                  value={formData.awardDate}
+                  value={formData.acquireDate}
                   onChange={handleDateChange}
                   onClose={() => setShowDatePicker(false)}
                 />
@@ -103,7 +110,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
         <Input
           type="text"
           placeholder="수여기관"
-          value={formData.awardingInstitution}
+          value={formData.administer}
           onChange={(e) => handleInputChange("administer", e.target.value)}
           style={{width:'195px'}}
           maxLength={15}

@@ -23,10 +23,14 @@ const Select = () => {
   useEffect(() => {
     const fetchRecruitList = async () => {
       try {
-        const response = await getValidRecruitList();
-        setRecruitList(response.data.unapplied.recruits);
+        const currentDate = new Date();
+        const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}`; 
+        
+        const response = await getValidRecruitList(formattedDate);
+        
+        setRecruitList(response.unapplied.recruits);
         if(response.data.unapplied.recruits.length > 0) {
-          setSelectedJob(response.data.unapplied.recruits[0].id);
+          setSelectedJob(response.unapplied.recruits[0].id);
         }
       } catch (error) {
         console.error("Failed to fetch recruit list:", error);
@@ -58,8 +62,11 @@ const Select = () => {
   // 공고 추가하기
   const handleAddApply = async (newRecruitId) => {
     try{
-      const newRecruitList = await getValidRecruitList();
-      const newRecruit = newRecruitList.data.unapplied.recruits.find(
+      const currentDate = new Date();
+        const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}`; 
+
+      const newRecruitList = await getValidRecruitList(formattedDate);
+      const newRecruit = newRecruitList.unapplied.recruits.find(
         (recruit) => recruit.id === newRecruitId
       );
 
@@ -75,6 +82,7 @@ const Select = () => {
 
       setRecruitList(updatedRecruitList);
       setSelectedJob(newRecruitId); // 새 공고를 선택된 상태로 설정
+      
     } catch (error) {
       console.error("Failed to fetch the newly created recruit:", error);
     }
@@ -110,7 +118,7 @@ const Select = () => {
       {isModalOpen && 
         <AddApplyModal 
           onClose={()=>setIsModalOpen(false)} 
-          onSave = {handleAddApply}
+          onSave = {(id) => {handleAddApply(id)}}
       />}
       {isLoading && <LoadingSpinner message="자기소개서 생성 중 ..."/>}
       <ContentWrapper>
@@ -144,9 +152,13 @@ const Select = () => {
                   </TagContainer>
                   <JobLinkBox 
                     onClick={
-                      (e) => { e.stopPropagation(); 
-                      window.open(recruit.link, '_blank'); 
-                    }}>
+                      recruit.link
+                      ? (e) => { 
+                        e.stopPropagation(); 
+                        window.open(recruit.link, '_blank'); 
+                      }
+                      : undefined
+                  }>
                     공고 보러가기
                     <SvgIcon name="jobLink" size={15} color="var(--gray-02, #707070)"/>
                   </JobLinkBox>
@@ -210,7 +222,7 @@ const ColumnHeader = styled.div`
 const ListSection = styled.div`
   width: calc(100% - 10px);
   margin-top: 10px;
-  padding-top: 280px;
+  // padding-top: 280px;
   display: flex;
   flex-direction: column;
   justify-content: center;

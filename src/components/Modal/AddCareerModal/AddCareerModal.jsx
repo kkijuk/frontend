@@ -133,14 +133,13 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		contribution,
 	]);
 
-
 	// 초기 데이터 설정
 	useEffect(() => {
 		if (initialData) {
 			setName(initialData.name || '');
 			setAlias(initialData.alias || '');
-			setStartdate(initialData.startDate || null);
-			setEnddate(initialData.endDate || null);
+			setStartdate(initialData.startdate || null);
+			setEnddate(initialData.enddate || null);
 			setUnknown(initialData.unknown || false);
 			setLocation(initialData.location || 'ON_CAMPUS');
 			setRole(initialData.role || '');
@@ -184,7 +183,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								placeholder="ex) 광고 기획 연합동아리, 교내 밴드 동아리 등(20자 이내)"
 								maxLength={20}
 							/>
-							{formErrors.name && <ErrorText style={{top: '105px'}}>{formErrors.name}</ErrorText>}
+							{formErrors.name && <ErrorText style={{ top: '105px' }}>{formErrors.name}</ErrorText>}
 						</FormItem>
 
 						{/* 별칭 */}
@@ -202,7 +201,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								placeholder="ex) UMC, 멋쟁이사자처럼 등(20자 이내)"
 								maxLength={20}
 							/>
-							{formErrors.alias && <ErrorText style={{top: '105px'}}>{formErrors.alias}</ErrorText>}
+							{formErrors.alias && <ErrorText style={{ top: '105px' }}>{formErrors.alias}</ErrorText>}
 						</FormItem>
 
 						{/* 기간 */}
@@ -215,14 +214,14 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						{/* 시작날짜 */}
 						<FormItem>
 							<DateInput value={startdate} onChange={setStartdate} />
-							{formErrors.startdate && <ErrorText style={{top: '60px'}}>{formErrors.startdate}</ErrorText>}
+							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
 						</FormItem>
 						{/* 종료날짜 */}
 						<FormItem>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
-							{formErrors.enddate && <ErrorText style={{top: '60px'}}>{formErrors.enddate}</ErrorText>}
-							{hasError && <ErrorText style={{top: '70px'}}>{formErrors.invalidPeriodError}</ErrorText>}
+							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
+							{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
 						</FormItem>
 
 						{/* 소속 */}
@@ -267,9 +266,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								value={name}
 								onChange={(e) => setName(e.target.value)}
 								placeholder="ex) 00은행 홍보대사, 00공업 서포터즈 등(20자 이내)"
-								maxLength={20}>
-							</input>
-							{formErrors.name && <ErrorText style={{top: '105px'}}>{formErrors.name}</ErrorText>}
+								maxLength={20}></input>
+							{formErrors.name && <ErrorText style={{ top: '105px' }}>{formErrors.name}</ErrorText>}
 						</FormItem>
 
 						{/* 별칭 */}
@@ -285,9 +283,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								value={alias}
 								onChange={(e) => setAlias(e.target.value)}
 								placeholder="ex) 00손해보험 대학생 서포터즈, 2025년 00부 정책기자단 등(20자 이내)"
-								maxLength={20}>
-							</input>
-							{formErrors.alias && <ErrorText style={{top: '105px'}}>{formErrors.alias}</ErrorText>}
+								maxLength={20}></input>
+							{formErrors.alias && <ErrorText style={{ top: '105px' }}>{formErrors.alias}</ErrorText>}
 						</FormItem>
 
 						{/* 기간 */}
@@ -300,14 +297,14 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						{/* 시작날짜 */}
 						<FormItem>
 							<DateInput value={startdate} onChange={setStartdate} />
-							{formErrors.startdate && <ErrorText style={{top: '60px'}}>{formErrors.startdate}</ErrorText>}
+							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
 						</FormItem>
 						{/* 종료날짜 */}
 						<FormItem>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
-							{formErrors.enddate && <ErrorText style={{top: '60px'}}>{formErrors.enddate}</ErrorText>}
-							{hasError && <ErrorText style={{top: '70px'}}>{formErrors.invalidPeriodError}</ErrorText>}
+							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
+							{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
 						</FormItem>
 
 						{/* 주최 */}
@@ -315,14 +312,13 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							<label>
 								주최 <span style={{ color: '#FC5555' }}>*</span>
 							</label>
-							<input 
-								type="text" 
-								value={organizer} 
+							<input
+								type="text"
+								value={organizer}
 								onChange={(e) => setOrganizer(e.target.value)}
 								placeholder="ex) 00여행사, 00도청 등"
-								maxLength={15}>
-							</input>
-							{formErrors.organizer && <ErrorText style={{top: '105px'}}>{formErrors.organizer}</ErrorText>}
+								maxLength={15}></input>
+							{formErrors.organizer && <ErrorText style={{ top: '105px' }}>{formErrors.organizer}</ErrorText>}
 						</FormItem>
 
 						{/* 역할 */}
@@ -365,9 +361,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								value={name}
 								onChange={(e) => setName(e.target.value)}
 								placeholder="ex) PR 아이디어 공모전, 모의투자대회, 해커톤 등(20자 이내)"
-								maxLength={20}>
-							</input>
-							{formErrors.name && <ErrorText style={{top: '105px'}}>{formErrors.name}</ErrorText>}
+								maxLength={20}></input>
+							{formErrors.name && <ErrorText style={{ top: '105px' }}>{formErrors.name}</ErrorText>}
 						</FormItem>
 
 						{/* 별칭 */}
@@ -383,9 +378,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								value={alias}
 								onChange={(e) => setAlias(e.target.value)}
 								placeholder="ex) 2025 로레0 브랜드스톰 공모전, 기0 PBV 아이디어 공모전 등(20자 이내)"
-								maxLength={20}>
-							</input>
-							{formErrors.alias && <ErrorText style={{top: '105px'}}>{formErrors.alias}</ErrorText>}
+								maxLength={20}></input>
+							{formErrors.alias && <ErrorText style={{ top: '105px' }}>{formErrors.alias}</ErrorText>}
 						</FormItem>
 
 						{/* 기간 */}
@@ -398,14 +392,14 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						{/* 시작날짜 */}
 						<FormItem>
 							<DateInput value={startdate} onChange={setStartdate} />
-							{formErrors.startdate && <ErrorText style={{top: '60px'}}>{formErrors.startdate}</ErrorText>}
+							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
 						</FormItem>
 						{/* 종료날짜 */}
 						<FormItem>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
-							{formErrors.enddate && <ErrorText style={{top: '60px'}}>{formErrors.enddate}</ErrorText>}
-							{hasError && <ErrorText style={{top: '70px'}}>{formErrors.invalidPeriodError}</ErrorText>}
+							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
+							{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
 						</FormItem>
 
 						{/* 주최 */}
@@ -413,14 +407,13 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							<label>
 								주최 <span style={{ color: '#FC5555' }}>*</span>
 							</label>
-							<input 
-								type="text" 
-								value={organizer} 
+							<input
+								type="text"
+								value={organizer}
 								onChange={(e) => setOrganizer(e.target.value)}
-								placeholder = "ex) 00문화재단, 00증권 등"
-								maxLength={15}>
-							</input>
-							{formErrors.organizer && <ErrorText style={{top: '105px'}}>{formErrors.organizer}</ErrorText>}
+								placeholder="ex) 00문화재단, 00증권 등"
+								maxLength={15}></input>
+							{formErrors.organizer && <ErrorText style={{ top: '105px' }}>{formErrors.organizer}</ErrorText>}
 						</FormItem>
 
 						{/* 개인-팀 */}
@@ -452,9 +445,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								value={name}
 								onChange={(e) => setName(e.target.value)}
 								placeholder="ex) 앱 개발 프로젝트, 시각디자인과 졸업 전시 등(20자 이내)"
-								maxLength={20}>
-							</input>
-							{formErrors.name && <ErrorText style={{top: '105px'}}>{formErrors.name}</ErrorText>}
+								maxLength={20}></input>
+							{formErrors.name && <ErrorText style={{ top: '105px' }}>{formErrors.name}</ErrorText>}
 						</FormItem>
 
 						{/* 별칭 */}
@@ -470,9 +462,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								value={alias}
 								onChange={(e) => setAlias(e.target.value)}
 								placeholder="ex) 끼적, DIMIVERSE 등(20자 이내)"
-								maxLength={20}>
-							</input>
-							{formErrors.alias && <ErrorText style={{top: '105px'}}>{formErrors.alias}</ErrorText>}
+								maxLength={20}></input>
+							{formErrors.alias && <ErrorText style={{ top: '105px' }}>{formErrors.alias}</ErrorText>}
 						</FormItem>
 
 						{/* 기간 */}
@@ -485,14 +476,14 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						{/* 시작날짜 */}
 						<FormItem>
 							<DateInput value={startdate} onChange={setStartdate} />
-							{formErrors.startdate && <ErrorText style={{top: '60px'}}>{formErrors.startdate}</ErrorText>}
+							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
 						</FormItem>
 						{/* 종료날짜 */}
 						<FormItem>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
-							{formErrors.enddate && <ErrorText style={{top: '60px'}}>{formErrors.enddate}</ErrorText>}
-							{hasError && <ErrorText style={{top: '70px'}}>{formErrors.invalidPeriodError}</ErrorText>}
+							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
+							{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
 						</FormItem>
 
 						{/* 소속 */}
@@ -505,7 +496,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 									setLocation(newLocation);
 								}}
 							/>
-							{formErrors.location && <ErrorText style={{top: '105px'}}>{formErrors.location}</ErrorText>}
+							{formErrors.location && <ErrorText style={{ top: '105px' }}>{formErrors.location}</ErrorText>}
 						</FormItem>
 
 						{/* 개인-팀 */}
@@ -538,7 +529,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								isOpen={isCareerDropdownOpen}
 								onToggle={() => setIsCareerDropdownOpen(!isCareerDropdownOpen)}
 							/>
-							{formErrors.type && <ErrorText style={{top: '105px'}}>{formErrors.type}</ErrorText>}
+							{formErrors.type && <ErrorText style={{ top: '105px' }}>{formErrors.type}</ErrorText>}
 						</FormItem>
 
 						{/* 근무처 */}
@@ -549,13 +540,12 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 									근무한 곳의 이름을 작성해주세요.
 								</span>
 							</label>
-							<input 
-								type="text" 
-								value={alias} 
+							<input
+								type="text"
+								value={alias}
 								onChange={(e) => setAlias(e.target.value)}
-								placeholder="근무처 입력">
-							</input>
-							{formErrors.alias && <ErrorText style={{top: '105px'}}>근무처를 입력해주세요.</ErrorText>}
+								placeholder="근무처 입력"></input>
+							{formErrors.alias && <ErrorText style={{ top: '105px' }}>근무처를 입력해주세요.</ErrorText>}
 						</FormItem>
 
 						{/* 활동명 */}
@@ -566,14 +556,13 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 									경력의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
-							<input 
-								type="text" 
-								value={name} 
+							<input
+								type="text"
+								value={name}
 								onChange={(e) => setName(e.target.value)}
-								placeholder = "ex) 학원 채점 아르바이트, 콘텐츠 에디터 인턴 등(20자 이내)"
-								maxLength={20}>
-							</input>
-							{formErrors.name && <ErrorText style={{top: '105px'}}>{formErrors.name}</ErrorText>}
+								placeholder="ex) 학원 채점 아르바이트, 콘텐츠 에디터 인턴 등(20자 이내)"
+								maxLength={20}></input>
+							{formErrors.name && <ErrorText style={{ top: '105px' }}>{formErrors.name}</ErrorText>}
 						</FormItem>
 
 						{/* 기간 */}
@@ -586,22 +575,22 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						{/* 시작날짜 */}
 						<FormItem>
 							<DateInput value={startdate} onChange={setStartdate} />
-							{formErrors.startdate && <ErrorText style={{top: '60px'}}>{formErrors.startdate}</ErrorText>}
+							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
 						</FormItem>
 						{/* 종료날짜 */}
 						<FormItem>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
-							{formErrors.enddate && <ErrorText style={{top: '60px'}}>{formErrors.enddate}</ErrorText>}
-							{hasError && <ErrorText style={{top: '70px'}}>{formErrors.invalidPeriodError}</ErrorText>}
+							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
+							{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
 						</FormItem>
 
 						{/* 직급/직위 */}
 						<FormItem>
 							<label>직급/직위</label>
-							<input 
-								type="text" 
-								value={position} 
+							<input
+								type="text"
+								value={position}
 								onChange={(e) => setPosition(e.target.value)}
 								placeholder="ex) 인턴, 보조강사 등"
 								maxLength={15}></input>
@@ -610,9 +599,9 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						{/* 직무/분야 */}
 						<FormItem>
 							<label>직무/분야</label>
-							<input 
-								type="text" 
-								value={jobField} 
+							<input
+								type="text"
+								value={jobField}
 								onChange={(e) => setJobField(e.target.value)}
 								placeholder="ex) 서비스업, iOS 개발 등"
 								maxLength={15}></input>
@@ -635,9 +624,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								value={name}
 								onChange={(e) => setName(e.target.value)}
 								placeholder="ex) 데이터 분석 세미나, JAVA 개발 부트캠프 등(20자 이내)"
-								maxLength={20}>
-							</input>
-							{formErrors.name && <ErrorText style={{top: '105px'}}>{formErrors.name}</ErrorText>}
+								maxLength={20}></input>
+							{formErrors.name && <ErrorText style={{ top: '105px' }}>{formErrors.name}</ErrorText>}
 						</FormItem>
 
 						{/* 별칭 */}
@@ -653,9 +641,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								value={alias}
 								onChange={(e) => setAlias(e.target.value)}
 								placeholder="ex) 000톤 정글 8기, 00시스템 BEYOND SW 캠프 등(20자 이내)"
-								maxLength={20}>
-							</input>
-							{formErrors.alias && <ErrorText style={{top: '105px'}}>{formErrors.alias}</ErrorText>}
+								maxLength={20}></input>
+							{formErrors.alias && <ErrorText style={{ top: '105px' }}>{formErrors.alias}</ErrorText>}
 						</FormItem>
 
 						{/* 기간 */}
@@ -668,14 +655,14 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						{/* 시작날짜 */}
 						<FormItem>
 							<DateInput value={startdate} onChange={setStartdate} />
-							{formErrors.startdate && <ErrorText style={{top: '60px'}}>{formErrors.startdate}</ErrorText>}
+							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
 						</FormItem>
 						{/* 종료날짜 */}
 						<FormItem>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
-							{formErrors.enddate && <ErrorText style={{top: '60px'}}>{formErrors.enddate}</ErrorText>}
-							{hasError && <ErrorText style={{top: '70px'}}>{formErrors.invalidPeriodError}</ErrorText>}
+							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
+							{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
 						</FormItem>
 
 						{/* 주최 */}
@@ -683,14 +670,13 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							<label>
 								주최 <span style={{ color: '#FC5555' }}>*</span>
 							</label>
-							<input 
-								type="text" 
-								value={organizer} 
+							<input
+								type="text"
+								value={organizer}
 								onChange={(e) => setOrganizer(e.target.value)}
 								placeholder="ex) 대한상공회의소, 코드0 등"
-								maxLength={15}>
-							</input>
-							{formErrors.organizer && <ErrorText style={{top: '105px'}}>{formErrors.organizer}</ErrorText>}
+								maxLength={15}></input>
+							{formErrors.organizer && <ErrorText style={{ top: '105px' }}>{formErrors.organizer}</ErrorText>}
 						</FormItem>
 
 						{/* 교육 시간 */}
@@ -699,15 +685,15 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								교육 시간 <span style={{ color: '#FC5555' }}>*</span>
 							</label>
 							<input
-								type="text" 
-								value={time} 
-								onChange={(e) =>{
+								type="text"
+								value={time}
+								onChange={(e) => {
 									const value = e.target.value;
-									if(/^\d*$/.test(value) && value.length <= 4){
+									if (/^\d*$/.test(value) && value.length <= 4) {
 										setTime(value);
 									}
-								}
-							}/>
+								}}
+							/>
 						</FormItem>
 					</>
 				);
@@ -727,9 +713,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								value={name}
 								onChange={(e) => setName(e.target.value)}
 								placeholder="ex) 필리핀 해외봉사, 캐나다 교환학생 등(20자 이내)"
-								maxLength={20}>
-							</input>
-							{formErrors.name && <ErrorText style={{top: '105px'}}>{formErrors.name}</ErrorText>}
+								maxLength={20}></input>
+							{formErrors.name && <ErrorText style={{ top: '105px' }}>{formErrors.name}</ErrorText>}
 						</FormItem>
 
 						{/* 별칭 */}
@@ -745,9 +730,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								value={alias}
 								onChange={(e) => setAlias(e.target.value)}
 								placeholder="ex) 000톤 정글 8기, 00시스템 BEYOND SW 캠프 등(20자 이내)"
-								maxLength={20}>
-							</input>
-							{formErrors.alias && <ErrorText style={{top: '105px'}}>{formErrors.alias}</ErrorText>}
+								maxLength={20}></input>
+							{formErrors.alias && <ErrorText style={{ top: '105px' }}>{formErrors.alias}</ErrorText>}
 						</FormItem>
 
 						{/* 기간 */}
@@ -760,14 +744,14 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						{/* 시작날짜 */}
 						<FormItem>
 							<DateInput value={startdate} onChange={setStartdate} />
-							{formErrors.startdate && <ErrorText style={{top: '60px'}}>{formErrors.startdate}</ErrorText>}
+							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
 						</FormItem>
 						{/* 종료날짜 */}
 						<FormItem>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
-							{formErrors.enddate && <ErrorText style={{top: '60px'}}>{formErrors.enddate}</ErrorText>}
-							{hasError && <ErrorText style={{top: '70px'}}>{formErrors.invalidPeriodError}</ErrorText>}
+							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
+							{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
 						</FormItem>
 					</>
 				);
@@ -786,12 +770,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		// }
 
 		// startdate와 enddate를 YYYY-MM-DD 형식으로 변환하기 위해 추가 (에러)
-		const formattedStartdate = (startdate !== '' && startdate != null)
-			? moment(startdate).format('YYYY-MM-DD')
-			: null;
-		const formattedEnddate = (unknown || enddate === '' || enddate == null)
-			? null
-			: moment(enddate).format('YYYY-MM-DD');
+		const formattedStartdate = startdate !== '' && startdate != null ? moment(startdate).format('YYYY-MM-DD') : null;
+		const formattedEnddate = unknown || enddate === '' || enddate == null ? null : moment(enddate).format('YYYY-MM-DD');
 
 		const allFormData = {
 			name,
@@ -815,30 +795,30 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		// 날짜 외 입력 데이터 검증 및 필터링 실행
 		// 잘 수행되면 isValid:true와 filteredDate를, 오류가 있으면 isValid:false와 errors를 반환
 		const { isValid, errors, filteredData } = validateAndFilterForm(selectedCategory, allFormData);
-		console.log("errors: ", errors);
+		console.log('errors: ', errors);
 
 		//오류 생길 경우
 		if (!isValid) {
 			// errors 배열을 필드별 에러 객체로 변환
 			let errorsObj = {};
 			errors.forEach((err) => {
-				if (err === "활동명을 입력해주세요.") {
+				if (err === '활동명을 입력해주세요.') {
 					errorsObj.name = err;
-				} else if (err === "별칭을 입력해주세요.") {
+				} else if (err === '별칭을 입력해주세요.') {
 					errorsObj.alias = err;
-				} else if (err === "시작 날짜를 선택해주세요.") {
+				} else if (err === '시작 날짜를 선택해주세요.') {
 					errorsObj.startdate = err;
-				} else if (err === "종료 날짜를 선택해주세요." || err === "종료 날짜는 시작 날짜 이후로 설정해주세요") {
+				} else if (err === '종료 날짜를 선택해주세요.' || err === '종료 날짜는 시작 날짜 이후로 설정해주세요') {
 					errorsObj.enddate = err;
-				} else if(err === "종료 날짜는 시작 날짜 이후로 설정해주세요") {
+				} else if (err === '종료 날짜는 시작 날짜 이후로 설정해주세요') {
 					errorsObj.invalidPeriodError = err;
-				} else if (err === "소속을 선택해주세요.") {
+				} else if (err === '소속을 선택해주세요.') {
 					errorsObj.location = err;
-				} else if (err === "주최를 입력해주세요.") {
+				} else if (err === '주최를 입력해주세요.') {
 					errorsObj.organizer = err;
-				} else if (err === "인원을 선택해주세요.") {
+				} else if (err === '인원을 선택해주세요.') {
 					errorsObj.teamSize = err;
-				} else if (err === "분류를 선택해주세요.") {
+				} else if (err === '분류를 선택해주세요.') {
 					errorsObj.type = err;
 				} else {
 					errorsObj.general = err;
@@ -871,7 +851,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				const response = await createCareer(selectedCategory, filteredData);
 				console.log('Success - 활동 추가: ', response);
 				// onClose();
-				window.location.reload();
+				//window.location.reload();
+				navigate('/mycareer'); //세연 추가
 			} catch (error) {
 				console.error('createCareer 호출 중 오류 발생: ', error.response ? error.response.data : error.message);
 			}
@@ -903,7 +884,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 			{showDeletePopup && (
 				<DeletePopup
 					onClose={() => setShowDeletePopup(false)}
-					onConfirm={()=>{
+					onConfirm={() => {
 						handleDeleteCareer();
 						setShowDeletePopup(false);
 					}}
@@ -922,7 +903,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							isSelected={selectedCategory === parseInt(key)}
 							bgColor={categoryColors[key]}
 							onClick={() => {
-								if(!isEditMode) { // 수정모드가 아닐 때만 카테고리 변경 가능
+								if (!isEditMode) {
+									// 수정모드가 아닐 때만 카테고리 변경 가능
 									setSelectedCategory(parseInt(key));
 								}
 							}}>
@@ -1119,6 +1101,6 @@ const ErrorText = styled.div`
 	top: 80px;
 	font-family: 'Regular';
 	font-size: 13px;
-	color: #FF7979;
+	color: #ff7979;
 	margin-left: 10px;
-`
+`;

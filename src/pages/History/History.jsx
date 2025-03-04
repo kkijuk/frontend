@@ -89,7 +89,7 @@ const History = () => {
 	const [editableUserData, setEditableUserData] = useState({	// 사용자 정보 수정
 		profileImageUrl: profileImageUrl,
 		address: address,
-		email: email,
+		// email: email,
 	});
 	const [profileURL, setProfileURL] = useState(profileImageUrl);	// 프로필 이미지
 
@@ -299,13 +299,14 @@ const History = () => {
 								<InfoValue>{phone}</InfoValue>
 
 								<InfoLabel>이메일</InfoLabel>
-								<InfoValue>
+								{/* <InfoValue>
 									<EmailAndAddress
 										type="email"
 										userData={email}
 										onSave={(data) => handleEmailOrAddressChange(data)}
 									/>
-								</InfoValue>
+								</InfoValue> */}
+								<InfoValue>{email}</InfoValue>
 
 								<InfoLabel>주소</InfoLabel>
 								<InfoValue>

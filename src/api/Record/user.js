@@ -5,7 +5,6 @@ const updateUserData = async (data) => {
         // Ensure data fields are not undefined or null
         data.address = data.address ?? "string";
         data.profileImageUrl = data.profileImageUrl ?? "string";
-        data.email = data.email ?? "string";
         
         console.log("Data to update: ", data);
         const response = await api.patch("/history/resume", data);

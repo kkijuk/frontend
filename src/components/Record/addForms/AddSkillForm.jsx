@@ -80,7 +80,11 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
   }, [formData]);
 
   const hasEmptyField =(data)=>{
-    return Object.values(data).some((value) => value.trim() === "");
+    const { id, ...fields } = data; //id 제외
+    return Object.values(fields).some((value) => {
+      if (typeof value !== "string") return true;
+      return value.trim() === ""
+    });
   }
 
   return (

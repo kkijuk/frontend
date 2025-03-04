@@ -10,6 +10,7 @@ import { CareerEdit, CareerDelete } from '../api/Mycareer/CareerEdit.js';
 import { createPresignedUrl, saveKeyName, deleteS3File, uploadFileToS3 } from '../api/Record/s3File.js';
 import { addURL, deleteURL } from '../api/Record/url.js';
 import { updateRecord } from '../api/Record/record.js';
+import { updateUserData } from '../api/Record/user.js';
 
 // 기존 코드 유지
 const useRecordStore = create((set, get) => ({
@@ -116,7 +117,7 @@ const useRecordStore = create((set, get) => ({
 			set((state) => ({
 				[category]: [...state[category], response],
 			}));
-			window.location.reload();
+			// window.location.reload();
 		} catch (error) {
 			console.error('Add Item Error:', error);
 		}
@@ -269,12 +270,11 @@ const useRecordStore = create((set, get) => ({
 
 	updateUserData: async (data) => {
 		try {
-			const response = await updateRecord(data);
+			const response = await updateUserData(data);
 			set((state) => ({
 				userData: { 
 					...state.userData, 
 					profileImageUrl: response.profileImageUrl,
-					email: response.email, 
 					address: response.address
 				},
 			}));

@@ -323,7 +323,7 @@ const OthersRewrite = () => {
 							<Delete
 								style={{
 									left: '10px',
-									top: '10px',
+									top: '15px',
 									color: '#707070',
 									fontSize: '24px',
 									lineHeight: 'normal',
@@ -336,13 +336,20 @@ const OthersRewrite = () => {
 							<InputTitle
 								placeholder={'질문을 작성하세요'}
 								style={{ height: '20px', marginBottom: '12px', paddingLeft: '50px', width: '750px' }}
-								value={question.title || ''}
+								value={
+									question.title && question.title !== 'string' 
+									? question.title
+									: '질문을 작성하세요.'
+								}
 								onChange={(e) => handleInputChange(question.number, 'title', e)}
 							/>
 							<InputTitle
 								placeholder={'답변을 작성하세요'}
 								style={{ height: '150px', marginBottom: '35px', width: '780px' }}
-								value={question.content || ''}
+								value={
+									question.content && question.content !== 'string' 
+									? question
+									: '답변을 작성하세요.'}
 								onChange={(e) => handleInputChange(question.number, 'content', e)}
 							/>
 							<p
@@ -519,6 +526,6 @@ const Delete = styled.div`
 	font-family: Regular;
 	cursor: pointer;
 	position: absolute;
-	top: 16px;
+	top: 20px;
 	right: 10px;
 `;
