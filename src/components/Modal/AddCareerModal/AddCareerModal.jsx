@@ -852,7 +852,13 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				console.log('Success - 활동 추가: ', response);
 				// onClose();
 				//window.location.reload();
-				navigate('/mycareer'); //세연 추가
+				//navigate('/mycareer'); //세연 추가
+				// 현재 경로가 `/mycareer`라면 새로고침, `/home`이라면 `/mycareer`로 이동
+				if (location.pathname === '/mycareer') {
+					window.location.reload();
+				} else if (location.pathname === '/home') {
+					navigate('/mycareer');
+				}
 			} catch (error) {
 				console.error('createCareer 호출 중 오류 발생: ', error.response ? error.response.data : error.message);
 			}
