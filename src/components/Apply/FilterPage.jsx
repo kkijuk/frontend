@@ -171,6 +171,7 @@ const FilterPage = () => {
 	const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const tagFromURL = queryParams.get('tag');
+	const [isTagSearch, setIsTagSearch] = useState(false);
 
 	const fetchSearchResults = async (term) => {
 		if (!term.trim()) return;  // 빈 검색어일 경우 실행 안 함
@@ -243,13 +244,21 @@ const FilterPage = () => {
             console.log('Updated results:', changes);
         }
     }, [recruits]);
+
 	useEffect(() => {
 		if (tagFromURL) {
 			setSearchTerm(tagFromURL);
 			handleSearchClick();
 		}
 	}, [tagFromURL]); // 태그 값이 변경될 때만 실행
-	
+
+	 useEffect(() => {
+        if (isTagSearch && searchTerm) {
+            handleSearchClick();
+            setIsTagSearch(false); // 한 번 실행 후 다시 false로 설정 (중복 실행 방지)
+        }
+    }, [searchTerm]);
+
 	return (
 		<Container>
 			<Layout title="지원관리">
