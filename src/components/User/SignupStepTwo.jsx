@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../../stores/useAuthStore';
 import { createRecord } from '../../api/Record/record';
 import { createMaster } from '../../api/Intro/master';
+import { trackEvent } from '../../utils/ga4';
 
 const StepTwoContainer = styled.div`
   max-width: 600px;
@@ -125,6 +126,15 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
       alert('최소 1개를 선택해주세요.');
       return;
     }
+
+    // GA 이벤트 트래킹 (회원가입 2단계 완료)
+    trackEvent('btn_click', {
+      category: 'signup',
+      detail: 'step2',
+      action_type: 'click',
+      label: '완료',
+    });
+
   
     const payload = {
       isTermsAgreed: agreements.isTermsAgreed,

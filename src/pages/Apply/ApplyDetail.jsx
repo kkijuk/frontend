@@ -18,6 +18,8 @@ import ReviewDetailAdd from '../../components/Apply/ReviewDetailAdd';
 import ReviewDeleteModal from '../../components/Apply/ReviewDeleteModal';
 import { updateRecruitApplyDate } from '../../api/Apply/RecruitApplydate';
 import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
+import { trackEvent } from '../../utils/ga4';
+
 const SvgIcon = styled.svg`
 	width: 20px;
 	height: 20px;
@@ -689,9 +691,18 @@ const ApplyDetail = () => {
 		}
 	};
 
-	const handleAddReviewClick = () => {
+	const handleAddReviewClick = () => { 
+		// GA 트래킹 추가 (후기 추가 버튼 클릭)
+		trackEvent('add_click', {
+			category: 'apply',
+			detail: 'add_recruit_review',
+			action_type: 'add',
+			label: '전형 후기 추가',
+		});
+	
 		setShowReviewAdd(true);
 	};
+	
 
 	const handleCancelReviewAdd = () => {
 		setShowReviewAdd(false);

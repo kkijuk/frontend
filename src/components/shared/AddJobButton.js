@@ -1,7 +1,6 @@
-//pages/Apply/ApplySchedule, /pages/Mycareer, components/Intro/AddButton
-// 화면 오른쪽 아래 +버튼
 import React from 'react';
 import styled from 'styled-components';
+import { trackEvent } from '../../utils/ga4'; 
 
 const Button = styled.button`
 	position: fixed;
@@ -23,7 +22,22 @@ const Button = styled.button`
 `;
 
 const AddJobButton = ({ onClick }) => {
-	return <Button onClick={onClick}>+</Button>;
+	const handleClick = () => {
+		//  GA 트래킹 추가 (공고 추가 버튼 클릭)
+		trackEvent('add_click', {
+			category: 'apply',
+			detail: 'add_recruit',
+			action_type: 'add',
+			label: '공고 추가',
+		});
+
+		//  props로 받은 onClick 함수 실행
+		if (onClick) {
+			onClick();
+		}
+	};
+
+	return <Button onClick={handleClick}>+</Button>;
 };
 
 export default AddJobButton;

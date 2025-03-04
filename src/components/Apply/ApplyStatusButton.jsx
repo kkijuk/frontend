@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { trackEvent } from '../../utils/ga4';
 
 const StatusContainer = styled.div`
 	display: flex;
@@ -44,6 +45,16 @@ const StatusText = styled.span`
 const ApplyStatusButton = ({ activeStatus, onStatusClick, statusCounts }) => {
 	const handleClick = (status) => {
 		window.scrollTo(0, 0); 
+	
+		//  GA 트래킹 추가 (공고 상태 칩 클릭)
+		trackEvent('chip_click', {
+			category: 'apply',
+			detail: 'status_chip',
+			action_type: 'click',
+			label: '공고 상태 칩',
+			status: status, // 선택한 상태 전달
+		});
+	
 		onStatusClick(status); 
 	};
 
