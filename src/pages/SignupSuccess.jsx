@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import createMaster from '../api/Signup/createMaster';
 import createResume from '../api/Signup/createResume';
 import signupLogo from '../assets/signuplogo.svg';
+import { trackEvent } from '../utils/ga4';
 
 const SignupSuccessScreen = styled.div`
 	max-width: flex;
@@ -121,16 +122,30 @@ const SignupSuccess = () => {
 	}, [hasCalled]); 
 
 	const handleButtonClick = () => {
+		// "관심분야 등록" 버튼 클릭 GA 이벤트 추가
+		trackEvent('btn_click', {
+			category: 'signup',
+			action_type: 'click',
+			detail: 'interests_register',
+			label: '관심분야 등록',
+		});
 		navigate('/signupinterest'); // 관심분야 등록 페이지로 이동
-	}; 
+	};
 
 	const handleLogoClick = () => {
 		navigate('/'); 
 	  };
 
 	  const handleHomeClick = () => {
+		// "홈으로" 버튼 클릭 GA 이벤트 추가
+		trackEvent('btn_click', {
+			category: 'signup',
+			action_type: 'click',
+			detail: 'interests_skip',
+			label: '홈으로',
+		});
 		navigate('/');
-	  };
+	};
 
 	return (
 		<SignupSuccessScreen>
