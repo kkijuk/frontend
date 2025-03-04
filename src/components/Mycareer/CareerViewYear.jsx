@@ -22,6 +22,10 @@ const Container = styled.div`
 	max-width: 820px;
 	box-sizing: border-box;
 	padding: 0 15px; /* 좌우 여백 추가로 반응형에서 보기 좋게 */
+
+	@media (max-width: 600px) {
+		padding: 0 10px; /* 작은 화면에서 패딩 조정 */
+	}
 `;
 
 const YearBox = styled.div`
@@ -45,12 +49,12 @@ const Year = styled.div`
 const ListBox = styled.div`
 	width: 95%; /* 화면에 맞게 가변적으로 조정 */
 	height: auto;
-	padding: 10px;
+	padding: 12px 24px;
 	background-color: white;
 	flex-shrink: 0;
 	border-radius: 10px;
-	margin-bottom: 15px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	margin-bottom: 12px;
+	box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
 	cursor: pointer;
 
 	@media (max-width: 860px) {
@@ -62,7 +66,7 @@ const Category = styled.div`
 	height: 15px;
 	display: flex;
 	align-items: center;
-	margin-bottom: 9px;
+	margin-bottom: 0px;
 `;
 
 const CategoryTextBox = styled.div`

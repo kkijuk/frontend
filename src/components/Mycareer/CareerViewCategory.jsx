@@ -19,8 +19,7 @@ const BackgroundSection = styled.div`
 const CategoryBox = styled.div`
 	width: 100%;
 	max-width: 820px;
-	gap: 12px;
-	margin-bottom: 10px;
+	margin-bottom: 24px;
 	padding: 0 15px; /* 좌우 여백 추가 */
 
 	@media (max-width: 600px) {
@@ -55,14 +54,12 @@ const CategoryText = styled.div`
 const ListBox = styled.div`
 	width: 95%;
 	height: auto;
-	padding: 10px;
+	padding: 12px 24px;
 	flex-shrink: 0;
 	border-radius: 10px;
 	background: var(--white, #fff);
+	margin-bottom: 12px;
 	box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
-	margin-left: 5px;
-	margin-bottom: 10px;
-	box-sizing: border-box;
 	cursor: pointer;
 
 	@media (max-width: 600px) {
@@ -78,8 +75,7 @@ const AliasName = styled.div`
 	font-size: 18px;
 	font-weight: 400;
 	line-height: normal;
-	margin-bottom: 9px;
-	margin-top: 5px;
+	margin-bottom: 3px;
 
 	@media (max-width: 600px) {
 		font-size: 14px; /* 작은 화면에서 폰트 크기 축소 */
@@ -98,13 +94,13 @@ const CareerName = styled.div`
 	font-style: regular;
 	line-height: normal;
 	margin-bottom: 9px;
-	margin-top: 5px;
+	margin-top: 3px;
 `;
 
 const Date = styled.div`
 	font-size: 14px;
 	color: #555;
-	margin-bottom: 20px;
+	margin-bottom: 8px;
 `;
 const CareerViewCategory = ({ data }) => {
 	const navigate = useNavigate();
