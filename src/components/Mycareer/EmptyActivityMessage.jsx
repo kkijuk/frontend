@@ -13,7 +13,7 @@ const MessageContainer = styled.div`
 const MessageTitle = styled.div`
 	color: var(--gray-01, #424242);
 	font-size: 20px;
-	font-weight: 400;
+	font-weight: 500;
 	margin-bottom: 14px;
 `;
 
