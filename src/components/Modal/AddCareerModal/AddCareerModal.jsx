@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { Affiliation1 } from './Affiliation';
 import { Affiliation2 } from './Affiliation';
@@ -17,6 +17,7 @@ import DeletePopup from './DeletePopup';
 
 const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const navigate = useNavigate();
+	const currentLocation = useLocation(); // 기존의 `location`과 충돌 방지
 
 	// console.log('initialData:', initialData);
 
@@ -852,7 +853,17 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				console.log('Success - 활동 추가: ', response);
 				// onClose();
 				//window.location.reload();
-				navigate('/mycareer'); //세연 추가
+				//navigate('/mycareer'); //세연 추가
+				// 현재 경로가 `/mycareer`라면 새로고침, `/home`이라면 `/mycareer`로 이동
+				if (currentLocation.pathname === '/mycareer') {
+					setTimeout(() => {
+						window.location.reload();
+					}, 100); // 100ms 후 실행 (리액트 상태 업데이트 이후 확실하게 새로고침)
+				} else if (currentLocation.pathname === '/home') {
+					navigate('/mycareer');
+				}
+
+				onClose();
 			} catch (error) {
 				console.error('createCareer 호출 중 오류 발생: ', error.response ? error.response.data : error.message);
 			}

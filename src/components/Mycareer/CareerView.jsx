@@ -24,7 +24,7 @@ const ToggleButtonsContainer = styled.div`
 `;
 
 const ToggleButton = styled.button`
-	padding: 8px 10px;
+	padding: 8px 20px;
 	border-radius: 10px 10px 0px 0px;
 	background-color: ${(props) => (props.active ? '#F1F1F1' : 'white')};
 	cursor: pointer;
@@ -50,9 +50,9 @@ const ToggleButton = styled.button`
 const ViewTitle = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
-	font-size: 22px;
-	font-weight: 700;
-	margin-bottom: 0;
+	font-size: 20px;
+	font-weight: 600;
+	margin-left: 6px;
 
 	@media (max-width: 600px) {
 		font-size: 18px; /* 작은 화면에서는 제목 폰트 크기 축소 */
