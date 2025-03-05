@@ -520,6 +520,17 @@ const CountdownBox = styled.div`
   }
 `;
 
+const StyledBackLink = styled(BackLink)`
+    color: #707070; 
+    display: flex;
+    align-items: center;
+    text-decoration: none; 
+    
+    img {
+        filter: invert(44%) sepia(1%) saturate(11%) hue-rotate(314deg) brightness(94%) contrast(83%);
+    }
+`;
+
 const ApplyDetail = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -777,10 +788,10 @@ const ApplyDetail = () => {
 	return (
 		<Container>
 			<Title>지원현황</Title> 
-			<BackLink to="/apply-status">
-			<img src={SvgIconBefore} alt="Close" width={20} height={13} />
-                     지원공고 관리  
-            </BackLink>
+			<StyledBackLink to="/apply-status">
+              <img src={SvgIconBefore} alt="Close" width={20} height={13} />
+              지원공고 관리
+            </StyledBackLink>
 			<Header>
 				<TitleContainer>
 					<div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
