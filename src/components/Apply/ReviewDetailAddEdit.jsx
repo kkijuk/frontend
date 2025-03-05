@@ -198,7 +198,7 @@ export default function ReviewDetailAddEdit({
 		<Box>
 			<Top>
 				<Title>
-					<Label>제목</Label>
+					<Label>전형</Label> 
 					<ReviewInputBox 
 	height="50px" 
 	width="460px" 
@@ -214,7 +214,7 @@ export default function ReviewDetailAddEdit({
 				</Date>
 			</Top>
 			<Middle>
-				<Label>내용</Label>
+				<Label>전형 후기</Label> 
 				<ReviewInputBox height="100px" width="720px" value={contents} onChange={(e) => setContents(e.target.value)} />
 			</Middle>
 

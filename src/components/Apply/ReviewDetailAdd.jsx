@@ -76,12 +76,12 @@ const Cancel = styled.div`
     height: 50px;
     flex-shrink: 0;
     border-radius: 10px;
-    border: 1.5px solid var(--sub-rd, #FA7C79);
+    border: 1.5px solid var(--sub-rd, #E0E0E0);
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--sub-rd, #FA7C79);
+    color: var(--sub-rd, #707070);  
     text-align: center;
     font-family: regular;
     font-size: 18px;
