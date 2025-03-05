@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { act, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import './history.css';
 import { set } from 'react-hook-form';
@@ -25,6 +25,7 @@ import Profile from '../../components/Record/Profile';
 import EmailAndAddress from '../../components/Record/EmailAndAddress';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import useAuthRedirect from '../../stores/useAuthRedirect'; 
+import { trackEvent } from '../../utils/ga4';
 
 const History = () => {
     useAuthRedirect();
@@ -326,7 +327,15 @@ const History = () => {
 								key = {sections[1].id}
 							>
 								<h2>학력</h2>
-								<AddButton onClick={() => toggleAddForm('educations')}>+</AddButton>
+								<AddButton onClick={() => {
+									trackEvent('add_click', {
+										category: 'resume',
+										detail: 'add_education',
+										action_type: 'add',
+										label: '학력 추가',
+									});
+									toggleAddForm('educations');
+								}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{openedForms.add.educations && 
@@ -590,13 +599,13 @@ const History = () => {
 								<NoneContentBox>
 									새로운 활동을 추가해주세요!
 								</NoneContentBox>}
-								{files.map((file, index)=>{
+								{files.map((file, index)=>(
 									<FileItem
 										data={file}
 										onDelete={(data) => deleteEtcItem(data)}
 										onUpdate={(data) => updateEtcItem(data)}
 									/>
-								})}
+								))}
 							</ContentWrapper>
 						</SectionWrapper>
 					</div>
