@@ -5,6 +5,7 @@ import signupLogo from '../assets/signuplogo.svg';
 import InterestBox from '../components/shared/InterestBox';
 import InterestSkipModal from '../components/User/InterestSkipModal';
 import { saveInterests } from '../api/Signup/signupInterest';
+import { trackEvent } from '../utils/ga4';
 
 const ContentArea = styled.div`
   margin: 0 auto;
@@ -138,15 +139,31 @@ const SignupInterest = ({ onSave = () => {} }) => {
 			console.log('Response:', result);
 			console.log('Interest list being sent:', interestingList);
 
+			// GA 트래킹 추가 (완료 버튼 클릭)
+			trackEvent('btn_click', {
+				category: 'interests',
+				detail: 'done',
+				action_type: 'click',
+				label: '완료',
+			});
+
 			onSave(result); // API 응답 데이터를 처리할 필요가 있으면 사용
 			navigate('/home');
 		} catch (error) {
 			console.error('Error occurred while saving interests:', error.message);
-			console.error('Stack Trace:', error.stack); // 스택 추적도 출력
+			console.error('Stack Trace:', error.stack); 
 		}
 	};
 
 	const handleClose = () => {
+		// GA 트래킹 추가 (건너뛰기 버튼 클릭)
+		trackEvent('btn_click', {
+			category: 'interests',
+			detail: 'skip',
+			action_type: 'click',
+			label: '건너뛰기',
+		});
+
 		navigate('/home');
 	};
 

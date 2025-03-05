@@ -18,6 +18,8 @@ import ReviewDetailAdd from '../../components/Apply/ReviewDetailAdd';
 import ReviewDeleteModal from '../../components/Apply/ReviewDeleteModal';
 import { updateRecruitApplyDate } from '../../api/Apply/RecruitApplydate';
 import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
+import { trackEvent } from '../../utils/ga4';
+
 const SvgIcon = styled.svg`
 	width: 20px;
 	height: 20px;
@@ -29,43 +31,40 @@ const SvgIcon = styled.svg`
 `;
 
 const DeleteSvgIcon = ({ onClick }) => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		width="30"
-		height="30"
-		viewBox="0 0 30 30"
-		fill="none"
-		onClick={onClick}
-		style={{ cursor: 'pointer' }}
-	>
-		<path
-			d="M6.83333 9.25H5.55556V25.5C5.55556 26.163 5.8248 26.7989 6.30406 27.2678C6.78332 27.7366 7.43334 28 8.11111 28H20.8889C21.5667 28 22.2167 27.7366 22.6959 27.2678C23.1752 26.7989 23.4444 26.163 23.4444 25.5V9.25H6.83333ZM20.4008 5.5L18.3333 3H10.6667L8.59922 5.5H3V8H26V5.5H20.4008Z"
-			fill="#707070"
-		/>
-		<line x1="14.5352" y1="24" x2="14.5352" y2="12" stroke="white" strokeWidth="1.5" />
-		<line x1="18.8223" y1="24" x2="18.8223" y2="12" stroke="white" strokeWidth="1.5" />
-		<line x1="10.25" y1="24" x2="10.25" y2="12" stroke="white" strokeWidth="1.5" />
-	</svg>
+	<svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        width="24" 
+        height="24" 
+        viewBox="0 0 24 24" 
+        fill="none"
+        onClick={onClick} 
+        style={{ cursor: 'pointer' }} 
+    >
+        <path d="M16.583 4.66667V2.83333C16.583 2.3471 16.3899 1.88079 16.046 1.53697C15.7022 1.19315 15.2359 1 14.7497 1H9.24967C8.76344 1 8.29713 1.19315 7.95331 1.53697C7.6095 1.88079 7.41634 2.3471 7.41634 2.83333V4.66667H2.83301V6.5H4.66634V20.25C4.66634 20.9793 4.95607 21.6788 5.4718 22.1945C5.98752 22.7103 6.687 23 7.41634 23H16.583C17.3124 23 18.0118 22.7103 18.5276 22.1945C19.0433 21.6788 19.333 20.9793 19.333 20.25V6.5H21.1663V4.66667H16.583ZM11.083 16.5833H9.24967V11.0833H11.083V16.5833ZM14.7497 16.5833H12.9163V11.0833H14.7497V16.5833ZM14.7497 4.66667H9.24967V2.83333H14.7497V4.66667Z" 
+            fill="#707070"
+        />
+    </svg>
 );
 
 const EditSvgIcon = ({ onClick }) => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		width="23"
-		height="23"
-		viewBox="0 0 23 23"
-		fill="none"
-		onClick={onClick}
-		style={{ cursor: 'pointer' }}
-	>
-		<path
-			d="M0 18.209V23H4.791L18.9213 8.86974L14.1303 4.07874L0 18.209ZM22.6263 5.1647C23.1246 4.66644 23.1246 3.86155 22.6263 3.36328L19.6367 0.373698C19.1385 -0.124566 18.3336 -0.124566 17.8353 0.373698L15.4973 2.71171L20.2883 7.50271L22.6263 5.1647Z"
-			fill="#707070"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		/>
-	</svg>
+	<svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        width="24" 
+        height="24" 
+        viewBox="0 0 24 24" 
+        fill="none"
+        onClick={onClick} 
+        style={{ cursor: 'pointer' }} 
+    >
+        <path d="M14.7785 5.5127L12.953 7.33789L9.302 10.9886L2 18.2901V22.0001H5.71L13.0115 14.6981L16.6622 11.0471L18.4876 9.22182L14.7785 5.5127Z" 
+            fill="#707070"
+        />
+        <path d="M21.2315 2.7681C20.7394 2.27628 20.0722 2 19.3765 2C18.6808 2 18.0135 2.27628 17.5215 2.7681L15.7715 4.5206L19.4805 8.2321L21.2305 6.4821C21.4747 6.23845 21.6684 5.94904 21.8007 5.63043C21.9329 5.31182 22.001 4.97027 22.0011 4.62531C22.0012 4.28035 21.9333 3.93876 21.8012 3.62008C21.6691 3.3014 21.4755 3.01189 21.2315 2.7681Z" 
+            fill="#707070"
+        />
+    </svg>
 );
+
 
 const DateInputWrapper = styled.div`
 	display: flex;
@@ -544,6 +543,17 @@ const CountdownBox = styled.div`
   }
 `;
 
+const StyledBackLink = styled(BackLink)`
+    color: #707070; 
+    display: flex;
+    align-items: center;
+    text-decoration: none; 
+    
+    img {
+        filter: invert(44%) sepia(1%) saturate(11%) hue-rotate(314deg) brightness(94%) contrast(83%);
+    }
+`;
+
 const ApplyDetail = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -565,7 +575,7 @@ const ApplyDetail = () => {
 			// introduceId가 없으면 기본값 설정
 			const updatedJobDetails = {
 				...jobDetails,
-				introduceId: jobDetails.introduceId ?? 0, // ✅ 기본값 설정
+				introduceId: jobDetails.introduceId ?? 0, // 기본값 설정
 			};
 	
 			setJob(updatedJobDetails);
@@ -689,9 +699,18 @@ const ApplyDetail = () => {
 		}
 	};
 
-	const handleAddReviewClick = () => {
+	const handleAddReviewClick = () => { 
+		// GA 트래킹 추가 (후기 추가 버튼 클릭)
+		trackEvent('add_click', {
+			category: 'apply',
+			detail: 'add_recruit_review',
+			action_type: 'add',
+			label: '전형 후기 추가',
+		});
+	
 		setShowReviewAdd(true);
 	};
+	
 
 	const handleCancelReviewAdd = () => {
 		setShowReviewAdd(false);
@@ -792,10 +811,10 @@ const ApplyDetail = () => {
 	return (
 		<Container>
 			<Title>지원현황</Title> 
-			<BackLink to="/apply-status">
-			<img src={SvgIconBefore} alt="Close" width={20} height={13} />
-                     지원공고 관리  
-            </BackLink>
+			<StyledBackLink to="/apply-status">
+              <img src={SvgIconBefore} alt="Close" width={20} height={13} />
+              지원공고 관리
+            </StyledBackLink>
 			<Header>
 				<TitleContainer>
 					<div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -876,10 +895,15 @@ const ApplyDetail = () => {
         <div className="time">{timeLeft}</div>
       </CountdownBox>
     )}
-	<TagLabel>
-		태그
-		{job?.tags && job.tags.length > 0 && job.tags.map((tag, idx) => <Tag key={idx}>{tag}</Tag>)}
-	</TagLabel>
+	 <TagLabel>
+            태그
+            {job?.tags && job.tags.length > 0 &&
+                job.tags.map((tag, idx) => (
+                    <Tag key={idx} onClick={() => navigate(`/filter?tag=${encodeURIComponent(tag)}`)}>
+                        {tag}
+                    </Tag>
+                ))}
+        </TagLabel>
 </SubHeader>
 			</Header>
 
@@ -898,8 +922,8 @@ const ApplyDetail = () => {
 					title: '서류',
 					date: new Date().toISOString().split("T")[0],
 					content: '',
-					introduceState: job.introduceState ?? 0, // ✅ 기본값 처리
-					introduceId: job.introduceId ?? 0, // ✅ introduceId 추가
+					introduceState: job.introduceState ?? 0, //  기본값 처리
+					introduceId: job.introduceId ?? 0, //  introduceId 추가
 				});
 			}
 			
@@ -922,7 +946,7 @@ const ApplyDetail = () => {
 	date={review.date}
 	content={review.content}
 	introduceState={review.introduceState}
-	introduceId={review.introduceId ?? 0} // ✅ introduceId 추가
+	introduceId={review.introduceId ?? 0} //  introduceId 추가
 	onDelete={() => handleReviewDelete(review.reviewId)}
 	fetchData={fetchJobDetails}
 />

@@ -188,20 +188,36 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
 
     if (isSearchClicked && (!recruits || recruits.length === 0)) {
         return (
-            <BackgroundSection style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100px' }}>
-                <p style={{ color: '#707070', fontSize: '16px' }}>
-                    ‘{searchTerm}’의 검색 결과가 없어요
-                </p>
+            <BackgroundSection 
+            style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                alignItems: 'center', 
+                justifyContent: 'center', // 기존 UI 유지
+                gap: '10px' // 요소 간 간격 추가
+            }}
+        >
+            <p style={{ 
+                color: '#707070', 
+                fontSize: '16px', 
+                marginTop: '-600px' // 검색 결과 없음 메시지만 위로 올리기
+            }}>
+                ‘{searchTerm}’의 검색 결과가 없어요
+            </p>
                 <button 
                     onClick={() => navigate('/apply-status')} 
                     style={{ 
                         backgroundColor: '#3AAF85', 
                         color: 'white', 
-                        padding: '10px 20px', 
+                        whiteSpace: 'nowrap', 
+                        padding: '7px 45px', 
                         borderRadius: '10px', 
                         border: 'none', 
+                        width: '180px',
+                        height: '32px',
+                        fontSize: '13px', 
                         cursor: 'pointer', 
-                        marginTop: '10px' 
+                        marginTop: '-10px' 
                     }}
                 >
                     내 공고 보러가기

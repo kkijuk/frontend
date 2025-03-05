@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // useNavigate import
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
@@ -8,11 +8,11 @@ import Title from '../../components/Apply/Title';
 import CareerView from '../../components/Mycareer/CareerView';
 import CareerViewYear from '../../components/Mycareer/CareerViewYear';
 import CareerViewCategory from '../../components/Mycareer/CareerViewCategory';
-import AddJobButton from '../../components/shared/AddJobButton';
 import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
 import SearchBar from '../../components/Mycareer/shareSearchBar';
 import CareerTimeline from '../../components/Mycareer/CareerTimeline';
 import useAuthRedirect from '../../stores/useAuthRedirect';
+import AddActivityButton from '../../components/Mycareer/AddActivityButton';
 
 const Container = styled.div`
 	width: 100%;
@@ -31,7 +31,7 @@ const SearchBox = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 20px;
-	margin-top: 35px;
+	margin-top: 40px;
 	box-sizing: border-box;
 
 	@media (max-width: 600px) {
@@ -83,7 +83,8 @@ export default function Mycareer() {
 				<div>
 					<CareerTimeline />
 					<CareerView view={view} onToggle={setView} />
-					<AddJobButton onClick={() => setShowModal(true)} />
+					<AddActivityButton onClick={() => setShowModal(true)} data={careers} />
+
 					{showModal && <AddCareerModal onClose={() => setShowModal(false)} onSave={handleAddCareer} />}
 				</div>
 			</Container>

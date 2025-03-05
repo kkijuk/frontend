@@ -4,6 +4,7 @@ import ReviewInputBox from './ReviewInputBox';
 import ReactCalendar from './ReviewCalendar';
 import moment from 'moment';
 import { ReviewAdd } from '../../api/Apply/ReviewAdd'; 
+import { trackEvent } from '../../utils/ga4';
 
 const Box = styled.div`
     height: 384px;
@@ -75,12 +76,12 @@ const Cancel = styled.div`
     height: 50px;
     flex-shrink: 0;
     border-radius: 10px;
-    border: 1.5px solid var(--sub-rd, #FA7C79);
+    border: 1.5px solid var(--sub-rd, #E0E0E0);
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--sub-rd, #FA7C79);
+    color: var(--sub-rd, #707070);  
     text-align: center;
     font-family: regular;
     font-size: 18px;
@@ -131,11 +132,20 @@ export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를
 
     const handleSaveClick = async () => {
         try {
+            // GA 트래킹 추가 (전형 후기 저장 버튼 클릭)
+            trackEvent('add_confirm', {
+                category: 'apply',
+                detail: 'add_recruit_review',
+                action_type: 'confirm',
+                label: '저장',
+            });
+    
             const reviewData = {
                 title,
                 content,
                 date: selectedDate,
             };
+    
             await ReviewAdd(recruitId, reviewData);
             onSave(); // 저장 후 콜백 실행 (예: 모달 닫기, 목록 갱신 등)
         } catch (error) {
