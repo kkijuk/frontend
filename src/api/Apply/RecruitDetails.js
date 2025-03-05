@@ -4,7 +4,7 @@ export const getRecruitDetails = async (id) => {
     try {
         const response = await api.get(`/recruit/${id}`);
 
-        // ✅ introduceId가 없으면 기본값 0을 설정
+        // introduceId가 없으면 기본값 0을 설정
         const updatedResponse = {
             ...response.data,
             id,

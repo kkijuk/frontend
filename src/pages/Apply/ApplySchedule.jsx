@@ -155,7 +155,7 @@ useEffect(() => {
 	
 			if (jobDetails) {
 				const jobId = job.recruitId || job.id;
-				const updatedJobDetails = { ...jobDetails, introduceId: jobDetails.introduceId ?? 0 }; // ✅ introduceId 추가
+				const updatedJobDetails = { ...jobDetails, introduceId: jobDetails.introduceId ?? 0 }; //  introduceId 추가
 	
 				navigate(`/apply-detail/${jobId}`, { state: { job: updatedJobDetails, from: 'list' } });
 			} else {
