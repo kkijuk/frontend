@@ -279,7 +279,7 @@ const FilterPage = () => {
 
 	return (
 		<Container>
-			<Layout title="지원관리">
+			<Layout >
 			<div style={{ display: 'flex', alignItems: 'center' }}>
 				<BackLink to="/apply-status">
 					<img src={SvgIconBefore} alt="Back" width={20} height={13} />
