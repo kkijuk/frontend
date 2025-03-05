@@ -575,7 +575,7 @@ const ApplyDetail = () => {
 			// introduceId가 없으면 기본값 설정
 			const updatedJobDetails = {
 				...jobDetails,
-				introduceId: jobDetails.introduceId ?? 0, // ✅ 기본값 설정
+				introduceId: jobDetails.introduceId ?? 0, // 기본값 설정
 			};
 	
 			setJob(updatedJobDetails);
@@ -922,8 +922,8 @@ const ApplyDetail = () => {
 					title: '서류',
 					date: new Date().toISOString().split("T")[0],
 					content: '',
-					introduceState: job.introduceState ?? 0, // ✅ 기본값 처리
-					introduceId: job.introduceId ?? 0, // ✅ introduceId 추가
+					introduceState: job.introduceState ?? 0, //  기본값 처리
+					introduceId: job.introduceId ?? 0, //  introduceId 추가
 				});
 			}
 			
@@ -946,7 +946,7 @@ const ApplyDetail = () => {
 	date={review.date}
 	content={review.content}
 	introduceState={review.introduceState}
-	introduceId={review.introduceId ?? 0} // ✅ introduceId 추가
+	introduceId={review.introduceId ?? 0} //  introduceId 추가
 	onDelete={() => handleReviewDelete(review.reviewId)}
 	fetchData={fetchJobDetails}
 />

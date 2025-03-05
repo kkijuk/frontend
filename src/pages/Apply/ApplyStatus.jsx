@@ -54,7 +54,7 @@ export default function ApplyStatus() {
 					(a, b) => new Date(a.endTime) - new Date(b.endTime)
 				);
 				setJobs(updatedJobs);
-				filterJobsByStatus(activeStatus); // ✅ 필터링 재적용
+				filterJobsByStatus(activeStatus); //  필터링 재적용
 			} else {
 				console.error('Failed to retrieve the newly created recruit');
 			}
@@ -108,7 +108,7 @@ export default function ApplyStatus() {
 		filterJobsByStatus(status);
 	};
 
-	// ✅ 개별 공고 클릭 핸들러
+	// 개별 공고 클릭 핸들러
 	const handleJobClick = async (job) => {
 		const jobId = job.recruitId || job.id;
 		if (jobId) {

@@ -150,7 +150,7 @@ const CalendarListView = ({ date, data, count, onJobClick }) => {
       const fullAdDetails = { 
           ...response.data, 
           id: ad.recruitId, 
-          introduceId: response.data.introduceId ?? 0 // ✅ introduceId 추가 (없으면 0 설정)
+          introduceId: response.data.introduceId ?? 0 //  introduceId 추가 (없으면 0 설정)
       };
 
       console.log('Full ad details with introduceId:', fullAdDetails);
