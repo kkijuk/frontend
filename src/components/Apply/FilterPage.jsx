@@ -167,12 +167,14 @@ const FilterPage = () => {
     const [sortOrder, setSortOrder] = useState('latest');
     const [activeTab, setActiveTab] = useState('전체');
     const [isSearchClicked, setIsSearchClicked] = useState(false);
-
+	const queryFromURL = queryParams.get('query'); //검색바 
 	const previousRecruits = useRef([]);
+
 	const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const tagFromURL = queryParams.get('tag');
+    const tagFromURL = queryParams.get('tag');//태그 
 	const [isTagSearch, setIsTagSearch] = useState(false);
+	const [isSearchTriggered, setIsSearchTriggered] = useState(false);
 
 	const fetchSearchResults = async (term) => {
 		if (!term.trim()) return; // 빈 검색어일 경우 실행 안 함
@@ -253,18 +255,21 @@ const FilterPage = () => {
     }, [recruits]);
 
 	useEffect(() => {
-		if (tagFromURL) {
-			setSearchTerm(tagFromURL);
-			setIsTagSearch(true); //  태그 검색 여부를 true로 설정
-		}
-	}, [tagFromURL]); //  URL에서 태그 값이 변경될 때 실행
-	
-	useEffect(() => {
-		if (isTagSearch && searchTerm) {
-			handleSearchClick();
-			setIsTagSearch(false); //  한 번 실행 후 다시 false로 설정 (중복 실행 방지)
-		}
-	}, [searchTerm]); //  searchTerm이 변경될 때 실행
+        if (queryFromURL) {
+            setSearchTerm(queryFromURL);
+            setIsSearchTriggered(true); // ✅ 일반 검색 실행
+        } else if (tagFromURL) {
+            setSearchTerm(tagFromURL);
+            setIsSearchTriggered(true); // ✅ 태그 검색 실행
+        }
+    }, [queryFromURL, tagFromURL]);
+
+    useEffect(() => {
+        if (isSearchTriggered && searchTerm) {
+            handleSearchClick();
+            setIsSearchTriggered(false); // ✅ 중복 실행 방지
+        }
+    }, [searchTerm]);
 	
 
 	return (
