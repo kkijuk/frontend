@@ -175,7 +175,7 @@ const FilterPage = () => {
 	const [isTagSearch, setIsTagSearch] = useState(false);
 
 	const fetchSearchResults = async (term) => {
-		if (!term.trim()) return;  // 빈 검색어일 경우 실행 안 함
+		if (!term.trim()) return; // 빈 검색어일 경우 실행 안 함
 	
 		try {
 			const { recruitResult, reviewResult } = await fetchRecruitList(term);
@@ -183,29 +183,26 @@ const FilterPage = () => {
 			let filteredRecruits = recruitResult || [];
 			let filteredReviews = reviewResult || [];
 	
-			if (activeTab === '공고') {
-				filteredRecruits = filteredRecruits.filter((recruit) => 
-					recruit.recruitTitle.includes(term)
-				);
-				setRecruits(filteredRecruits);
-			} else if (activeTab === '공고후기') {
-				filteredReviews = filteredReviews.filter((review) => 
-					review.recruitTitle.includes(term)
-				);
-				setRecruits(filteredReviews);
-			} else {
-				filteredRecruits = filteredRecruits.filter((recruit) => 
-					recruit.recruitTitle.includes(term)
-				);
-				filteredReviews = filteredReviews.filter((review) => 
-					review.recruitTitle.includes(term)
-				);
-				setRecruits([...filteredRecruits, ...filteredReviews]);
-			}
+			//  검색어가 공고 제목 또는 태그에 포함될 경우 필터링
+			filteredRecruits = filteredRecruits.filter((recruit) => 
+				recruit.recruitTitle.includes(term) || 
+				(recruit.tags && recruit.tags.some(tag => tag.includes(term))) // 태그에도 검색 적용
+			);
+	
+			//  검색어가 공고후기 제목에 포함될 경우 필터링
+			filteredReviews = filteredReviews.filter((review) => 
+				review.recruitTitle.includes(term) || 
+				(review.reviews && review.reviews.some(r => r.reviewTitle.includes(term))) // 후기 제목도 검색
+			);
+	
+			//  검색 결과를 합쳐서 설정 (공고 + 공고후기)
+			setRecruits([...filteredRecruits, ...filteredReviews]);
+	
 		} catch (error) {
 			console.error('Error fetching recruit list:', error);
 		}
 	};
+	
 	
 	
 	const handleSearchClick = () => {
@@ -258,16 +255,17 @@ const FilterPage = () => {
 	useEffect(() => {
 		if (tagFromURL) {
 			setSearchTerm(tagFromURL);
-			handleSearchClick();
+			setIsTagSearch(true); //  태그 검색 여부를 true로 설정
 		}
-	}, [tagFromURL]); // 태그 값이 변경될 때만 실행
-
-	 useEffect(() => {
-        if (isTagSearch && searchTerm) {
-            handleSearchClick();
-            setIsTagSearch(false); // 한 번 실행 후 다시 false로 설정 (중복 실행 방지)
-        }
-    }, [searchTerm]);
+	}, [tagFromURL]); //  URL에서 태그 값이 변경될 때 실행
+	
+	useEffect(() => {
+		if (isTagSearch && searchTerm) {
+			handleSearchClick();
+			setIsTagSearch(false); //  한 번 실행 후 다시 false로 설정 (중복 실행 방지)
+		}
+	}, [searchTerm]); //  searchTerm이 변경될 때 실행
+	
 
 	return (
 		<Container>
