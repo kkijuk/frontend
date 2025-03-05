@@ -165,12 +165,13 @@ export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를
                 <Title>
                     <Label>전형</Label>
                     <ReviewInputBox 
-                        height="50px" 
-                        width="460px" 
-                        placeholderText="전형 이름을 입력하세요." 
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
+                     height="50px" 
+                     width="460px" 
+                     placeholderText="전형 이름을 입력하세요." 
+                     value={title}
+                     onChange={(e) => setTitle(e.target.value)}
+                    type="text" //  전형 입력칸 → input 사용 (스크롤 없음)
+                     />
                 </Title>
                 <Date>
                     <Label>날짜</Label>
@@ -181,11 +182,12 @@ export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를
             <Middle>
                 <Label>전형 후기</Label>  
                 <ReviewInputBox 
-                    height="100px" 
-                    width="720px" 
-                    placeholderText="전형 후기를 입력하세요.(선택)"  
-                    value={content}
-                    onChange={handleContentChange} 
+                  height="100px" 
+                  width="720px" 
+                  placeholderText="전형 후기를 입력하세요.(선택)"  
+                 value={content}
+                 onChange={handleContentChange}
+                 type="textarea" // 전형 후기 입력칸 → textarea 사용 (스크롤 있음)
                 />
             </Middle>
             <Button>
