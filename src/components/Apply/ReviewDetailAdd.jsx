@@ -130,6 +130,12 @@ export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를
         setShowCalendar(false);
     };
 
+    const handleContentChange = (e) => {
+        if (e.target.value.length <= 1000) {
+            setContent(e.target.value);
+        }
+    };     
+
     const handleSaveClick = async () => {
         try {
             // GA 트래킹 추가 (전형 후기 저장 버튼 클릭)
@@ -157,11 +163,11 @@ export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를
         <Box>
             <Top>
                 <Title>
-                    <Label>제목</Label>
+                    <Label>전형</Label>
                     <ReviewInputBox 
                         height="50px" 
                         width="460px" 
-                        placeholderText="활동 제목을 작성하세요" 
+                        placeholderText="전형 이름을 입력하세요." 
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                     />
@@ -173,13 +179,13 @@ export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를
                 </Date>
             </Top>
             <Middle>
-                <Label>내용</Label>
+                <Label>전형 후기</Label>  
                 <ReviewInputBox 
                     height="100px" 
                     width="720px" 
-                    placeholderText="활동 세부 내용을 작성하세요" 
+                    placeholderText="전형 후기를 입력하세요.(선택)"  
                     value={content}
-                    onChange={(e) => setContent(e.target.value)}
+                    onChange={handleContentChange} 
                 />
             </Middle>
             <Button>
