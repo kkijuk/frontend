@@ -5,11 +5,11 @@ import styled from 'styled-components';
 import getColorByCategory from '../../utils/getColorByCategory';
 
 const Circle = styled.div`
-	width: 15px;
-	height: 15px;
+	width: 12px;
+	height: 12px;
 	border-radius: 50%;
 	background-color: ${(props) => getColorByCategory(props.category)};
-	margin: 0 6px 6px 0;
+	margin: 0 6px 3px 0;
 `;
 
 const TagContainer = styled.div`
