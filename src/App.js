@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
+import PageFooter from "./components/PageFooter";
 
 import queryClient from './api/queryClient/queryClient';
 import api, { setupApiInterceptors } from './Axios';
@@ -68,6 +69,16 @@ const MainContent = styled.div`
 const App = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
+
+	const showPageFooterRoutes = [
+        "/mycareer", "/mycareer_search", "/mycareer/:careerId/:category",
+        "/apply-schedule", "/apply-status", "/apply-detail/:id",
+        "/filter"
+    ];
+
+	const showPageFooter = showPageFooterRoutes.some(route => 
+        location.pathname.startsWith(route.replace(/:\w+/g, ""))
+    );
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
@@ -163,7 +174,7 @@ const App = () => {
 					<Route path="/delete-account" element={<DeleteAccount />} />
 				</Routes>
 			</MainContent>
-			{!hideHeaderFooter && <Footer />}
+			{showPageFooter ? <PageFooter /> : (!hideHeaderFooter && <Footer />)}
 		</AppContainer>
 	);
 };

@@ -5,6 +5,7 @@ const BackgroundSection = styled.div`
   width: 100vw;
   background-color: #f0f0f0;
   margin-top: 20px;
+  min-height: 100vh; 
   position: relative;
   padding: 20px 0;
   box-sizing: border-box;
@@ -139,7 +140,7 @@ const ListView = ({ data, onJobClick }) => {
     return (
       <BackgroundSection>
         <ContentSection>
-          <p style={{ textAlign: 'center', color: '#707070' }}>데이터가 없습니다.</p>
+          <p style={{ textAlign: 'center', color: '#707070' }}></p>
         </ContentSection>
       </BackgroundSection>
     );
