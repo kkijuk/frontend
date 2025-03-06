@@ -8,6 +8,7 @@ const CalendarBackgroundSection = styled.div`
   width: 100vw; 
   background-color: #f0f0f0;
   margin-top: 20px;
+  min-height: 100vh;
   position: relative;
   padding: 20px 0;
   box-sizing: border-box;
