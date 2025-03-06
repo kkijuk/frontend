@@ -139,8 +139,7 @@ const Container = styled.div`
 	margin: 0 auto;
 	padding: 24px 40px;
 	background-color: #fff;
-	border-radius: 8px;
-	 padding-bottom: 100px;
+	border-radius: 8px; 
 `;
 
 const BackLink = styled(Link)`

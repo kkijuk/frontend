@@ -25,7 +25,7 @@ const ContentSection = styled.div`
 const AdListStyled = styled.div`
   padding: 20px;
   border-radius: 10px;
-  margin-top: 15px;
+  margin-top: -5px;  
 `;
 
 const AdDateSection = styled.div`
