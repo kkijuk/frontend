@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import CustomCalendarPicker from "../CustomCalendarPicker";
+import { trackEvent } from "../../../utils/ga4";
 
 const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
@@ -193,6 +194,12 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                     }
                     onSave(formData);
                     onClose();
+                    trackEvent('add_confirm', {
+                      category: 'resume',
+                      detail: 'add_certificate',
+                      action_type: 'confirm',
+                      label: '추가',
+                    });
                   }}
                   style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
                   추가

@@ -220,6 +220,12 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
               }
               onSave(formData);
               onClose();
+              trackEvent('add_confirm', {
+                category: 'resume',
+                detail: 'add_education',
+                action_type: 'confirm',
+                label: '추가',
+              });
             }}
             style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
             추가
