@@ -14,6 +14,7 @@ import SearchBar from '../../components/Mycareer/shareSearchBar';
 import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 import { CareertextEdit } from '../../api/Mycareer/CareerEdit';
+import { trackEvent } from '../../utils/ga4';
 
 const Container = styled.div`
 	display: flex;
@@ -559,7 +560,18 @@ export default function MycareerDetail() {
 							/>
 							<EditBoxContainer>
 								<CancelButton onClick={handleCancelClick}>취소</CancelButton>
-								<EditButton onClick={handleSaveClick}>저장</EditButton>
+								<EditButton
+									onClick={() => {
+										trackEvent('btn_click', {
+											category: 'career',
+											detail: 'career_summary',
+											action_type: 'confirm',
+											label: '확인',
+										});
+										handleSaveClick();
+									}}>
+									저장
+								</EditButton>
 							</EditBoxContainer>
 						</EditActivityContent>
 					) : (
@@ -570,7 +582,17 @@ export default function MycareerDetail() {
 									<EditTag onClick={handleEditClick}>수정</EditTag>
 								</>
 							) : (
-								<Content style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={handleEditClick}>
+								<Content
+									style={{ textDecoration: 'underline', cursor: 'pointer' }}
+									onClick={() => {
+										trackEvent('add_conrifm', {
+											category: 'mycareer',
+											detail: 'career_summary',
+											action_type: 'add',
+											label: '활동 내역 추가',
+										});
+										handleEditClick();
+									}}>
 									활동내역을 작성해주세요.
 								</Content>
 							)}
@@ -579,7 +601,7 @@ export default function MycareerDetail() {
 				</CareerContentContainer>
 				<Line></Line>
 				<CareerListBox>
-					{isAdding && ( // ✅ 항상 맨 위에 DetailAdd를 추가
+					{isAdding && ( //항상 맨 위에 DetailAdd를 추가
 						<DetailAdd
 							onCancel={handleCancelAdd}
 							onSave={handleSaveAdd}
@@ -627,7 +649,7 @@ export default function MycareerDetail() {
 							)}
 						</>
 					) : (
-						// ✅ 활동이 없을 때만 NoContents 표시 (DetailAdd 중복 방지)
+						// 활동이 없을 때만 NoContents 표시 (DetailAdd 중복 방지)
 						<NoContents>
 							등록된 활동 기록이 없습니다. <br />
 							아래 버튼을 눌러 활동 기록을 추가해주세요!
@@ -635,7 +657,17 @@ export default function MycareerDetail() {
 					)}
 				</CareerListBox>
 
-				<CareerPlus onClick={handleAddButtonClick} disabled={editingDetailId !== null}>
+				<CareerPlus
+					onClick={() => {
+						trackEvent('add_click', {
+							category: 'mycareer',
+							detail: 'career_detail',
+							action_type: 'add',
+							label: '활동 기록 추가',
+						});
+						handleAddButtonClick();
+					}}
+					disabled={editingDetailId !== null}>
 					활동 기록 추가
 				</CareerPlus>
 				{isModalOpen && modalData && (

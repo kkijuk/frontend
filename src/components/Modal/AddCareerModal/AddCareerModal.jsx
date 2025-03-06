@@ -14,6 +14,7 @@ import ParticipantType from './ParticipantType';
 import { Form } from 'react-router-dom';
 import moment from 'moment'; // moment 라이브러리 임포트(세연)
 import DeletePopup from './DeletePopup';
+import { trackEvent } from '../../../utils/ga4';
 
 const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const navigate = useNavigate();
@@ -763,6 +764,14 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 
 	// 활동 추가 함수
 	const handleAddCareer = async () => {
+		if (!isEditMode) {
+			trackEvent('add_confirm', {
+				category: 'mycareer',
+				detail: 'add_career',
+				action_type: 'confirm',
+				label: '확인',
+			});
+		}
 		// 날짜 입력 유효성 검증
 		// if (hasError) {
 		// 	setFormErrors((prev) => ({ ...prev, startdate: !startdate ? "시작 날짜를 선택해주세요." : prev.startdate,
