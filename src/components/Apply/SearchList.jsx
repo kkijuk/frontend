@@ -9,7 +9,7 @@ const BackgroundSection = styled.div`
     transform: translateX(-50%);
     background-color: #f0f0f0;
     padding: 20px 0;
-    min-height: 100vh;
+    min-height: 110vh;  
     box-sizing: border-box;
 `;
 
