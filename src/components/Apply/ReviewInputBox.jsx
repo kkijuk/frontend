@@ -51,6 +51,17 @@ const Textarea = styled.textarea`
 
 // `type` prop을 추가하여 전형 입력칸은 `input`, 전형 후기는 `textarea`로 자동 설정
 export default function ReviewInputBox({ height, width, placeholderText, value, onChange, type = "text" }) {
+    
+    const maxLength = type === "textarea" ? 1000 : 30;
+
+    // 글자수 초과 입력 방지
+    const handleChange = (e) => {
+        if (e.target.value.length <= maxLength) {
+            onChange(e);
+        }
+    };
+    
+    
     return type === "textarea" ? (
         <Textarea 
             height={height} 

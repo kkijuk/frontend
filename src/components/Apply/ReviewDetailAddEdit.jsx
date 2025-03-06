@@ -200,12 +200,13 @@ export default function ReviewDetailAddEdit({
 				<Title>
 					<Label>전형</Label> 
 					<ReviewInputBox 
-	height="50px" 
-	width="460px" 
-	value={title} 
-	onChange={(e) => setTitle(e.target.value)}
-	disabled={disableTitleEdit} //  서류 리뷰는 제목 수정 비활성화
-/>
+                     height="50px" 
+                     width="460px" 
+                     value={title} 
+                     onChange={(e) => setTitle(e.target.value)}
+                     type="text"  //  전형 (타이틀) 입력란 - 30자 제한 적용 
+                     disabled={disableTitleEdit} 
+                      />
 				</Title>
 				<Date>
 					<Label>날짜</Label>
@@ -215,7 +216,14 @@ export default function ReviewDetailAddEdit({
 			</Top>
 			<Middle>
 				<Label>전형 후기</Label> 
-				<ReviewInputBox height="100px" width="720px" value={contents} onChange={(e) => setContents(e.target.value)} />
+				<ReviewInputBox 
+                   height="100px" 
+                   width="720px" 
+                   value={contents} 
+                   onChange={(e) => setContents(e.target.value)} 
+                   type="textarea" // 전형 후기 입력란 - 1000자 제한 적용
+                />
+
 			</Middle>
 
 			<Button>
