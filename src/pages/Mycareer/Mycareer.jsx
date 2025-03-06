@@ -26,12 +26,11 @@ const Container = styled.div`
 const SearchBox = styled.div`
 	width: 100%;
 	max-width: 820px;
-	height: 36px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 20px;
-	margin-top: 40px;
+	margin-top: 20px;
 	box-sizing: border-box;
 
 	@media (max-width: 600px) {
@@ -54,6 +53,7 @@ export default function Mycareer() {
 	const fetchData = async () => {
 		const status = view === 'year' ? 'year' : 'category';
 		const data = await CareerViewSelect(status);
+
 		if (data) {
 			setCareers(data.data);
 		}
@@ -78,7 +78,7 @@ export default function Mycareer() {
 			<Container>
 				<SearchBox>
 					<Title>내커리어</Title>
-					<SearchBar onClick={handleSearchClick} /> {/* 클릭 이벤트 추가 */}
+					<SearchBar onClick={handleSearchClick} />
 				</SearchBox>
 				<div>
 					<CareerTimeline />

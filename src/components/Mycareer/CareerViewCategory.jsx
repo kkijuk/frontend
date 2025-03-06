@@ -14,8 +14,13 @@ const BackgroundSection = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: flex-start;
-	padding: 20px 0;
+	padding-top: 24px;
 `;
+
+const Container = styled.div`
+	margin-bottom: 24px;
+`;
+
 const CategoryBox = styled.div`
 	width: 100%;
 	max-width: 820px;
@@ -29,22 +34,17 @@ const CategoryBox = styled.div`
 
 const Category = styled.div`
 	width: 820px;
-	height: 25px;
 	display: flex;
 	align-items: center;
-	margin-bottom: 10px;
-	margin-top: 25px;
+	margin-bottom: 12px;
 `;
 
 const CategoryText = styled.div`
 	color: var(--black, #000);
-	font-family: regular;
-	font-size: 20px;
+	font-family: Pretendard;
+	font-size: 16px;
 	font-weight: 400;
 	line-height: normal;
-	margin-top: 14px;
-	margin-bottom: 20px;
-	margin-left: 10px;
 
 	@media (max-width: 600px) {
 		font-size: 16px; /* 작은 화면에서 폰트 크기 축소 */
@@ -72,7 +72,7 @@ const Name = styled.div``;
 const AliasName = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 400;
 	line-height: normal;
 	margin-bottom: 3px;
@@ -90,17 +90,17 @@ const CareerContainer = styled.div`
 const CareerName = styled.div`
 	color: var(--black, #000);
 	font-family: bold;
-	font-size: 18px;
+	font-size: 16px;
+	font-weight: 700;
 	font-style: regular;
 	line-height: normal;
 	margin-bottom: 9px;
-	margin-top: 3px;
 `;
 
 const Date = styled.div`
-	font-size: 14px;
-	color: #555;
-	margin-bottom: 8px;
+	font-size: 12px;
+	color: var(--gray-02, #707070);
+	font-weight: 400;
 `;
 const CareerViewCategory = ({ data }) => {
 	const navigate = useNavigate();
@@ -148,7 +148,7 @@ const CareerViewCategory = ({ data }) => {
 					if (!Array.isArray(data[category]) || data[category].length === 0) return null;
 
 					return (
-						<React.Fragment key={category}>
+						<Container key={category}>
 							<Category>
 								<CareerCategoryCircle category={category} />
 								<CategoryText>{formatCategoryName(category)}</CategoryText> {/* 세연 수정 */}
@@ -170,7 +170,7 @@ const CareerViewCategory = ({ data }) => {
 									</Date>
 								</ListBox>
 							))}
-						</React.Fragment>
+						</Container>
 					);
 				})}
 			</CategoryBox>
