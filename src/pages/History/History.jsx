@@ -369,7 +369,7 @@ const History = () => {
 								<AddButton onClick={()=> {
 									trackEvent('add_click', {
 										category: 'resume',
-										detail: 'add_experience',
+										detail: 'add_employments',
 										action_type: 'add',
 										label: '경력 추가',
 									});
@@ -402,7 +402,7 @@ const History = () => {
 								<AddButton onClick={()=> {
 									trackEvent('add_click', {
 										category: 'resume',
-										detail: 'add_career',
+										detail: 'add_activitiesAndExperiences',
 										action_type: 'add',
 										label: '활동 및 경험 추가',
 									});
