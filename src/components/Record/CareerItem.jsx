@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { editCareerSummary } from '../../api/Mycareer/Career';
 import { KebabMenu1 } from './KebabMenu';
 import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
+import { trackEvent } from '../../utils/ga4';
 
 const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 	// const today = new Date();
@@ -25,6 +26,47 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 		navigate(`/mycareer/${data.category.categoryKoName}/${data.id}`);
 	}
 
+	// GA4
+	const trackCategoryEvent = (category) => {
+		switch(category) {
+			case 'CIRCLE':
+			case 'ACTIVITY':
+			case 'ETC':
+				trackEvent('edit_click', {
+					category: 'resume',
+					detail: 'edit_activitiesAndExperiences_summary',
+					action_type: 'edit',
+					label: '활동내역 수정하기',
+				});
+				break;
+			case 'PROJECT':
+			case 'COM':
+				trackEvent('edit_click', {
+					category: 'resume',
+					detail: 'edit_project_summary',
+					action_type: 'edit',
+					label: '활동내역 수정하기',
+				});
+				break;
+			case 'EMP':
+				trackEvent('edit_click', {
+					category: 'resume',
+					detail: 'edit_career_summary',
+					action_type: 'edit',
+					label: '활동내역 수정하기',
+				});
+				break;
+			case 'EDU':
+				trackEvent('edit_click', {
+					category: 'resume',
+					detail: 'edit_training_summary',
+					action_type: 'edit',
+					label: '활동내역 수정하기',
+				});
+				break;
+		}
+	}
+
 	// 활동 내역 수정
 	const handleDetailSave = async () => {
 		try{
@@ -39,6 +81,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 			
 			// 수정된 데이터로 상태 업데이트
 			setDetail(updatedData.summary);
+			trackCategoryEvent(data.category.categoryEnName);
 		} catch (error) {
 			console.error('활동내역 수정 실패: ', error);
 		}
