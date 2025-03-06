@@ -14,6 +14,7 @@ import ParticipantType from './ParticipantType';
 import { Form } from 'react-router-dom';
 import moment from 'moment'; // moment 라이브러리 임포트(세연)
 import DeletePopup from './DeletePopup';
+import { trackEvent } from '../../../utils/ga4';
 
 const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const navigate = useNavigate();
@@ -761,6 +762,94 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		}
 	};
 
+	// GA4
+	const trackCategoryEvent = (category) => {
+		if (isEditMode) {
+		switch(category) {
+			case 1 : 
+			case 2:
+			case 7:
+				//활동 및 경험(동아리, 활동, 기타)
+				trackEvent('add_confirm', {
+					category:'resume',
+					detail: 'add_activitiesAndExperiences',
+					action_type:'confirm',
+					label: '확인',
+				});
+				break;
+			case 3: 
+			case 4:
+				//공모전/대회, 프로젝트
+				trackEvent('add_confirm', {
+					category:'resume',
+					detail: 'add_project',
+					action_type:'confirm',
+					label: '확인',
+				});
+				break;
+			case 5: //경력
+				trackEvent('add_confirm', {
+					category:'resume',
+					detail: 'add_career',
+					action_type:'confirm',
+					label: '확인',
+				});
+				break;
+			case 6: //교육
+				trackEvent('add_confirm', {
+					category:'resume',
+					detail: 'add_training',
+					action_type:'confirm',
+					label: '확인',
+				});
+				break;
+			default:
+				return;
+		}} else {
+			switch(category) {
+				case 1 : 
+				case 2:
+				case 7:
+					//활동 및 경험(동아리, 활동, 기타)
+					trackEvent('edit_click', {
+						category:'resume',
+						detail: 'edit_activitiesAndExperiences',
+						action_type:'edit',
+						label: '활동 수정하기',
+					});
+					break;
+				case 3: 
+				case 4:
+					//공모전/대회, 프로젝트
+					trackEvent('edit_click', {
+						category:'resume',
+						detail: 'edit_project',
+						action_type:'edit',
+						label: '활동 수정하기',
+					});
+					break;
+				case 5: //경력
+					trackEvent('edit_click', {
+						category:'resume',
+						detail: 'edit_career',
+						action_type:'edit',
+						label: '활동 수정하기',
+					});
+					break;
+				case 6: //교육
+					trackEvent('edit_click', {
+						category:'resume',
+						detail: 'edit_training',
+						action_type:'edit',
+						label: '활동 수정하기',
+					});
+					break;
+				default:
+					return;
+			}
+		}	
+	};
+
 	// 활동 추가 함수
 	const handleAddCareer = async () => {
 		// 날짜 입력 유효성 검증
@@ -870,6 +959,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		}
 
 		onClose();
+		trackCategoryEvent(selectedCategory);
 	};
 
 	// 활동 삭제 함수
