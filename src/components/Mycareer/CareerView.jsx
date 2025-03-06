@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const ViewToggleStyled = styled.div`
 	display: flex;
 	justify-content: space-between;
-	align-items: center;
+	align-items: top;
 	flex-wrap: wrap; /* 화면 크기가 작아지면 버튼과 제목이 줄 바꿈되도록 설정 */
 
 	@media (max-width: 600px) {
