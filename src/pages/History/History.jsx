@@ -366,7 +366,15 @@ const History = () => {
 								key = {sections[2].id}
 							>
 								<h2>경력</h2>
-								<AddButton onClick={()=> handleOpenCareerModal("EMP")}>+</AddButton>
+								<AddButton onClick={()=> {
+									trackEvent('add_click', {
+										category: 'resume',
+										detail: 'add_experience',
+										action_type: 'add',
+										label: '경력 추가',
+									});
+									handleOpenCareerModal("EMP");
+								}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{employments.length === 0 && 
@@ -391,7 +399,15 @@ const History = () => {
 								key = {sections[3].id}
 							>
 								<h2>활동 및 경험</h2>
-								<AddButton onClick={()=> handleOpenCareerModal("ACTIVITY")}>+</AddButton>
+								<AddButton onClick={()=> {
+									trackEvent('add_click', {
+										category: 'resume',
+										detail: 'add_career',
+										action_type: 'add',
+										label: '활동 및 경험 추가',
+									});
+									handleOpenCareerModal("ACTIVITY");
+								}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{activitiesAndExperiences.length === 0 && 
@@ -416,7 +432,15 @@ const History = () => {
 								key = {sections[4].id}
 							>
 								<h2>프로젝트</h2>
-								<AddButton onClick={()=> handleOpenCareerModal("PROJECT")}>+</AddButton>
+								<AddButton onClick={()=> {
+									trackEvent('add_click', {
+										category: 'resume',
+										detail: 'add_project',
+										action_type: 'add',
+										label: '프로젝트 추가',
+									});
+									handleOpenCareerModal("PROJECT");
+								}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{projects.length === 0 && 
@@ -441,7 +465,15 @@ const History = () => {
 								key = {sections[5].id}
 							>
 								<h2>교육</h2>
-								<AddButton onClick={()=> handleOpenCareerModal("EDU")}>+</AddButton>
+								<AddButton onClick={()=> {
+									trackEvent('add_click', {
+										category: 'resume',
+										detail: 'add_training',
+										action_type: 'add',
+										label: '교육 추가',
+									});
+									handleOpenCareerModal("EDU");
+								}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{eduCareers.length === 0 && 
@@ -466,7 +498,15 @@ const History = () => {
 								key = {sections[6].id}
 							>
 								<h2>수상</h2>
-								<AddButton onClick={() => toggleAddForm('awards')}>+</AddButton>
+								<AddButton onClick={() => {
+									trackEvent('add_click', {
+										category: 'resume',
+										detail: 'add_award',
+										action_type: 'add',
+										label: '수상 추가',
+									});
+									toggleAddForm('awards');
+								}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{openedForms.add.awards &&
@@ -496,7 +536,15 @@ const History = () => {
 								key = {sections[7].id}
 							>
 								<h2>자격증 · 외국어</h2>
-								<AddButton onClick={() => toggleAddForm('licenses')}>+</AddButton>
+								<AddButton onClick={() => {
+									trackEvent('add_click', {
+										category: 'resume',
+										detail: 'add_certificate',
+										action_type: 'add',
+										label: '자격증/외국어 추가',
+									});
+									toggleAddForm('licenses');
+								}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper style={{gap:'50px'}}>
 								{openedForms.add.licenses &&
@@ -547,7 +595,15 @@ const History = () => {
 								key = {sections[8].id}
 							>
 								<h2>스킬</h2>
-								<AddButton onClick={() => toggleAddForm('skills')}>+</AddButton>
+								<AddButton onClick={() => {
+									trackEvent('add_click', {
+										category: 'resume',
+										detail: 'add_skill',
+										action_type: 'add',
+										label: '스킬 추가',
+									});
+									toggleAddForm('skills');
+								}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{openedForms.add.skills &&
@@ -586,7 +642,15 @@ const History = () => {
 							key = {sections[9].id}
 						>
 							<h2>추가자료</h2>
-							<AddButton onClick={() => toggleAddForm('files')}>+</AddButton>
+							<AddButton onClick={() => {
+								trackEvent('add_click', {
+									category: 'resume',
+									detail: 'add_attachment',
+									action_type: 'add',
+									label: '추가자료 추가',
+								});
+								toggleAddForm('files');
+							}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{openedForms.add.files &&
