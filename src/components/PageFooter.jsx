@@ -4,7 +4,7 @@ import FooterLogo from '../assets/logo.png';
 
 const FooterContainer = styled.footer`
     display: flex;
-    width: 1280px;
+    width: 100%;
     height: 160px;
     flex-direction: column;
     justify-content: center;
@@ -14,14 +14,16 @@ const FooterContainer = styled.footer`
 
 const FooterLogoImage = styled.img`
     width: auto;
-    height: 50px; /* 로고 크기 조정 */
-    margin-bottom: 10px; /* 로고 아래 여백 */
+    height: 50px; 
+    margin-bottom: 10px; 
 `;
 
 const FooterText = styled.p`
-    font-size: 14px;
     color: #707070;
-    font-family: Pretendard, sans-serif;
+    font-family: normal;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: normal;
 `;
 
 export default function PageFooter() {
