@@ -764,7 +764,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 
 	// GA4
 	const trackCategoryEvent = (category) => {
-		if (isEditMode) {
+		if (!isEditMode) {
 		switch(category) {
 			case 1 : 
 			case 2:
