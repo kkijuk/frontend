@@ -140,6 +140,7 @@ const Container = styled.div`
 	padding: 24px 40px;
 	background-color: #fff;
 	border-radius: 8px;
+	 padding-bottom: 100px;
 `;
 
 const BackLink = styled(Link)`
@@ -967,7 +968,12 @@ const ApplyDetail = () => {
 			)}
 
 			<ButtonContainer>
-				<Button onClick={handleAddReviewClick}>전형 후기 추가</Button>
+			<Button 
+        onClick={!showReviewAdd && !isEditModalOpen ? handleAddReviewClick : null} 
+        disabled={showReviewAdd || isEditModalOpen} 
+    >
+        전형 후기 추가
+    </Button>
 			</ButtonContainer>
 
 			{isEditModalOpen && <EditApplyModal job={job} onClose={handleCloseEditModal} onSave={handleSave} />}
