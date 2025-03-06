@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { getIntroduce } from '../../api/Home/getIntroduce';
 import { useNavigate } from 'react-router-dom';
+import { trackEvent } from '../../utils/ga4';
 
 const Container = styled.div`
 	flex-shrink: 0;
@@ -132,7 +133,19 @@ export default function WritingNoti() {
 				const fontB = num <= 7 ? 'SemiBold' : 'Medium';
 
 				return (
-					<Box key={index} onClick={() => handleClick(isEmpty, id)}>
+					<Box
+						key={index}
+						onClick={() => {
+							if (isEmpty) {
+								trackEvent('add_click', {
+									category: 'home',
+									detail: 'add_cover',
+									action_type: 'add',
+									label: '자기소개서 작성하기',
+								});
+							}
+							handleClick(isEmpty, id);
+						}}>
 						{isEmpty ? (
 							<PlaceholderText>자기소개서를 작성해 주세요</PlaceholderText>
 						) : (

@@ -13,6 +13,7 @@ import SearchBar from '../../components/Mycareer/shareSearchBar';
 import CareerTimeline from '../../components/Mycareer/CareerTimeline';
 import useAuthRedirect from '../../stores/useAuthRedirect';
 import AddActivityButton from '../../components/Mycareer/AddActivityButton';
+import { trackEvent } from '../../utils/ga4';
 
 const Container = styled.div`
 	width: 100%;
@@ -73,6 +74,17 @@ export default function Mycareer() {
 		navigate('/Mycareer_search'); // 원하는 경로로 페이지 이동
 	};
 
+	const handleAddActivityClick = () => {
+		trackEvent('add_click', {
+			category: 'mycareer',
+			detail: 'add_career',
+			action_type: 'add',
+			label: '활동 추가',
+		});
+
+		setShowModal(true);
+	};
+
 	return (
 		<>
 			<Container>
@@ -83,7 +95,7 @@ export default function Mycareer() {
 				<div>
 					<CareerTimeline />
 					<CareerView view={view} onToggle={setView} />
-					<AddActivityButton onClick={() => setShowModal(true)} data={careers} />
+					<AddActivityButton onClick={handleAddActivityClick} data={careers} />
 
 					{showModal && <AddCareerModal onClose={() => setShowModal(false)} onSave={handleAddCareer} />}
 				</div>
