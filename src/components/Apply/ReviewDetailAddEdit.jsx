@@ -5,6 +5,7 @@ import ReactCalendar from './ReviewCalendar';
 import moment from 'moment';
 import { editReview } from '../../api/Apply/ReviewEdit';
 import { deleteReview } from '../../api/Apply/DeleteReview';
+import ApplyDeleteModal from '../../components/Apply/ReviewDeleteModal';
 
 const Box = styled.div`
 	height: 384px;
@@ -132,6 +133,7 @@ export default function ReviewDetailAddEdit({
 	const [title, setTitle] = useState(initialTitle);
 	const [contents, setContents] = useState(initialContents);
 	const [isEditing, setIsEditing] = useState(true); // 수정란 상태
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 삭제 모달 상태
 
 	const handleDateClick = () => {
 		setShowCalendar(!showCalendar);
@@ -167,27 +169,27 @@ export default function ReviewDetailAddEdit({
 		}
 	};
 
-	const handleDeleteClick = async () => {
-		const confirmed = window.confirm('정말로 삭제하시겠습니까?');
-		if (confirmed) {
-			try {
-				await deleteReview(recruitId, reviewId);
+const handleDeleteClick = () => {
+		setIsDeleteModalOpen(true); // 삭제 모달 열기
+	};
 
-				if (onDelete) {
-					onDelete(); // 부모 컴포넌트에서 상태 업데이트를 위한 콜백 함수 호출
-				}
+	const handleConfirmDelete = async () => {
+		try {
+			await deleteReview(recruitId, reviewId);
 
-				// 삭제 후 최신 데이터를 가져옵니다.
-				if (fetchData) {
-					await fetchData(); // 추가
-				}
-
-				setIsEditing(false); // 수정란 닫기
-				alert('삭제되었습니다.');
-			} catch (error) {
-				console.error('Failed to delete review:', error);
+			if (onDelete) {
+				onDelete(); // 부모 컴포넌트에서 상태 업데이트를 위한 콜백 함수 호출
 			}
+
+			if (fetchData) {
+				await fetchData();
+			}
+
+			setIsEditing(false);
+		} catch (error) {
+			console.error('Failed to delete review:', error);
 		}
+		setIsDeleteModalOpen(false); // 모달 닫기
 	};
 
 	if (!isEditing) {
