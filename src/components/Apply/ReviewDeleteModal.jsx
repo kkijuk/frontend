@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const Background = styled.div`
@@ -44,9 +44,9 @@ const ButtonContainer = styled.div`
 	margin-top: 15px;
 `;
 
-const CancelButton = styled.button`
+const StyledButton = styled.button`
 	width: 120px;
-	height: 35px;
+	height: 40px; /* 🔥 버튼 크기 살짝 키움 */
 	border-radius: 12px;
 	cursor: pointer;
 	font-family: Regular;
@@ -54,51 +54,47 @@ const CancelButton = styled.button`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-top: 5px;
-	border: 1.5px solid #E0E0E0;
-	background: #fff;
-	color: #707070;
-`;
+	border: none;
+	padding: 0;
+	outline: none;
+	background: ${({ isDelete }) => (isDelete ? '#FF7979' : '#FFF')};
+	color: ${({ isDelete }) => (isDelete ? 'white' : '#707070')};
+	border: ${({ isDelete }) => (isDelete ? '1.5px solid #FF7979' : '1.5px solid #E0E0E0')};
+	width: 100%;
+	height: 100%;
+	
+	/* 🔥 버튼 클릭 범위 확장 */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
 
-const ConfirmButton = styled.button`
-	width: 120px;
-	height: 35px;
-	border-radius: 12px;
-	cursor: pointer;
-	font-family: Regular;
-	font-size: 15px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-top: 5px;
-	border: 1.5px solid #FF7979;
-	background: #FF7979;
-	color: white;
+	&:hover {
+		background: ${({ isDelete }) => (isDelete ? '#e06666' : '#f5f5f5')};
+	}
 `;
 
 const ReviewDeleteModal = ({ onClose, onConfirm }) => {
-
-	//  삭제 버튼을 누르면 모달이 즉시 닫히고, 삭제 실행
+	// ✅ 삭제 버튼 클릭 시 동작
 	const handleDelete = async () => {
-		onClose(); // 모달 닫기 먼저 실행
-		await onConfirm(); // 삭제 실행
+		onClose(); // ✅ 모달 닫기
+		await onConfirm(); // ✅ 삭제 실행
 	};
 
 	return (
-		<Background onClick={onClose}>
-			<Modal > {/* 모달 바깥 클릭 시 닫힘 방지 */}
+		<Background>
+			<Modal>
 				<ModalTitle>
 					해당 전형 후기를
 					<br />
 					정말로 삭제하시겠습니까?
 				</ModalTitle>
 				<ButtonContainer>
-					<CancelButton onClick={onClose}>취소</CancelButton>
-					<ConfirmButton onClick={handleDelete}>삭제</ConfirmButton>
+					<StyledButton onClick={onClose}>취소</StyledButton> {/* ✅ 취소 버튼 정상 동작 */}
+					<StyledButton isDelete onClick={handleDelete}>삭제</StyledButton> {/* ✅ 삭제 버튼 정상 동작 */}
 				</ButtonContainer>
 			</Modal>
 		</Background>
-		
 	);
 };
 
