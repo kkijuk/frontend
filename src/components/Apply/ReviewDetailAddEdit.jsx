@@ -5,7 +5,7 @@ import ReactCalendar from './ReviewCalendar';
 import moment from 'moment';
 import { editReview } from '../../api/Apply/ReviewEdit';
 import { deleteReview } from '../../api/Apply/DeleteReview';
-import ApplyDeleteModal from '../../components/Apply/ReviewDeleteModal';
+import ReviewDeleteModal from '../../components/Apply/ReviewDeleteModal';
 
 const Box = styled.div`
 	height: 384px;
@@ -133,7 +133,7 @@ export default function ReviewDetailAddEdit({
 	const [title, setTitle] = useState(initialTitle);
 	const [contents, setContents] = useState(initialContents);
 	const [isEditing, setIsEditing] = useState(true); // 수정란 상태
-	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 삭제 모달 상태
+	const [isReviewDeleteModalOpen, setIsReviewDeleteModalOpen] = useState(false); // 삭제 모달 상태
 
 	const handleDateClick = () => {
 		setShowCalendar(!showCalendar);
@@ -169,27 +169,26 @@ export default function ReviewDetailAddEdit({
 		}
 	};
 
-const handleDeleteClick = () => {
-		setIsDeleteModalOpen(true); // 삭제 모달 열기
+	const handleReviewDeleteClick = () => {
+		setIsReviewDeleteModalOpen(true);
 	};
 
-	const handleConfirmDelete = async () => {
+	// ✅ 후기 삭제 모달에서 "삭제" 버튼 클릭 시 실행
+	const handleConfirmReviewDelete = async () => {
 		try {
 			await deleteReview(recruitId, reviewId);
 
 			if (onDelete) {
-				onDelete(); // 부모 컴포넌트에서 상태 업데이트를 위한 콜백 함수 호출
+				onDelete(); // ✅ 부모 컴포넌트에서 상태 업데이트
 			}
 
 			if (fetchData) {
 				await fetchData();
 			}
-
-			setIsEditing(false);
 		} catch (error) {
 			console.error('Failed to delete review:', error);
 		}
-		setIsDeleteModalOpen(false); // 모달 닫기
+		setIsReviewDeleteModalOpen(false); // ✅ 모달 닫기
 	};
 
 	if (!isEditing) {
@@ -197,6 +196,7 @@ const handleDeleteClick = () => {
 	}
 
 	return (
+		<>
 		<Box>
 			<Top>
 				<Title>
@@ -229,11 +229,16 @@ const handleDeleteClick = () => {
 			</Middle>
 
 			<Button>
-			{onDelete && (
-	         <Cancel onClick={handleDeleteClick}>삭제</Cancel>
-            )}
+			{onDelete && <Cancel onClick={handleReviewDeleteClick}>삭제</Cancel>}
 				<Save onClick={handleSaveClick}>저장</Save>
 			</Button>
 		</Box>
-	);
-}
+		{isReviewDeleteModalOpen && (
+			<ReviewDeleteModal 
+				onClose={() => setIsReviewDeleteModalOpen(false)}
+				onConfirm={handleConfirmReviewDelete} 
+			/>
+		)}
+	</>
+);
+};
