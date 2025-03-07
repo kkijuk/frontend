@@ -192,15 +192,17 @@ export default function ReviewDetailAddEdit({
 					<Title>
 						<Label>전형</Label> 
 						<ReviewInputBox
-                          height="50px"
-                          width="460px"
-                          value={title}
-                          onChange={(e) => setTitle(e.target.value)}
-                          type="text"
-                          disabled={disableTitleEdit} // 서류 후기 제목 비활성화
-                          readOnly={disableTitleEdit} // 입력을 아예 차단
-                          style={disableTitleEdit ? { backgroundColor: "#f5f5f5", color: "#b0b0b0", cursor: "not-allowed" } : {}} // 회색 처리하여 수정 불가 표시
-                        />
+    height="50px"
+    width="460px"
+    value={disableTitleEdit ? "서류" : title} // 서류 후기는 값 변경 불가능하게 고정
+    onChange={(e) => {
+        if (!disableTitleEdit) setTitle(e.target.value); // 서류 후기는 제목 변경 불가
+    }}
+    type="text"
+    disabled={disableTitleEdit} // 서류 제목 비활성화
+    readOnly={disableTitleEdit} // 입력을 아예 차단
+    style={disableTitleEdit ? { backgroundColor: "#f5f5f5", color: "#b0b0b0", cursor: "not-allowed" } : {}} 
+/>
 					</Title>
 					<Date>
 						<Label>날짜</Label>

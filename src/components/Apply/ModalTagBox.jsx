@@ -80,6 +80,7 @@ const CloseButton = styled.button`
 const Tag = styled.div`
   background: #F5F5F5;
   color: var(--main-01, #3aaf85);
+  border: 1.5px solid #707070;
   border-radius: 10px;
   padding: 4px 8px;
   font-size: 13px;
@@ -99,10 +100,8 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
   useEffect(() => {
     if (typeof onTagListChange === 'function') {
       onTagListChange(tags);
-    } else {
-      console.error('onTagListChange is not a function');
     }
-  }, [tags]);
+  }, [tags, onTagListChange]);
 
   // 태그 불러오기 (GET 요청)
   useEffect(() => {
@@ -131,10 +130,11 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
         try {
           const createdTag = await addModalTag(newTag);
           const tagName = createdTag?.tagName || newTag;
-          if (tagName) {
-            setTags([...tags, tagName]);
-            onTagListChange([...tags, tagName]);
-          }
+          setTags((prevTags) => {
+            const updatedTags = [...prevTags, tagName];
+            onTagListChange(updatedTags);
+            return updatedTags;
+          });
           setInputValue('');
         } catch (error) {
           console.error('태그 추가 오류:', error);
@@ -199,7 +199,7 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
         <TagBoxList>
           <TagBoxListContainer>
             {allTags.map((tag) => (
-              <Tag key={tag} onClick={() => handleTagSelect(tag)}> {/* 클릭 시 선택되도록 변경 */}
+              <Tag key={tag} onClick={() => handleTagSelect(tag)}>
                 {tag}
               </Tag>
             ))}

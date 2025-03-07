@@ -111,6 +111,7 @@ export default function ReviewList({ recruitId, reviewId, title, date, content =
 	const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
 	const [documentReviewAdded, setDocumentReviewAdded] = useState(false); // 서류 리뷰 추가 여부 확인
 	const navigate = useNavigate();
+	const disableTitleEdit = introduceState === 1 && title === '서류';
 
 	useEffect(() => {
 		// introduceState === 1이면 "서류" 리뷰 자동 생성 및 저장
@@ -192,16 +193,17 @@ export default function ReviewList({ recruitId, reviewId, title, date, content =
         reviewId={reviewId}
         initialTitle={title}
         initialDate={date}
-        initialContents={content} // `initialContent` -> `initialContents` 수정
-        onDelete={introduceState === 1 && title === '서류' ? null : handleDeleteClick} // 서류 후기는 삭제 비활성화
+        initialContents={content}
+        onDelete={!disableTitleEdit ? handleDeleteClick : null} // 서류 후기는 삭제 비활성화
         onSave={() => {
             setIsDetailAddVisible(false);
             fetchData();
         }}
         fetchData={fetchData}
-        disableTitleEdit={introduceState === 1 && title === '서류'} // 서류 제목 비활성화
+       disableTitleEdit={disableTitleEdit} // 서류 제목 비활성화
     />
 )}
+
 
 			<Line></Line>
 		</div>
