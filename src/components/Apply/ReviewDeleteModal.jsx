@@ -91,6 +91,12 @@ const ReviewDeleteModal = ({ onClose, onConfirm }) => {
 		};
 	}, [onClose]);
 
+	//  삭제 버튼을 누르면 모달이 즉시 닫히고, 삭제 실행
+	const handleDelete = async () => {
+		onClose(); // 모달 닫기 먼저 실행
+		await onConfirm(); // 삭제 실행
+	};
+
 	return (
 		<Background onClick={onClose}>
 			<Modal onClick={(e) => e.stopPropagation()}> {/* 모달 바깥 클릭 시 닫힘 방지 */}
@@ -101,14 +107,7 @@ const ReviewDeleteModal = ({ onClose, onConfirm }) => {
 				</ModalTitle>
 				<ButtonContainer>
 					<CancelButton onClick={onClose}>취소</CancelButton>
-					<ConfirmButton
-						onClick={async () => {
-							await onConfirm(); // 삭제 완료 후
-							onClose(); // 모달 닫기
-						}}
-					>
-						삭제
-					</ConfirmButton>
+					<ConfirmButton onClick={handleDelete}>삭제</ConfirmButton>
 				</ButtonContainer>
 			</Modal>
 		</Background>
