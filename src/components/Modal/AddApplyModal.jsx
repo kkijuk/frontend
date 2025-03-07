@@ -260,6 +260,7 @@ const AddApplyModal = ({ onClose, onSave }) => {
 	const [tags, setTags] = useState([]);
 	const [link, setLink] = useState('');
 	const [status, setStatus] = useState('unapplied');
+	const [selectedTags, setSelectedTags] = useState([]);
 
 	const handleSave = async () => {
 		if (!title || !startTime || !endTime) {
@@ -296,7 +297,7 @@ const AddApplyModal = ({ onClose, onSave }) => {
 			startTime: formattedStartTime,
 			endTime: formattedEndTime,
 			status,
-			tags,
+			tags: selectedTags, // 선택한 태그만 서버로 전송
 			link,
 		};
 
@@ -325,8 +326,8 @@ const AddApplyModal = ({ onClose, onSave }) => {
 	};
 
 	const handleTagListChange = (newTags) => {
-		setTags(newTags);
-	  };
+    setSelectedTags(newTags); // 선택한 태그만 저장
+};
 
 	return (
 		<ModalBackdrop>
