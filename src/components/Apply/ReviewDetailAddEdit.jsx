@@ -190,14 +190,16 @@ export default function ReviewDetailAddEdit({
 				<Top>
 					<Title>
 						<Label>전형</Label> 
-						<ReviewInputBox 
-							height="50px" 
-							width="460px" 
-							value={title} 
-							onChange={(e) => setTitle(e.target.value)}
-							type="text"  
-							disabled={disableTitleEdit} 
-						/>
+						<ReviewInputBox
+                          height="50px"
+                          width="460px"
+                          value={title}
+                          onChange={(e) => setTitle(e.target.value)}
+                          type="text"
+                          disabled={disableTitleEdit} // 서류 후기 제목 비활성화
+                          readOnly={disableTitleEdit} // 입력을 아예 차단
+                          style={disableTitleEdit ? { backgroundColor: "#f5f5f5", color: "#b0b0b0", cursor: "not-allowed" } : {}} // 회색 처리하여 수정 불가 표시
+                        />
 					</Title>
 					<Date>
 						<Label>날짜</Label>
@@ -214,9 +216,11 @@ export default function ReviewDetailAddEdit({
 						onChange={(e) => setContents(e.target.value)} 
 						type="textarea"
 					/>
-				</Middle>
+				</Middle> 
 				<Button>
-					{onDelete && <Cancel onClick={handleDeleteClick}>삭제</Cancel>}
+                 {!isDocumentReview && ( // 서류 후기가 아닌 경우에만 삭제 버튼 표시
+                  <Cancel onClick={handleDeleteClick}>삭제</Cancel>
+                )}
 					<Save onClick={handleSaveClick}>저장</Save>
 				</Button>
 			</Box>

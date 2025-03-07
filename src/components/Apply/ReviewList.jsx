@@ -199,7 +199,8 @@ export default function ReviewList({ recruitId, reviewId, title, date, content =
 					fetchData();
 				}}
 				fetchData={fetchData}
-				disableTitleEdit={introduceState === 1 && title === '서류'} //  서류 리뷰 제목 수정 비활성화
+				disableTitleEdit={introduceState === 1 && title === '서류'} // 서류 제목 비활성화
+                isDocumentReview={introduceState === 1 && title === '서류'} //  서류 리뷰 제목 수정 비활성화
 			/>
 			
 			)}
