@@ -96,6 +96,7 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
   const [allTags, setAllTags] = useState([]); //  API에서 불러온 전체 태그 목록
   const [selectedTags, setSelectedTags] = useState([]); // 선택된 태그 (초기값 비어있음)
 
+
   // 태그가 변경될 때 부모 컴포넌트에 전달
   useEffect(() => {
     if (typeof onTagListChange === 'function') {
@@ -150,11 +151,16 @@ const handleTagSelect = (tag) => {
 };
 
 // 선택된 태그 삭제
-const handleTagRemove = (tag) => {
-    const updatedTags = selectedTags.filter((t) => t !== tag);
-    setSelectedTags(updatedTags);
+const handleTagRemove = async (tagName) => {
+  try {
+    await deleteModalTag(tagName);
+    const updatedTags = tags.filter((tag) => tag !== tagName);
+    setTags(updatedTags);
     onTagListChange(updatedTags);
-};
+  } catch (error) {
+    console.error('태그 삭제 오류:', error);
+  }
+}; 
 
 
   // 태그 입력 처리
@@ -162,14 +168,16 @@ const handleTagRemove = (tag) => {
     setInputValue(e.target.value);
   };
 
+const handleTagInputClick = () => {
+  setIsTagBoxVisible(true);
+};
 
-
-  // TagBox 외부 클릭 시 닫기
-  const handleClickOutside = (e) => {
-    if (tagBoxRef.current && !tagBoxRef.current.contains(e.target)) {
-      setIsTagBoxVisible(false);
-    }
-  };
+// 모달 외부 클릭 시 태그 박스 닫기
+const handleClickOutside = (e) => {
+  if (tagBoxRef.current && !tagBoxRef.current.contains(e.target)) {
+    setIsTagBoxVisible(false);
+  }
+};
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -181,32 +189,33 @@ const handleTagRemove = (tag) => {
   return (
     <Box>
         <Row>
-            <TagInputContainer>
-                {selectedTags.map((tag) => (
-                    <Tag key={tag}>
-                        {tag}
-                        <CloseButton onClick={() => handleTagRemove(tag)}>x</CloseButton>
-                    </Tag>
-                ))}
-                <TagInput
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    placeholder="태그 입력"
-                />
-            </TagInputContainer>
+        <TagInputContainer onClick={handleTagInputClick}>
+  {tags.map((tag) => (
+    <Tag key={tag}>
+      {tag}
+      <CloseButton onClick={() => handleTagRemove(tag)}>x</CloseButton> {/* 태그 내부 x 버튼 */}
+    </Tag>
+  ))}
+  <TagInput
+    value={inputValue}
+    onChange={handleInputChange}
+    onKeyDown={handleKeyDown}
+    placeholder="태그 입력"
+  />
+</TagInputContainer>
         </Row>
-        {allTags.length > 0 && (
-            <TagBoxList>
-                <TagBoxListContainer>
-                    {allTags.map((tag) => (
-                        <Tag key={tag} onClick={() => handleTagSelect(tag)}> {/* 클릭 시 추가 */}
-                            {tag}
-                        </Tag>
-                    ))}
-                </TagBoxListContainer>
-            </TagBoxList>
-        )}
+        {allTags.length > 0 && isTagBoxVisible && (
+  <TagBoxList>
+    <TagBoxListContainer>
+      {allTags.map((tag) => (
+        <Tag key={tag} onClick={() => handleTagSelect(tag)}>
+          {tag}
+        </Tag>
+      ))}
+    </TagBoxListContainer>
+  </TagBoxList>
+)}
+
     </Box>
 );
 }
