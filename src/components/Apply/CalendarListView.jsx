@@ -13,7 +13,7 @@ const CalendarBackgroundSection = styled.div`
   padding: 20px 0;
   box-sizing: border-box;
   display: flex;  // Flexbox 적용
-   justify-content: space-between;
+  justify-content: center;
   align-items: flex-start;  // 상단 정렬 (필요하면 center로 변경)
 `;
 
