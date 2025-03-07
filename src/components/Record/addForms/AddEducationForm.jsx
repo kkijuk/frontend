@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import CustomDropdown from "../CustomDropdown";
 import CustomDatePicker from "../CustomDatePicker";
-
+import { trackEvent } from "../../../utils/ga4";
 
 const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
