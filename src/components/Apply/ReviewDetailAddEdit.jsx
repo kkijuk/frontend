@@ -219,9 +219,9 @@ export default function ReviewDetailAddEdit({
 					/>
 				</Middle> 
 				<Button>
-                 {!isDocumentReview && ( // 서류 후기가 아닌 경우에만 삭제 버튼 표시
-                  <Cancel onClick={handleDeleteClick}>삭제</Cancel>
-                )}
+				{!disableTitleEdit && (
+  <Cancel onClick={handleDeleteClick}>삭제</Cancel>
+)}
 					<Save onClick={handleSaveClick}>저장</Save>
 				</Button>
 			</Box>
