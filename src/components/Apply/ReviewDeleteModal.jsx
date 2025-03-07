@@ -111,6 +111,7 @@ const ReviewDeleteModal = ({ onClose, onConfirm }) => {
 				</ButtonContainer>
 			</Modal>
 		</Background>
+		
 	);
 };
 
