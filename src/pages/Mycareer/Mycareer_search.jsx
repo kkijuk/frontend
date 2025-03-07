@@ -46,14 +46,13 @@ const SearchQueryResultBox = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-bottom: 20px;
-	margin-top: 35px;
+	margin: 32px 0;
 	box-sizing: border-box;
 `;
 
 const SearchQueryResult = styled.h1`
 	color: var(--black, #000);
-	font-family: Inter;
+	font-family: Pretendard;
 	font-size: 28px;
 	font-style: normal;
 	font-weight: 700;

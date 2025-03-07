@@ -20,10 +20,10 @@ const Container = styled.div`
 
 const Title = styled.div`
 	color: var(--black, #000);
-	font-family: Inter;
-	font-size: 1rem;
+	font-family: Pretendard;
+	font-size: 18px;
 	font-style: normal;
-	font-weight: 700;
+	font-weight: 400;
 	line-height: normal;
 	margin-left: 20px;
 	margin-bottom: 5px;
@@ -35,14 +35,14 @@ const Wrapper = styled.div`
 `;
 
 const ChangeViewButton = styled.button`
+	color: var(--gray-02, #707070);
 	border: none;
 	cursor: pointer;
-	font-family: Inter;
-	font-size: 0.75rem;
+	font-family: Pretendard;
+	font-size: 14px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
-	color: var(--gray-02, #707070);
 `;
 
 export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewToggle }) {
@@ -93,7 +93,7 @@ export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewTogg
 							활동기록 ({activityDetail?.data.data.reduce((total, item) => total + (item.detailList?.length || 0), 0)})
 						</Title>
 						<ChangeViewButton value="2" onClick={handleButtonClick}>
-							모두보기
+							결과 전체보기
 						</ChangeViewButton>
 					</Wrapper>
 					<MyCareerSearchTotalActivityDetail
@@ -105,7 +105,7 @@ export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewTogg
 					<Wrapper>
 						<Title>태그 ({activityTagList?.data.data.detailCount})</Title>
 						<ChangeViewButton value="3" onClick={handleButtonClick}>
-							모두보기
+							결과 전체보기
 						</ChangeViewButton>
 					</Wrapper>
 

@@ -20,7 +20,7 @@ const ActivityContent = styled.div`
 
 const ActivityBox = styled.div`
 	width: 100%;
-	height: 3.25rem;
+	height: 52px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between; /* 왼쪽, 오른쪽 정렬 */
@@ -35,8 +35,8 @@ const ActivityBox = styled.div`
 const AcitivityDate = styled.div`
 	color: var(--gray-02, #707070);
 	text-align: right;
-	font-family: Inter;
-	font-size: 0.75rem;
+	font-family: Pretendard;
+	font-size: 12px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
@@ -44,10 +44,10 @@ const AcitivityDate = styled.div`
 
 const ActivityCareerTitle = styled.div`
 	color: var(--black, #000);
-	font-family: Inter;
-	font-size: 1rem;
+	font-family: Pretendard;
+	font-size: 16px;
 	font-style: normal;
-	font-weight: 500;
+	font-weight: 700;
 	line-height: normal;
 	margin-left: 5px;
 `;
