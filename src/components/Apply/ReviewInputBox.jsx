@@ -21,6 +21,12 @@ const Input = styled.input`
         color: #707070;
         opacity: 1;
     }
+
+    ${(props) => props.disabled && `
+        background: #e0e0e0; 
+        color: #b0b0b0;
+        cursor: not-allowed;
+    `}
 `;
 
 const Textarea = styled.textarea`
@@ -47,20 +53,32 @@ const Textarea = styled.textarea`
         color: #707070;
         opacity: 1;
     }
+
+    ${(props) => props.disabled && `
+        background: #e0e0e0; 
+        color: #b0b0b0;
+        cursor: not-allowed;
+    `}
 `;
 
-// `type` prop을 추가하여 전형 입력칸은 `input`, 전형 후기는 `textarea`로 자동 설정
-export default function ReviewInputBox({ height, width, placeholderText, value, onChange, type = "text" }) {
+export default function ReviewInputBox({ 
+    height, 
+    width, 
+    placeholderText, 
+    value, 
+    onChange, 
+    type = "text",
+    disabled = false,  // 추가: 비활성화 여부 설정
+}) {
     
     const maxLength = type === "textarea" ? 1000 : 30;
 
     // 글자수 초과 입력 방지
     const handleChange = (e) => {
-        if (e.target.value.length <= maxLength) {
+        if (!disabled && e.target.value.length <= maxLength) {
             onChange(e);
         }
     };
-    
     
     return type === "textarea" ? (
         <Textarea 
@@ -68,7 +86,9 @@ export default function ReviewInputBox({ height, width, placeholderText, value, 
             width={width} 
             placeholder={placeholderText} 
             value={value} 
-            onChange={onChange} 
+            onChange={handleChange} 
+            disabled={disabled} // 추가: 서류 후기 비활성화 적용
+            readOnly={disabled} // 추가: 서류 제목 비활성화 적용
         />
     ) : (
         <Input 
@@ -76,7 +96,9 @@ export default function ReviewInputBox({ height, width, placeholderText, value, 
             width={width} 
             placeholder={placeholderText} 
             value={value} 
-            onChange={onChange} 
+            onChange={handleChange} 
+            disabled={disabled} // 추가: 서류 제목 비활성화 적용
+            readOnly={disabled} // 추가: 서류 제목 비활성화 적용
         />
     );
 }
