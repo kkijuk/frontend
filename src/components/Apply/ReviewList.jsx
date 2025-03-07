@@ -187,23 +187,22 @@ export default function ReviewList({ recruitId, reviewId, title, date, content =
 			</Box>
 
 			{isDetailAddVisible && (
-				<ReviewDetailAddEdit
-				recruitId={recruitId}
-				reviewId={reviewId}
-				initialTitle={title}
-				initialDate={date}
-				initialContent={content}
-				onDelete={introduceState === 1 && title === '서류' ? null : handleDeleteClick} //  서류 리뷰는 삭제 비활성화
-				onSave={() => {
-					setIsDetailAddVisible(false);
-					fetchData();
-				}}
-				fetchData={fetchData}
-				disableTitleEdit={introduceState === 1 && title === '서류'} // 서류 제목 비활성화
-                isDocumentReview={introduceState === 1 && title === '서류'} //  서류 리뷰 제목 수정 비활성화
-			/>
-			
-			)}
+    <ReviewDetailAddEdit
+        recruitId={recruitId}
+        reviewId={reviewId}
+        initialTitle={title}
+        initialDate={date}
+        initialContents={content} // `initialContent` -> `initialContents` 수정
+        onDelete={introduceState === 1 && title === '서류' ? null : handleDeleteClick} // 서류 후기는 삭제 비활성화
+        onSave={() => {
+            setIsDetailAddVisible(false);
+            fetchData();
+        }}
+        fetchData={fetchData}
+        disableTitleEdit={introduceState === 1 && title === '서류'} // 서류 제목 비활성화
+    />
+)}
+
 			<Line></Line>
 		</div>
 	);
