@@ -567,6 +567,8 @@ const ApplyDetail = () => {
 	const [showReviewAdd, setShowReviewAdd] = useState(false);
 	const [gotoShow, setGotoShow] = useState(false);
 	const [timeLeft, setTimeLeft] = useState('');
+	const [isReviewDeleteModalOpen, setIsReviewDeleteModalOpen] = useState(false); // ✅ 후기 삭제 모달 상태
+	const [selectedReviewId, setSelectedReviewId] = useState(null);
 
 	const fetchJobDetails = async () => {
 		try {
@@ -721,14 +723,24 @@ const ApplyDetail = () => {
 		fetchJobDetails(); // 수정 후 전체 공고 정보를 다시 가져와 화면을 업데이트
 	};
 
-	const handleReviewDelete = async (reviewId) => {
+	const handleReviewDeleteClick = (reviewId) => {
+		setSelectedReviewId(reviewId); // ✅ 선택한 리뷰 ID 저장
+		setIsReviewDeleteModalOpen(true); // ✅ 모달 열기
+	};
+
+	const handleConfirmReviewDelete = async () => {
 		try {
-			await deleteReview(id, reviewId); // 리뷰 삭제를 처리
-			await fetchJobDetails(); // 이후에 데이터를 다시 가져옵니다.
+			if (selectedReviewId) {
+				await deleteReview(id, selectedReviewId);
+				await fetchJobDetails(); // ✅ 삭제 후 최신 데이터 반영
+			}
 		} catch (error) {
 			console.error('Failed to delete review:', error);
 		}
+		setIsReviewDeleteModalOpen(false);
+		setSelectedReviewId(null);
 	};
+
 
 	const clickGotoApply = () => {
 		if (job?.link) {
@@ -947,7 +959,7 @@ const ApplyDetail = () => {
 	content={review.content}
 	introduceState={review.introduceState}
 	introduceId={review.introduceId ?? 0} //  introduceId 추가
-	onDelete={() => handleReviewDelete(review.reviewId)}
+	onDelete={() => handleReviewDeleteClick(review.reviewId)} 
 	fetchData={fetchJobDetails}
 />
 
@@ -977,7 +989,9 @@ const ApplyDetail = () => {
 
 			{isEditModalOpen && <EditApplyModal job={job} onClose={handleCloseEditModal} onSave={handleSave} />}
 			{isDeleteModalOpen && <ApplyDeleteModal onClose={handleCloseDeleteModal} onConfirm={handleDeleteConfirm} />}
-
+			{isReviewDeleteModalOpen && (
+				<ReviewDeleteModal onClose={() => setIsReviewDeleteModalOpen(false)} onConfirm={handleConfirmReviewDelete} />
+			)}
 			<Limiter show={gotoShow}>
 				등록된 링크가 없습니다. <br />
 				공고 수정에서 링크를 등록해주세요!
