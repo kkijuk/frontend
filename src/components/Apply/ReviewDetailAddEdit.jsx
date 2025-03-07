@@ -115,7 +115,8 @@ export default function ReviewDetailAddEdit({
 	onSave,
 	onDelete,
 	fetchData,
-	disableTitleEdit
+	disableTitleEdit,
+	isDocumentReview
 }) {
 	const [showCalendar, setShowCalendar] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(initialDate);
