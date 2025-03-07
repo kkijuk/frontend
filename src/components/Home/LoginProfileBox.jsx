@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { getUserInfo } from '../../api/Home/getUserInfo';
 import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
+import { trackEvent } from '../../utils/ga4';
 
 const Container = styled.div`
 	flex-shrink: 0;
@@ -210,7 +211,18 @@ export default function LoginProfileBox() {
 						<BoldText fontSize="12px">{recruitCount}</BoldText>
 					</CountBox>
 				</BoxContainer>
-				<OKButton onClick={handleOpenModal}>활동 추가하기</OKButton> {/* ✅ 버튼 클릭 시 모달 열기 */}
+				<OKButton
+					onClick={() => {
+						trackEvent('add_click', {
+							category: 'home',
+							detail: 'add_career',
+							action_type: 'add',
+							label: '활동 추가하기',
+						});
+						handleOpenModal();
+					}}>
+					활동 추가하기
+				</OKButton>
 			</Container>
 
 			{/* 모달이 열렸을 때만 렌더링 */}
