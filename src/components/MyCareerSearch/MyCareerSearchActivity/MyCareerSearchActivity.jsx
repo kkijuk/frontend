@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
+import { NotExistSearchComponent } from '../NotExistSearchWrapper';
 import { useFetchActivityDetail } from '../../../hooks/MycareerSearch/useFetchActivityDetail';
 
 import { useNavigate } from 'react-router-dom';
@@ -112,44 +113,6 @@ const DetailTag = styled.div`
 	line-height: normal;
 `;
 
-const NotExistSearchWrapper = styled.div`
-	color: var(--gray-02, #707070);
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	margin-top: 40px;
-	padding: 20px;
-
-	div {
-		margin-bottom: 20px;
-	}
-`;
-
-const NotExistSearchButton = styled.button`
-	border-radius: 0.625rem;
-	background: var(--main-01, #3aaf85);
-	display: flex;
-	width: 11.25rem;
-	height: 1.875rem;
-	justify-content: center;
-	align-items: center;
-	gap: 0.625rem;
-	flex-shrink: 0;
-	color: #ffffff;
-	font-family: Pretendard, sans-serif;
-	font-size: 0.875rem;
-	font-weight: 500;
-	line-height: normal;
-	cursor: pointer;
-	border: none;
-	transition: background-color 0.3s ease;
-
-	&:hover {
-		background-color: #2e9872;
-	}
-`;
-
 export default function MyCareerSearchActivity({ sortOrder, searchQuery, onViewToggle }) {
 	const navigate = useNavigate();
 
@@ -164,12 +127,8 @@ export default function MyCareerSearchActivity({ sortOrder, searchQuery, onViewT
 			{isActivityDetailLoading ? (
 				'loading...'
 			) : activityDetail?.data?.data?.length === 0 ? (
-				<>
-					<NotExistSearchWrapper>
-						<div>'{searchQuery}'의 검색 결과가 없어요.</div>
-						<NotExistSearchButton onClick={() => navigate('/mycareer')}>내 활동 보러가기</NotExistSearchButton>
-					</NotExistSearchWrapper>
-				</>
+				// 검색 결과가 없을 때
+				<NotExistSearchComponent query={searchQuery} onClick={() => navigate('/mycareer')} />
 			) : (
 				activityDetail?.data.data.map((activityDetail, idx) => (
 					<Box
@@ -183,7 +142,8 @@ export default function MyCareerSearchActivity({ sortOrder, searchQuery, onViewT
 							<TopLeft>
 								<CareerCategoryCircle category={activityDetail.category.categoryKoName} />
 								<DetailCareerTitle>
-									{highlightMatch(activityDetail.careerTitle, searchQuery)} / {highlightMatch(activityDetail.careerAlias, searchQuery)}
+									{highlightMatch(activityDetail.careerTitle, searchQuery)} /{' '}
+									{highlightMatch(activityDetail.careerAlias, searchQuery)}
 								</DetailCareerTitle>
 							</TopLeft>
 						</TopWrapper>
