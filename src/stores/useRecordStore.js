@@ -126,7 +126,6 @@ const useRecordStore = create((set, get) => ({
 					break;
 				case 'skills':
 					response = await createSkill(item);
-					console.log('response: ', response);
 					if(Array.isArray(response.data)){
 						set({[category]: response.data});
 					} else {
@@ -306,6 +305,7 @@ const useRecordStore = create((set, get) => ({
 
 				// 3. 업로드 성공하면, keyName 백엔드에 저장
 				savedEtcData = await saveKeyName(keyName, data.fileTitle);
+				console.log('savedEtcData:', savedEtcData);
 			} else if(data.fileType === 'URL'){
 				savedEtcData = await addURL(data);
 			} else {
@@ -330,6 +330,7 @@ const useRecordStore = create((set, get) => ({
 				}))
 			} else if(data.fileType === 'URL'){
 				deletedData = await deleteURL(data);
+				console.log('deletedData:', deletedData);
 				set((state)=>({
 					files: state.files.filter((item) => item.urlTitle !== deletedData.urlTitle && item.url !== deletedData.url),
 				}));
@@ -345,6 +346,7 @@ const useRecordStore = create((set, get) => ({
 	updateEtcItem: async (oldData, newData) => {
 		try {
 			let savedEtcData;
+			let deletedEtcData;
 			if (oldData.fileType === 'File') {
 				await deleteS3File(oldData);
 				const { keyName, signedURL } = await createPresignedUrl(newData);
@@ -356,8 +358,10 @@ const useRecordStore = create((set, get) => ({
 					),
 				}));
 			} else if (oldData.fileType === 'URL') {
-				await deleteURL(oldData);
+				deletedEtcData = await deleteURL(oldData);
+				console.log('deletedEtcData:', deletedEtcData);
 				savedEtcData = await addURL(newData);
+				console.log('savedEtcData:', savedEtcData);
 				set((state) => ({
 					files: state.files.map((item) =>
 						item.url === oldData.url ? savedEtcData : item
