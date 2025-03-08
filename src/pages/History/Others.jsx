@@ -89,7 +89,7 @@ const Others = () => {
 								: '질문을 작성하세요.'
 								}
 							</h3>
-							<div style={{ height: '100px' }}>
+							<div style={{ height: '100px', whiteSpace: 'pre-wrap' }}>
 								<p>
 									{question.content && question.content !== 'string'
 									? question.content
