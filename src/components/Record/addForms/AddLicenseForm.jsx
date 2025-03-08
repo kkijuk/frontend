@@ -180,6 +180,12 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                     }
                     onUpdate(formData);
                     onClose();
+                    trackEvent('edit_click', {
+                      category: 'resume',
+                      detail: 'edit_certificate',
+                      action_type: 'edit',
+                      label: '활동 수정하기',
+                    });
                   }}
                   style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
                   저장
@@ -224,6 +230,7 @@ const RealFirstContainer = styled.div`
 const FirstContainer = styled.div`
     height:195px;
     width:100%;
+    z-index:1000;
 `
 
 const TypeWrapper = styled.div`
