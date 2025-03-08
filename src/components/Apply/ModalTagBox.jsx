@@ -28,6 +28,7 @@ const TagInputContainer = styled.div`
   padding: 5px 10px;
   gap: 5px;
   font-family: Light;
+  cursor: pointer;
 `;
 
 const TagInput = styled.input`
@@ -45,13 +46,15 @@ const TagInput = styled.input`
 
 const TagBoxList = styled.div`
   width: 300px;
-  height: 120px;
+  height: auto;
+  max-height: 200px;
+  overflow-y: auto;
   flex-shrink: 0;
   border-radius: 10px;
   background: var(--white, #fff);
   box-shadow: 0px 0.5px 1px 0px;
   position: absolute;
-  top: 40px;
+  top: 45px;
   left: 0;
   z-index: 1000;
   padding: 10px;
@@ -84,26 +87,27 @@ const Tag = styled.div`
   border-radius: 10px;
   padding: 4px 8px;
   font-size: 13px;
-  margin-left: 5px;
   font-family: Light;
+  display: flex;
+  align-items: center;
+  gap: 5px;
   cursor: pointer;
 `;
 
 export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
-  const [tags, setTags] = useState([]); // 선택된 태그
+  const [tags, setTags] = useState([]); // 선택된 태그 목록
   const [inputValue, setInputValue] = useState('');
   const [isTagBoxVisible, setIsTagBoxVisible] = useState(false);
   const tagBoxRef = useRef(null);
-  const [allTags, setAllTags] = useState([]); // API에서 불러온 전체 태그 목록
+  const [allTags, setAllTags] = useState([]); // 전체 태그 목록
 
-  // 태그가 변경될 때 부모 컴포넌트에 전달
   useEffect(() => {
     if (typeof onTagListChange === 'function') {
       onTagListChange(tags);
     }
   }, [tags, onTagListChange]);
 
-  // 태그 불러오기 (GET 요청)
+  // API에서 태그 불러오기
   useEffect(() => {
     const fetchTags = async () => {
       try {
@@ -117,12 +121,12 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
     fetchTags();
   }, []);
 
-  // 태그 입력 처리
+  // 입력값 변경
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
 
-  // 엔터 입력 시 태그 추가 (POST 요청)
+  // 태그 추가 (엔터 입력 시)
   const handleKeyDown = async (e) => {
     if (e.key === 'Enter' && inputValue.trim() !== '') {
       const newTag = inputValue.trim();
@@ -143,15 +147,28 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
     }
   };
 
-  // 태그 삭제 (DELETE 요청)
+  // 태그 삭제
   const handleTagRemove = async (tagName) => {
     try {
       await deleteModalTag(tagName);
-      const updatedTags = tags.filter((tag) => tag !== tagName);
-      setTags(updatedTags);
-      onTagListChange(updatedTags);
+      setTags((prevTags) => {
+        const updatedTags = prevTags.filter((tag) => tag !== tagName);
+        onTagListChange(updatedTags);
+        return updatedTags;
+      });
     } catch (error) {
       console.error('태그 삭제 오류:', error);
+    }
+  };
+
+  // 태그 선택
+  const handleTagSelect = (tag) => {
+    if (!tags.includes(tag)) {
+      setTags((prevTags) => {
+        const updatedTags = [...prevTags, tag];
+        onTagListChange(updatedTags);
+        return updatedTags;
+      });
     }
   };
 
@@ -168,14 +185,6 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
-  // 태그 선택 기능 추가
-  const handleTagSelect = (tag) => {
-    if (!tags.includes(tag)) {
-      setTags([...tags, tag]);
-      onTagListChange([...tags, tag]);
-    }
-  };
 
   return (
     <Box ref={tagBoxRef}>
@@ -195,6 +204,7 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
           />
         </TagInputContainer>
       </Row>
+
       {isTagBoxVisible && (
         <TagBoxList>
           <TagBoxListContainer>

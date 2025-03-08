@@ -257,10 +257,9 @@ const AddApplyModal = ({ onClose, onSave }) => {
 	const [title, setTitle] = useState('');
 	const [startTime, setStartTime] = useState('');
 	const [endTime, setEndTime] = useState('');
-	const [tags, setTags] = useState([]);
+	const [tags, setTags] = useState([]); //  선택된 태그 목록
 	const [link, setLink] = useState('');
 	const [status, setStatus] = useState('unapplied');
-	const [selectedTags, setSelectedTags] = useState([]);
 
 	const handleSave = async () => {
 		if (!title || !startTime || !endTime) {
@@ -268,7 +267,6 @@ const AddApplyModal = ({ onClose, onSave }) => {
 			return;
 		}
 	
-		// GA 트래킹 수정 (공고 추가 "확인" 버튼 클릭)
 		trackEvent('add_confirm', {
 			category: 'apply',
 			detail: 'add_recruit',
@@ -289,45 +287,33 @@ const AddApplyModal = ({ onClose, onSave }) => {
 		const formattedStartTime = formatDateTime(startTime);
 		const formattedEndTime = formatDateTime(endTime);
 
-		console.log('Formatted Start Time (YYYY-MM-DD HH:mm):', formattedStartTime);
-		console.log('Formatted End Time (YYYY-MM-DD HH:mm):', formattedEndTime);
-
 		const recruitData = {
 			title,
 			startTime: formattedStartTime,
 			endTime: formattedEndTime,
 			status,
-			tags: selectedTags, // 선택한 태그만 서버로 전송
+			tags, //  선택한 태그만 서버로 전송
 			link,
 		};
-
-		console.log('Recruit Data to be sent:', recruitData);
 
 		try {
 			const response = await createRecruit(recruitData);
 
 			if (response && response.id) {
-				console.log('Recruit created successfully:', response);
-				try {
-					onSave(response.id);
-					console.log('onSave function executed successfully.');
-				} catch (saveError) {
-					console.error('Error in onSave function:', saveError);
-				}
+				onSave(response.id);
 				onClose();
 			} else {
-				console.error('Invalid response from server:', response);
 				alert('공고 생성에 실패했습니다.');
 			}
 		} catch (error) {
-			console.error('Error creating recruit:', error);
 			alert('공고 생성에 실패했습니다.');
 		}
 	};
 
+	// 태그 변경 시 즉시 업데이트
 	const handleTagListChange = (newTags) => {
-    setSelectedTags(newTags); // 선택한 태그만 저장
-};
+		setTags(newTags);
+	};
 
 	return (
 		<ModalBackdrop>
