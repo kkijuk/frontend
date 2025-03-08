@@ -106,7 +106,7 @@ const useRecordStore = create((set, get) => ({
 				case 'licenses':
 					response = await createLicense(item);
 					if(Array.isArray(response)){
-						set({[category]: response});
+						set({[category]: response.data});
 					} else {
 						set((state) => ({
 							[category]: [...state[category], response],
@@ -116,7 +116,7 @@ const useRecordStore = create((set, get) => ({
 				case 'awards':
 					response = await createAward(item);
 					if(Array.isArray(response)){
-						set({[category]: response});
+						set({[category]: response.data});
 					} else {
 						set((state) => ({
 							[category]: [...state[category], response],
@@ -125,13 +125,9 @@ const useRecordStore = create((set, get) => ({
 					break;
 				case 'skills':
 					response = await createSkill(item);
-					if(Array.isArray(response)){
-						set({[category]: response});
-					} else {
-						set((state) => ({
-							[category]: [...state[category], response],
-						}));
-					}
+					set((state) => ({
+                        [category]: [...state[category], response.data],
+                    }));
 					break;
 				case 'activitiesAndExperiences':
 				case 'employments':
@@ -139,7 +135,7 @@ const useRecordStore = create((set, get) => ({
 				case 'eduCareers':
 					response = await createCareer(item);
 					set((state) => ({
-                        [category]: [...state[category], response],
+                        [category]: [...state[category], response.data],
                     }));
 					break;
 				default:
@@ -171,7 +167,7 @@ const useRecordStore = create((set, get) => ({
 				case 'licenses':
 					response = await updateLicense(id, updates);
 					if (Array.isArray(response)) {
-                        set({ [category]: response });
+                        set({ [category]: response.data });
                     } else {
                         set((state) => ({
                             [category]: state[category].map((item) =>
@@ -183,7 +179,7 @@ const useRecordStore = create((set, get) => ({
 				case 'awards':
 					response = await updateAward(id, updates);
 					if (Array.isArray(response)) {
-                        set({ [category]: response });
+                        set({ [category]: response.data });
                     } else {
                         set((state) => ({
                             [category]: state[category].map((item) =>
@@ -194,15 +190,9 @@ const useRecordStore = create((set, get) => ({
 					break;
 				case 'skills':
 					response = await updateSkill(id, updates);
-					if (Array.isArray(response)) {
-                        set({ [category]: response });
-                    } else {
-                        set((state) => ({
-                            [category]: state[category].map((item) =>
-                                item.id === id ? { ...item, ...updates } : item
-                            ),
-                        }));
-                    }
+					set((state) => ({
+						[category]: state[category].map((item) => (item.id === id ? { ...item, ...updates } : item)),
+					}));
 					break;
 				case 'activitiesAndExperiences':
 				case 'employments':
@@ -241,7 +231,7 @@ const useRecordStore = create((set, get) => ({
 				case 'licenses':
 					response = await deleteLicense(id);
 					if (Array.isArray(response)) {
-                        set({ [category]: response });
+                        set({ [category]: response.data });
                     } else {
                         set((state) => ({
                             [category]: state[category].filter(
@@ -253,7 +243,7 @@ const useRecordStore = create((set, get) => ({
 				case 'awards':
 					response = await deleteAward(id);
 					if (Array.isArray(response)) {
-                        set({ [category]: response });
+                        set({ [category]: response.data });
                     } else {
                         set((state) => ({
                             [category]: state[category].filter(
@@ -264,15 +254,9 @@ const useRecordStore = create((set, get) => ({
 					break;
 				case 'skills':
 					response = await deleteSkill(id);
-					if (Array.isArray(response)) {
-                        set({ [category]: response });
-                    } else {
-                        set((state) => ({
-                            [category]: state[category].filter(
-                                (item) => item.id !== id
-                            ),
-                        }));
-                    }
+					set((state) => ({
+						[category]: state[category].filter((item) => item.id !== id),
+					}));
 					break;
 				case 'activitiesAndExperiences':
 				case 'employments':
