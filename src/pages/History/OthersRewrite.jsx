@@ -131,14 +131,6 @@ const OthersRewrite = () => {
 		} catch (error) {
 			console.log(error);
 		}
-		await api
-			.patch(`history/intro/${contents.id}`, Data)
-			.then((response) => {
-				console.log(response.data);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
 	};
 
 	// 자동 저장
@@ -360,22 +352,22 @@ const OthersRewrite = () => {
 							</Delete>
 							<Delete onClick={() => deleteItem(question.number)}>삭제</Delete>
 							<InputTitle
-								placeholder={'질문을 작성하세요'}
+								placeholder='질문을 작성하세요'
 								style={{ height: '20px', marginBottom: '12px', paddingLeft: '50px', width: '750px' }}
 								value={
 									question.title && question.title !== 'string' 
 									? question.title
-									: '질문을 작성하세요.'
+									: ''
 								}
 								onChange={(e) => handleInputChange(question.number, 'title', e)}
 							/>
 							<InputTitle
-								placeholder={'답변을 작성하세요'}
+								placeholder='답변을 작성하세요'
 								style={{ height: '150px', marginBottom: '35px', width: '780px' }}
 								value={
 									question.content && question.content !== 'string' 
 									? question.content
-									: '답변을 작성하세요.'}
+									: ''}
 								onChange={(e) => handleInputChange(question.number, 'content', e)}
 							/>
 							<p
@@ -417,7 +409,7 @@ const OthersRewrite = () => {
 						
 						<Button
 							onClick={handleSubmit}
-							style={{ width: '645px', borderRadius: '10px', background: '#3AAF85', color: '#FFF' }}
+							style={{ width: '185px', borderRadius: '10px', background: '#3AAF85', color: '#FFF' }}
 						>
 							저장하고 나가기
 						</Button>
