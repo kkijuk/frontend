@@ -127,11 +127,12 @@ const useRecordStore = create((set, get) => ({
 				case 'skills':
 					response = await createSkill(item);
 					console.log('response: ', response);
-					if (response.skillName){
+					if(Array.isArray(response.data)){
+						set({[category]: response.data});
+					} else {
 						set((state) => ({
 							[category]: [...state[category], response],
 						}));
-						console.log('store.skills: ', get().skills);
 					}
 					break;
 				case 'activitiesAndExperiences':
