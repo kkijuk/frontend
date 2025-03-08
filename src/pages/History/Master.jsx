@@ -109,7 +109,7 @@ const Master = () => {
 						<div key={index}>
 						<h3>{question.title && question.title !== 'string' && question.title !== '' ? question.title : defaultTitle}</h3>
 						<ContentBox>
-							{question.title && question.title !== 'string' && question.title !== '' ? question.content : defaultContent}
+							{question.content && question.content !== 'string' && question.content !== '' ? question.content : defaultContent}
 						</ContentBox>
 						</div>
 					);
