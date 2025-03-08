@@ -19,7 +19,8 @@ const RadioContainer = styled.div`
 	display: flex;
 	justify-content: right;
 	align-items: center;
-	margin-top: -20px;
+	position: relative;
+	top: -20px;
 `;
 
 const RadioWrapper = styled.div`
