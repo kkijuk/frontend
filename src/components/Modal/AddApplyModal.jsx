@@ -358,7 +358,8 @@ const AddApplyModal = ({ onClose, onSave }) => {
 					<LabelTag>태그</LabelTag>
 					<InputWrapperTag>
 						<TagBoxWrapper>
-						<ModalTagBox onTagListChange={handleTagListChange} initialTags={tags} />
+						<ModalTagBox onTagListChange={handleTagListChange} initialTags={tags} isWhiteBackground={true} />
+
 						</TagBoxWrapper>
 					</InputWrapperTag>
 				</FieldWrapper>
