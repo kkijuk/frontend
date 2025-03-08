@@ -226,7 +226,7 @@ const useRecordStore = create((set, get) => ({
 		try {
 			switch (category) {
 				case 'educations':
-					await deleteEducation(id);
+					response = await deleteEducation(id);
 					if (Array.isArray(response)) {
                         set({ [category]: response });
                     } else {
