@@ -24,12 +24,6 @@ const Container = styled.div`
 	height: 30px;
 `;
 
-const TitleWithIcon = styled.div`
-	display: flex;
-	align-items: center;
-	gap: 10px;
-`;
-
 const SearchIcon = styled.svg`
 	width: 25px;
 	height: 25px;
@@ -109,13 +103,13 @@ const Date = styled.div`
 const Content = styled.div`
 	width: 720px;
 	height: auto;
-	color: var(--gray-02, #707070);
+	color: ${({ hasSummary }) => (hasSummary ? '#000' : 'var(--gray-02, #707070)')};
 	font-family: Pretendard;
 	font-size: 16px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
-	text-decoration-line: underline;
+	text-decoration: ${({ hasSummary }) => (hasSummary ? 'none' : 'underline')};
 	text-decoration-style: solid;
 	text-decoration-skip-ink: none;
 	text-decoration-thickness: auto;
@@ -578,7 +572,7 @@ export default function MycareerDetail() {
 						<ContentWrapper>
 							{details?.summary ? (
 								<>
-									<Content>{details.summary}</Content>
+									<Content hasSummary>{details.summary}</Content>
 									<EditTag onClick={handleEditClick}>수정</EditTag>
 								</>
 							) : (
