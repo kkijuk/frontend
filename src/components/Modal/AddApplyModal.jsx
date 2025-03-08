@@ -358,7 +358,7 @@ const AddApplyModal = ({ onClose, onSave }) => {
 					<LabelTag>태그</LabelTag>
 					<InputWrapperTag>
 						<TagBoxWrapper>
-						<ModalTagBox onTagListChange={handleTagListChange} />  {/* 변경된 태그 전달 */}
+						<ModalTagBox onTagListChange={handleTagListChange} initialTags={tags} />
 						</TagBoxWrapper>
 					</InputWrapperTag>
 				</FieldWrapper>
