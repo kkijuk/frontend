@@ -952,7 +952,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				//window.location.reload();
 				//navigate('/mycareer'); //세연 추가
 				// 현재 경로가 `/mycareer`라면 새로고침, `/home`이라면 `/mycareer`로 이동
-				if (currentLocation.pathname === '/mycareer') {
+				if (currentLocation.pathname === '/mycareer' || currentLocation.pathname === '/history') {
 					setTimeout(() => {
 						window.location.reload();
 					}, 100); // 100ms 후 실행 (리액트 상태 업데이트 이후 확실하게 새로고침)

@@ -300,6 +300,7 @@ const InputTitle = styled.textarea`
 	line-height: normal;
 	resize: none;
 	overflow: hidden;
+	white-space: pre-wrap;
 `;
 
 const Linear = styled.div`

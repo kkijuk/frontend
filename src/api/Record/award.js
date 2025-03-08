@@ -24,6 +24,7 @@ const createAward = async (data) => {
 
 const updateAward = async (awardId, data) => {
 	try {
+		console.log('award Data: ', data);
 		const response = await api.patch(`/history/resume/award?awardId=${awardId}`, data);
 		console.log('Success-updateAward:', response.data);
 		return response.data;

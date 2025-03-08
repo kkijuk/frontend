@@ -23,7 +23,12 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 
 	// 내커리어-상세페이지로 이동
 	const handleNavigate = () => {
-		navigate(`/mycareer/${data.category.categoryKoName}/${data.id}`);
+		navigate(`/mycareer/${data.category.categoryKoName}/${data.id}`,{
+			state: {
+				careerId: data.id,
+				category: data.category.categoryKoName,
+			},
+		});
 	}
 
 	// GA4
@@ -80,7 +85,8 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 			setIsKebabMenuOpen(false);
 			
 			// 수정된 데이터로 상태 업데이트
-			setDetail(updatedData.summary);
+			// setDetail(updatedData.summary);
+			window.location.reload();
 			trackCategoryEvent(data.category.categoryEnName);
 		} catch (error) {
 			console.error('활동내역 수정 실패: ', error);
@@ -157,7 +163,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 							<Status>{statusToDisplay}</Status>
 						</Dates>
 						<DetailContainer>
-							<div style={{ width:'58px',fontWeight: '600', marginRight: '30px'}}>활동내역</div>
+							<DetailLabel>활동내역</DetailLabel>
 							{isSummaryEditMode ? (
 								<DetailWrapper>
 									<DetailTextArea 
@@ -377,6 +383,13 @@ const DetailContainer = styled.div`
 	flex-direction: row;
 	margin-top: 10px;
 `;
+
+const DetailLabel = styled.div`
+	width: 58px;
+	font-weight: 600;
+	margin-right: 30px;
+	flex-shrink: 0;
+`
 
 const DetailWrapper = styled.div`
 	display: flex;

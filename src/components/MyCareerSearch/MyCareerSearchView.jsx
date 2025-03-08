@@ -35,8 +35,8 @@ const ToggleButton = styled.button`
 	align-items: center;
 	justify-content: center;
 	font-family: Pretendard;
-	font-size: 16px;
-	font-weight: 700;
+	font-size: 18px;
+	font-weight: 600;
 	color: ${(props) => (props.active ? 'black' : '#D9D9D9')};
 	transition: all 0.2s ease; /* 버튼 클릭 시 부드러운 전환 효과 */
 

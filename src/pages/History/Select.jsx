@@ -112,7 +112,7 @@ const Select = () => {
         action_type: 'click',
         label: '다음',
       });
-      navigate(`/history/others/${response.data.id}`);
+      navigate(`/history/others/${response.data.id}/rewrite`);
     } catch (error) {
       console.error("Failed to create intro:", error);
     } finally {

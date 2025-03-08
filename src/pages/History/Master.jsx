@@ -186,6 +186,7 @@ const ContentBox = styled.div`
 	font-weight: 400;
 	line-height: normal;
 	margin-bottom: 60px;
+	white-space: pre-wrap;
 `;
 const EditButton = styled.button`
 	width: 60px;
