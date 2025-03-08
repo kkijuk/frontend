@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
+
 import Title from '../../components/Apply/Title';
 import SearchBar from '../../components/Mycareer/shareSearchBar';
-import { useSearchParams } from 'react-router-dom';
-import { useFetchActivity } from '../../hooks/MycareerSearch/useFetchActivity';
 
 import MyCareerSearchTotal from '../../components/MyCareerSearch/MyCareerSearchTotal';
 import MyCareerSearchView from '../../components/MyCareerSearch/MyCareerSearchView';
