@@ -79,7 +79,7 @@ const CloseButton = styled.button`
 const Tag = styled.div`
   display: flex;
   align-items: center;
-  background: #F5F5F5;
+  background: ${({ isWhite }) => (isWhite ? '#fff' : '#F5F5F5')};
   color: var(--main-01, #3aaf85);
   border-radius: 10px;
   padding: 4px 8px;
@@ -89,14 +89,14 @@ const Tag = styled.div`
   gap: 5px;
 `;
 
-export default function ModalTagBox({ onTagListChange, initialTags }) {
+export default function ModalTagBox({ onTagListChange, initialTags, isWhiteBackground = false }) {
   const [tags, setTags] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [isTagBoxVisible, setIsTagBoxVisible] = useState(false);
   const tagBoxRef = useRef(null);
   const [allTags, setAllTags] = useState([]);
 
-  // ✅ `initialTags`가 변경될 때 `tags` 업데이트
+  // ✅ `initialTags`가 변경될 때 즉시 반영
   useEffect(() => {
     setTags(initialTags || []);
   }, [initialTags]);
@@ -183,7 +183,7 @@ export default function ModalTagBox({ onTagListChange, initialTags }) {
       <Row>
         <TagInputContainer onClick={() => setIsTagBoxVisible(true)}>
           {tags.map((tag) => (
-            <Tag key={tag}>
+            <Tag key={tag} isWhite={isWhiteBackground}>
               {tag}
               <CloseButton onClick={() => handleTagRemove(tag)}>x</CloseButton>
             </Tag>
