@@ -190,9 +190,15 @@ const useRecordStore = create((set, get) => ({
 					break;
 				case 'skills':
 					response = await updateSkill(id, updates);
-					set((state) => ({
-						[category]: state[category].map((item) => (item.id === id ? { ...item, ...updates } : item)),
-					}));
+					if (Array.isArray(response.data)) {
+                        set({ [category]: response.data });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].map((item) =>
+                                item.id === id ? { ...item, ...updates } : item
+                            ),
+                        }));
+                    }
 					break;
 				case 'activitiesAndExperiences':
 				case 'employments':
@@ -254,9 +260,15 @@ const useRecordStore = create((set, get) => ({
 					break;
 				case 'skills':
 					response = await deleteSkill(id);
-					set((state) => ({
-						[category]: state[category].filter((item) => item.id !== id),
-					}));
+					if (Array.isArray(response.data)) {
+                        set({ [category]: response.data });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].filter(
+                                (item) => item.id !== id
+                            ),
+                        }));
+                    }
 					break;
 				case 'activitiesAndExperiences':
 				case 'employments':
