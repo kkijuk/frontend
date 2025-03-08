@@ -105,7 +105,7 @@ const useRecordStore = create((set, get) => ({
 					break;
 				case 'licenses':
 					response = await createLicense(item);
-					if(Array.isArray(response)){
+					if(Array.isArray(response.data)){
 						set({[category]: response.data});
 					} else {
 						set((state) => ({
@@ -115,7 +115,7 @@ const useRecordStore = create((set, get) => ({
 					break;
 				case 'awards':
 					response = await createAward(item);
-					if(Array.isArray(response)){
+					if(Array.isArray(response.data)){
 						set({[category]: response.data});
 					} else {
 						set((state) => ({
@@ -126,7 +126,7 @@ const useRecordStore = create((set, get) => ({
 				case 'skills':
 					response = await createSkill(item);
 					set((state) => ({
-                        [category]: [...state[category], response.data],
+                        [category]: [...state[category], response],
                     }));
 					break;
 				case 'activitiesAndExperiences':
@@ -166,7 +166,7 @@ const useRecordStore = create((set, get) => ({
 					break;
 				case 'licenses':
 					response = await updateLicense(id, updates);
-					if (Array.isArray(response)) {
+					if (Array.isArray(response.data)) {
                         set({ [category]: response.data });
                     } else {
                         set((state) => ({
@@ -178,7 +178,7 @@ const useRecordStore = create((set, get) => ({
 					break;
 				case 'awards':
 					response = await updateAward(id, updates);
-					if (Array.isArray(response)) {
+					if (Array.isArray(response.data)) {
                         set({ [category]: response.data });
                     } else {
                         set((state) => ({
@@ -230,7 +230,7 @@ const useRecordStore = create((set, get) => ({
 					break;
 				case 'licenses':
 					response = await deleteLicense(id);
-					if (Array.isArray(response)) {
+					if (Array.isArray(response.data)) {
                         set({ [category]: response.data });
                     } else {
                         set((state) => ({
@@ -242,7 +242,7 @@ const useRecordStore = create((set, get) => ({
 					break;
 				case 'awards':
 					response = await deleteAward(id);
-					if (Array.isArray(response)) {
+					if (Array.isArray(response.data)) {
                         set({ [category]: response.data });
                     } else {
                         set((state) => ({
