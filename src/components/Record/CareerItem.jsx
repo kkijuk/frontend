@@ -388,7 +388,7 @@ const DetailLabel = styled.div`
 	width: 58px;
 	font-weight: 600;
 	margin-right: 30px;
-	flex-shirnk: 0;
+	flex-shrink: 0;
 `
 
 const DetailWrapper = styled.div`
