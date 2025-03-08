@@ -187,6 +187,7 @@ const OneLiner = styled.h1`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 60%;
 `;
 
 const LastUpdated = styled.p`
