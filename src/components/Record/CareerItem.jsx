@@ -85,7 +85,8 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 			setIsKebabMenuOpen(false);
 			
 			// 수정된 데이터로 상태 업데이트
-			setDetail(updatedData.summary);
+			// setDetail(updatedData.summary);
+			window.location.reload();
 			trackCategoryEvent(data.category.categoryEnName);
 		} catch (error) {
 			console.error('활동내역 수정 실패: ', error);
