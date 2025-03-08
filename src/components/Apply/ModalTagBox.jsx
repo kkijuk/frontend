@@ -89,12 +89,17 @@ const Tag = styled.div`
   gap: 5px;
 `;
 
-export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
-  const [tags, setTags] = useState(initialTags || []);
+export default function ModalTagBox({ onTagListChange, initialTags }) {
+  const [tags, setTags] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [isTagBoxVisible, setIsTagBoxVisible] = useState(false);
   const tagBoxRef = useRef(null);
-  const [allTags, setAllTags] = useState([]); 
+  const [allTags, setAllTags] = useState([]);
+
+  // ✅ `initialTags`가 변경될 때 `tags` 업데이트
+  useEffect(() => {
+    setTags(initialTags || []);
+  }, [initialTags]);
 
   useEffect(() => {
     if (typeof onTagListChange === 'function') {
@@ -167,8 +172,9 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
 
   const handleTagSelect = (tag) => {
     if (!tags.includes(tag)) {
-      setTags([...tags, tag]);
-      onTagListChange([...tags, tag]);
+      const updatedTags = [...tags, tag];
+      setTags(updatedTags);
+      onTagListChange(updatedTags);
     }
   };
 
