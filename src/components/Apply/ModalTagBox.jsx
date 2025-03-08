@@ -131,11 +131,12 @@ export default function ModalTagBox({ onTagListChange, initialTags = [], isWhite
         try {
           const createdTag = await addModalTag(newTag);
           const tagName = createdTag?.tagName || newTag;
-          
+
           const updatedTags = [...tags, tagName];
           setTags(updatedTags);
+          setAllTags([...allTags, tagName]); //  태그 박스에도 즉시 반영
           onTagListChange(updatedTags);
-          
+
           setInputValue('');
         } catch (error) {
           console.error('태그 추가 오류:', error);
@@ -144,14 +145,22 @@ export default function ModalTagBox({ onTagListChange, initialTags = [], isWhite
     }
   };
 
-  // ✅ 태그 입력란에서 삭제 (API 호출 ❌)
+  const handleTagSelect = (tag) => {
+    if (!tags.includes(tag)) {
+      const updatedTags = [...tags, tag];
+      setTags(updatedTags);
+      onTagListChange(updatedTags);
+    }
+  }; 
+
+  // 태그 입력란에서 삭제 (API 호출 ❌)
   const handleTagRemoveFromInput = (tagName) => {
     const updatedTags = tags.filter((tag) => tag !== tagName);
     setTags(updatedTags);
     onTagListChange(updatedTags);
   };
 
-  // ✅ 태그 박스에서 삭제 (API 호출 ✅)
+  // 태그 박스에서 삭제 (API 호출 ✅)
   const handleTagRemoveFromBox = async (tagName) => {
     try {
       await deleteModalTag(tagName);
@@ -188,7 +197,7 @@ export default function ModalTagBox({ onTagListChange, initialTags = [], isWhite
         <TagBoxList>
           <TagBoxListContainer>
             {allTags.map((tag) => (
-              <Tag key={tag}>
+              <Tag key={tag} onClick={() => handleTagSelect(tag)}> {/*  태그 클릭 시 입력칸에 추가 */}
                 {tag}
                 <CloseButton onClick={() => handleTagRemoveFromBox(tag)}>x</CloseButton> {/* ✅ 서버에서도 삭제 */}
               </Tag>
