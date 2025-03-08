@@ -27,8 +27,8 @@ const updateLicense = async (licenseId, data) => {
 		console.log('license Data: ', data);
 		const {id, ...dataWithoutId} = data;
 		const response = api.patch(`/history/resume/license?licenseId=${licenseId}`, dataWithoutId);
-		console.log('Success-createing license: ', response.data);
-		return response.data;
+		console.log('Success-creating license: ', response);
+		return response;
 	} catch (error) {
 		if (error.response) {
 			// 서버 응답이 있는 경우
