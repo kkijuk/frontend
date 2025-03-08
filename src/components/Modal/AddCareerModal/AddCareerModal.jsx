@@ -88,7 +88,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const [type, setType] = useState(''); //경력분류
 	const [workplace, setWorkplace] = useState(''); //근무처
 	const [position, setPosition] = useState(''); //직급/직위
-	const [jobField, setJobField] = useState(''); //직무/분야
+	const [field, setField] = useState(''); //직무/분야
 	const [time, setTime] = useState(0); //교육시간
 	// const [participantType, setParticipantType] = useState({}); //인원-팀인원-기여도
 	const [isTeam, setIsTeam] = useState(false);
@@ -603,8 +603,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							<label>직무/분야</label>
 							<input
 								type="text"
-								value={jobField}
-								onChange={(e) => setJobField(e.target.value)}
+								value={field}
+								onChange={(e) => setField(e.target.value)}
 								placeholder="ex) 서비스업, iOS 개발 등"
 								maxLength={15}></input>
 						</FormItem>
