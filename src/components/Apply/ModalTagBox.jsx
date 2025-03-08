@@ -96,7 +96,21 @@ export default function ModalTagBox({ onTagListChange, initialTags = [], isWhite
   const tagBoxRef = useRef(null);
   const [allTags, setAllTags] = useState([]);
 
-  // ✅ initialTags가 변경될 때만 상태 업데이트
+//  태그 박스 외부 클릭 시 닫히도록 처리
+useEffect(() => {
+  const handleClickOutside = (e) => {
+    if (tagBoxRef.current && !tagBoxRef.current.contains(e.target)) {
+      setIsTagBoxVisible(false);
+    }
+  };
+
+  document.addEventListener('mousedown', handleClickOutside);
+  return () => {
+    document.removeEventListener('mousedown', handleClickOutside);
+  };
+}, []);
+
+  //  initialTags가 변경될 때만 상태 업데이트
   useEffect(() => {
     setTags(initialTags);
   }, [initialTags]);
@@ -153,14 +167,14 @@ export default function ModalTagBox({ onTagListChange, initialTags = [], isWhite
     }
   }; 
 
-  // 태그 입력란에서 삭제 (API 호출 ❌)
+  // 태그 입력란에서 삭제 (API 호출 x)
   const handleTagRemoveFromInput = (tagName) => {
     const updatedTags = tags.filter((tag) => tag !== tagName);
     setTags(updatedTags);
     onTagListChange(updatedTags);
   };
 
-  // 태그 박스에서 삭제 (API 호출 ✅)
+  // 태그 박스에서 삭제 (API 호출 o)  
   const handleTagRemoveFromBox = async (tagName) => {
     try {
       await deleteModalTag(tagName);
