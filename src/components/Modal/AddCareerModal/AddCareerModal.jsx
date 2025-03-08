@@ -762,6 +762,94 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		}
 	};
 
+	// GA4
+	const trackCategoryEvent = (category) => {
+		if (!isEditMode) {
+		switch(category) {
+			case 1 : 
+			case 2:
+			case 7:
+				//활동 및 경험(동아리, 활동, 기타)
+				trackEvent('add_confirm', {
+					category:'resume',
+					detail: 'add_activitiesAndExperiences',
+					action_type:'confirm',
+					label: '확인',
+				});
+				break;
+			case 3: 
+			case 4:
+				//공모전/대회, 프로젝트
+				trackEvent('add_confirm', {
+					category:'resume',
+					detail: 'add_project',
+					action_type:'confirm',
+					label: '확인',
+				});
+				break;
+			case 5: //경력
+				trackEvent('add_confirm', {
+					category:'resume',
+					detail: 'add_career',
+					action_type:'confirm',
+					label: '확인',
+				});
+				break;
+			case 6: //교육
+				trackEvent('add_confirm', {
+					category:'resume',
+					detail: 'add_training',
+					action_type:'confirm',
+					label: '확인',
+				});
+				break;
+			default:
+				return;
+		}} else {
+			switch(category) {
+				case 1 : 
+				case 2:
+				case 7:
+					//활동 및 경험(동아리, 활동, 기타)
+					trackEvent('edit_click', {
+						category:'resume',
+						detail: 'edit_activitiesAndExperiences',
+						action_type:'edit',
+						label: '활동 수정하기',
+					});
+					break;
+				case 3: 
+				case 4:
+					//공모전/대회, 프로젝트
+					trackEvent('edit_click', {
+						category:'resume',
+						detail: 'edit_project',
+						action_type:'edit',
+						label: '활동 수정하기',
+					});
+					break;
+				case 5: //경력
+					trackEvent('edit_click', {
+						category:'resume',
+						detail: 'edit_career',
+						action_type:'edit',
+						label: '활동 수정하기',
+					});
+					break;
+				case 6: //교육
+					trackEvent('edit_click', {
+						category:'resume',
+						detail: 'edit_training',
+						action_type:'edit',
+						label: '활동 수정하기',
+					});
+					break;
+				default:
+					return;
+			}
+		}	
+	};
+
 	// 활동 추가 함수
 	const handleAddCareer = async () => {
 		if (!isEditMode) {
@@ -864,7 +952,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				//window.location.reload();
 				//navigate('/mycareer'); //세연 추가
 				// 현재 경로가 `/mycareer`라면 새로고침, `/home`이라면 `/mycareer`로 이동
-				if (currentLocation.pathname === '/mycareer') {
+				if (currentLocation.pathname === '/mycareer' || currentLocation.pathname === '/history') {
 					setTimeout(() => {
 						window.location.reload();
 					}, 100); // 100ms 후 실행 (리액트 상태 업데이트 이후 확실하게 새로고침)
@@ -879,6 +967,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		}
 
 		onClose();
+		trackCategoryEvent(selectedCategory);
 	};
 
 	// 활동 삭제 함수

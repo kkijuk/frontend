@@ -949,6 +949,7 @@ const ApplyDetail = () => {
 	introduceId={review.introduceId ?? 0} //  introduceId 추가
 	onDelete={() => handleReviewDelete(review.reviewId)}
 	fetchData={fetchJobDetails}
+	disableTitleEdit={review.title === '서류'}
 />
 
 				));

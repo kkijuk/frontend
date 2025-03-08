@@ -62,9 +62,9 @@ const Others = () => {
 		<BackgroundDiv>
 			<BaseDiv>
 				<ContentTitle>
-					<h1 style={{ position: 'relative', display: 'inline-block', marginRight: '12px' }}>
+					<RecruitTitle>
 						{contents.recruitTitle}
-					</h1>
+					</RecruitTitle>
 					<Tag style={{ color: 'white' }}>{isCompleted ? '작성 완료' : '작성 중'}</Tag>
 					{contents.tags.map((tag) => (
 						<Tag style={{ background: '#F5F5F5', color: '#3AAF85' }}>{tag}</Tag>
@@ -84,14 +84,14 @@ const Others = () => {
 						<div style={{ position: 'relative' }}>
 							<h3>
 								{index + 1}. {
-								question.title && question.title !== 'string'
+								question.title && question.title !== 'string' && question.title !== ''
 								? question.title
 								: '질문을 작성하세요.'
 								}
 							</h3>
-							<div style={{ height: '100px' }}>
+							<div style={{ minHeight:'100px', whiteSpace: 'pre-wrap', marginBottom: '20px' }}>
 								<p>
-									{question.content && question.content !== 'string'
+									{question.content && question.content !== 'string' && question.content !== ''
 									? question.content
 									: '답변을 작성하세요.'}
 								</p>
@@ -155,6 +155,9 @@ const ContentTitle = styled.div`
 	position: relative;
 	margin-top: 10px;
 	margin-bottom: 33px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 `;
 
 const Tag = styled.div`
@@ -197,4 +200,14 @@ const Delete = styled.div`
 	position: absolute;
 	top: 16px;
 	right: 10px;
+`;
+
+const RecruitTitle = styled.h1`
+  display: inline-block;
+  margin-right: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 50%; 
+  position: relative;
 `;

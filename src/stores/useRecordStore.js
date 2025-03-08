@@ -95,28 +95,58 @@ const useRecordStore = create((set, get) => ({
 			switch (category) {
 				case 'educations':
 					response = await createEducation(item);
+					if(Array.isArray(response)){
+						set({[category]: response});
+					} else {
+						set((state) => ({
+							[category]: [...state[category], response],
+						}));
+					}
 					break;
 				case 'licenses':
 					response = await createLicense(item);
+					console.log('response: ', response);
+					if(Array.isArray(response.data)){
+						set({[category]: response.data});
+					} else {
+						set((state) => ({
+							[category]: [...state[category], response],
+						}));
+					}
 					break;
 				case 'awards':
 					response = await createAward(item);
+					if(Array.isArray(response.data)){
+						set({[category]: response.data});
+					} else {
+						set((state) => ({
+							[category]: [...state[category], response],
+						}));
+					}
 					break;
 				case 'skills':
 					response = await createSkill(item);
+					console.log('response: ', response);
+					if(Array.isArray(response.data)){
+						set({[category]: response.data});
+					} else {
+						set((state) => ({
+							[category]: [...state[category], response],
+						}));
+					}
 					break;
 				case 'activitiesAndExperiences':
 				case 'employments':
 				case 'projects':
 				case 'eduCareers':
 					response = await createCareer(item);
+					set((state) => ({
+                        [category]: [...state[category], response.data],
+                    }));
 					break;
 				default:
 					throw new Error('Invalid category');
 			}
-			set((state) => ({
-				[category]: [...state[category], response],
-			}));
 			// window.location.reload();
 		} catch (error) {
 			console.error('Add Item Error:', error);
@@ -130,28 +160,64 @@ const useRecordStore = create((set, get) => ({
 			switch (category) {
 				case 'educations':
 					response = await updateEducation(id, updates);
+					if (Array.isArray(response)) {
+                        set({ [category]: response });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].map((item) =>
+                                item.id === id ? { ...item, ...updates } : item
+                            ),
+                        }));
+                    }
 					break;
 				case 'licenses':
 					response = await updateLicense(id, updates);
+					if (Array.isArray(response.data)) {
+                        set({ [category]: response.data });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].map((item) =>
+                                item.id === id ? { ...item, ...updates } : item
+                            ),
+                        }));
+                    }
 					break;
 				case 'awards':
 					response = await updateAward(id, updates);
+					if (Array.isArray(response.data)) {
+                        set({ [category]: response.data });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].map((item) =>
+                                item.id === id ? { ...item, ...updates } : item
+                            ),
+                        }));
+                    }
 					break;
 				case 'skills':
 					response = await updateSkill(id, updates);
+					if (Array.isArray(response.data)) {
+                        set({ [category]: response.data });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].map((item) =>
+                                item.id === id ? { ...item, ...updates } : item
+                            ),
+                        }));
+                    }
 					break;
 				case 'activitiesAndExperiences':
 				case 'employments':
 				case 'projects':
 				case 'eduCareers':
 					response = await CareerEdit(id, updates);
+					set((state) => ({
+						[category]: state[category].map((item) => (item.id === id ? { ...item, ...updates } : item)),
+					}));
 					break;
 				default:
 					throw new Error('Invalid category');
 			}
-			set((state) => ({
-				[category]: state[category].map((item) => (item.id === id ? { ...item, ...updates } : item)),
-			}));
 		} catch (error) {
 			console.error('Update Item Error:', error);
 		}
@@ -160,31 +226,68 @@ const useRecordStore = create((set, get) => ({
 	// 항목 삭제
 	deleteItem: async (category, id) => {
 		try {
+			let response;
 			switch (category) {
 				case 'educations':
-					await deleteEducation(id);
+					response = await deleteEducation(id);
+					if (Array.isArray(response)) {
+                        set({ [category]: response });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].filter(
+                                (item) => item.id !== id
+                            ),
+                        }));
+                    }
 					break;
 				case 'licenses':
-					await deleteLicense(id);
+					response = await deleteLicense(id);
+					if (Array.isArray(response.data)) {
+                        set({ [category]: response.data });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].filter(
+                                (item) => item.id !== id
+                            ),
+                        }));
+                    }
 					break;
 				case 'awards':
-					await deleteAward(id);
+					response = await deleteAward(id);
+					if (Array.isArray(response.data)) {
+                        set({ [category]: response.data });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].filter(
+                                (item) => item.id !== id
+                            ),
+                        }));
+                    }
 					break;
 				case 'skills':
-					await deleteSkill(id);
+					response = await deleteSkill(id);
+					if (Array.isArray(response.data)) {
+                        set({ [category]: response.data });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].filter(
+                                (item) => item.id !== id
+                            ),
+                        }));
+                    }
 					break;
 				case 'activitiesAndExperiences':
 				case 'employments':
 				case 'projects':
 				case 'eduCareers':
 					await CareerDelete(id);
+					set((state) => ({
+						[category]: state[category].filter((item) => item.id !== id),
+					}));
 					break;
 				default:
 					throw new Error('Invalid category');
 			}
-			set((state) => ({
-				[category]: state[category].filter((item) => item.id !== id),
-			}));
 		} catch (error) {
 			console.error('Delete Item Error:', error);
 		}

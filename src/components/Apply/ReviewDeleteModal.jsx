@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 const Background = styled.div`
@@ -15,8 +15,8 @@ const Background = styled.div`
 `;
 
 const Modal = styled.div`
-	width: 350px;
-	height: 280px;
+	width: 310px;
+	height: 150px;
 	background: rgba(255, 255, 255, 1);
 	border-radius: 10px;
 	padding: 20px;
@@ -25,23 +25,23 @@ const Modal = styled.div`
 	justify-content: center;
 	align-items: center;
 	text-align: center;
+	position: relative;
 `;
 
 const ModalTitle = styled.div`
 	color: #333;
 	text-align: center;
-	font-family: 'Light';
-	font-size: 18px;
-	font-style: normal;
+	font-family: normal;
+	font-size: 16px;
 	font-weight: 400;
 	line-height: 1.8;
-	margin-top: 35px;
+	margin-top: -5px;
 `;
 
 const ButtonContainer = styled.div`
 	display: flex;
 	gap: 20px;
-	margin-top: 20px;
+	margin-top: 15px;
 `;
 
 const CancelButton = styled.button`
@@ -50,11 +50,14 @@ const CancelButton = styled.button`
 	border-radius: 12px;
 	cursor: pointer;
 	font-family: Regular;
-	font-size: 18px;
+	font-size: 15px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-top: 45px;
+	margin-top: 5px;
+	border: 1.5px solid #E0E0E0;
+	background: #fff;
+	color: #707070;
 `;
 
 const ConfirmButton = styled.button`
@@ -63,37 +66,40 @@ const ConfirmButton = styled.button`
 	border-radius: 12px;
 	cursor: pointer;
 	font-family: Regular;
-	font-size: 18px;
+	font-size: 15px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-top: 45px;
+	margin-top: 5px;
+	border: 1.5px solid #FF7979;
+	background: #FF7979;
+	color: white;
 `;
 
-const ReviewDeleteModal = ({ onClose, onConfirm }) => (
-	<Background>
-		<Modal>
-			<ModalTitle>
-				해당 전형 후기를
-				<br />
-				정말로 삭제하시겠습니까?
-			</ModalTitle>
-			<ButtonContainer>
-				<CancelButton onClick={onClose} style={{ border: '1.5px solid #77AFF2', background: '#FFF', color: '#77AFF2' }}>
-					취소
-				</CancelButton>
-				<ConfirmButton
-					onClick={async () => {
-						await onConfirm(); // 삭제 작업이 완료된 후
-						onClose(); // 모달 닫기
-					}}
-					style={{ border: '1.5px solid red', background: '#FFF', color: 'red' }}
-				>
-					삭제
-				</ConfirmButton>
-			</ButtonContainer>
-		</Modal>
-	</Background>
-);
+const ReviewDeleteModal = ({ onClose, onConfirm }) => {
+
+	//  삭제 버튼을 누르면 모달이 즉시 닫히고, 삭제 실행
+	const handleDelete = async () => {
+		onClose(); // 모달 닫기 먼저 실행
+		await onConfirm(); // 삭제 실행
+	};
+
+	return (
+		<Background >
+			<Modal > 
+				<ModalTitle>
+					해당 전형 후기를
+					<br />
+					정말로 삭제하시겠습니까?
+				</ModalTitle>
+				<ButtonContainer>
+					<CancelButton onClick={onClose}>취소</CancelButton>
+					<ConfirmButton onClick={handleDelete}>삭제</ConfirmButton>
+				</ButtonContainer>
+			</Modal>
+		</Background>
+		
+	);
+};
 
 export default ReviewDeleteModal;

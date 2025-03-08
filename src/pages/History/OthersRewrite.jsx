@@ -36,6 +36,9 @@ const OthersRewrite = () => {
 	const [gotoShow, setGotoShow] = useState(false);
 	const [charCounts, setCharCounts] = useState([]);
 	const [nextQuestionId, setNextQuestionId] = useState(1);
+	const [showAutoSaveMessage, setShowAutoSaveMessage] = useState(false); // 자동 저장 메시지
+	const [autoSaveTime, setAutoSaveTime] = useState(''); // 자동 저장 시간
+
 
 	useEffect(() => {
 		setCharCounts(questions.map((question) => question.content.length));
@@ -109,29 +112,44 @@ const OthersRewrite = () => {
 		);
 	};
 
-	const submitData = () => {
+	const submitData = async () => {
 		const Data = {
 			questionList: questions,
 			state: isCompleted,
 		};
 		console.log('자소서 수정 데이터: ', Data);
 		console.log('이력서 ID: ', contents.id);
-		api
-			.patch(`history/intro/${contents.id}`, Data)
-			.then((response) => {
-				console.log(response.data);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		try{
+			const response = await api.patch(`history/intro/${contents.id}`, Data);
+			// console.log(response.data);
+
+			setAutoSaveTime(new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}));
+			setShowAutoSaveMessage(true);
+			setTimeout(() => {
+				setShowAutoSaveMessage(false);
+			}, 3000);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
-	// setInterval(submitData, 60000);
+	// 자동 저장
+	useEffect(() => {
+		const interval = setInterval(() => {
+			submitData();
+		}, 60000);
+		return () => clearInterval(interval);
+	}, [questions]); 
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault();
-		submitData();
-		navigate(`/history/others/${id}`);
+		try{
+			await submitData();
+		} catch (error) {
+			console.error('Error:', error);
+		} finally {
+			navigate(`/history/others/${id}`);
+		}
 	};
 
 	const toggleEditApplyModal = () => {
@@ -334,22 +352,22 @@ const OthersRewrite = () => {
 							</Delete>
 							<Delete onClick={() => deleteItem(question.number)}>삭제</Delete>
 							<InputTitle
-								placeholder={'질문을 작성하세요'}
+								placeholder='질문을 작성하세요'
 								style={{ height: '20px', marginBottom: '12px', paddingLeft: '50px', width: '750px' }}
 								value={
 									question.title && question.title !== 'string' 
 									? question.title
-									: '질문을 작성하세요.'
+									: ''
 								}
 								onChange={(e) => handleInputChange(question.number, 'title', e)}
 							/>
 							<InputTitle
-								placeholder={'답변을 작성하세요'}
+								placeholder='답변을 작성하세요'
 								style={{ height: '150px', marginBottom: '35px', width: '780px' }}
 								value={
 									question.content && question.content !== 'string' 
-									? question
-									: '답변을 작성하세요.'}
+									? question.content
+									: ''}
 								onChange={(e) => handleInputChange(question.number, 'content', e)}
 							/>
 							<p
@@ -369,7 +387,7 @@ const OthersRewrite = () => {
 				</form>
 				<AddButton onClick={handleAddClick}>+</AddButton>
 				<div style={{ height: '70px' }}></div>
-				<div style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', gap: '15px' }}>
+				<div style={{display: 'flex', justifyContent: 'space-between'}}>
 					<Button
 						onClick={toggleModal}
 						style={{
@@ -382,12 +400,20 @@ const OthersRewrite = () => {
 					>
 						삭제
 					</Button>
-					<Button
-						onClick={handleSubmit}
-						style={{ width: '645px', borderRadius: '10px', background: '#3AAF85', color: '#FFF' }}
-					>
-						저장하고 나가기
-					</Button>
+					<div style={{display: 'flex', flexDirection:'column', alignItems: 'center', position: 'relative'}}>
+						{showAutoSaveMessage && (
+							<p style={{ fontFamily: 'pretendard', fontSize: '14px', color: '#707070', marginBottom: '10px', position:'absolute', top:'-40px' }}>
+								자동 저장을 완료했습니다. {autoSaveTime}
+							</p>
+						)}
+						
+						<Button
+							onClick={handleSubmit}
+							style={{ width: '185px', borderRadius: '10px', background: '#3AAF85', color: '#FFF' }}
+						>
+							저장하고 나가기
+						</Button>
+					</div>
 				</div>
 			</BaseDiv>
 		</BackgroundDiv>
@@ -457,6 +483,7 @@ const InputTitle = styled.textarea`
 	line-height: normal;
 	resize: none;
 	overflow: hidden;
+	white-space: pre-wrap;
 `;
 
 const AddButton = styled.button`

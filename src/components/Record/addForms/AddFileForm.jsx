@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import FileSearch from "../FileSearch";
+import { trackEvent } from "../../../utils/ga4";
 
 const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialData}) => {
   const [formData, setFormData] = useState({
@@ -116,6 +117,12 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                         onClick={() => {
                           onUpdate(formData);
                           onClose();
+                          trackEvent('edit_click', {
+                            category: 'resume',
+                            detail: 'add_attatchment',
+                            action_type: 'edit',
+                            label: '활동 수정하기',
+                          });
                         }}
                         style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
                         저장
@@ -126,6 +133,12 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                         onClick={() => {
                           onSave(formData);
                           onClose();
+                          trackEvent('add_confirm', {
+                            category: 'resume',
+                            detail: 'add_attachment',
+                            action_type: 'confirm',
+                            label: '추가',
+                          });
                         }}
                         style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
                         추가
