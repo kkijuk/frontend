@@ -107,9 +107,9 @@ const Master = () => {
 
 					return (
 						<div key={index}>
-						<h3>{question.title && question.title !== 'string' ? question.title : defaultTitle}</h3>
+						<h3>{question.title && question.title !== 'string' && question.title !== '' ? question.title : defaultTitle}</h3>
 						<ContentBox>
-							{question.title && question.title !== 'string' ? question.content : defaultContent}
+							{question.title && question.title !== 'string' && question.title !== '' ? question.content : defaultContent}
 						</ContentBox>
 						</div>
 					);
