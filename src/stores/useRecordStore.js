@@ -95,6 +95,13 @@ const useRecordStore = create((set, get) => ({
 			switch (category) {
 				case 'educations':
 					response = await createEducation(item);
+					if(Array.isArray(response)){
+						set({[category]: response});
+					} else {
+						set((state) => ({
+							[category]: [...state[category], response],
+						}));
+					}
 					break;
 				case 'licenses':
 					response = await createLicense(item);
