@@ -23,7 +23,12 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 
 	// 내커리어-상세페이지로 이동
 	const handleNavigate = () => {
-		navigate(`/mycareer/${data.category.categoryKoName}/${data.id}`);
+		navigate(`/mycareer/${data.category.categoryKoName}/${data.id}`,{
+			state: {
+				careerId: data.id,
+				category: data.category.categoryKoName,
+			},
+		});
 	}
 
 	// GA4
