@@ -28,8 +28,10 @@ const deleteURL = async (data) => {
         const {urlTitle, url} = data;
         console.log("URL data: ", data);
         const response = await api.delete("/history/url",{
-            urlTitle: urlTitle,
-            url: url
+            data: {
+                urlTitle: urlTitle,
+                url: url
+            }
         });
         console.log("URL deleted successfully: ", response.data);
         return response.data;
