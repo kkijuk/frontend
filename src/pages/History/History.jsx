@@ -768,7 +768,7 @@ const Section = styled.div`
 const ItemsWrapper = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* 2열 배치 */
+  grid-template-columns: repeat(2, minmax(100px, 1fr)); /* 2열 배치 */
   gap: 25px;
 `;
 
