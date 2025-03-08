@@ -364,7 +364,7 @@ const useRecordStore = create((set, get) => ({
 				console.log('savedEtcData:', savedEtcData);
 				set((state) => ({
 					files: state.files.map((item) =>
-						item.url === oldData.url ? savedEtcData : item
+						item.url === oldData.url ? savedEtcData.data : item
 					),
 				}));
 			} else {
