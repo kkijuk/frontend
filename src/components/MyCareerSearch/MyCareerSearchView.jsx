@@ -29,11 +29,13 @@ const ToggleButton = styled.button`
 	background-color: white;
 	cursor: pointer;
 	border: 2px solid white;
-	width: 85px;
+	min-width: 85px;
 	height: 30px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+
+	white-space: nowrap; /* 줄 바꿈 방지 */
 	font-family: Pretendard;
 	font-size: 18px;
 	font-weight: 600;
@@ -41,21 +43,9 @@ const ToggleButton = styled.button`
 	transition: all 0.2s ease; /* 버튼 클릭 시 부드러운 전환 효과 */
 
 	@media (max-width: 600px) {
-		width: 70px; /* 작은 화면에서는 버튼 너비 축소 */
-		font-size: 12px; /* 폰트 크기 축소 */
+		min-width: 70px; /* 작은 화면에서는 버튼 너비 축소 */
+		font-size: 14px; /* 폰트 크기 축소 */
 		padding: 6px 8px; /* 패딩 축소 */
-	}
-`;
-
-const ViewTitle = styled.div`
-	color: var(--black, #000);
-	font-family: Pretendard;
-	font-size: 22px;
-	font-weight: 700;
-	margin-bottom: 0;
-
-	@media (max-width: 600px) {
-		font-size: 18px; /* 작은 화면에서는 제목 폰트 크기 축소 */
 	}
 `;
 
