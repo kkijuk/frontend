@@ -111,7 +111,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 			organizer,
 			type,
 			position,
-			jobField,
+			field,
 			time,
 			isTeam,
 			teamSize,
@@ -128,7 +128,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		organizer,
 		type,
 		position,
-		jobField,
+		field,
 		time,
 		isTeam,
 		teamSize,
@@ -149,7 +149,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 			setType(initialData.type || '');
 			setWorkplace(initialData.workplace || '');
 			setPosition(initialData.position || '');
-			setJobField(initialData.jobField || '');
+			setField(initialData.field || '');
 			setTime(initialData.time || 0);
 			setIsTeam(initialData.isTeam || false);
 			setTeamSize(initialData.teamSize || 0);
@@ -882,7 +882,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 			organizer,
 			type,
 			position,
-			jobField,
+			field,
 			time,
 			isTeam,
 			teamSize,
