@@ -88,9 +88,9 @@ const History = () => {
 
 	const [activeSection, setActiveSection] = useState("");	// 인디케이터 활성화 섹션
 	const [editableUserData, setEditableUserData] = useState({	// 사용자 정보 수정
-		profileImageUrl: profileImageUrl,
-		address: address,
-		email: email,
+		profileImageUrl: '',
+		address: '',
+		email: '',
 	});
 	const [profileURL, setProfileURL] = useState(profileImageUrl);	// 프로필 이미지
 
@@ -139,8 +139,13 @@ const History = () => {
 
 	useEffect(() => {
 		// 사용자 정보 업데이트
+		setEditableUserData({
+			profileImageUrl: profileImageUrl,
+			address: address,
+			email: email,
+		})
 		updateUserData(editableUserData); //in useRecordStore
-	}, [editableUserData]);
+	}, [profileImageUrl, address, email]);
 
 
 	// LOGIC
