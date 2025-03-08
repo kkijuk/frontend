@@ -25,7 +25,8 @@ const createLicense = async (data) => {
 const updateLicense = async (licenseId, data) => {
 	try {
 		console.log('license Data: ', data);
-		const response = api.patch(`/history/resume/licence?licenseId=${licenseId}`, data);
+		const {id, ...dataWithoutId} = data;
+		const response = api.patch(`/history/resume/licence?licenseId=${licenseId}`, dataWithoutId);
 		console.log('Success-createing license: ', response.data);
 		return response.data;
 	} catch (error) {
