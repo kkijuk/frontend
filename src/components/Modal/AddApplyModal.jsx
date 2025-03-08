@@ -359,7 +359,6 @@ const AddApplyModal = ({ onClose, onSave }) => {
 					<InputWrapperTag>
 						<TagBoxWrapper>
 						<ModalTagBox onTagListChange={handleTagListChange} initialTags={tags} isWhiteBackground={true} />
-
 						</TagBoxWrapper>
 					</InputWrapperTag>
 				</FieldWrapper>
