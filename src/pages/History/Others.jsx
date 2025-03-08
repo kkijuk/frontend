@@ -62,9 +62,9 @@ const Others = () => {
 		<BackgroundDiv>
 			<BaseDiv>
 				<ContentTitle>
-					<h1 style={{ position: 'relative', display: 'inline-block', marginRight: '12px' }}>
+					<RecruitTitle>
 						{contents.recruitTitle}
-					</h1>
+					</RecruitTitle>
 					<Tag style={{ color: 'white' }}>{isCompleted ? '작성 완료' : '작성 중'}</Tag>
 					{contents.tags.map((tag) => (
 						<Tag style={{ background: '#F5F5F5', color: '#3AAF85' }}>{tag}</Tag>
@@ -89,7 +89,7 @@ const Others = () => {
 								: '질문을 작성하세요.'
 								}
 							</h3>
-							<div style={{ height: '100px', whiteSpace: 'pre-wrap' }}>
+							<div style={{ minHeight:'100px', whiteSpace: 'pre-wrap', marginBottom: '20px' }}>
 								<p>
 									{question.content && question.content !== 'string'
 									? question.content
@@ -197,4 +197,14 @@ const Delete = styled.div`
 	position: absolute;
 	top: 16px;
 	right: 10px;
+`;
+
+const RecruitTitle = styled.h1`
+  display: inline-block;
+  margin-right: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60%; 
+  position: relative;
 `;
