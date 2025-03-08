@@ -155,6 +155,9 @@ const ContentTitle = styled.div`
 	position: relative;
 	margin-top: 10px;
 	margin-bottom: 33px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 `;
 
 const Tag = styled.div`
@@ -205,6 +208,6 @@ const RecruitTitle = styled.h1`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 60%; 
+  max-width: 50%; 
   position: relative;
 `;
