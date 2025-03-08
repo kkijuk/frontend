@@ -672,7 +672,7 @@ const History = () => {
 									<FileItem
 										data={file}
 										onDelete={(data) => deleteEtcItem(data)}
-										onUpdate={(data) => updateEtcItem(data)}
+										onUpdate={(oldData, newData) => updateEtcItem(oldData, newData)}
 									/>
 								))}
 							</ContentWrapper>
