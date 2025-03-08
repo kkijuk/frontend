@@ -80,12 +80,12 @@ const Master = () => {
 		):(
 			<BaseDiv>
 				<ContentTitle>
-					<h1 style={{ display: 'inline-block' }}>
+					<OneLiner>
 						{data.oneLiner ? data.oneLiner : '한줄소개를 작성해주세요!'}
-					</h1>
-					<p className="lastUpdated" style={{ display: 'inline-block', position: 'absolute', top: '10px', right: 0 }}>
+					</OneLiner>
+					<LastUpdated className="lastUpdated">
 						{data.updated_at ? `마지막 수정일시: ${data.updated_at}` : '마지막 수정일시: unknown'}
-					</p>
+					</LastUpdated>
 				</ContentTitle>
 
 				{data.questions.length > 0 ? (
@@ -176,6 +176,25 @@ const ContentTitle = styled.div`
 	position: relative;
 	margin-top: 10px;
 	margin-bottom: 33px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+`;
+
+const OneLiner = styled.h1`
+  display: inline-block;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const LastUpdated = styled.p`
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  right: 0;
+  white-space: nowrap;
 `;
 
 const ContentBox = styled.div`
