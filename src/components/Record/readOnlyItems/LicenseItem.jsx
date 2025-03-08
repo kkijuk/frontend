@@ -13,8 +13,8 @@ const LicenseItem = ({ data, isSecondColumn, onSave, onUpdate, onDelete }) => {
           <LicenseName>{data.licenseName}</LicenseName>
           <LicenseDetails>
             {data.acquireDate} 
-            {data.administer && data.administer !== ''  ` ・ ${data.administer}`} 
-            {data.licenseNumber && data.licenseNumber !== '' ` ・ ${data.licenseNumber}`}
+            {data.administer && data.administer !== '' ?  ` ・ ${data.administer}` : ''} 
+            {data.licenseNumber && data.licenseNumber !== '' ? ` ・ ${data.licenseNumber}` : ''}
           </LicenseDetails>
         </LicenseInfo>
         <EditButton>
