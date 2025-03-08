@@ -348,7 +348,7 @@ const OthersRewrite = () => {
 								style={{ height: '150px', marginBottom: '35px', width: '780px' }}
 								value={
 									question.content && question.content !== 'string' 
-									? question
+									? question.content
 									: '답변을 작성하세요.'}
 								onChange={(e) => handleInputChange(question.number, 'content', e)}
 							/>
