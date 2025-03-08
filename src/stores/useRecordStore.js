@@ -224,6 +224,7 @@ const useRecordStore = create((set, get) => ({
 	// 항목 삭제
 	deleteItem: async (category, id) => {
 		try {
+			let response;
 			switch (category) {
 				case 'educations':
 					response = await deleteEducation(id);
@@ -238,7 +239,7 @@ const useRecordStore = create((set, get) => ({
                     }
 					break;
 				case 'licenses':
-					await deleteLicense(id);
+					response = await deleteLicense(id);
 					if (Array.isArray(response)) {
                         set({ [category]: response });
                     } else {
@@ -250,7 +251,7 @@ const useRecordStore = create((set, get) => ({
                     }
 					break;
 				case 'awards':
-					await deleteAward(id);
+					response = await deleteAward(id);
 					if (Array.isArray(response)) {
                         set({ [category]: response });
                     } else {
@@ -262,7 +263,7 @@ const useRecordStore = create((set, get) => ({
                     }
 					break;
 				case 'skills':
-					await deleteSkill(id);
+					response = await deleteSkill(id);
 					if (Array.isArray(response)) {
                         set({ [category]: response });
                     } else {
