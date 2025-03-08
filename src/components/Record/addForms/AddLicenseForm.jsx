@@ -65,11 +65,13 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
   }, [formData]);
 
   const hasEmptyField =(data)=>{
-    const { id, ...fields } = data; //id 제외
-    return Object.values(fields).some((value) => {
-      if (typeof value !== "string") {return true;}
-      return value.trim() === ""
-    });
+    // const { id, ...fields } = data; //id 제외
+    // return Object.values(fields).some((value) => {
+    //   if (typeof value !== "string") {return true;}
+    //   return value.trim() === ""
+    // });
+    const { acquireDate, licenseName } = data;
+    return !acquireDate.trim() || !licenseName.trim();
   }
 
   return (
