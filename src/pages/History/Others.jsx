@@ -156,7 +156,7 @@ const ContentTitle = styled.div`
 	margin-top: 10px;
 	margin-bottom: 33px;
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	align-items: center;
 `;
 
