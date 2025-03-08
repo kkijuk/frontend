@@ -4,7 +4,7 @@ const createSkill = async (data) => {
 	try {
 		console.log('skill Data: ', data);
 		const response = await api.post(`/history/resume/skill`, data);
-		console.log('Success-createSkill: ', data);
+		console.log('Success-createSkill: ', response.data);
 		return response.data;
 	} catch (error) {
 		console.error('Error-createSkill: ', error);
