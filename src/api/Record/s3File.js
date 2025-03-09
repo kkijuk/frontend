@@ -32,7 +32,7 @@ const uploadFileToS3 = async (file, presignedURL) => {
     try{
         const response = await axios.put(presignedURL, file, {
             headers: {
-                'Content-Type': file.type || 'application/pdf',
+                'Content-Type': file.type,
                 'x-amz-server-side-encryption' : 'AES256'
             }
         });
