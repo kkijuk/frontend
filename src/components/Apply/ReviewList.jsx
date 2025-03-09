@@ -110,10 +110,9 @@ const LinkIcon = styled.img`
 export default function ReviewList({ recruitId, reviewId, title, date, content = '', introduceState, introduceId, onDelete, fetchData }) {
 	const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
 	const navigate = useNavigate();
-	const disableTitleEdit = introduceState === 1 && title === '서류';
+	const isDocumentReview = introduceState === 1 && title === '서류'; // 서류 리뷰 여부
 
 	const handleEditClick = () => {
-		console.log(`Editing review with ID: ${reviewId}`);
 		setIsDetailAddVisible(!isDetailAddVisible);
 	};
 
@@ -137,8 +136,7 @@ export default function ReviewList({ recruitId, reviewId, title, date, content =
 				<TitleDateContainer>
 					<TitleWrapper>
 						<Title>{title}</Title>
-						{/*  "서류" 리뷰에만 링크 버튼 추가 */}
-						{title.trim() === "서류" && introduceState === 1 && introduceId > 0 && (
+						{isDocumentReview && (
 							<LinkButton onClick={handleLinkClick}>
 								<LinkIcon src={linkIcon} alt="link icon" />
 								자기소개서
@@ -148,7 +146,6 @@ export default function ReviewList({ recruitId, reviewId, title, date, content =
 					<Date>{date}</Date>
 				</TitleDateContainer>
 
-				{/*  "서류" 리뷰도 포함하여 모든 리뷰의 내용 표시 */}
 				<Contents>
 					{content ? (
 						content.split('\n').map((line, index) => <p key={index}>{line}</p>)
@@ -157,28 +154,27 @@ export default function ReviewList({ recruitId, reviewId, title, date, content =
 					)}
 				</Contents>
 
-				{/* 원래 코드 유지 */}
 				<EditIconStyled src={editIcon} alt="Edit" title="Edit" onClick={handleEditClick} />
-
-				{isDetailAddVisible && (
-					<ReviewDetailAddEdit
-						recruitId={recruitId}
-						reviewId={reviewId}
-						initialTitle={title}
-						initialDate={date}
-						initialContents={content}
-						onDelete={!disableTitleEdit ? handleDeleteClick : null} // 서류 후기는 삭제 비활성화
-						onSave={() => {
-							setIsDetailAddVisible(false);
-							fetchData();
-						}}
-						fetchData={fetchData}
-						disableTitleEdit={disableTitleEdit} // 서류 제목 비활성화
-					/>
-				)}
-
-				<Line></Line>
 			</Box>
+
+			{isDetailAddVisible && (
+				<ReviewDetailAddEdit
+					recruitId={recruitId}
+					reviewId={reviewId}
+					initialTitle={title}
+					initialDate={date}
+					initialContents={content}
+					onDelete={isDocumentReview ? null : handleDeleteClick} // 서류 리뷰는 삭제 불가능, 나머지는 삭제 가능
+					onSave={() => {
+						setIsDetailAddVisible(false);
+						fetchData();
+					}}
+					fetchData={fetchData}
+					disableTitleEdit={isDocumentReview} // 서류 제목 수정 불가
+				/>
+			)}
+
+			<Line></Line>
 		</div>
 	);
-}
+} 
