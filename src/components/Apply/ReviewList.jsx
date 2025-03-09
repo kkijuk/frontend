@@ -107,16 +107,14 @@ const LinkIcon = styled.img`
 	height: 15px;
 `;
 
-export default function ReviewList({ recruitId, reviews, onDelete, fetchData }) {
+export default function ReviewList({ recruitId, reviews = [], onDelete, fetchData }) {
 	const [isDetailAddVisible, setIsDetailAddVisible] = useState(null);
 	const navigate = useNavigate();
 
-	// ✅ "서류" 리뷰를 항상 최상단에 위치하도록 정렬
-	const sortedReviews = [...reviews].sort((a, b) => {
-		if (a.title === "서류") return -1;
-		if (b.title === "서류") return 1;
-		return 0;
-	});
+	// "서류" 리뷰를 항상 최상단에 위치하도록 정렬 (배열 확인 추가)
+	const sortedReviews = Array.isArray(reviews)
+		? [...reviews].sort((a, b) => (a.title === "서류" ? -1 : b.title === "서류" ? 1 : 0))
+		: [];
 
 	const handleEditClick = (reviewId) => {
 		setIsDetailAddVisible((prev) => (prev === reviewId ? null : reviewId));
@@ -138,60 +136,65 @@ export default function ReviewList({ recruitId, reviews, onDelete, fetchData }) 
 
 	return (
 		<div>
-			{sortedReviews.map(({ reviewId, title, date, content, introduceState, introduceId }) => {
-				const isDocumentReview = introduceState === 1 && title === "서류";
-				const disableTitleEdit = isDocumentReview;
+			{sortedReviews.length > 0 ? (
+				sortedReviews.map(({ reviewId, title, date, content, introduceState, introduceId }) => {
+					const isDocumentReview = introduceState === 1 && title === "서류";
+					const disableTitleEdit = isDocumentReview;
 
-				return (
-					<Box key={reviewId}>
-						<TitleDateContainer>
-							<TitleWrapper>
-								<Title>{title}</Title>
-								{/* ✅ "서류" 리뷰에만 링크 버튼 표시 */}
-								{isDocumentReview && introduceId && introduceId !== 0 && (
-									<LinkButton onClick={() => handleLinkClick(introduceId)}>
-										<LinkIcon src={linkIcon} alt="link icon" />
-										자기소개서
-									</LinkButton>
+					return (
+						<Box key={reviewId}>
+							<TitleDateContainer>
+								<TitleWrapper>
+									<Title>{title}</Title>
+									{/*  "서류" 리뷰에만 링크 버튼 표시 */}
+									{isDocumentReview && introduceId && introduceId !== 0 && (
+										<LinkButton onClick={() => handleLinkClick(introduceId)}>
+											<LinkIcon src={linkIcon} alt="link icon" />
+											자기소개서
+										</LinkButton>
+									)}
+								</TitleWrapper>
+								<Date>{date}</Date>
+							</TitleDateContainer>
+
+							<Contents>
+								{content ? (
+									content.split('\n').map((line, index) => <p key={index}>{line}</p>)
+								) : (
+									<NoContentText>전형 후기가 없습니다</NoContentText>
 								)}
-							</TitleWrapper>
-							<Date>{date}</Date>
-						</TitleDateContainer>
+							</Contents>
 
-						<Contents>
-							{content ? (
-								content.split('\n').map((line, index) => <p key={index}>{line}</p>)
-							) : (
-								<NoContentText>전형 후기가 없습니다</NoContentText>
+							{/* ✅ 서류 리뷰는 삭제 버튼 숨김 */}
+							{!isDocumentReview && (
+								<EditIconStyled src={editIcon} alt="Edit" title="Edit" onClick={() => handleEditClick(reviewId)} />
 							)}
-						</Contents>
 
-						{/* ✅ 서류 리뷰는 삭제 버튼 숨김 */}
-						{!isDocumentReview && (
-							<EditIconStyled src={editIcon} alt="Edit" title="Edit" onClick={() => handleEditClick(reviewId)} />
-						)}
+							{isDetailAddVisible === reviewId && (
+								<ReviewDetailAddEdit
+									recruitId={recruitId}
+									reviewId={reviewId}
+									initialTitle={title}
+									initialDate={date}
+									initialContents={content}
+									onDelete={!disableTitleEdit ? () => handleDeleteClick(reviewId) : null}
+									onSave={() => {
+										setIsDetailAddVisible(null);
+										fetchData();
+									}}
+									fetchData={fetchData}
+									disableTitleEdit={disableTitleEdit} //  서류 제목 수정 비활성화
+								/>
+							)}
 
-						{isDetailAddVisible === reviewId && (
-							<ReviewDetailAddEdit
-								recruitId={recruitId}
-								reviewId={reviewId}
-								initialTitle={title}
-								initialDate={date}
-								initialContents={content}
-								onDelete={!disableTitleEdit ? () => handleDeleteClick(reviewId) : null}
-								onSave={() => {
-									setIsDetailAddVisible(null);
-									fetchData();
-								}}
-								fetchData={fetchData}
-								disableTitleEdit={disableTitleEdit} // ✅ 서류 제목 수정 비활성화
-							/>
-						)}
-
-						<Line></Line>
-					</Box>
-				);
-			})}
+							<Line></Line>
+						</Box>
+					);
+				})
+			) : (
+				<p>등록된 전형 후기가 없습니다.</p>
+			)}
 		</div>
 	);
 }
+
