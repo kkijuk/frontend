@@ -126,8 +126,8 @@ const Line = styled.div`
 
 const CareerListBox = styled.div`
 	width: 800px;
-	height: 560px;
-	overflow-y: auto;
+	height: auto; /* 원래 560px */
+	/* overflow-y: auto; 삭제 */
 	overflow-x: hidden;
 `;
 
@@ -612,6 +612,7 @@ export default function MycareerDetail() {
 										key={detail.detailId}
 										initialTitle={detail.title}
 										initialDate={detail.startDate}
+										initialEndDate={detail.endDate} // ✅ endDate 추가
 										initialContents={detail.content}
 										initialTags={detail.detailTag || []}
 										careerId={careerId}
@@ -626,7 +627,11 @@ export default function MycareerDetail() {
 									<CareerList
 										key={detail.detailId}
 										title={detail.title}
-										date={`${detail.startDate} ~ ${detail.endDate || '진행중'}`}
+										date={
+											detail.startDate === detail.endDate || !detail.endDate
+												? detail.startDate
+												: `${detail.startDate} ~ ${detail.endDate}`
+										}
 										contents={detail.content}
 										detailTag={detail.detailTag || []}
 										careerId={careerId}
@@ -659,6 +664,7 @@ export default function MycareerDetail() {
 							action_type: 'add',
 							label: '활동 기록 추가',
 						});
+						window.scrollTo({ top: 0, behavior: 'smooth' });
 						handleAddButtonClick();
 					}}
 					disabled={editingDetailId !== null}>
