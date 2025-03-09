@@ -136,7 +136,8 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
 		return (
 			<DetailAddEdit
 				initialTitle={detailData.title}
-				initialDate={detailData.startDate}
+				initialStartDate={detailData.startDate}
+				initialEndDate={detailData.endDate} // ✅ endDate 추가
 				initialContents={detailData.content}
 				initialTags={detailData.detailTag}
 				careerId={careerId}
