@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import ReviewDetailAddEdit from './ReviewDetailAddEdit';
 import editIcon from '../../assets/edit.svg';
 import linkIcon from '../../assets/link.svg';
-import { ReviewAdd } from '../../api/Apply/ReviewAdd';
+import { ReviewAdd } from '../../api/Apply/ReviewAdd'; 
 import { useNavigate } from 'react-router-dom';
 
 const Box = styled.div`
@@ -107,94 +107,83 @@ const LinkIcon = styled.img`
 	height: 15px;
 `;
 
-export default function ReviewList({ recruitId, reviews = [], onDelete, fetchData }) {
-	const [isDetailAddVisible, setIsDetailAddVisible] = useState(null);
+export default function ReviewList({ recruitId, reviewId, title, date, content = '', introduceState, introduceId, onDelete, fetchData }) {
+	const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
 	const navigate = useNavigate();
 
-	// "서류" 리뷰를 항상 최상단에 위치하도록 정렬 (배열 확인 추가)
-	const sortedReviews = Array.isArray(reviews)
-		? [...reviews].sort((a, b) => (a.title === "서류" ? -1 : b.title === "서류" ? 1 : 0))
-		: [];
+	// ✅ "서류" 리뷰 여부 확인
+	const isDocumentReview = introduceState === 1 && title === "서류";
+	const disableTitleEdit = isDocumentReview;
 
-	const handleEditClick = (reviewId) => {
-		setIsDetailAddVisible((prev) => (prev === reviewId ? null : reviewId));
+	const handleEditClick = () => {
+		console.log(`Editing review with ID: ${reviewId}`);
+		setIsDetailAddVisible(!isDetailAddVisible);
 	};
 
-	const handleDeleteClick = (reviewId) => {
+	const handleDeleteClick = () => {
 		if (onDelete) {
 			onDelete(reviewId);
 		}
 	};
 
-	const handleLinkClick = (introduceId) => {
+	const handleLinkClick = () => {
 		if (introduceId && introduceId !== 0) {
-			navigate(`/history/others/${introduceId}`);
+			navigate(`/history/others/${introduceId}`); // ✅ introduceId가 있을 경우 링크 이동
 		} else {
-			console.warn("유효한 introduceId가 없습니다.");
+			console.warn("유효한 introduceId가 없습니다."); // introduceId 없을 때 경고
 		}
 	};
 
 	return (
 		<div>
-			{sortedReviews.length > 0 ? (
-				sortedReviews.map(({ reviewId, title, date, content, introduceState, introduceId }) => {
-					const isDocumentReview = introduceState === 1 && title === "서류";
-					const disableTitleEdit = isDocumentReview;
+			<Box>
+				<TitleDateContainer>
+					<TitleWrapper>
+						<Title>{title}</Title>
+						{/*  "서류" 리뷰에만 링크 버튼 추가 */}
+						{isDocumentReview && introduceId && introduceId !== 0 && (
+							<LinkButton onClick={handleLinkClick}>
+								<LinkIcon src={linkIcon} alt="link icon" />
+								자기소개서
+							</LinkButton>
+						)}
+					</TitleWrapper>
+					<Date>{date}</Date>
+				</TitleDateContainer>
 
-					return (
-						<Box key={reviewId}>
-							<TitleDateContainer>
-								<TitleWrapper>
-									<Title>{title}</Title>
-									{/*  "서류" 리뷰에만 링크 버튼 표시 */}
-									{isDocumentReview && introduceId && introduceId !== 0 && (
-										<LinkButton onClick={() => handleLinkClick(introduceId)}>
-											<LinkIcon src={linkIcon} alt="link icon" />
-											자기소개서
-										</LinkButton>
-									)}
-								</TitleWrapper>
-								<Date>{date}</Date>
-							</TitleDateContainer>
+				<Contents>
+					{content ? (
+						content.split('\n').map((line, index) => <p key={index}>{line}</p>)
+					) : (
+						<NoContentText>전형 후기가 없습니다</NoContentText>
+					)}
+				</Contents>
 
-							<Contents>
-								{content ? (
-									content.split('\n').map((line, index) => <p key={index}>{line}</p>)
-								) : (
-									<NoContentText>전형 후기가 없습니다</NoContentText>
-								)}
-							</Contents>
+				{/*  "서류" 리뷰는 삭제 버튼 숨김 */}
+				{!isDocumentReview && (
+					<EditIconStyled src={editIcon} alt="Edit" title="Edit" onClick={handleEditClick} />
+				)}
 
-							{/* ✅ 서류 리뷰는 삭제 버튼 숨김 */}
-							{!isDocumentReview && (
-								<EditIconStyled src={editIcon} alt="Edit" title="Edit" onClick={() => handleEditClick(reviewId)} />
-							)}
+				{isDetailAddVisible && (
+					<ReviewDetailAddEdit
+						recruitId={recruitId}
+						reviewId={reviewId}
+						initialTitle={title}
+						initialDate={date}
+						initialContents={content}
+						onDelete={!disableTitleEdit ? handleDeleteClick : null} //  "서류" 리뷰는 삭제 비활성화
+						onSave={() => {
+							setIsDetailAddVisible(false);
+							fetchData();
+						}}
+						fetchData={fetchData}
+						disableTitleEdit={disableTitleEdit} //  "서류" 제목 수정 비활성화
+					/>
+				)}
 
-							{isDetailAddVisible === reviewId && (
-								<ReviewDetailAddEdit
-									recruitId={recruitId}
-									reviewId={reviewId}
-									initialTitle={title}
-									initialDate={date}
-									initialContents={content}
-									onDelete={!disableTitleEdit ? () => handleDeleteClick(reviewId) : null}
-									onSave={() => {
-										setIsDetailAddVisible(null);
-										fetchData();
-									}}
-									fetchData={fetchData}
-									disableTitleEdit={disableTitleEdit} //  서류 제목 수정 비활성화
-								/>
-							)}
-
-							<Line></Line>
-						</Box>
-					);
-				})
-			) : (
-				<p>등록된 전형 후기가 없습니다.</p>
-			)}
+				<Line></Line>
+			</Box>
 		</div>
 	);
 }
-
+ 
