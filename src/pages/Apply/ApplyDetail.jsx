@@ -908,28 +908,31 @@ const ApplyDetail = () => {
 			</Header>
 
 			{job && job.reviews && job.reviews.length > 0 && (
-			job.reviews.map((review, index) => (
-				<ReviewList
-					key={index}
-					recruitId={job.id}
-					reviewId={review.reviewId}
-					title={review.title}
-					date={review.date}
-					content={review.content}
-					onDelete={() => handleReviewDelete(review.reviewId)}
-					fetchData={fetchJobDetails}
-				/>
-			))
-		)}
+	job.reviews.map((review, index) => (
+		<ReviewList
+			key={index}
+			recruitId={job.id}
+			reviewId={review.reviewId}
+			title={review.title}
+			date={review.date}
+			content={review.content}
+			onDelete={() => handleReviewDelete(review.reviewId)}
+			fetchData={fetchJobDetails}
+			introduceState={job.introduceState} //  introduceState 전달
+			introduceId={job.introduceId} //  introduceId 전달
+		/>
+	))
+)}
 
-			{showReviewAdd && (
-				<ReviewDetailAdd
-					recruitId={job?.id}
-					onSave={handleReviewSave}
-					onCancel={handleCancelReviewAdd}
-					fetchData={fetchJobDetails} // fetchData 전달
-				/>
-			)}
+{showReviewAdd && (
+	<ReviewDetailAdd
+		recruitId={job?.id}
+		onSave={handleReviewSave}
+		onCancel={handleCancelReviewAdd}
+		fetchData={fetchJobDetails} 
+	/>
+)}
+
 
 			<ButtonContainer>
 			<Button 
