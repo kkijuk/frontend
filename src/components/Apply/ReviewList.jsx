@@ -108,77 +108,77 @@ const LinkIcon = styled.img`
 `;
 
 export default function ReviewList({ recruitId, reviewId, title, date, content = '', introduceState, introduceId, onDelete, fetchData }) {
-    const [isDetailAddVisible, setIsDetailAddVisible] = useState({});
-    const navigate = useNavigate();
-    
-    const handleEditClick = (reviewId) => {
-        setIsDetailAddVisible((prev) => ({
-            ...prev,
-            [reviewId]: !prev[reviewId],
-        }));
-    };
+	const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
+	const navigate = useNavigate();
+	const disableTitleEdit = introduceState === 1 && title === '서류';
 
-    const handleDeleteClick = () => {
-        if (onDelete) {
-            onDelete(reviewId);
-        }
-    };
+	const handleEditClick = () => {
+		console.log(`Editing review with ID: ${reviewId}`);
+		setIsDetailAddVisible(!isDetailAddVisible);
+	};
 
-    const handleLinkClick = () => {
-        if (introduceId && Number(introduceId) > 0) {
-            navigate(`/history/others/${introduceId}`);
-        } else {
-            console.warn("유효한 introduceId가 없습니다.");
-        }
-    };
+	const handleDeleteClick = () => {
+		if (onDelete) {
+			onDelete(reviewId);
+		}
+	};
 
-    const isDocumentReview = introduceState === 1 && title.trim() === "서류" && Number(introduceId) > 0;
+	const handleLinkClick = () => {
+		if (introduceId && introduceId !== 0) {
+			navigate(`/history/others/${introduceId}`);
+		} else {
+			console.warn("유효한 introduceId가 없습니다.");
+		}
+	};
 
-    return (
-        <div>
-            <Box>
-                <TitleDateContainer>
-                    <TitleWrapper>
-                        <Title>{title}</Title>
-                        {isDocumentReview && (
-                            <LinkButton onClick={handleLinkClick}>
-                                <LinkIcon src={linkIcon} alt="link icon" />
-                                자기소개서
-                            </LinkButton>
-                        )}
-                    </TitleWrapper>
-                    <Date>{date}</Date>
-                </TitleDateContainer>
+	return (
+		<div>
+			<Box>
+				<TitleDateContainer>
+					<TitleWrapper>
+						<Title>{title}</Title>
+						{/*  "서류" 리뷰에만 링크 버튼 추가 */}
+						{title.trim() === "서류" && introduceState === 1 && introduceId > 0 && (
+							<LinkButton onClick={handleLinkClick}>
+								<LinkIcon src={linkIcon} alt="link icon" />
+								자기소개서
+							</LinkButton>
+						)}
+					</TitleWrapper>
+					<Date>{date}</Date>
+				</TitleDateContainer>
 
-                <Contents>
-                    {content ? (
-                        content.split('\n').map((line, index) => <p key={index}>{line}</p>)
-                    ) : (
-                        <NoContentText>전형 후기가 없습니다</NoContentText>
-                    )}
-                </Contents>
+				{/*  "서류" 리뷰도 포함하여 모든 리뷰의 내용 표시 */}
+				<Contents>
+					{content ? (
+						content.split('\n').map((line, index) => <p key={index}>{line}</p>)
+					) : (
+						<NoContentText>전형 후기가 없습니다</NoContentText>
+					)}
+				</Contents>
 
-                <EditIconStyled src={editIcon} alt="Edit" title="Edit" onClick={() => handleEditClick(reviewId)} />
+				{/* 원래 코드 유지 */}
+				<EditIconStyled src={editIcon} alt="Edit" title="Edit" onClick={handleEditClick} />
 
-                {isDetailAddVisible[reviewId] && (
-                    <ReviewDetailAddEdit
-                        recruitId={recruitId}
-                        reviewId={reviewId}
-                        initialTitle={title}
-                        initialDate={date}
-                        initialContents={content}
-                        onDelete={handleDeleteClick}
-                        onSave={() => {
-                            setIsDetailAddVisible((prev) => ({ ...prev, [reviewId]: false }));
-                            fetchData();
-                        }}
-                        fetchData={fetchData}
-                        disableTitleEdit={introduceState === 1 && title === '서류'}
-                    />
-                )}
+				{isDetailAddVisible && (
+					<ReviewDetailAddEdit
+						recruitId={recruitId}
+						reviewId={reviewId}
+						initialTitle={title}
+						initialDate={date}
+						initialContents={content}
+						onDelete={!disableTitleEdit ? handleDeleteClick : null} // 서류 후기는 삭제 비활성화
+						onSave={() => {
+							setIsDetailAddVisible(false);
+							fetchData();
+						}}
+						fetchData={fetchData}
+						disableTitleEdit={disableTitleEdit} // 서류 제목 비활성화
+					/>
+				)}
 
-                <Line />
-            </Box>
-        </div>
-    );
+				<Line></Line>
+			</Box>
+		</div>
+	);
 }
