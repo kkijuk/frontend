@@ -17,7 +17,7 @@ import useAuthRedirect from '../stores/useAuthRedirect';
 
 const Body = styled.div`
 	width: 820px;
-	min-height: 100vh; //그래도 안되면 얘 height: auto로 바꾸기
+	height: auto; //그래도 안되면 얘 height: auto로 바꾸기
 	display: flex;
 	justify-content: flex-start; //원래 center
 	align-items: flex-start; //원래 center
