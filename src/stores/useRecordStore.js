@@ -333,7 +333,7 @@ const useRecordStore = create((set, get) => ({
 				deletedData = await deleteURL(data);
 				console.log('deletedData:', deletedData);
 				set((state)=>({
-					files: state.files.filter((item) => item.urlTitle !== deletedData.urlTitle && item.url !== deletedData.url),
+					files: state.files.filter((item) => item.urlTitle !== deletedData.data.urlTitle && item.url !== deletedData.data.url),
 				}));
 			} else {
 				throw new Error('Invalid fileType');
