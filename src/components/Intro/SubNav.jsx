@@ -18,21 +18,19 @@ const SubNav = () => {
 		<Layout title="서류준비">
 			<BaseDiv>
 				{isResumeActive && (
-        <ExportButton
-            onClick={() => {
-                alert('이 페이지는 준비중입니다.');
-                trackEvent('btn_click', {
-                    category: 'resume',
-                    detail: 'export',
-                    action_type: 'click',
-                    label: '이력서 내보내기',
-                });
-                navigate('/history/resumeExport');
-            }}
-        >
-            문서로 내보내기
-        </ExportButton>
-
+					<ExportButton
+						onClick={() => {
+							alert('이 페이지는 준비중입니다.');
+							trackEvent('btn_click', {
+								category: 'resume',
+								detail: 'export',
+								action_type: 'click',
+								label: '이력서 내보내기',
+							});
+							//navigate('/history/resumeExport');
+						}}>
+						문서로 내보내기
+					</ExportButton>
 				)}
 				<Nav>
 					<NavItems onClick={() => navigate('/history')} active={isResumeActive}>
