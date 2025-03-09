@@ -308,11 +308,12 @@ const useRecordStore = create((set, get) => ({
 				console.log('savedEtcData:', savedEtcData);
 			} else if(data.fileType === 'URL'){
 				savedEtcData = await addURL(data);
+				console.log('savedEtcData:', savedEtcData);
 			} else {
 				throw new Error('Invalid fileType');
 			}
 			set((state) => ({
-				files: [...state.files, savedEtcData],
+				files: [...state.files, savedEtcData.data],
 			}));
 		} catch (error) {
 			console.error('Add Etc Item Error:', error);
