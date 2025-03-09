@@ -267,18 +267,18 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
 	const [title, setTitle] = useState('');
 	const [startTime, setStartTime] = useState('');
 	const [endTime, setEndTime] = useState('');
-	const [tags, setTags] = useState([]);
+	const [tags, setTags] = useState(job?.tags || []);
 	const [link, setLink] = useState('');
 
 	useEffect(() => {
 		if (job) {
-			setTitle(job.title || '');
-			setStartTime(formatDateTimeToLocal(job.startTime) || '');
-			setEndTime(formatDateTimeToLocal(job.endTime) || '');
-			setTags(job.tags || []); // 태그를 초기화할 때 job.tags 값을 사용
-			setLink(job.link || '');
+		  setTitle(job.title || '');
+		  setStartTime(formatDateTimeToLocal(job.startTime) || '');
+		  setEndTime(formatDateTimeToLocal(job.endTime) || '');
+		  setTags(job.tags || []);  //  초기 태그는 한 번만 설정
+		  setLink(job.link || '');
 		}
-	}, [job]);
+	  }, [job]);
 
 	const handleSave = async () => {
 		const isAnyFieldFilled = title || tags.length > 0 || (startTime && endTime) || link;
@@ -354,7 +354,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
   <LabelTag>태그</LabelTag>
   <InputWrapperTag>
     <TagBoxWrapper>
-	<ModalTagBox onTagListChange={handleTagListChange} initialTags={tags} />  {/* 태그 변경 함수 전달 */}
+	<ModalTagBox onTagListChange={handleTagListChange} initialTags={job?.tags || []} />
     </TagBoxWrapper>
   </InputWrapperTag>
 </FieldWrapper>
