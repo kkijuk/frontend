@@ -2,6 +2,7 @@
 //태그
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const Tag = styled.div`
 	display: flex;
@@ -19,6 +20,8 @@ const Tag = styled.div`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+
+	cursor: pointer;
 `;
 
 const TagContainer = styled.div`
@@ -28,10 +31,18 @@ const TagContainer = styled.div`
 `;
 
 export default function AbilityTag({ tags }) {
+	const navigate = useNavigate();
+
+	const handleTagClick = (tagName) => {
+		console.log(`태그 클릭됨: ${tagName}`); // ✅ 로그 확인
+		navigate(`/Mycareer_search?query=${encodeURIComponent(tagName)}`);
+	};
 	return (
 		<TagContainer>
 			{tags.map((tag, index) => (
-				<Tag key={index}>{tag}</Tag>
+				<Tag key={index} onClick={() => handleTagClick(tag)}>
+					{tag}
+				</Tag>
 			))}
 		</TagContainer>
 	);
