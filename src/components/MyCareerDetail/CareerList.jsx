@@ -128,6 +128,7 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
 	}, [careerId]);
 
 	const handleTagClick = (tagName) => {
+		console.log(`Tag clicked: ${tagName}`); // 클릭 이벤트 확인
 		navigate(`/Mycareer_search?query=${encodeURIComponent(tagName)}`);
 	};
 
