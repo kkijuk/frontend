@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import CustomDropdown from "../CustomDropdown";
 import SvgIcon from "../../shared/SvgIcon";
+import { trackEvent } from "../../../utils/ga4";
 
 const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
@@ -82,7 +83,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
   const hasEmptyField =(data)=>{
     const { id, ...fields } = data; //id 제외
     return Object.values(fields).some((value) => {
-      if (typeof value !== "string") return true;
+      if (typeof value !== "string") {return true;}
       return value.trim() === ""
     });
   }
@@ -172,6 +173,12 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
                   }
                   onUpdate(formData);
                   onClose();
+                  trackEvent('edit_click', {
+                    category: 'resume',
+                    detail: 'add_skill',
+                    action_type: 'edit',
+                    label: '활동 수정하기',
+                  });
                 }}
                 style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
                 저장
@@ -186,6 +193,12 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
                   }
                   onSave(formData);
                   onClose();
+                  trackEvent('add_confirm', {
+                    category: 'resume',
+                    detail: 'add_skill',
+                    action_type: 'confirm',
+                    label: '추가',
+                  });
                 }}
                 style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
                 추가

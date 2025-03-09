@@ -32,8 +32,8 @@ const TopLeft = styled.div`
 
 const DetailCareerTitle = styled.div`
 	color: var(--black, #000);
-	font-family: Inter;
-	font-size: 1rem;
+	font-family: Pretenard;
+	font-size: 14px;
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
@@ -43,8 +43,8 @@ const DetailCareerTitle = styled.div`
 const DetailCareerDate = styled.div`
 	color: var(--gray-02, #707070);
 	text-align: right;
-	font-family: Inter;
-	font-size: 0.75rem;
+	font-family: Pretendard;
+	font-size: 12px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
@@ -69,7 +69,7 @@ const DetailWrapper = styled.div`
 const DetailTitle = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
-	font-size: 1.125rem;
+	font-size: 16px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
@@ -94,7 +94,7 @@ const DetailTag = styled.div`
 	display: flex;
 	margin-right: 10px;
 	padding: 0 10px;
-	border-radius: 0.6875rem;
+	border-radius: 11px;
 	background: var(--gray-06, #f5f5f5);
 	height: 1.375rem;
 	flex-direction: column;
@@ -103,7 +103,7 @@ const DetailTag = styled.div`
 	color: var(--main-01, #3aaf85);
 	text-align: center;
 	font-family: Pretendard;
-	font-size: 0.75rem;
+	font-size: 12px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
@@ -154,7 +154,8 @@ export default function MyCareerSearchTotalActivityDetail({ activityDetail, isAc
 								<TopLeft>
 									<CareerCategoryCircle category={activity.category.categoryKoName} />
 									<DetailCareerTitle>
-										{highlightMatch(activity.careerTitle, searchQuery)} / {highlightMatch(activity.careerAlias, searchQuery)}
+										{highlightMatch(activity.careerTitle, searchQuery)} /{' '}
+										{highlightMatch(activity.careerAlias, searchQuery)}
 									</DetailCareerTitle>
 								</TopLeft>
 							</TopWrapper>

@@ -13,14 +13,14 @@ import Banner2SVG from '../assets/banner2.svg';
 import Banner3SVG from '../assets/banner3.svg';
 import Box from '../components/Home/Box';
 import CareerTimeline from '../components/Mycareer/CareerTimeline';
-import useAuthRedirect from '../stores/useAuthRedirect'; 
+import useAuthRedirect from '../stores/useAuthRedirect';
 
 const Body = styled.div`
 	width: 820px;
-	min-height: 100vh;
+	height: auto; //그래도 안되면 얘 height: auto로 바꾸기
 	display: flex;
-	justify-content: center;
-	align-items: center;
+	justify-content: flex-start; //원래 center
+	align-items: flex-start; //원래 center
 	flex-direction: column; /*Top이랑 CareerBox를 세로 방향 정렬*/
 	box-sizing: border-box; /* 추가 */
 	padding-bottom: 100px;
@@ -38,7 +38,6 @@ const Container1 = styled.div`
 const Container2 = styled.div`
 	width: 100%;
 `;
-
 
 const Label = styled.div`
 	color: var(--black, #000);
@@ -148,8 +147,6 @@ export default function Home() {
 					<WritingNoti />
 				</ContentBox>
 			</Container2>
-
-
 		</Body>
 	);
 }

@@ -3,6 +3,7 @@ import api from "../../Axios";
 const addURL = async (data) => {
     try{
         const { urlTitle, url } = data;
+        console.log("URL data: ", data);
         const response = await api.post("/history/url",{
             urlTitle: urlTitle,
             url: url
@@ -25,9 +26,12 @@ const addURL = async (data) => {
 const deleteURL = async (data) => {
     try{
         const {urlTitle, url} = data;
+        console.log("URL data: ", data);
         const response = await api.delete("/history/url",{
-            urlTitle: urlTitle,
-            url: url
+            data: {
+                urlTitle: urlTitle,
+                url: url
+            }
         });
         console.log("URL deleted successfully: ", response.data);
         return response.data;

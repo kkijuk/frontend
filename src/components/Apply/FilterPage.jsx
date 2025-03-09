@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import SvgIconBefore from '../../assets/before.svg';
 import Layout from '../../components/Layout'; 
 import { useLocation } from 'react-router-dom';
+import { trackEvent } from '../../utils/ga4';
 
 const Container = styled.div`
   padding: 24px 40px;
@@ -171,10 +172,11 @@ const FilterPage = () => {
 	const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const tagFromURL = queryParams.get('tag');
+	const searchQuery = queryParams.get('query');
 	const [isTagSearch, setIsTagSearch] = useState(false);
 
 	const fetchSearchResults = async (term) => {
-		if (!term.trim()) return;  // 빈 검색어일 경우 실행 안 함
+		if (!term.trim()) return; // 빈 검색어일 경우 실행 안 함
 	
 		try {
 			const { recruitResult, reviewResult } = await fetchRecruitList(term);
@@ -182,33 +184,39 @@ const FilterPage = () => {
 			let filteredRecruits = recruitResult || [];
 			let filteredReviews = reviewResult || [];
 	
-			if (activeTab === '공고') {
-				filteredRecruits = filteredRecruits.filter((recruit) => 
-					recruit.recruitTitle.includes(term)
-				);
-				setRecruits(filteredRecruits);
-			} else if (activeTab === '공고후기') {
-				filteredReviews = filteredReviews.filter((review) => 
-					review.recruitTitle.includes(term)
-				);
-				setRecruits(filteredReviews);
-			} else {
-				filteredRecruits = filteredRecruits.filter((recruit) => 
-					recruit.recruitTitle.includes(term)
-				);
-				filteredReviews = filteredReviews.filter((review) => 
-					review.recruitTitle.includes(term)
-				);
-				setRecruits([...filteredRecruits, ...filteredReviews]);
-			}
+			//  검색어가 공고 제목 또는 태그에 포함될 경우 필터링
+			filteredRecruits = filteredRecruits.filter((recruit) => 
+				recruit.recruitTitle.includes(term) || 
+				(recruit.tags && recruit.tags.some(tag => tag.includes(term))) // 태그에도 검색 적용
+			);
+	
+			//  검색어가 공고후기 제목에 포함될 경우 필터링
+			filteredReviews = filteredReviews.filter((review) => 
+				review.recruitTitle.includes(term) || 
+				(review.reviews && review.reviews.some(r => r.reviewTitle.includes(term))) // 후기 제목도 검색
+			);
+	
+			//  검색 결과를 합쳐서 설정 (공고 + 공고후기)
+			setRecruits([...filteredRecruits, ...filteredReviews]);
+	
 		} catch (error) {
 			console.error('Error fetching recruit list:', error);
 		}
 	};
 	
 	
+	
 	const handleSearchClick = () => {
 		if (searchTerm.trim()) {
+			// GA 트래킹 추가 (검색 버튼 클릭)
+			trackEvent('search_performed', {
+				category: 'apply',
+				detail: 'search_recruit',
+				action_type: 'search',
+				label: '검색',
+				search_query: searchTerm, // 검색어 전달
+			});
+	
 			setIsSearchClicked(true); // 검색 버튼을 눌렀을 때만 true로 변경
 			setDisplayedTerm(searchTerm);
 			fetchSearchResults(searchTerm);
@@ -246,22 +254,32 @@ const FilterPage = () => {
     }, [recruits]);
 
 	useEffect(() => {
+		// 태그 검색인 경우
 		if (tagFromURL) {
 			setSearchTerm(tagFromURL);
-			handleSearchClick();
+			setIsSearchClicked(true);
+			fetchSearchResults(tagFromURL);
 		}
-	}, [tagFromURL]); // 태그 값이 변경될 때만 실행
-
-	 useEffect(() => {
-        if (isTagSearch && searchTerm) {
-            handleSearchClick();
-            setIsTagSearch(false); // 한 번 실행 후 다시 false로 설정 (중복 실행 방지)
-        }
-    }, [searchTerm]);
+	
+		// 일반 검색인 경우
+		if (searchQuery) {
+			setSearchTerm(searchQuery);
+			setIsSearchClicked(true);
+			fetchSearchResults(searchQuery);
+		}
+	}, [tagFromURL, searchQuery]); 
+	
+	useEffect(() => {
+		if (isTagSearch && searchTerm) {
+			handleSearchClick();
+			setIsTagSearch(false); //  한 번 실행 후 다시 false로 설정 (중복 실행 방지)
+		}
+	}, [searchTerm]); //  searchTerm이 변경될 때 실행
+	
 
 	return (
 		<Container>
-			<Layout title="지원관리">
+			<Layout >
 			<div style={{ display: 'flex', alignItems: 'center' }}>
 				<BackLink to="/apply-status">
 					<img src={SvgIconBefore} alt="Back" width={20} height={13} />

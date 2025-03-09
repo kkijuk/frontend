@@ -6,6 +6,7 @@ const BackgroundSection = styled.div`
   background-color: #f0f0f0;
   margin-top: 20px;
   position: relative;
+   min-height: 100vh;
   padding: 20px 0;
   box-sizing: border-box;
   justify-content: center; /* 중앙 정렬 */
@@ -24,7 +25,7 @@ const ContentSection = styled.div`
 const AdListStyled = styled.div`
   padding: 20px;
   border-radius: 10px;
-  margin-top: 30px;
+  margin-top: -5px;
 `;
 
 const AdDateSection = styled.div`

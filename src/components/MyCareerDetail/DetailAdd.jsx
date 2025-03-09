@@ -4,6 +4,7 @@ import ReactCalendar from './Calendar';
 import moment from 'moment';
 import TagBox from '../shared/TagBox';
 import { AddDetail } from '../../api/Mycareer/AddDetail';
+import { trackEvent } from '../../utils/ga4';
 
 const Box = styled.div`
 	height: 384px;
@@ -235,7 +236,18 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 			<TagBox onTagListChange={setTagList} /> {/* 태그 박스에서 선택한 태그 관리 */}
 			<Button>
 				<Cancel onClick={onCancel}>취소</Cancel>
-				<Save onClick={handleSave}>저장</Save>
+				<Save
+					onClick={() => {
+						trackEvent('add_confirm', {
+							category: 'mycareer',
+							detail: 'career_detail',
+							action_type: 'confirm',
+							label: '저장',
+						});
+						handleSave();
+					}}>
+					저장
+				</Save>
 			</Button>
 			<Line></Line>
 		</Box>

@@ -1,4 +1,5 @@
 import api from "../../Axios";
+import axios from "axios";
 
 // presigned URL 생성
 const createPresignedUrl = async (data) => {
@@ -29,12 +30,20 @@ const createPresignedUrl = async (data) => {
 const uploadFileToS3 = async (file, presignedURL) => {
     console.log('Uploading file to S3:', file, presignedURL);
     try{
-        const response = await api.put(presignedURL, file, {
+        // const response = await axios.put(presignedURL, file, {
+        //     headers: {
+        //         'Content-Type': file.type,
+        //         'x-amz-server-side-encryption' : 'AES256'
+        //     }
+        // });
+        const response = await fetch(presignedURL, {
+            method: 'GET',
+            body: file,
             headers: {
                 'Content-Type': file.type,
                 'x-amz-server-side-encryption' : 'AES256'
             }
-        });
+        })
         console.log("Success - uploadFileToS3: ", response.data);
         return response.data;
     } catch (error) {

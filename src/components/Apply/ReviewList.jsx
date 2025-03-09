@@ -109,37 +109,10 @@ const LinkIcon = styled.img`
 
 export default function ReviewList({ recruitId, reviewId, title, date, content = '', introduceState, introduceId, onDelete, fetchData }) {
 	const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
-	const [documentReviewAdded, setDocumentReviewAdded] = useState(false); // 서류 리뷰 추가 여부 확인
 	const navigate = useNavigate();
+	const isDocumentReview = introduceState === 1 && title === '서류'; // 서류 리뷰 여부
 
-	useEffect(() => {
-		// introduceState === 1이면 "서류" 리뷰 자동 생성 및 저장
-		if (introduceState === 1 && !documentReviewAdded) {
-			saveDocumentReview();
-			setDocumentReviewAdded(true); // 중복 요청 방지
-		}
-	}, [introduceState, documentReviewAdded]);
-
-	const saveDocumentReview = async () => {
-		const newReview = {
-			title: "서류",
-			date: new Date().toISOString().split("T")[0], // 오늘 날짜
-			introduceState: 1,
-			introduceId: introduceId ?? 0, //  introduceId 추가
-		};
-	
-		try {
-			await ReviewAdd(recruitId, newReview);
-			console.log("서류 리뷰 저장 완료");
-			fetchData(); // 저장 후 최신 데이터 다시 불러오기
-		} catch (error) {
-			console.error("서류 리뷰 저장 실패", error);
-		}
-	};
-	
-	
 	const handleEditClick = () => {
-		console.log(`Editing review with ID: ${reviewId}`);
 		setIsDetailAddVisible(!isDetailAddVisible);
 	};
 
@@ -150,12 +123,12 @@ export default function ReviewList({ recruitId, reviewId, title, date, content =
 	};
 
 	const handleLinkClick = () => {
-	if (introduceId && introduceId !== 0) {
-		navigate(`/history/others/${introduceId}`); //  introduceId 포함하여 이동
-	} else {
-		console.warn("유효한 introduceId가 없습니다."); // introduceId가 없을 경우 로그 출력
-	}
-};
+		if (introduceId && introduceId !== 0) {
+			navigate(`/history/others/${introduceId}`);
+		} else {
+			console.warn("유효한 introduceId가 없습니다.");
+		}
+	};
 
 	return (
 		<div>
@@ -163,7 +136,7 @@ export default function ReviewList({ recruitId, reviewId, title, date, content =
 				<TitleDateContainer>
 					<TitleWrapper>
 						<Title>{title}</Title>
-						{introduceState === 1 && title === '서류' && (
+						{isDocumentReview && (
 							<LinkButton onClick={handleLinkClick}>
 								<LinkIcon src={linkIcon} alt="link icon" />
 								자기소개서
@@ -173,37 +146,35 @@ export default function ReviewList({ recruitId, reviewId, title, date, content =
 					<Date>{date}</Date>
 				</TitleDateContainer>
 
-				{/* ✅ "서류" 리뷰도 포함하여 모든 리뷰의 내용 표시 */}
 				<Contents>
 					{content ? (
 						content.split('\n').map((line, index) => <p key={index}>{line}</p>)
 					) : (
-						<NoContentText>전형 후기가 없습니다</NoContentText> // ✅ 내용이 없으면 표시
+						<NoContentText>전형 후기가 없습니다</NoContentText>
 					)}
 				</Contents>
 
-				{/* ✅ "서류" 리뷰도 수정 버튼 활성화 */}
 				<EditIconStyled src={editIcon} alt="Edit" title="Edit" onClick={handleEditClick} />
 			</Box>
 
 			{isDetailAddVisible && (
 				<ReviewDetailAddEdit
-				recruitId={recruitId}
-				reviewId={reviewId}
-				initialTitle={title}
-				initialDate={date}
-				initialContent={content}
-				onDelete={introduceState === 1 && title === '서류' ? null : handleDeleteClick} // ✅ 서류 리뷰는 삭제 비활성화
-				onSave={() => {
-					setIsDetailAddVisible(false);
-					fetchData();
-				}}
-				fetchData={fetchData}
-				disableTitleEdit={introduceState === 1 && title === '서류'} // ✅ 서류 리뷰 제목 수정 비활성화
-			/>
-			
+					recruitId={recruitId}
+					reviewId={reviewId}
+					initialTitle={title}
+					initialDate={date}
+					initialContents={content}
+					onDelete={isDocumentReview ? null : handleDeleteClick} // 서류 리뷰는 삭제 불가능, 나머지는 삭제 가능
+					onSave={() => {
+						setIsDetailAddVisible(false);
+						fetchData();
+					}}
+					fetchData={fetchData}
+					disableTitleEdit={isDocumentReview} // 서류 제목 수정 불가
+				/>
 			)}
+
 			<Line></Line>
 		</div>
 	);
-}
+} 

@@ -5,13 +5,13 @@ import ReactCalendar from './ReviewCalendar';
 import moment from 'moment';
 import { editReview } from '../../api/Apply/ReviewEdit';
 import { deleteReview } from '../../api/Apply/DeleteReview';
+import ReviewDeleteModal from '../../components/Apply/ReviewDeleteModal';
 
 const Box = styled.div`
 	height: 384px;
 	width: 800px;
 	padding: 24px 40px;
 `;
-
 const Top = styled.div`
 	display: flex;
 	justify-content: space-between;
@@ -19,32 +19,27 @@ const Top = styled.div`
 	width: 720px;
 	margin-top: 22px;
 `;
-
 const Middle = styled.div`
 	height: 142px;
 	width: 800px;
 	margin-top: 18px;
 `;
-
 const Button = styled.div`
 	height: 50px;
 	display: flex;
 	gap: 15px;
 	margin-bottom: 24px;
 `;
-
 const Title = styled.div`
 	display: flex;
 	flex-direction: column;
 	margin-right: 20px;
 `;
-
 const Date = styled.div`
 	display: flex;
 	flex-direction: column;
 	position: relative;
 `;
-
 const DateBox = styled.div`
 	border-radius: 10px;
 	cursor: pointer;
@@ -60,7 +55,6 @@ const DateBox = styled.div`
 	font-weight: 400;
 	line-height: normal;
 `;
-
 const Label = styled.div`
 	color: var(--black, #000);
 	font-family: semibold;
@@ -70,7 +64,6 @@ const Label = styled.div`
 	line-height: normal;
 	margin-bottom: 8px;
 `;
-
 const Cancel = styled.div`
 	width: 150px;
 	height: 50px;
@@ -90,7 +83,6 @@ const Cancel = styled.div`
 	line-height: normal;
 	cursor: pointer;
 `;
-
 const Save = styled.div`
 	width: 555px;
 	height: 50px;
@@ -109,13 +101,11 @@ const Save = styled.div`
 	line-height: normal;
 	cursor: pointer;
 `;
-
 const Line = styled.div`
 	width: 800px;
 	height: 2px;
 	background: var(--gray-03, #d9d9d9);
 `;
-
 export default function ReviewDetailAddEdit({
 	recruitId,
 	reviewId,
@@ -125,13 +115,15 @@ export default function ReviewDetailAddEdit({
 	onSave,
 	onDelete,
 	fetchData,
-	disableTitleEdit
+	disableTitleEdit,
+	isDocumentReview
 }) {
 	const [showCalendar, setShowCalendar] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(initialDate);
 	const [title, setTitle] = useState(initialTitle);
 	const [contents, setContents] = useState(initialContents);
-	const [isEditing, setIsEditing] = useState(true); // 수정란 상태
+	const [isEditing, setIsEditing] = useState(true); 
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
 	const handleDateClick = () => {
 		setShowCalendar(!showCalendar);
@@ -153,77 +145,94 @@ export default function ReviewDetailAddEdit({
 			await editReview(recruitId, reviewId, reviewData);
 
 			if (onSave) {
-				onSave(); // 저장 후 부모 컴포넌트에서 전달된 콜백 함수 호출
+				onSave();
 			}
 
-			// 수정 후 최신 데이터를 가져옵니다.
 			if (fetchData) {
-				fetchData(); // 추가
+				fetchData();
 			}
 
-			setIsEditing(false); // 수정란 닫기
+			setIsEditing(false);
 		} catch (error) {
 			console.error('Failed to save review:', error);
 		}
 	};
 
-	const handleDeleteClick = async () => {
-		const confirmed = window.confirm('정말로 삭제하시겠습니까?');
-		if (confirmed) {
-			try {
-				await deleteReview(recruitId, reviewId);
+	const handleDeleteClick = () => {
+		setIsDeleteModalOpen(true);
+	};
 
-				if (onDelete) {
-					onDelete(); // 부모 컴포넌트에서 상태 업데이트를 위한 콜백 함수 호출
-				}
+	const handleConfirmDelete = async () => {
+		try {
+			await deleteReview(recruitId, reviewId);
 
-				// 삭제 후 최신 데이터를 가져옵니다.
-				if (fetchData) {
-					await fetchData(); // 추가
-				}
-
-				setIsEditing(false); // 수정란 닫기
-				alert('삭제되었습니다.');
-			} catch (error) {
-				console.error('Failed to delete review:', error);
+			if (onDelete) {
+				onDelete();
 			}
+
+			if (fetchData) {
+				await fetchData();
+			}
+
+			setIsEditing(false);
+		} catch (error) {
+			console.error('Failed to delete review:', error);
 		}
+		setIsDeleteModalOpen(false);
 	};
 
 	if (!isEditing) {
-		return null; // 수정란 닫기
+		return null;
 	}
 
 	return (
-		<Box>
-			<Top>
-				<Title>
-					<Label>제목</Label>
-					<ReviewInputBox 
-	height="50px" 
-	width="460px" 
-	value={title} 
-	onChange={(e) => setTitle(e.target.value)}
-	disabled={disableTitleEdit} //  서류 리뷰는 제목 수정 비활성화
+		<>
+			<Box>
+				<Top>
+					<Title>
+						<Label>전형</Label> 
+						<ReviewInputBox
+    height="50px"
+    width="460px"
+    value={disableTitleEdit ? "서류" : title} // 서류 후기는 값 변경 불가능하게 고정
+    onChange={(e) => {
+        if (!disableTitleEdit) setTitle(e.target.value); // 서류 후기는 제목 변경 불가
+    }}
+    type="text"
+    disabled={disableTitleEdit} // 서류 제목 비활성화
+    readOnly={disableTitleEdit} // 입력을 아예 차단
+    style={disableTitleEdit ? { backgroundColor: "#f5f5f5", color: "#b0b0b0", cursor: "not-allowed" } : {}} 
 />
-				</Title>
-				<Date>
-					<Label>날짜</Label>
-					<DateBox onClick={handleDateClick}>{selectedDate || '날짜를 선택하세요'}</DateBox>
-					{showCalendar && <ReactCalendar onChange={handleDateChange} />}
-				</Date>
-			</Top>
-			<Middle>
-				<Label>내용</Label>
-				<ReviewInputBox height="100px" width="720px" value={contents} onChange={(e) => setContents(e.target.value)} />
-			</Middle>
-
-			<Button>
-			{onDelete && (
-	         <Cancel onClick={handleDeleteClick}>삭제</Cancel>
-            )}
-				<Save onClick={handleSaveClick}>저장</Save>
-			</Button>
-		</Box>
+					</Title>
+					<Date>
+						<Label>날짜</Label>
+						<DateBox onClick={handleDateClick}>{selectedDate || '날짜를 선택하세요'}</DateBox>
+						{showCalendar && <ReactCalendar onChange={handleDateChange} />}
+					</Date>
+				</Top>
+				<Middle>
+					<Label>전형 후기</Label> 
+					<ReviewInputBox 
+						height="100px" 
+						width="720px" 
+						value={contents} 
+						onChange={(e) => setContents(e.target.value)} 
+						type="textarea"
+					/>
+				</Middle> 
+				<Button>
+				{!disableTitleEdit && (
+  <Cancel onClick={handleDeleteClick}>삭제</Cancel>
+)}
+					<Save onClick={handleSaveClick}>저장</Save>
+				</Button>
+			</Box>
+			{isDeleteModalOpen && (
+				<ReviewDeleteModal 
+					onClose={() => setIsDeleteModalOpen(false)}
+					onConfirm={handleConfirmDelete} 
+				/>
+			)}
+		</>
 	);
 }

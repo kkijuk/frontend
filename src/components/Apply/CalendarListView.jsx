@@ -8,11 +8,12 @@ const CalendarBackgroundSection = styled.div`
   width: 100vw; 
   background-color: #f0f0f0;
   margin-top: 20px;
+   min-height: 110vh;
   position: relative;
   padding: 20px 0;
   box-sizing: border-box;
   display: flex;  // Flexbox 적용
-  justify-content: center;  // 수평 가운데 정렬
+  justify-content: center;
   align-items: flex-start;  // 상단 정렬 (필요하면 center로 변경)
 `;
 
@@ -21,7 +22,7 @@ const CalendarAdListStyled = styled.div`
   padding: 20px;
   border-radius: 10px;
   margin-top: 30px;
-   margin-left: -45px;
+  margin-left: -45px;
   max-width: 820px;
   width: 100%;  // 가로 너비 100% 설정
   flex-direction: column;  // 수직 정렬
@@ -39,8 +40,8 @@ const CalendarAdDate = styled.div`
   margin-bottom: 10px;
   text-align: center;
   width: 100%;
-  position: absolute;  // ❗ 리스트 위로 고정
-  top: 30px;  // ❗ 리스트 위로 위치 조정
+  position: absolute;  // 리스트 위로 고정
+  top: 30px;  // 리스트 위로 위치 조정  
 `;
 
 
@@ -150,7 +151,7 @@ const CalendarListView = ({ date, data, count, onJobClick }) => {
       const fullAdDetails = { 
           ...response.data, 
           id: ad.recruitId, 
-          introduceId: response.data.introduceId ?? 0 // ✅ introduceId 추가 (없으면 0 설정)
+          introduceId: response.data.introduceId ?? 0 //  introduceId 추가 (없으면 0 설정)
       };
 
       console.log('Full ad details with introduceId:', fullAdDetails);

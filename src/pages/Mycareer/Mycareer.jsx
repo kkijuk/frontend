@@ -13,6 +13,7 @@ import SearchBar from '../../components/Mycareer/shareSearchBar';
 import CareerTimeline from '../../components/Mycareer/CareerTimeline';
 import useAuthRedirect from '../../stores/useAuthRedirect';
 import AddActivityButton from '../../components/Mycareer/AddActivityButton';
+import { trackEvent } from '../../utils/ga4';
 
 const Container = styled.div`
 	width: 100%;
@@ -26,12 +27,11 @@ const Container = styled.div`
 const SearchBox = styled.div`
 	width: 100%;
 	max-width: 820px;
-	height: 36px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 20px;
-	margin-top: 40px;
+	margin-top: 20px;
 	box-sizing: border-box;
 
 	@media (max-width: 600px) {
@@ -54,6 +54,7 @@ export default function Mycareer() {
 	const fetchData = async () => {
 		const status = view === 'year' ? 'year' : 'category';
 		const data = await CareerViewSelect(status);
+
 		if (data) {
 			setCareers(data.data);
 		}
@@ -73,17 +74,28 @@ export default function Mycareer() {
 		navigate('/Mycareer_search'); // 원하는 경로로 페이지 이동
 	};
 
+	const handleAddActivityClick = () => {
+		trackEvent('add_click', {
+			category: 'mycareer',
+			detail: 'add_career',
+			action_type: 'add',
+			label: '활동 추가',
+		});
+
+		setShowModal(true);
+	};
+
 	return (
 		<>
 			<Container>
 				<SearchBox>
 					<Title>내커리어</Title>
-					<SearchBar onClick={handleSearchClick} /> {/* 클릭 이벤트 추가 */}
+					<SearchBar onClick={handleSearchClick} />
 				</SearchBox>
 				<div>
 					<CareerTimeline />
 					<CareerView view={view} onToggle={setView} />
-					<AddActivityButton onClick={() => setShowModal(true)} data={careers} />
+					<AddActivityButton onClick={handleAddActivityClick} data={careers} />
 
 					{showModal && <AddCareerModal onClose={() => setShowModal(false)} onSave={handleAddCareer} />}
 				</div>

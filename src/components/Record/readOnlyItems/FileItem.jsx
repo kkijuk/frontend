@@ -64,7 +64,7 @@ const FileItem = ({ id, data, onSave, onUpdate, onDelete }) => {
             mode='edit'
             initialData={data}
             onClose={() => setIsEditMode(false)}
-            onUpdate = {(FormData) => onUpdate(FormData)}
+            onUpdate = {(newData) => onUpdate(data, newData)} // oldData, newData 전달
             onDelete={(FormData)=>onDelete(FormData)}
           />
         </EditContainer>
@@ -93,6 +93,10 @@ const FileOrURLName = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    flex-shrink: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 const ContentLink = styled.div`
@@ -109,6 +113,10 @@ const ContentLink = styled.div`
     text-decoration-thickness: auto;
     text-underline-offset: auto;
     text-underline-position: from-font;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60%;
 `;
 
 const DeleteButton = styled.button`
