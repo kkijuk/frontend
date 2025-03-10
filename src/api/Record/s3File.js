@@ -97,7 +97,7 @@ const deleteS3File = async (data) => {
     console.log('Deleting S3 file:', data);
     try{
         const fileTitle = data.fileTitle;
-        const response = await api.delete(`/history/file?fileTitle=${fileTitle}`);
+        const response = await api.delete(`/history/file?fileName=${fileTitle}`);
         console.log("Success - deleteS3File: ", response.data);
         return response.data;
     } catch (error) {
