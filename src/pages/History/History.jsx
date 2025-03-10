@@ -107,7 +107,6 @@ const History = () => {
 				if(error === "Record not created"){
 					setShowCreateButton(true);
 				}
-				console.log('Record Id:', recordId);
 			} catch (error) {
 				console.error('Error: fetchRecord: ', error);
 				setShowCreateButton(true);
@@ -148,7 +147,7 @@ const History = () => {
 
 	useEffect(() => {
 		console.log("EditableUserData: ", editableUserData);
-		updateUserData(editableUserData); //in useRecordStore
+		updateUserData(recordId, editableUserData); //in useRecordStore
 	}, [editableUserData]);
 
 

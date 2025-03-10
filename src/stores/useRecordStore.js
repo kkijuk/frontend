@@ -376,9 +376,9 @@ const useRecordStore = create((set, get) => ({
 		}
 	},
 
-	updateUserData: async (data) => {
+	updateUserData: async (recordId, data) => {
 		try {
-			const response = await updateUserData(data);
+			const response = await updateUserData(recordId, data);
 			set((state) => ({
 				userData: { 
 					...state.userData, 
