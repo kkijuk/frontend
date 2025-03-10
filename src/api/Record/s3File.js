@@ -127,11 +127,8 @@ const downS3File = async (data) => {
             console.log("Success - downS3File: ", response ,response.data.data.presignedURL);
             // return response.data.data.presignedURL;
 
-            // 다운로드
             const presignedURL = response.data.data.presignedURL;
-
-            window.open(presignedURL, '_blank');
-
+            // window.open(presignedURL, '_blank');
             return presignedURL;
 
         } else{
