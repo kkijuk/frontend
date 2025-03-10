@@ -11,7 +11,7 @@ const FileItem = ({ id, data, onSave, onUpdate, onDelete }) => {
   useEffect(() => {
     if (data) {
       setIsTypeUrl(data.fileType === "URL");
-      console.log("File Data:", data);
+      // console.log("File Data:", data);
     }
   }, [data]);
 
