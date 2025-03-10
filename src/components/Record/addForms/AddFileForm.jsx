@@ -17,6 +17,7 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
 
   const [isTypeURL, setIsTypeUrl] = useState(true);
   const [existingFileUrl, setExistingFileUrl] = useState(null);
+  const [displayedFileUrl, setDisplayedFileUrl] = useState("");
 
   // 수정 모드일 경우 formData 기존 내용으로 초기화
   useEffect(() => {
@@ -26,7 +27,10 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
       setIsTypeUrl(initialData.fileType === "URL");
 
       downS3File(initialData)
-        .then((url) => setExistingFileUrl(url))
+        .then((url) => {
+          setExistingFileUrl(url);
+          setDisplayedFileUrl(truncateText(url, 30));
+        })
         .catch((error) => console.error("다운로드 URL 가져오기 실패:", error));
     }
   }, []);
@@ -36,6 +40,13 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
   const handleInputChange = (field, value) => {
   setFormData((prev) => ({ ...prev, [field]: value }));
   };
+
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + "...";
+    }
+    return text;
+  }
     
 
   return (
@@ -93,7 +104,7 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                           <Input
                             type="text"
                             placeholder="첨부파일 제목(ex. 포트폴리오, 경력기술서 등)"
-                            value={existingFileUrl}
+                            value={displayedFileUrl}
                             onClick = {()=>window.open(existingFileUrl, "_blank")}
                             readOnly
                             style={{ width: "450px", cursor: "pointer" }}
@@ -313,7 +324,8 @@ const FileSelectButton = styled.button`
   width: 85px;
   height: 45px;
   position: absolute;
-  right: 20px;
+  top: 0;
+  right: 15px;
   border: none;
   background: none;
   color: #707070;
