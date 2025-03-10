@@ -37,7 +37,7 @@ const uploadFileToS3 = async (file, presignedURL) => {
         //     }
         // });
         const response = await fetch(presignedURL, {
-            method: 'GET',
+            method: 'PUT',
             body: file,
             headers: {
                 'Content-Type': file.type,
