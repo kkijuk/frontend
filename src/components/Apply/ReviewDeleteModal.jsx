@@ -41,9 +41,12 @@ const ModalTitle = styled.div`
 
 const ButtonContainer = styled.div`
 	display: flex;
+	justify-content: center; 
 	gap: 20px;
 	margin-top: 15px;
+	width: 100%; /* 버튼이 부모 요소를 꽉 채우도록 설정 */
 `;
+
 
 const CancelButton = styled.button`
 	width: 120px;
@@ -58,11 +61,17 @@ const CancelButton = styled.button`
 	position: relative;
 	text-align: center; 
 	z-index: 1500;
+	padding: 10px 0;
+	display: flex; 
+	align-items: center; 
+	justify-content: center; 
 `;
 
 const ConfirmButton = styled.button`
 	width: 120px;
 	height: 35px;
+	z-index: 1500;
+	padding: 10px 0;
 	border-radius: 12px;
 	cursor: pointer;
 	font-family: Regular;
@@ -72,7 +81,9 @@ const ConfirmButton = styled.button`
 	background: #FF7979;
 	color: white;
 	text-align: center; 
-	z-index: 1500;
+	display: flex; 
+	align-items: center; 
+	justify-content: center; 
 `;
 
 
