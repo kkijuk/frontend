@@ -11,7 +11,7 @@ const Background = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	  z-index: 1000;
+	  z-index: 1500;
 `;
 
 const Modal = styled.div`
@@ -26,7 +26,7 @@ const Modal = styled.div`
 	align-items: center;
 	text-align: center;
 	position: relative;
-	  z-index: 1000;
+	  z-index: 1500;
 `;
 
 const ModalTitle = styled.div`
