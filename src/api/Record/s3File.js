@@ -42,7 +42,7 @@ const uploadFileToS3 = async (file, presignedURL) => {
             headers: {
                 'Content-Type': file.type,
                 'x-amz-server-side-encryption' : 'AES256',
-                'origin': 'https://test.kkijuk.com'
+                // 'origin': 'https://test.kkijuk.com'
             }
         })
         // console.log("Success - uploadFileToS3: ", response.data);
