@@ -137,16 +137,19 @@ const History = () => {
 
 	}, [fetchRecord]);
 
+
 	useEffect(() => {
-		// 사용자 정보 업데이트
 		setEditableUserData({
 			profileImageUrl: profileImageUrl,
 			address: address,
 			email: email,
-		})
+		});
+	}, [userData]);
+
+	useEffect(() => {
 		console.log("EditableUserData: ", editableUserData);
 		updateUserData(editableUserData); //in useRecordStore
-	}, [profileImageUrl, address, email]);
+	}, [editableUserData]);
 
 
 	// LOGIC
