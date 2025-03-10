@@ -36,11 +36,9 @@ const BaseContainer = styled.div`
 	align-items: center;
 	justify-content: center;
 	width: 480px;
-	height: 540px;
+	height: 567px;
 	gap: 8px;
 	z-index: 5;
-
-	border: 1px solid black;
 `;
 
 const SwiperStyled = styled(Swiper)`
@@ -77,7 +75,6 @@ const CheckContainer = styled.div`
 	align-items: center;
 	width: 100%;
 	padding: 8px;
-	border: 1px solid black;
 `;
 
 const CheckBoxContainer = styled.div`
@@ -168,6 +165,12 @@ export default function OnboardingModal({ onClose }) {
 		onClose?.();
 	};
 
+	const goToNextSlide = () => {
+		if (swiperRef.current) {
+			swiperRef.current.slideTo(1); // 0부터 시작하는 인덱스이므로 1 = 두 번째 슬라이드
+		}
+	};
+
 	if (!isVisible) return null;
 
 	return (
@@ -176,7 +179,7 @@ export default function OnboardingModal({ onClose }) {
 				<SwiperStyled modules={[Pagination]} pagination={{ clickable: true }} slidesPerView={1}>
 					<SwiperSlide>
 						<SlideImage src={Slide1} alt="온보딩 1" />
-						<OnboardingButton onClick={() => swiperRef.current?.slideTo(1)} />
+						<OnboardingButton onClick={goToNextSlide} />
 					</SwiperSlide>
 
 					<SwiperSlide>
