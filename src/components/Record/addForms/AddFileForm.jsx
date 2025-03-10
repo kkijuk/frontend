@@ -20,8 +20,9 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
   useEffect(() => {
     if (mode === "edit" && initialData) {
       setFormData(initialData);
+      setIsTypeUrl(initialData.fileType === "URL");
     }
-  }, [mode, initialData]);
+  }, []);
 
 
   // 변경된 데이터 저장
