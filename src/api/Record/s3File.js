@@ -123,8 +123,8 @@ const downS3File = async (data) => {
         const response = await api.get(`/history/file/download?fileName=${fileTitle}`);
         
         // s3의 presendURL로 파일 다운로드
-        if(response.status === 200 && response.data.presignedURL){
-            console.log("Success - downS3File: ", response.data.presignedURL);
+        if(response.status === 200 && response.data.data.presignedURL){
+            console.log("Success - downS3File: ", response.data.data.presignedURL);
             return response.data.presignedURL;
         } else{
             console.error('Failed to get presigned URL:', response.statusText);
