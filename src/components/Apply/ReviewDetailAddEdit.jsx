@@ -84,7 +84,7 @@ const Cancel = styled.div`
 	cursor: pointer;
 `;
 const Save = styled.div`
-	width: 555px;
+	width: ${(props) => (props.isDocumentReview ? "720px" : "555px")};
 	height: 50px;
 	flex-shrink: 0;
 	border-radius: 10px;
@@ -136,6 +136,11 @@ export default function ReviewDetailAddEdit({
 	};
 
 	const handleSaveClick = async () => {
+		if (title.trim() === "서류") { 
+			alert("이미 해당 전형이 존재합니다."); 
+			return;
+		}
+
 		try {
 			const reviewData = {
 				title: title || initialTitle,
@@ -222,9 +227,11 @@ export default function ReviewDetailAddEdit({
 				</Middle> 
 				<Button>
 				{!disableTitleEdit && (
-  <Cancel onClick={handleDeleteClick}>삭제</Cancel>
-)}
-					<Save onClick={handleSaveClick}>저장</Save>
+                   <Cancel onClick={handleDeleteClick}>삭제</Cancel>
+                 )}
+					<Save isDocumentReview={disableTitleEdit} onClick={handleSaveClick}>
+	                 저장
+                    </Save>  
 				</Button>
 			</Box>
 			{isDeleteModalOpen && (

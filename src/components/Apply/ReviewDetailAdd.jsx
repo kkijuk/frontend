@@ -137,6 +137,11 @@ export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를
     };     
 
     const handleSaveClick = async () => {
+        if (title.trim() === "서류") { 
+            alert("이미 해당 전형이 존재합니다."); 
+            return;
+        }
+
         try {
             // GA 트래킹 추가 (전형 후기 저장 버튼 클릭)
             trackEvent('add_confirm', {
