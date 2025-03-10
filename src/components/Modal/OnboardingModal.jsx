@@ -33,12 +33,10 @@ const BaseContainer = styled.div`
 
 	display: flex;
 	flex-direction: column;
-	align-items: center; /* ✅ 내부 요소 가운데 정렬 */
-	justify-content: center; /* ✅ 내부 요소 수직 중앙 정렬 */
+	align-items: center;
+	justify-content: center;
 	width: 480px;
 	height: 540px;
-	flex-direction: column;
-	align-items: flex-start;
 	gap: 8px;
 	z-index: 5;
 
@@ -46,18 +44,17 @@ const BaseContainer = styled.div`
 `;
 
 const SwiperStyled = styled(Swiper)`
-	width: 480px; /*원래 100% height도*/
+	width: 480px;
 	height: 540px;
 
 	.swiper-slide {
-		opacity: 1 !important; /* ✅ 모든 슬라이드를 똑같이 보이게 설정 */
-		z-index: 3 !important; /* ✅ 네 번째 슬라이드만 정상적으로 보이는 문제 방지 */
+		opacity: 1 !important;
+		z-index: 3 !important;
 	}
 
-	/* 페이지네이션 스타일 */
 	.swiper-pagination {
 		position: absolute;
-		bottom: 14px; /* 아래쪽 여백 조절 */
+		bottom: 14px;
 		display: flex;
 		justify-content: center;
 		gap: 8px;
@@ -66,39 +63,54 @@ const SwiperStyled = styled(Swiper)`
 	.swiper-pagination-bullet {
 		width: 10px;
 		height: 10px;
-		background: #d9d9d9; /* 원하는 색상 */
+		background: #d9d9d9;
 	}
 
 	.swiper-pagination-bullet-active {
-		background: #88d1b6; /* 활성화된 페이지네이션 색상 */
+		background: #88d1b6;
 	}
 `;
 
 const CheckContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
-	align-items: flex-start;
-	align-self: stretch;
-
+	align-items: center;
+	width: 100%;
+	padding: 8px;
 	border: 1px solid black;
 `;
 
 const CheckBoxContainer = styled.div`
-	display: flex; /* ✅ 가로 정렬 */
-	align-items: center; /* ✅ 세로 중앙 정렬 */
-	width: auto;
-	height: auto;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
 	gap: 8px;
 `;
 
 const CheckBox = styled.div`
 	width: 18px;
 	height: 18px;
-
 	border-radius: 2px;
 	border: 1px solid var(--gray-02, #707070);
 	background: var(--white, #fff);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 `;
+
+//체크된 상태에서 SVG 아이콘을 렌더링하는 컴포넌트
+const CheckedIcon = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+		<path
+			d="M0 2C0 0.89543 0.895431 0 2 0H16C17.1046 0 18 0.895431 18 2V16C18 17.1046 17.1046 18 16 18H2C0.89543 18 0 17.1046 0 16V2Z"
+			fill="white"
+		/>
+		<path
+			d="M16 0H2C0.89 0 0 0.9 0 2V16C0 17.1 0.89 18 2 18H16C17.11 18 18 17.1 18 16V2C18 0.9 17.11 0 16 0ZM7 14L2 9L3.41 7.59L7 11.17L14.59 3.58L16 5L7 14Z"
+			fill="#707070"
+		/>
+	</svg>
+);
 
 const CheckText = styled.div`
 	color: var(--black, #000);
@@ -129,39 +141,42 @@ export default function OnboardingModal({ onClose }) {
 	const [isVisible, setIsVisible] = useState(true);
 	const swiperRef = useRef(null);
 
+	// `console.log` 추가해서 상태 변화 확인
+	const toggleCheck = () => {
+		setIsChecked((prev) => {
+			console.log('CheckBox 클릭됨. isChecked 상태:', !prev);
+			return !prev;
+		});
+	};
+
 	// 로컬스토리지 확인해서 모달 숨길지 결정
 	useEffect(() => {
 		const lastClosedDate = localStorage.getItem('hideOnboardingModal');
-		const today = new Date().toISOString().split('T')[0]; // 오늘 날짜 (YYYY-MM-DD)
+		const today = new Date().toISOString().split('T')[0];
 		if (lastClosedDate === today) {
 			setIsVisible(false);
 		}
 	}, []);
 
-	const toggleCheck = () => {
-		setIsChecked((prev) => !prev);
-	};
-
 	// 닫기 버튼 클릭 시
 	const handleClose = () => {
 		if (isChecked) {
-			const today = new Date().toISOString().split('T')[0]; // 오늘 날짜 저장
+			const today = new Date().toISOString().split('T')[0];
 			localStorage.setItem('hideOnboardingModal', today);
 		}
 		setIsVisible(false);
-		onClose?.(); // 필요하면 상위에서 모달 관리
+		onClose?.();
 	};
 
-	if (!isVisible) return null; // 모달 숨김
+	if (!isVisible) return null;
 
 	return (
 		<BlurContainer>
 			<BaseContainer>
 				<SwiperStyled modules={[Pagination]} pagination={{ clickable: true }} slidesPerView={1}>
-					{/* 첫 번째 슬라이드 */}
 					<SwiperSlide>
 						<SlideImage src={Slide1} alt="온보딩 1" />
-						<OnboardingButton onClick={() => swiperRef.current?.slideTo(1)} />{' '}
+						<OnboardingButton onClick={() => swiperRef.current?.slideTo(1)} />
 					</SwiperSlide>
 
 					<SwiperSlide>
@@ -178,16 +193,7 @@ export default function OnboardingModal({ onClose }) {
 				</SwiperStyled>
 				<CheckContainer>
 					<CheckBoxContainer onClick={toggleCheck}>
-						<CheckBox checked={isChecked}>
-							{isChecked && (
-								<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-									<path
-										d="M16 0H2C0.89 0 0 0.9 0 2V16C0 17.1 0.89 18 2 18H16C17.11 18 18 17.1 18 16V2C18 0.9 17.11 0 16 0ZM7 14L2 9L3.41 7.59L7 11.17L14.59 3.58L16 5L7 14Z"
-										fill="#fff"
-									/>
-								</svg>
-							)}
-						</CheckBox>
+						<CheckBox>{isChecked && <CheckedIcon />}</CheckBox>
 						<CheckText>오늘 하루 보지 않기</CheckText>
 					</CheckBoxContainer>
 					<CloseText onClick={handleClose}>닫기</CloseText>

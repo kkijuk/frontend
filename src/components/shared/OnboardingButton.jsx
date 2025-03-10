@@ -2,6 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Button = styled.button`
+	position: absolute;
+	top: 427px;
+	left: 50%;
+	transform: translateX(-50%);
 	display: flex;
 	padding: 12px 32px;
 	justify-content: center;
