@@ -327,7 +327,7 @@ const useRecordStore = create((set, get) => ({
 			if(data.fileType === 'File'){
 				deletedData = await deleteS3File(data);
 				set((state) => ({
-					files: state.files.filter((item) => item.fileTitle !== deletedData.fileTitle && item.keyName !== deletedData.keyName),
+					files: state.files.filter((item) => item.fileTitle !== deletedData.data.fileTitle && item.keyName !== deletedData.data.keyName),
 				}))
 			} else if(data.fileType === 'URL'){
 				deletedData = await deleteURL(data);
