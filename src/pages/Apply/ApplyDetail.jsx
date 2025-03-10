@@ -497,6 +497,8 @@ const Limiter = styled.div`
 	opacity: ${(props) => (props.show ? 1 : 0)};
 	transition: opacity 1s;
 	z-index: 1000;
+
+	pointer-events: ${(props) => (props.show ? "auto" : "none")};
 `;
 
 const ChevronDownIcon = ({ className }) => (
