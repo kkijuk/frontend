@@ -72,7 +72,7 @@ const saveKeyName = async(keyName, title) => {
     console.log('Saving key name:', keyName, title);
     try{
         const response = await api.post("/history/file", { 
-            keyname: keyName,
+            keyName: keyName,
             title: title
         });
 
