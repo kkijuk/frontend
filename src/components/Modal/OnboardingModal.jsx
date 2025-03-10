@@ -31,6 +31,9 @@ const BaseContainer = styled.div`
 	transform: translate(-50%, -50%);
 
 	display: flex;
+	flex-direction: column;
+	align-items: center; /* ✅ 내부 요소 가운데 정렬 */
+	justify-content: center; /* ✅ 내부 요소 수직 중앙 정렬 */
 	width: 480px;
 	height: 540px;
 	flex-direction: column;
