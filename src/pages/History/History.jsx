@@ -90,7 +90,7 @@ const History = () => {
 	const [editableUserData, setEditableUserData] = useState({	// 사용자 정보 수정
 		profileImageUrl: '',
 		address: '',
-		email: '',
+		// email: '',
 	});
 	const [profileURL, setProfileURL] = useState(profileImageUrl);	// 프로필 이미지
 
@@ -143,7 +143,7 @@ const History = () => {
 		setEditableUserData({
 			profileImageUrl: profileImageUrl,
 			address: address,
-			email: email,
+			// email: email,
 		});
 	}, [userData]);
 
