@@ -7,7 +7,7 @@ const updateUserData = async (recordId, data) => {
         data.profileImageUrl = data.profileImageUrl ?? "";
         
         console.log("Data to update: ", data);
-        const response = await api.patch(`/history/resume/${recordId}`, data);
+        const response = await api.patch(`/history/resume?recordId=${recordId}`, data);
         console.log("User data updated successfully: ", response.data);
         return response.data;
     } catch (error) {
