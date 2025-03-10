@@ -123,16 +123,15 @@ const ImageContainer = styled.div`
 	height: 280px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	background: url(<path-to-image>) lightgray 0px -0.094px / 100% 134.71% no-repeat;
 	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
 
 	magrin-top: -20px;
 
-	img {
+	/*img {
 		width: 100%;
 		height: auto;
 		border-radius: 10px;
-	}
+	}*/
 `;
 
 export default function OnboardingLayout({ title, contentTitle, contentText1, contentText2, img, url }) {
