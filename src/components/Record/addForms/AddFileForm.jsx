@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import FileSearch from "../FileSearch";
 import { trackEvent } from "../../../utils/ga4";
+import { downS3File } from "../../../api/Record/s3File";
 
 const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialData}) => {
   const [formData, setFormData] = useState({
@@ -15,12 +16,18 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
   });
 
   const [isTypeURL, setIsTypeUrl] = useState(true);
+  const [existingFileUrl, setExistingFileUrl] = useState(null);
 
   // 수정 모드일 경우 formData 기존 내용으로 초기화
   useEffect(() => {
     if (mode === "edit" && initialData) {
+      console.log('initialData:', initialData);
       setFormData(initialData);
       setIsTypeUrl(initialData.fileType === "URL");
+
+      downS3File(initialData.fileTitle)
+        .then((url) => setExistingFileUrl(url))
+        .catch((error) => console.error("다운로드 URL 가져오기 실패:", error));
     }
   }, []);
 
@@ -74,16 +81,27 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                 <Row>
                     {isTypeURL ? (
                         <Input
-                            type="text"
-                            placeholder="링크를 입력해주세요."
-                            value={formData.url}
-                            onChange={(e) => handleInputChange("url", e.target.value)}
-                            style={{ width: "450px" }}
-                        />
+                        type="text"
+                        placeholder="링크를 입력해주세요."
+                        value={formData.url}
+                        onChange={(e) => handleInputChange("url", e.target.value)}
+                        style={{ width: "450px" }}
+                      />
                     ) : (
-                        <FileSearch
-                          onFileSelect = {(selectedFile) => handleInputChange("file", selectedFile)}
+                      existingFileUrl ? (
+                        <Input
+                          type="text"
+                          placeholder="첨부파일 제목(ex. 포트폴리오, 경력기술서 등)"
+                          value={existingFileUrl}
+                          onClick = {()=>window.open(existingFileUrl, "_blank")}
+                          readOnly
+                          style={{ width: "450px" }}
                         />
+                      ) : (
+                        <FileSearch
+                          onFileSelect={(selectedFile) => handleInputChange("file", selectedFile)}
+                        />
+                      )
                     )}
                     <ButtonRow>
                     {mode === "edit" ? (
