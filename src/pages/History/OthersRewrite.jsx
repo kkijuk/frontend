@@ -482,8 +482,13 @@ const InputTitle = styled.textarea`
 	font-weight: 400;
 	line-height: normal;
 	resize: none;
-	overflow: hidden;
 	white-space: pre-wrap;
+
+	// overflow: hidden;
+	overflow-y: auto;
+	::-webkit-scrollbar {
+    	display: none; /* 웹킷 브라우저에서 스크롤바 숨기기 */
+  	}
 `;
 
 const AddButton = styled.button`
