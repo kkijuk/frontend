@@ -89,14 +89,17 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                       />
                     ) : (
                       existingFileUrl ? (
-                        <Input
-                          type="text"
-                          placeholder="첨부파일 제목(ex. 포트폴리오, 경력기술서 등)"
-                          value={existingFileUrl}
-                          onClick = {()=>window.open(existingFileUrl, "_blank")}
-                          readOnly
-                          style={{ width: "450px", cursor: "pointer" }}
-                        />
+                        <InputWrapper>
+                          <Input
+                            type="text"
+                            placeholder="첨부파일 제목(ex. 포트폴리오, 경력기술서 등)"
+                            value={existingFileUrl}
+                            onClick = {()=>window.open(existingFileUrl, "_blank")}
+                            readOnly
+                            style={{ width: "450px", cursor: "pointer" }}
+                          />
+                          <FileSelectButton onClick={()=>setExistingFileUrl(null)}>파일 선택</FileSelectButton>
+                        </InputWrapper>
                       ) : (
                         <FileSearch
                           onFileSelect={(selectedFile) => handleInputChange("file", selectedFile)}
@@ -250,6 +253,9 @@ const Input = styled.input`
   font-weight: 400;
   color: black;
   padding-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &::placeholder {
     color: #d9d9d9;
@@ -298,4 +304,30 @@ const DatePickerInput = styled.input.attrs({ type: "text" })`
 
 const DatePickerContainer = styled.div`
 	position: relative;
+`;
+
+const InputWrapper = styled.div`
+  position: relative;
+`
+const FileSelectButton = styled.button`
+  width: 85px;
+  height: 45px;
+  position: absolute;
+  right: 20px;
+  border: none;
+  background: none;
+  color: #707070;
+  font-family: 'Regular';
+  font-size: 16px;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: none;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
 `;
