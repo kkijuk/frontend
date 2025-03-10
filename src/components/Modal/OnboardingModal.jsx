@@ -42,8 +42,13 @@ const BaseContainer = styled.div`
 `;
 
 const SwiperStyled = styled(Swiper)`
-	width: 100%;
-	height: 100%;
+	width: 480px; /*원래 100% height도*/
+	height: 540px;
+
+	.swiper-slide {
+		opacity: 1 !important; /* ✅ 모든 슬라이드를 똑같이 보이게 설정 */
+		z-index: 3 !important; /* ✅ 네 번째 슬라이드만 정상적으로 보이는 문제 방지 */
+	}
 
 	/* 페이지네이션 스타일 */
 	.swiper-pagination {
@@ -143,7 +148,7 @@ export default function OnboardingModal({ onClose }) {
 	return (
 		<BlurContainer>
 			<BaseContainer>
-				<SwiperStyled modules={[Pagination]} pagination={{ clickable: true }} spaceBetween={10} slidesPerView={1}>
+				<SwiperStyled modules={[Pagination]} pagination={{ clickable: true }} slidesPerView={1}>
 					{/* 첫 번째 슬라이드 */}
 					<SwiperSlide>
 						<OnboardingMain onNext={() => swiperRef.current?.slideTo(1)} />
