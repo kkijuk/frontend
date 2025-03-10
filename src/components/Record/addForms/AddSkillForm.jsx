@@ -175,7 +175,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
                   onClose();
                   trackEvent('edit_click', {
                     category: 'resume',
-                    detail: 'add_skill',
+                    detail: 'edit_skill',
                     action_type: 'edit',
                     label: '활동 수정하기',
                   });
