@@ -21,7 +21,7 @@ const BlurContainer = styled.div`
 	height: 100vh;
 	background-color: rgba(0, 0, 0, 0.3);
 	backdrop-filter: blur(4px);
-	z-index: 1;
+	z-index: 4;
 `;
 
 const BaseContainer = styled.div`
@@ -36,7 +36,7 @@ const BaseContainer = styled.div`
 	flex-direction: column;
 	align-items: flex-start;
 	gap: 8px;
-	z-index: 2;
+	z-index: 5;
 
 	border: 1px solid black;
 `;
@@ -75,10 +75,11 @@ const CheckContainer = styled.div`
 `;
 
 const CheckBoxContainer = styled.div`
+	display: flex; /* ✅ 가로 정렬 */
+	align-items: center; /* ✅ 세로 중앙 정렬 */
 	width: auto;
 	height: auto;
 	gap: 8px;
-	/*가로배치*/
 `;
 
 const CheckBox = styled.div`
@@ -106,6 +107,7 @@ const CloseText = styled.div`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+	cursor: pointer;
 `;
 
 export default function OnboardingModal({ onClose }) {
