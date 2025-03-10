@@ -27,6 +27,7 @@ const Button = styled.button`
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
+	white-space: nowrap;
 `;
 
 export default function OnboardingButton({ onClick }) {
