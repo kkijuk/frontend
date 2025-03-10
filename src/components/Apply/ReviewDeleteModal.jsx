@@ -26,6 +26,7 @@ const Modal = styled.div`
 	align-items: center;
 	text-align: center;
 	position: relative;
+	z-index: 1100;
 `;
 
 const ModalTitle = styled.div`
@@ -51,13 +52,12 @@ const CancelButton = styled.button`
 	cursor: pointer;
 	font-family: Regular;
 	font-size: 15px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-top: 5px;
 	border: 1.5px solid #E0E0E0;
 	background: #fff;
 	color: #707070;
+	position: relative;
+	text-align: center; 
+	z-index: 1500;
 `;
 
 const ConfirmButton = styled.button`
@@ -66,15 +66,15 @@ const ConfirmButton = styled.button`
 	border-radius: 12px;
 	cursor: pointer;
 	font-family: Regular;
+	position: relative;
 	font-size: 15px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-top: 5px;
 	border: 1.5px solid #FF7979;
 	background: #FF7979;
 	color: white;
+	text-align: center; 
+	z-index: 1500;
 `;
+
 
 const ReviewDeleteModal = ({ onClose, onConfirm }) => {
 
