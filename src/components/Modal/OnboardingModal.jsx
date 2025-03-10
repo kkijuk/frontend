@@ -176,7 +176,11 @@ export default function OnboardingModal({ onClose }) {
 	return (
 		<BlurContainer>
 			<BaseContainer>
-				<SwiperStyled modules={[Pagination]} pagination={{ clickable: true }} slidesPerView={1}>
+				<SwiperStyled
+					modules={[Pagination]}
+					pagination={{ clickable: true }}
+					slidesPerView={1}
+					onSwiper={(swiper) => (swiperRef.current = swiper)}>
 					<SwiperSlide>
 						<SlideImage src={Slide1} alt="온보딩 1" />
 						<OnboardingButton onClick={goToNextSlide} />
