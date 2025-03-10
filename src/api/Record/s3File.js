@@ -41,10 +41,17 @@ const uploadFileToS3 = async (file, presignedURL) => {
             body: file,
             headers: {
                 'Content-Type': file.type,
-                'x-amz-server-side-encryption' : 'AES256'
+                'x-amz-server-side-encryption' : 'AES256',
+                'origin': 'https://test.kkijuk.com'
             }
         })
-        console.log("Success - uploadFileToS3: ", response.data);
+        // console.log("Success - uploadFileToS3: ", response.data);
+
+        if (!response.ok) {
+            throw new Error(`Failed to upload. status: ${response.status}`);
+        }
+
+        console.log("Success - uploadFileToS3: ", response);
         return response.data;
     } catch (error) {
         console.error("Error uploading file to S3: ", error);
