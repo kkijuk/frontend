@@ -120,7 +120,7 @@ const downS3File = async (data) => {
     try{
         // api 호출
         const fileTitle = data.fileTitle;
-        const response = await api.get(`/history/file/download?fileTitle=${fileTitle}`);
+        const response = await api.get(`/history/file/download?fileName=${fileTitle}`);
         
         // s3의 presendURL로 파일 다운로드
         if(response.status === 200 && response.data.signedURL){
