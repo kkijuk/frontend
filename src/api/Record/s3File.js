@@ -124,10 +124,22 @@ const downS3File = async (data) => {
         
         // s3의 presendURL로 파일 다운로드
         if(response.status === 200 && response.data.data.presignedURL){
-            console.log("Success - downS3File: ", response.data.data.presignedURL);
-            return response.data.presignedURL;
+            console.log("Success - downS3File: ", response ,response.data.data.presignedURL);
+            // return response.data.data.presignedURL;
+
+            // 다운로드
+            const presignedURL = response.data.data.presignedURL;
+            const link = document.createElement('a');
+            link.href = presignedURL;
+            link.setAttribute('download', fileTitle);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            return presignedURL;
+
         } else{
-            console.error('Failed to get presigned URL:', response.statusText);
+            console.error('Failed to get presigned URL:', response.status);
             alert('파일 다운로드 URL을 가져오는데 실패했습니다.');
         }
     
