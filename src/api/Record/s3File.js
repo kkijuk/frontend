@@ -97,7 +97,7 @@ const deleteS3File = async (data) => {
     console.log('Deleting S3 file:', data);
     try{
         const fileTitle = data.fileTitle;
-        const response = await api.delete(`/history/file?fileTitle=${fileTitle}`);
+        const response = await api.delete(`/history/file?fileName=${fileTitle}`);
         console.log("Success - deleteS3File: ", response.data);
         return response.data;
     } catch (error) {
@@ -129,12 +129,8 @@ const downS3File = async (data) => {
 
             // 다운로드
             const presignedURL = response.data.data.presignedURL;
-            const link = document.createElement('a');
-            link.href = presignedURL;
-            link.setAttribute('download', fileTitle);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+
+            window.open(presignedURL, '_blank');
 
             return presignedURL;
 
