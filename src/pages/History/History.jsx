@@ -144,6 +144,7 @@ const History = () => {
 			address: address,
 			email: email,
 		})
+		console.log("EditableUserData: ", editableUserData);
 		updateUserData(editableUserData); //in useRecordStore
 	}, [profileImageUrl, address, email]);
 
