@@ -19,7 +19,7 @@ const FileItem = ({ id, data, onSave, onUpdate, onDelete }) => {
     try{
       
       const response = await downS3File(data);
-      const presignedURL = response.data.data.presignedURL;
+      const presignedURL = response;
       window.open(presignedURL, '_blank');
 
     } catch (error) {
