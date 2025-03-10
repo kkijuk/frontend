@@ -1,35 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const BlurContainer = styled.div`
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 100vw;
-	height: 100vh;
-	background-color: rgba(0, 0, 0, 0.3);
-	backdrop-filter: blur(4px);
-	z-index: 1;
-`;
-
-const BaseContainer = styled.div`
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-
-	display: flex;
-	width: 480px;
-	height: 540px;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: 8px;
-	z-index: 2;
-
-	border: 1px solid black;
-`;
-
 const ModalBox = styled.div`
 	height: 540px;
 	align-self: stretch;
@@ -136,29 +107,25 @@ const ImageContainer = styled.div`
 
 export default function OnboardingLayout({ title, contentTitle, contentText1, contentText2, img, url }) {
 	return (
-		<BlurContainer>
-			<BaseContainer>
-				<ModalBox>
-					<TitleContainer>
-						<Title>{title}</Title>
-						<TitleUnderline></TitleUnderline>
-					</TitleContainer>
-					<SvgButtonContainer>
-						<SvgButton xmlns="http://www.w3.org/2000/svg" viewBox="0 0 351 102">
-							<path d="M25.8417 81.2211C25.8417 90.0863 20.3628 97.6718 12.6063 100.776H46.7926H330.3C341.1 100.776 349.855 92.0212 349.855 81.2211V20.3051C349.855 9.50501 341.1 0.749809 330.3 0.749809H45.3969C34.5968 0.749809 25.8417 9.50503 25.8417 20.3051V75.2218V81.2211Z" />
-						</SvgButton>
-						<ContentContainer>
-							<ContentTitle>{contentTitle}</ContentTitle>
-							<ContentText>
-								{contentText1}
-								<br />
-								{contentText2}
-							</ContentText>
-						</ContentContainer>
-					</SvgButtonContainer>
-					<ImageContainer href={url} target="_blank" style={{ backgroundImage: `url(${img})` }} />
-				</ModalBox>
-			</BaseContainer>
-		</BlurContainer>
+		<ModalBox>
+			<TitleContainer>
+				<Title>{title}</Title>
+				<TitleUnderline></TitleUnderline>
+			</TitleContainer>
+			<SvgButtonContainer>
+				<SvgButton xmlns="http://www.w3.org/2000/svg" viewBox="0 0 351 102">
+					<path d="M25.8417 81.2211C25.8417 90.0863 20.3628 97.6718 12.6063 100.776H46.7926H330.3C341.1 100.776 349.855 92.0212 349.855 81.2211V20.3051C349.855 9.50501 341.1 0.749809 330.3 0.749809H45.3969C34.5968 0.749809 25.8417 9.50503 25.8417 20.3051V75.2218V81.2211Z" />
+				</SvgButton>
+				<ContentContainer>
+					<ContentTitle>{contentTitle}</ContentTitle>
+					<ContentText>
+						{contentText1}
+						<br />
+						{contentText2}
+					</ContentText>
+				</ContentContainer>
+			</SvgButtonContainer>
+			<ImageContainer href={url} target="_blank" style={{ backgroundImage: `url(${img})` }} />
+		</ModalBox>
 	);
 }
