@@ -68,12 +68,12 @@ const uploadFileToS3 = async (file, presignedURL) => {
 };
 
 // keyName 저장
-const saveKeyName = async(keyName, fileTitle) => {
-    console.log('Saving key name:', keyName, fileTitle);
+const saveKeyName = async(keyName, title) => {
+    console.log('Saving key name:', keyName, title);
     try{
         const response = await api.post("/history/file", { 
             keyname: keyName,
-            fileTitle: fileTitle
+            title: title
         });
 
         console.log("Key Name saved successfully: ", response.data);
