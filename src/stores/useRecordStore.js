@@ -82,6 +82,7 @@ const useRecordStore = create((set, get) => ({
 				status: 'succeeded',
 				error: null,
 			});
+			console.log('Record Id:', data.record_id);
 		} catch (error) {
 			set({ status: 'failed', error: "Record not created" });
 			console.error('Fetch Record Error: ', error);

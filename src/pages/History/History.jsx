@@ -113,6 +113,8 @@ const History = () => {
 			}
 		}
 		fetchData();
+		
+		console.log('Record Id:', recordId);
 
 		// 인디케이터 관련 로직 - 화면 영역 계산
 		// const observer = new IntersectionObserver(
