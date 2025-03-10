@@ -42,8 +42,8 @@ const BaseContainer = styled.div`
 `;
 
 const SwiperStyled = styled(Swiper)`
-	width: 100%;
-	height: 100%;
+	width: 480px; /*원래 100% height도*/
+	height: 540px;
 
 	.swiper-slide {
 		opacity: 1 !important; /* ✅ 모든 슬라이드를 똑같이 보이게 설정 */
