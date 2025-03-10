@@ -20,6 +20,13 @@ const Button = styled.button`
 	cursor: pointer;
 	border: none;
 	margin-bottom: 51px; /* 버튼 위치 조정 */
+
+	color: var(--white, #fff);
+	font-family: Pretendard;
+	font-size: 32px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
 `;
 
 export default function OnboardingButton({ onClick }) {
