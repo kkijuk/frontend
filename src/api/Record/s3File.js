@@ -129,12 +129,8 @@ const downS3File = async (data) => {
 
             // 다운로드
             const presignedURL = response.data.data.presignedURL;
-            const link = document.createElement('a');
-            link.href = presignedURL;
-            link.setAttribute('download', fileTitle);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+
+            window.open(presignedURL, '_blank');
 
             return presignedURL;
 
