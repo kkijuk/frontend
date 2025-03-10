@@ -17,31 +17,10 @@ const FileItem = ({ id, data, onSave, onUpdate, onDelete }) => {
 
   const handleDownload = async () => {
     try{
-      // 1. presigned URL을 가져오기
-      const signedURL = await downS3File(data);
-      if(!signedURL){
-        alert("파일 다운로드 URL을 가져오는데 실패했습니다.");
-        return;
-      }
-
-      // 2. presigned URL로 파일 다운로드
-      const fileResponse = await fetch(signedURL);
-      if(!fileResponse.ok){
-        throw new Error("Failed to download file");
-      }
-
-      // 3. blob으로 변환
-      const blob = await fileResponse.blob();
-      const url = window.URL.createObjectURL(blob);
-
-      // 4. 다운로드 트리거 생성
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = data.fileTitle; // 다운받을 때 보이는 파일 이름
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
+      
+      const response = await downS3File(data);
+      const presignedURL = response;
+      window.open(presignedURL, '_blank');
 
     } catch (error) {
       console.error("Error downloading file: ", error);
