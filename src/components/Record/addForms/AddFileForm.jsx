@@ -95,7 +95,7 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                           value={existingFileUrl}
                           onClick = {()=>window.open(existingFileUrl, "_blank")}
                           readOnly
-                          style={{ width: "450px" }}
+                          style={{ width: "450px", cursor: "pointer" }}
                         />
                       ) : (
                         <FileSearch
