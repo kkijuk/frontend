@@ -1,16 +1,17 @@
 import React, { useState, useRef } from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import OnboardingMain from '../Onboarding/main';
-import OnboardingLayout from '../Onboarding/OnboardingLayout';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
 
-import MycareerImg from '../../assets/onboarding/onboarding2.png';
-import ApplyImg from '../../assets/onboarding/onboarding3.png';
-import HistoryImg from '../../assets/onboarding/onboarding4.png';
+import Slide1 from '../../assets/onboarding/onboarding1.png';
+import Slide2 from '../../assets/onboarding/onboarding2.png';
+import Slide3 from '../../assets/onboarding/onboarding3.png';
+import Slide4 from '../../assets/onboarding/onboarding4.png';
+
+import OnboardingButton from '../shared/OnboardingButton';
 
 const BlurContainer = styled.div`
 	position: absolute;
@@ -118,6 +119,11 @@ const CloseText = styled.div`
 	cursor: pointer;
 `;
 
+const SlideImage = styled.img`
+	width: 100%;
+	height: auto;
+`;
+
 export default function OnboardingModal({ onClose }) {
 	const [isChecked, setIsChecked] = useState(false);
 	const [isVisible, setIsVisible] = useState(true);
@@ -133,7 +139,7 @@ export default function OnboardingModal({ onClose }) {
 	}, []);
 
 	const toggleCheck = () => {
-		setIsChecked(!isChecked);
+		setIsChecked((prev) => !prev);
 	};
 
 	// 닫기 버튼 클릭 시
@@ -154,43 +160,20 @@ export default function OnboardingModal({ onClose }) {
 				<SwiperStyled modules={[Pagination]} pagination={{ clickable: true }} slidesPerView={1}>
 					{/* 첫 번째 슬라이드 */}
 					<SwiperSlide>
-						<OnboardingMain onNext={() => swiperRef.current?.slideTo(1)} />
+						<SlideImage src={Slide1} alt="온보딩 1" />
+						<OnboardingButton onClick={() => swiperRef.current?.slideTo(1)} />{' '}
 					</SwiperSlide>
 
-					{/* 두 번째 슬라이드 */}
 					<SwiperSlide>
-						<OnboardingLayout
-							title="내커리어"
-							contentTitle="내가 그동안 뭐 했더라?"
-							contentText1="나중에 정리하느라 허둥지둥하지 말고,"
-							contentText2="끼적에 차곡차곡 활동을 쌓아놔요!"
-							img={MycareerImg}
-							url="https://www.kkijuk.com/mycareer"
-						/>
+						<SlideImage src={Slide2} alt="온보딩 2" />
 					</SwiperSlide>
 
-					{/* 세 번째 슬라이드 */}
 					<SwiperSlide>
-						<OnboardingLayout
-							title="서류준비"
-							contentTitle="이력서? 자기소개서? 너무 어려워..."
-							contentText1="내커리어에 적어둔 경험을"
-							contentText2="서류에 활용할 수 있게 채워줘요!"
-							img={ApplyImg}
-							url="https://www.kkijuk.com/history"
-						/>
+						<SlideImage src={Slide3} alt="온보딩 3" />
 					</SwiperSlide>
 
-					{/* 네 번째 슬라이드 */}
 					<SwiperSlide>
-						<OnboardingLayout
-							title="지원관리"
-							contentTitle="저번에 면접 어땠었지?"
-							contentText1="여기저기 흩어져 있던 지원 현황과"
-							contentText2="잊기 쉬운 전형 후기를 한눈에 확인해요!"
-							img={HistoryImg}
-							url="https://www.kkijuk.com/apply-schedule"
-						/>
+						<SlideImage src={Slide4} alt="온보딩 4" />
 					</SwiperSlide>
 				</SwiperStyled>
 				<CheckContainer>
