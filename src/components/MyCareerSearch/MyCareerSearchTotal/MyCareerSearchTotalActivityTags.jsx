@@ -22,12 +22,12 @@ const TagWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
-	margin-bottom: 24px;
+	margin-bottom: 12px;
 `;
 
 // 태그 버튼
 const Tag = styled.button`
-	padding: 0 20px;
+	padding: 4px 20px;
 	border-radius: 20px;
 	font-family: Pretendard;
 	font-size: 12px;
