@@ -28,13 +28,12 @@ const TagWrapper = styled.div`
 const Tag = styled.button`
 	padding: 4px 20px;
 	border-radius: 20px;
-	min-width: 
 	font-family: Pretendard;
 	font-size: 14px;
 	font-weight: 400;
 	font-style: normal;
 	cursor: pointer;
-	
+
 	background: ${(props) => (props.isActive ? '#3aaf85' : '#f5f5f5')};
 	color: ${(props) => (props.isActive ? '#ffffff' : '#3aaf85')};
 	border: 1px solid ${(props) => (props.isActive ? '#3aaf85' : '#f5f5f5')};
@@ -51,7 +50,6 @@ const Tag = styled.button`
 
 // 활동 리스트 Wrapper
 const ActivityWrapper = styled.div`
-	margin-top: 24px;
 	cursor: pointer;
 `;
 
@@ -60,6 +58,7 @@ const ActivityItem = styled.div`
 	border-bottom: 1px solid #eaeaea;
 	display: flex;
 	flex-direction: column;
+	margin: 0 24px;
 
 	&:last-child {
 		border-bottom: none;
@@ -70,8 +69,8 @@ const ActivityItem = styled.div`
 const ActivityTop = styled.div`
 	display: flex;
 	justify-content: space-between;
+	height: auto;
 	align-items: center;
-	margin-bottom: 16px;
 `;
 
 // 제목 (왼쪽)
