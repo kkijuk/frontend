@@ -13,7 +13,7 @@ const Container = styled.div`
 const Box = styled.div`
 	width: 98%;
 	margin: 16px auto;
-	padding: 20px 24px 32px 24px;
+	padding: 20px 24px 28px 24px;
 	background-color: white;
 	border-radius: 10px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -58,7 +58,7 @@ const MainWrapper = styled.div`
 const DetailWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
-	padding: 16px 12px;
+	padding: 24px 12px;
 	border-bottom: 1px solid var(--gray-04, #e0e0e0);
 	&:last-child {
 		border-bottom: none; // 마지막 요소에는 선이 나타나지 않도록
