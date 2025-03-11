@@ -7,6 +7,7 @@ const Button = styled.button`
 	left: 306px;
 	margin-bottom: 20px;
 	border: none;
+	pointer: cursor;
 
 	display: inline-flex;
 	padding: 12px 24px;
