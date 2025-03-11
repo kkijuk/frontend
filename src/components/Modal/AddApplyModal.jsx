@@ -266,10 +266,16 @@ const AddApplyModal = ({ onClose, onSave }) => {
 		startTime: '',
 		endTime: '',
 		endTimeOrder: '',
+		link: '',
 	});
 
+	const isValidUrl = (url) => {
+		const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+		return urlPattern.test(url);
+	};
+
 	const handleSave = async () => {
-		let errors = { title: '', startTime: '', endTime: '', endTimeOrder: '' };
+		let errors = { title: '', startTime: '', endTime: '', endTimeOrder: '', link: '' };
 
 		if (!title) {
 			errors.title = '공고 제목을 입력해주세요.';
@@ -283,10 +289,18 @@ const AddApplyModal = ({ onClose, onSave }) => {
 		if (startTime && endTime && new Date(endTime) <= new Date(startTime)) {
 			errors.endTimeOrder = '종료 날짜는 시작 날짜 이후로 설정해주세요.';
 		}
+		if (link && !isValidUrl(link)) {
+			errors.link = '올바른 형식의 링크를 입력해주세요.';
+		}
 
 		// 에러 메시지 업데이트
 		setErrorMessages(errors);
-		
+
+		// 하나라도 에러가 있으면 저장 중단
+		if (errors.title || errors.startTime || errors.endTime || errors.endTimeOrder || errors.link) {
+			return;
+		}
+
 		trackEvent('add_confirm', {
 			category: 'apply',
 			detail: 'add_recruit',
