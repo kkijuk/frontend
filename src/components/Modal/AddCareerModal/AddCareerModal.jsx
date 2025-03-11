@@ -979,7 +979,12 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				console.log('Success - 활동 삭제: ', response);
 				// onClose();
 				// navigate('/mycareer');
-				window.location.reload();
+				// 현재 경로가 '/history'가 아니라면 '/mycareer'로 이동
+                if (location.pathname !== '/history') {
+                    navigate('/mycareer');
+                } else {
+                    window.location.reload();
+                }
 			} catch (error) {
 				console.error('deleteCareer 호출 중 오류 발생: ', error.response ? error.response.data : error.message);
 			}
