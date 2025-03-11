@@ -123,7 +123,7 @@ const CheckedIcon = () => (
 );
 
 const CheckText = styled.div`
-	color: var(--black, #000);
+	color: var(--white, #fff);
 	font-family: Pretendard;
 	font-size: 16px;
 	font-style: normal;
@@ -132,13 +132,12 @@ const CheckText = styled.div`
 `;
 
 const CloseText = styled.div`
-	color: var(--white, #fff);
+	color: var(--gray-03, #d9d9d9);
 	font-family: Pretendard;
 	font-size: 16px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
-	cursor: pointer;
 `;
 
 const SlideImage = styled.img`
