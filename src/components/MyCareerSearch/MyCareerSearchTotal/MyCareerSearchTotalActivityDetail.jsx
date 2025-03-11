@@ -23,6 +23,7 @@ const Box = styled.div`
 const TopWrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
+	padding-top: 10px;
 `;
 
 const TopLeft = styled.div`
@@ -77,7 +78,7 @@ const DetailTitle = styled.div`
 const DetailContent = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
-	font-size: 1rem;
+	font-size: 14px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
