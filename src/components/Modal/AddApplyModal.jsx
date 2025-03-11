@@ -408,8 +408,11 @@ const AddApplyModal = ({ onClose, onSave }) => {
 							onChange={(e) => setLink(e.target.value)}
 						/>
 					</InputWrapperLink>
+					{errorMessages.title && <ErrorMessage>{errorMessages.title}</ErrorMessage>}
+					{errorMessages.startTime && <ErrorMessage>{errorMessages.startTime}</ErrorMessage>}
 					{errorMessages.endTime && <ErrorMessage>{errorMessages.endTime}</ErrorMessage>}
 							{errorMessages.endTimeOrder && <ErrorMessage>{errorMessages.endTimeOrder}</ErrorMessage>}
+							{errorMessages.link && <ErrorMessage>{errorMessages.link}</ErrorMessage>}
 				</FieldWrapper>
 				<ButtonWrapper>
 					<SaveButton onClick={handleSave}>확인</SaveButton>
