@@ -34,18 +34,18 @@ const TagWrapper = styled.div`
 `;
 
 const Tag = styled.button`
-	padding: 3px 10px;
+	padding: 2px 20px;
 	border-radius: 20px;
-	// background: ${(props) => (props.isActive ? '#3aaf85' : '#f5f5f5')};
-	// color: ${(props) => (props.isActive ? '#ffffff' : '#3aaf85')};
-	color: #3aaf85;
-	border: 1px solid ${(props) => (props.isActive ? '#3aaf85' : '#f5f5f5')};
 	font-family: Pretendard;
-	font-size: 0.75rem;
-	font-style: normal;
+	font-size: 12px;
 	font-weight: 400;
-	line-height: normal;
+	font-style: normal;
 	cursor: pointer;
+
+	background: ${(props) => (props.isActive ? '#3aaf85' : '#f5f5f5')};
+	color: ${(props) => (props.isActive ? '#ffffff' : '#3aaf85')};
+	border: 1px solid ${(props) => (props.isActive ? '#3aaf85' : '#f5f5f5')};
+
 	transition:
 		background-color 0.3s ease,
 		color 0.3s ease;
@@ -68,8 +68,8 @@ const TopLeft = styled.div`
 
 const DetailCareerTitle = styled.div`
 	color: var(--black, #000);
-	font-family: Inter;
-	font-size: 1rem;
+	font-family: Pretenard;
+	font-size: 14px;
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
@@ -79,8 +79,8 @@ const DetailCareerTitle = styled.div`
 const DetailCareerDate = styled.div`
 	color: var(--gray-02, #707070);
 	text-align: right;
-	font-family: Inter;
-	font-size: 0.75rem;
+	font-family: Pretendard;
+	font-size: 12px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
@@ -95,7 +95,7 @@ const MainWrapper = styled.div`
 const DetailWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
-	padding: 15px 10px;
+	padding: 18px 10px;
 	border-bottom: 1px solid var(--gray-04, #e0e0e0);
 	&:last-child {
 		border-bottom: none; // 마지막 요소에는 선이 나타나지 않도록
@@ -105,7 +105,7 @@ const DetailWrapper = styled.div`
 const DetailTitle = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
-	font-size: 1.125rem;
+	font-size: 16px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
@@ -114,11 +114,11 @@ const DetailTitle = styled.div`
 const DetailContent = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
-	font-size: 1rem;
+	font-size: 14px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
-	margin-top: 15px;
+	margin-top: 16px;
 `;
 
 const BottomWrapper = styled.div`
@@ -127,22 +127,28 @@ const BottomWrapper = styled.div`
 `;
 
 const DetailTag = styled.div`
-	display: flex;
-	margin-right: 10px;
-	padding: 0 10px;
-	border-radius: 0.6875rem;
-	background: var(--gray-06, #f5f5f5);
-	height: 1.375rem;
-	flex-direction: column;
-	justify-content: center;
-	flex-shrink: 0;
-	color: var(--main-01, #3aaf85);
-	text-align: center;
+	padding: 2px 15px;
+	border-radius: 20px;
 	font-family: Pretendard;
-	font-size: 0.75rem;
-	font-style: normal;
+	font-size: 12px;
 	font-weight: 400;
-	line-height: normal;
+	font-style: normal;
+	cursor: pointer;
+	text-align: center;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	white-space: nowrap;
+
+	background: #f5f5f5;
+	color: #3aaf85;
+	border: 1px solid #f5f5f5;
+
+	b {
+		display: inline;
+		font-weight: bold;
+	}
 `;
 
 export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle }) {
