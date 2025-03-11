@@ -102,6 +102,9 @@ const CheckBox = styled.div`
       border-radius: 2px;
       border: 1px solid var(--gray-02, #707070);
       background: var(--white, #fff);
+	  box-sizing: border-box;
+
+
     `}
 `;
 
