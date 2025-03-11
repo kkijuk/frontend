@@ -220,7 +220,7 @@ const Oval = styled.div`
 					? '#FCC400'
 					: props.category === '대외활동'
 						? '#77AFF2'
-						: props.category === '공모전대회'
+						: props.category === '공모전/대회'
 							? '#C48DEF'
 							: props.category === '프로젝트'
 								? '#78D333'
@@ -236,7 +236,7 @@ const Oval = styled.div`
 				? '3px solid #FCC400'
 				: props.category === '대외활동'
 					? '3px solid #77AFF2'
-					: props.category === '공모전대회'
+					: props.category === '공모전/대회'
 						? '3px solid #C48DEF'
 						: props.category === '프로젝트'
 							? '3px solid #78D333'
@@ -264,7 +264,7 @@ const Line = styled.div`
 				? '2px solid #FCC400'
 				: props.category === '대외활동' && props.isPastDue
 					? '2px solid #77AFF2'
-					: props.category === '공모전대회' && props.isPastDue
+					: props.category === '공모전/대회' && props.isPastDue
 						? '2px solid #C48DEF'
 						: props.category === '프로젝트' && props.isPastDue
 							? '2px solid #78D333'
@@ -278,7 +278,7 @@ const Line = styled.div`
 											? '2px dashed #FCC400'
 											: props.category === '대외활동' && !props.isPastDue
 												? '2px dashed #77AFF2'
-												: props.category === '공모전대회' && !props.isPastDue
+												: props.category === '공모전/대회' && !props.isPastDue
 													? '2px dashed #C48DEF'
 													: props.category === '프로젝트' && !props.isPastDue
 														? '2px dashed #78D333'
@@ -333,7 +333,7 @@ const LevelTag = styled.div`
 			? '#FCC400'
 			: props.category === '대외활동'
 				? '#77AFF2'
-				: props.category === '공모전대회'
+				: props.category === '공모전/대회'
 					? '#C48DEF'
 					: props.category === '프로젝트'
 						? '#78D333'
