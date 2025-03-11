@@ -24,6 +24,7 @@ const TopWrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
 	padding-top: 10px;
+	margin-bottom: 10px;
 `;
 
 const TopLeft = styled.div`
@@ -59,7 +60,7 @@ const MainWrapper = styled.div`
 const DetailWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
-	padding: 0 12px;
+	padding: 24px 12px;
 	border-bottom: 1px solid var(--gray-04, #e0e0e0);
 	&:last-child {
 		border-bottom: none; // 마지막 요소에는 선이 나타나지 않도록
@@ -93,7 +94,7 @@ const BottomWrapper = styled.div`
 `;
 
 const DetailTag = styled.div`
-	padding: 4px 20px;
+	padding: 2px 15px;
 	border-radius: 20px;
 	font-family: Pretendard;
 	font-size: 12px;
