@@ -23,8 +23,6 @@ const Box = styled.div`
 const TopWrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
-	padding-top: 10px;
-	margin-bottom: 10px;
 `;
 
 const TopLeft = styled.div`
@@ -60,7 +58,7 @@ const MainWrapper = styled.div`
 const DetailWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
-	padding: 24px 12px;
+	padding: 16px 12px;
 	border-bottom: 1px solid var(--gray-04, #e0e0e0);
 	&:last-child {
 		border-bottom: none; // 마지막 요소에는 선이 나타나지 않도록
@@ -83,7 +81,7 @@ const DetailContent = styled.div`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
-	margin-top: 15px;
+	margin-top: 16px;
 `;
 
 const BottomWrapper = styled.div`
