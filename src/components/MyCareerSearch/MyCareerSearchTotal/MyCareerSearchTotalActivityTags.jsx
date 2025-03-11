@@ -10,7 +10,7 @@ const Container = styled.div`
 	width: 100%;
 	box-sizing: border-box;
 	padding: 20px 40px 32px 40px;
-	margin: 10px auto;
+	margin: 0 auto;
 	margin-left: 12px;
 	background-color: #fff;
 	border-radius: 10px;
@@ -22,6 +22,7 @@ const TagWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	gap: 12px;
+	margin-bottom: 24px;
 `;
 
 // 태그 버튼
@@ -59,6 +60,7 @@ const ActivityItem = styled.div`
 	display: flex;
 	flex-direction: column;
 	margin: 0 24px;
+	padding: 16px 0;
 
 	&:last-child {
 		border-bottom: none;
@@ -71,6 +73,7 @@ const ActivityTop = styled.div`
 	justify-content: space-between;
 	height: auto;
 	align-items: center;
+	margin-bottom: 8px;
 `;
 
 // 제목 (왼쪽)
@@ -78,6 +81,7 @@ const ActivityTitle = styled.h3`
 	font-family: Pretendard;
 	font-size: 16px;
 	font-weight: 400;
+	margin: 0;
 `;
 
 // 날짜 (오른쪽)
@@ -92,6 +96,8 @@ const ActivityDate = styled.div`
 const ActivityContent = styled.p`
 	font-size: 14px;
 	color: var(--black, #000);
+	margin: 0;
+	line-height: 1.5;
 `;
 
 // 검색 결과가 없을 때 표시
