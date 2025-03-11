@@ -71,12 +71,16 @@ export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewTogg
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	};
 
+	const getActivityDetailCount = () => {
+		return activityDetail?.data.data.reduce((total, item) => total + (item.detailList?.length || 0), 0) || 0;
+	};
+
 	const isAllDataEmpty =
 		!isActivityLoading &&
 		!isActivityDetailLoading &&
 		!isActivityTagListLoading &&
 		activity?.data.data.length === 0 &&
-		activityDetail?.data.data.reduce((total, item) => total + (item.detailList?.length || 0), 0) === 0 &&
+		getActivityDetailCount() === 0 &&
 		activityTagList?.data.data.detailCount === 0;
 
 	return (
@@ -85,13 +89,11 @@ export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewTogg
 				<NotExistSearchComponent query={searchQuery} onClick={() => navigate('/mycareer')} />
 			) : (
 				<>
-					<Title>활동 ({activity?.data.data.length})</Title>
+					<Title>활동 ({activity?.data.data.length || 0})</Title>
 					<MyCareerSearchTotalActivity activity={activity} isActivityLoading={isActivityLoading} />
 
 					<Wrapper>
-						<Title>
-							활동기록 ({activityDetail?.data.data.reduce((total, item) => total + (item.detailList?.length || 0), 0)})
-						</Title>
+						<Title>활동기록 ({getActivityDetailCount()})</Title>
 						<ChangeViewButton value="2" onClick={handleButtonClick}>
 							결과 전체보기
 						</ChangeViewButton>
@@ -103,7 +105,7 @@ export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewTogg
 					/>
 
 					<Wrapper>
-						<Title>태그 ({activityTagList?.data.data.detailCount})</Title>
+						<Title>태그 ({activityTagList?.data.data.detailCount || 0})</Title>
 						<ChangeViewButton value="3" onClick={handleButtonClick}>
 							결과 전체보기
 						</ChangeViewButton>
