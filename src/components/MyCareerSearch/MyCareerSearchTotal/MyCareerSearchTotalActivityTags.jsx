@@ -21,7 +21,7 @@ const Container = styled.div`
 const TagWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
-	gap: 12px;
+	gap: 10px;
 	margin-bottom: 24px;
 `;
 
@@ -30,7 +30,7 @@ const Tag = styled.button`
 	padding: 0 20px;
 	border-radius: 20px;
 	font-family: Pretendard;
-	font-size: 14px;
+	font-size: 12px;
 	font-weight: 400;
 	font-style: normal;
 	cursor: pointer;
