@@ -269,6 +269,12 @@ const AddApplyModal = ({ onClose, onSave }) => {
 		link: '',
 	});
 
+	const handleTitleChange = (e) => {
+		const value = e.target.value.slice(0, 20); // 20자까지만 허용
+		setTitle(value);
+	};
+	
+
 	const isValidUrl = (url) => {
 		const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
 		return urlPattern.test(url);
@@ -360,9 +366,10 @@ const AddApplyModal = ({ onClose, onSave }) => {
 					<InputWrapper>
 						<Input
 							type="text"
-							placeholder="공고 제목을 작성하세요"
+							placeholder="공고 제목을 작성하세요 (20자 이하)"
 							value={title}
-							onChange={(e) => setTitle(e.target.value)}
+							onChange={handleTitleChange}
+							maxLength={20} 
 						/>
 					</InputWrapper>
 				</FieldWrapper>
