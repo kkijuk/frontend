@@ -981,6 +981,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				// navigate('/mycareer');
 				// 현재 경로가 '/history'가 아니라면 '/mycareer'로 이동
                 if (location.pathname !== '/history') {
+					console.log('loaction.pathname: ', location.pathname);
                     navigate('/mycareer');
                 } else {
                     window.location.reload();
