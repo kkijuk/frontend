@@ -13,7 +13,7 @@ const Container = styled.div`
 const Box = styled.div`
 	width: 98%;
 	margin: 10px auto;
-	padding: 10px 20px;
+	padding: 20px 24px 32px 24px;
 	background-color: white;
 	border-radius: 10px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -87,26 +87,34 @@ const DetailContent = styled.div`
 
 const BottomWrapper = styled.div`
 	display: flex;
-	margin-top: 25px;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 16px;
 `;
 
 const DetailTag = styled.div`
-	display: flex;
-	margin-right: 10px;
-	padding: 0 10px;
-	border-radius: 11px;
-	background: var(--gray-06, #f5f5f5);
-	height: 1.375rem;
-	flex-direction: column;
-	justify-content: center;
-	flex-shrink: 0;
-	color: var(--main-01, #3aaf85);
-	text-align: center;
+	padding: 0 20px;
+	border-radius: 20px;
 	font-family: Pretendard;
 	font-size: 12px;
-	font-style: normal;
 	font-weight: 400;
-	line-height: normal;
+	font-style: normal;
+	cursor: pointer;
+	text-align: center;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	white-space: nowrap;
+
+	background: #f5f5f5;
+	color: #3aaf85;
+	border: 1px solid #f5f5f5;
+
+	b {
+		display: inline;
+		font-weight: bold;
+	}
 `;
 
 const NotExistSearch = styled.div`

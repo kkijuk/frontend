@@ -21,16 +21,16 @@ const Container = styled.div`
 const TagWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
-	gap: 12px;
+	gap: 10px;
 	margin-bottom: 24px;
 `;
 
 // 태그 버튼
 const Tag = styled.button`
-	padding: 4px 20px;
+	padding: 0 20px;
 	border-radius: 20px;
 	font-family: Pretendard;
-	font-size: 14px;
+	font-size: 12px;
 	font-weight: 400;
 	font-style: normal;
 	cursor: pointer;
@@ -59,8 +59,8 @@ const ActivityItem = styled.div`
 	border-bottom: 1px solid #eaeaea;
 	display: flex;
 	flex-direction: column;
-	margin: 0 24px;
-	padding: 16px 0;
+	margin: 0;
+	padding: 24px 0;
 
 	&:last-child {
 		border-bottom: none;
