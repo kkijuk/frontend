@@ -27,7 +27,7 @@ const TagWrapper = styled.div`
 
 // 태그 버튼
 const Tag = styled.button`
-	padding: 4px 20px;
+	padding: 2px 20px;
 	border-radius: 20px;
 	font-family: Pretendard;
 	font-size: 12px;
