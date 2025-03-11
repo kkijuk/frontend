@@ -10,7 +10,7 @@ import SocialRedirect from './components/Redirect';
 import Home from './pages/Home';
 import MyPage from './pages/Mypage/Mypage';
 import MyCareer from './pages/Mycareer/Mycareer';
-import MycareerSearch from './pages/Mycareer/Mycareer_search';
+import MycareerSearch from './pages/Mycareer/MycareerSearch';
 import ApplySchedule from './pages/Apply/ApplySchedule';
 import ApplyStatus from './pages/Apply/ApplyStatus';
 import Community from './pages/Community';

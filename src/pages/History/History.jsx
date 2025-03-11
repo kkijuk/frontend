@@ -90,7 +90,7 @@ const History = () => {
 	const [editableUserData, setEditableUserData] = useState({	// 사용자 정보 수정
 		profileImageUrl: '',
 		address: '',
-		email: '',
+		// email: '',
 	});
 	const [profileURL, setProfileURL] = useState(profileImageUrl);	// 프로필 이미지
 
@@ -107,13 +107,14 @@ const History = () => {
 				if(error === "Record not created"){
 					setShowCreateButton(true);
 				}
-				console.log('Record Id:', recordId);
 			} catch (error) {
 				console.error('Error: fetchRecord: ', error);
 				setShowCreateButton(true);
 			}
 		}
 		fetchData();
+		
+		console.log('Record Id:', recordId);
 
 		// 인디케이터 관련 로직 - 화면 영역 계산
 		// const observer = new IntersectionObserver(
@@ -137,15 +138,19 @@ const History = () => {
 
 	}, [fetchRecord]);
 
+
 	useEffect(() => {
-		// 사용자 정보 업데이트
 		setEditableUserData({
 			profileImageUrl: profileImageUrl,
 			address: address,
-			email: email,
-		})
-		updateUserData(editableUserData); //in useRecordStore
-	}, [profileImageUrl, address, email]);
+			// email: email,
+		});
+	}, [userData]);
+
+	useEffect(() => {
+		console.log("EditableUserData: ", editableUserData);
+		updateUserData(recordId, editableUserData); //in useRecordStore
+	}, [editableUserData]);
 
 
 	// LOGIC

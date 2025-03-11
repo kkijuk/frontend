@@ -82,6 +82,7 @@ const useRecordStore = create((set, get) => ({
 				status: 'succeeded',
 				error: null,
 			});
+			console.log('Record Id:', data.record_id);
 		} catch (error) {
 			set({ status: 'failed', error: "Record not created" });
 			console.error('Fetch Record Error: ', error);
@@ -327,7 +328,7 @@ const useRecordStore = create((set, get) => ({
 			if(data.fileType === 'File'){
 				deletedData = await deleteS3File(data);
 				set((state) => ({
-					files: state.files.filter((item) => item.fileTitle !== deletedData.fileTitle && item.keyName !== deletedData.keyName),
+					files: state.files.filter((item) => item.fileTitle !== deletedData.data.fileTitle && item.keyName !== deletedData.data.keyName),
 				}))
 			} else if(data.fileType === 'URL'){
 				deletedData = await deleteURL(data);
@@ -376,9 +377,9 @@ const useRecordStore = create((set, get) => ({
 		}
 	},
 
-	updateUserData: async (data) => {
+	updateUserData: async (recordId, data) => {
 		try {
-			const response = await updateUserData(data);
+			const response = await updateUserData(recordId, data);
 			set((state) => ({
 				userData: { 
 					...state.userData, 

@@ -37,14 +37,21 @@ const uploadFileToS3 = async (file, presignedURL) => {
         //     }
         // });
         const response = await fetch(presignedURL, {
-            method: 'GET',
+            method: 'PUT',
             body: file,
             headers: {
                 'Content-Type': file.type,
-                'x-amz-server-side-encryption' : 'AES256'
+                'x-amz-server-side-encryption' : 'AES256',
+                // 'origin': 'https://test.kkijuk.com'
             }
         })
-        console.log("Success - uploadFileToS3: ", response.data);
+        // console.log("Success - uploadFileToS3: ", response.data);
+
+        if (!response.ok) {
+            throw new Error(`Failed to upload. status: ${response.status}`);
+        }
+
+        console.log("Success - uploadFileToS3: ", response);
         return response.data;
     } catch (error) {
         console.error("Error uploading file to S3: ", error);
@@ -61,12 +68,12 @@ const uploadFileToS3 = async (file, presignedURL) => {
 };
 
 // keyName 저장
-const saveKeyName = async(keyName, fileTitle) => {
-    console.log('Saving key name:', keyName, fileTitle);
+const saveKeyName = async(keyName, title) => {
+    console.log('Saving key name:', keyName, title);
     try{
         const response = await api.post("/history/file", { 
-            keyname: keyName,
-            fileTitle: fileTitle
+            keyName: keyName,
+            title: title
         });
 
         console.log("Key Name saved successfully: ", response.data);
@@ -90,7 +97,7 @@ const deleteS3File = async (data) => {
     console.log('Deleting S3 file:', data);
     try{
         const fileTitle = data.fileTitle;
-        const response = await api.delete(`/history/file?fileTitle=${fileTitle}`);
+        const response = await api.delete(`/history/file?fileName=${fileTitle}`);
         console.log("Success - deleteS3File: ", response.data);
         return response.data;
     } catch (error) {
@@ -113,14 +120,19 @@ const downS3File = async (data) => {
     try{
         // api 호출
         const fileTitle = data.fileTitle;
-        const response = await api.get(`/history/file/download?fileTitle=${fileTitle}`);
+        const response = await api.get(`/history/file/download?fileName=${fileTitle}`);
         
         // s3의 presendURL로 파일 다운로드
-        if(response.status === 200 && response.data.signedURL){
-            console.log("Success - downS3File: ", response.data.signedURL);
-            return response.data.signedURL;
+        if(response.status === 200 && response.data.data.presignedURL){
+            console.log("Success - downS3File: ", response ,response.data.data.presignedURL);
+            // return response.data.data.presignedURL;
+
+            const presignedURL = response.data.data.presignedURL;
+            // window.open(presignedURL, '_blank');
+            return presignedURL;
+
         } else{
-            console.error('Failed to get presigned URL:', response.statusText);
+            console.error('Failed to get presigned URL:', response.status);
             alert('파일 다운로드 URL을 가져오는데 실패했습니다.');
         }
     
