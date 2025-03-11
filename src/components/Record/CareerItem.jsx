@@ -130,6 +130,8 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 
 	const displayKoName = data.category.categoryKoName === '경력'
 	? getEmploymentsType(data.type)
+	: data.category.categoryKoName === '공모전대회'
+	? '공모전/대회'
 	: data.category.categoryKoName;
 
 	// 활동내역 placeholder (아래 들여쓰기 상태 고정!)
