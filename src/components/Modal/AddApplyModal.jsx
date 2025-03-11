@@ -28,6 +28,7 @@ const ModalContent = styled.div`
 	max-width: 90%;
 	position: relative;
 	align-items: center;
+		z-index: 2000;
 `;
 
 const CloseButton = styled.button`
@@ -260,13 +261,32 @@ const AddApplyModal = ({ onClose, onSave }) => {
 	const [tags, setTags] = useState([]); //  선택된 태그 목록
 	const [link, setLink] = useState('');
 	const [status, setStatus] = useState('unapplied');
+	const [errorMessages, setErrorMessages] = useState({
+		title: '',
+		startTime: '',
+		endTime: '',
+		endTimeOrder: '',
+	});
 
 	const handleSave = async () => {
-		if (!title || !startTime || !endTime) {
-			alert('필수 정보를 입력하세요!');
-			return;
+		let errors = { title: '', startTime: '', endTime: '', endTimeOrder: '' };
+
+		if (!title) {
+			errors.title = '공고 제목을 입력해주세요.';
 		}
-	
+		if (!startTime) {
+			errors.startTime = '시작 날짜를 선택해주세요.';
+		}
+		if (!endTime) {
+			errors.endTime = '종료 날짜를 선택해주세요.';
+		}
+		if (startTime && endTime && new Date(endTime) <= new Date(startTime)) {
+			errors.endTimeOrder = '종료 날짜는 시작 날짜 이후로 설정해주세요.';
+		}
+
+		// 에러 메시지 업데이트
+		setErrorMessages(errors);
+		
 		trackEvent('add_confirm', {
 			category: 'apply',
 			detail: 'add_recruit',
@@ -374,6 +394,8 @@ const AddApplyModal = ({ onClose, onSave }) => {
 							onChange={(e) => setLink(e.target.value)}
 						/>
 					</InputWrapperLink>
+					{errorMessages.endTime && <ErrorMessage>{errorMessages.endTime}</ErrorMessage>}
+							{errorMessages.endTimeOrder && <ErrorMessage>{errorMessages.endTimeOrder}</ErrorMessage>}
 				</FieldWrapper>
 				<ButtonWrapper>
 					<SaveButton onClick={handleSave}>확인</SaveButton>
