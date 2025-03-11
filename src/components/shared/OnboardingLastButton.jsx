@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Button = styled.button`
 	position: absolute;
-	top: 477px;
+	top: 457px;
 	left: 306px;
 	margin-bottom: 20px;
 	border: none;
@@ -26,6 +26,6 @@ const Button = styled.button`
 	line-height: normal;
 `;
 
-export default function LastButton() {
-	return <Button>지금 끼적하기 ➔</Button>;
+export default function LastButton({ onClick }) {
+	return <Button onClick={onClick}>지금 끼적하기 ➔</Button>;
 }
