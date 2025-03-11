@@ -93,12 +93,16 @@ const CheckBox = styled.div`
 	justify-content: center;
 
 	${({ isChecked }) =>
-		!isChecked &&
-		`
-		border-radius: 2px;
-		border: 1px solid var(--gray-02, #707070);
-		background: var(--white, #fff);
-	`}
+		isChecked
+			? `
+      border: none;
+      background: none;
+    `
+			: `
+      border-radius: 2px;
+      border: 1px solid var(--gray-02, #707070);
+      background: var(--white, #fff);
+    `}
 `;
 
 //체크된 상태에서 SVG 아이콘을 렌더링하는 컴포넌트
@@ -207,7 +211,7 @@ export default function OnboardingModal({ onClose }) {
 				</SwiperStyled>
 				<CheckContainer>
 					<CheckBoxContainer onClick={toggleCheck}>
-						<CheckBox>{isChecked && <CheckedIcon />}</CheckBox>
+						<CheckBox isChecked={isChecked}>{isChecked && <CheckedIcon />}</CheckBox>
 						<CheckText>오늘 하루 보지 않기</CheckText>
 					</CheckBoxContainer>
 					<CloseText onClick={handleClose}>닫기</CloseText>
