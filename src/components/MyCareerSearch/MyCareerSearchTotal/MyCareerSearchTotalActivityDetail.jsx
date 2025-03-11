@@ -12,7 +12,7 @@ const Container = styled.div`
 
 const Box = styled.div`
 	width: 98%;
-	margin: 10px auto;
+	margin: 16px auto;
 	padding: 20px 24px 32px 24px;
 	background-color: white;
 	border-radius: 10px;
@@ -59,7 +59,7 @@ const MainWrapper = styled.div`
 const DetailWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
-	padding: 15px 10px;
+	padding: 0 12px;
 	border-bottom: 1px solid var(--gray-04, #e0e0e0);
 	&:last-child {
 		border-bottom: none; // 마지막 요소에는 선이 나타나지 않도록
@@ -93,7 +93,7 @@ const BottomWrapper = styled.div`
 `;
 
 const DetailTag = styled.div`
-	padding: 0 20px;
+	padding: 4px 20px;
 	border-radius: 20px;
 	font-family: Pretendard;
 	font-size: 12px;
