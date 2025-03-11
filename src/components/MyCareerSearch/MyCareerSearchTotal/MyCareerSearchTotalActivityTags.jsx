@@ -9,32 +9,36 @@ import { highlightMatch } from '../../../utils/highlightMatch';
 const Container = styled.div`
 	width: 100%;
 	box-sizing: border-box;
-	padding: 20px;
+	padding: 20px 40px 32px 40px;
 	margin: 10px auto;
 	margin-left: 12px;
-	background-color: #ffffff;
+	background-color: #fff;
 	border-radius: 10px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
 `;
 
 // 태그 목록 Wrapper
 const TagWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
-	gap: 10px;
-	margin-top: 20px;
+	gap: 12px;
 `;
 
 // 태그 버튼
 const Tag = styled.button`
-	padding: 3px 10px;
+	padding: 4px 20px;
 	border-radius: 20px;
+	min-width: 
+	font-family: Pretendard;
+	font-size: 14px;
+	font-weight: 400;
+	font-style: normal;
+	cursor: pointer;
+	
 	background: ${(props) => (props.isActive ? '#3aaf85' : '#f5f5f5')};
 	color: ${(props) => (props.isActive ? '#ffffff' : '#3aaf85')};
 	border: 1px solid ${(props) => (props.isActive ? '#3aaf85' : '#f5f5f5')};
-	font-family: Pretendard;
-	font-size: 0.75rem;
-	cursor: pointer;
+
 	transition:
 		background-color 0.3s ease,
 		color 0.3s ease;
@@ -47,13 +51,12 @@ const Tag = styled.button`
 
 // 활동 리스트 Wrapper
 const ActivityWrapper = styled.div`
-	margin-top: 20px;
+	margin-top: 24px;
 	cursor: pointer;
 `;
 
 // 활동 항목
 const ActivityItem = styled.div`
-	padding: 25px 15px;
 	border-bottom: 1px solid #eaeaea;
 	display: flex;
 	flex-direction: column;
@@ -68,34 +71,28 @@ const ActivityTop = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 10px;
+	margin-bottom: 16px;
 `;
 
 // 제목 (왼쪽)
 const ActivityTitle = styled.h3`
-	font-size: 1rem;
-	font-weight: 500;
-	margin: 0;
+	font-family: Pretendard;
+	font-size: 16px;
+	font-weight: 400;
 `;
 
 // 날짜 (오른쪽)
 const ActivityDate = styled.div`
-	font-size: 0.85rem;
-	color: #6d6d6d;
+	font-size: 12px;
+	color: var(--gray-02, #707070);
+	font-family: Pretendard;
+	font-weight: 400;
 `;
 
 // 콘텐츠
 const ActivityContent = styled.p`
-	font-size: 0.85rem;
-	color: #6d6d6d;
-	margin: 5px 0 0 0;
-`;
-
-// 하단 날짜
-const ActivityFooter = styled.span`
-	font-size: 0.75rem;
-	color: #9b9b9b;
-	margin-top: 5px;
+	font-size: 14px;
+	color: var(--black, #000);
 `;
 
 // 검색 결과가 없을 때 표시
@@ -110,7 +107,12 @@ const NotExistSearch = styled.div`
 
 // TODO: API 데이터 형식 피그마와 대조하여 수정 필요
 
-export default function MyCareerSearchTotalActivityTags({ activityTagList, isActivityTagListLoading, sortOrder, searchQuery }) {
+export default function MyCareerSearchTotalActivityTags({
+	activityTagList,
+	isActivityTagListLoading,
+	sortOrder,
+	searchQuery,
+}) {
 	const [selectedTag, setSelectedTag] = useState(null); // 선택된 태그 상태
 
 	const navigate = useNavigate();
@@ -120,8 +122,6 @@ export default function MyCareerSearchTotalActivityTags({ activityTagList, isAct
 		isLoading: isActivityLoading,
 		error: activityError,
 	} = useFetchActivityByTag(selectedTag, sortOrder);
-
-	console.log(activityData);
 
 	// 첫 번째 태그를 기본 선택
 	useEffect(() => {
@@ -141,8 +141,8 @@ export default function MyCareerSearchTotalActivityTags({ activityTagList, isAct
 				<NotExistSearch>검색 결과가 없어요.</NotExistSearch>
 			) : (
 				<Container>
-					{/* 태그 목록 */}
 					<TagWrapper>
+						{/* 태그 목록 */}
 						{activityTagList?.data?.data.tagList.map((tag) => (
 							<Tag key={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => setSelectedTag(tag.tagId)}>
 								{highlightMatch(tag.tagName, searchQuery)}
@@ -167,8 +167,6 @@ export default function MyCareerSearchTotalActivityTags({ activityTagList, isAct
 								// 렌더링된 detail 개수 업데이트
 								totalDetailsRendered += detailsToRender.length;
 
-								console.log(detailsToRender);
-
 								return detailsToRender.map((detail, i) => (
 									<ActivityItem
 										key={detail.careerId}
@@ -184,7 +182,6 @@ export default function MyCareerSearchTotalActivityTags({ activityTagList, isAct
 											</ActivityDate>
 										</ActivityTop>
 										<ActivityContent>{highlightMatch(detail.content, searchQuery)}</ActivityContent>
-										<ActivityFooter>{detail.date}</ActivityFooter>
 									</ActivityItem>
 								));
 							})}
