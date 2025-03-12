@@ -276,9 +276,12 @@ const AddApplyModal = ({ onClose, onSave }) => {
 	
 
 	const isValidUrl = (url) => {
-		const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+		if (url.length > 2048) return false; // URL 길이 제한 추가 (선택 사항)
+	
+		const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*(\?[;&a-zA-Z0-9%_.~+=-]*)?$/;
 		return urlPattern.test(url);
 	};
+	
 
 	const handleSave = async () => {
 		let errors = { title: '', startTime: '', endTime: '', endTimeOrder: '', link: '' };
