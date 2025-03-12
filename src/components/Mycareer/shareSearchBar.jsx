@@ -14,7 +14,7 @@ const SearchBarContainer = styled.div`
 	margin-left: 5px;
 	box-sizing: border-box;
 	width: 100%;
-	max-width: 600px;
+	max-width: 400px;
 
 	@media (max-width: 768px) {
 		max-width: 100%;
