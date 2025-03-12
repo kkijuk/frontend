@@ -30,7 +30,7 @@ const SearchBox = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 20px;
-	margin-top: 20px;
+	margin-top: 35px;
 	box-sizing: border-box;
 
 	@media (max-width: 600px) {
