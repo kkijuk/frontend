@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { editCareerSummary } from '../../api/Mycareer/Career';
 import { KebabMenu1 } from './KebabMenu';
 import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
+import { trackEvent } from '../../utils/ga4';
 
 const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 	// const today = new Date();
@@ -22,7 +23,53 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 
 	// 내커리어-상세페이지로 이동
 	const handleNavigate = () => {
-		navigate(`/mycareer/${data.category.categoryKoName}/${data.id}`);
+		navigate(`/mycareer/${data.category.categoryKoName}/${data.id}`,{
+			state: {
+				careerId: data.id,
+				category: data.category.categoryKoName,
+			},
+		});
+	}
+
+	// GA4
+	const trackCategoryEvent = (category) => {
+		switch(category) {
+			case 'CIRCLE':
+			case 'ACTIVITY':
+			case 'ETC':
+				trackEvent('edit_click', {
+					category: 'resume',
+					detail: 'edit_activitiesAndExperiences_summary',
+					action_type: 'edit',
+					label: '활동내역 수정하기',
+				});
+				break;
+			case 'PROJECT':
+			case 'COM':
+				trackEvent('edit_click', {
+					category: 'resume',
+					detail: 'edit_project_summary',
+					action_type: 'edit',
+					label: '활동내역 수정하기',
+				});
+				break;
+			case 'EMP':
+				trackEvent('edit_click', {
+					category: 'resume',
+					detail: 'edit_career_summary',
+					action_type: 'edit',
+					label: '활동내역 수정하기',
+				});
+				break;
+			case 'EDU':
+				trackEvent('edit_click', {
+					category: 'resume',
+					detail: 'edit_training_summary',
+					action_type: 'edit',
+					label: '활동내역 수정하기',
+				});
+				break;
+		}
 	}
 
 	// 활동 내역 수정
@@ -38,7 +85,9 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 			setIsKebabMenuOpen(false);
 			
 			// 수정된 데이터로 상태 업데이트
-			setDetail(updatedData.summary);
+			// setDetail(updatedData.summary);
+			window.location.reload();
+			trackCategoryEvent(data.category.categoryEnName);
 		} catch (error) {
 			console.error('활동내역 수정 실패: ', error);
 		}
@@ -81,6 +130,8 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 
 	const displayKoName = data.category.categoryKoName === '경력'
 	? getEmploymentsType(data.type)
+	: data.category.categoryKoName === '공모전대회'
+	? '공모전/대회'
 	: data.category.categoryKoName;
 
 	// 활동내역 placeholder (아래 들여쓰기 상태 고정!)
@@ -114,7 +165,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 							<Status>{statusToDisplay}</Status>
 						</Dates>
 						<DetailContainer>
-							<div style={{ width:'58px',fontWeight: '600', marginRight: '30px'}}>활동내역</div>
+							<DetailLabel>활동내역</DetailLabel>
 							{isSummaryEditMode ? (
 								<DetailWrapper>
 									<DetailTextArea 
@@ -169,7 +220,7 @@ const Oval = styled.div`
 					? '#FCC400'
 					: props.category === '대외활동'
 						? '#77AFF2'
-						: props.category === '공모전대회'
+						: props.category === '공모전/대회'
 							? '#C48DEF'
 							: props.category === '프로젝트'
 								? '#78D333'
@@ -185,7 +236,7 @@ const Oval = styled.div`
 				? '3px solid #FCC400'
 				: props.category === '대외활동'
 					? '3px solid #77AFF2'
-					: props.category === '공모전대회'
+					: props.category === '공모전/대회'
 						? '3px solid #C48DEF'
 						: props.category === '프로젝트'
 							? '3px solid #78D333'
@@ -213,7 +264,7 @@ const Line = styled.div`
 				? '2px solid #FCC400'
 				: props.category === '대외활동' && props.isPastDue
 					? '2px solid #77AFF2'
-					: props.category === '공모전대회' && props.isPastDue
+					: props.category === '공모전/대회' && props.isPastDue
 						? '2px solid #C48DEF'
 						: props.category === '프로젝트' && props.isPastDue
 							? '2px solid #78D333'
@@ -227,7 +278,7 @@ const Line = styled.div`
 											? '2px dashed #FCC400'
 											: props.category === '대외활동' && !props.isPastDue
 												? '2px dashed #77AFF2'
-												: props.category === '공모전대회' && !props.isPastDue
+												: props.category === '공모전/대회' && !props.isPastDue
 													? '2px dashed #C48DEF'
 													: props.category === '프로젝트' && !props.isPastDue
 														? '2px dashed #78D333'
@@ -282,7 +333,7 @@ const LevelTag = styled.div`
 			? '#FCC400'
 			: props.category === '대외활동'
 				? '#77AFF2'
-				: props.category === '공모전대회'
+				: props.category === '공모전/대회'
 					? '#C48DEF'
 					: props.category === '프로젝트'
 						? '#78D333'
@@ -334,6 +385,13 @@ const DetailContainer = styled.div`
 	flex-direction: row;
 	margin-top: 10px;
 `;
+
+const DetailLabel = styled.div`
+	width: 58px;
+	font-weight: 600;
+	margin-right: 30px;
+	flex-shrink: 0;
+`
 
 const DetailWrapper = styled.div`
 	display: flex;

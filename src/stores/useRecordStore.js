@@ -82,6 +82,7 @@ const useRecordStore = create((set, get) => ({
 				status: 'succeeded',
 				error: null,
 			});
+			console.log('Record Id:', data.record_id);
 		} catch (error) {
 			set({ status: 'failed', error: "Record not created" });
 			console.error('Fetch Record Error: ', error);
@@ -95,28 +96,57 @@ const useRecordStore = create((set, get) => ({
 			switch (category) {
 				case 'educations':
 					response = await createEducation(item);
+					if(Array.isArray(response)){
+						set({[category]: response});
+					} else {
+						set((state) => ({
+							[category]: [...state[category], response],
+						}));
+					}
 					break;
 				case 'licenses':
 					response = await createLicense(item);
+					console.log('response: ', response);
+					if(Array.isArray(response.data)){
+						set({[category]: response.data});
+					} else {
+						set((state) => ({
+							[category]: [...state[category], response],
+						}));
+					}
 					break;
 				case 'awards':
 					response = await createAward(item);
+					if(Array.isArray(response.data)){
+						set({[category]: response.data});
+					} else {
+						set((state) => ({
+							[category]: [...state[category], response],
+						}));
+					}
 					break;
 				case 'skills':
 					response = await createSkill(item);
+					if(Array.isArray(response.data)){
+						set({[category]: response.data});
+					} else {
+						set((state) => ({
+							[category]: [...state[category], response],
+						}));
+					}
 					break;
 				case 'activitiesAndExperiences':
 				case 'employments':
 				case 'projects':
 				case 'eduCareers':
 					response = await createCareer(item);
+					set((state) => ({
+                        [category]: [...state[category], response.data],
+                    }));
 					break;
 				default:
 					throw new Error('Invalid category');
 			}
-			set((state) => ({
-				[category]: [...state[category], response],
-			}));
 			// window.location.reload();
 		} catch (error) {
 			console.error('Add Item Error:', error);
@@ -130,28 +160,64 @@ const useRecordStore = create((set, get) => ({
 			switch (category) {
 				case 'educations':
 					response = await updateEducation(id, updates);
+					if (Array.isArray(response)) {
+                        set({ [category]: response });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].map((item) =>
+                                item.id === id ? { ...item, ...updates } : item
+                            ),
+                        }));
+                    }
 					break;
 				case 'licenses':
 					response = await updateLicense(id, updates);
+					if (Array.isArray(response.data)) {
+                        set({ [category]: response.data });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].map((item) =>
+                                item.id === id ? { ...item, ...updates } : item
+                            ),
+                        }));
+                    }
 					break;
 				case 'awards':
 					response = await updateAward(id, updates);
+					if (Array.isArray(response.data)) {
+                        set({ [category]: response.data });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].map((item) =>
+                                item.id === id ? { ...item, ...updates } : item
+                            ),
+                        }));
+                    }
 					break;
 				case 'skills':
 					response = await updateSkill(id, updates);
+					if (Array.isArray(response.data)) {
+                        set({ [category]: response.data });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].map((item) =>
+                                item.id === id ? { ...item, ...updates } : item
+                            ),
+                        }));
+                    }
 					break;
 				case 'activitiesAndExperiences':
 				case 'employments':
 				case 'projects':
 				case 'eduCareers':
 					response = await CareerEdit(id, updates);
+					set((state) => ({
+						[category]: state[category].map((item) => (item.id === id ? { ...item, ...updates } : item)),
+					}));
 					break;
 				default:
 					throw new Error('Invalid category');
 			}
-			set((state) => ({
-				[category]: state[category].map((item) => (item.id === id ? { ...item, ...updates } : item)),
-			}));
 		} catch (error) {
 			console.error('Update Item Error:', error);
 		}
@@ -160,31 +226,68 @@ const useRecordStore = create((set, get) => ({
 	// 항목 삭제
 	deleteItem: async (category, id) => {
 		try {
+			let response;
 			switch (category) {
 				case 'educations':
-					await deleteEducation(id);
+					response = await deleteEducation(id);
+					if (Array.isArray(response)) {
+                        set({ [category]: response });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].filter(
+                                (item) => item.id !== id
+                            ),
+                        }));
+                    }
 					break;
 				case 'licenses':
-					await deleteLicense(id);
+					response = await deleteLicense(id);
+					if (Array.isArray(response.data)) {
+                        set({ [category]: response.data });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].filter(
+                                (item) => item.id !== id
+                            ),
+                        }));
+                    }
 					break;
 				case 'awards':
-					await deleteAward(id);
+					response = await deleteAward(id);
+					if (Array.isArray(response.data)) {
+                        set({ [category]: response.data });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].filter(
+                                (item) => item.id !== id
+                            ),
+                        }));
+                    }
 					break;
 				case 'skills':
-					await deleteSkill(id);
+					response = await deleteSkill(id);
+					if (Array.isArray(response.data)) {
+                        set({ [category]: response.data });
+                    } else {
+                        set((state) => ({
+                            [category]: state[category].filter(
+                                (item) => item.id !== id
+                            ),
+                        }));
+                    }
 					break;
 				case 'activitiesAndExperiences':
 				case 'employments':
 				case 'projects':
 				case 'eduCareers':
 					await CareerDelete(id);
+					set((state) => ({
+						[category]: state[category].filter((item) => item.id !== id),
+					}));
 					break;
 				default:
 					throw new Error('Invalid category');
 			}
-			set((state) => ({
-				[category]: state[category].filter((item) => item.id !== id),
-			}));
 		} catch (error) {
 			console.error('Delete Item Error:', error);
 		}
@@ -203,13 +306,15 @@ const useRecordStore = create((set, get) => ({
 
 				// 3. 업로드 성공하면, keyName 백엔드에 저장
 				savedEtcData = await saveKeyName(keyName, data.fileTitle);
+				console.log('savedEtcData:', savedEtcData);
 			} else if(data.fileType === 'URL'){
 				savedEtcData = await addURL(data);
+				console.log('savedEtcData:', savedEtcData);
 			} else {
 				throw new Error('Invalid fileType');
 			}
 			set((state) => ({
-				files: [...state.files, savedEtcData],
+				files: [...state.files, savedEtcData.data],
 			}));
 		} catch (error) {
 			console.error('Add Etc Item Error:', error);
@@ -223,12 +328,13 @@ const useRecordStore = create((set, get) => ({
 			if(data.fileType === 'File'){
 				deletedData = await deleteS3File(data);
 				set((state) => ({
-					files: state.files.filter((item) => item.fileTitle !== deletedData.fileTitle && item.keyName !== deletedData.keyName),
+					files: state.files.filter((item) => item.fileTitle !== deletedData.data.fileTitle && item.keyName !== deletedData.data.keyName),
 				}))
 			} else if(data.fileType === 'URL'){
 				deletedData = await deleteURL(data);
+				console.log('deletedData:', deletedData);
 				set((state)=>({
-					files: state.files.filter((item) => item.urlTitle !== deletedData.urlTitle && item.url !== deletedData.url),
+					files: state.files.filter((item) => item.urlTitle !== deletedData.data.urlTitle && item.url !== deletedData.data.url),
 				}));
 			} else {
 				throw new Error('Invalid fileType');
@@ -242,6 +348,7 @@ const useRecordStore = create((set, get) => ({
 	updateEtcItem: async (oldData, newData) => {
 		try {
 			let savedEtcData;
+			let deletedEtcData;
 			if (oldData.fileType === 'File') {
 				await deleteS3File(oldData);
 				const { keyName, signedURL } = await createPresignedUrl(newData);
@@ -253,11 +360,13 @@ const useRecordStore = create((set, get) => ({
 					),
 				}));
 			} else if (oldData.fileType === 'URL') {
-				await deleteURL(oldData);
+				deletedEtcData = await deleteURL(oldData);
+				console.log('deletedEtcData:', deletedEtcData);
 				savedEtcData = await addURL(newData);
+				console.log('savedEtcData:', savedEtcData);
 				set((state) => ({
 					files: state.files.map((item) =>
-						item.url === oldData.url ? savedEtcData : item
+						item.url === oldData.url ? savedEtcData.data : item
 					),
 				}));
 			} else {
@@ -268,9 +377,9 @@ const useRecordStore = create((set, get) => ({
 		}
 	},
 
-	updateUserData: async (data) => {
+	updateUserData: async (recordId, data) => {
 		try {
-			const response = await updateUserData(data);
+			const response = await updateUserData(recordId, data);
 			set((state) => ({
 				userData: { 
 					...state.userData, 

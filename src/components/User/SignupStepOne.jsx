@@ -4,6 +4,7 @@ import Agreement from './Agreement';
 import AgreementModal1 from './AgreementModal1';
 import AgreementModal2 from './AgreementModal2';
 import AgreementModal3 from './AgreementModal3';
+import { trackEvent } from '../../utils/ga4';
 
 const StyledButton = styled.button`
   width: 400px;
@@ -189,6 +190,18 @@ const SignupStepOne = ({ agreements, setAgreements, handleNextStep }) => {
     setModalType(null);
   };
 
+  const handleNext = () => {
+    // GA 이벤트 트래킹 (회원가입 1단계 완료)
+    trackEvent('btn_click', {
+      category: 'signup',
+      detail: 'step1',
+      action_type: 'click',
+      label: '다음',
+    });
+    handleNextStep(); // 원래 있던 함수 호출 (2단계로 이동)
+  };
+  
+
   return (
     <FormContainer>
        <Title>
@@ -226,12 +239,12 @@ const SignupStepOne = ({ agreements, setAgreements, handleNextStep }) => {
         label="마케팅 활용 동의 (선택)"
         handleModal={() => handleModal(3)}
       />
-     <StyledButton 
-  onClick={handleNextStep} 
-  disabled={!(agreements.isTermsAgreed && agreements.isPrivacyAgreed)}
->
-  다음
-</StyledButton>
+    <StyledButton 
+        onClick={handleNext} 
+        disabled={!(agreements.isTermsAgreed && agreements.isPrivacyAgreed)}
+      > 
+        다음
+      </StyledButton>
       {modalType === 1 && <AgreementModal1 show={true} handleModal={closeModal} />}
       {modalType === 2 && <AgreementModal2 show={true} handleModal={closeModal} />}
       {modalType === 3 && <AgreementModal3 show={true} handleModal={closeModal} />}

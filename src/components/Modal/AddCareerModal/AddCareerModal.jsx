@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { Affiliation1 } from './Affiliation';
 import { Affiliation2 } from './Affiliation';
@@ -14,9 +14,11 @@ import ParticipantType from './ParticipantType';
 import { Form } from 'react-router-dom';
 import moment from 'moment'; // moment 라이브러리 임포트(세연)
 import DeletePopup from './DeletePopup';
+import { trackEvent } from '../../../utils/ga4';
 
 const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const navigate = useNavigate();
+	const currentLocation = useLocation(); // 기존의 `location`과 충돌 방지
 
 	// console.log('initialData:', initialData);
 
@@ -86,7 +88,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const [type, setType] = useState(''); //경력분류
 	const [workplace, setWorkplace] = useState(''); //근무처
 	const [position, setPosition] = useState(''); //직급/직위
-	const [jobField, setJobField] = useState(''); //직무/분야
+	const [field, setField] = useState(''); //직무/분야
 	const [time, setTime] = useState(0); //교육시간
 	// const [participantType, setParticipantType] = useState({}); //인원-팀인원-기여도
 	const [isTeam, setIsTeam] = useState(false);
@@ -109,7 +111,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 			organizer,
 			type,
 			position,
-			jobField,
+			field,
 			time,
 			isTeam,
 			teamSize,
@@ -126,7 +128,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		organizer,
 		type,
 		position,
-		jobField,
+		field,
 		time,
 		isTeam,
 		teamSize,
@@ -147,7 +149,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 			setType(initialData.type || '');
 			setWorkplace(initialData.workplace || '');
 			setPosition(initialData.position || '');
-			setJobField(initialData.jobField || '');
+			setField(initialData.field || '');
 			setTime(initialData.time || 0);
 			setIsTeam(initialData.isTeam || false);
 			setTeamSize(initialData.teamSize || 0);
@@ -601,8 +603,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 							<label>직무/분야</label>
 							<input
 								type="text"
-								value={jobField}
-								onChange={(e) => setJobField(e.target.value)}
+								value={field}
+								onChange={(e) => setField(e.target.value)}
 								placeholder="ex) 서비스업, iOS 개발 등"
 								maxLength={15}></input>
 						</FormItem>
@@ -760,8 +762,104 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		}
 	};
 
+	// GA4
+	const trackCategoryEvent = (category) => {
+		if (!isEditMode) {
+		switch(category) {
+			case 1 : 
+			case 2:
+			case 7:
+				//활동 및 경험(동아리, 활동, 기타)
+				trackEvent('add_confirm', {
+					category:'resume',
+					detail: 'add_activitiesAndExperiences',
+					action_type:'confirm',
+					label: '확인',
+				});
+				break;
+			case 3: 
+			case 4:
+				//공모전/대회, 프로젝트
+				trackEvent('add_confirm', {
+					category:'resume',
+					detail: 'add_project',
+					action_type:'confirm',
+					label: '확인',
+				});
+				break;
+			case 5: //경력
+				trackEvent('add_confirm', {
+					category:'resume',
+					detail: 'add_career',
+					action_type:'confirm',
+					label: '확인',
+				});
+				break;
+			case 6: //교육
+				trackEvent('add_confirm', {
+					category:'resume',
+					detail: 'add_training',
+					action_type:'confirm',
+					label: '확인',
+				});
+				break;
+			default:
+				return;
+		}} else {
+			switch(category) {
+				case 1 : 
+				case 2:
+				case 7:
+					//활동 및 경험(동아리, 활동, 기타)
+					trackEvent('edit_click', {
+						category:'resume',
+						detail: 'edit_activitiesAndExperiences',
+						action_type:'edit',
+						label: '활동 수정하기',
+					});
+					break;
+				case 3: 
+				case 4:
+					//공모전/대회, 프로젝트
+					trackEvent('edit_click', {
+						category:'resume',
+						detail: 'edit_project',
+						action_type:'edit',
+						label: '활동 수정하기',
+					});
+					break;
+				case 5: //경력
+					trackEvent('edit_click', {
+						category:'resume',
+						detail: 'edit_career',
+						action_type:'edit',
+						label: '활동 수정하기',
+					});
+					break;
+				case 6: //교육
+					trackEvent('edit_click', {
+						category:'resume',
+						detail: 'edit_training',
+						action_type:'edit',
+						label: '활동 수정하기',
+					});
+					break;
+				default:
+					return;
+			}
+		}	
+	};
+
 	// 활동 추가 함수
 	const handleAddCareer = async () => {
+		if (!isEditMode) {
+			trackEvent('add_confirm', {
+				category: 'mycareer',
+				detail: 'add_career',
+				action_type: 'confirm',
+				label: '확인',
+			});
+		}
 		// 날짜 입력 유효성 검증
 		// if (hasError) {
 		// 	setFormErrors((prev) => ({ ...prev, startdate: !startdate ? "시작 날짜를 선택해주세요." : prev.startdate,
@@ -784,7 +882,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 			organizer,
 			type,
 			position,
-			jobField,
+			field,
 			time,
 			isTeam,
 			teamSize,
@@ -852,13 +950,24 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				console.log('Success - 활동 추가: ', response);
 				// onClose();
 				//window.location.reload();
-				navigate('/mycareer'); //세연 추가
+				//navigate('/mycareer'); //세연 추가
+				// 현재 경로가 `/mycareer`라면 새로고침, `/home`이라면 `/mycareer`로 이동
+				if (currentLocation.pathname === '/mycareer' || currentLocation.pathname === '/history') {
+					setTimeout(() => {
+						window.location.reload();
+					}, 100); // 100ms 후 실행 (리액트 상태 업데이트 이후 확실하게 새로고침)
+				} else if (currentLocation.pathname === '/home') {
+					navigate('/mycareer');
+				}
+
+				onClose();
 			} catch (error) {
 				console.error('createCareer 호출 중 오류 발생: ', error.response ? error.response.data : error.message);
 			}
 		}
 
 		onClose();
+		trackCategoryEvent(selectedCategory);
 	};
 
 	// 활동 삭제 함수
@@ -870,7 +979,13 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				console.log('Success - 활동 삭제: ', response);
 				// onClose();
 				// navigate('/mycareer');
-				window.location.reload();
+				// 현재 경로가 '/history'가 아니라면 '/mycareer'로 이동
+                if (currentLocation.pathname !== '/history') {
+					console.log('loaction.pathname: ', currentLocation.pathname);
+                    navigate('/mycareer');
+                } else {
+                    window.location.reload();
+                }
 			} catch (error) {
 				console.error('deleteCareer 호출 중 오류 발생: ', error.response ? error.response.data : error.message);
 			}

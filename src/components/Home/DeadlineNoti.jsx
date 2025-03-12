@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { getRecruitRemind } from '../../api/Home/getRecruitRemind';
 import { useNavigate } from 'react-router-dom';
+import { trackEvent } from '../../utils/ga4';
 
 const Container = styled.div`
 	flex-shrink: 0;
@@ -132,7 +133,19 @@ export default function DeadlineNoti() {
 				const dDayText = recruit.dday === 0 ? 'D-DAY' : `D-${recruit.dday}`; // ✅ D-0 대신 D-DAY
 
 				return (
-					<Box key={recruit.id} onClick={() => handleClick(isEmpty, recruit.id)}>
+					<Box
+						key={recruit.id}
+						onClick={() => {
+							if (isEmpty) {
+								trackEvent('add_click', {
+									category: 'home',
+									detail: 'add_apply',
+									action_type: 'add',
+									label: '공고 추가하기',
+								});
+							}
+							handleClick(isEmpty, recruit.id);
+						}}>
 						{isEmpty ? (
 							<PlaceholderText>공고를 추가해 주세요</PlaceholderText>
 						) : (

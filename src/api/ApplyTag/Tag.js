@@ -10,7 +10,7 @@ export const fetchModalTags = async () => {
         },
       });
   
-      // ✅ 빈 태그 리스트 강제 초기화
+      //  빈 태그 리스트 강제 초기화
       if (!response.data.tags) {
         return [];
       }
@@ -28,15 +28,15 @@ export const fetchModalTags = async () => {
       const token = sessionStorage.getItem('token'); // 토큰 가져오기
       const encodedTag = encodeURIComponent(tagName);
   
-      // ✅ 태그 목록 초기화 (빈 배열 반환 보장)
+      //  태그 목록 초기화 (빈 배열 반환 보장)
       const existingTags = await fetchModalTags();
   
-      // ✅ 태그 리스트가 null일 경우 빈 리스트로 초기화
+      //  태그 리스트가 null일 경우 빈 리스트로 초기화
       if (!Array.isArray(existingTags)) {
         console.warn('태그 목록이 비어 있습니다. 빈 배열로 초기화합니다.');
       }
   
-      // ✅ 태그 추가 요청
+      // 태그 추가 요청
       const response = await api.post(
         `/recruit/tag?tag=${encodedTag}`,
         {},

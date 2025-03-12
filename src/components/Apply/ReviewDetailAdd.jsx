@@ -4,6 +4,7 @@ import ReviewInputBox from './ReviewInputBox';
 import ReactCalendar from './ReviewCalendar';
 import moment from 'moment';
 import { ReviewAdd } from '../../api/Apply/ReviewAdd'; 
+import { trackEvent } from '../../utils/ga4';
 
 const Box = styled.div`
     height: 384px;
@@ -75,12 +76,12 @@ const Cancel = styled.div`
     height: 50px;
     flex-shrink: 0;
     border-radius: 10px;
-    border: 1.5px solid var(--sub-rd, #FA7C79);
+    border: 1.5px solid var(--sub-rd, #E0E0E0);
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--sub-rd, #FA7C79);
+    color: var(--sub-rd, #707070);  
     text-align: center;
     font-family: regular;
     font-size: 18px;
@@ -129,13 +130,33 @@ export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를
         setShowCalendar(false);
     };
 
+    const handleContentChange = (e) => {
+        if (e.target.value.length <= 1000) {
+            setContent(e.target.value);
+        }
+    };     
+
     const handleSaveClick = async () => {
+        if (title.trim() === "서류") { 
+            alert("이미 해당 전형이 존재합니다."); 
+            return;
+        }
+
         try {
+            // GA 트래킹 추가 (전형 후기 저장 버튼 클릭)
+            trackEvent('add_confirm', {
+                category: 'apply',
+                detail: 'add_recruit_review',
+                action_type: 'confirm',
+                label: '저장',
+            });
+    
             const reviewData = {
                 title,
                 content,
                 date: selectedDate,
             };
+    
             await ReviewAdd(recruitId, reviewData);
             onSave(); // 저장 후 콜백 실행 (예: 모달 닫기, 목록 갱신 등)
         } catch (error) {
@@ -147,14 +168,15 @@ export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를
         <Box>
             <Top>
                 <Title>
-                    <Label>제목</Label>
+                    <Label>전형</Label>
                     <ReviewInputBox 
-                        height="50px" 
-                        width="460px" 
-                        placeholderText="활동 제목을 작성하세요" 
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
+                     height="50px" 
+                     width="460px" 
+                     placeholderText="전형 이름을 입력하세요." 
+                     value={title}
+                     onChange={(e) => setTitle(e.target.value)}
+                    type="text" //  전형 입력칸 → input 사용 (스크롤 없음)
+                     />
                 </Title>
                 <Date>
                     <Label>날짜</Label>
@@ -163,13 +185,14 @@ export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를
                 </Date>
             </Top>
             <Middle>
-                <Label>내용</Label>
+                <Label>전형 후기</Label>  
                 <ReviewInputBox 
-                    height="100px" 
-                    width="720px" 
-                    placeholderText="활동 세부 내용을 작성하세요" 
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
+                  height="100px" 
+                  width="720px" 
+                  placeholderText="전형 후기를 입력하세요.(선택)"  
+                 value={content}
+                 onChange={handleContentChange}
+                 type="textarea" // 전형 후기 입력칸 → textarea 사용 (스크롤 있음)
                 />
             </Middle>
             <Button>

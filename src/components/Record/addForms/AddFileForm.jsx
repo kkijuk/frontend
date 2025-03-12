@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import FileSearch from "../FileSearch";
+import { trackEvent } from "../../../utils/ga4";
+import { downS3File } from "../../../api/Record/s3File";
 
 const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialData}) => {
   const [formData, setFormData] = useState({
@@ -14,19 +16,37 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
   });
 
   const [isTypeURL, setIsTypeUrl] = useState(true);
+  const [existingFileUrl, setExistingFileUrl] = useState(null);
+  const [displayedFileUrl, setDisplayedFileUrl] = useState("");
 
   // 수정 모드일 경우 formData 기존 내용으로 초기화
   useEffect(() => {
     if (mode === "edit" && initialData) {
+      console.log('initialData:', initialData);
       setFormData(initialData);
+      setIsTypeUrl(initialData.fileType === "URL");
+
+      downS3File(initialData)
+        .then((url) => {
+          setExistingFileUrl(url);
+          setDisplayedFileUrl(truncateText(url, 30));
+        })
+        .catch((error) => console.error("다운로드 URL 가져오기 실패:", error));
     }
-  }, [mode, initialData]);
+  }, []);
 
 
   // 변경된 데이터 저장
   const handleInputChange = (field, value) => {
   setFormData((prev) => ({ ...prev, [field]: value }));
   };
+
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + "...";
+    }
+    return text;
+  }
     
 
   return (
@@ -72,16 +92,30 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                 <Row>
                     {isTypeURL ? (
                         <Input
-                            type="text"
-                            placeholder="링크를 입력해주세요."
-                            value={formData.url}
-                            onChange={(e) => handleInputChange("url", e.target.value)}
-                            style={{ width: "450px" }}
-                        />
+                        type="text"
+                        placeholder="링크를 입력해주세요."
+                        value={formData.url}
+                        onChange={(e) => handleInputChange("url", e.target.value)}
+                        style={{ width: "450px" }}
+                      />
                     ) : (
+                      existingFileUrl ? (
+                        <InputWrapper>
+                          <Input
+                            type="text"
+                            placeholder="첨부파일 제목(ex. 포트폴리오, 경력기술서 등)"
+                            value={displayedFileUrl}
+                            onClick = {()=>window.open(existingFileUrl, "_blank")}
+                            readOnly
+                            style={{ width: "450px", cursor: "pointer" }}
+                          />
+                          <FileSelectButton onClick={()=>setExistingFileUrl(null)}>파일 선택</FileSelectButton>
+                        </InputWrapper>
+                      ) : (
                         <FileSearch
-                          onFileSelect = {(selectedFile) => handleInputChange("file", selectedFile)}
+                          onFileSelect={(selectedFile) => handleInputChange("file", selectedFile)}
                         />
+                      )
                     )}
                     <ButtonRow>
                     {mode === "edit" ? (
@@ -116,6 +150,12 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                         onClick={() => {
                           onUpdate(formData);
                           onClose();
+                          trackEvent('edit_click', {
+                            category: 'resume',
+                            detail: 'add_attatchment',
+                            action_type: 'edit',
+                            label: '활동 수정하기',
+                          });
                         }}
                         style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
                         저장
@@ -126,6 +166,12 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                         onClick={() => {
                           onSave(formData);
                           onClose();
+                          trackEvent('add_confirm', {
+                            category: 'resume',
+                            detail: 'add_attachment',
+                            action_type: 'confirm',
+                            label: '추가',
+                          });
                         }}
                         style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
                         추가
@@ -218,6 +264,9 @@ const Input = styled.input`
   font-weight: 400;
   color: black;
   padding-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &::placeholder {
     color: #d9d9d9;
@@ -266,4 +315,31 @@ const DatePickerInput = styled.input.attrs({ type: "text" })`
 
 const DatePickerContainer = styled.div`
 	position: relative;
+`;
+
+const InputWrapper = styled.div`
+  position: relative;
+`
+const FileSelectButton = styled.button`
+  width: 85px;
+  height: 45px;
+  position: absolute;
+  top: 0;
+  right: 15px;
+  border: none;
+  background: none;
+  color: #707070;
+  font-family: 'Regular';
+  font-size: 16px;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: none;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
 `;

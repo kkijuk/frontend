@@ -7,6 +7,7 @@ import { getValidRecruitList } from "../../api/Apply/RecruitValid";
 import { createIntro } from "../../api/Intro/intro";
 import AddApplyModal from "../../components/Modal/AddApplyModal";
 import LoadingSpinner from "../../components/shared/LoadingSpinner";
+import { trackEvent } from "../../utils/ga4";
 
 
 const Select = () => {
@@ -105,7 +106,13 @@ const Select = () => {
         "state": 0
       });
       console.log("자기소개서 생성 결과:", response);
-      navigate(`/history/others/${response.data.id}`);
+      trackEvent('btn_click', {
+        category: 'coverletter',
+        detail: 'select_recruit',
+        action_type: 'click',
+        label: '다음',
+      });
+      navigate(`/history/others/${response.data.id}/rewrite`);
     } catch (error) {
       console.error("Failed to create intro:", error);
     } finally {

@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import ModalTagBox from '../Apply/ModalTagBox';  // 일관성 있게 사용
 import { createRecruit } from '../../api/Apply/Recruit';
-
+import { trackEvent } from '../../utils/ga4'; 
+ 
 const ModalBackdrop = styled.div`
 	position: fixed;
 	top: 0;
@@ -27,6 +28,7 @@ const ModalContent = styled.div`
 	max-width: 90%;
 	position: relative;
 	align-items: center;
+		z-index: 2000;
 `;
 
 const CloseButton = styled.button`
@@ -256,15 +258,61 @@ const AddApplyModal = ({ onClose, onSave }) => {
 	const [title, setTitle] = useState('');
 	const [startTime, setStartTime] = useState('');
 	const [endTime, setEndTime] = useState('');
-	const [tags, setTags] = useState([]);
+	const [tags, setTags] = useState([]); //  선택된 태그 목록
 	const [link, setLink] = useState('');
 	const [status, setStatus] = useState('unapplied');
+	const [errorMessages, setErrorMessages] = useState({
+		title: '',
+		startTime: '',
+		endTime: '',
+		endTimeOrder: '',
+		link: '',
+	});
+
+	const handleTitleChange = (e) => {
+		const value = e.target.value.slice(0, 20); // 20자까지만 허용
+		setTitle(value);
+	};
+	
+
+	const isValidUrl = (url) => {
+		const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+		return urlPattern.test(url);
+	};
 
 	const handleSave = async () => {
-		if (!title || !startTime || !endTime) {
-			alert('필수 정보를 입력하세요!');
+		let errors = { title: '', startTime: '', endTime: '', endTimeOrder: '', link: '' };
+
+		if (!title) {
+			errors.title = '공고 제목을 입력해주세요.';
+		}
+		if (!startTime) {
+			errors.startTime = '시작 날짜를 선택해주세요.';
+		}
+		if (!endTime) {
+			errors.endTime = '종료 날짜를 선택해주세요.';
+		}
+		if (startTime && endTime && new Date(endTime) <= new Date(startTime)) {
+			errors.endTimeOrder = '종료 날짜는 시작 날짜 이후로 설정해주세요.';
+		}
+		if (link && !isValidUrl(link)) {
+			errors.link = '올바른 형식의 링크를 입력해주세요.';
+		}
+
+		// 에러 메시지 업데이트
+		setErrorMessages(errors);
+
+		// 하나라도 에러가 있으면 저장 중단
+		if (errors.title || errors.startTime || errors.endTime || errors.endTimeOrder || errors.link) {
 			return;
 		}
+
+		trackEvent('add_confirm', {
+			category: 'apply',
+			detail: 'add_recruit',
+			action_type: 'confirm',
+			label: '확인',
+		});
 
 		const formatDateTime = (dateTime) => {
 			const date = new Date(dateTime);
@@ -279,45 +327,33 @@ const AddApplyModal = ({ onClose, onSave }) => {
 		const formattedStartTime = formatDateTime(startTime);
 		const formattedEndTime = formatDateTime(endTime);
 
-		console.log('Formatted Start Time (YYYY-MM-DD HH:mm):', formattedStartTime);
-		console.log('Formatted End Time (YYYY-MM-DD HH:mm):', formattedEndTime);
-
 		const recruitData = {
 			title,
 			startTime: formattedStartTime,
 			endTime: formattedEndTime,
 			status,
-			tags,
+			tags, //  선택한 태그만 서버로 전송
 			link,
 		};
-
-		console.log('Recruit Data to be sent:', recruitData);
 
 		try {
 			const response = await createRecruit(recruitData);
 
 			if (response && response.id) {
-				console.log('Recruit created successfully:', response);
-				try {
-					onSave(response.id);
-					console.log('onSave function executed successfully.');
-				} catch (saveError) {
-					console.error('Error in onSave function:', saveError);
-				}
+				onSave(response.id);
 				onClose();
 			} else {
-				console.error('Invalid response from server:', response);
 				alert('공고 생성에 실패했습니다.');
 			}
 		} catch (error) {
-			console.error('Error creating recruit:', error);
 			alert('공고 생성에 실패했습니다.');
 		}
 	};
 
+	// 태그 변경 시 즉시 업데이트
 	const handleTagListChange = (newTags) => {
 		setTags(newTags);
-	  };
+	};
 
 	return (
 		<ModalBackdrop>
@@ -330,9 +366,10 @@ const AddApplyModal = ({ onClose, onSave }) => {
 					<InputWrapper>
 						<Input
 							type="text"
-							placeholder="공고 제목을 작성하세요"
+							placeholder="공고 제목을 작성하세요 (20자 이하)"
 							value={title}
-							onChange={(e) => setTitle(e.target.value)}
+							onChange={handleTitleChange}
+							maxLength={20} 
 						/>
 					</InputWrapper>
 				</FieldWrapper>
@@ -362,7 +399,7 @@ const AddApplyModal = ({ onClose, onSave }) => {
 					<LabelTag>태그</LabelTag>
 					<InputWrapperTag>
 						<TagBoxWrapper>
-						<ModalTagBox onTagListChange={handleTagListChange} />  {/* 변경된 태그 전달 */}
+						<ModalTagBox onTagListChange={handleTagListChange} initialTags={tags} isWhiteBackground={true} />
 						</TagBoxWrapper>
 					</InputWrapperTag>
 				</FieldWrapper>
@@ -378,6 +415,11 @@ const AddApplyModal = ({ onClose, onSave }) => {
 							onChange={(e) => setLink(e.target.value)}
 						/>
 					</InputWrapperLink>
+					{errorMessages.title && <ErrorMessage>{errorMessages.title}</ErrorMessage>}
+					{errorMessages.startTime && <ErrorMessage>{errorMessages.startTime}</ErrorMessage>}
+					{errorMessages.endTime && <ErrorMessage>{errorMessages.endTime}</ErrorMessage>}
+							{errorMessages.endTimeOrder && <ErrorMessage>{errorMessages.endTimeOrder}</ErrorMessage>}
+							{errorMessages.link && <ErrorMessage>{errorMessages.link}</ErrorMessage>}
 				</FieldWrapper>
 				<ButtonWrapper>
 					<SaveButton onClick={handleSave}>확인</SaveButton>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { act, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import './history.css';
 import { set } from 'react-hook-form';
@@ -25,6 +25,7 @@ import Profile from '../../components/Record/Profile';
 import EmailAndAddress from '../../components/Record/EmailAndAddress';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import useAuthRedirect from '../../stores/useAuthRedirect'; 
+import { trackEvent } from '../../utils/ga4';
 
 const History = () => {
     useAuthRedirect();
@@ -87,9 +88,9 @@ const History = () => {
 
 	const [activeSection, setActiveSection] = useState("");	// 인디케이터 활성화 섹션
 	const [editableUserData, setEditableUserData] = useState({	// 사용자 정보 수정
-		profileImageUrl: profileImageUrl,
-		address: address,
-		// email: email,
+		profileImageUrl: '',
+		address: '',
+		// email: '',
 	});
 	const [profileURL, setProfileURL] = useState(profileImageUrl);	// 프로필 이미지
 
@@ -106,13 +107,14 @@ const History = () => {
 				if(error === "Record not created"){
 					setShowCreateButton(true);
 				}
-				console.log('Record Id:', recordId);
 			} catch (error) {
 				console.error('Error: fetchRecord: ', error);
 				setShowCreateButton(true);
 			}
 		}
 		fetchData();
+		
+		console.log('Record Id:', recordId);
 
 		// 인디케이터 관련 로직 - 화면 영역 계산
 		// const observer = new IntersectionObserver(
@@ -136,9 +138,18 @@ const History = () => {
 
 	}, [fetchRecord]);
 
+
 	useEffect(() => {
-		// 사용자 정보 업데이트
-		updateUserData(editableUserData); //in useRecordStore
+		setEditableUserData({
+			profileImageUrl: profileImageUrl,
+			address: address,
+			// email: email,
+		});
+	}, [userData]);
+
+	useEffect(() => {
+		console.log("EditableUserData: ", editableUserData);
+		updateUserData(recordId, editableUserData); //in useRecordStore
 	}, [editableUserData]);
 
 
@@ -326,7 +337,15 @@ const History = () => {
 								key = {sections[1].id}
 							>
 								<h2>학력</h2>
-								<AddButton onClick={() => toggleAddForm('educations')}>+</AddButton>
+								<AddButton onClick={() => {
+									trackEvent('add_click', {
+										category: 'resume',
+										detail: 'add_education',
+										action_type: 'add',
+										label: '학력 추가',
+									});
+									toggleAddForm('educations');
+								}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{openedForms.add.educations && 
@@ -357,7 +376,15 @@ const History = () => {
 								key = {sections[2].id}
 							>
 								<h2>경력</h2>
-								<AddButton onClick={()=> handleOpenCareerModal("EMP")}>+</AddButton>
+								<AddButton onClick={()=> {
+									trackEvent('add_click', {
+										category: 'resume',
+										detail: 'add_employments',
+										action_type: 'add',
+										label: '경력 추가',
+									});
+									handleOpenCareerModal("EMP");
+								}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{employments.length === 0 && 
@@ -382,7 +409,15 @@ const History = () => {
 								key = {sections[3].id}
 							>
 								<h2>활동 및 경험</h2>
-								<AddButton onClick={()=> handleOpenCareerModal("ACTIVITY")}>+</AddButton>
+								<AddButton onClick={()=> {
+									trackEvent('add_click', {
+										category: 'resume',
+										detail: 'add_activitiesAndExperiences',
+										action_type: 'add',
+										label: '활동 및 경험 추가',
+									});
+									handleOpenCareerModal("ACTIVITY");
+								}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{activitiesAndExperiences.length === 0 && 
@@ -407,7 +442,15 @@ const History = () => {
 								key = {sections[4].id}
 							>
 								<h2>프로젝트</h2>
-								<AddButton onClick={()=> handleOpenCareerModal("PROJECT")}>+</AddButton>
+								<AddButton onClick={()=> {
+									trackEvent('add_click', {
+										category: 'resume',
+										detail: 'add_project',
+										action_type: 'add',
+										label: '프로젝트 추가',
+									});
+									handleOpenCareerModal("PROJECT");
+								}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{projects.length === 0 && 
@@ -432,7 +475,15 @@ const History = () => {
 								key = {sections[5].id}
 							>
 								<h2>교육</h2>
-								<AddButton onClick={()=> handleOpenCareerModal("EDU")}>+</AddButton>
+								<AddButton onClick={()=> {
+									trackEvent('add_click', {
+										category: 'resume',
+										detail: 'add_training',
+										action_type: 'add',
+										label: '교육 추가',
+									});
+									handleOpenCareerModal("EDU");
+								}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{eduCareers.length === 0 && 
@@ -457,7 +508,15 @@ const History = () => {
 								key = {sections[6].id}
 							>
 								<h2>수상</h2>
-								<AddButton onClick={() => toggleAddForm('awards')}>+</AddButton>
+								<AddButton onClick={() => {
+									trackEvent('add_click', {
+										category: 'resume',
+										detail: 'add_award',
+										action_type: 'add',
+										label: '수상 추가',
+									});
+									toggleAddForm('awards');
+								}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{openedForms.add.awards &&
@@ -487,7 +546,15 @@ const History = () => {
 								key = {sections[7].id}
 							>
 								<h2>자격증 · 외국어</h2>
-								<AddButton onClick={() => toggleAddForm('licenses')}>+</AddButton>
+								<AddButton onClick={() => {
+									trackEvent('add_click', {
+										category: 'resume',
+										detail: 'add_certificate',
+										action_type: 'add',
+										label: '자격증/외국어 추가',
+									});
+									toggleAddForm('licenses');
+								}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper style={{gap:'50px'}}>
 								{openedForms.add.licenses &&
@@ -538,7 +605,15 @@ const History = () => {
 								key = {sections[8].id}
 							>
 								<h2>스킬</h2>
-								<AddButton onClick={() => toggleAddForm('skills')}>+</AddButton>
+								<AddButton onClick={() => {
+									trackEvent('add_click', {
+										category: 'resume',
+										detail: 'add_skill',
+										action_type: 'add',
+										label: '스킬 추가',
+									});
+									toggleAddForm('skills');
+								}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{openedForms.add.skills &&
@@ -577,7 +652,15 @@ const History = () => {
 							key = {sections[9].id}
 						>
 							<h2>추가자료</h2>
-							<AddButton onClick={() => toggleAddForm('files')}>+</AddButton>
+							<AddButton onClick={() => {
+								trackEvent('add_click', {
+									category: 'resume',
+									detail: 'add_attachment',
+									action_type: 'add',
+									label: '추가자료 추가',
+								});
+								toggleAddForm('files');
+							}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{openedForms.add.files &&
@@ -590,13 +673,13 @@ const History = () => {
 								<NoneContentBox>
 									새로운 활동을 추가해주세요!
 								</NoneContentBox>}
-								{files.map((file, index)=>{
+								{files.map((file, index)=>(
 									<FileItem
 										data={file}
 										onDelete={(data) => deleteEtcItem(data)}
-										onUpdate={(data) => updateEtcItem(data)}
+										onUpdate={(oldData, newData) => updateEtcItem(oldData, newData)}
 									/>
-								})}
+								))}
 							</ContentWrapper>
 						</SectionWrapper>
 					</div>
@@ -695,7 +778,7 @@ const Section = styled.div`
 const ItemsWrapper = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* 2열 배치 */
+  grid-template-columns: repeat(2, minmax(100px, 1fr)); /* 2열 배치 */
   gap: 25px;
 `;
 

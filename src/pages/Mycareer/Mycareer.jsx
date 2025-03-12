@@ -13,6 +13,7 @@ import SearchBar from '../../components/Mycareer/shareSearchBar';
 import CareerTimeline from '../../components/Mycareer/CareerTimeline';
 import useAuthRedirect from '../../stores/useAuthRedirect';
 import AddActivityButton from '../../components/Mycareer/AddActivityButton';
+import { trackEvent } from '../../utils/ga4';
 
 const Container = styled.div`
 	width: 100%;
@@ -72,6 +73,17 @@ export default function Mycareer() {
 
 	const handleSearchClick = () => {
 		navigate('/Mycareer_search'); // 원하는 경로로 페이지 이동
+	};
+
+	const handleAddActivityClick = () => {
+		trackEvent('add_click', {
+			category: 'mycareer',
+			detail: 'add_career',
+			action_type: 'add',
+			label: '활동 추가',
+		});
+
+		setShowModal(true);
 	};
 
 	return (

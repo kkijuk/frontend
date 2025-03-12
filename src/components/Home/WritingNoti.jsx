@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { getIntroduce } from '../../api/Home/getIntroduce';
 import { useNavigate } from 'react-router-dom';
+import { trackEvent } from '../../utils/ga4';
 
 const Container = styled.div`
 	flex-shrink: 0;
@@ -91,28 +92,33 @@ export default function WritingNoti() {
 			try {
 				const data = await getIntroduce();
 				if (data && data.length > 0) {
-					const filledIntroduceList = [...data.slice(0, 2)]; // 최대 2개의 데이터만 사용
-					// 빈 박스가 있어야 하므로 데이터가 2개 미만일 경우 빈 박스를 추가
+					// 마감 기한이 지난 항목 필터링
+					const validIntroduceList = data.filter((introduce) => {
+						if (!introduce.deadline) return true; // 마감일이 없으면 유지
+						const num = parseInt(introduce.deadline.replace(/[^0-9]/g, ''), 10);
+						return num >= 0; // D-0 이하 제거
+					});
+
+					// 최대 2개만 유지하고, 부족하면 빈 박스 추가
+					const filledIntroduceList = [...validIntroduceList.slice(0, 2)];
 					while (filledIntroduceList.length < 2) {
 						filledIntroduceList.push({});
 					}
 					setIntroduceList(filledIntroduceList);
 				} else {
-					setIntroduceList([{}, {}]); // 데이터가 없을 경우 빈 박스 유지
+					setIntroduceList([{}, {}]);
 				}
 			} catch (error) {
 				console.error('Error fetching data:', error);
-				setIntroduceList([{}, {}]); // 에러 발생 시에도 빈 박스 유지
+				setIntroduceList([{}, {}]);
 			}
 		};
 
 		fetchIntroduce();
 	}, []);
 
-	const regex = /[^0-9]/g;
-
 	const handleClick = (isEmpty, id) => {
-		window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
+		window.scrollTo(0, 0);
 
 		if (isEmpty) {
 			navigate('/history/master');
@@ -126,13 +132,26 @@ export default function WritingNoti() {
 			<Label>자기소개서 작성 완료를 기다려요</Label>
 			{introduceList.map((introduce, index) => {
 				const isEmpty = !introduce.recruitTitle; // 데이터 없는 경우 처리
-				const num = introduce.deadline ? parseInt(introduce.deadline.replace(regex, ''), 10) : null;
+				const num = introduce.deadline ? parseInt(introduce.deadline.replace(/[^0-9]/g, ''), 10) : null;
 				const id = introduce.introduceId;
 				const fontColor = num <= 7 ? '#FA7C79' : '#707070'; // 현재: 7일 이하면 글자색 빨간색
 				const fontB = num <= 7 ? 'SemiBold' : 'Medium';
+				const dDayText = num === 0 ? 'D-DAY' : `D-${num}`;
 
 				return (
-					<Box key={index} onClick={() => handleClick(isEmpty, id)}>
+					<Box
+						key={index}
+						onClick={() => {
+							if (isEmpty) {
+								trackEvent('add_click', {
+									category: 'home',
+									detail: 'add_career',
+									action_type: 'add',
+									label: '활동 추가하기',
+								});
+							}
+							handleClick(isEmpty, id);
+						}}>
 						{isEmpty ? (
 							<PlaceholderText>자기소개서를 작성해 주세요</PlaceholderText>
 						) : (
@@ -140,10 +159,7 @@ export default function WritingNoti() {
 								{introduce.recruitTitle}
 								<DDayBox>
 									<DDayText fontColor={fontColor} font={fontB}>
-										D-
-									</DDayText>
-									<DDayText fontColor={fontColor} font={fontB}>
-										{num}
+										{dDayText}
 									</DDayText>
 								</DDayBox>
 							</>

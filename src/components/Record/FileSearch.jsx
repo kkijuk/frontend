@@ -17,11 +17,12 @@ const FileSearch = ({onFileSelect}) => {
       const fileSizeMB = file.size / (1024 * 1024); // 파일 크기(MB)
       const fileExtension = file.name.split('.').pop().toLowerCase(); // 파일 확장자
 
-      if (fileExtension === 'pdf' && fileSizeMB <= 50) {
+      // if (fileExtension === 'pdf' && fileSizeMB <= 50) {
+      if (fileSizeMB <= 50) {
         setFileName(file.name); // 파일 이름 설정
         onFileSelect(file); // 선택한 파일 전달
       } else {
-        alert('pdf 파일만 첨부할 수 있으며, 파일 크기는 50MB 이하이어야 합니다.');
+        alert('파일 크기는 50MB 이하이어야 합니다.');
         fileInputRef.current.value = ""; // 파일 입력 필드 초기화
         setFileName(""); // 파일 이름 초기화
       }
