@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import CareerCategoryCircle from './CareerCategoryCircle';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 import EmptyActivityMessage from './EmptyActivityMessage';
+import { formatDate } from '../../utils/formateDate';
 
 const BackgroundSection = styled.div`
 	width: 100vw;
@@ -163,9 +164,7 @@ const CareerViewYear = ({ data }) => {
 											<CareerName>{item.name}</CareerName>
 											<AliasName>&nbsp;/ {item.alias}</AliasName>
 										</CareerContainer>
-										<Date>
-											{item.startdate === item.enddate ? item.startdate : `${item.startdate} ~ ${item.enddate}`}
-										</Date>
+										<Date>{formatDate(item.startdate, item.enddate, item.unknown)}</Date>
 									</ListBox>
 								);
 							})}
