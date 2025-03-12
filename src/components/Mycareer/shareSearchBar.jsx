@@ -7,17 +7,22 @@ import { trackEvent } from '../../utils/ga4';
 
 const SearchBarContainer = styled.div`
 	display: flex;
-	height: 36px;
 	align-items: center;
 	background-color: #f5f5f5;
 	padding: 10px 20px;
 	border-radius: 12px;
 	margin-left: 5px;
 	box-sizing: border-box;
+	width: 100%;
+	max-width: 600px;
+
+	@media (max-width: 768px) {
+		max-width: 100%;
+		margin-left: 0;
+	}
 `;
 
 const SearchInput = styled.input`
-	max-width: 500px;
 	width: 100%;
 	border: none;
 	background: none;
@@ -26,6 +31,10 @@ const SearchInput = styled.input`
 	font-size: 17px;
 	color: #707070;
 	font-family: Light;
+
+	@media (max-width: 480px) {
+		font-size: 15px;
+	}
 `;
 
 const SearchIcon = styled.div`
