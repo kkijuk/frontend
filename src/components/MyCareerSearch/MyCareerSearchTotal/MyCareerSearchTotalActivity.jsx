@@ -88,7 +88,7 @@ export default function MyCareerSearchTotalActivity({ activity, isActivityLoadin
 							</ActivityContent>
 							<AcitivityDate>
 								{activity.startdate} ~<br />
-								{activity.enddate}
+								{activity.unknown === true ? 'ing' : activity.enddate}
 							</AcitivityDate>
 						</ActivityBox>
 					))}

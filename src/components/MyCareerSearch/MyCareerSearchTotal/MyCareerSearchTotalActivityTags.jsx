@@ -4,6 +4,7 @@ import { useFetchActivityByTag } from '../../../hooks/MycareerSearch/useFetchAct
 
 import { useNavigate } from 'react-router-dom';
 import { highlightMatch } from '../../../utils/highlightMatch';
+import { formatDate } from '../../../utils/formateDate';
 
 // 메인 컨테이너
 const Container = styled.div`
@@ -182,9 +183,7 @@ export default function MyCareerSearchTotalActivityTags({
 										}>
 										<ActivityTop>
 											<ActivityTitle>{highlightMatch(detail.title, searchQuery)}</ActivityTitle>
-											<ActivityDate>
-												{detail.startDate} ~ {detail.endDate}
-											</ActivityDate>
+											<ActivityDate>{formatDate(detail.startDate, detail.endDate, detail.unknown)}</ActivityDate>
 										</ActivityTop>
 										<ActivityContent>{highlightMatch(detail.content, searchQuery)}</ActivityContent>
 									</ActivityItem>
