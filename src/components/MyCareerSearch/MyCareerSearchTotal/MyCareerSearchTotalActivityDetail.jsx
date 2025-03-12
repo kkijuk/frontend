@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
 import { useNavigate } from 'react-router-dom';
 import { highlightMatch } from '../../../utils/highlightMatch';
+import { formatDate } from '../../../utils/formateDate';
 
 const Container = styled.div`
 	width: 100%;
@@ -173,7 +174,7 @@ export default function MyCareerSearchTotalActivityDetail({ activityDetail, isAc
 										<TopWrapper>
 											<DetailTitle>{highlightMatch(detail.title, searchQuery)}</DetailTitle>
 											<DetailCareerDate>
-												{detail.startDate} ~ {detail.endDate}
+												{formatDate(detail.startDate, detail.endDate, detail.unknown)}
 											</DetailCareerDate>
 										</TopWrapper>
 										<DetailContent>{highlightMatch(detail.content, searchQuery)}</DetailContent>
