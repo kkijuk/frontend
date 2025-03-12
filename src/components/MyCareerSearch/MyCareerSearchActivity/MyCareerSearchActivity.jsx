@@ -6,6 +6,7 @@ import { useFetchActivityDetail } from '../../../hooks/MycareerSearch/useFetchAc
 
 import { useNavigate } from 'react-router-dom';
 import { highlightMatch } from '../../../utils/highlightMatch';
+import { formatDate } from '../../../utils/formateDate';
 
 const Container = styled.div`
 	width: 100%;
@@ -160,9 +161,7 @@ export default function MyCareerSearchActivity({ sortOrder, searchQuery, onViewT
 								<DetailWrapper>
 									<TopWrapper>
 										<DetailTitle>{highlightMatch(detail.title, searchQuery)}</DetailTitle>
-										<DetailCareerDate>
-											{detail.startDate} ~ {detail.endDate}
-										</DetailCareerDate>
+										<DetailCareerDate>{formatDate(detail.startDate, detail.endDate, detail.unknown)}</DetailCareerDate>
 									</TopWrapper>
 									<DetailContent>{highlightMatch(detail.content, searchQuery)}</DetailContent>
 									<BottomWrapper>
