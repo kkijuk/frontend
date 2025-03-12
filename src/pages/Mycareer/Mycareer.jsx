@@ -27,6 +27,7 @@ const Container = styled.div`
 const SearchBox = styled.div`
 	width: 100%;
 	max-width: 820px;
+	height: 40px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -43,7 +44,7 @@ const SearchBox = styled.div`
 `;
 
 export default function Mycareer() {
-	useAuthRedirect();
+	// useAuthRedirect();
 
 	const [view, setView] = useState('year');
 	const [showModal, setShowModal] = useState(false);
@@ -92,13 +93,12 @@ export default function Mycareer() {
 					<Title>내커리어</Title>
 					<SearchBar onClick={handleSearchClick} />
 				</SearchBox>
-				<div>
-					<CareerTimeline />
-					<CareerView view={view} onToggle={setView} />
-					<AddActivityButton onClick={handleAddActivityClick} data={careers} />
 
-					{showModal && <AddCareerModal onClose={() => setShowModal(false)} onSave={handleAddCareer} />}
-				</div>
+				<CareerTimeline />
+				<CareerView view={view} onToggle={setView} />
+				<AddActivityButton onClick={() => setShowModal(true)} data={careers} />
+
+				{showModal && <AddCareerModal onClose={() => setShowModal(false)} onSave={handleAddCareer} />}
 			</Container>
 			{view === 'year' ? <CareerViewYear data={careers} /> : <CareerViewCategory data={careers} />}
 		</>
