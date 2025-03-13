@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { formatDate } from '../../utils/formateDate';
 
 const getBackgroundColor = (category, selected) => {
 	let color;
@@ -32,20 +33,22 @@ const getBackgroundColor = (category, selected) => {
 	return selected ? color + '4D' : color; // '4D'는 불투명도 30%를 의미
 };
 
-const formatDate = (dateString) => {
-	if (!dateString) return '-'; // dateString이 없을 경우 기본값 '-'
-	return dateString.replace(/-/g, '.');
-};
+//const formatDate = (dateString) => {
+//	if (!dateString) return '-'; // dateString이 없을 경우 기본값 '-'
+//	return dateString.replace(/-/g, '.');
+//};
 
 const CareerBox = styled.div`
-	width: 139px;
+	width: 143px; /*수정-> 원래 139*/
 	height: 58px;
+	padding: 12px; /*수정-> 원래 없었음*/
 	border-radius: 10px;
 	background-color: ${(props) => getBackgroundColor(props.category, props.selected)};
 	border: 2px solid ${(props) => getBackgroundColor(props.category)};
 	box-sizing: border-box;
 	position: relative;
 	cursor: pointer;
+	box-sizing: border-box; /*수정-> 원래 없었음*/
 
 	display: flex;
 	flex-direction: column; /* 자식 요소를 세로 방향으로 배치 */
@@ -71,8 +74,8 @@ const Date = styled.div`
 
 const Nickname = styled.div`
 	display: flex;
-	width: 143px;
-	height: 22.895px;
+	width: 100%; /*수정-> 원래 143*/
+	height: auto; /*수정 ->22.895px*/
 	flex-direction: column;
 	justify-content: center;
 	flex-shrink: 0;
@@ -82,10 +85,15 @@ const Nickname = styled.div`
 	font-size: 14px;
 	font-style: bold;
 	line-height: normal;
-\	box-sizing: border-box;
+	box-sizing: border-box;
+
+	/*수정-> 아래부분 세개 다 새로 추가*/
+	white-space: nowrap; /* 줄바꿈 방지 */
+	overflow: hidden; /* 넘치는 글씨 숨김 */
+	text-overflow: ellipsis; /* 넘치면 '...' 표시 */
 `;
 
-export default function Careerbox({ id, startdate, enddate, careerName, category, selected, onClick }) {
+export default function Careerbox({ id, startdate, enddate, unknown, careerName, category, selected, onClick }) {
 	const navigate = useNavigate();
 
 	const handleClick = () => {
@@ -100,14 +108,12 @@ export default function Careerbox({ id, startdate, enddate, careerName, category
 
 	return (
 		<CareerBox category={category} selected={selected} onClick={handleClick}>
-			<Date selected={selected}>
-				{formatDate(startdate)} ~ {formatDate(enddate)}
-			</Date>
+			<Date selected={selected}>{formatDate(startdate, enddate, unknown)}</Date>
 			<Nickname selected={selected}>{careerName}</Nickname>
 			{selected && (
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
-					width="19"
+					width="20"
 					height="16"
 					viewBox="0 0 19 16"
 					fill="none"

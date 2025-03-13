@@ -34,7 +34,7 @@ const SearchIcon = styled.svg`
 
 const CareerBoxContainer = styled.div`
 	width: 100%; /* 가로 스크롤을 위해 전체 너비 */
-	height: 72px;
+	height: 68px;
 	margin-top: 40px;
 	display: flex; /* 플렉스 박스를 사용 */
 	flex-wrap: nowrap; /* 줄 바꿈을 방지 */
@@ -42,13 +42,16 @@ const CareerBoxContainer = styled.div`
 	overflow-x: auto; /* 가로 스크롤 활성화 */
 	overflow-y: hidden; /* 세로 스크롤 방지 */
 	white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
+
+	border: 1px solid black;
+	box-sizing: border-box;
 `;
 
 const CareerContentContainer = styled.div`
 	width: 720px;
 	height: ${(props) => (props.isEditing ? '175px' : '88px')}; /* 편집 상태에 따라 높이 변경 */
-	margin-top: 30px;
-	margin-bottom: 32px;
+	margin-top: 32px;
+	margin-bottom: 28px;
 
 	/*border: 1px solid black;
 	box-sizing: border-box;*/
@@ -512,6 +515,7 @@ export default function MycareerDetail() {
 							id={career.id}
 							startdate={career.startdate}
 							enddate={career.enddate}
+							unknown={career.unknown}
 							careerName={career.name}
 							category={career.category.categoryKoName}
 							selected={career.id === selectedCareer.id && career.category.categoryKoName === selectedCareer.type}
@@ -604,7 +608,7 @@ export default function MycareerDetail() {
 						/>
 					)}
 
-					{details?.detailList?.length > 0 ? ( // ✅ 활동 내역이 존재하면 리스트 보여주기
+					{details?.detailList?.length > 0 ? ( // 활동 내역이 존재하면 리스트 보여주기
 						<>
 							{details.detailList.map((detail) =>
 								editingDetailId === detail.detailId ? (
@@ -612,7 +616,8 @@ export default function MycareerDetail() {
 										key={detail.detailId}
 										initialTitle={detail.title}
 										initialDate={detail.startDate}
-										initialEndDate={detail.endDate} // ✅ endDate 추가
+										initialEndDate={detail.endDate} // endDate 추가
+										initialUnknown={detail.unknown}
 										initialContents={detail.content}
 										initialTags={detail.detailTag || []}
 										careerId={careerId}
