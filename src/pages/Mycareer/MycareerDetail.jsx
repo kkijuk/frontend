@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Layout from '../../components/Layout';
@@ -33,7 +33,7 @@ const SearchIcon = styled.svg`
 `;
 
 const CareerBoxContainer = styled.div`
-	width: 100%; /* 가로 스크롤을 위해 전체 너비 */
+	width: 820px; /* 가로 스크롤을 위해 전체 너비 원래 100%..*/
 	height: 68px;
 	margin-top: 40px;
 	display: flex; /* 플렉스 박스를 사용 */
@@ -43,8 +43,8 @@ const CareerBoxContainer = styled.div`
 	overflow-y: hidden; /* 세로 스크롤 방지 */
 	white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
 
-	border: 1px solid black;
-	box-sizing: border-box;
+	/*border: 1px solid black;
+	box-sizing: border-box;*/
 `;
 
 const CareerContentContainer = styled.div`
@@ -123,6 +123,7 @@ const Content = styled.div`
 const Line = styled.div`
 	width: 800px;
 	height: 6px;
+	margin-bottom: 2px; /*추가*/
 
 	background: var(--gray-03, #d9d9d9);
 `;
@@ -337,6 +338,32 @@ export default function MycareerDetail() {
 	const [isSearchOpen, setIsSearchOpen] = useState(false); // 검색창 상태 추가
 	const [isFixed, setIsFixed] = useState(false);
 
+	/* 커리어박스 드래그 기능 추가 */
+	const careerBoxRef = useRef(null);
+	let isDragging = false;
+	let startX, scrollLeft;
+
+	const handleMouseDown = (e) => {
+		isDragging = true;
+		startX = e.pageX - careerBoxRef.current.offsetLeft;
+		scrollLeft = careerBoxRef.current.scrollLeft;
+		careerBoxRef.current.style.cursor = 'grabbing';
+	};
+
+	const handleMouseMove = (e) => {
+		if (!isDragging) return;
+		e.preventDefault();
+		const x = e.pageX - careerBoxRef.current.offsetLeft;
+		const walk = (x - startX) * 2; // 드래그 속도 조절
+		careerBoxRef.current.scrollLeft = scrollLeft - walk;
+	};
+
+	const handleMouseUp = () => {
+		isDragging = false;
+		careerBoxRef.current.style.cursor = 'grab';
+	};
+	/*추가 완 */
+
 	useEffect(() => {
 		const handleScroll = () => {
 			const scrollY = window.scrollY;
@@ -508,7 +535,12 @@ export default function MycareerDetail() {
 				</Container>
 			}>
 			<PageContainer>
-				<CareerBoxContainer>
+				<CareerBoxContainer
+					ref={careerBoxRef}
+					onMouseDown={handleMouseDown}
+					onMouseLeave={handleMouseUp}
+					onMouseUp={handleMouseUp}
+					onMouseMove={handleMouseMove}>
 					{careerList.map((career) => (
 						<Careerbox
 							key={career.id}

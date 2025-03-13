@@ -119,7 +119,7 @@ export default function Careerbox({ id, startdate, enddate, unknown, careerName,
 					fill="none"
 					style={{
 						position: 'absolute',
-						bottom: '-16px', // 수정된 부분
+						bottom: '-12px', // 수정된 부분 -16 -> -12
 						left: '50%',
 						transform: 'translateX(-50%)',
 					}}>
