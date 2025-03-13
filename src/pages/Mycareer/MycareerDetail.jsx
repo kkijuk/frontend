@@ -39,12 +39,12 @@ const CareerBoxContainer = styled.div`
 	display: flex; /* 플렉스 박스를 사용 */
 	flex-wrap: nowrap; /* 줄 바꿈을 방지 */
 	gap: 10px; /* 박스 간격 */
-	overflow-x: auto; /* 가로 스크롤 활성화 */
+	overflow-x: hidden; /* 가로 스크롤 활성화 */
 	overflow-y: hidden; /* 세로 스크롤 방지 */
 	white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
 
-	/*border: 1px solid black;
-	box-sizing: border-box;*/
+	border: 1px solid black;
+	box-sizing: border-box;
 `;
 
 const CareerContentContainer = styled.div`
