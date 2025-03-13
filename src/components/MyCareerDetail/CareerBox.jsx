@@ -108,6 +108,7 @@ const TriangleWrapper = styled.div`
 const Triangle = styled.svg`
 	width: 20px;
 	height: 16px;
+	bottom: -12px;
 `;
 
 export default function Careerbox({ id, startdate, enddate, unknown, careerName, category, selected, onClick }) {
