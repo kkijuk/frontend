@@ -49,13 +49,12 @@ const CareerBox = styled.div`
 	position: relative;
 	cursor: pointer;
 	box-sizing: border-box; /*수정-> 원래 없었음*/
+	position: relative;
 
 	display: flex;
 	flex-direction: column; /* 자식 요소를 세로 방향으로 배치 */
 	align-items: center; /* 가로 가운데 정렬 */
 	justify-content: center;
-	position: relative;
-
 	z-index: 2; /*제발*/
 `;
 
@@ -98,6 +97,8 @@ const Nickname = styled.div`
 
 const TriangleWrapper = styled.div`
 	position: absolute;
+	bottom: -12px;
+
 	top: 100%;
 	left: 50%;
 	transform: translateX(-50%);
