@@ -101,7 +101,7 @@ const Triangle = styled.svg`
 	bottom: -12px;
 	left: 50%;
 	transform: translateX(-50%);
-	z-index: -1;
+	z-index: 1;
 `;
 
 export default function Careerbox({ id, startdate, enddate, unknown, careerName, category, selected, onClick }) {
