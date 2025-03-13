@@ -54,6 +54,7 @@ const CareerBox = styled.div`
 	flex-direction: column; /* 자식 요소를 세로 방향으로 배치 */
 	align-items: center; /* 가로 가운데 정렬 */
 	justify-content: center;
+	z-index: 2; /*제발*/
 `;
 
 const Date = styled.div`
@@ -116,10 +117,12 @@ export default function Careerbox({ id, startdate, enddate, unknown, careerName,
 		navigate(`/mycareer/${category}/${id}`, { state: { careerId: id, category } });
 	};
 
+	const formattedCareerName = careerName.length > 10 ? careerName.substring(0, 10) + '...' : careerName;
+
 	return (
 		<CareerBox category={category} selected={selected} onClick={handleClick}>
 			<Date selected={selected}>{formatDate(startdate, enddate, unknown)}</Date>
-			<Nickname selected={selected}>{careerName}</Nickname>
+			<Nickname selected={selected}>{formattedCareerName}</Nickname>
 			{selected && (
 				<Triangle xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 16" fill={getBackgroundColor(category)}>
 					<path d="M9.5 16L0.406736 0.249998L18.5933 0.25L9.5 16Z" />
