@@ -54,6 +54,8 @@ const CareerBox = styled.div`
 	flex-direction: column; /* 자식 요소를 세로 방향으로 배치 */
 	align-items: center; /* 가로 가운데 정렬 */
 	justify-content: center;
+	position: relative;
+
 	z-index: 2; /*제발*/
 `;
 
@@ -94,14 +96,17 @@ const Nickname = styled.div`
 	text-overflow: ellipsis; /* 넘치면 '...' 표시 */
 `;
 
+const TriangleWrapper = styled.div`
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1; /* CareerBox보다 아래에 있도록 설정 */
+`;
+
 const Triangle = styled.svg`
 	width: 20px;
 	height: 16px;
-	position: absolute;
-	bottom: -12px;
-	left: 50%;
-	transform: translateX(-50%);
-	z-index: -1;
 `;
 
 export default function Careerbox({ id, startdate, enddate, unknown, careerName, category, selected, onClick }) {
@@ -117,16 +122,18 @@ export default function Careerbox({ id, startdate, enddate, unknown, careerName,
 		navigate(`/mycareer/${category}/${id}`, { state: { careerId: id, category } });
 	};
 
-	const formattedCareerName = careerName.length > 10 ? careerName.substring(0, 10) + '...' : careerName;
+	const formattedCareerName = careerName.length > 8 ? careerName.substring(0, 10) + '...' : careerName;
 
 	return (
 		<CareerBox category={category} selected={selected} onClick={handleClick}>
 			<Date selected={selected}>{formatDate(startdate, enddate, unknown)}</Date>
 			<Nickname selected={selected}>{formattedCareerName}</Nickname>
 			{selected && (
-				<Triangle xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 16" fill={getBackgroundColor(category)}>
-					<path d="M9.5 16L0.406736 0.249998L18.5933 0.25L9.5 16Z" />
-				</Triangle>
+				<TriangleWrapper>
+					<Triangle xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 16" fill={getBackgroundColor(category)}>
+						<path d="M9.5 16L0.406736 0.249998L18.5933 0.25L9.5 16Z" />
+					</Triangle>
+				</TriangleWrapper>
 			)}
 		</CareerBox>
 	);

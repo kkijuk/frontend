@@ -43,8 +43,8 @@ const CareerBoxContainer = styled.div`
 	overflow-y: hidden; /* 세로 스크롤 방지 */
 	white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
 
-	border: 1px solid black;
-	box-sizing: border-box;
+	/*border: 1px solid black;
+	box-sizing: border-box;*/
 `;
 
 const CareerContentContainer = styled.div`
