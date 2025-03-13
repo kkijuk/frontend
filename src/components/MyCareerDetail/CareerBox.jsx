@@ -37,7 +37,13 @@ const getBackgroundColor = (category, selected) => {
 //	if (!dateString) return '-'; // dateString이 없을 경우 기본값 '-'
 //	return dateString.replace(/-/g, '.');
 //};
-
+// CareerBox와 Triangle을 감싸는 Wrapper
+const Wrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+`;
 const CareerBox = styled.div`
 	width: 143px; /*수정-> 원래 139*/
 	height: 58px;
@@ -54,7 +60,6 @@ const CareerBox = styled.div`
 	flex-direction: column; /* 자식 요소를 세로 방향으로 배치 */
 	align-items: center; /* 가로 가운데 정렬 */
 	justify-content: center;
-	z-index: 2; /*제발*/
 `;
 
 const Date = styled.div`
@@ -101,7 +106,6 @@ const Triangle = styled.svg`
 	bottom: -12px;
 	left: 50%;
 	transform: translateX(-50%);
-	z-index: 1;
 `;
 
 export default function Careerbox({ id, startdate, enddate, unknown, careerName, category, selected, onClick }) {
@@ -117,17 +121,19 @@ export default function Careerbox({ id, startdate, enddate, unknown, careerName,
 		navigate(`/mycareer/${category}/${id}`, { state: { careerId: id, category } });
 	};
 
-	const formattedCareerName = careerName.length > 8 ? careerName.substring(0, 10) + '...' : careerName;
+	const formattedCareerName = careerName.length > 8 ? careerName.substring(0, 8) + '...' : careerName;
 
 	return (
-		<CareerBox category={category} selected={selected} onClick={handleClick}>
-			<Date selected={selected}>{formatDate(startdate, enddate, unknown)}</Date>
-			<Nickname selected={selected}>{formattedCareerName}</Nickname>
+		<Wrapper>
 			{selected && (
 				<Triangle xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 16" fill={getBackgroundColor(category)}>
 					<path d="M9.5 16L0.406736 0.249998L18.5933 0.25L9.5 16Z" />
 				</Triangle>
 			)}
-		</CareerBox>
+			<CareerBox category={category} selected={selected} onClick={handleClick}>
+				<Date selected={selected}>{formatDate(startdate, enddate, unknown)}</Date>
+				<Nickname selected={selected}>{formattedCareerName}</Nickname>
+			</CareerBox>
+		</Wrapper>
 	);
 }
