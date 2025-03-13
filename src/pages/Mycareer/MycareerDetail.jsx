@@ -42,6 +42,7 @@ const CareerBoxContainer = styled.div`
 	overflow-x: hidden; /* 가로 스크롤 활성화 */
 	overflow-y: hidden; /* 세로 스크롤 방지 */
 	white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
+	position: relative; /* 제발*/
 
 	/*border: 1px solid black;
 	box-sizing: border-box;*/
