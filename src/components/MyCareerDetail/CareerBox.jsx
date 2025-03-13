@@ -41,7 +41,7 @@ const getBackgroundColor = (category, selected) => {
 const CareerBox = styled.div`
 	width: 143px; /*수정-> 원래 139*/
 	height: 58px;
-	padding: 12px; /*수정-> 원래 없었음*/
+	padding: 6px; /*수정-> 원래 없었음*/
 	border-radius: 10px;
 	background-color: ${(props) => getBackgroundColor(props.category, props.selected)};
 	border: 2px solid ${(props) => getBackgroundColor(props.category)};
@@ -74,7 +74,7 @@ const Date = styled.div`
 
 const Nickname = styled.div`
 	display: flex;
-	width: 100%; /*수정-> 원래 143*/
+	max-width: calc(100% - 12px); /*부모의 padding 고려 */
 	height: auto; /*수정 ->22.895px*/
 	flex-direction: column;
 	justify-content: center;
@@ -91,6 +91,16 @@ const Nickname = styled.div`
 	white-space: nowrap; /* 줄바꿈 방지 */
 	overflow: hidden; /* 넘치는 글씨 숨김 */
 	text-overflow: ellipsis; /* 넘치면 '...' 표시 */
+`;
+
+const Triangle = styled.svg`
+	width: 20px;
+	height: 16px;
+	position: absolute;
+	bottom: -12px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: -1;
 `;
 
 export default function Careerbox({ id, startdate, enddate, unknown, careerName, category, selected, onClick }) {
@@ -111,20 +121,9 @@ export default function Careerbox({ id, startdate, enddate, unknown, careerName,
 			<Date selected={selected}>{formatDate(startdate, enddate, unknown)}</Date>
 			<Nickname selected={selected}>{careerName}</Nickname>
 			{selected && (
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="20"
-					height="16"
-					viewBox="0 0 19 16"
-					fill="none"
-					style={{
-						position: 'absolute',
-						bottom: '-12px', // 수정된 부분 -16 -> -12
-						left: '50%',
-						transform: 'translateX(-50%)',
-					}}>
-					<path d="M9.5 16L0.406736 0.249998L18.5933 0.25L9.5 16Z" fill={getBackgroundColor(category)} />
-				</svg>
+				<Triangle xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 16" fill={getBackgroundColor(category)}>
+					<path d="M9.5 16L0.406736 0.249998L18.5933 0.25L9.5 16Z" />
+				</Triangle>
 			)}
 		</CareerBox>
 	);
