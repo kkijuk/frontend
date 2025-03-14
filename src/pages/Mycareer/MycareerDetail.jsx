@@ -15,6 +15,7 @@ import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 import { CareertextEdit } from '../../api/Mycareer/CareerEdit';
 import { trackEvent } from '../../utils/ga4';
+import { formatDate } from '../../utils/formateDate';
 
 const Container = styled.div`
 	display: flex;
@@ -71,7 +72,7 @@ const TitleContainer = styled.div`
 const TitleBox = styled.div`
 	height: 30px;
 	display: flex; /* 요소를 가로로 배치 */
-	gap: 23px;
+	gap: 20px;
 `;
 
 const IconWrapper = styled.div`
@@ -94,8 +95,8 @@ const Date = styled.div`
 	height: 15px;
 	color: #707070;
 
-	margin-top: 7px;
-	margin-bottom: 18px;
+	margin-top: 8px;
+	margin-bottom: 20px;
 
 	font-family: Pretendard;
 	font-size: 12px;
@@ -574,9 +575,7 @@ export default function MycareerDetail() {
 							</svg>
 						</IconWrapper>
 					</TitleContainer>
-					<Date>
-						{details?.startdate} ~ {details?.endDate}
-					</Date>
+					<Date>{formatDate(details?.startdate, details?.endDate, details?.unknown)}</Date>
 					{isEditing ? (
 						<EditActivityContent>
 							<Textbox
