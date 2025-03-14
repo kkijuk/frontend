@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -55,26 +55,27 @@ const SearchBox = styled.div`
 	}
 `;
 
+// 메모이제이션된 컴포넌트 생성
+const MemoizedCareerViewYear = React.memo(CareerViewYear);
+const MemoizedCareerViewCategory = React.memo(CareerViewCategory);
+const MemoizedCareerView = React.memo(CareerView);
+const MemoizedCareerTimeline = React.memo(CareerTimeline);
+const MemoizedAddActivityButton = React.memo(AddActivityButton);
+
 export default function Mycareer() {
 	useAuthRedirect();
 
 	const [view, setView] = useState('year');
 	const [showModal, setShowModal] = useState(false);
-	// const [_, setTriggerEffect] = useState(false);
 	const navigate = useNavigate();
 
 	const { data: careers, isLoading, error } = useFetchMycareerActivity(view);
 
-	const handleAddCareer = () => {
-		// fetchData();
-		// setTriggerEffect((prev) => !prev);
-	};
+	const handleSearchClick = useCallback(() => {
+		navigate('/Mycareer_search');
+	}, [navigate]);
 
-	const handleSearchClick = () => {
-		navigate('/Mycareer_search'); // 원하는 경로로 페이지 이동
-	};
-
-	const handleAddActivityClick = () => {
+	const handleAddActivityClick = useCallback(() => {
 		trackEvent('add_click', {
 			category: 'mycareer',
 			detail: 'add_career',
@@ -83,7 +84,24 @@ export default function Mycareer() {
 		});
 
 		setShowModal(true);
-	};
+	}, []);
+
+	const handleToggleView = useCallback((newView) => {
+		setView(newView);
+	}, []);
+
+	const handleCloseModal = useCallback(() => {
+		setShowModal(false);
+	}, []);
+
+	// 조건부 렌더링을 위한 컴포넌트 메모이제이션
+	const careerViewComponent = useMemo(() => {
+		return view === 'year' ? (
+			<MemoizedCareerViewYear data={careers?.data.data} />
+		) : (
+			<MemoizedCareerViewCategory data={careers?.data.data} />
+		);
+	}, [view, careers?.data.data]);
 
 	return (
 		<>
@@ -93,20 +111,14 @@ export default function Mycareer() {
 					<SearchBar onClick={handleSearchClick} />
 				</SearchBox>
 
-				<CareerTimeline />
-				<CareerView view={view} onToggle={setView} />
-				<AddActivityButton onClick={() => setShowModal(true)} data={careers} />
+				<MemoizedCareerTimeline />
+				<MemoizedCareerView view={view} onToggle={handleToggleView} />
+				<MemoizedAddActivityButton onClick={() => setShowModal(true)} data={careers} />
 
-				{showModal && <AddCareerModal onClose={() => setShowModal(false)} onSave={handleAddCareer} />}
+				{showModal && <AddCareerModal onClose={handleCloseModal} />}
 			</Container>
 			<BackgroundSection>
-				{isLoading ? (
-					<LoadingSpinner message="로딩 중입니다..." />
-				) : view === 'year' ? (
-					<CareerViewYear data={careers?.data.data} />
-				) : (
-					<CareerViewCategory data={careers?.data.data} />
-				)}
+				{isLoading ? <LoadingSpinner message="로딩 중입니다..." /> : careerViewComponent}
 			</BackgroundSection>
 		</>
 	);
