@@ -23,7 +23,7 @@ const Body = styled.div`
 	box-sizing: border-box; /* 추가 */
 	padding-bottom: 100px;
 	margin: 48px auto 20px auto;
-	gap: 40px;
+	gap: 32px;
 `;
 
 const Container1 = styled.div`
