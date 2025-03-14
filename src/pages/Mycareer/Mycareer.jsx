@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
-
 import Title from '../../components/Apply/Title';
 import CareerView from '../../components/Mycareer/CareerView';
 import CareerViewYear from '../../components/Mycareer/CareerViewYear';
@@ -14,6 +12,8 @@ import CareerTimeline from '../../components/Mycareer/CareerTimeline';
 import useAuthRedirect from '../../stores/useAuthRedirect';
 import AddActivityButton from '../../components/Mycareer/AddActivityButton';
 import { trackEvent } from '../../utils/ga4';
+import { useFetchMycareerActivity } from '../../hooks/Mycareer/useFetchMycareerActivity';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
 
 const Container = styled.div`
 	width: 100%;
@@ -22,6 +22,18 @@ const Container = styled.div`
 	background-color: white;
 	border-radius: 15px;
 	box-sizing: border-box;
+`;
+
+const BackgroundSection = styled.div`
+	width: 100vw;
+	min-height: 100vh;
+	background-color: #f0f0f0;
+	position: relative;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	padding: 20px 0;
 `;
 
 const SearchBox = styled.div`
@@ -44,31 +56,18 @@ const SearchBox = styled.div`
 `;
 
 export default function Mycareer() {
-	// useAuthRedirect();
+	useAuthRedirect();
 
 	const [view, setView] = useState('year');
 	const [showModal, setShowModal] = useState(false);
-	const [careers, setCareers] = useState({});
-	const [_, setTriggerEffect] = useState(false);
+	// const [_, setTriggerEffect] = useState(false);
 	const navigate = useNavigate();
 
-	const fetchData = async () => {
-		const status = view === 'year' ? 'year' : 'category';
-		const data = await CareerViewSelect(status);
-
-		if (data) {
-			setCareers(data.data);
-		}
-	};
-
-	useEffect(() => {
-		// 데이터를 항상 가져오도록 수정
-		fetchData();
-	}, [view]);
+	const { data: careers, isLoading, error } = useFetchMycareerActivity(view);
 
 	const handleAddCareer = () => {
-		fetchData();
-		setTriggerEffect((prev) => !prev);
+		// fetchData();
+		// setTriggerEffect((prev) => !prev);
 	};
 
 	const handleSearchClick = () => {
@@ -100,7 +99,15 @@ export default function Mycareer() {
 
 				{showModal && <AddCareerModal onClose={() => setShowModal(false)} onSave={handleAddCareer} />}
 			</Container>
-			{view === 'year' ? <CareerViewYear data={careers} /> : <CareerViewCategory data={careers} />}
+			<BackgroundSection>
+				{isLoading ? (
+					<LoadingSpinner message="로딩 중입니다..." />
+				) : view === 'year' ? (
+					<CareerViewYear data={careers} />
+				) : (
+					<CareerViewCategory data={careers} />
+				)}
+			</BackgroundSection>
 		</>
 	);
 }

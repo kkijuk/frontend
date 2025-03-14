@@ -4,7 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
 import PageFooter from './components/PageFooter';
 
-import queryClient from './api/queryClient/queryClient';
+import queryClient from './api/queryClient/queryClient'; 
 import api, { setupApiInterceptors } from './Axios';
 import SocialRedirect from './components/Redirect';
 import Home from './pages/Home';
