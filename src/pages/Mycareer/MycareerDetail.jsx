@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Layout from '../../components/Layout';
@@ -33,22 +33,26 @@ const SearchIcon = styled.svg`
 `;
 
 const CareerBoxContainer = styled.div`
-	width: 100%; /* 가로 스크롤을 위해 전체 너비 */
-	height: 72px;
+	width: 820px; /* 가로 스크롤을 위해 전체 너비 원래 100%..*/
+	height: 68px;
 	margin-top: 40px;
 	display: flex; /* 플렉스 박스를 사용 */
 	flex-wrap: nowrap; /* 줄 바꿈을 방지 */
 	gap: 10px; /* 박스 간격 */
-	overflow-x: auto; /* 가로 스크롤 활성화 */
+	overflow-x: hidden; /* 가로 스크롤 활성화 */
 	overflow-y: hidden; /* 세로 스크롤 방지 */
 	white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
+	position: relative; /* 제발*/
+
+	/*border: 1px solid black;
+	box-sizing: border-box;*/
 `;
 
 const CareerContentContainer = styled.div`
 	width: 720px;
 	height: ${(props) => (props.isEditing ? '175px' : '88px')}; /* 편집 상태에 따라 높이 변경 */
-	margin-top: 30px;
-	margin-bottom: 32px;
+	margin-top: 32px;
+	margin-bottom: 28px;
 
 	/*border: 1px solid black;
 	box-sizing: border-box;*/
@@ -120,6 +124,7 @@ const Content = styled.div`
 const Line = styled.div`
 	width: 800px;
 	height: 6px;
+	margin-bottom: 2px; /*추가*/
 
 	background: var(--gray-03, #d9d9d9);
 `;
@@ -334,6 +339,32 @@ export default function MycareerDetail() {
 	const [isSearchOpen, setIsSearchOpen] = useState(false); // 검색창 상태 추가
 	const [isFixed, setIsFixed] = useState(false);
 
+	/* 커리어박스 드래그 기능 추가 */
+	const careerBoxRef = useRef(null);
+	let isDragging = false;
+	let startX, scrollLeft;
+
+	const handleMouseDown = (e) => {
+		isDragging = true;
+		startX = e.pageX - careerBoxRef.current.offsetLeft;
+		scrollLeft = careerBoxRef.current.scrollLeft;
+		careerBoxRef.current.style.cursor = 'grabbing';
+	};
+
+	const handleMouseMove = (e) => {
+		if (!isDragging) return;
+		e.preventDefault();
+		const x = e.pageX - careerBoxRef.current.offsetLeft;
+		const walk = (x - startX) * 2; // 드래그 속도 조절
+		careerBoxRef.current.scrollLeft = scrollLeft - walk;
+	};
+
+	const handleMouseUp = () => {
+		isDragging = false;
+		careerBoxRef.current.style.cursor = 'grab';
+	};
+	/*추가 완 */
+
 	useEffect(() => {
 		const handleScroll = () => {
 			const scrollY = window.scrollY;
@@ -505,13 +536,19 @@ export default function MycareerDetail() {
 				</Container>
 			}>
 			<PageContainer>
-				<CareerBoxContainer>
+				<CareerBoxContainer
+					ref={careerBoxRef}
+					onMouseDown={handleMouseDown}
+					onMouseLeave={handleMouseUp}
+					onMouseUp={handleMouseUp}
+					onMouseMove={handleMouseMove}>
 					{careerList.map((career) => (
 						<Careerbox
 							key={career.id}
 							id={career.id}
 							startdate={career.startdate}
 							enddate={career.enddate}
+							unknown={career.unknown}
 							careerName={career.name}
 							category={career.category.categoryKoName}
 							selected={career.id === selectedCareer.id && career.category.categoryKoName === selectedCareer.type}
@@ -604,7 +641,7 @@ export default function MycareerDetail() {
 						/>
 					)}
 
-					{details?.detailList?.length > 0 ? ( // ✅ 활동 내역이 존재하면 리스트 보여주기
+					{details?.detailList?.length > 0 ? ( // 활동 내역이 존재하면 리스트 보여주기
 						<>
 							{details.detailList.map((detail) =>
 								editingDetailId === detail.detailId ? (
@@ -612,7 +649,8 @@ export default function MycareerDetail() {
 										key={detail.detailId}
 										initialTitle={detail.title}
 										initialDate={detail.startDate}
-										initialEndDate={detail.endDate} // ✅ endDate 추가
+										initialEndDate={detail.endDate} // endDate 추가
+										initialUnknown={detail.unknown}
 										initialContents={detail.content}
 										initialTags={detail.detailTag || []}
 										careerId={careerId}
