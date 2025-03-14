@@ -103,9 +103,9 @@ export default function Mycareer() {
 				{isLoading ? (
 					<LoadingSpinner message="로딩 중입니다..." />
 				) : view === 'year' ? (
-					<CareerViewYear data={careers} />
+					<CareerViewYear data={careers?.data.data} />
 				) : (
-					<CareerViewCategory data={careers} />
+					<CareerViewCategory data={careers?.data.data} />
 				)}
 			</BackgroundSection>
 		</>
