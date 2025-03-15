@@ -6,8 +6,6 @@ const TitleStyled = styled.h1`
 	font-family: Pretendard;
 	font-size: 28px;
 	font-weight: 700;
-	margin-bottom: 20px;
-	margin-left: 18px;
 `;
 
 const Title = ({ children }) => {

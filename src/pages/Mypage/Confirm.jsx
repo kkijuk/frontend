@@ -37,20 +37,21 @@ const Text = styled.div`
 	font-weight: 400;
 	line-height: normal;
 
-	margin-top: 100px;
+	margin-top: 52px;
 `;
 
 const EmailBox = styled.div`
 	width: 400px;
 	height: 81px;
 
-	margin-top: 56px;
+	margin-top: 48px;
+	gap: 12px; /*input이랑 위에 이메일 글씨 사이에 12gap*/
 `;
 
 const EmailTextBox = styled.div`
 	width: 400px;
 	height: 31px;
-	gap: 20px;
+	gap: 8px;
 
 	display: flex;
 	align-items: center;
@@ -64,6 +65,8 @@ const EmailText = styled.div`
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
+
+	margin-right: 8px;
 `;
 
 const Email = styled.div`
@@ -131,7 +134,7 @@ const Button = styled.button`
 	font-weight: 500;
 	line-height: normal;
 
-	margin: 50px auto 200px auto;
+	margin: 48px auto 200px auto;
 	display: flex;
 	justify-content: center;
 	align-items: center;

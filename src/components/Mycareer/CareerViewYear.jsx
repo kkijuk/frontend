@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import CareerCategoryCircle from './CareerCategoryCircle';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 import EmptyActivityMessage from './EmptyActivityMessage';
+import { formatDate } from '../../utils/formateDate';
 
 const BackgroundSection = styled.div`
 	width: 100vw;
@@ -144,36 +145,34 @@ const CareerViewYear = ({ data }) => {
 	};
 
 	return (
-		<BackgroundSection>
-			<Container>
-				{sortedYears.map((year) => {
-					return (
-						<YearBox key={year}>
-							<Year>{year}</Year>
-							{data[year].map((item, index) => {
-								return (
-									<ListBox
-										key={`${item.category.categoryId}_${item.id}`}
-										onClick={() => handleListBoxClick(item.id, item.category.categoryKoName)}>
-										<Category>
-											<CareerCategoryCircle category={item.category.categoryKoName} />
-											<CategoryTextBox>{formatCategoryName(item.category.categoryKoName)}</CategoryTextBox>
-										</Category>
-										<CareerContainer>
-											<CareerName>{item.name}</CareerName>
-											<AliasName>&nbsp;/ {item.alias}</AliasName>
-										</CareerContainer>
-										<Date>
-											{item.startdate === item.enddate ? item.startdate : `${item.startdate} ~ ${item.enddate}`}
-										</Date>
-									</ListBox>
-								);
-							})}
-						</YearBox>
-					);
-				})}
-			</Container>
-		</BackgroundSection>
+		// <BackgroundSection>
+		<Container>
+			{sortedYears.map((year) => {
+				return (
+					<YearBox key={year}>
+						<Year>{year}</Year>
+						{data[year].map((item, index) => {
+							return (
+								<ListBox
+									key={`${item.category.categoryId}_${item.id}`}
+									onClick={() => handleListBoxClick(item.id, item.category.categoryKoName)}>
+									<Category>
+										<CareerCategoryCircle category={item.category.categoryKoName} />
+										<CategoryTextBox>{formatCategoryName(item.category.categoryKoName)}</CategoryTextBox>
+									</Category>
+									<CareerContainer>
+										<CareerName>{item.name}</CareerName>
+										<AliasName>&nbsp;/ {item.alias}</AliasName>
+									</CareerContainer>
+									<Date>{formatDate(item.startdate, item.enddate, item.unknown)}</Date>
+								</ListBox>
+							);
+						})}
+					</YearBox>
+				);
+			})}
+		</Container>
+		// </BackgroundSection>
 	);
 };
 

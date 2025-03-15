@@ -72,7 +72,7 @@ const TimelineChart = () => {
 					horizontal: true,
 					distributed: false,
 					rangeBarOverlap: false,
-					barHeight: '20px',
+					barHeight: '18px',
 					borderRadius: 10,
 				},
 			},
