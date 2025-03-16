@@ -361,27 +361,20 @@ const OthersRewrite = () => {
 								}
 								onChange={(e) => handleInputChange(question.number, 'title', e)}
 							/>
-							<InputTitle
-								placeholder='답변을 작성하세요'
-								style={{ height: '150px', marginBottom: '35px', width: '780px' }}
-								value={
-									question.content && question.content !== 'string' 
-									? question.content
-									: ''}
-								onChange={(e) => handleInputChange(question.number, 'content', e)}
-							/>
-							<p
-								style={{
-									fontFamily: 'Regular',
-									fontSize: '16px',
-									color: '#707070',
-									position: 'absolute',
-									right: '20px',
-									top: `${index + 220}px`,
-								}}
-							>
-								{charCounts[index]} (공백포함)
-							</p>
+							<InputWrapper>
+								<InputTitle
+									placeholder='답변을 작성하세요'
+									style={{ height: '150px', marginBottom: '35px', width: '780px' }}
+									value={
+										question.content && question.content !== 'string' 
+										? question.content
+										: ''}
+									onChange={(e) => handleInputChange(question.number, 'content', e)}
+								/>
+								<CharCount>
+									{charCounts[index]} (공백포함)
+									</CharCount>
+							</InputWrapper>
 						</div>
 					))}
 				</form>
@@ -484,9 +477,10 @@ const InputTitle = styled.textarea`
 	resize: none;
 	white-space: pre-wrap;
 
-	// overflow: hidden;
+	overflow: hidden;
 	overflow-y: auto;
-	::-webkit-scrollbar {
+	outline: none;
+	&::-webkit-scrollbar {
     	display: none; /* 웹킷 브라우저에서 스크롤바 숨기기 */
   	}
 `;
@@ -560,4 +554,31 @@ const Delete = styled.div`
 	position: absolute;
 	top: 20px;
 	right: 10px;
+`;
+
+// InputTitle와 글자수를 함께 감쌀 컨테이너
+const InputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  margin-bottom: 12px;
+`;
+
+// 글자수 표시 스타일 (p 대신 div/span 등을 써도 무방)
+const CharCount = styled.div`
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	font-family: Regular;
+	font-size: 16px;
+	color: #707070;
+	width: 780px;
+	height: 25px;
+	flex-shrink: 0;
+	border: none;
+	border-radius: 0px 0px 10px 10px;
+	background: var(--gray-06, #f5f5f5);
+	padding: 0px 20px;
+	line-height: normal;
+	white-space: pre-wrap;
+	text-align: right;
 `;
