@@ -173,7 +173,15 @@ const Select = () => {
             ))}
           </ListSection>
         </ListBox>
-        <AddNewJob onClick = {() => setIsModalOpen(true)}>
+        <AddNewJob onClick = {() => {
+          setIsModalOpen(true);
+          trackEvent('add_click', {
+            category: 'coverletter',
+            detail: 'add_recruit',
+            action_type: 'add',
+            label: '공고 추가',
+          });
+        }}>
           + 새로운 공고 추가
         </AddNewJob>
         <NextButton
