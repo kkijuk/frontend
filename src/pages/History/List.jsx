@@ -44,12 +44,14 @@ const List = () => {
 				// 현재 날짜
 				const now = new Date();
 
-				// 경과한 공고 목록 필터링
-				const expiredItems = Data.filter((item) => new Date(item.deadline) < now);
+				
+				const expiredItems = Data.filter((item) => new Date(item.deadline) < now); // 경과한 공고 목록 필터링
+				const activeItems =  Data.filter((item) => new Date(item.deadline) >= now); // 경과하지 않은 공고 목록 필터링
 				//  setExpiredRecruits(expiredItems);
 
-				// 전체 공고 목록 설정
-				setRecruits(Data);
+				// 상태 업데이트
+				console.log('진행중인 공고 목록:', activeItems);
+				setRecruits(activeItems);
 				console.log('경과한 공고 목록:', expiredItems);
 				setExpiredRecruits(expiredItems);
 			})
