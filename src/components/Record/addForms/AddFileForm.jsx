@@ -126,8 +126,13 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                         </InputWrapper>
                       ) : (
                         <FileSearch
-                          onFileSelect={(selectedFile) => handleInputChange("file", selectedFile)}
-                        />
+                          onFileSelect={(selectedFile) =>{
+                            if(selectedFile.size > 20 * 1024 * 1024){
+                              alert("20MB 이하의 파일만 첨부할 수 있습니다.");
+                              return;
+                            }
+                            handleInputChange("file", selectedFile);
+                          }}/>
                       )
                     )}
                     <ButtonRow>
