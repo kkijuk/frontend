@@ -293,7 +293,7 @@ const OthersRewrite = () => {
 					</p>
 					<button
 						onClick={()=>{
-							clickGotoApply;
+							clickGotoApply();
 							trackEvent('edit_click', {
 								category: 'coverletter',
 								detail: 'edit_recruit',

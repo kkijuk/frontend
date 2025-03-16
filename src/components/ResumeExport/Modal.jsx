@@ -178,7 +178,7 @@ export default function Modal({ onClose }) {
 					</div>
 				</ShowResume>
 				<Button onClick={()=>{
-					handleDownloadPdf;
+					handleDownloadPdf();
 					trackEvent('btn_click', {
 						category: 'resume',
 						detail: 'export_resume',
