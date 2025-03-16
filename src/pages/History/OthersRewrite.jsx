@@ -10,6 +10,7 @@ import ButtonOptions from '../../components/Intro/AddButton.jsx';
 import Alert from '../../components/Intro/Alert';
 import EditApplyModal from '../../components/Intro/EditApplyModal.jsx';
 import { updateRecruit } from '../../api/Apply/RecruitUpdate.js';
+import { trackEvent } from '../../utils/ga4.js';
 
 const OthersRewrite = () => {
 	const navigate = useNavigate();
@@ -291,7 +292,15 @@ const OthersRewrite = () => {
 						공고 마감 일시 : {contents.deadline}
 					</p>
 					<button
-						onClick={clickGotoApply}
+						onClick={()=>{
+							clickGotoApply;
+							trackEvent('edit_click', {
+								category: 'coverletter',
+								detail: 'edit_recruit',
+								action_type: 'edit',
+								label: '공고 수정',
+							});
+						}}
 						style={{
 							display: 'inline-block',
 							width: '140px',
@@ -373,7 +382,7 @@ const OthersRewrite = () => {
 								/>
 								<CharCount>
 									{charCounts[index]} (공백포함)
-									</CharCount>
+								</CharCount>
 							</InputWrapper>
 						</div>
 					))}

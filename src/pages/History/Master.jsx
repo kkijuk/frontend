@@ -9,6 +9,7 @@ import Toggle from '../../components/Intro/Toggle';
 import ButtonOptions from '../../components/Intro/AddButton';
 import { createMaster, readMaster } from '../../api/Intro/master';
 import { set } from 'react-hook-form';
+import { trackEvent } from '../../utils/ga4';
 
 const Master = () => {
 	const navigate = useNavigate();
