@@ -246,7 +246,7 @@ const MasterRewrite = () => {
 						)}
 						<Button
 							onClick={()=>{
-								handleSubmit;
+								handleSubmit();
 								trackEvent('add_confirm', {
 									category: 'coverletter',
 									detail: 'add_coverletter',
