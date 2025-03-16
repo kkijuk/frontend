@@ -33,8 +33,8 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
           setDisplayedFileUrl(truncateText(url, 30));
         })
         .catch((error) => console.error("다운로드 URL 가져오기 실패:", error));
-    }
       }
+    }
   }, []);
 
 
@@ -49,7 +49,16 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
     }
     return text;
   }
-    
+  
+  // URL 유효성 검사
+  function isValidUrl(value){
+    try{
+      new URL(value);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 
   return (
     <RealFirstContainer>
@@ -80,6 +89,7 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                             value={formData.urlTitle}
                             onChange={(e) => handleInputChange("urlTitle", e.target.value)}
                             style={{ width: "610px" }}
+                            maxLength={20}
                         />
                     ) : (
                         <Input
@@ -88,6 +98,7 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                             value={formData.fileTitle}
                             onChange={(e) => handleInputChange("fileTitle", e.target.value)}
                             style={{ width: "610px" }}
+                            maxLength={20}
                         />
                     )}
                 </Row>
@@ -115,8 +126,13 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                         </InputWrapper>
                       ) : (
                         <FileSearch
-                          onFileSelect={(selectedFile) => handleInputChange("file", selectedFile)}
-                        />
+                          onFileSelect={(selectedFile) =>{
+                            if(selectedFile.size > 20 * 1024 * 1024){
+                              alert("20MB 이하의 파일만 첨부할 수 있습니다.");
+                              return;
+                            }
+                            handleInputChange("file", selectedFile);
+                          }}/>
                       )
                     )}
                     <ButtonRow>
@@ -150,6 +166,20 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                       <Button 
                         primary 
                         onClick={() => {
+                          // 제목 확인
+                          if(formData.fileType === "URL" && (!formData.urlTitle || !formData.urlTitle.trim())){
+                            alert("입력하지 않은 항목이 있습니다.");
+                            return;
+                          }
+                          if (formData.fileType === "File" && (!formData.fileTitle || !formData.fileTitle.trim())) {
+                            alert("입력하지 않은 항목이 있습니다.");
+                            return;
+                          }
+                          //URL 유효성 확인
+                          if (formData.fileType === "URL" && !isValidUrl(formData.url)) {
+                            alert("유효한 URL 형식이 아닙니다.");
+                            return;
+                          }
                           onUpdate(formData);
                           onClose();
                           trackEvent('edit_click', {
@@ -166,6 +196,20 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                       <Button 
                         primary 
                         onClick={() => {
+                          // 제목 확인
+                          if(formData.fileType === "URL" && (!formData.urlTitle || !formData.urlTitle.trim())){
+                            alert("입력하지 않은 항목이 있습니다.");
+                            return;
+                          }
+                          if (formData.fileType === "File" && (!formData.fileTitle || !formData.fileTitle.trim())) {
+                            alert("입력하지 않은 항목이 있습니다.");
+                            return;
+                          }
+                          //URL 유효성 확인
+                          if (formData.fileType === "URL" && !isValidUrl(formData.url)) {
+                            alert("유효한 URL 형식이 아닙니다.");
+                            return;
+                          }
                           onSave(formData);
                           onClose();
                           trackEvent('add_confirm', {

@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 
 import ResumeComponent from './Resume1';
+import { trackEvent } from '../../utils/ga4';
 
 const ModalBackdrop = styled.div`
 	position: fixed;
@@ -176,7 +177,15 @@ export default function Modal({ onClose }) {
 						<ResumeComponent />
 					</div>
 				</ShowResume>
-				<Button onClick={handleDownloadPdf}>{isLoading ? '다운로드 중...' : 'pdf로 내보내기'}</Button>
+				<Button onClick={()=>{
+					handleDownloadPdf;
+					trackEvent('btn_click', {
+						category: 'resume',
+						detail: 'export_resume',
+						action_type: 'export',
+						label: 'pdf로 내보내기',
+					});
+				}}>{isLoading ? '다운로드 중...' : 'pdf로 내보내기'}</Button>
 			</ModalBox>
 		</ModalBackdrop>
 	);

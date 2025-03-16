@@ -4,6 +4,7 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Toggle from '../../components/Intro/Toggle';
 import AddButton from '../../components/Intro/AddButton';
+import { trackEvent } from '../../utils/ga4';
 
 // Todo
 // - 옵션 로직 수정
@@ -124,7 +125,16 @@ const ViewOptions = () => {
 			<div style={{ position: 'absolute', right: 0, top: 134, display: 'inline-block' }}>
 				<Toggle checked={isChecked} onChange={handleToggleClick} />
 			</div>
-			<AddButton />
+			<AddButton 
+				onClick={() => {
+					trackEvent('add_click', {
+						category: 'coverletter',
+						detail: 'add_coverletter',
+						action_type: 'add',
+						label: '추가(+)',
+					});
+				}}
+			/>
 			<Outlet key={location.pathname} />
 		</>
 	);

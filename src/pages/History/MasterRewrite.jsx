@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { readMaster, updateMaster } from '../../api/Intro/master';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import { use } from 'react';
+import { trackEvent } from '../../utils/ga4';
 
 const MasterRewrite = () => {
 	const navigate = useNavigate();
@@ -244,7 +245,15 @@ const MasterRewrite = () => {
 							</p>
 						)}
 						<Button
-							onClick={handleSubmit}
+							onClick={()=>{
+								handleSubmit;
+								trackEvent('add_confirm', {
+									category: 'coverletter',
+									detail: 'add_coverletter',
+									action_type: 'confirm',
+									label: '저장하고 나가기',
+								});
+							}}
 							style={{ width: '185px', borderRadius: '10px', background: '#3AAF85', color: '#FFF' }}
 						>
 							저장하고 나가기
