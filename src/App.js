@@ -2,15 +2,15 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
-import PageFooter from "./components/PageFooter";
+import PageFooter from './components/PageFooter';
 
-import queryClient from './api/queryClient/queryClient';
+import queryClient from './api/queryClient/queryClient'; 
 import api, { setupApiInterceptors } from './Axios';
 import SocialRedirect from './components/Redirect';
 import Home from './pages/Home';
 import MyPage from './pages/Mypage/Mypage';
 import MyCareer from './pages/Mycareer/Mycareer';
-import MycareerSearch from './pages/Mycareer/Mycareer_search';
+import MycareerSearch from './pages/Mycareer/MycareerSearch';
 import ApplySchedule from './pages/Apply/ApplySchedule';
 import ApplyStatus from './pages/Apply/ApplyStatus';
 import Community from './pages/Community';
@@ -26,7 +26,7 @@ import SubNav from './components/Intro/SubNav';
 import ViewOptions from './pages/History/ViewOptions';
 
 import History from './pages/History/History';
-import ResumePdf from './pages/History/ResumePDF';
+import ResumePdf from './pages/History/ResumePDF'; //엥
 import Master from './pages/History/Master';
 import Others from './pages/History/Others';
 import MasterRewrite from './pages/History/MasterRewrite';
@@ -71,14 +71,16 @@ const App = () => {
 	const navigate = useNavigate();
 
 	const showPageFooterRoutes = [
-        "/mycareer", "/mycareer_search", "/mycareer/:careerId/:category",
-        "/apply-schedule", "/apply-status", "/apply-detail/:id",
-        "/filter"
-    ];
+		'/mycareer',
+		'/mycareer_search',
+		'/mycareer/:careerId/:category',
+		'/apply-schedule',
+		'/apply-status',
+		'/apply-detail/:id',
+		'/filter',
+	];
 
-	const showPageFooter = showPageFooterRoutes.some(route => 
-        location.pathname.startsWith(route.replace(/:\w+/g, ""))
-    );
+	const showPageFooter = showPageFooterRoutes.some((route) => location.pathname.startsWith(route.replace(/:\w+/g, '')));
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
@@ -136,7 +138,6 @@ const App = () => {
 					<Route path="/mypage" element={<MyPage />} />
 					<Route path="/mycareer" element={<MyCareer />} />
 					<Route path="/signupinterest" element={<SignupInterest />} />
-
 					<Route path="/agree" element={<PrivacyAgreed />} />
 					<Route path="/login/oauth2/code/kakao" element={<SocialRedirect provider="kakao" />} />
 					<Route path="/login/oauth2/code/naver" element={<SocialRedirect provider="naver" />} />
@@ -153,13 +154,12 @@ const App = () => {
 					<Route path="/history/others/:id/rewrite" element={<OthersRewrite />} />
 					<Route path="/history/select" element={<Select />} />
 					<Route path="/history/add_apply" element={<AddApply />} />
-					<Route path="/history/resumeExport" element={<ResumePdf />} />
+					<Route path="/history/resumeExport" element={<ResumePdf />} /> 얘 없애고
 					<Route path="/apply-schedule" element={<ApplySchedule />} />
 					<Route path="/apply-status" element={<ApplyStatus />} />
 					<Route path="/apply-detail/:id" element={<ApplyDetail />} />
 					<Route path="/filter" element={<FilterPage />} />
 					<Route path="/community" element={<Community />} />
-
 					<Route path="/mypage/authentication" element={<Confirm />} />
 					<Route path="/mypage/myinformation" element={<MyInformation />} />
 					<Route path="/mypage/field" element={<Field />} />
@@ -168,13 +168,12 @@ const App = () => {
 					<Route path="/mypage/passwordresetemailconfirm" element={<PasswordResetEmailConfirm />} />
 					<Route path="/mypage/passwordreset" element={<PasswordReset />} />
 					<Route path="/mypage/resetsuccess" element={<ResetSuccess />} />
-
 					<Route path="/error" element={<Error />} />
 					<Route path="/numerror" element={<NumError />} />
 					<Route path="/delete-account" element={<DeleteAccount />} />
 				</Routes>
 			</MainContent>
-			{showPageFooter ? <PageFooter /> : (!hideHeaderFooter && <Footer />)}
+			{showPageFooter ? <PageFooter /> : !hideHeaderFooter && <Footer />}
 		</AppContainer>
 	);
 };

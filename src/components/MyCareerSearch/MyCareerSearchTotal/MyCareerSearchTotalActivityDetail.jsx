@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
 import { useNavigate } from 'react-router-dom';
 import { highlightMatch } from '../../../utils/highlightMatch';
+import { formatDate } from '../../../utils/formateDate';
 
 const Container = styled.div`
 	width: 100%;
@@ -12,8 +13,8 @@ const Container = styled.div`
 
 const Box = styled.div`
 	width: 98%;
-	margin: 10px auto;
-	padding: 10px 20px;
+	margin: 16px auto;
+	padding: 20px 24px;
 	background-color: white;
 	border-radius: 10px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -59,7 +60,7 @@ const MainWrapper = styled.div`
 const DetailWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
-	padding: 15px 10px;
+	padding: 24px 12px;
 	border-bottom: 1px solid var(--gray-04, #e0e0e0);
 	&:last-child {
 		border-bottom: none; // 마지막 요소에는 선이 나타나지 않도록
@@ -78,35 +79,43 @@ const DetailTitle = styled.div`
 const DetailContent = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
-	font-size: 1rem;
+	font-size: 14px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
-	margin-top: 15px;
+	margin-top: 16px;
 `;
 
 const BottomWrapper = styled.div`
 	display: flex;
-	margin-top: 25px;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 16px;
 `;
 
 const DetailTag = styled.div`
-	display: flex;
-	margin-right: 10px;
-	padding: 0 10px;
-	border-radius: 11px;
-	background: var(--gray-06, #f5f5f5);
-	height: 1.375rem;
-	flex-direction: column;
-	justify-content: center;
-	flex-shrink: 0;
-	color: var(--main-01, #3aaf85);
-	text-align: center;
+	padding: 2px 15px;
+	border-radius: 20px;
 	font-family: Pretendard;
 	font-size: 12px;
-	font-style: normal;
 	font-weight: 400;
-	line-height: normal;
+	font-style: normal;
+	cursor: pointer;
+	text-align: center;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	white-space: nowrap;
+
+	background: #f5f5f5;
+	color: #3aaf85;
+	border: 1px solid #f5f5f5;
+
+	b {
+		display: inline;
+		font-weight: bold;
+	}
 `;
 
 const NotExistSearch = styled.div`
@@ -165,7 +174,7 @@ export default function MyCareerSearchTotalActivityDetail({ activityDetail, isAc
 										<TopWrapper>
 											<DetailTitle>{highlightMatch(detail.title, searchQuery)}</DetailTitle>
 											<DetailCareerDate>
-												{detail.startDate} ~ {detail.endDate}
+												{formatDate(detail.startDate, detail.endDate, detail.unknown)}
 											</DetailCareerDate>
 										</TopWrapper>
 										<DetailContent>{highlightMatch(detail.content, searchQuery)}</DetailContent>

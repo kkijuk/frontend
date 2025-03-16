@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import AbilityTag from './AbilityTag';
 import DetailAddEdit from './DetailAddEdit';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
@@ -9,23 +10,26 @@ const Box = styled.div`
 	width: 720px;
 	flex-direction: column;
 	align-items: flex-start;
-	gap: 14px;
+	gap: 16px;
 	padding: 24px 40px;
 	position: relative;
 `;
 
 const Title = styled.div`
 	color: var(--black, #000);
-	font-family: bold;
-	font-size: 18px;
+	font-family: Pretendard;
+	font-size: 16px;
 	font-style: normal;
+	font-weight: 700;
 	line-height: normal;
 `;
 
 const Contents = styled.div`
 	color: var(--black, #000);
-	font-size: 16px;
+	font-family: Pretendard;
+	font-size: 14px;
 	font-style: normal;
+	font-weight: 400;
 	line-height: normal;
 
 	p {
@@ -37,12 +41,11 @@ const Contents = styled.div`
 const Date = styled.div`
 	color: var(--gray-02, #707070);
 	text-align: right;
-	font-family: regular;
+	font-family: Pretendard;
 	font-size: 14px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
-	align-self: flex-start;
 `;
 
 const TitleDateContainer = styled.div`
@@ -70,6 +73,7 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
 	const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
 	const [detailData, setDetailData] = useState(null);
 	const [currentCareerId, setCurrentCareerId] = useState(careerId);
+	const navigate = useNavigate();
 
 	const handleEditClick = async () => {
 		try {
@@ -78,7 +82,7 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
 				return;
 			}
 
-			// ✅ categoryMapping을 직접 사용하여 변환
+			//categoryMapping을 직접 사용하여 변환
 			const categoryMapping = {
 				ACTIVITY: 'activity',
 				PROJECT: 'project',
@@ -125,11 +129,17 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
 		}
 	}, [careerId]);
 
+	const handleTagClick = (tagName) => {
+		console.log(`Tag clicked: ${tagName}`); // 클릭 이벤트 확인
+		navigate(`/Mycareer_search?query=${encodeURIComponent(tagName)}`);
+	};
+
 	if (isDetailAddVisible && detailData) {
 		return (
 			<DetailAddEdit
 				initialTitle={detailData.title}
-				initialDate={detailData.startDate}
+				initialStartDate={detailData.startDate}
+				initialEndDate={detailData.endDate} // ✅ endDate 추가
 				initialContents={detailData.content}
 				initialTags={detailData.detailTag}
 				careerId={careerId}
@@ -151,11 +161,14 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
 						<p key={index}>{line}</p>
 					))}
 				</Contents>
-				<AbilityTag tags={detailTag.map((tag) => tag.tagName)} />
+				<AbilityTag
+					tags={detailTag.map((tag) => tag.tagName)}
+					onTagClick={handleTagClick} // 태그 클릭 이벤트 핸들러 추가
+				/>
 				<SvgIcon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" onClick={handleEditClick}>
 					<path
 						d="M0 15.8339V20H4.16609L16.4533 7.71282L12.2872 3.54673L0 15.8339ZM19.675 4.49104C20.1083 4.05777 20.1083 3.35787 19.675 2.92459L17.0754 0.324955C16.6421 -0.108318 15.9422 -0.108318 15.509 0.324955L13.4759 2.35801L17.642 6.52409L19.675 4.49104Z"
-						fill="#B0B0B0"
+						fill="#707070"
 					/>
 				</SvgIcon>
 			</Box>

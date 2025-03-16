@@ -9,8 +9,7 @@ import { fetchUserInfo, changeUserInfo, sendCode, verifyCode } from '../../api/M
 const ContentBox = styled.div`
 	width: 450px;
 	height: auto;
-
-	margin-bottom: 30px;
+	margin-bottom: 36px;
 `;
 
 const TitleBox = styled.div`
@@ -59,7 +58,7 @@ const Box = styled.div`
 `;
 
 const Content = styled.div`
-	height: 19px;
+	height: 25px;
 	color: #000;
 	font-family: Pretendard;
 	font-size: 16px;
@@ -91,6 +90,7 @@ const Container = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	margin-top: 12px;
 `;
 
 //이메일 수정 클릭 시 나오는 컴포넌트
@@ -310,7 +310,7 @@ const CheckBoxContainer1 = styled.div`
 	display: flex;
 	align-items: center;
 	gap: 8px;
-	margin-top: 20px;
+	/*margin-top: 20px;*/
 	margin-left: 52px;
 `;
 
@@ -332,7 +332,7 @@ const Button = styled.button`
 	color: #fff;
 
 	margin-left: 32px;
-	margin-top: 34px;
+	margin-top: 48px; /*원래 34*/
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 18px;
@@ -379,7 +379,7 @@ const DeleteAccount = styled.div`
 const Bottom = styled.div`
 	width: 464px;
 	height: 196px;
-	margin-top: 47px;
+	margin-top: 18px;
 `;
 
 const NumInputWrapper = styled.div`

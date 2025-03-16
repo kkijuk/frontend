@@ -45,11 +45,11 @@ const TagInput = styled.input`
 
 const TagBoxList = styled.div`
   width: 300px;
-  height: 120px;
-  flex-shrink: 0;
+  max-height: 200px;
+  overflow-y: auto;
   border-radius: 10px;
   background: var(--white, #fff);
-  box-shadow: 0px 0.5px 1px 0px;
+  box-shadow: 0px 5px 10px 0px #d9d9d9;
   position: absolute;
   top: 40px;
   left: 0;
@@ -58,7 +58,6 @@ const TagBoxList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-family: Light;
 `;
 
 const TagBoxListContainer = styled.div`
@@ -78,32 +77,50 @@ const CloseButton = styled.button`
 `;
 
 const Tag = styled.div`
-  background: #F5F5F5;
+  display: flex;
+  align-items: center;
+  background: ${({ isWhite }) => (isWhite ? '#fff' : '#F5F5F5')};
   color: var(--main-01, #3aaf85);
-  border: 1.5px solid #707070;
   border-radius: 10px;
   padding: 4px 8px;
   font-size: 13px;
-  margin-left: 5px;
   font-family: Light;
   cursor: pointer;
+  gap: 5px;
 `;
 
-export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
-  const [tags, setTags] = useState([]); // 선택된 태그
+export default function ModalTagBox({ onTagListChange, initialTags = [], isWhiteBackground = false }) {
+  const [tags, setTags] = useState(initialTags);
   const [inputValue, setInputValue] = useState('');
   const [isTagBoxVisible, setIsTagBoxVisible] = useState(false);
   const tagBoxRef = useRef(null);
-  const [allTags, setAllTags] = useState([]); // API에서 불러온 전체 태그 목록
+  const [allTags, setAllTags] = useState([]);
 
-  // 태그가 변경될 때 부모 컴포넌트에 전달
+//  태그 박스 외부 클릭 시 닫히도록 처리
+useEffect(() => {
+  const handleClickOutside = (e) => {
+    if (tagBoxRef.current && !tagBoxRef.current.contains(e.target)) {
+      setIsTagBoxVisible(false);
+    }
+  };
+
+  document.addEventListener('mousedown', handleClickOutside);
+  return () => {
+    document.removeEventListener('mousedown', handleClickOutside);
+  };
+}, []);
+
+  //  initialTags가 변경될 때만 상태 업데이트
+  useEffect(() => {
+    setTags(initialTags);
+  }, [initialTags]);
+
   useEffect(() => {
     if (typeof onTagListChange === 'function') {
       onTagListChange(tags);
     }
   }, [tags, onTagListChange]);
 
-  // 태그 불러오기 (GET 요청)
   useEffect(() => {
     const fetchTags = async () => {
       try {
@@ -117,12 +134,10 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
     fetchTags();
   }, []);
 
-  // 태그 입력 처리
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
 
-  // 엔터 입력 시 태그 추가 (POST 요청)
   const handleKeyDown = async (e) => {
     if (e.key === 'Enter' && inputValue.trim() !== '') {
       const newTag = inputValue.trim();
@@ -130,11 +145,12 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
         try {
           const createdTag = await addModalTag(newTag);
           const tagName = createdTag?.tagName || newTag;
-          setTags((prevTags) => {
-            const updatedTags = [...prevTags, tagName];
-            onTagListChange(updatedTags);
-            return updatedTags;
-          });
+
+          const updatedTags = [...tags, tagName];
+          setTags(updatedTags);
+          setAllTags([...allTags, tagName]); //  태그 박스에도 즉시 반영
+          onTagListChange(updatedTags);
+
           setInputValue('');
         } catch (error) {
           console.error('태그 추가 오류:', error);
@@ -143,37 +159,33 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
     }
   };
 
-  // 태그 삭제 (DELETE 요청)
-  const handleTagRemove = async (tagName) => {
-    try {
-      await deleteModalTag(tagName);
-      const updatedTags = tags.filter((tag) => tag !== tagName);
-      setTags(updatedTags);
-      onTagListChange(updatedTags);
-    } catch (error) {
-      console.error('태그 삭제 오류:', error);
-    }
-  };
-
-  // 외부 클릭 시 태그 박스 닫기
-  const handleClickOutside = (e) => {
-    if (tagBoxRef.current && !tagBoxRef.current.contains(e.target)) {
-      setIsTagBoxVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
-  // 태그 선택 기능 추가
   const handleTagSelect = (tag) => {
     if (!tags.includes(tag)) {
-      setTags([...tags, tag]);
-      onTagListChange([...tags, tag]);
+      const updatedTags = [...tags, tag];
+      setTags(updatedTags);
+      onTagListChange(updatedTags);
+    }
+  }; 
+
+  // 태그 입력란에서 삭제 (API 호출 x)
+  const handleTagRemoveFromInput = (tagName) => {
+    const updatedTags = tags.filter((tag) => tag !== tagName);
+    setTags(updatedTags);
+    onTagListChange(updatedTags);
+  };
+
+  // 태그 박스에서 삭제 (API 호출 o)  
+  const handleTagRemoveFromBox = async (tagName) => {
+    try {
+      await deleteModalTag(tagName);
+
+      const updatedTags = tags.filter((tag) => tag !== tagName);
+      setTags(updatedTags);
+      setAllTags(allTags.filter((tag) => tag !== tagName)); // 태그 박스에서도 삭제
+      onTagListChange(updatedTags);
+
+    } catch (error) {
+      console.error('태그 삭제 오류:', error);
     }
   };
 
@@ -182,9 +194,9 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
       <Row>
         <TagInputContainer onClick={() => setIsTagBoxVisible(true)}>
           {tags.map((tag) => (
-            <Tag key={tag}>
+            <Tag key={tag} isWhite={isWhiteBackground}>
               {tag}
-              <CloseButton onClick={() => handleTagRemove(tag)}>x</CloseButton>
+              <CloseButton onClick={() => handleTagRemoveFromInput(tag)}>x</CloseButton> {/* ✅ UI에서만 삭제 */}
             </Tag>
           ))}
           <TagInput
@@ -199,8 +211,9 @@ export default function ModalTagBox({ onTagListChange, initialTags = [] }) {
         <TagBoxList>
           <TagBoxListContainer>
             {allTags.map((tag) => (
-              <Tag key={tag} onClick={() => handleTagSelect(tag)}>
+              <Tag key={tag} onClick={() => handleTagSelect(tag)}> {/*  태그 클릭 시 입력칸에 추가 */}
                 {tag}
+                <CloseButton onClick={() => handleTagRemoveFromBox(tag)}>x</CloseButton> {/* ✅ 서버에서도 삭제 */}
               </Tag>
             ))}
           </TagBoxListContainer>

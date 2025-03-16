@@ -18,15 +18,17 @@ const SubNav = () => {
 		<Layout title="서류준비">
 			<BaseDiv>
 				{isResumeActive && (
-					<ExportButton onClick = {()=>{
-						trackEvent('btn_click', {
-							category: 'resume',
-							detail: 'export',
-							action_type: 'click',
-							label: '이력서 내보내기',
-						});
-						navigate('/history/resumeExport');
-					}}>
+					<ExportButton
+						onClick={() => {
+							alert('이 페이지는 준비중입니다.');
+							trackEvent('btn_click', {
+								category: 'resume',
+								detail: 'export',
+								action_type: 'click',
+								label: '이력서 내보내기',
+							});
+							//navigate('/history/resumeExport');
+						}}>
 						문서로 내보내기
 					</ExportButton>
 				)}
@@ -44,8 +46,7 @@ const SubNav = () => {
 					<Section>
 						<Outlet />
 					</Section>
-					
-				</Nav>		
+				</Nav>
 			</BaseDiv>
 		</Layout>
 	);
@@ -88,18 +89,18 @@ const Linear = styled.div`
 
 const Section = styled.div`
 	height: 100%;
-`
+`;
 const ExportButton = styled.button`
 	width: 150px;
 	height: 35px;
 	flex-shrink: 0;
 	border-radius: 10px;
 	border: none;
-	background: var(--main-01, #3AAF85);
+	background: var(--main-01, #3aaf85);
 	position: absolute;
 	right: 0;
 	top: -50px;
-	color: var(--white, #FFF);
+	color: var(--white, #fff);
 	text-align: center;
 	font-family: Regular;
 	font-size: 18px;
@@ -107,4 +108,4 @@ const ExportButton = styled.button`
 	font-weight: 500;
 	line-height: normal;
 	cursor: pointer;
-`
+`;

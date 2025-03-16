@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import LoginProfileBox from '../components/Home/LoginProfileBox';
 import LogoutProfileBox from '../components/Home/LogoutProfileBox';
@@ -8,24 +8,22 @@ import WritingNoti from '../components/Home/WritingNoti';
 import RecommendBox from '../components/Home/RecommendBox';
 import TimelineHome from '../components/Home/TimelineHome';
 import { useNavigate } from 'react-router-dom';
-import Banner1SVG from '../assets/banner1.svg';
-import Banner2SVG from '../assets/banner2.svg';
-import Banner3SVG from '../assets/banner3.svg';
-import Box from '../components/Home/Box';
+
 import CareerTimeline from '../components/Mycareer/CareerTimeline';
-import useAuthRedirect from '../stores/useAuthRedirect'; 
+import useAuthRedirect from '../stores/useAuthRedirect';
+import OnboardingModal from '../components/Modal/OnboardingModal';
 
 const Body = styled.div`
 	width: 820px;
-	min-height: 100vh;
+	height: auto; //그래도 안되면 얘 height: auto로 바꾸기
 	display: flex;
-	justify-content: center;
-	align-items: center;
+	justify-content: flex-start; //원래 center
+	align-items: flex-start; //원래 center
 	flex-direction: column; /*Top이랑 CareerBox를 세로 방향 정렬*/
 	box-sizing: border-box; /* 추가 */
 	padding-bottom: 100px;
-	margin: 20px auto;
-	gap: 40px;
+	margin: 48px auto 20px auto;
+	gap: 32px;
 `;
 
 const Container1 = styled.div`
@@ -38,7 +36,6 @@ const Container1 = styled.div`
 const Container2 = styled.div`
 	width: 100%;
 `;
-
 
 const Label = styled.div`
 	color: var(--black, #000);
@@ -127,29 +124,49 @@ export default function Home() {
 	const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
 	useAuthRedirect(); // ✅ 추가: 로그인 상태에 따라 자동 리디렉트 수행
 
+	//OnboardingModal 상태 관리
+	const [showOnboarding, setShowOnboarding] = useState(false);
+
+	//localStorage를 확인해서 오늘은 모달을 보이지 않도록 처리
+	useEffect(() => {
+		const lastClosedDate = localStorage.getItem('hideOnboardingModal');
+		const today = new Date().toISOString().split('T')[0]; // 오늘 날짜 (YYYY-MM-DD)
+
+		if (lastClosedDate !== today) {
+			setShowOnboarding(true); // 오늘 처음 방문하면 모달 표시
+		}
+	}, []);
+
+	//모달 닫기 함수
+	const handleCloseOnboarding = () => {
+		setShowOnboarding(false);
+	};
+
 	const handleTimelineClick = () => {
 		window.scrollTo(0, 0);
 		navigate('/login-required'); // 로그아웃 상태일 시 로그인 페이지로 이동합니다.
 	};
 
 	return (
-		<Body>
-			<Container1>
-				<LoginProfileBox />
-				<CareerTimeline />
-			</Container1>
-			{/* <Banner banners={bannerDummy} /> */}
-			<BannerComponent banners={bannerDummy} />
+		<>
+			{showOnboarding && <OnboardingModal onClose={handleCloseOnboarding} />}
 
-			<Container2>
-				<Label>잠깐! 잊지 않으셨죠?</Label>
-				<ContentBox>
-					<DeadlineNoti />
-					<WritingNoti />
-				</ContentBox>
-			</Container2>
+			<Body>
+				<Container1>
+					<LoginProfileBox />
+					<CareerTimeline />
+				</Container1>
+				{/* <Banner banners={bannerDummy} /> */}
+				<BannerComponent banners={bannerDummy} />
 
-
-		</Body>
+				<Container2>
+					<Label>잠깐! 잊지 않으셨죠?</Label>
+					<ContentBox>
+						<DeadlineNoti />
+						<WritingNoti />
+					</ContentBox>
+				</Container2>
+			</Body>
+		</>
 	);
 }

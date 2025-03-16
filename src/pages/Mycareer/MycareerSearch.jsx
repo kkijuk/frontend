@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
+
 import Title from '../../components/Apply/Title';
 import SearchBar from '../../components/Mycareer/shareSearchBar';
-import { useSearchParams } from 'react-router-dom';
-import { useFetchActivity } from '../../hooks/MycareerSearch/useFetchActivity';
 
 import MyCareerSearchTotal from '../../components/MyCareerSearch/MyCareerSearchTotal';
 import MyCareerSearchView from '../../components/MyCareerSearch/MyCareerSearchView';
@@ -15,14 +15,12 @@ const Container = styled.div`
 	max-width: 820px;
 	margin: 0 auto;
 	background-color: white;
-	border-radius: 15px;
 	box-sizing: border-box;
 `;
 
 const SearchBox = styled.div`
 	width: 100%;
 	max-width: 820px;
-	height: 36px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -71,12 +69,40 @@ const BackgroundSection = styled.div`
 	padding: 20px 0;
 `;
 
+// 상수 정의 추가
+const VIEW_TYPES = {
+	TOTAL: '1',
+	ACTIVITY: '2',
+	TAG: '3',
+};
+
 export default function MyCareerSearch() {
 	const [searchParams] = useSearchParams();
-	const [view, setView] = useState('1');
+	const [view, setView] = useState(VIEW_TYPES.TOTAL);
 	const [sortOrder, setSortOrder] = useState('new');
 
 	const searchQuery = searchParams.get('query') || '';
+
+	// 공통 props 객체 생성
+	const commonProps = {
+		sortOrder,
+		searchQuery,
+		onViewToggle: setView,
+	};
+
+	// 현재 뷰에 따른 컴포넌트 선택 로직
+	const renderCurrentView = () => {
+		switch (view) {
+			case VIEW_TYPES.TOTAL:
+				return <MyCareerSearchTotal {...commonProps} />;
+			case VIEW_TYPES.ACTIVITY:
+				return <MyCareerSearchActivity {...commonProps} />;
+			case VIEW_TYPES.TAG:
+				return <MyCareerSearchTag {...commonProps} />;
+			default:
+				return <MyCareerSearchTotal {...commonProps} />;
+		}
+	};
 
 	return (
 		<>
@@ -90,24 +116,7 @@ export default function MyCareerSearch() {
 				</SearchQueryResultBox>
 				<MyCareerSearchView view={view} onViewToggle={setView} sortOrder={sortOrder} onSortToggle={setSortOrder} />
 			</Container>
-			<BackgroundSection>
-				{view === '1' && (
-					<MyCareerSearchTotal
-						sortOrder={sortOrder}
-						searchQuery={searchQuery}
-						onViewToggle={setView}></MyCareerSearchTotal>
-				)}
-				{view === '2' && (
-					<MyCareerSearchActivity
-						sortOrder={sortOrder}
-						searchQuery={searchQuery}
-						onViewToggle={setView}></MyCareerSearchActivity>
-				)}
-
-				{view === '3' && (
-					<MyCareerSearchTag sortOrder={sortOrder} searchQuery={searchQuery} onViewToggle={setView}></MyCareerSearchTag>
-				)}
-			</BackgroundSection>
+			<BackgroundSection>{renderCurrentView()}</BackgroundSection>
 		</>
 	);
 }

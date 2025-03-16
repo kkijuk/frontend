@@ -13,6 +13,7 @@ const Container = styled.div`
 	flex-shrink: 0;
 	border-radius: 10px;
 	background: var(--gray-05, #f1f1f1);
+	z-index: 1;
 `;
 
 const Banner = styled.div``;

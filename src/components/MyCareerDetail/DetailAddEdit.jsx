@@ -154,7 +154,8 @@ const TextArea = styled.textarea`
 
 export default function DetailAddEdit({
 	initialTitle,
-	initialDate,
+	initialStartDate,
+	initialEndDate,
 	initialContents,
 	initialTags,
 	careerId,
@@ -163,7 +164,9 @@ export default function DetailAddEdit({
 	onUpdate,
 }) {
 	const [showCalendar, setShowCalendar] = useState(false);
-	const [selectedDate, setSelectedDate] = useState(initialDate);
+	const [selectedStartDate, setSelectedStartDate] = useState(initialStartDate || '');
+	const [selectedEndDate, setSelectedEndDate] = useState(initialEndDate || '');
+
 	const [title, setTitle] = useState(initialTitle);
 	const [contents, setContents] = useState(initialContents);
 	const [tagNames, setTagNames] = useState([]);
@@ -190,36 +193,30 @@ export default function DetailAddEdit({
 
 	const handleDateChange = (date) => {
 		if (Array.isArray(date) && date.length === 2) {
+			// startDate와 endDate 분리
 			const [startDate, endDate] = date;
-			const formattedStartDate = moment(startDate).format('YYYY-MM-DD');
-			const formattedEndDate = moment(endDate).format('YYYY-MM-DD');
-
-			if (formattedStartDate === formattedEndDate) {
-				setSelectedDate(formattedStartDate);
-			} else {
-				setSelectedDate(`${formattedStartDate} ~ ${formattedEndDate}`);
-			}
+			setSelectedStartDate(moment(startDate).format('YYYY-MM-DD'));
+			setSelectedEndDate(moment(endDate).format('YYYY-MM-DD'));
 		} else {
+			// 단일 날짜 선택 시 startDate만 설정
 			const formattedDate = moment(date).format('YYYY-MM-DD');
-			setSelectedDate(formattedDate);
+			setSelectedStartDate(formattedDate);
+			setSelectedEndDate('');
 		}
 		setShowCalendar(false);
 	};
 
 	const handleSave = async () => {
-		const [startDate, endDate] = selectedDate.split(' ~ ');
-
 		const data = {
 			title,
 			content: contents,
-			startDate: startDate || selectedDate,
-			endDate: endDate || startDate || selectedDate,
+			startDate: selectedStartDate,
+			endDate: selectedEndDate || null, // endDate 없으면 null
 			tagList: tagIds, // 태그의 id 리스트를 전송
 		};
-		console.log('handleSave 호출 - 전송할 data:', data);
 
 		try {
-			await CareerDetailEdit(careerId, detailId, data); // API 호출
+			await CareerDetailEdit(careerId, detailId, data);
 			alert('저장되었습니다.');
 			onClose();
 			onUpdate();
@@ -255,7 +252,13 @@ export default function DetailAddEdit({
 					</Title>
 					<Date>
 						<Label>날짜</Label>
-						<DateBox onClick={handleDateClick}>{selectedDate || '날짜를 선택하세요'}</DateBox>
+						<DateBox onClick={handleDateClick}>
+							{selectedStartDate
+								? selectedEndDate
+									? `${selectedStartDate} ~ ${selectedEndDate}`
+									: selectedStartDate
+								: '날짜를 선택하세요'}
+						</DateBox>{' '}
 						{showCalendar && <ReactCalendar onChange={handleDateChange} />}
 					</Date>
 				</Top>

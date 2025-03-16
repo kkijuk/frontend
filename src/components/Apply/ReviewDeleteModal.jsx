@@ -11,7 +11,7 @@ const Background = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	z-index: 1000;
+	  z-index: 1500;
 `;
 
 const Modal = styled.div`
@@ -26,6 +26,7 @@ const Modal = styled.div`
 	align-items: center;
 	text-align: center;
 	position: relative;
+	  z-index: 1500;
 `;
 
 const ModalTitle = styled.div`
@@ -39,42 +40,53 @@ const ModalTitle = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-	display: flex;
-	gap: 20px;
-	margin-top: 15px;
+    display: flex;
+    justify-content: center; 
+    gap: 20px;
+    margin-top: 15px;
+    width: auto; /* 100% 제거 */
 `;
 
+
 const CancelButton = styled.button`
-	width: 120px;
-	height: 35px;
-	border-radius: 12px;
-	cursor: pointer;
-	font-family: Regular;
-	font-size: 15px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-top: 5px;
-	border: 1.5px solid #E0E0E0;
-	background: #fff;
-	color: #707070;
+    width: 120px;
+    height: 35px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: Regular;
+    font-size: 15px;
+    border: 1.5px solid #E0E0E0;
+    background: #fff;
+    color: #707070;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000; /* 충분히 높지만 과도하지 않게 */
+    position: relative; /* relative로 설정해 버튼 위치 보장 */
+    padding: 0; /* 패딩 제거 */
 `;
 
 const ConfirmButton = styled.button`
-	width: 120px;
-	height: 35px;
-	border-radius: 12px;
-	cursor: pointer;
-	font-family: Regular;
-	font-size: 15px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-top: 5px;
-	border: 1.5px solid #FF7979;
-	background: #FF7979;
-	color: white;
+    width: 120px;
+    height: 35px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: Regular;
+    font-size: 15px;
+    border: 1.5px solid #FF7979;
+    background: #FF7979;
+    color: white;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000; /* 버튼이 가장 위에 오도록 설정 */
+    position: relative;
+    padding: 0;
 `;
+
+
 
 const ReviewDeleteModal = ({ onClose, onConfirm }) => {
 
