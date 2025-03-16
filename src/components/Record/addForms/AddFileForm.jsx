@@ -26,13 +26,15 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
       setFormData(initialData);
       setIsTypeUrl(initialData.fileType === "URL");
 
-      downS3File(initialData)
+      if(initialData.fileType === "File") {
+        downS3File(initialData)
         .then((url) => {
           setExistingFileUrl(url);
           setDisplayedFileUrl(truncateText(url, 30));
         })
         .catch((error) => console.error("다운로드 URL 가져오기 실패:", error));
     }
+      }
   }, []);
 
 

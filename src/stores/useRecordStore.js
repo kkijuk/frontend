@@ -347,6 +347,8 @@ const useRecordStore = create((set, get) => ({
 	// 기타 항목 수정
 	updateEtcItem: async (oldData, newData) => {
 		try {
+			console.log('oldData:', oldData);
+			console.log('newData:', newData);
 			let savedEtcData;
 			let deletedEtcData;
 			if (oldData.fileType === 'File') {
