@@ -252,7 +252,7 @@ const MasterRewrite = () => {
 							</p>
 						)}
 						<Button
-							onClick={()=>handleSubmit}
+							onClick={handleSubmit}
 							style={{ width: '185px', borderRadius: '10px', background: '#3AAF85', color: '#FFF' }}
 						>
 							저장하고 나가기
