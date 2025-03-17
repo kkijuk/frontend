@@ -77,7 +77,7 @@ const Others = () => {
 					{contents.tags.map((tag) => (
 						<Tag 
 							key={tag}
-							style={{ background: '#F5F5F5', color: '#3AAF85' }}
+							style={{ background: '#F5F5F5', color: '#3AAF85', cursor: 'pointer' }}
 							onClick={() => navigate(`/filter?query=${tag}`)}
 						>
 							{tag}
