@@ -113,7 +113,7 @@ export default function Mycareer() {
 
 				<MemoizedCareerTimeline />
 				<MemoizedCareerView view={view} onToggle={handleToggleView} />
-				<MemoizedAddActivityButton onClick={() => setShowModal(true)} data={careers} />
+				<MemoizedAddActivityButton onClick={() => setShowModal(true)} data={careers?.data.data} />
 
 				{showModal && <AddCareerModal onClose={handleCloseModal} />}
 			</Container>
