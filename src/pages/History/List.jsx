@@ -2,8 +2,6 @@ import api from '../../Axios';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import SubNav from '../../components/Intro/SubNav';
-import Toggle from '../../components/Intro/Toggle';
 import ListItem from '../../components/Intro/ListItem';
 
 const List = () => {
@@ -14,6 +12,7 @@ const List = () => {
 	// (Data) 지원 공고 목록
 	const [recruits, setRecruits] = useState([]);
 	const [expiredRecruits, setExpiredRecruits] = useState([]); // 경과한 공고 목록
+	const [isExpiredRecruitsVisible, setIsExpiredRecruitsVisible] = useState(false); // 경과한 공고 목록 토글
 
 	// 0. 마스터 마지막 수정 일시 가져오기
 	const [masterData, setMasterData] = useState({});
@@ -62,6 +61,20 @@ const List = () => {
 
 	const filterdData = state === '3' ? recruits : recruits.filter((item) => item.state.toString() === state);
 
+	// 공고 마감일시가 빠른 순서대로 정렬(마감일이 지나지 않은 자소서)
+	const sortedData = filterdData.sort((a, b) => {
+		const aDays = parseInt(a.timeSinceUpdate.replace('D-',''));
+		const bDays = parseInt(b.timeSinceUpdate.replace('D-',''));
+		return aDays - bDays;
+	});
+
+	// 공고 마감일시가 늦은 순서대로 정렬(마감일이 지난 자소서)
+	const sortedExpiredData = expiredRecruits.sort((a, b) => {
+        const aDays = parseInt(a.timeSinceUpdate.replace('D-', ''), 10);
+        const bDays = parseInt(b.timeSinceUpdate.replace('D-', ''), 10);
+        return bDays - aDays;
+    });
+
 	return (
 		<BaseDiv>
 			<ListItem
@@ -70,7 +83,7 @@ const List = () => {
 				state={masterData.state}
 				onClick={() => navigate('/history/master')}
 			/>
-			{filterdData
+			{sortedData
 				.filter((item) => item.state !== 2) // state가 2가 아닌 항목만 필터링
 				.map((item) => (
 					<ListItem
@@ -87,18 +100,27 @@ const List = () => {
 			<br></br>
 			{expiredRecruits.length > 0 && (
 				<div>
-					<h3 style={{ marginLeft: 10 }}>마감일이 지난 자기소개서 보기</h3>
-					{expiredRecruits.map((item) => (
-						<ListItem
-							key={item.id}
-							title={item.recruitTitle}
-							updated_at={item.updatedAt}
-							deadline={item.deadline}
-							state={item.state}
-							timeSinceUpdate={item.timeSinceUpdate}
-							onClick={() => navigate(`/history/others/${item.id}`)}
-						/>
-					))}
+					<div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>					
+						<h3 style={{ marginLeft: 10 }}>마감일이 지난 자기소개서 보기</h3>
+						<ToggleButton onClick={()=>setIsExpiredRecruitsVisible(!isExpiredRecruitsVisible)}>
+							{isExpiredRecruitsVisible ? '▲' : '▼'}
+						</ToggleButton>
+					</div>
+					{isExpiredRecruitsVisible && (
+						<div>
+							{sortedExpiredData.map((item) => (
+								<ListItem
+									key={item.id}
+									title={item.recruitTitle}
+									updated_at={item.updatedAt}
+									deadline={item.deadline}
+									state={item.state}
+									timeSinceUpdate={item.timeSinceUpdate}
+									onClick={() => navigate(`/history/others/${item.id}`)}
+								/>
+							))}
+						</div>
+					)}
 				</div>
 			)}
 		</BaseDiv>
@@ -112,3 +134,7 @@ const BaseDiv = styled.div`
 	max-width: 820px;
 	position: relative;
 `;
+
+const ToggleButton = styled.div`
+	cursor: pointer;
+`
