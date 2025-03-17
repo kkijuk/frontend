@@ -60,6 +60,12 @@ const Others = () => {
 
 	const isQuestionListEmpty = questions.length === 0 || (questions.length === 1 && questions[0].title === 'string' && questions[0].content === 'string');
 
+	const isDeadlineWithin7Days = () => {
+		if (!contents.deadline) return false;
+		const deadlineDate = new Date(contents.deadline);
+		return (deadlineDate - new Date()) / (1000 * 60 * 60 * 24) <= 7;
+	};
+
 	return (
 		<BackgroundDiv>
 			<BaseDiv>
@@ -69,11 +75,22 @@ const Others = () => {
 					</RecruitTitle>
 					<Tag style={{ color: 'white' }}>{isCompleted ? '작성 완료' : '작성 중'}</Tag>
 					{contents.tags.map((tag) => (
-						<Tag style={{ background: '#F5F5F5', color: '#3AAF85' }}>{tag}</Tag>
+						<Tag 
+							key={tag}
+							style={{ background: '#F5F5F5', color: '#3AAF85', cursor: 'pointer' }}
+							onClick={() => navigate(`/filter?query=${tag}`)}
+						>
+							{tag}
+						</Tag>
 					))}
 
 					<div style={{ display: 'inline-block', position: 'absolute', right: 0 }}>
-						<p className="lastUpdated" style={{ color: 'red', marginBottom: '8px' }}>
+						<p 
+							className="lastUpdated" 
+							style={{ 
+								color: isDeadlineWithin7Days() ? '#FA7C79' : '#707070', 
+								marginBottom: '8px' 
+						}}>
 							공고 마감 일시 : {contents.deadline}
 						</p>
 						<p className="lastUpdated" style={{ marginTop: 0 }}>
