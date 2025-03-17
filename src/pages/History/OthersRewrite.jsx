@@ -11,6 +11,7 @@ import Alert from '../../components/Intro/Alert';
 import EditApplyModal from '../../components/Intro/EditApplyModal.jsx';
 import { updateRecruit } from '../../api/Apply/RecruitUpdate.js';
 import { trackEvent } from '../../utils/ga4.js';
+import SvgIcon from '../../components/shared/SvgIcon.jsx';
 
 const OthersRewrite = () => {
 	const navigate = useNavigate();
@@ -245,6 +246,12 @@ const OthersRewrite = () => {
 		}
 	};
 
+	const isDeadlineWithin7Days =()=>{
+		if(!contents.deadline) return false;
+		const deadlineDate = new Date(contents.deadline);
+		return (deadlineDate - new Date()) / (1000 * 60 * 60 * 24) < 7;
+	}
+
 	return (
 		<BackgroundDiv>
 			<BaseDiv>
@@ -287,11 +294,15 @@ const OthersRewrite = () => {
 					<br />
 					<p
 						className="lastUpdated"
-						style={{ display: 'inline-block', color: 'red', margin: '0 20px 8px 0px', textAlign: 'left' }}
+						style={{ 
+							display: 'inline-block', 
+							color: isDeadlineWithin7Days() ? '#FA7C79' : '#707070',
+							margin: '0 20px 8px 0px', 
+							textAlign: 'left' }}
 					>
 						공고 마감 일시 : {contents.deadline}
 					</p>
-					<button
+					<JobLinkBox
 						onClick={()=>{
 							clickGotoApply();
 							trackEvent('edit_click', {
@@ -301,21 +312,11 @@ const OthersRewrite = () => {
 								label: '공고 수정',
 							});
 						}}
-						style={{
-							display: 'inline-block',
-							width: '140px',
-							height: '30px',
-							background: '#FFF',
-							border: '1px solid #707070',
-							borderRadius: '10px',
-							fontFamily: 'Regular',
-							color: '#707070',
-							fontSize: '15px',
-							cursor: 'pointer',
-						}}
+						disabled = {!contents.link}
 					>
 						공고 보러가기
-					</button>
+						<SvgIcon name="jobLink" size={15} color="var(--gray-02, #707070)"/>
+					</JobLinkBox>
 					<svg
 						onClick={toggleEditApplyModal}
 						style={{
@@ -591,3 +592,19 @@ const CharCount = styled.div`
 	white-space: pre-wrap;
 	text-align: right;
 `;
+
+const JobLinkBox = styled.div`
+  width: 120px;
+  height: 28px;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+  background: #FFFFFF;
+  border-radius: 12px;
+  border: 2.3px solid var(--gray-03, #707070);
+  font-size: 12px;
+  color: var(--gray-02, #707070);
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+`
