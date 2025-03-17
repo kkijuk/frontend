@@ -576,7 +576,7 @@ const InputWrapper = styled.div`
 // 글자수 표시 스타일 (p 대신 div/span 등을 써도 무방)
 const CharCount = styled.div`
 	position: absolute;
-	bottom: 0px;
+	bottom: 17px;
 	right: 0px;
 	font-family: Regular;
 	font-size: 16px;

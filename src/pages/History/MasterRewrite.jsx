@@ -109,6 +109,13 @@ const MasterRewrite = () => {
 		} finally {
 			setShowLoadingSpinner(false);
 			navigate('/history/master');
+
+			trackEvent('add_confirm', {
+				category: 'coverletter',
+				detail: 'add_coverletter',
+				action_type: 'confirm',
+				label: '저장하고 나가기',
+			});
 		}
 	};
 
@@ -245,15 +252,7 @@ const MasterRewrite = () => {
 							</p>
 						)}
 						<Button
-							onClick={()=>{
-								handleSubmit();
-								trackEvent('add_confirm', {
-									category: 'coverletter',
-									detail: 'add_coverletter',
-									action_type: 'confirm',
-									label: '저장하고 나가기',
-								});
-							}}
+							onClick={()=>handleSubmit}
 							style={{ width: '185px', borderRadius: '10px', background: '#3AAF85', color: '#FFF' }}
 						>
 							저장하고 나가기
