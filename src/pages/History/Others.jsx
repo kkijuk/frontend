@@ -58,7 +58,7 @@ const Others = () => {
 			});
 	}, []);
 
-	const isQuestionListEmpty = questions.length === 0 || (question.length === 1 && questions[0].title === 'string' && questions[0].content === 'string');
+	const isQuestionListEmpty = questions.length === 0 || (questions.length === 1 && questions[0].title === 'string' && questions[0].content === 'string');
 
 	return (
 		<BackgroundDiv>
