@@ -246,6 +246,12 @@ const OthersRewrite = () => {
 		}
 	};
 
+	const isDeadlineWithin7Days =()=>{
+		if(!contents.deadline) return false;
+		const deadlineDate = new Date(contents.deadline);
+		return (deadlineDate - new Date()) / (1000 * 60 * 60 * 24) < 7;
+	}
+
 	return (
 		<BackgroundDiv>
 			<BaseDiv>
@@ -288,7 +294,11 @@ const OthersRewrite = () => {
 					<br />
 					<p
 						className="lastUpdated"
-						style={{ display: 'inline-block', color: 'red', margin: '0 20px 8px 0px', textAlign: 'left' }}
+						style={{ 
+							display: 'inline-block', 
+							color: isDeadlineWithin7Days() ? '#FA7C79' : '#707070',
+							margin: '0 20px 8px 0px', 
+							textAlign: 'left' }}
 					>
 						공고 마감 일시 : {contents.deadline}
 					</p>
@@ -302,6 +312,7 @@ const OthersRewrite = () => {
 								label: '공고 수정',
 							});
 						}}
+						disabled = {!contents.link}
 					>
 						공고 보러가기
 						<SvgIcon name="jobLink" size={15} color="var(--gray-02, #707070)"/>
