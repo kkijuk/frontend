@@ -12,6 +12,7 @@ import Slide3 from '../../assets/onboarding/onboarding3.png';
 import Slide4 from '../../assets/onboarding/onboarding4.png';
 
 import OnboardingButton from '../shared/OnboardingButton';
+import LastButton from '../shared/OnboardingLastButton';
 
 const BlurContainer = styled.div`
 	position: absolute;
@@ -87,12 +88,24 @@ const CheckBoxContainer = styled.div`
 const CheckBox = styled.div`
 	width: 18px;
 	height: 18px;
-	border-radius: 2px;
-	border: 1px solid var(--gray-02, #707070);
-	background: var(--white, #fff);
 	display: flex;
 	align-items: center;
 	justify-content: center;
+
+	${({ isChecked }) =>
+		isChecked
+			? `
+      border: none;
+      background: none;
+    `
+			: `
+      border-radius: 2px;
+      border: 1px solid var(--gray-02, #707070);
+      background: var(--white, #fff);
+	  box-sizing: border-box;
+
+
+    `}
 `;
 
 //체크된 상태에서 SVG 아이콘을 렌더링하는 컴포넌트
@@ -110,7 +123,7 @@ const CheckedIcon = () => (
 );
 
 const CheckText = styled.div`
-	color: var(--black, #000);
+	color: var(--white, #fff);
 	font-family: Pretendard;
 	font-size: 16px;
 	font-style: normal;
@@ -119,7 +132,7 @@ const CheckText = styled.div`
 `;
 
 const CloseText = styled.div`
-	color: var(--white, #fff);
+	color: var(--gray-03, #d9d9d9);
 	font-family: Pretendard;
 	font-size: 16px;
 	font-style: normal;
@@ -196,11 +209,12 @@ export default function OnboardingModal({ onClose }) {
 
 					<SwiperSlide>
 						<SlideImage src={Slide4} alt="온보딩 4" />
+						<LastButton onClick={handleClose} />
 					</SwiperSlide>
 				</SwiperStyled>
 				<CheckContainer>
 					<CheckBoxContainer onClick={toggleCheck}>
-						<CheckBox>{isChecked && <CheckedIcon />}</CheckBox>
+						<CheckBox isChecked={isChecked}>{isChecked && <CheckedIcon />}</CheckBox>
 						<CheckText>오늘 하루 보지 않기</CheckText>
 					</CheckBoxContainer>
 					<CloseText onClick={handleClose}>닫기</CloseText>

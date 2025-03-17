@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { readMaster, updateMaster } from '../../api/Intro/master';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import { use } from 'react';
+import { trackEvent } from '../../utils/ga4';
 
 const MasterRewrite = () => {
 	const navigate = useNavigate();
@@ -108,6 +109,13 @@ const MasterRewrite = () => {
 		} finally {
 			setShowLoadingSpinner(false);
 			navigate('/history/master');
+
+			trackEvent('add_confirm', {
+				category: 'coverletter',
+				detail: 'add_coverletter',
+				action_type: 'confirm',
+				label: '저장하고 나가기',
+			});
 		}
 	};
 
@@ -219,26 +227,17 @@ const MasterRewrite = () => {
 							value={currentTitle}
 							onChange={(e) => handleInputChange(index, 'title', e.target.value)}
 							/>
-							<InputTitle
-							placeholder={contentPlaceholder}
-							style={{ height: '150px', marginBottom: '12px' }}
-							value={currentContent}
-							onChange={(e) => handleInputChange(index, 'content', e.target.value)}
-							/>
-							<p
-							style={{
-								fontFamily: 'Regular',
-								fontSize: '16px',
-								color: '#707070',
-								textAlign: 'right',
-								marginRight: '20px',
-								position: 'absolute',
-								bottom: '20px',
-								right: '5px',
-							}}
-							>
-							{currentContent.length} (공백 포함)
-							</p>
+							<InputWrapper>
+								<InputTitle
+								placeholder={contentPlaceholder}
+								style={{ height: '150px', marginBottom: '12px' }}
+								value={currentContent}
+								onChange={(e) => handleInputChange(index, 'content', e.target.value)}
+								/>
+								<CharCount>
+									{currentContent.length} (공백 포함)
+								</CharCount>
+							</InputWrapper>
 						</div>
 						);
 					})}
@@ -303,7 +302,8 @@ const InputTitle = styled.textarea`
 
 	overflow: hidden;
 	overflow-y: auto;
-	::-webkit-scrollbar {
+	outline: none;
+	&::-webkit-scrollbar {
     	display: none; /* 웹킷 브라우저에서 스크롤바 숨기기 */
   	}
 `;
@@ -387,4 +387,31 @@ const Delete = styled.div`
 	position: absolute;
 	top: 20px;
 	right: 10px;
+`;
+
+// InputTitle와 글자수를 함께 감쌀 컨테이너
+const InputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  margin-bottom: 12px;
+`;
+
+// 글자수 표시 스타일 (p 대신 div/span 등을 써도 무방)
+const CharCount = styled.div`
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	font-family: Regular;
+	font-size: 16px;
+	color: #707070;
+	width: 780px;
+	height: 25px;
+	flex-shrink: 0;
+	border: none;
+	border-radius: 0px 0px 10px 10px;
+	background: var(--gray-06, #f5f5f5);
+	padding: 0px 20px;
+	line-height: normal;
+	white-space: pre-wrap;
+	text-align: right;
 `;

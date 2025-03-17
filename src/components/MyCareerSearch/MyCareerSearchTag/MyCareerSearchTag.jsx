@@ -8,6 +8,7 @@ import { useFetchActivityByTag } from '../../../hooks/MycareerSearch/useFetchAct
 import { useNavigate } from 'react-router-dom';
 import { highlightMatch } from '../../../utils/highlightMatch';
 import { NotExistSearchComponent } from '../NotExistSearchWrapper';
+import { formatDate } from '../../../utils/formateDate';
 
 const Container = styled.div`
 	width: 100%;
@@ -220,7 +221,7 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 										<TopWrapper>
 											<DetailTitle>{highlightMatch(detail.title, searchQuery)}</DetailTitle>
 											<DetailCareerDate>
-												{detail.startDate} ~ {detail.endDate}
+												{formatDate(detail.startDate, detail.endDate, detail.unknown)}
 											</DetailCareerDate>
 										</TopWrapper>
 										<DetailContent>{highlightMatch(detail.content, searchQuery)}</DetailContent>

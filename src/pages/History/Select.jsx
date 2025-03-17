@@ -165,7 +165,9 @@ const Select = () => {
                         window.open(recruit.link, '_blank'); 
                       }
                       : undefined
-                  }>
+                   }
+                   disabled={!recruit.link}
+                  >
                     공고 보러가기
                     <SvgIcon name="jobLink" size={15} color="var(--gray-02, #707070)"/>
                   </JobLinkBox>
@@ -173,7 +175,15 @@ const Select = () => {
             ))}
           </ListSection>
         </ListBox>
-        <AddNewJob onClick = {() => setIsModalOpen(true)}>
+        <AddNewJob onClick = {() => {
+          setIsModalOpen(true);
+          trackEvent('add_click', {
+            category: 'coverletter',
+            detail: 'add_recruit',
+            action_type: 'add',
+            label: '공고 추가',
+          });
+        }}>
           + 새로운 공고 추가
         </AddNewJob>
         <NextButton
@@ -330,7 +340,7 @@ const JobLinkBox = styled.div`
   border: 2.3px solid var(--gray-03, #707070);
   font-size: 12px;
   color: var(--gray-02, #707070);
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
 `
 
 const AddNewJob = styled.div`

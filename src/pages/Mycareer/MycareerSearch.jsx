@@ -15,14 +15,12 @@ const Container = styled.div`
 	max-width: 820px;
 	margin: 0 auto;
 	background-color: white;
-	border-radius: 15px;
 	box-sizing: border-box;
 `;
 
 const SearchBox = styled.div`
 	width: 100%;
 	max-width: 820px;
-	height: 36px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;

@@ -58,6 +58,14 @@ const Others = () => {
 			});
 	}, []);
 
+	const isQuestionListEmpty = questions.length === 0 || (questions.length === 1 && questions[0].title === 'string' && questions[0].content === 'string');
+
+	const isDeadlineWithin7Days = () => {
+		if (!contents.deadline) return false;
+		const deadlineDate = new Date(contents.deadline);
+		return (deadlineDate - new Date()) / (1000 * 60 * 60 * 24) <= 7;
+	};
+
 	return (
 		<BackgroundDiv>
 			<BaseDiv>
@@ -67,11 +75,22 @@ const Others = () => {
 					</RecruitTitle>
 					<Tag style={{ color: 'white' }}>{isCompleted ? '작성 완료' : '작성 중'}</Tag>
 					{contents.tags.map((tag) => (
-						<Tag style={{ background: '#F5F5F5', color: '#3AAF85' }}>{tag}</Tag>
+						<Tag 
+							key={tag}
+							style={{ background: '#F5F5F5', color: '#3AAF85', cursor: 'pointer' }}
+							onClick={() => navigate(`/filter?query=${tag}`)}
+						>
+							{tag}
+						</Tag>
 					))}
 
 					<div style={{ display: 'inline-block', position: 'absolute', right: 0 }}>
-						<p className="lastUpdated" style={{ color: 'red', marginBottom: '8px' }}>
+						<p 
+							className="lastUpdated" 
+							style={{ 
+								color: isDeadlineWithin7Days() ? '#FA7C79' : '#707070', 
+								marginBottom: '8px' 
+						}}>
 							공고 마감 일시 : {contents.deadline}
 						</p>
 						<p className="lastUpdated" style={{ marginTop: 0 }}>
@@ -80,24 +99,35 @@ const Others = () => {
 					</div>
 				</ContentTitle>
 				<div>
-					{questions.map((question, index) => (
-						<div style={{ position: 'relative' }}>
-							<h3>
-								{index + 1}. {
-								question.title && question.title !== 'string' && question.title !== ''
-								? question.title
-								: '질문을 작성하세요.'
-								}
-							</h3>
-							<div style={{ minHeight:'100px', whiteSpace: 'pre-wrap', marginBottom: '20px' }}>
-								<p>
-									{question.content && question.content !== 'string' && question.content !== ''
-									? question.content
-									: '답변을 작성하세요.'}
-								</p>
-							</div>
+					{isQuestionListEmpty ? (
+						<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px'}}>
+							<p style={{
+								fontFamily: 'Regular',
+								fontSize: '16px',
+							}}>
+								아직 내용을 작성하지 않았어요.
+							</p>
 						</div>
-					))}
+					) : (
+						questions.map((question, index) => (
+							<div style={{ position: 'relative' }}>
+								<h3>
+									{index + 1}. {
+									question.title && question.title !== 'string' && question.title !== ''
+									? question.title
+									: '질문을 작성하세요.'
+									}
+								</h3>
+								<div style={{ minHeight:'100px', whiteSpace: 'pre-wrap', marginBottom: '20px' }}>
+									<p>
+										{question.content && question.content !== 'string' && question.content !== ''
+										? question.content
+										: '답변을 작성하세요.'}
+									</p>
+								</div>
+							</div>
+						))
+					)}
 				</div>
 				<EditButton onClick={() => navigate(`/history/others/${id}/rewrite`)} style={{ right: '100px' }}>
 					<svg width="60" height="60" viewBox="2-2 80 70" fill="none" xmlns="http://www.w3.org/2000/svg">
