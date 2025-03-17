@@ -100,27 +100,25 @@ const List = () => {
 			<br></br>
 			{expiredRecruits.length > 0 && (
 				<div>
-					<div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>					
+					<div style={{display:'flex', justifyContent:'space-between', alignItems:'center', height:'20px'}}>					
 						<h3 style={{ marginLeft: 10 }}>마감일이 지난 자기소개서 보기</h3>
 						<ToggleButton onClick={()=>setIsExpiredRecruitsVisible(!isExpiredRecruitsVisible)}>
 							{isExpiredRecruitsVisible ? '▲' : '▼'}
 						</ToggleButton>
 					</div>
-					{isExpiredRecruitsVisible && (
-						<div>
-							{sortedExpiredData.map((item) => (
-								<ListItem
-									key={item.id}
-									title={item.recruitTitle}
-									updated_at={item.updatedAt}
-									deadline={item.deadline}
-									state={item.state}
-									timeSinceUpdate={item.timeSinceUpdate}
-									onClick={() => navigate(`/history/others/${item.id}`)}
-								/>
-							))}
-						</div>
-					)}
+					<AnimatedDiv isVisible={isExpiredRecruitsVisible}>
+						{sortedExpiredData.map((item) => (
+							<ListItem
+								key={item.id}
+								title={item.recruitTitle}
+								updated_at={item.updatedAt}
+								deadline={item.deadline}
+								state={item.state}
+								timeSinceUpdate={item.timeSinceUpdate}
+								onClick={() => navigate(`/history/others/${item.id}`)}
+							/>
+						))}
+					</AnimatedDiv>
 				</div>
 			)}
 		</BaseDiv>
@@ -137,4 +135,11 @@ const BaseDiv = styled.div`
 
 const ToggleButton = styled.div`
 	cursor: pointer;
+	margin-right: 10px;
 `
+
+const AnimatedDiv = styled.div`
+    max-height: ${({ isVisible }) => (isVisible ? '1000px' : '0')};
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+`;
