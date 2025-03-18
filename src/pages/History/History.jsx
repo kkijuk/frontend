@@ -92,7 +92,6 @@ const History = () => {
 	const [editableUserData, setEditableUserData] = useState({	// 사용자 정보 수정
 		profileImageUrl: '',
 		address: '',
-		email: email,
 	});
 	const [profileURL, setProfileURL] = useState(profileImageUrl);	// 프로필 이미지
 
@@ -145,7 +144,10 @@ const History = () => {
 	useEffect(() => {
 		if (initialized && !isEqual(userData, debouncedUserData)) {
 			console.log("EditableUserData: ", debouncedUserData);
-			updateUserData(recordId, debouncedUserData); //in useRecordStore
+			updateUserData(recordId, {
+				email,
+				...debouncedUserData,
+			}); //in useRecordStore
 		} else {
 			setInitialized(true);
 		}
@@ -227,13 +229,6 @@ const History = () => {
 
 	//(2) 이메일 또는 주소 변경 시
 	const handleEmailOrAddressChange = (data) => {
-		if(data.type === 'email'){
-			setEditableUserData((prev) => ({
-				...prev,
-				email: data.data
-			}));
-		} 
-		
 		if(data.type === 'address'){
 			setEditableUserData((prev) => ({
 				...prev,
