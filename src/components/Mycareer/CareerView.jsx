@@ -4,13 +4,13 @@ import styled from 'styled-components';
 const ViewToggleStyled = styled.div`
 	display: flex;
 	justify-content: space-between;
-	align-items: top;
-	flex-wrap: wrap; /* 화면 크기가 작아지면 버튼과 제목이 줄 바꿈되도록 설정 */
+	align-items: center; /* top에서 center로 변경하여 수직 중앙 정렬 */
+	margin-top: 32px;
 
-	// @media (max-width: 600px) {
-	// 	flex-direction: column; /* 작은 화면에서는 세로 배치 */
-	// 	align-items: flex-start; /* 정렬을 왼쪽으로 */
-	// }
+	@media (max-width: 600px) {
+		justify-content: space-between; /* 좌우 배치 유지 */
+		padding: 0 10px; /* 필요한 경우 좌우 여백 추가 */
+	}
 `;
 
 const ToggleButtonsContainer = styled.div`
@@ -18,8 +18,7 @@ const ToggleButtonsContainer = styled.div`
 	flex-wrap: wrap; /* 버튼이 화면에 맞춰 줄 바꿈되도록 설정 */
 
 	@media (max-width: 600px) {
-		width: 100%; /* 버튼 컨테이너의 너비를 전체로 */
-		margin-top: 10px; /* 제목과 버튼 사이 여백 추가 */
+		gap: 5px; /* 버튼 사이 간격 조정 (필요한 경우) */
 	}
 `;
 
