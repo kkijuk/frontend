@@ -129,9 +129,9 @@ const CareerViewYear = ({ data }) => {
 
 	if (!sortedYears.length || !data[sortedYears[0]]) {
 		return (
-			<BackgroundSection>
-				<EmptyActivityMessage />
-			</BackgroundSection>
+			// <BackgroundSection>
+			<EmptyActivityMessage />
+			// </BackgroundSection>
 		);
 	}
 

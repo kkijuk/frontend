@@ -7,10 +7,10 @@ const ViewToggleStyled = styled.div`
 	align-items: top;
 	flex-wrap: wrap; /* 화면 크기가 작아지면 버튼과 제목이 줄 바꿈되도록 설정 */
 
-	@media (max-width: 600px) {
-		flex-direction: column; /* 작은 화면에서는 세로 배치 */
-		align-items: flex-start; /* 정렬을 왼쪽으로 */
-	}
+	// @media (max-width: 600px) {
+	// 	flex-direction: column; /* 작은 화면에서는 세로 배치 */
+	// 	align-items: flex-start; /* 정렬을 왼쪽으로 */
+	// }
 `;
 
 const ToggleButtonsContainer = styled.div`
