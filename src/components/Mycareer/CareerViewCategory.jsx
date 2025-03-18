@@ -6,19 +6,8 @@ import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 import EmptyActivityMessage from './EmptyActivityMessage';
 import { formatDate } from '../../utils/formateDate';
 
-const BackgroundSection = styled.div`
-	width: 100vw;
-	min-height: 100vh;
-	background-color: #f0f0f0;
-	position: relative;
-	box-sizing: border-box;
-	display: flex;
-	justify-content: center;
-	align-items: flex-start;
-	padding-top: 24px;
-`;
-
 const Container = styled.div`
+	max-width: 860px;
 	margin-bottom: 24px;
 `;
 
@@ -28,7 +17,7 @@ const CategoryBox = styled.div`
 	margin-bottom: 24px;
 	padding: 0 15px; /* 좌우 여백 추가 */
 
-	@media (max-width: 600px) {
+	@media (max-width: 860px) {
 		padding: 0 10px; /* 작은 화면에서 패딩 조정 */
 	}
 `;
@@ -58,12 +47,12 @@ const ListBox = styled.div`
 	padding: 12px 24px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	background: var(--white, #fff);
 	margin-bottom: 12px;
+	background: var(--white, #fff);
 	box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
 	cursor: pointer;
 
-	@media (max-width: 600px) {
+	@media (max-width: 860px) {
 		padding: 10px; /* 작은 화면에서 패딩 축소 */
 	}
 `;
@@ -103,16 +92,13 @@ const Date = styled.div`
 	color: var(--gray-02, #707070);
 	font-weight: 400;
 `;
+
 const CareerViewCategory = ({ data }) => {
 	const navigate = useNavigate();
 
 	// 데이터가 없거나 유효하지 않을 경우 처리
 	if (!data || typeof data !== 'object') {
-		return (
-			<BackgroundSection>
-				<EmptyActivityMessage />
-			</BackgroundSection>
-		);
+		return <EmptyActivityMessage />;
 	}
 
 	// 데이터의 키를 정렬
@@ -121,11 +107,7 @@ const CareerViewCategory = ({ data }) => {
 	// 데이터가 없을 경우 처리
 	const hasData = sortedKey.some((key) => Array.isArray(data[key]) && data[key].length > 0);
 	if (!hasData) {
-		return (
-			<BackgroundSection>
-				<EmptyActivityMessage />
-			</BackgroundSection>
-		);
+		return <EmptyActivityMessage />;
 	}
 
 	const handleListBoxClick = (careerId, category) => {
@@ -142,38 +124,36 @@ const CareerViewCategory = ({ data }) => {
 	};
 
 	return (
-		<BackgroundSection>
-			<CategoryBox>
-				{sortedKey.map((category) => {
-					// 카테고리 내 데이터가 없는 경우 건너뜀
-					if (!Array.isArray(data[category]) || data[category].length === 0) return null;
+		<CategoryBox>
+			{sortedKey.map((category) => {
+				// 카테고리 내 데이터가 없는 경우 건너뜀
+				if (!Array.isArray(data[category]) || data[category].length === 0) return null;
 
-					return (
-						<Container key={category}>
-							<Category>
-								<CareerCategoryCircle category={category} />
-								<CategoryText>{formatCategoryName(category)}</CategoryText> {/* 세연 수정 */}
-							</Category>
+				return (
+					<Container key={category}>
+						<Category>
+							<CareerCategoryCircle category={category} />
+							<CategoryText>{formatCategoryName(category)}</CategoryText> {/* 세연 수정 */}
+						</Category>
 
-							{data[category].map((item) => (
-								<ListBox
-									key={`${item.id}_${item.category}`}
-									onClick={() => handleListBoxClick(item.id, item.category.categoryKoName)} // 클릭 시 career.id 전송
-								>
-									<Name>
-										<CareerContainer>
-											<CareerName>{item.name}</CareerName>
-											<AliasName>&nbsp;/ {item.alias}</AliasName>
-										</CareerContainer>
-									</Name>
-									<Date>{formatDate(item.startdate, item.enddate, item.unknown)}</Date>
-								</ListBox>
-							))}
-						</Container>
-					);
-				})}
-			</CategoryBox>
-		</BackgroundSection>
+						{data[category].map((item) => (
+							<ListBox
+								key={`${item.id}_${item.category}`}
+								onClick={() => handleListBoxClick(item.id, item.category.categoryKoName)} // 클릭 시 career.id 전송
+							>
+								<Name>
+									<CareerContainer>
+										<CareerName>{item.name}</CareerName>
+										<AliasName>&nbsp;/ {item.alias}</AliasName>
+									</CareerContainer>
+								</Name>
+								<Date>{formatDate(item.startdate, item.enddate, item.unknown)}</Date>
+							</ListBox>
+						))}
+					</Container>
+				);
+			})}
+		</CategoryBox>
 	);
 };
 
