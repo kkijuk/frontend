@@ -150,6 +150,16 @@ const TextArea = styled.textarea`
 	overflow-y: auto; /* 텍스트가 넘칠 경우 스크롤 생성 */
 `;
 
+const ErrorMessage = styled.div`
+	color: var(--error, #ff7979);
+	font-family: Pretendard;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	margin-top: 5px;
+`;
+
 export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 	// careerId도 prop으로 받음
 	const [showCalendar, setShowCalendar] = useState(false);
@@ -157,6 +167,7 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 	const [title, setTitle] = useState('');
 	const [content, setContent] = useState('');
 	const [tagList, setTagList] = useState([]); // 태그 ID 리스트를 상태로 관리
+	const [errorMessage, setErrorMessage] = useState('');
 
 	console.log('careerId:', careerId);
 	const handleDateClick = () => {
@@ -182,8 +193,16 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 	};
 
 	const handleSave = async () => {
-		if (!title || !content) {
-			console.error('Title or Content is empty!');
+		if (!title) {
+			setErrorMessage('제목을 입력해주세요.');
+			return;
+		}
+		if (!selectedDate) {
+			setErrorMessage('날짜를 선택해주세요.');
+			return;
+		}
+		if (!content) {
+			setErrorMessage('입력한 내용이 없습니다.');
 			return;
 		}
 		const [startDate, endDate] = selectedDate.split(' ~ ');
@@ -202,12 +221,15 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 	};
 
 	const saveTitle = (event) => {
-		setTitle(event.target.value);
+		const inputText = event.target.value.slice(0, 30); // 30자 제한
+
+		setTitle(inputText);
 	};
 
 	const saveContent = (event) => {
-		setContent(event.target.value);
-		console.log(event.target.value);
+		const inputText = event.target.value.slice(0, 800); // 800자 제한
+
+		setContent(inputText);
 	};
 
 	return (
@@ -248,6 +270,7 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 					}}>
 					저장
 				</Save>
+				{errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
 			</Button>
 			<Line></Line>
 		</Box>
