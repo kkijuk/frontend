@@ -206,6 +206,16 @@ export default function DetailAddEdit({
 		setShowCalendar(false);
 	};
 
+	const handleTitleChange = (event) => {
+		const inputText = event.target.value.slice(0, 30); // 30자 제한
+		setTitle(inputText);
+	};
+
+	const handleContentChange = (event) => {
+		const inputText = event.target.value.slice(0, 800); // 800자 제한
+		setContents(inputText);
+	};
+
 	const handleSave = async () => {
 		const data = {
 			title,
@@ -248,7 +258,7 @@ export default function DetailAddEdit({
 				<Top>
 					<Title>
 						<Label>제목</Label>
-						<Input height="50px" width="460px" value={title} onChange={(e) => setTitle(e.target.value)} />
+						<Input height="50px" width="460px" value={title} onChange={handleTitleChange} />
 					</Title>
 					<Date>
 						<Label>날짜</Label>
@@ -264,7 +274,7 @@ export default function DetailAddEdit({
 				</Top>
 				<Middle>
 					<Label>내용</Label>
-					<TextArea height="100px" width="720px" value={contents} onChange={(e) => setContents(e.target.value)} />
+					<TextArea height="100px" width="720px" value={contents} onChange={handleContentChange} />
 				</Middle>
 				{console.log('TagBox Props - externalTags:', tagNames)}
 
