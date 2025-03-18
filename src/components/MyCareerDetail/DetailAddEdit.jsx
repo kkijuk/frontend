@@ -177,7 +177,7 @@ const BlurContainer = styled.div`
 	height: 100vh;
 	background-color: rgba(0, 0, 0, 0.3);
 	backdrop-filter: blur(4px);
-	z-index: 2;
+	z-index: 11;
 `;
 
 const BaseContainer = styled.div`
@@ -186,7 +186,7 @@ const BaseContainer = styled.div`
 	left: 50%;
 	transform: translate(-50%, -50%);
 
-	z-index: 3;
+	z-index: 12;
 `;
 
 export default function DetailAddEdit({
@@ -256,6 +256,19 @@ export default function DetailAddEdit({
 	};
 
 	const handleSave = async () => {
+		if (!title) {
+			setErrorMessage('제목을 입력해주세요.');
+			return;
+		}
+		if (!selectedStartDate) {
+			setErrorMessage('날짜를 선택해주세요.');
+			return;
+		}
+		if (!contents) {
+			setErrorMessage('입력한 내용이 없습니다.');
+			return;
+		}
+
 		const data = {
 			title,
 			content: contents,

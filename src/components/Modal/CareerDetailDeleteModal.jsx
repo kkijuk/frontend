@@ -27,7 +27,7 @@ const Text = styled.div`
 
 const ButtonContainer = styled.div`
 	width: 252px;
-	border: 1px solid black;
+	display: flex; /* flex 추가 */
 	gap: 12px;
 	flex-direction: row; /* 가로 배치 */
 	justify-content: center; /* 버튼들을 가로 중앙 정렬 */
@@ -40,6 +40,7 @@ const CancelButton = styled.button`
 	flex-shrink: 0;
 	border-radius: 10px;
 	border: 1px solid var(--gray-04, #e0e0e0);
+	cursor: pointer;
 
 	color: var(--gray-02, #707070);
 	text-align: center;
@@ -57,6 +58,7 @@ const DeleteButton = styled.button`
 	flex-shrink: 0;
 	border-radius: 10px;
 	background: var(--error, #ff7979);
+	cursor: pointer;
 
 	color: var(--white, #fff);
 	text-align: center;
