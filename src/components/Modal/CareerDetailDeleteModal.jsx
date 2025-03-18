@@ -26,6 +26,8 @@ const Text = styled.div`
 `;
 
 const ButtonContainer = styled.div`
+	width: 252px;
+	border: 1px solid black;
 	gap: 12px;
 	flex-direction: row; /* 가로 배치 */
 	justify-content: center; /* 버튼들을 가로 중앙 정렬 */
@@ -46,10 +48,11 @@ const CancelButton = styled.button`
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
+	border: none;
 `;
 
 const DeleteButton = styled.button`
-	width: 120.002px;
+	width: 120px;
 	height: 35px;
 	flex-shrink: 0;
 	border-radius: 10px;
@@ -62,6 +65,7 @@ const DeleteButton = styled.button`
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
+	border: none;
 `;
 
 export default function CareerDetailDeleteModal({ onCancel, onConfirm }) {

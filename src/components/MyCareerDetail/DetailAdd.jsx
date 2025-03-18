@@ -7,7 +7,7 @@ import { AddDetail } from '../../api/Mycareer/AddDetail';
 import { trackEvent } from '../../utils/ga4';
 
 const Box = styled.div`
-	height: 384px;
+	height: auto; /*원래 384!*/
 	width: 800px;
 	padding: 24px 40px;
 `;
@@ -27,7 +27,7 @@ const Middle = styled.div`
 `;
 
 const Button = styled.div`
-	height: 50px;
+	height: auto; /*원래 50*/
 	display: flex;
 	gap: 15px;
 	margin-bottom: 24px;
@@ -157,7 +157,7 @@ const ErrorMessage = styled.div`
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
-	margin-top: 5px;
+	margin-top: 9px;
 `;
 
 const SaveBox = styled.div`

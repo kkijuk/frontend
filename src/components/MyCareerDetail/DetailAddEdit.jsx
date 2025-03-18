@@ -169,7 +169,7 @@ const SaveBox = styled.div`
 `;
 
 const BlurContainer = styled.div`
-	position: absolute;
+	position: fixed; /*원래 absolute*/
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
@@ -177,16 +177,16 @@ const BlurContainer = styled.div`
 	height: 100vh;
 	background-color: rgba(0, 0, 0, 0.3);
 	backdrop-filter: blur(4px);
-	z-index: 1;
+	z-index: 2;
 `;
 
 const BaseContainer = styled.div`
-	position: absolute;
+	position: fixed;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 
-	z-index: 2;
+	z-index: 3;
 `;
 
 export default function DetailAddEdit({
