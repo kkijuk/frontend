@@ -6,6 +6,7 @@ import { downS3File } from "../../../api/Record/s3File";
 
 const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialData}) => {
   const [formData, setFormData] = useState({
+      fileLinkTitle: "",
       fileId: "",
       fileType: "URL", //기본값
       fileTitle: "",
@@ -117,12 +118,17 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                           <Input
                             type="text"
                             placeholder="첨부파일 제목(ex. 포트폴리오, 경력기술서 등)"
-                            value={displayedFileUrl}
+                            value={formData.fileLinkTitle}
                             onClick = {()=>window.open(existingFileUrl, "_blank")}
                             readOnly
                             style={{ width: "450px", cursor: "pointer" }}
                           />
-                          <FileSelectButton onClick={()=>setExistingFileUrl(null)}>파일 선택</FileSelectButton>
+                          <FileSelectButton 
+                            onClick={()=>{
+                              setExistingFileUrl(null);
+                            }}>
+                              파일 선택
+                          </FileSelectButton>
                         </InputWrapper>
                       ) : (
                         <FileSearch

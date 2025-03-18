@@ -1,4 +1,4 @@
-import api from "axios";
+import api from "../../Axios";
 
 const updateUserData = async (recordId, data) => {
     try{

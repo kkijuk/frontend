@@ -7,7 +7,7 @@ import { readRecord } from '../api/Record/record.js'; // default export
 import { createCareer } from '../api/Mycareer/Career.js';
 import * as CareerEditAPI from '../api/Mycareer/CareerEdit.js';
 import { CareerEdit, CareerDelete } from '../api/Mycareer/CareerEdit.js';
-import { createPresignedUrl, saveKeyName, deleteS3File, uploadFileToS3 } from '../api/Record/s3File.js';
+import { createPresignedUrl, saveKeyName, deleteS3File, uploadFileToS3, changeFileTitle } from '../api/Record/s3File.js';
 import { addURL, deleteURL } from '../api/Record/url.js';
 import { updateRecord } from '../api/Record/record.js';
 import { updateUserData } from '../api/Record/user.js';
@@ -305,7 +305,7 @@ const useRecordStore = create((set, get) => ({
 				await uploadFileToS3(data.file, signedURL);
 
 				// 3. 업로드 성공하면, keyName 백엔드에 저장
-				savedEtcData = await saveKeyName(keyName, data.fileTitle);
+				savedEtcData = await saveKeyName(keyName, data.fileTitle, data.file.name);
 				console.log('savedEtcData:', savedEtcData);
 			} else if(data.fileType === 'URL'){
 				savedEtcData = await addURL(data);
@@ -352,15 +352,26 @@ const useRecordStore = create((set, get) => ({
 			let savedEtcData;
 			let deletedEtcData;
 			if (oldData.fileType === 'File') {
-				await deleteS3File(oldData);
-				const { keyName, signedURL } = await createPresignedUrl(newData);
-				await uploadFileToS3(newData.file, signedURL);
-				savedEtcData = await saveKeyName(keyName, newData.fileTitle);
-				set((state) => ({
-					files: state.files.map((item) =>
-						item.keyName === oldData.keyName ? savedEtcData : item
-					),
-				}));
+				if(newData.file){ // 파일도 변경된 경우
+					await deleteS3File(oldData);
+					const { keyName, signedURL } = await createPresignedUrl(newData);
+					await uploadFileToS3(newData.file, signedURL, newData.file.name);
+					savedEtcData = await saveKeyName(keyName, newData.fileTitle, newData.file.name);
+					console.log('savedEtcData:', savedEtcData);
+					set((state) => ({
+						files: state.files.map((item) =>
+							item.keyName === oldData.keyName ? savedEtcData.data : item
+						),
+					}));
+				} else if(newData.fileTitle !== oldData.fileTitle){ // 파일 이름만 변경된 경우
+					await changeFileTitle(oldData.fileTitle, newData.fileTitle);
+					set((state) => ({
+						files: state.files.map((item) =>
+							item.keyName === oldData.keyName ? { ...item, fileTitle: newData.fileTitle } : item
+						),
+					}));
+				}
+				
 			} else if (oldData.fileType === 'URL') {
 				deletedEtcData = await deleteURL(oldData);
 				console.log('deletedEtcData:', deletedEtcData);
