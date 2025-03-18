@@ -16,6 +16,7 @@ import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 import { CareertextEdit } from '../../api/Mycareer/CareerEdit';
 import { trackEvent } from '../../utils/ga4';
 import { formatDate } from '../../utils/formateDate';
+import CareerDetailDeleteModal from '../../components/Modal/CareerDetailDeleteModal';
 
 const Container = styled.div`
 	display: flex;
