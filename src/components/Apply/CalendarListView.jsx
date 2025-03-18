@@ -140,6 +140,9 @@ const CalendarListView = ({ date, data, count, onJobClick }) => {
   if (count === 0) {
     return (
       <CalendarBackgroundSection>
+      <p style={{ textAlign: 'center', color: '#707070', fontSize: '16px' }}>
+      선택하신 날짜가 마감일인 공고가 없습니다.
+      </p>
       </CalendarBackgroundSection>
     );
   }
