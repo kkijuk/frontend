@@ -53,6 +53,7 @@ const ViewTitle = styled.div`
 	font-size: 20px;
 	font-weight: 600;
 	margin-left: 6px;
+	margin-top: 32px;
 
 	@media (max-width: 600px) {
 		font-size: 18px; /* 작은 화면에서는 제목 폰트 크기 축소 */
