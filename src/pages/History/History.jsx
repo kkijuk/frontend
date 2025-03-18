@@ -26,6 +26,8 @@ import EmailAndAddress from '../../components/Record/EmailAndAddress';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import useAuthRedirect from '../../stores/useAuthRedirect'; 
 import { trackEvent } from '../../utils/ga4';
+import { isEqual } from 'lodash';
+import { useDebounce } from 'use-debounce';
 
 const History = () => {
     useAuthRedirect();
@@ -90,13 +92,15 @@ const History = () => {
 	const [editableUserData, setEditableUserData] = useState({	// 사용자 정보 수정
 		profileImageUrl: '',
 		address: '',
-		// email: '',
+		email: email,
 	});
 	const [profileURL, setProfileURL] = useState(profileImageUrl);	// 프로필 이미지
 
 	const [isCareerModalOpen, setIsCareerModalOpen] = useState(false); // 내 커리어 관련 활동 추가 모달 관리
 	const [modalMode, setModalMode] = useState('add');	// 모달 모드(add, edit)
 	const [modalData, setModalData] = useState(null);	// 모달 카테고리(add mode)
+	const [initialized, setInitialized] = useState(false);	// 초기화 여부
+	const [debouncedUserData] = useDebounce(editableUserData, 1000); // 1초 동안 입력 없을 때 호출
 
 	// useEffect
 	// 이력서 불러오기
@@ -138,19 +142,14 @@ const History = () => {
 
 	}, [fetchRecord]);
 
-
 	useEffect(() => {
-		setEditableUserData({
-			profileImageUrl: profileImageUrl,
-			address: address,
-			// email: email,
-		});
-	}, [userData]);
-
-	useEffect(() => {
-		console.log("EditableUserData: ", editableUserData);
-		updateUserData(recordId, editableUserData); //in useRecordStore
-	}, [editableUserData]);
+		if (initialized && !isEqual(userData, debouncedUserData)) {
+			console.log("EditableUserData: ", debouncedUserData);
+			updateUserData(recordId, debouncedUserData); //in useRecordStore
+		} else {
+			setInitialized(true);
+		}
+	}, [debouncedUserData]);
 
 
 	// LOGIC

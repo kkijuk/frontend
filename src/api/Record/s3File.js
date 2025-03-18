@@ -68,12 +68,13 @@ const uploadFileToS3 = async (file, presignedURL) => {
 };
 
 // keyName 저장
-const saveKeyName = async(keyName, title) => {
-    console.log('Saving key name:', keyName, title);
+const saveKeyName = async(keyName, title, linkTitle) => {
+    console.log('Saving key name:', keyName, title, linkTitle);
     try{
         const response = await api.post("/history/file", { 
             keyName: keyName,
-            title: title
+            title: title,
+            linkTitle: linkTitle,
         });
 
         console.log("Key Name saved successfully: ", response.data);
@@ -150,4 +151,28 @@ const downS3File = async (data) => {
     }
 };
 
-export { createPresignedUrl, uploadFileToS3, saveKeyName, deleteS3File, downS3File };
+// fileTitle 변경
+const changeFileTitle = async (oldFileName, newFileName) => {
+    console.log('Changing file title:', oldFileName, "->", newFileName);
+    try{
+        const response = await api.put("/history/file/rename", {
+            oldFileName: oldFileName,
+            newFileName: newFileName
+        });
+        console.log("Success - changeFileTitle: ", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error changing file title: ", error);
+        if(error.response){
+            console.error('Server responded with status code:', error.response.status);
+            console.error('Server responded with:', error.response.data);
+        } else if(error.request){
+            console.error('No response received:', error.request);
+        } else {
+            console.error('Error setting up request:', error.message);
+        }
+        throw error;
+    }
+}
+
+export { createPresignedUrl, uploadFileToS3, saveKeyName, deleteS3File, downS3File, changeFileTitle };
