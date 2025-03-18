@@ -160,6 +160,12 @@ const ErrorMessage = styled.div`
 	margin-top: 5px;
 `;
 
+const SaveBox = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center; /* 가운데 정렬 */
+`;
+
 export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 	// careerId도 prop으로 받음
 	const [showCalendar, setShowCalendar] = useState(false);
@@ -258,19 +264,21 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 			<TagBox onTagListChange={setTagList} /> {/* 태그 박스에서 선택한 태그 관리 */}
 			<Button>
 				<Cancel onClick={onCancel}>취소</Cancel>
-				<Save
-					onClick={() => {
-						trackEvent('add_confirm', {
-							category: 'mycareer',
-							detail: 'career_detail',
-							action_type: 'confirm',
-							label: '저장',
-						});
-						handleSave();
-					}}>
-					저장
-				</Save>
-				{errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+				<SaveBox>
+					<Save
+						onClick={() => {
+							trackEvent('add_confirm', {
+								category: 'mycareer',
+								detail: 'career_detail',
+								action_type: 'confirm',
+								label: '저장',
+							});
+							handleSave();
+						}}>
+						저장
+					</Save>
+					{errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+				</SaveBox>
 			</Button>
 			<Line></Line>
 		</Box>
