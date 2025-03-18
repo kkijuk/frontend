@@ -55,16 +55,16 @@ const ButtonContainer = styled.div`
 const CompleteButton = styled.button`
   width: 400px;
   height: 50px;
-  background: var(--main-01, #3AAF85);
+   background: ${({ disabled }) => (disabled ? '#D9D9D9' : '#3aaf85')};
   color: white;
   border: none;
   border-radius: 10px;
   font-size: 17px;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   transition: background 0.3s;
 
-  &:hover {
-    background: #2a9f72;
+ &:hover {
+    background: ${({ disabled }) => (disabled ? '#D9D9D9' : '#2a9f72')};
   }
 `;
 
@@ -202,8 +202,13 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
       </div>
       {showErrorMessage && <ErrorMessage>최대 2개까지 선택 가능해요</ErrorMessage>}
       <ButtonContainer>
-        <CompleteButton onClick={handleSubmit}>완료</CompleteButton>
-      </ButtonContainer>
+  <CompleteButton 
+    onClick={handleSubmit} 
+    disabled={selectedStatuses.length < 1} // 1개 이상 선택해야 활성화됨
+  >
+    완료
+  </CompleteButton>
+</ButtonContainer>
     </StepTwoContainer>
   );
 };
