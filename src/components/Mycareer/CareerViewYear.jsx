@@ -6,25 +6,13 @@ import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 import EmptyActivityMessage from './EmptyActivityMessage';
 import { formatDate } from '../../utils/formateDate';
 
-const BackgroundSection = styled.div`
-	width: 100vw;
-	min-height: 100vh;
-	background-color: #f0f0f0;
-	position: relative;
-	box-sizing: border-box;
-	display: flex;
-	justify-content: center;
-	align-items: flex-start;
-	padding: 20px 0;
-`;
-
 const Container = styled.div`
 	width: 100%;
 	max-width: 820px;
 	box-sizing: border-box;
 	// padding: 0 15px; /* 좌우 여백 추가로 반응형에서 보기 좋게 */
 
-	@media (max-width: 600px) {
+	@media (max-width: 860px) {
 		padding: 0 10px; /* 작은 화면에서 패딩 조정 */
 	}
 `;
@@ -128,11 +116,7 @@ const CareerViewYear = ({ data }) => {
 	const sortedYears = Object.keys(data).sort((a, b) => b - a);
 
 	if (!sortedYears.length || !data[sortedYears[0]]) {
-		return (
-			// <BackgroundSection>
-			<EmptyActivityMessage />
-			// </BackgroundSection>
-		);
+		return <EmptyActivityMessage />;
 	}
 
 	const formatCategoryName = (category) => {
