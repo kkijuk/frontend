@@ -51,6 +51,7 @@ const SearchBox = styled.div`
 		flex-direction: column; /* 작은 화면에서는 세로로 정렬 */
 		align-items: flex-start; /* 왼쪽 정렬 */
 		height: auto; /* 높이 자동 조정 */
+		padding-left: 10px
 		margin-top: 20px; /* 위쪽 여백 조정 */
 	}
 `;
@@ -70,6 +71,8 @@ export default function Mycareer() {
 	const navigate = useNavigate();
 
 	const { data: careers, isLoading, error } = useFetchMycareerActivity(view);
+
+	console.log(careers);
 
 	const handleSearchClick = useCallback(() => {
 		navigate('/Mycareer_search');
