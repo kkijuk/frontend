@@ -5,71 +5,20 @@ import styled from 'styled-components';
 import Title from '../../components/Apply/Title';
 import SearchBar from '../../components/Mycareer/shareSearchBar';
 
+import {
+	Container,
+	SearchBox,
+	SearchQueryResultBox,
+	SearchQueryResult,
+	BackgroundSection,
+} from './MycareerSearch.styles';
+
 import MyCareerSearchTotal from '../../components/MyCareerSearch/MyCareerSearchTotal';
 import MyCareerSearchView from '../../components/MyCareerSearch/MyCareerSearchView';
 import MyCareerSearchActivity from '../../components/MyCareerSearch/MyCareerSearchActivity/MyCareerSearchActivity';
 import MyCareerSearchTag from '../../components/MyCareerSearch/MyCareerSearchTag/MyCareerSearchTag';
 
-const Container = styled.div`
-	width: 100%;
-	max-width: 820px;
-	margin: 0 auto;
-	background-color: white;
-	box-sizing: border-box;
-`;
-
-const SearchBox = styled.div`
-	width: 100%;
-	max-width: 820px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin-bottom: 20px;
-	margin-top: 35px;
-	box-sizing: border-box;
-
-	@media (max-width: 600px) {
-		flex-direction: column; /* 작은 화면에서는 세로로 정렬 */
-		align-items: flex-start;
-		height: auto;
-		margin-top: 20px;
-	}
-`;
-
-const SearchQueryResultBox = styled.div`
-	width: 100%;
-	max-width: 820px;
-	padding: 0 18px;
-	height: 36px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin: 32px 0;
-	box-sizing: border-box;
-`;
-
-const SearchQueryResult = styled.h1`
-	color: var(--black, #000);
-	font-family: Pretendard;
-	font-size: 28px;
-	font-style: normal;
-	font-weight: 700;
-	line-height: normal;
-`;
-
-const BackgroundSection = styled.div`
-	width: 100vw;
-	min-height: 80vh;
-	background-color: #f0f0f0;
-	position: relative;
-	box-sizing: border-box;
-	display: flex;
-	justify-content: center;
-	align-items: flex-start;
-	padding: 20px 0;
-`;
-
-// 상수 정의 추가
+// 상수 정의
 const VIEW_TYPES = {
 	TOTAL: '1',
 	ACTIVITY: '2',
