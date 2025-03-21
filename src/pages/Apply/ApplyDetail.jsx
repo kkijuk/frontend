@@ -616,10 +616,6 @@ const ApplyDetail = () => {
 		updateJobState();
 	}, [id]);
 	
-	useEffect(() => {
-		fetchJobDetails();
-	}, [job]);
-	
 
 	useEffect(() => {
 		if (!job?.endTime) return;
