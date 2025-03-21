@@ -761,10 +761,11 @@ const ApplyDetail = () => {
 
 	const handleDateChange = async (date) => {
 		if (!date) return; //  날짜가 없으면 실행하지 않음
-	
-		//  'YYYY-MM-DD' 형식으로 변환
-		const formattedDate = new Date(date).toISOString().split("T")[0];
-	
+
+	 //  한국 시간(KST) 적용 후 'YYYY-MM-DD' 형식으로 변환
+	 const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+	 const formattedDate = localDate.toISOString().split("T")[0];
+ 
 		setApplyDate(new Date(formattedDate)); //  UI 즉시 반영
 		setShowCalendar(false); //  캘린더 숨기기
 	
