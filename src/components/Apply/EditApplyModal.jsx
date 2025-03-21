@@ -270,15 +270,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
 	const [tags, setTags] = useState(job?.tags || []);
 	const [link, setLink] = useState('');
 
-	useEffect(() => {
-		if (job) {
-		  setTitle(job.title || '');
-		  setStartTime(formatDateTimeToLocal(job.startTime) || '');
-		  setEndTime(formatDateTimeToLocal(job.endTime) || '');
-		  setTags(job.tags || []);  //  초기 태그는 한 번만 설정
-		  setLink(job.link || '');
-		}
-	  }, [job]);
+
 
 	const handleSave = async () => {
 		const isAnyFieldFilled = title || tags.length > 0 || (startTime && endTime) || link;
