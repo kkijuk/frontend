@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { highlightMatch } from '../../../utils/highlightMatch';
 import { NotExistSearchComponent } from '../NotExistSearchWrapper';
 import { formatDate } from '../../../utils/formateDate';
+import TagButton from '../../shared/TagButton';
 
 const Container = styled.div`
 	width: 100%;
@@ -32,29 +33,6 @@ const TagWrapper = styled.div`
 	flex-wrap: wrap;
 	gap: 10px;
 	margin-top: 20px;
-`;
-
-const Tag = styled.button`
-	padding: 2px 20px;
-	border-radius: 20px;
-	font-family: Pretendard;
-	font-size: 12px;
-	font-weight: 400;
-	font-style: normal;
-	cursor: pointer;
-
-	background: ${(props) => (props.isActive ? '#3aaf85' : '#f5f5f5')};
-	color: ${(props) => (props.isActive ? '#ffffff' : '#3aaf85')};
-	border: 1px solid ${(props) => (props.isActive ? '#3aaf85' : '#f5f5f5')};
-
-	transition:
-		background-color 0.3s ease,
-		color 0.3s ease;
-
-	&:hover {
-		background-color: #3aaf85;
-		color: #ffffff;
-	}
 `;
 
 const TopWrapper = styled.div`
@@ -190,9 +168,10 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 					<div>로딩중...</div>
 				) : (
 					activityTagList?.data?.data.tagList.map((tag) => (
-						<Tag key={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => setSelectedTag(tag.tagId)}>
+						<TagButton id={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => setSelectedTag(tag.tagId)}>
 							{highlightMatch(tag.tagName, searchQuery)}
-						</Tag>
+						</TagButton>
+						
 					))
 				)}
 			</TagWrapper>

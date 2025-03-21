@@ -3,4 +3,7 @@ export const theme = {
 		sm: '480px',
 		md: '768px',
 	},
+	colors: {
+		primary: '#3AAF85',
+	},
 };
