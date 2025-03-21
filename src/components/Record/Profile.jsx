@@ -12,7 +12,7 @@ const Profile = ({ profileKeyName, onProfileChange }) => {
     // }, [profileBlob]);
 
     useEffect(()=>{
-        if(profileKeyName){
+        if(profileKeyName && profileKeyName !== 'string'){
             downS3File({ fileTitle: profileKeyName })
                 .then((response) => {
                     if(response){
