@@ -49,7 +49,6 @@ const useRecordStore = create((set, get) => ({
 			if (response.message === '해당 유저의 이력서가 존재하지 않습니다.') {
 				throw new Error('not created');
 			}
-			
 
 			// 임시
 			const normalizeData = (items, idField) => items.map((item) => ({ ...item, id: item[idField] }));
@@ -391,8 +390,35 @@ const useRecordStore = create((set, get) => ({
 	},
 
 	updateUserData: async (recordId, data) => {
+		// data : {address: adderss, profileImageFile: file}
 		try {
-			const response = await updateUserData(recordId, data);
+			const { email, profileImageUrl } = get().userData;
+
+			if(data.profileImageFile) {
+				// (1) 기존 프로필 있으면 먼저 삭제
+				// if(profileImageUrl) {
+				// 	await deleteS3File({fileTitle : profileImageUrl});
+				// }
+				// (2) Presigned URL 발급
+				// fileTitle = "profileImage_recordId"를 고정값으로 사용
+				const { keyName, signedURL } = await createPresignedUrl({ fileTitle: `profileImage_${recordId}` });
+				// (3) S3에 파일 업로드
+				await uploadFileToS3(data.profileImageFile, signedURL);
+				// (4) keyName 백엔드에 저장
+				const savedNewProfileData = await saveKeyName(keyName, `profileImage_${recordId}`, data.profileImageFile.name);
+				console.log('savedNewProfileData:', savedNewProfileData);
+				// (5) oldProfileData 업데이트
+				set((state) => ({
+					oldProfileData: savedNewProfileData,
+				})
+				)
+			}
+
+			const response = await updateUserData(recordId, {
+				address: data.address,
+				profileImageUrl: `profileImage_${recordId}`,
+				email: email,
+			});
 			set((state) => ({
 				userData: { 
 					...state.userData, 
