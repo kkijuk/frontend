@@ -666,22 +666,18 @@ const ApplyDetail = () => {
 
 	const handleSave = async (updatedJob) => {
 		try {
-			await updateRecruit(updatedJob.id, updatedJob); // 업데이트 API 호출
+			await updateRecruit(updatedJob.id, updatedJob);
+			
+			// 수정된 데이터를 다시 가져와 화면을 최신 상태로 유지
+			const updatedData = await fetchJobDetails();
+			if (updatedData) setJob(updatedData);
 	
-			// 1) 수정된 데이터를 반영
-			setJob(prevJob => ({
-				...prevJob,
-				...updatedJob
-			}));
-	
-			// 2) 최신 데이터 다시 불러오기
-			await fetchJobDetails();
-	
-			setIsEditModalOpen(false); // 모달 닫기
+			setIsEditModalOpen(false);
 		} catch (error) {
 			console.error('Error updating job:', error);
 		}
 	};
+	
 	
 
 	const handleDeleteConfirm = async () => {
