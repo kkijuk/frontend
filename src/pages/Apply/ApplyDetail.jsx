@@ -600,12 +600,19 @@ const ApplyDetail = () => {
 				setStatus(location.state.job.status);
 				setApplyDate(location.state.job.applyDate ? new Date(location.state.job.applyDate) : null);
 			} else {
-				await fetchJobDetails(); // 최신 데이터로 업데이트
+				const jobDetails = await fetchJobDetails();
+				setJob({
+					...jobDetails,
+					startTime: jobDetails.startTime, // 접수 시작 시간을 최신 값으로 설정
+					endTime: jobDetails.endTime, // 접수 마감 시간을 최신 값으로 설정
+				});
+				setStatus(jobDetails.status);
+				setApplyDate(jobDetails.applyDate ? new Date(jobDetails.applyDate) : null);
 			}
 		};
-	
+
 		updateJobState();
-	}, [id, location.state, job]); 
+	}, [id, location.state]);
 
 	useEffect(() => {
 		if (!job?.endTime) return;
@@ -652,12 +659,18 @@ const ApplyDetail = () => {
 
 	const handleSave = async (updatedJob) => {
 		try {
-			await updateRecruit(updatedJob.id, updatedJob);
+			await updateRecruit(updatedJob.id, updatedJob); // 업데이트 API 호출
 	
-			// 수정 후 데이터를 다시 불러와 화면에 반영
-			await fetchJobDetails();  
+			// 1) 수정된 데이터를 반영
+			setJob(prevJob => ({
+				...prevJob,
+				...updatedJob
+			}));
 	
-			setIsEditModalOpen(false);
+			// 2) 최신 데이터 다시 불러오기
+			await fetchJobDetails();
+	
+			setIsEditModalOpen(false); // 모달 닫기
 		} catch (error) {
 			console.error('Error updating job:', error);
 		}
