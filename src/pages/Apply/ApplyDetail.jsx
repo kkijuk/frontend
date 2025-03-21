@@ -762,35 +762,31 @@ const ApplyDetail = () => {
 	const handleDateChange = async (date) => {
 		if (!date) return; //  날짜가 없으면 실행하지 않음
 	
-		//  로컬 날짜를 'YYYY-MM-DD' 형식으로 변환
-		const year = date.getFullYear();
-		const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
-		const day = String(date.getDate()).padStart(2, '0');
-		const formattedDate = `${year}-${month}-${day}`;
+		//  'YYYY-MM-DD' 형식으로 변환
+		const formattedDate = new Date(date).toISOString().split("T")[0];
 	
-		setApplyDate(new Date(formattedDate)); //  UI 즉시 반영 (문자열이 아니라 Date 객체로 저장)
+		setApplyDate(new Date(formattedDate)); //  UI 즉시 반영
 		setShowCalendar(false); //  캘린더 숨기기
 	
 		try {
-			//  API 요청을 올바르게 `{ applyDate: formattedDate }` 형식으로 변경
-			const response = await updateRecruitApplyDate(id, { applyDate: formattedDate });
-			
-			if (response) { // 응답이 올바르게 왔는지 확인
+			const response = await updateRecruitApplyDate(id, formattedDate);
+			if (response) { 
 				console.log(" 지원 날짜가 성공적으로 업데이트됨:", formattedDate);
 	
-				//  최신 데이터 다시 가져오기 (DB에 반영되었는지 확인)
+				//  최신 데이터 다시 가져오기
 				const updatedJob = await getRecruitDetails(id);
 				setJob((prevJob) => ({
 					...prevJob,
-					applyDate: updatedJob.applyDate ? new Date(updatedJob.applyDate) : new Date(formattedDate), // ✅ Date 객체로 변환
+					applyDate: updatedJob.applyDate ? new Date(updatedJob.applyDate) : new Date(formattedDate),
 				}));
 			} else {
 				console.error("❌ 지원 날짜 업데이트 실패:", response);
 			}
 		} catch (error) {
-			console.error("❌ Failed to update apply date:", error);
+			console.error("❌ Failed to update apply date:", error.response?.data || error);
 		}
 	};
+	
 	
 	
 
