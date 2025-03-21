@@ -230,13 +230,29 @@ const FilterPage = () => {
 
 	const handleSortChange = (order) => {
 		setSortOrder(order);
-		fetchSearchResults(); // 정렬 변경 시 즉시 검색 결과 갱신
-	  };
+		setRecruits((prevRecruits) => {
+			return [...prevRecruits].sort((a, b) => {
+				return order === 'latest'
+					? new Date(b.endTime) - new Date(a.endTime) // 최신순
+					: new Date(a.endTime) - new Date(b.endTime); // 오래된순
+			});
+		});
+	};
+
+	useEffect(() => {
+		fetchSearchResults();  // activeTab이 변경될 때만 API 요청
+	}, [activeTab]);
 
 	  useEffect(() => {
-		fetchSearchResults();  // sortOrder가 변경될 때마다 재검색
-	  }, [sortOrder, activeTab]);
-
+		setRecruits((prevRecruits) => {
+			return [...prevRecruits].sort((a, b) => {
+				return sortOrder === 'latest'
+					? new Date(b.endTime) - new Date(a.endTime) // 최신순
+					: new Date(a.endTime) - new Date(b.endTime); // 오래된순
+			});
+		});
+	}, [sortOrder]);
+	
 	  useEffect(() => {
         // 이전 검색 결과와 비교
         const changes = recruits.filter(

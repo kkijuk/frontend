@@ -22,6 +22,7 @@ export const updateRecruit = async (recruitId, updatedJob) => {
             status: updatedJob.status || null,
             tags: updatedJob.tags.length > 0 ? updatedJob.tags : null,
             link: updatedJob.link || null,
+            applyDate: updatedJob.applyDate || null,
         });
 
         return response.data; // 응답 데이터 반환

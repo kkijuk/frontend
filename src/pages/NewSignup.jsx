@@ -4,6 +4,7 @@ import SignupStepOne from '../components/User/SignupStepOne';
 import SignupStepTwo from '../components/User/SignupStepTwo';
 import styled from 'styled-components';
 import signupLogo from '../assets/signuplogo.svg';
+import useAuthStore from '../stores/useAuthStore';
 
 const Container = styled.div`
   max-width: 500px;
@@ -67,12 +68,20 @@ const StepBar = styled.div`
 
 const NewSignup = () => {
   const [step, setStep] = useState(1);
+  const navigate = useNavigate();
+  const { isProfileComplete } = useAuthStore(); // Zustand에서 프로필 완료 여부 가져오기
 
   const [agreements, setAgreements] = useState({
     isTermsAgreed: false,
     isPrivacyAgreed: false,
     isMarketingAgreed: false,
   });
+
+  useEffect(() => {
+    if (isProfileComplete) {
+      navigate('/home'); // 프로필이 완료된 경우 홈으로 리다이렉트
+    }
+  }, [isProfileComplete, navigate]);
 
   useEffect(() => {
     const preventScroll = (e) => {
@@ -88,8 +97,6 @@ const NewSignup = () => {
       $body.style.overflow = '';
     };
   }, []);
-
-  const navigate = useNavigate();
 
   const handleAgreementChange = (key, value) => {
     setAgreements((prev) => ({ ...prev, [key]: value }));

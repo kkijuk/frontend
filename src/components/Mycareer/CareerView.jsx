@@ -1,62 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
 
-const ViewToggleStyled = styled.div`
-	display: flex;
-	justify-content: space-between;
-	align-items: center; /* top에서 center로 변경하여 수직 중앙 정렬 */
-	margin-top: 32px;
-
-	@media (max-width: 600px) {
-		justify-content: space-between; /* 좌우 배치 유지 */
-		padding: 0 10px; /* 필요한 경우 좌우 여백 추가 */
-	}
-`;
-
-const ToggleButtonsContainer = styled.div`
-	display: flex;
-	flex-wrap: wrap; /* 버튼이 화면에 맞춰 줄 바꿈되도록 설정 */
-
-	@media (max-width: 600px) {
-		gap: 5px; /* 버튼 사이 간격 조정 (필요한 경우) */
-	}
-`;
-
-const ToggleButton = styled.button`
-	padding: 8px 20px;
-	border-radius: 10px 10px 0px 0px;
-	background-color: ${(props) => (props.active ? '#F1F1F1' : 'white')};
-	cursor: pointer;
-	border: 2px solid ${(props) => (props.active ? '#F1F1F1' : 'white')};
-	width: 85px;
-	height: 30px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-family: Pretendard;
-	font-size: 14px;
-	font-weight: 500;
-	color: ${(props) => (props.active ? '#3AAF85' : '#707070')};
-	transition: all 0.3s ease; /* 버튼 클릭 시 부드러운 전환 효과 */
-
-	@media (max-width: 600px) {
-		width: 70px; /* 작은 화면에서는 버튼 너비 축소 */
-		font-size: 12px; /* 폰트 크기 축소 */
-		padding: 6px 8px; /* 패딩 축소 */
-	}
-`;
-
-const ViewTitle = styled.div`
-	color: var(--black, #000);
-	font-family: Pretendard;
-	font-size: 20px;
-	font-weight: 600;
-	margin-left: 6px;
-
-	@media (max-width: 600px) {
-		font-size: 18px; /* 작은 화면에서는 제목 폰트 크기 축소 */
-	}
-`;
+import { ViewToggleStyled, ToggleButtonsContainer, ToggleButton, ViewTitle } from './CareerView.styles';
 
 const CareerView = ({ view, onToggle }) => {
 	return (

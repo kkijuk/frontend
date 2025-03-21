@@ -583,6 +583,8 @@ const ApplyDetail = () => {
 			setJob(updatedJobDetails);
 			setStatus(updatedJobDetails.status);
 			setApplyDate(updatedJobDetails.applyDate ? new Date(updatedJobDetails.applyDate) : null);
+		
+			return updatedJobDetails;
 		} catch (error) {
 			console.error('Error fetching job details:', error);
 		}
@@ -591,28 +593,29 @@ const ApplyDetail = () => {
 
 	useEffect(() => {
 		const updateJobState = async () => {
-			if (location.state && location.state.job) {
-				setJob({
-					...location.state.job,
-					startTime: location.state.job.startTime, // 접수 시작 시간을 최신 값으로 설정
-					endTime: location.state.job.endTime, // 접수 마감 시간을 최신 값으로 설정
-				});
-				setStatus(location.state.job.status);
-				setApplyDate(location.state.job.applyDate ? new Date(location.state.job.applyDate) : null);
-			} else {
+			if (location.state?.job) {
+		
 				const jobDetails = await fetchJobDetails();
-				setJob({
-					...jobDetails,
-					startTime: jobDetails.startTime, // 접수 시작 시간을 최신 값으로 설정
-					endTime: jobDetails.endTime, // 접수 마감 시간을 최신 값으로 설정
-				});
-				setStatus(jobDetails.status);
-				setApplyDate(jobDetails.applyDate ? new Date(jobDetails.applyDate) : null);
+	
+				if (!jobDetails || jobDetails.updatedAt <= location.state.job.updatedAt) {
+					// 프론트엔드 상태가 더 최신이면 유지
+					setJob(location.state.job);
+					setStatus(location.state.job.status);
+					setApplyDate(location.state.job.applyDate ? new Date(location.state.job.applyDate) : null);
+				} else {
+					// 백엔드 데이터가 최신이면 업데이트
+					setJob(jobDetails);
+					setStatus(jobDetails.status);
+					setApplyDate(jobDetails.applyDate ? new Date(jobDetails.applyDate) : null);
+				}
+			} else {
+				await fetchJobDetails(); // location.state가 없으면 백엔드 데이터 사용
 			}
 		};
-
+	
 		updateJobState();
-	}, [id, location.state]);
+	}, [id]);
+	
 
 	useEffect(() => {
 		if (!job?.endTime) return;
@@ -659,22 +662,26 @@ const ApplyDetail = () => {
 
 	const handleSave = async (updatedJob) => {
 		try {
-			// 공고를 업데이트
-			await updateRecruit(updatedJob.id, updatedJob);
-
-			// 화면에 표시되는 데이터를 수동으로 업데이트
+			await updateRecruit(updatedJob.id, {
+				...updatedJob,
+				applyDate: job.applyDate || updatedJob.applyDate, //  기존 applyDate 유지
+			});
+	
+			//  기존 지원 날짜 유지하면서 최신 데이터 반영
 			setJob((prevJob) => ({
 				...prevJob,
 				...updatedJob,
-				startTime: updatedJob.startTime, // 업데이트된 시작 시간을 반영
-				endTime: updatedJob.endTime, // 업데이트된 마감 시간을 반영
+				applyDate: job.applyDate || prevJob.applyDate, //  지원 날짜가 null이 되지 않도록 유지
 			}));
-
+	
 			setIsEditModalOpen(false); // 모달 닫기
 		} catch (error) {
-			console.error('Error updating job:', error);
+			console.error("Error updating job:", error);
 		}
 	};
+	
+	
+	
 
 	const handleDeleteConfirm = async () => {
 		try {
@@ -696,6 +703,10 @@ const ApplyDetail = () => {
 
 		try {
 			await updateRecruitStatus(id, newStatus);
+			setJob((prevJob) => ({
+				...prevJob,
+				status: newStatus,
+			}));
 		} catch (error) {
 			console.error('Failed to update status:', error);
 		}
@@ -755,22 +766,36 @@ const ApplyDetail = () => {
 	};
 
 	const handleDateChange = async (date) => {
-		// 로컬 날짜를 'YYYY-MM-DD' 형식으로 변환
-		const year = date.getFullYear();
-		const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
-		const day = String(date.getDate()).padStart(2, '0');
-		const formattedDate = `${year}-${month}-${day}`;
+		if (!date) return; //  날짜가 없으면 실행하지 않음
 
-		setApplyDate(date);
-		setShowCalendar(false); // 날짜 선택 후 캘린더 숨기기
-
-		// 선택한 날짜를 서버에 PATCH 요청으로 보내기
+	 //  한국 시간(KST) 적용 후 'YYYY-MM-DD' 형식으로 변환
+	 const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+	 const formattedDate = localDate.toISOString().split("T")[0];
+ 
+		setApplyDate(new Date(formattedDate)); //  UI 즉시 반영
+		setShowCalendar(false); //  캘린더 숨기기
+	
 		try {
-			await updateRecruitApplyDate(id, formattedDate);
+			const response = await updateRecruitApplyDate(id, formattedDate);
+			if (response) { 
+				console.log(" 지원 날짜가 성공적으로 업데이트됨:", formattedDate);
+	
+				//  최신 데이터 다시 가져오기
+				const updatedJob = await getRecruitDetails(id);
+				setJob((prevJob) => ({
+					...prevJob,
+					applyDate: updatedJob.applyDate ? new Date(updatedJob.applyDate) : new Date(formattedDate),
+				}));
+			} else {
+				console.error("❌ 지원 날짜 업데이트 실패:", response);
+			}
 		} catch (error) {
-			console.error('Failed to update apply date:', error);
+			console.error("❌ Failed to update apply date:", error.response?.data || error);
 		}
 	};
+	
+	
+	
 
 	const formatDateTimeToLocal = (dateString) => {
 		// 서버에서 받은 UTC 시간을 Date 객체로 변환

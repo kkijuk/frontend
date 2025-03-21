@@ -7,7 +7,7 @@ import { AddDetail } from '../../api/Mycareer/AddDetail';
 import { trackEvent } from '../../utils/ga4';
 
 const Box = styled.div`
-	height: 384px;
+	height: auto; /*원래 384!*/
 	width: 800px;
 	padding: 24px 40px;
 `;
@@ -27,7 +27,7 @@ const Middle = styled.div`
 `;
 
 const Button = styled.div`
-	height: 50px;
+	height: auto; /*원래 50*/
 	display: flex;
 	gap: 15px;
 	margin-bottom: 24px;
@@ -150,6 +150,22 @@ const TextArea = styled.textarea`
 	overflow-y: auto; /* 텍스트가 넘칠 경우 스크롤 생성 */
 `;
 
+const ErrorMessage = styled.div`
+	color: var(--error, #ff7979);
+	font-family: Pretendard;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	margin-top: 9px;
+`;
+
+const SaveBox = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center; /* 가운데 정렬 */
+`;
+
 export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 	// careerId도 prop으로 받음
 	const [showCalendar, setShowCalendar] = useState(false);
@@ -157,6 +173,7 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 	const [title, setTitle] = useState('');
 	const [content, setContent] = useState('');
 	const [tagList, setTagList] = useState([]); // 태그 ID 리스트를 상태로 관리
+	const [errorMessage, setErrorMessage] = useState('');
 
 	console.log('careerId:', careerId);
 	const handleDateClick = () => {
@@ -182,8 +199,16 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 	};
 
 	const handleSave = async () => {
-		if (!title || !content) {
-			console.error('Title or Content is empty!');
+		if (!title) {
+			setErrorMessage('제목을 입력해주세요.');
+			return;
+		}
+		if (!selectedDate) {
+			setErrorMessage('날짜를 선택해주세요.');
+			return;
+		}
+		if (!content) {
+			setErrorMessage('입력한 내용이 없습니다.');
 			return;
 		}
 		const [startDate, endDate] = selectedDate.split(' ~ ');
@@ -202,12 +227,15 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 	};
 
 	const saveTitle = (event) => {
-		setTitle(event.target.value);
+		const inputText = event.target.value.slice(0, 30); // 30자 제한
+
+		setTitle(inputText);
 	};
 
 	const saveContent = (event) => {
-		setContent(event.target.value);
-		console.log(event.target.value);
+		const inputText = event.target.value.slice(0, 800); // 800자 제한
+
+		setContent(inputText);
 	};
 
 	return (
@@ -236,18 +264,21 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 			<TagBox onTagListChange={setTagList} /> {/* 태그 박스에서 선택한 태그 관리 */}
 			<Button>
 				<Cancel onClick={onCancel}>취소</Cancel>
-				<Save
-					onClick={() => {
-						trackEvent('add_confirm', {
-							category: 'mycareer',
-							detail: 'career_detail',
-							action_type: 'confirm',
-							label: '저장',
-						});
-						handleSave();
-					}}>
-					저장
-				</Save>
+				<SaveBox>
+					<Save
+						onClick={() => {
+							trackEvent('add_confirm', {
+								category: 'mycareer',
+								detail: 'career_detail',
+								action_type: 'confirm',
+								label: '저장',
+							});
+							handleSave();
+						}}>
+						저장
+					</Save>
+					{errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+				</SaveBox>
 			</Button>
 			<Line></Line>
 		</Box>

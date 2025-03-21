@@ -5,6 +5,7 @@ import moment from 'moment';
 import TagBox from '../shared/TagBox';
 import { CareerDetailEdit } from '../../api/Mycareer/CareerDetailEdit';
 import { CareerDetailDelete } from '../../api/Mycareer/CareerDetailEdit';
+import CareerDetailDeleteModal from '../Modal/CareerDetailDeleteModal';
 
 const Box = styled.div`
 	height: 384px;
@@ -151,6 +152,42 @@ const TextArea = styled.textarea`
 	resize: none; /* 사용자가 텍스트 영역 크기 조절 못하도록 함 */
 	overflow-y: auto; /* 텍스트가 넘칠 경우 스크롤 생성 */
 `;
+const ErrorMessage = styled.div`
+	color: var(--error, #ff7979);
+	font-family: Pretendard;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	margin-top: 5px;
+`;
+
+const SaveBox = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center; /* 가운데 정렬 */
+`;
+
+const BlurContainer = styled.div`
+	position: fixed; /*원래 absolute*/
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.3);
+	backdrop-filter: blur(4px);
+	z-index: 11;
+`;
+
+const BaseContainer = styled.div`
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	z-index: 12;
+`;
 
 export default function DetailAddEdit({
 	initialTitle,
@@ -171,6 +208,8 @@ export default function DetailAddEdit({
 	const [contents, setContents] = useState(initialContents);
 	const [tagNames, setTagNames] = useState([]);
 	const [tagIds, setTagIds] = useState([]);
+	const [errorMessage, setErrorMessage] = useState('');
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 삭제 모달 상태 추가
 
 	/*useEffect(() => {
 		// initialTags 배열의 tagName만 추출하여 tagNames 배열 생성
@@ -206,7 +245,30 @@ export default function DetailAddEdit({
 		setShowCalendar(false);
 	};
 
+	const handleTitleChange = (event) => {
+		const inputText = event.target.value.slice(0, 30); // 30자 제한
+		setTitle(inputText);
+	};
+
+	const handleContentChange = (event) => {
+		const inputText = event.target.value.slice(0, 800); // 800자 제한
+		setContents(inputText);
+	};
+
 	const handleSave = async () => {
+		if (!title) {
+			setErrorMessage('제목을 입력해주세요.');
+			return;
+		}
+		if (!selectedStartDate) {
+			setErrorMessage('날짜를 선택해주세요.');
+			return;
+		}
+		if (!contents) {
+			setErrorMessage('입력한 내용이 없습니다.');
+			return;
+		}
+
 		const data = {
 			title,
 			content: contents,
@@ -225,30 +287,42 @@ export default function DetailAddEdit({
 		}
 	};
 
-	const handleCancel = async () => {
-		if (window.confirm('정말로 삭제하시겠습니까?')) {
-			console.log('careerId:', careerId);
-			console.log('detailId:', detailId);
-			try {
-				await CareerDetailDelete(careerId, detailId); // 삭제 API 호출
-				alert('삭제되었습니다.');
-				onClose(); // 삭제 후 창 닫기
-				onUpdate();
-			} catch (error) {
-				console.error('삭제 실패:', error);
-			}
+	const handleCancel = () => {
+		// 삭제 모달 열기
+		setIsDeleteModalOpen(true);
+	};
+
+	const handleConfirmDelete = async () => {
+		// 삭제 API 호출
+		try {
+			await CareerDetailDelete(careerId, detailId);
+			setIsDeleteModalOpen(false); // 모달 닫기
+			onClose();
+			onUpdate();
+		} catch (error) {
+			console.error('삭제 실패:', error);
 		}
 	};
 
 	return (
 		<div>
 			<Line></Line>
+			{isDeleteModalOpen && (
+				<BlurContainer>
+					<BaseContainer>
+						<CareerDetailDeleteModal
+							onCancel={() => setIsDeleteModalOpen(false)} // 취소 버튼 클릭 시 모달 닫기
+							onConfirm={handleConfirmDelete} // 삭제 버튼 클릭 시 삭제 수행
+						/>
+					</BaseContainer>
+				</BlurContainer>
+			)}
 
 			<Box>
 				<Top>
 					<Title>
 						<Label>제목</Label>
-						<Input height="50px" width="460px" value={title} onChange={(e) => setTitle(e.target.value)} />
+						<Input height="50px" width="460px" value={title} onChange={handleTitleChange} />
 					</Title>
 					<Date>
 						<Label>날짜</Label>
@@ -264,7 +338,7 @@ export default function DetailAddEdit({
 				</Top>
 				<Middle>
 					<Label>내용</Label>
-					<TextArea height="100px" width="720px" value={contents} onChange={(e) => setContents(e.target.value)} />
+					<TextArea height="100px" width="720px" value={contents} onChange={handleContentChange} />
 				</Middle>
 				{console.log('TagBox Props - externalTags:', tagNames)}
 
@@ -275,7 +349,10 @@ export default function DetailAddEdit({
 				/>
 				<Button>
 					<Cancel onClick={handleCancel}>삭제</Cancel>
-					<Save onClick={handleSave}>저장</Save>
+					<SaveBox>
+						<Save onClick={handleSave}>저장</Save>
+						{errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+					</SaveBox>
 				</Button>
 			</Box>
 			<Line></Line>
