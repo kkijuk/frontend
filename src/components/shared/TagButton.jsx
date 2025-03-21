@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { theme } from '../../constants/theme';
 
 const StyledTag = styled.button`
-	padding: 2px 20px;
+	padding: 4px 20px;
 	border-radius: 20px;
 	font-family: Pretendard;
 	font-size: 12px;
