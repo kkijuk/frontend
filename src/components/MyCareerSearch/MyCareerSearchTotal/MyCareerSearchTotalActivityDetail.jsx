@@ -8,6 +8,9 @@ const Container = styled.div`
 	width: 100%;
 	box-sizing: border-box;
 	padding: 0 15px;
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+	gap: 16px;
 	margin-bottom: 32px;
 `;
 
