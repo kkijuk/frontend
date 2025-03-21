@@ -666,13 +666,14 @@ const ApplyDetail = () => {
 
 	const handleSave = async (updatedJob) => {
 		try {
-			await updateRecruit(updatedJob.id, updatedJob);
-			
-			// 수정된 데이터를 다시 가져와 화면을 최신 상태로 유지
-			const updatedData = await fetchJobDetails();
-			if (updatedData) setJob(updatedData);
+			await updateRecruit(updatedJob.id, updatedJob); 
 	
-			setIsEditModalOpen(false);
+			setJob((prevJob) => ({
+				...prevJob, // 기존 데이터 유지
+				...updatedJob, // 수정된 데이터 반영
+			}));
+	
+			setIsEditModalOpen(false); // 모달 닫기
 		} catch (error) {
 			console.error('Error updating job:', error);
 		}
