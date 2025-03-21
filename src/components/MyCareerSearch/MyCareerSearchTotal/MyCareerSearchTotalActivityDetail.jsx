@@ -13,7 +13,7 @@ const Container = styled.div`
 
 const Box = styled.div`
 	width: 98%;
-	margin: 0px auto;
+	margin: 16px auto;
 	padding: 20px 24px;
 	background-color: white;
 	border-radius: 10px;
@@ -25,6 +25,11 @@ const TopWrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
 	padding-top: 10px;
+`;
+
+const DetailTopWrapper = styled.div`
+	display: flex;
+	justify-content: space-between;
 `;
 
 const TopLeft = styled.div`
@@ -171,12 +176,12 @@ export default function MyCareerSearchTotalActivityDetail({ activityDetail, isAc
 							<MainWrapper>
 								{detailsToRender.map((detail, i) => (
 									<DetailWrapper key={i}>
-										<TopWrapper>
+										<DetailTopWrapper>
 											<DetailTitle>{highlightMatch(detail.title, searchQuery)}</DetailTitle>
 											<DetailCareerDate>
 												{formatDate(detail.startDate, detail.endDate, detail.unknown)}
 											</DetailCareerDate>
-										</TopWrapper>
+										</DetailTopWrapper>
 										<DetailContent>{highlightMatch(detail.content, searchQuery)}</DetailContent>
 										<BottomWrapper>
 											{detail.detailTag.map((tag, j) => (
