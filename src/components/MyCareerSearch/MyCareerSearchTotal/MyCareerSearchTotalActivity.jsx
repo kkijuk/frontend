@@ -29,7 +29,7 @@ const ActivityContent = styled.div`
 
 const ActivityBox = styled.div`
 	width: 100%;
-	height: 52px;
+	min-height: 52px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between; /* 왼쪽, 오른쪽 정렬 */
@@ -49,10 +49,8 @@ const AcitivityDate = styled.div`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
-
-	@media (min-width: 600px) {
-		font-size: 12px; /* 큰 화면에서 폰트 크기 유지 */
-	}
+	flex-shrink: 0;
+	margin-left: 10px;
 `;
 
 const ActivityCareerTitle = styled.div`
@@ -61,8 +59,14 @@ const ActivityCareerTitle = styled.div`
 	font-size: 16px;
 	font-style: normal;
 	font-weight: 700;
-	line-height: normal;
+	line-height: 1.2;
 	margin-left: 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2; /* 두 줄까지 표시 */
+	-webkit-box-orient: vertical;
+	word-break: break-all;
 `;
 
 const NotExistSearch = styled.div`
