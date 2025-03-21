@@ -269,6 +269,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
 	const [endTime, setEndTime] = useState('');
 	const [tags, setTags] = useState(job?.tags || []);
 	const [link, setLink] = useState('');
+	const [applyDate, setApplyDate] = useState(job?.applyDate || '');
 
 	useEffect(() => {
 		if (job) {
@@ -277,6 +278,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
 		  setEndTime(formatDateTimeToLocal(job.endTime) || '');
 		  setTags(job.tags || []);  //  초기 태그는 한 번만 설정
 		  setLink(job.link || '');
+		  setApplyDate(job.applyDate || '');
 		}
 	  }, [job]);
 
@@ -295,6 +297,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
 			endTime: endTime || job.endTime,
 			tags: tags.length > 0 ? tags : job.tags,
 			link: link || job.link,
+			applyDate: applyDate || job.applyDate, 
 		});
 		onClose();
 	};
