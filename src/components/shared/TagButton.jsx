@@ -13,7 +13,7 @@ const StyledTag = styled.button`
 	cursor: ${(props) => (props.isActive ? 'default' : 'pointer')};
 
 	background: ${(props) => {
-		if (props.isActive) return theme.colors.primary;
+		if (props.isActive) return '#fff';
 		return props.hasWhiteBackground ? '#f5f5f5' : '#fff';
 	}};
 	color: ${theme.colors.primary};
@@ -29,6 +29,7 @@ const StyledTag = styled.button`
 
 	&:hover {
 		background-color: ${(props) => (props.isActive ? theme.colors.primary : '#e0e0e0')};
+		border-color: ${(props) => (props.hasWhiteBackground ? '#fff' : '#e0e0e0')};
 	}
 
 	pointer-events: ${(props) => (props.isActive ? 'none' : 'auto')};
