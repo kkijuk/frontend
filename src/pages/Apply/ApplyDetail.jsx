@@ -662,18 +662,24 @@ const ApplyDetail = () => {
 
 	const handleSave = async (updatedJob) => {
 		try {
-			await updateRecruit(updatedJob.id, updatedJob); 
+			await updateRecruit(updatedJob.id, {
+				...updatedJob,
+				applyDate: job.applyDate || updatedJob.applyDate, //  기존 applyDate 유지
+			});
 	
+			//  기존 지원 날짜 유지하면서 최신 데이터 반영
 			setJob((prevJob) => ({
-				...prevJob, // 기존 데이터 유지
-				...updatedJob, // 수정된 데이터 반영
+				...prevJob,
+				...updatedJob,
+				applyDate: job.applyDate || prevJob.applyDate, //  지원 날짜가 null이 되지 않도록 유지
 			}));
 	
 			setIsEditModalOpen(false); // 모달 닫기
 		} catch (error) {
-			console.error('Error updating job:', error);
+			console.error("Error updating job:", error);
 		}
 	};
+	
 	
 	
 
