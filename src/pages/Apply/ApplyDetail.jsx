@@ -583,6 +583,8 @@ const ApplyDetail = () => {
 			setJob(updatedJobDetails);
 			setStatus(updatedJobDetails.status);
 			setApplyDate(updatedJobDetails.applyDate ? new Date(updatedJobDetails.applyDate) : null);
+		
+			return updatedJobDetails;
 		} catch (error) {
 			console.error('Error fetching job details:', error);
 		}
