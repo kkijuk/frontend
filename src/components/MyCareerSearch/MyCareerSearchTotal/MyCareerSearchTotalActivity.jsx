@@ -10,7 +10,7 @@ const ActivityContainer = styled.div`
 	display: grid;
 	grid-template-columns: repeat(2, 1fr); /* 기본적으로 2열 */
 	gap: 20px 50px;
-	margin-bottom: 20px;
+	margin-bottom: 32px;
 
 	@media (max-width: 600px) {
 		grid-template-columns: 1fr; /* 화면이 작아지면 1열로 변경 */
