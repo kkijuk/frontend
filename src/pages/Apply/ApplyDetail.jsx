@@ -580,9 +580,16 @@ const ApplyDetail = () => {
 				introduceId: jobDetails.introduceId ?? 0, // 기본값 설정
 			};
 	
-			setJob(updatedJobDetails);
-			setStatus(updatedJobDetails.status);
-			setApplyDate(updatedJobDetails.applyDate ? new Date(updatedJobDetails.applyDate) : null);
+			setJob((prevJob) => ({
+				...prevJob, //  기존 데이터 유지
+				...updatedJobDetails, // 최신 데이터 반영
+				status: updatedJobDetails.status || prevJob.status, //  상태 유지
+				applyDate: updatedJobDetails.applyDate ? new Date(updatedJobDetails.applyDate) : prevJob.applyDate, // ✅ 지원 날짜 유지
+			}));
+			
+			setStatus(updatedJobDetails.status || job?.status); //  상태 값 유지
+			setApplyDate(updatedJobDetails.applyDate ? new Date(updatedJobDetails.applyDate) : applyDate); //  지원 날짜 유지
+	
 		
 			return updatedJobDetails;
 		} catch (error) {
@@ -697,6 +704,10 @@ const ApplyDetail = () => {
 
 		try {
 			await updateRecruitStatus(id, newStatus);
+			setJob((prevJob) => ({
+				...prevJob,
+				applyDate: formattedDate,
+			}));
 		} catch (error) {
 			console.error('Failed to update status:', error);
 		}
@@ -768,6 +779,10 @@ const ApplyDetail = () => {
 		// 선택한 날짜를 서버에 PATCH 요청으로 보내기
 		try {
 			await updateRecruitApplyDate(id, formattedDate);
+			setJob((prevJob) => ({
+				...prevJob,
+				applyDate: formattedDate,
+			}));
 		} catch (error) {
 			console.error('Failed to update apply date:', error);
 		}
