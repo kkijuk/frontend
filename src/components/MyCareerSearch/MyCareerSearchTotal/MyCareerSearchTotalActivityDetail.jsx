@@ -16,7 +16,7 @@ const Container = styled.div`
 
 const Box = styled.div`
 	width: 98%;
-	margin: 16px auto;
+	margin: 0px auto;
 	padding: 20px 24px;
 	background-color: white;
 	border-radius: 10px;
