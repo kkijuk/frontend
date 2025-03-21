@@ -593,28 +593,33 @@ const ApplyDetail = () => {
 
 	useEffect(() => {
 		const updateJobState = async () => {
-			if (location.state && location.state.job) {
-				setJob({
-					...location.state.job,
-					startTime: location.state.job.startTime, // 접수 시작 시간을 최신 값으로 설정
-					endTime: location.state.job.endTime, // 접수 마감 시간을 최신 값으로 설정
-				});
-				setStatus(location.state.job.status);
-				setApplyDate(location.state.job.applyDate ? new Date(location.state.job.applyDate) : null);
-			} else {
+			if (location.state?.job) {
+		
 				const jobDetails = await fetchJobDetails();
-				setJob({
-					...jobDetails,
-					startTime: jobDetails.startTime, // 접수 시작 시간을 최신 값으로 설정
-					endTime: jobDetails.endTime, // 접수 마감 시간을 최신 값으로 설정
-				});
-				setStatus(jobDetails.status);
-				setApplyDate(jobDetails.applyDate ? new Date(jobDetails.applyDate) : null);
+	
+				if (!jobDetails || jobDetails.updatedAt <= location.state.job.updatedAt) {
+					// 프론트엔드 상태가 더 최신이면 유지
+					setJob(location.state.job);
+					setStatus(location.state.job.status);
+					setApplyDate(location.state.job.applyDate ? new Date(location.state.job.applyDate) : null);
+				} else {
+					// 백엔드 데이터가 최신이면 업데이트
+					setJob(jobDetails);
+					setStatus(jobDetails.status);
+					setApplyDate(jobDetails.applyDate ? new Date(jobDetails.applyDate) : null);
+				}
+			} else {
+				await fetchJobDetails(); // location.state가 없으면 백엔드 데이터 사용
 			}
 		};
-
+	
 		updateJobState();
-	}, [id, location.state]);
+	}, [id]);
+	
+	useEffect(() => {
+		fetchJobDetails();
+	}, [job]);
+	
 
 	useEffect(() => {
 		if (!job?.endTime) return;
