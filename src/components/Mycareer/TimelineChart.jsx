@@ -19,6 +19,7 @@ const TimelineChart = () => {
 				category: item.category,
 				y: [new Date(item.startdate).getTime(), new Date(item.enddate).getTime()],
 				name: item.title,
+				unknown: item.unknown,
 				fillColor: getColorByCategory(item.category.categoryKoName) || '#707070',
 			})) || [],
 		[rawData], // ✅ rawData가 변경될 때만 계산
@@ -86,7 +87,7 @@ const TimelineChart = () => {
 					const data = w.config.series[seriesIndex].data[dataPointIndex];
 					const name = data.name;
 					const startDate = moment(data.y[0]).format('YYYY.MM.DD');
-					const endDate = moment(data.y[1]).format('YYYY.MM.DD');
+					const endDate = data.unknown ? 'ing' : moment(data.y[1]).format('YYYY.MM.DD');
 					return `
                 <div style="
                     background: #333;
