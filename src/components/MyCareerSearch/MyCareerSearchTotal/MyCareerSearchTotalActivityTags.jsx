@@ -5,6 +5,7 @@ import { useFetchActivityByTag } from '../../../hooks/MycareerSearch/useFetchAct
 import { useNavigate } from 'react-router-dom';
 import { highlightMatch } from '../../../utils/highlightMatch';
 import { formatDate } from '../../../utils/formateDate';
+import TagButton from '../../shared/TagButton';
 
 // 메인 컨테이너
 const Container = styled.div`
@@ -150,9 +151,13 @@ export default function MyCareerSearchTotalActivityTags({
 					<TagWrapper>
 						{/* 태그 목록 */}
 						{activityTagList?.data?.data.tagList.map((tag) => (
-							<Tag key={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => setSelectedTag(tag.tagId)}>
+							<TagButton
+								id={tag.tagId}
+								isActive={selectedTag === tag.tagId}
+								onClick={() => setSelectedTag(tag.tagId)}
+								hasWhiteBackground={true}>
 								{highlightMatch(tag.tagName, searchQuery)}
-							</Tag>
+							</TagButton>
 						))}
 					</TagWrapper>
 
