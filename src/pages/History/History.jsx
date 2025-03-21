@@ -90,7 +90,7 @@ const History = () => {
 
 	const [activeSection, setActiveSection] = useState("");	// 인디케이터 활성화 섹션
 	const [editableUserData, setEditableUserData] = useState({	// 사용자 정보 수정
-		profileImageUrl: '',
+		profileImageFile: '',
 		address: '',
 	});
 	const [profileURL, setProfileURL] = useState(profileImageUrl);	// 프로필 이미지
@@ -219,10 +219,10 @@ const History = () => {
 	// 인적사항 변경 관련 로직
 	//(1) 프로필 사진 변경 관련 로직
 	const handleProfileChange = (file) => {
-		setProfileURL(file);
+		// setProfileURL(file);
 		setEditableUserData((prev) => ({
 			...prev,
-			profileImageUrl: file,
+			profileImageFile: file,
 		}));
 		console.log('Profile Image changed:', file);
 	}
@@ -286,7 +286,7 @@ const History = () => {
 							key = {sections[0].id}	
 						/>
 						<Profile
-							profileBlob={profileURL}
+							profileKeyName={profileImageUrl}
 							onProfileChange={handleProfileChange}
 						/>
 						<UserInfoWrapper>

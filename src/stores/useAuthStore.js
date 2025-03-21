@@ -5,16 +5,16 @@ const useAuthStore = create((set) => ({
 	refreshToken: null,
 	isLoggedIn: false,
 
-	// 초기 상태 복원
-	restoreState: () => {
-		const token = localStorage.getItem('token');
-		const refreshToken = localStorage.getItem('refreshToken');
-		set({
-			token: token || null,
-			refreshToken: refreshToken || null,
-			isLoggedIn: !!token,
-		});
-	},
+    // 초기 상태 복원
+    restoreState: () => {
+        const token = localStorage.getItem('token');
+        const refreshToken = localStorage.getItem('refreshToken');
+        set({
+            token: token || null,
+            refreshToken: refreshToken || null,
+            isLoggedIn: !!token,
+        });
+    },
 
 	// 로그인 시 토큰 저장
 	login: (token, refreshToken) => {
