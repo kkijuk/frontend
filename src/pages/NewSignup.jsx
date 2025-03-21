@@ -68,6 +68,7 @@ const StepBar = styled.div`
 
 const NewSignup = () => {
   const [step, setStep] = useState(1);
+  const navigate = useNavigate();
   const { isProfileComplete } = useAuthStore(); // Zustand에서 프로필 완료 여부 가져오기
 
   const [agreements, setAgreements] = useState({
@@ -96,8 +97,6 @@ const NewSignup = () => {
       $body.style.overflow = '';
     };
   }, []);
-
-  const navigate = useNavigate();
 
   const handleAgreementChange = (key, value) => {
     setAgreements((prev) => ({ ...prev, [key]: value }));
