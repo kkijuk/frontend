@@ -706,7 +706,7 @@ const ApplyDetail = () => {
 			await updateRecruitStatus(id, newStatus);
 			setJob((prevJob) => ({
 				...prevJob,
-				applyDate: formattedDate,
+				status: newStatus,
 			}));
 		} catch (error) {
 			console.error('Failed to update status:', error);
