@@ -24,7 +24,6 @@ const TagWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
-	margin-bottom: 12px;
 `;
 
 // 태그 버튼

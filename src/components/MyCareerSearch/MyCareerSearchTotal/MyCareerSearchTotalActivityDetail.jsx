@@ -27,6 +27,11 @@ const TopWrapper = styled.div`
 	padding-top: 10px;
 `;
 
+const DetailTopWrapper = styled.div`
+	display: flex;
+	justify-content: space-between;
+`;
+
 const TopLeft = styled.div`
 	display: flex;
 `;
@@ -171,12 +176,12 @@ export default function MyCareerSearchTotalActivityDetail({ activityDetail, isAc
 							<MainWrapper>
 								{detailsToRender.map((detail, i) => (
 									<DetailWrapper key={i}>
-										<TopWrapper>
+										<DetailTopWrapper>
 											<DetailTitle>{highlightMatch(detail.title, searchQuery)}</DetailTitle>
 											<DetailCareerDate>
 												{formatDate(detail.startDate, detail.endDate, detail.unknown)}
 											</DetailCareerDate>
-										</TopWrapper>
+										</DetailTopWrapper>
 										<DetailContent>{highlightMatch(detail.content, searchQuery)}</DetailContent>
 										<BottomWrapper>
 											{detail.detailTag.map((tag, j) => (
