@@ -5,6 +5,7 @@ import createMaster from '../api/Signup/createMaster';
 import createResume from '../api/Signup/createResume';
 import signupLogo from '../assets/signuplogo.svg';
 import { trackEvent } from '../utils/ga4';
+import useAuthStore from '../stores/useAuthStore';
 
 const SignupSuccessScreen = styled.div`
 	max-width: flex;
@@ -94,9 +95,17 @@ const HomeLink = styled.div`
 const SignupSuccess = () => {
 	const navigate = useNavigate();
 	const [hasCalled, setHasCalled] = useState(false); // 호출 여부 상태 관리
-
+	const { isProfileComplete } = useAuthStore();
 	const address = 'string';
 	const profileImageUrl = 'string';
+
+	useEffect(() => {
+		// 프로필 완료된 경우 홈으로 리다이렉트
+		if (isProfileComplete) {
+		  navigate('/home');
+		}
+	  }, [isProfileComplete, navigate]);
+
 
 	useEffect(() => {
 		const preventScroll = (e) => {
