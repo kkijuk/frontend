@@ -59,7 +59,7 @@ const ActivityCareerTitle = styled.div`
 	font-size: 16px;
 	font-style: normal;
 	font-weight: 700;
-	line-height: 1.2;
+	line-height: normal;
 	margin-left: 5px;
 	overflow: hidden;
 	text-overflow: ellipsis;
