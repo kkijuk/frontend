@@ -81,7 +81,7 @@ const Nav = styled.ul`
     list-style-type: none;
     padding-left: 0;
     margin-top: 30px;
-	width: 100vw;
+	// width: 100vw;
 
     @media (max-width: ${theme.breakpoints.md}) {
         margin-top: 20px;
