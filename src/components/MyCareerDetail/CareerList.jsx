@@ -82,6 +82,9 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
 				return;
 			}
 
+			// 실제 들어오는 categoryEnName 확인
+			console.log('categoryEnName from props:', categoryEnName);
+
 			//categoryMapping을 직접 사용하여 변환
 			const categoryMapping = {
 				ACTIVITY: 'activity',
@@ -90,18 +93,13 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
 				EMP: 'employment',
 				CIRCLE: 'circle',
 				COM: 'competition',
+				ETC: 'ETC',
 			};
 
 			const mappedCategory = categoryMapping[categoryEnName] || 'unknown'; // 변환 실패 시 "unknown"
 
-			if (categoryEnName === 'etc') {
-				mappedCategory = 'ETC'; // 대문자 그대로 백엔드로 전달
-			}
-
-			// 혹시 다른 이상한 값이 들어오면 unknown 처리
-			if (!mappedCategory) {
-				mappedCategory = 'unknown';
-			}
+			// 백엔드에 보내지는 실제 category 값 확인
+			console.log('mappedCategory for API call:', mappedCategory);
 
 			// ViewCareerDetail 호출 (소문자로 변환된 값 전달)
 			const data = await ViewCareerDetail(careerId, mappedCategory);
