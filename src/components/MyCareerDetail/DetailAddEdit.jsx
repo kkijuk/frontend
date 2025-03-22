@@ -28,7 +28,7 @@ const Middle = styled.div`
 `;
 
 const Button = styled.div`
-	height: 50px;
+	height: auto;
 	display: flex;
 	gap: 15px;
 	margin-bottom: 24px;
