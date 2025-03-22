@@ -174,7 +174,7 @@ const MasterRewrite = () => {
 							<DropdownItem onClick={() => handleDropdownClick(0)}>작성 중</DropdownItem>
 							<DropdownItem onClick={() => handleDropdownClick(1)}>작성 완료</DropdownItem>
 						</Dropdown>
-						)}
+						)};
 				</Tag>
 			</div>
 			<div></div>
