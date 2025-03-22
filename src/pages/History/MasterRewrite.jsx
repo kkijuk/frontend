@@ -170,7 +170,7 @@ const MasterRewrite = () => {
 				<Tag onClick={()=>{setDropdownOpened(!dropdownOpened)}} style={{ position:'relative', color: 'white', width: '60px', cursor: 'pointer' }}>
 						{data.state ? '작성 완료' : '작성 중'} ▼
 						{dropdownOpened && (
-						<Dropdown style={{position:'absolute', top:'65px'}}>
+						<Dropdown style={{position:'absolute', top:'2px'}}>
 							<DropdownItem onClick={() => handleDropdownClick(0)}>작성 중</DropdownItem>
 							<DropdownItem onClick={() => handleDropdownClick(1)}>작성 완료</DropdownItem>
 						</Dropdown>
