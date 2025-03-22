@@ -2,12 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Box = styled.div`
+	width: 252px;
+	height: 104px;
 	display: flex;
 	padding: 32px 24px 24px 24px;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	gap: 10px;
+	gap: 24px;
 
 	box-sizing: content-box;
 	border-radius: 10px;
@@ -73,8 +75,10 @@ const DeleteButton = styled.button`
 export default function CareerDetailDeleteModal({ onCancel, onConfirm }) {
 	return (
 		<Box>
-			<Text>해당 활동 기록을</Text>
-			<Text>정말로 삭제하시겠습니까?</Text>
+			<div>
+				<Text>해당 활동 기록을</Text>
+				<Text>정말로 삭제하시겠습니까?</Text>
+			</div>
 			<ButtonContainer>
 				<CancelButton onClick={onCancel}>취소</CancelButton>
 				<DeleteButton onClick={onConfirm}>삭제</DeleteButton>
