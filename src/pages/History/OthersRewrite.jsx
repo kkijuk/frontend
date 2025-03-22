@@ -10,6 +10,8 @@ import ButtonOptions from '../../components/Intro/AddButton.jsx';
 import Alert from '../../components/Intro/Alert';
 import EditApplyModal from '../../components/Intro/EditApplyModal.jsx';
 import { updateRecruit } from '../../api/Apply/RecruitUpdate.js';
+import { trackEvent } from '../../utils/ga4.js';
+import SvgIcon from '../../components/shared/SvgIcon.jsx';
 
 const OthersRewrite = () => {
 	const navigate = useNavigate();
@@ -32,8 +34,8 @@ const OthersRewrite = () => {
 	const [dropdownOpend, setDropdownOpend] = useState(false);
 	const [isCompleted, setIsCompleted] = useState(0);
 	const [isEditApplyModalOpend, setIsEditApplyModalOpend] = useState(false);
-	const [show, setShow] = useState(false);
-	const [gotoShow, setGotoShow] = useState(false);
+	// const [show, setShow] = useState(false);
+	// const [gotoShow, setGotoShow] = useState(false);
 	const [charCounts, setCharCounts] = useState([]);
 	const [nextQuestionId, setNextQuestionId] = useState(1);
 	const [showAutoSaveMessage, setShowAutoSaveMessage] = useState(false); // 자동 저장 메시지
@@ -187,10 +189,10 @@ const OthersRewrite = () => {
 				console.log(question.number);
 			}
 		});
-		if (count < 3) {
-			setQuestions([...questions, { number: nextQuestionId, subTitle: '', content: '' }]);
-			setNextQuestionId((prevId) => prevId + 1);
-		} else showLimiter();
+		// if (count < 3) {
+		// 	setQuestions([...questions, { number: nextQuestionId, subTitle: '', content: '' }]);
+		// 	setNextQuestionId((prevId) => prevId + 1);
+		// } else showLimiter();
 	};
 
 	const handleEditApply = async (data) => {
@@ -221,12 +223,12 @@ const OthersRewrite = () => {
 		}
 	};
 
-	const showLimiter = () => {
-		setShow(true);
-		setTimeout(() => {
-			setShow(false);
-		}, 3000);
-	};
+	// const showLimiter = () => {
+	// 	setShow(true);
+	// 	setTimeout(() => {
+	// 		setShow(false);
+	// 	}, 3000);
+	// };
 
 	const deleteItem = (number) => {
 		const deletedQuestions = questions.filter((question) => question.number !== number);
@@ -236,28 +238,35 @@ const OthersRewrite = () => {
 	const clickGotoApply = () => {
 		if (contents.link) {
 			window.open(contents.link);
-		} else {
-			setGotoShow(true);
-			setTimeout(() => {
-				setGotoShow(false);
-			}, 3000);
-		}
+		} 
+		// else {
+		// 	setGotoShow(true);
+		// 	setTimeout(() => {
+		// 		setGotoShow(false);
+		// 	}, 3000);
+		// }
 	};
+
+	const isDeadlineWithin7Days =()=>{
+		if(!contents.deadline) return false;
+		const deadlineDate = new Date(contents.deadline);
+		return (deadlineDate - new Date()) / (1000 * 60 * 60 * 24) < 7;
+	}
 
 	return (
 		<BackgroundDiv>
 			<BaseDiv>
 				<ContentTitle>
-					<h1 style={{ position: 'relative', display: 'inline-block', marginRight: '12px' }}>
+					<h1 style={{ position: 'relative', display: 'inline-block', marginRight: '12px', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '60%' }}>
 						{contents.recruitTitle}
 					</h1>
 					<div style={{ display: 'inline-block', position: 'relative' }}>
 						{modalOpend && <Alert closeModal={toggleModal} deleteResume={deleteResume}></Alert>}
-						<Limiter show={show}>빈 질문을 먼저 채워주세요!</Limiter>
-						<Limiter show={gotoShow} style={{ width: '250px', position: 'absolute', left: 20, top: 400 }}>
+						{/* <Limiter show={show}>빈 질문을 먼저 채워주세요!</Limiter> */}
+						{/* <Limiter show={gotoShow} style={{ width: '250px', position: 'absolute', left: 20, top: 400 }}>
 							등록된 링크가 없습니다. <br />
 							공고 수정에서 링크를 등록해주세요!
-						</Limiter>
+						</Limiter> */}
 						<div style={{ position: 'relative', zIndex: 1000 }}>
 							{isEditApplyModalOpend && (
 								<EditApplyModal
@@ -284,37 +293,41 @@ const OthersRewrite = () => {
 						</Tag>
 					))}
 					<br />
-					<p
-						className="lastUpdated"
-						style={{ display: 'inline-block', color: 'red', margin: '0 20px 8px 0px', textAlign: 'left' }}
-					>
-						공고 마감 일시 : {contents.deadline}
-					</p>
-					<button
-						onClick={clickGotoApply}
-						style={{
-							display: 'inline-block',
-							width: '140px',
-							height: '30px',
-							background: '#FFF',
-							border: '1px solid #707070',
-							borderRadius: '10px',
-							fontFamily: 'Regular',
-							color: '#707070',
-							fontSize: '15px',
-							cursor: 'pointer',
-						}}
-					>
-						공고 보러가기
-					</button>
+					<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap:'30px' }}>
+						<p
+							className="lastUpdated"
+							style={{ 
+								display: 'inline-block', 
+								color: isDeadlineWithin7Days() ? '#FA7C79' : '#707070',
+								margin: '0 20px 8px 0px', 
+								textAlign: 'left' }}
+						>
+							공고 마감 일시 : {contents.deadline}
+						</p>
+						<JobLinkBox
+							onClick={()=>{
+								clickGotoApply();
+								trackEvent('edit_click', {
+									category: 'coverletter',
+									detail: 'edit_recruit',
+									action_type: 'edit',
+									label: '공고 수정',
+								});
+							}}
+							disabled = {!contents.link}
+						>
+							공고 보러가기
+							<SvgIcon name="jobLink" size={15} color="var(--gray-02, #707070)"/>
+						</JobLinkBox>
+					</div>
 					<svg
 						onClick={toggleEditApplyModal}
 						style={{
 							width: '30px',
 							height: '30px',
-							position: 'relative',
-							top: '10px',
-							left: '390px',
+							position: 'absolute',
+							top: '26px',
+							right: '10px',
 							cursor: 'pointer',
 							zIndex: '900',
 						}}
@@ -361,27 +374,20 @@ const OthersRewrite = () => {
 								}
 								onChange={(e) => handleInputChange(question.number, 'title', e)}
 							/>
-							<InputTitle
-								placeholder='답변을 작성하세요'
-								style={{ height: '150px', marginBottom: '35px', width: '780px' }}
-								value={
-									question.content && question.content !== 'string' 
-									? question.content
-									: ''}
-								onChange={(e) => handleInputChange(question.number, 'content', e)}
-							/>
-							<p
-								style={{
-									fontFamily: 'Regular',
-									fontSize: '16px',
-									color: '#707070',
-									position: 'absolute',
-									right: '20px',
-									top: `${index + 220}px`,
-								}}
-							>
-								{charCounts[index]} (공백포함)
-							</p>
+							<InputWrapper>
+								<InputTitle
+									placeholder='답변을 작성하세요'
+									style={{ height: '150px', marginBottom: '35px', width: '780px' }}
+									value={
+										question.content && question.content !== 'string' 
+										? question.content
+										: ''}
+									onChange={(e) => handleInputChange(question.number, 'content', e)}
+								/>
+								<CharCount>
+									{charCounts[index]} (공백포함)
+								</CharCount>
+							</InputWrapper>
 						</div>
 					))}
 				</form>
@@ -484,9 +490,10 @@ const InputTitle = styled.textarea`
 	resize: none;
 	white-space: pre-wrap;
 
-	// overflow: hidden;
+	overflow: hidden;
 	overflow-y: auto;
-	::-webkit-scrollbar {
+	outline: none;
+	&::-webkit-scrollbar {
     	display: none; /* 웹킷 브라우저에서 스크롤바 숨기기 */
   	}
 `;
@@ -560,4 +567,47 @@ const Delete = styled.div`
 	position: absolute;
 	top: 20px;
 	right: 10px;
+`;
+
+// InputTitle와 글자수를 함께 감쌀 컨테이너
+const InputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  margin-bottom: 12px;
+`;
+
+// 글자수 표시 스타일 (p 대신 div/span 등을 써도 무방)
+const CharCount = styled.div`
+	position: absolute;
+	bottom: 17px;
+	right: 0px;
+	font-family: Regular;
+	font-size: 16px;
+	color: #707070;
+	width: 780px;
+	height: 25px;
+	flex-shrink: 0;
+	border: none;
+	border-radius: 0px 0px 10px 10px;
+	background: var(--gray-06, #f5f5f5);
+	padding: 0px 20px;
+	line-height: normal;
+	white-space: pre-wrap;
+	text-align: right;
+`;
+
+const JobLinkBox = styled.div`
+  width: 120px;
+  height: 28px;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+  background: #FFFFFF;
+  border-radius: 12px;
+  border: 2.3px solid var(--gray-03, #707070);
+  font-size: 12px;
+  color: var(--gray-02, #707070);
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
 `;

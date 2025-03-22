@@ -1,21 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { downS3File } from '../../api/Record/s3File';
 
-const Profile = ({ profileBlob, onProfileChange }) => {
-    const [profileUrl, setProfileUrl] = useState(null);
+const Profile = ({ profileKeyName, onProfileChange }) => {
+    const [profileUrl, setProfileUrl] = useState('');
+
+    // useEffect(() => {
+    //     if (typeof profileBlob === 'string') { // presigned GET URL
+    //         setProfileUrl(profileBlob);
+    //     } 
+    // }, [profileBlob]);
+
+    useEffect(()=>{
+        if(profileKeyName && profileKeyName !== 'string'){
+            downS3File({ fileTitle: profileKeyName })
+                .then((response) => {
+                    if(response){
+                        setProfileUrl(response);
+                    }
+                    console.log('Profile image downloaded successfully:', response);
+                })
+                .catch((error) => console.error('Error:', error));
+        }
+    }, [profileKeyName]);
 
     useEffect(() => {
-        // profileBlob이 Blob 객체인 경우 URL.createObjectURL을 사용하여 Blob URL을 생성
-        if (profileBlob instanceof Blob) {
-            const newProfileUrl = URL.createObjectURL(profileBlob);
-            setProfileUrl(newProfileUrl);
-
-            // 메모리 누수를 방지하기 위해 URL.revokeObjectURL을 사용하여 URL을 해제
-            return () => URL.revokeObjectURL(newProfileUrl);
-        } else if(typeof profileBlob === 'string') {
-            setProfileUrl(profileBlob);
-        }
-    }, [profileBlob]);
+        console.log('Profile URL:', profileUrl);
+    }, [profileUrl]);
 
     const handleProfileClick = () => {
         document.getElementById('profileInput').click();
@@ -24,9 +35,12 @@ const Profile = ({ profileBlob, onProfileChange }) => {
     const handleProfileChange = (event) => {
         const file = event.target.files[0];
         if (file && file.type.startsWith('image/')) {
+            // 미리보기를 위해 로컬 blob URL 생성
             const newProfileUrl = URL.createObjectURL(file);
             setProfileUrl(newProfileUrl);
-            onProfileChange(newProfileUrl);
+
+            // 상위로는 "File 객체"를 전달
+            onProfileChange(file);
 
             // 메모리 누수를 방지하기 위해 URL.revokeObjectURL을 사용하여 URL을 해제
             return () => URL.revokeObjectURL(newProfileUrl);

@@ -48,7 +48,10 @@ const BtnTooltip = styled.div`
 `;
 
 const AddActivityButton = ({ onClick, data }) => {
-	const isEmpty = !data || (typeof data === 'object' && Object.keys(data).length === 0);
+	const isEmpty =
+		!data ||
+		Object.keys(data).length === 0 ||
+		Object.values(data).every((items) => Array.isArray(items) && items.length === 0);
 
 	return (
 		<>

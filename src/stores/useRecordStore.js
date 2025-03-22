@@ -7,7 +7,7 @@ import { readRecord } from '../api/Record/record.js'; // default export
 import { createCareer } from '../api/Mycareer/Career.js';
 import * as CareerEditAPI from '../api/Mycareer/CareerEdit.js';
 import { CareerEdit, CareerDelete } from '../api/Mycareer/CareerEdit.js';
-import { createPresignedUrl, saveKeyName, deleteS3File, uploadFileToS3 } from '../api/Record/s3File.js';
+import { createPresignedUrl, saveKeyName, deleteS3File, uploadFileToS3, changeFileTitle } from '../api/Record/s3File.js';
 import { addURL, deleteURL } from '../api/Record/url.js';
 import { updateRecord } from '../api/Record/record.js';
 import { updateUserData } from '../api/Record/user.js';
@@ -49,7 +49,6 @@ const useRecordStore = create((set, get) => ({
 			if (response.message === '해당 유저의 이력서가 존재하지 않습니다.') {
 				throw new Error('not created');
 			}
-			
 
 			// 임시
 			const normalizeData = (items, idField) => items.map((item) => ({ ...item, id: item[idField] }));
@@ -305,7 +304,7 @@ const useRecordStore = create((set, get) => ({
 				await uploadFileToS3(data.file, signedURL);
 
 				// 3. 업로드 성공하면, keyName 백엔드에 저장
-				savedEtcData = await saveKeyName(keyName, data.fileTitle);
+				savedEtcData = await saveKeyName(keyName, data.fileTitle, data.file.name);
 				console.log('savedEtcData:', savedEtcData);
 			} else if(data.fileType === 'URL'){
 				savedEtcData = await addURL(data);
@@ -347,18 +346,31 @@ const useRecordStore = create((set, get) => ({
 	// 기타 항목 수정
 	updateEtcItem: async (oldData, newData) => {
 		try {
+			console.log('oldData:', oldData);
+			console.log('newData:', newData);
 			let savedEtcData;
 			let deletedEtcData;
 			if (oldData.fileType === 'File') {
-				await deleteS3File(oldData);
-				const { keyName, signedURL } = await createPresignedUrl(newData);
-				await uploadFileToS3(newData.file, signedURL);
-				savedEtcData = await saveKeyName(keyName, newData.fileTitle);
-				set((state) => ({
-					files: state.files.map((item) =>
-						item.keyName === oldData.keyName ? savedEtcData : item
-					),
-				}));
+				if(newData.file){ // 파일도 변경된 경우
+					await deleteS3File(oldData);
+					const { keyName, signedURL } = await createPresignedUrl(newData);
+					await uploadFileToS3(newData.file, signedURL, newData.file.name);
+					savedEtcData = await saveKeyName(keyName, newData.fileTitle, newData.file.name);
+					console.log('savedEtcData:', savedEtcData);
+					set((state) => ({
+						files: state.files.map((item) =>
+							item.keyName === oldData.keyName ? savedEtcData.data : item
+						),
+					}));
+				} else if(newData.fileTitle !== oldData.fileTitle){ // 파일 이름만 변경된 경우
+					await changeFileTitle(oldData.fileTitle, newData.fileTitle);
+					set((state) => ({
+						files: state.files.map((item) =>
+							item.keyName === oldData.keyName ? { ...item, fileTitle: newData.fileTitle } : item
+						),
+					}));
+				}
+				
 			} else if (oldData.fileType === 'URL') {
 				deletedEtcData = await deleteURL(oldData);
 				console.log('deletedEtcData:', deletedEtcData);
@@ -378,15 +390,69 @@ const useRecordStore = create((set, get) => ({
 	},
 
 	updateUserData: async (recordId, data) => {
+		// data : {address: adderss, profileImageFile: file}
+		console.log('data:', data);
 		try {
-			const response = await updateUserData(recordId, data);
-			set((state) => ({
-				userData: { 
-					...state.userData, 
-					profileImageUrl: response.profileImageUrl,
-					address: response.address
-				},
-			}));
+			const { email, profileImageUrl: oldProfileImageUrl, address: oldAddress } = get().userData;
+			console.log('get().userData:', get().userData);
+			console.log('oldProfileImageUrl:', oldProfileImageUrl);
+			const addressToUse = data.address ?? oldAddress;
+			// let newProfileImageUrl = oldProfileImageUrl;
+
+			// (1) 주소 변경만 있는 경우
+			if(data.address){
+				// address만 업데이트
+				const response = await updateUserData(recordId, {
+					email, //email 고정
+					address: data.address, // 새 주소
+					profileImageUrl: oldProfileImageUrl, // 기존 프로필 유지
+				});
+
+				set((state) => ({
+					userData: {
+					  ...state.userData,
+					  address: response.address,
+					},
+				  }));
+			}
+
+			// (2) 프로필 이미지 변경만 있는 경우
+			if(data.profileImageFile) {
+				// await deleteS3File({fileTitle: `profileImage_${recordId}`});
+				console.log('oldprofileImage: ', oldProfileImageUrl);
+				// 2-1) 기존 이미지가 있으면 s3에서 먼저 삭제
+				if(oldProfileImageUrl && oldProfileImageUrl !== 'string'){
+					await deleteS3File({fileTitle: oldProfileImageUrl});
+				}
+				// 2-2) Presigned URL 발급
+				const {keyName, signedURL} = await createPresignedUrl({
+					fileTitle: `profileImage_${recordId}`,
+				})
+                // 2-3) s3 업로드
+				await uploadFileToS3(data.profileImageFile, signedURL);
+
+				// 2-4) keyName 저장
+				const savedNewProfileData = await saveKeyName(
+					keyName,
+					`profileImage_${recordId}`,
+					data.profileImageFile.name
+				);
+				console.log('savedNewProfileData:', savedNewProfileData)
+				//2-5) 사용자정보업데이트
+				const newProfileImageUrl = `profileImage_${recordId}`;
+				const response = await updateUserData(recordId, {
+					email,                   // email은 고정
+					address: oldAddress,     // 기존 주소 유지
+					profileImageUrl: newProfileImageUrl,
+				});
+				// 2-6) store 업데이트
+				set((state) => ({
+					userData: {
+					...state.userData,
+					profileImageUrl: newProfileImageUrl,
+					},
+				}));
+			}
 		} catch (error) {
 			console.error('Update User Data Error:', error);
 		}

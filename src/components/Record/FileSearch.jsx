@@ -18,11 +18,11 @@ const FileSearch = ({onFileSelect}) => {
       const fileExtension = file.name.split('.').pop().toLowerCase(); // 파일 확장자
 
       // if (fileExtension === 'pdf' && fileSizeMB <= 50) {
-      if (fileSizeMB <= 50) {
+      if (fileSizeMB <= 20) {
         setFileName(file.name); // 파일 이름 설정
         onFileSelect(file); // 선택한 파일 전달
       } else {
-        alert('파일 크기는 50MB 이하이어야 합니다.');
+        alert('20MB 이하의 파일만 수정할 수 있습니다.');
         fileInputRef.current.value = ""; // 파일 입력 필드 초기화
         setFileName(""); // 파일 이름 초기화
       }

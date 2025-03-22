@@ -136,11 +136,11 @@ export default function ReviewDetailAddEdit({
 	};
 
 	const handleSaveClick = async () => {
-		if (title.trim() === "서류") { 
+		if (title.trim() === "서류" && !isDocumentReview) { 
 			alert("이미 해당 전형이 존재합니다."); 
 			return;
 		}
-
+	
 		try {
 			const reviewData = {
 				title: title || initialTitle,
@@ -148,15 +148,15 @@ export default function ReviewDetailAddEdit({
 				date: selectedDate || initialDate,
 			};
 			await editReview(recruitId, reviewId, reviewData);
-
+	
 			if (onSave) {
 				onSave();
 			}
-
+	
 			if (fetchData) {
 				fetchData();
 			}
-
+	
 			setIsEditing(false);
 		} catch (error) {
 			console.error('Failed to save review:', error);

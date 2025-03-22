@@ -6,6 +6,7 @@ import { downS3File } from "../../../api/Record/s3File";
 
 const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialData}) => {
   const [formData, setFormData] = useState({
+      fileLinkTitle: "",
       fileId: "",
       fileType: "URL", //기본값
       fileTitle: "",
@@ -26,12 +27,14 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
       setFormData(initialData);
       setIsTypeUrl(initialData.fileType === "URL");
 
-      downS3File(initialData)
+      if(initialData.fileType === "File") {
+        downS3File(initialData)
         .then((url) => {
           setExistingFileUrl(url);
           setDisplayedFileUrl(truncateText(url, 30));
         })
         .catch((error) => console.error("다운로드 URL 가져오기 실패:", error));
+      }
     }
   }, []);
 
@@ -47,7 +50,16 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
     }
     return text;
   }
-    
+  
+  // URL 유효성 검사
+  function isValidUrl(value){
+    try{
+      new URL(value);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 
   return (
     <RealFirstContainer>
@@ -78,6 +90,7 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                             value={formData.urlTitle}
                             onChange={(e) => handleInputChange("urlTitle", e.target.value)}
                             style={{ width: "610px" }}
+                            maxLength={20}
                         />
                     ) : (
                         <Input
@@ -86,6 +99,7 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                             value={formData.fileTitle}
                             onChange={(e) => handleInputChange("fileTitle", e.target.value)}
                             style={{ width: "610px" }}
+                            maxLength={20}
                         />
                     )}
                 </Row>
@@ -104,17 +118,23 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                           <Input
                             type="text"
                             placeholder="첨부파일 제목(ex. 포트폴리오, 경력기술서 등)"
-                            value={displayedFileUrl}
+                            value={formData.fileLinkTitle}
                             onClick = {()=>window.open(existingFileUrl, "_blank")}
                             readOnly
                             style={{ width: "450px", cursor: "pointer" }}
                           />
-                          <FileSelectButton onClick={()=>setExistingFileUrl(null)}>파일 선택</FileSelectButton>
+                          <FileSelectButton 
+                            onClick={()=>{
+                              setExistingFileUrl(null);
+                            }}>
+                              파일 선택
+                          </FileSelectButton>
                         </InputWrapper>
                       ) : (
                         <FileSearch
-                          onFileSelect={(selectedFile) => handleInputChange("file", selectedFile)}
-                        />
+                          onFileSelect={(selectedFile) =>{
+                            handleInputChange("file", selectedFile);
+                          }}/>
                       )
                     )}
                     <ButtonRow>
@@ -148,6 +168,20 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                       <Button 
                         primary 
                         onClick={() => {
+                          // 제목 확인
+                          if(formData.fileType === "URL" && (!formData.urlTitle || !formData.urlTitle.trim())){
+                            alert("입력하지 않은 항목이 있습니다.");
+                            return;
+                          }
+                          if (formData.fileType === "File" && (!formData.fileTitle || !formData.fileTitle.trim())) {
+                            alert("입력하지 않은 항목이 있습니다.");
+                            return;
+                          }
+                          //URL 유효성 확인
+                          if (formData.fileType === "URL" && !isValidUrl(formData.url)) {
+                            alert("유효한 URL 형식이 아닙니다.");
+                            return;
+                          }
                           onUpdate(formData);
                           onClose();
                           trackEvent('edit_click', {
@@ -164,6 +198,20 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                       <Button 
                         primary 
                         onClick={() => {
+                          // 제목 확인
+                          if(formData.fileType === "URL" && (!formData.urlTitle || !formData.urlTitle.trim())){
+                            alert("입력하지 않은 항목이 있습니다.");
+                            return;
+                          }
+                          if (formData.fileType === "File" && (!formData.fileTitle || !formData.fileTitle.trim())) {
+                            alert("입력하지 않은 항목이 있습니다.");
+                            return;
+                          }
+                          //URL 유효성 확인
+                          if (formData.fileType === "URL" && !isValidUrl(formData.url)) {
+                            alert("유효한 URL 형식이 아닙니다.");
+                            return;
+                          }
                           onSave(formData);
                           onClose();
                           trackEvent('add_confirm', {

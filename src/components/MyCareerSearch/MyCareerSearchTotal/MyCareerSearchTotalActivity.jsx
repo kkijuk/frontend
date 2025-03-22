@@ -8,19 +8,28 @@ const ActivityContainer = styled.div`
 	box-sizing: border-box;
 	padding: 0 15px;
 	display: grid;
-	grid-template-columns: repeat(2, 1fr);
+	grid-template-columns: repeat(2, 1fr); /* 기본적으로 2열 */
 	gap: 20px 50px;
-	margin-bottom: 20px;
+	margin-bottom: 32px;
+
+	@media (max-width: 600px) {
+		grid-template-columns: 1fr; /* 화면이 작아지면 1열로 변경 */
+	}
 `;
 
 const ActivityContent = styled.div`
 	display: flex;
+	flex-direction: row; /* 기본적으로 세로로 쌓이도록 설정 */
 	padding: 10px;
+
+	@media (min-width: 600px) {
+		flex-direction: column; /* 화면이 커지면 가로로 배치 */
+	}
 `;
 
 const ActivityBox = styled.div`
 	width: 100%;
-	height: 52px;
+	min-height: 52px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between; /* 왼쪽, 오른쪽 정렬 */
@@ -40,6 +49,8 @@ const AcitivityDate = styled.div`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+	flex-shrink: 0;
+	margin-left: 10px;
 `;
 
 const ActivityCareerTitle = styled.div`
@@ -50,6 +61,12 @@ const ActivityCareerTitle = styled.div`
 	font-weight: 700;
 	line-height: normal;
 	margin-left: 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2; /* 두 줄까지 표시 */
+	-webkit-box-orient: vertical;
+	word-break: break-all;
 `;
 
 const NotExistSearch = styled.div`
