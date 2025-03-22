@@ -94,6 +94,15 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
 
 			const mappedCategory = categoryMapping[categoryEnName] || 'unknown'; // 변환 실패 시 "unknown"
 
+			if (categoryEnName === 'etc') {
+				mappedCategory = 'ETC'; // 대문자 그대로 백엔드로 전달
+			}
+
+			// 혹시 다른 이상한 값이 들어오면 unknown 처리
+			if (!mappedCategory) {
+				mappedCategory = 'unknown';
+			}
+
 			// ViewCareerDetail 호출 (소문자로 변환된 값 전달)
 			const data = await ViewCareerDetail(careerId, mappedCategory);
 			console.log('API Response:', data);
