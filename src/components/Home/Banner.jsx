@@ -16,15 +16,21 @@ const Container = styled.div`
 	border-radius: 10px;
 	background: var(--gray-05, #f1f1f1);
 	z-index: 1;
-`;
 
-const Banner = styled.div``;
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
+`;
 
 const BannerImage = styled.img`
 	width: 820px;
 	height: 188px;
 	object-fit: cover;
 	cursor: pointer;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const BannerComponent = ({ banners }) => {
