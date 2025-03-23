@@ -10,8 +10,9 @@ import 'swiper/css/pagination';
 //ver2
 
 const Container = styled.div`
-	width: 820px;
-	height: 188px;
+	width: 100%; /*820*/
+	max-width: 820px;
+	/*height: 188px;*/
 	flex-shrink: 0;
 	border-radius: 10px;
 	background: var(--gray-05, #f1f1f1);
@@ -23,8 +24,8 @@ const Container = styled.div`
 `;
 
 const BannerImage = styled.img`
-	width: 820px;
-	height: 188px;
+	width: 100%; /*820*/
+	height: auto; /*188*/
 	object-fit: cover;
 	cursor: pointer;
 
