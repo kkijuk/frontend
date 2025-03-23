@@ -5,6 +5,7 @@ import AgreementModal1 from './AgreementModal1';
 import AgreementModal2 from './AgreementModal2';
 import AgreementModal3 from './AgreementModal3';
 import { trackEvent } from '../../utils/ga4';
+import { theme } from '../../constants/theme';
 
 const StyledButton = styled.button`
   width: 400px;
@@ -22,6 +23,7 @@ const StyledButton = styled.button`
   align-items: center;
   justify-content: center;
   margin-top: 40px;
+  
   &:hover {
     background: ${({ disabled }) => (disabled ? '#D9D9D9' : '#2a9f72')};
   }
@@ -109,6 +111,12 @@ font-style: normal;
 font-weight: 400;
 line-height: normal;
 margin-bottom: 30px;
+
+ @media (max-width: ${theme.breakpoints.md}) {
+    font-size: 14px;
+    margin-bottom: 40px;
+  }
+
 `;
 
 const AllAgreementContainer = styled.div`
