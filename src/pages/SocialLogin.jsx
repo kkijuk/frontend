@@ -8,11 +8,12 @@ import { useNavigate } from 'react-router-dom';
 import bottomSvg from '../assets/main/bottom.svg';
 import leftSvg from '../assets/main/left.svg';
 import leftStarSvg from '../assets/main/leftstar.svg';
-import postSvg from '../assets/main/post.svg';
+import postSvg from '../assets/main/post1.svg';
 import rightSvg from '../assets/main/right.svg';
 import rightStarSvg from '../assets/main/rightstar.svg';
 import useAuthRedirect from '../stores/useAuthRedirect';
 import { trackEvent } from '../utils/ga4';
+import { theme } from '../constants/theme';
 
 const PageContainer = styled.div`
   display: flex;
@@ -35,6 +36,12 @@ const StyledSVG = styled.svg`
   width: 100%;
   height: 100%;
   display: block;
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    image:not([href*="${postSvg}"]) {
+      display: none;
+    }
+  }
 `;
 
 const CustomFooter = styled.div`
@@ -143,6 +150,17 @@ const SocialButton = styled.button`
 	align-items: center;
 	justify-content: center;
 	position: relative;
+
+   @media (max-width: ${theme.breakpoints.md}) {
+    width: 320px;
+   color: rgba(0, 0, 0, 0.85);
+text-align: center;
+font-family: Pretendard;
+font-size: 14px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+  }
 	&.kakao {
 		background-color: #ffe812;
 		color: #000;
@@ -225,6 +243,13 @@ const TextContainer = styled.div`
   align-items: center;
   text-align: center;
   z-index: 10;
+  @media (max-width: ${theme.breakpoints.md}) {
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    margin-bottom: 1px;
+  }
 `;
 
 
@@ -234,14 +259,37 @@ const Title = styled.div`
   font-style: normal;
   font-weight: 800;
   font-family: Light;
+  white-space: nowrap; 
   line-height: normal;
   margin-bottom: 20px;
+
+   
+  @media (max-width: ${theme.breakpoints.md}) {
+    font-size: 18px;
+    margin-bottom: 10px; /* 태블릿에서 간격 줄이기 */
+  }
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    font-size: 16px;
+    margin-bottom: 8px; /* 모바일에서 더 줄이기 */
+  }
 `;
 
 const Logo = styled.img`
   width: 164px;
   height: 80px;
   margin-bottom: 0px;
+
+   @media (max-width: ${theme.breakpoints.md}) {
+    width: 145px;
+    height: 75px;
+    
+  }
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    width: 134px;
+    height: 70px;
+  }
 `;
 
 const Description = styled.p`
@@ -250,6 +298,15 @@ const Description = styled.p`
   font-size: 21px;
   font-weight: 800;
   margin-bottom: 30px;
+   @media (max-width: ${theme.breakpoints.md}) {
+    font-size: 16px;
+    margin-bottom: -15px; /* 태블릿에서 간격 줄이기 */
+  }
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    font-size: 14px;
+    margin-bottom:-20px; /* 모바일에서 더 줄이기 */
+  }
 
   .highlight {
     color: var(--main-01, #3aaf85);
