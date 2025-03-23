@@ -11,7 +11,7 @@ const StyledButton = styled.button`
   width: 400px;
   height: 50px;
   padding: 10px;
-  margin: 10px 0;
+  margin: 10px auto;
   border: none;
   border-radius: 10px;
   background-color: ${({ disabled }) => (disabled ? '#D9D9D9' : '#3aaf85')};
@@ -137,7 +137,7 @@ const AllAgreementContainer = styled.div`
   padding: 0 10px;
   stroke-width: 1px;
   stroke: var(--gray-03, #D9D9D9);
-  margin: 10px 0;
+   margin: 10px auto;
 
   input[type='checkbox'] {
     appearance: none;
