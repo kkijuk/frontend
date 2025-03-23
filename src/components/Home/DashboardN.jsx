@@ -10,6 +10,8 @@ const Container = styled.div`
 	flex-direction: column; /*세로배치 위해서 display 속성에 추가*/
 
 	gap: 10px;
+	justify-content: center; /* 세로 정렬 */
+	align-items: center; /* 가로 정렬 */
 `;
 
 const Text = styled.div`

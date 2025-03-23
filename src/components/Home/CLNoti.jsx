@@ -35,6 +35,9 @@ const Box = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
+
+	justify-content: center; // 가로 가운데 정렬
+	align-items: center; // 세로 가운데 정렬
 `;
 
 const List = styled.div`
@@ -93,7 +96,7 @@ export default function CLNoti() {
 				<DashboardNothing
 					text="작성 중인 자기소개서가 없어요"
 					buttonText="자기소개서 작성하기"
-					navigatePath="/history/master"
+					path="/history/master"
 				/>
 			);
 		}

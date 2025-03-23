@@ -35,6 +35,9 @@ const Box = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
+
+	justify-content: center; // 가로 가운데 정렬
+	align-items: center; // 세로 가운데 정렬//추가
 `;
 
 const List = styled.div`
@@ -88,11 +91,7 @@ export default function Noti() {
 	const renderLists = () => {
 		if (recruitList.length === 0) {
 			return (
-				<DashboardNothing
-					text="마감을 기다리는 공고가 없어요"
-					buttonText="공고 추가하기"
-					navigatePath="/apply-schedule"
-				/>
+				<DashboardNothing text="마감을 기다리는 공고가 없어요" buttonText="공고 추가하기" path="/apply-schedule" />
 			);
 		}
 
