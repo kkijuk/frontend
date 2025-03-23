@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import CareerTimeline from '../components/Mycareer/CareerTimeline';
 import useAuthRedirect from '../stores/useAuthRedirect';
 import OnboardingModal from '../components/Modal/OnboardingModal';
+import { theme } from '../constants/theme';
 
 const Container = styled.div`
 	display: flex;
