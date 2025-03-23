@@ -27,6 +27,10 @@ const StyledButton = styled.button`
   &:hover {
     background: ${({ disabled }) => (disabled ? '#D9D9D9' : '#2a9f72')};
   }
+    @media (max-width: ${theme.breakpoints.md}) {
+    width: 342px; /* 태블릿 이하에서는 342px 고정 */
+  }
+
 `;
 
 
@@ -90,6 +94,7 @@ const FormContainer = styled.div`
     cursor: pointer;
     margin-left: 5px;
   }
+   
 `;
 
 const Divider = styled.div`
@@ -100,6 +105,10 @@ const Divider = styled.div`
   margin: 5px auto;
   margin-top: -7px;
   margin-bottom: 20px;
+  
+  @media (max-width: ${theme.breakpoints.md}) {
+    max-width: 342px;
+  }
 `;
 
 const Title = styled.h2`
@@ -167,6 +176,11 @@ const AllAgreementContainer = styled.div`
     white-space: nowrap;
     color: black;
     font-size: 14px;
+  }
+    
+  @media (max-width: ${theme.breakpoints.md}) {
+    max-width: 342px; /* 태블릿에서는 342px로 조정 */
+    
   }
 `;
 
