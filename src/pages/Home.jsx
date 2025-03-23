@@ -23,6 +23,7 @@ const Container = styled.div`
 	display: flex;
 	gap: 32px;
 	flex-direction: column;
+	margin: 0 auto;
 
 	border: 1px solid black;
 	box-sizing: border-box;
