@@ -21,10 +21,10 @@ import OnboardingModal from '../components/Modal/OnboardingModal';
 
 const Container = styled.div`
 	display: flex;
+	height: auto;
 	gap: 32px;
 	flex-direction: column;
-	margin: 0 auto;
-
+	margin: 48px auto 0;
 	border: 1px solid black;
 	box-sizing: border-box;
 `;
@@ -61,7 +61,7 @@ const TopBox2 = styled.div`
 
 const Middle = styled.div`
 	width: 820px;
-	height: 160px;
+	height: 188px;
 
 	border: 1px solid black;
 	box-sizing: border-box;

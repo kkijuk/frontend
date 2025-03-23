@@ -7,7 +7,7 @@ import DashboardNothing from './DashboardN';
 const Container = styled.div`
 	display: flex;
 	gap: 12px;
-	width: 400px;
+	width: 350px;
 	height: 154px;
 	padding: 20px 25px;
 	flex-direction: column;
@@ -32,6 +32,9 @@ const Title = styled.div`
 const Box = styled.div`
 	width: 350px;
 	height: 88px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
 `;
 
 const List = styled.div`
