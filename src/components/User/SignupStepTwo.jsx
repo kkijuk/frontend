@@ -6,6 +6,7 @@ import useAuthStore from '../../stores/useAuthStore';
 import { createRecord } from '../../api/Record/record';
 import { createMaster } from '../../api/Intro/master';
 import { trackEvent } from '../../utils/ga4';
+import { theme } from '../../constants/theme';
 
 const StepTwoContainer = styled.div`
   max-width: 600px;
@@ -41,6 +42,10 @@ const StepTwoContainer = styled.div`
       color: #3AAF85;
       border: 2px solid var(--main-01, #3AAF85);
     }
+      @media (max-width: ${theme.breakpoints.md}) {
+    width: 165px; 
+    flex-grow: 1; 
+  }
   }
 `;
 
@@ -66,6 +71,10 @@ const CompleteButton = styled.button`
  &:hover {
     background: ${({ disabled }) => (disabled ? '#D9D9D9' : '#2a9f72')};
   }
+    @media (max-width: ${theme.breakpoints.md}) {
+    width: 342px; 
+    
+  }
 `;
 
 const Title = styled.div`
@@ -77,6 +86,10 @@ font-style: normal;
 font-weight: 400;
 line-height: normal;
 margin-bottom: 30px;
+
+@media (max-width: ${theme.breakpoints.md}) {
+   font-size: 14px;
+  }
 `;
 
 const ErrorMessage = styled.div`
