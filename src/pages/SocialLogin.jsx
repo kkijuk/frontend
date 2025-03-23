@@ -268,7 +268,7 @@ const Title = styled.div`
   @media (max-width: ${theme.breakpoints.md}) {
     font-size: 18px;
     margin-bottom: 10px; /* 태블릿에서 간격 줄이기 */
-    margin-top: 10px;
+    margin-top: 20px;  
   }
 
   @media (max-width: ${theme.breakpoints.sm}) {
