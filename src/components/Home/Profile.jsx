@@ -70,6 +70,11 @@ const ActivityTextBox = styled.div`
 	gap: 4px;
 `;
 
+const CenteredTextRow = styled.span`
+	display: block;
+	text-align: center;
+`;
+
 const ActivityTitle = styled.div`
 	align-self: stretch;
 	color: var(--black, #000);
@@ -95,7 +100,7 @@ const ActivityNum = styled.div`
 const Button = styled.button`
 	display: inline-flex;
 	height: 30px;
-	width: 30px;
+	width: 220px;
 	justify-content: center;
 	align-items: center;
 	flex-shrink: 0;
@@ -170,10 +175,10 @@ export default function ProfileBox() {
 			<Container>
 				<Top>
 					<Text>안녕하세요 {userName}님,</Text>
-					<span>
+					<CenteredTextRow>
 						<BoldText color="#3aaf85">끼적</BoldText>
 						<BoldText>한 지 {monthDuration}개월이 지났어요!</BoldText>
-					</span>
+					</CenteredTextRow>
 				</Top>
 				<Bottom>
 					<ActivityBoxContainer>

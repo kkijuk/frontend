@@ -7,6 +7,8 @@ const Container = styled.div`
 	width: 350px;
 	height: 88px;
 	display: flex;
+	flex-direction: column; /*세로배치 위해서 display 속성에 추가*/
+
 	gap: 10px;
 `;
 

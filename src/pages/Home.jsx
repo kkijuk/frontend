@@ -24,9 +24,10 @@ const Container = styled.div`
 	height: auto;
 	gap: 32px;
 	flex-direction: column;
-	margin: 48px auto 0;
-	border: 1px solid black;
-	box-sizing: border-box;
+	margin: 48px auto 48px;
+
+	/*border: 1px solid black;
+	box-sizing: border-box;*/
 `;
 
 const Top = styled.div`
@@ -35,8 +36,8 @@ const Top = styled.div`
 	display: flex;
 	gap: 20px;
 
-	border: 1px solid black;
-	box-sizing: border-box;
+	/*border: 1px solid black;
+	box-sizing: border-box;*/
 `;
 
 const TopBox1 = styled.div`
@@ -63,19 +64,19 @@ const Middle = styled.div`
 	width: 820px;
 	height: 188px;
 
-	border: 1px solid black;
-	box-sizing: border-box;
+	/*border: 1px solid black;
+	box-sizing: border-box;*/
 `;
 
 const Bottom = styled.div`
 	width: 820px;
-	height: 160px;
+	height: 194px;
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
 
-	border: 1px solid black;
-	box-sizing: border-box;
+	/*border: 1px solid black;
+	box-sizing: border-box;*/
 `;
 
 const BottomText = styled.div`
