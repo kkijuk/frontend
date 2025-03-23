@@ -216,7 +216,7 @@ const TopButton = styled.button`
   border: 1px solid var(--main-02, #88d1b6);
   background: #fff;
   color: var(--main-02, #88d1b6);
-   font-family: Pretendard;
+  font-family: Regular;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

@@ -5,6 +5,8 @@ body {
 	height: 100%; /* 부모 요소가 100% 높이를 가지도록 설정 */
 	display: flex;
 	flex-direction: column;
+	-webkit-text-size-adjust: 100%; /* iOS에서 자동 텍스트 크기 조정 방지 */
+	text-size-adjust: 100%;
 }
 
 #root {
