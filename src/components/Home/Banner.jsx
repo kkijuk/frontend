@@ -7,6 +7,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+//ver2
+
 const Container = styled.div`
 	width: 820px;
 	height: 188px;
