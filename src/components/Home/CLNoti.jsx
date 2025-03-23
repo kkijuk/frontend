@@ -1,4 +1,4 @@
-//ver2
+//ver2_오른쪽 대시보드
 import React from 'react';
 import styled from 'styled-components';
 
