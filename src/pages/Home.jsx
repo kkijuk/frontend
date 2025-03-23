@@ -74,7 +74,7 @@ const Middle = styled.div`
 
 const Bottom = styled.div`
 	width: 820px;
-	height: 194px;
+	height: auto; /*194*/
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
@@ -98,6 +98,8 @@ const ActivityBox = styled.div`
 	display: flex;
 	justify-content: space-between;
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		display: flex;
+		gap: 16px;
 		flex-direction: column;
 	}
 `;
