@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import ProfileBox from '../components/Home/Profile';
+
+import BannerComponent from '../components/Home/Banner';
+import Noti from '../components/Home/Noti';
+import CLNoti from '../components/Home/CLNoti';
+
 import LoginProfileBox from '../components/Home/LoginProfileBox';
 import LogoutProfileBox from '../components/Home/LogoutProfileBox';
-import BannerComponent from '../components/Home/Banner';
 import DeadlineNoti from '../components/Home/DeadlineNoti';
 import WritingNoti from '../components/Home/WritingNoti';
 import RecommendBox from '../components/Home/RecommendBox';
@@ -66,11 +70,36 @@ const Bottom = styled.div`
 	width: 820px;
 	height: 160px;
 	display: flex;
+	flex-direction: column;
 	gap: 16px;
 
 	border: 1px solid black;
 	box-sizing: border-box;
 `;
+
+const BottomText = styled.div`
+	color: var(--black, #000);
+	font-family: Pretendard;
+	font-size: 20px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+`;
+
+const ActivityBox = styled.div`
+	width: 810px;
+	height: 154px;
+	display: flex;
+	justify-content: space-between;
+`;
+
+const bannerDummy = [
+	{
+		image: require('../assets/banner/serviceBanner1.png'),
+		url: 'https://docs.google.com/forms/d/e/1FAIpQLSfCNlO7_QQR7J3BYHV4tGhkpCyJp4VggIKX1bmBBhs7DYEzWQ/viewform?usp=sharing',
+	},
+	{ image: require('../assets/banner/main.png'), url: 'https://forms.gle/RuuoXu6DzMz9vpyk6' },
+];
 
 export default function Home() {
 	return (
@@ -79,10 +108,20 @@ export default function Home() {
 				<TopBox1>
 					<ProfileBox></ProfileBox>
 				</TopBox1>
-				<TopBox2></TopBox2>
+				<TopBox2>
+					<CareerTimeline />
+				</TopBox2>
 			</Top>
-			<Middle>타임라인이 아니라 배너</Middle>
-			<Bottom>대시보드</Bottom>
+			<Middle>
+				<BannerComponent banners={bannerDummy} />
+			</Middle>
+			<Bottom>
+				<BottomText>잠깐! 잊지 않으셨죠?</BottomText>
+				<ActivityBox>
+					<Noti></Noti>
+					<CLNoti></CLNoti>
+				</ActivityBox>
+			</Bottom>
 		</Container>
 	);
 }
