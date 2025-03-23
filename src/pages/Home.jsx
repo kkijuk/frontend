@@ -7,12 +7,7 @@ import BannerComponent from '../components/Home/Banner';
 import Noti from '../components/Home/Noti';
 import CLNoti from '../components/Home/CLNoti';
 
-import LoginProfileBox from '../components/Home/LoginProfileBox';
-import LogoutProfileBox from '../components/Home/LogoutProfileBox';
-import DeadlineNoti from '../components/Home/DeadlineNoti';
-import WritingNoti from '../components/Home/WritingNoti';
 import RecommendBox from '../components/Home/RecommendBox';
-import TimelineHome from '../components/Home/TimelineHome';
 import { useNavigate } from 'react-router-dom';
 
 import CareerTimeline from '../components/Mycareer/CareerTimeline';
@@ -35,6 +30,10 @@ const Top = styled.div`
 	height: 160px;
 	display: flex;
 	gap: 20px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-direction: column;
+	}
 
 	/*border: 1px solid black;
 	box-sizing: border-box;*/
@@ -64,6 +63,10 @@ const Middle = styled.div`
 	width: 820px;
 	height: 188px;
 
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
+
 	/*border: 1px solid black;
 	box-sizing: border-box;*/
 `;
@@ -74,6 +77,10 @@ const Bottom = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-direction: column;
+	}
 
 	/*border: 1px solid black;
 	box-sizing: border-box;*/
@@ -89,8 +96,8 @@ const BottomText = styled.div`
 `;
 
 const ActivityBox = styled.div`
-	width: 810px;
-	height: 154px;
+	width: 820px;
+	height: 194px;
 	display: flex;
 	justify-content: space-between;
 `;
@@ -104,26 +111,48 @@ const bannerDummy = [
 ];
 
 export default function Home() {
+	const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
+	const [showOnboarding, setShowOnboarding] = useState(false);
+
+	//localStorage를 확인해서 오늘은 모달을 보이지 않도록 처리
+	useEffect(() => {
+		const lastClosedDate = localStorage.getItem('hideOnboardingModal');
+		const today = new Date().toISOString().split('T')[0]; // 오늘 날짜 (YYYY-MM-DD)
+
+		if (lastClosedDate !== today) {
+			setShowOnboarding(true); // 오늘 처음 방문하면 모달 표시
+		}
+	}, []);
+
+	//모달 닫기 함수
+	const handleCloseOnboarding = () => {
+		setShowOnboarding(false);
+	};
+
 	return (
-		<Container>
-			<Top>
-				<TopBox1>
-					<ProfileBox></ProfileBox>
-				</TopBox1>
-				<TopBox2>
-					<CareerTimeline />
-				</TopBox2>
-			</Top>
-			<Middle>
-				<BannerComponent banners={bannerDummy} />
-			</Middle>
-			<Bottom>
-				<BottomText>잠깐! 잊지 않으셨죠?</BottomText>
-				<ActivityBox>
-					<Noti></Noti>
-					<CLNoti></CLNoti>
-				</ActivityBox>
-			</Bottom>
-		</Container>
+		<>
+			{showOnboarding && <OnboardingModal onClose={handleCloseOnboarding} />}
+
+			<Container>
+				<Top>
+					<TopBox1>
+						<ProfileBox></ProfileBox>
+					</TopBox1>
+					<TopBox2>
+						<CareerTimeline />
+					</TopBox2>
+				</Top>
+				<Middle>
+					<BannerComponent banners={bannerDummy} />
+				</Middle>
+				<Bottom>
+					<BottomText>잠깐! 잊지 않으셨죠?</BottomText>
+					<ActivityBox>
+						<Noti></Noti>
+						<CLNoti></CLNoti>
+					</ActivityBox>
+				</Bottom>
+			</Container>
+		</>
 	);
 }
