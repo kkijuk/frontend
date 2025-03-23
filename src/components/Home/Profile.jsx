@@ -10,6 +10,7 @@ const Container = styled.div`
 	height: 138px;
 	display: flex;
 	gap: 9px;
+	flex-direction: column;
 `;
 
 const Top = styled.div`
@@ -61,8 +62,8 @@ const ActivityBox = styled.div`
 `;
 
 const ActivityTextBox = styled.div`
-	width: 32px;
-	height: 35px;
+	width: auto;
+	height: auto;
 	display: flex;
 	flex-direction: column;
 	gap: 4px;
@@ -93,6 +94,7 @@ const ActivityNum = styled.div`
 const Button = styled.button`
 	display: inline-flex;
 	height: 30px;
+	width: 30px;
 	justify-content: center;
 	align-items: center;
 	flex-shrink: 0;
