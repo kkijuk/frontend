@@ -6,6 +6,7 @@ import InterestBox from '../components/shared/InterestBox';
 import InterestSkipModal from '../components/User/InterestSkipModal';
 import { saveInterests } from '../api/Signup/signupInterest';
 import { trackEvent } from '../utils/ga4';
+import useAuthStore from '../stores/useAuthStore';
 
 const ContentArea = styled.div`
   margin: 0 auto;
@@ -112,6 +113,14 @@ const SignupInterest = ({ onSave = () => {} }) => {
 	const [interestingList, setSelectedInterest] = useState([]);
 	const navigate = useNavigate();
 	const [showModal, setShowModal] = useState(false);
+	const { isProfileComplete } = useAuthStore();
+	
+	useEffect(() => {
+		// 프로필 완료된 경우 홈으로 리다이렉트
+		if (isProfileComplete) {
+		  navigate('/home');
+		}
+	  }, [isProfileComplete, navigate]);
 
 	useEffect(() => {
 		const unwantedSvg = document.querySelector("body > svg");

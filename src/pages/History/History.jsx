@@ -89,17 +89,11 @@ const History = () => {
 	});
 
 	const [activeSection, setActiveSection] = useState("");	// 인디케이터 활성화 섹션
-	const [editableUserData, setEditableUserData] = useState({	// 사용자 정보 수정
-		profileImageUrl: '',
-		address: '',
-	});
 	const [profileURL, setProfileURL] = useState(profileImageUrl);	// 프로필 이미지
-
 	const [isCareerModalOpen, setIsCareerModalOpen] = useState(false); // 내 커리어 관련 활동 추가 모달 관리
 	const [modalMode, setModalMode] = useState('add');	// 모달 모드(add, edit)
 	const [modalData, setModalData] = useState(null);	// 모달 카테고리(add mode)
-	const [initialized, setInitialized] = useState(false);	// 초기화 여부
-	const [debouncedUserData] = useDebounce(editableUserData, 1000); // 1초 동안 입력 없을 때 호출
+
 
 	// useEffect
 	// 이력서 불러오기
@@ -119,39 +113,7 @@ const History = () => {
 		
 		console.log('Record Id:', recordId);
 
-		// 인디케이터 관련 로직 - 화면 영역 계산
-		// const observer = new IntersectionObserver(
-		// 	(entries) => {
-		// 		entries.forEach((entry)=>{
-		// 			if(entry.isIntersecting){
-		// 				setActiveSection(entry.target.id);
-		// 			}
-		// 		})
-		// 	},
-		// 	{ rootMargin: "-50% 0px -50% 0px" }
-		// )
-
-		// sections.forEach((section) => {
-		// 	const element = document.getElementById(section.id);
-		// 	if (element) observer.observe(element);
-
-		// });
-
-		// return ()=>observer.disconnect();
-
 	}, [fetchRecord]);
-
-	useEffect(() => {
-		if (initialized && !isEqual(userData, debouncedUserData)) {
-			console.log("EditableUserData: ", debouncedUserData);
-			updateUserData(recordId, {
-				email,
-				...debouncedUserData,
-			}); //in useRecordStore
-		} else {
-			setInitialized(true);
-		}
-	}, [debouncedUserData]);
 
 
 	// LOGIC
@@ -219,21 +181,20 @@ const History = () => {
 	// 인적사항 변경 관련 로직
 	//(1) 프로필 사진 변경 관련 로직
 	const handleProfileChange = (file) => {
-		setProfileURL(file);
-		setEditableUserData((prev) => ({
-			...prev,
-			profileImageUrl: file,
-		}));
-		console.log('Profile Image changed:', file);
+		// setProfileURL(file);
+		if(file) {
+			updateUserData(recordId, {
+				profileImageFile: file,
+			})
+		}
 	}
 
 	//(2) 이메일 또는 주소 변경 시
 	const handleEmailOrAddressChange = (data) => {
 		if(data.type === 'address'){
-			setEditableUserData((prev) => ({
-				...prev,
-				address: data.data
-			}));
+			updateUserData(recordId, {
+				address: data.data,
+			});
 		}
 	};
 
@@ -286,7 +247,7 @@ const History = () => {
 							key = {sections[0].id}	
 						/>
 						<Profile
-							profileBlob={profileURL}
+							profileKeyName={profileImageUrl}
 							onProfileChange={handleProfileChange}
 						/>
 						<UserInfoWrapper>

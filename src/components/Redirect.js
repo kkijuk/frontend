@@ -64,11 +64,12 @@ const SocialRedirect = ({ provider }) => {
             const decodedToken = decodeToken(accessToken);
             console.log('디코딩된 토큰:', decodedToken);
 
-            // zustand를 이용해 토큰 저장
-            login(accessToken, refreshToken);
+            // zustand를 이용해 토큰 및 프로필 입력여부 저장 
+            const isProfileComplete = decodedToken?.isProfileComplete || false;
+            login(accessToken, refreshToken, isProfileComplete);
 
             // 프로필 완료 여부 확인 (디코딩된 토큰에서 직접 확인)
-            if (decodedToken?.isProfileComplete) {
+            if (isProfileComplete) {
               navigate('/home'); // 홈 화면으로 리다이렉트
             } else {
               navigate('/signup'); // 추가 정보 입력 페이지로 리다이렉트
