@@ -34,6 +34,7 @@ const Button = styled.div`
 	border-radius: 10px;
 	background: var(--main-01, #3aaf85);
 	border: none;
+	cursor: pointer;
 
 	color: var(--white, #fff);
 	text-align: center;
