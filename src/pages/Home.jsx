@@ -28,7 +28,7 @@ const Container = styled.div`
 
 const Top = styled.div`
 	width: 820px;
-	height: 160px;
+	height: auto; /*160*/
 	display: flex;
 	gap: 20px;
 
@@ -79,10 +79,6 @@ const Bottom = styled.div`
 	flex-direction: column;
 	gap: 16px;
 
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		flex-direction: column;
-	}
-
 	/*border: 1px solid black;
 	box-sizing: border-box;*/
 `;
@@ -98,9 +94,12 @@ const BottomText = styled.div`
 
 const ActivityBox = styled.div`
 	width: 820px;
-	height: 194px;
+	height: auto; /*194*/
 	display: flex;
 	justify-content: space-between;
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-direction: column;
+	}
 `;
 
 const bannerDummy = [
