@@ -2,6 +2,7 @@
 //관심분야 설정 박스
 import React from 'react';
 import styled from 'styled-components';
+import { theme } from '../../constants/theme';
 
 const Box = styled.div`
 	width: 193px;
@@ -30,6 +31,10 @@ const Box = styled.div`
     color: white;
     border-color: #3AAF85;
   }*/
+ @media (max-width: ${theme.breakpoints.md}) {
+    width: 165px; 
+    flex-grow: 1; 
+  }
 `;
 
 const InterestBox = ({ content, selected, onClick }) => {
