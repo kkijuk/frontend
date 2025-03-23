@@ -6,6 +6,7 @@ import createResume from '../api/Signup/createResume';
 import signupLogo from '../assets/signuplogo.svg';
 import { trackEvent } from '../utils/ga4';
 import useAuthStore from '../stores/useAuthStore';
+import { theme } from '../constants/theme';
 
 const SignupSuccessScreen = styled.div`
 	max-width: flex;
@@ -27,6 +28,10 @@ const SignupSuccessScreen = styled.div`
 		font-style: normal;
 		font-weight: 700;
 		line-height: normal;
+
+		 @media (max-width: ${theme.breakpoints.md}) {
+      font-size: 18px; 
+    }
 	}
 
 	.button {
@@ -44,6 +49,12 @@ const SignupSuccessScreen = styled.div`
 		font-weight: 500;
 		cursor: pointer;
 		margin-top: 15px;
+
+		@media (max-width: ${theme.breakpoints.md}) {
+      width: 220px; 
+      height: 52px;
+      font-size: 18px;
+    }
 	}
 
 	.Interests-text1 {
@@ -54,6 +65,10 @@ const SignupSuccessScreen = styled.div`
 		font-weight: 400;
 		line-height: normal;
 		margin-top: 60px;
+
+		@media (max-width: ${theme.breakpoints.md}) {
+      font-size: 14px; 
+    }
 	}
 
 	.Interests-text2 {
@@ -64,6 +79,9 @@ const SignupSuccessScreen = styled.div`
 		font-size: 19px;
 		font-weight: 400;
 		line-height: normal;
+		@media (max-width: ${theme.breakpoints.md}) {
+      font-size: 14px; 
+    }
 	}
 `;
 const Logo = styled.img`
@@ -77,7 +95,7 @@ const Logo = styled.img`
 const HomeLink = styled.div`
   color: var(--gray-02, #707070);
   text-align: center;
-  font-family: Pretendard;
+  font-family: Regular;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
