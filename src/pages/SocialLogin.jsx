@@ -143,7 +143,7 @@ const SocialButton = styled.button`
 	z-index: 1000;
 	border-radius: 4px;
 	margin: 8px 0;
-	font-family: Pretendard;
+	  font-family: Regular;
 	font-size: 18px;
 	font-weight: 700;
 	display: flex;
@@ -216,7 +216,7 @@ const TopButton = styled.button`
   border: 1px solid var(--main-02, #88d1b6);
   background: #fff;
   color: var(--main-02, #88d1b6);
-  font-family: Pretendard;
+   font-family: Pretendard;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -262,11 +262,13 @@ const Title = styled.div`
   white-space: nowrap; 
   line-height: normal;
   margin-bottom: 20px;
+    font-family: Regular;
 
    
   @media (max-width: ${theme.breakpoints.md}) {
     font-size: 18px;
     margin-bottom: 10px; /* 태블릿에서 간격 줄이기 */
+    margin-top: 10px;
   }
 
   @media (max-width: ${theme.breakpoints.sm}) {
@@ -298,6 +300,7 @@ const Description = styled.p`
   font-size: 21px;
   font-weight: 800;
   margin-bottom: 30px;
+    font-family: Regular;
    @media (max-width: ${theme.breakpoints.md}) {
     font-size: 16px;
     margin-bottom: -15px; /* 태블릿에서 간격 줄이기 */
