@@ -116,8 +116,8 @@ export default function CLNoti() {
 				);
 			}
 
-			const ddayNumber = parseInt(item.dday?.replace('D-', ''));
-			const isDanger = !isNaN(ddayNumber) && ddayNumber <= 7;
+			const ddayNumber = item.dday; // 숫자 그대로 사용
+			const isDanger = ddayNumber <= 7;
 
 			return (
 				<List key={index}>
