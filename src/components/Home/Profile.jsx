@@ -35,6 +35,7 @@ const BoldText = styled.div`
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
+	display: inline;
 `;
 
 const Bottom = styled.div`
@@ -187,20 +188,20 @@ export default function ProfileBox() {
 								<ActivityTitle>지원현황</ActivityTitle>
 								<ActivityNum>{recruitCount}</ActivityNum>
 							</ActivityTextBox>
-							<Button
-								onClick={() => {
-									trackEvent('add_click', {
-										category: 'home',
-										detail: 'add_career',
-										action_type: 'add',
-										label: '활동 추가하기',
-									});
-									handleOpenModal();
-								}}>
-								활동 추가하기
-							</Button>
 						</ActivityBox>
 					</ActivityBoxContainer>
+					<Button
+						onClick={() => {
+							trackEvent('add_click', {
+								category: 'home',
+								detail: 'add_career',
+								action_type: 'add',
+								label: '활동 추가하기',
+							});
+							handleOpenModal();
+						}}>
+						활동 추가하기
+					</Button>
 				</Bottom>
 			</Container>
 			{/* 모달이 열렸을 때만 렌더링 */}
