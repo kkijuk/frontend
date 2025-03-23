@@ -26,12 +26,13 @@ const Title = styled.div`
 	font-weight: 400;
 	line-height: normal;
 	margin-left: 20px;
-	margin-bottom: 5px;
+	margin-bottom: 0px;
 `;
 
 const Wrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
+	margin-bottom: 16px;
 `;
 
 const ChangeViewButton = styled.button`
@@ -89,7 +90,9 @@ export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewTogg
 				<NotExistSearchComponent query={searchQuery} onClick={() => navigate('/mycareer')} />
 			) : (
 				<>
-					<Title>활동 ({activity?.data.data.length || 0})</Title>
+					<Wrapper>
+						<Title>활동 ({activity?.data.data.length || 0})</Title>
+					</Wrapper>
 					<MyCareerSearchTotalActivity activity={activity} isActivityLoading={isActivityLoading} />
 
 					<Wrapper>

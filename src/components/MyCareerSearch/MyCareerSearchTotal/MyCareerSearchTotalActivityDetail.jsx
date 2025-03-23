@@ -8,12 +8,15 @@ const Container = styled.div`
 	width: 100%;
 	box-sizing: border-box;
 	padding: 0 15px;
-	margin-bottom: 20px;
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+	gap: 16px;
+	margin-bottom: 32px;
 `;
 
 const Box = styled.div`
 	width: 98%;
-	margin: 16px auto;
+	margin: 0px auto;
 	padding: 20px 24px;
 	background-color: white;
 	border-radius: 10px;
@@ -25,6 +28,11 @@ const TopWrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
 	padding-top: 10px;
+`;
+
+const DetailTopWrapper = styled.div`
+	display: flex;
+	justify-content: space-between;
 `;
 
 const TopLeft = styled.div`
@@ -171,12 +179,12 @@ export default function MyCareerSearchTotalActivityDetail({ activityDetail, isAc
 							<MainWrapper>
 								{detailsToRender.map((detail, i) => (
 									<DetailWrapper key={i}>
-										<TopWrapper>
+										<DetailTopWrapper>
 											<DetailTitle>{highlightMatch(detail.title, searchQuery)}</DetailTitle>
 											<DetailCareerDate>
 												{formatDate(detail.startDate, detail.endDate, detail.unknown)}
 											</DetailCareerDate>
-										</TopWrapper>
+										</DetailTopWrapper>
 										<DetailContent>{highlightMatch(detail.content, searchQuery)}</DetailContent>
 										<BottomWrapper>
 											{detail.detailTag.map((tag, j) => (
