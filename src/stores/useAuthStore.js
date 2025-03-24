@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 const useAuthStore = create((set) => ({
+
     token: null,
     refreshToken: null,
     isLoggedIn: false,
@@ -47,18 +48,18 @@ const useAuthStore = create((set) => ({
         });
     },
 
-    // 액세스 토큰 갱신
-    updateAccessToken: (newAccessToken, newRefreshToken) => {
-        if (newAccessToken) {
-            localStorage.setItem('token', newAccessToken);
-            set({ token: newAccessToken });
-        }
+	// 액세스 토큰 갱신
+	updateAccessToken: (newAccessToken, newRefreshToken) => {
+		if (newAccessToken) {
+			localStorage.setItem('token', newAccessToken);
+			set({ token: newAccessToken });
+		}
 
-        if (newRefreshToken) {
-            localStorage.setItem('refreshToken', newRefreshToken);
-            set({ refreshToken: newRefreshToken });
-        }
-    },
+		if (newRefreshToken) {
+			localStorage.setItem('refreshToken', newRefreshToken);
+			set({ refreshToken: newRefreshToken });
+		}
+	},
 }));
 
 export default useAuthStore;
@@ -68,7 +69,7 @@ useAuthStore.getState().restoreState();
 
 // **localStorage 변경 감지 추가**
 if (typeof window !== 'undefined') {
-    window.addEventListener('storage', () => {
-        useAuthStore.getState().restoreState();
-    });
+	window.addEventListener('storage', () => {
+		useAuthStore.getState().restoreState();
+	});
 }

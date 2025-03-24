@@ -3,8 +3,10 @@ import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from
 import { QueryClientProvider } from '@tanstack/react-query';
 import styled from 'styled-components';
 import PageFooter from './components/PageFooter';
+import { ThemeProvider } from 'styled-components';
+import { theme } from './constants/theme';
 
-import queryClient from './api/queryClient/queryClient'; 
+import queryClient from './api/queryClient/queryClient';
 import api, { setupApiInterceptors } from './Axios';
 import SocialRedirect from './components/Redirect';
 import Home from './pages/Home';
@@ -181,9 +183,13 @@ const App = () => {
 export default function AppWrapper() {
 	return (
 		<QueryClientProvider client={queryClient}>
-			<Router>
-				<App />
-			</Router>
+			<ThemeProvider theme={theme}>
+				{' '}
+				{/* ✅ 여기서 감싸줌 */}
+				<Router>
+					<App />
+				</Router>
+			</ThemeProvider>
 		</QueryClientProvider>
 	);
 }

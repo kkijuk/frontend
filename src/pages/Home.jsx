@@ -1,130 +1,119 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import LoginProfileBox from '../components/Home/LoginProfileBox';
-import LogoutProfileBox from '../components/Home/LogoutProfileBox';
+
+import ProfileBox from '../components/Home/Profile';
+
 import BannerComponent from '../components/Home/Banner';
-import DeadlineNoti from '../components/Home/DeadlineNoti';
-import WritingNoti from '../components/Home/WritingNoti';
+import Noti from '../components/Home/Noti';
+import CLNoti from '../components/Home/CLNoti';
+
 import RecommendBox from '../components/Home/RecommendBox';
-import TimelineHome from '../components/Home/TimelineHome';
 import { useNavigate } from 'react-router-dom';
 
 import CareerTimeline from '../components/Mycareer/CareerTimeline';
 import useAuthRedirect from '../stores/useAuthRedirect';
 import OnboardingModal from '../components/Modal/OnboardingModal';
+import { theme } from '../constants/theme';
 
-const Body = styled.div`
-	width: 820px;
-	height: auto; //그래도 안되면 얘 height: auto로 바꾸기
+const Container = styled.div`
 	display: flex;
-	justify-content: flex-start; //원래 center
-	align-items: flex-start; //원래 center
-	flex-direction: column; /*Top이랑 CareerBox를 세로 방향 정렬*/
-	box-sizing: border-box; /* 추가 */
-	padding-bottom: 100px;
-	margin: 48px auto 20px auto;
+	height: auto;
 	gap: 32px;
+	flex-direction: column;
+	margin: 48px auto 48px;
+
+	/*border: 1px solid black;
+	box-sizing: border-box;*/
 `;
 
-const Container1 = styled.div`
-	width: 100%;
+const Top = styled.div`
+	width: 820px;
+	height: auto; /*160*/
 	display: flex;
-	flex-direction: row;
 	gap: 20px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-direction: column;
+	}
+
+	/*border: 1px solid black;
+	box-sizing: border-box;*/
 `;
 
-const Container2 = styled.div`
-	width: 100%;
+const TopBox1 = styled.div`
+	display: flex;
+	width: 240px;
+	height: 160px;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border-radius: 10px;
+	border: 1px solid var(--gray-03, #d9d9d9);
 `;
 
-const Label = styled.div`
+const TopBox2 = styled.div`
+	width: 560px;
+	height: 160px;
+	flex-shrink: 0;
+	border-radius: 10px;
+	border: 1px solid var(--gray-03, #d9d9d9);
+	background: var(--white, #fff);
+`;
+
+const Middle = styled.div`
+	width: 820px;
+	height: 188px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
+
+	/*border: 1px solid black;
+	box-sizing: border-box;*/
+`;
+
+const Bottom = styled.div`
+	width: 820px;
+	height: auto; /*194*/
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+
+	/*border: 1px solid black;
+	box-sizing: border-box;*/
+`;
+
+const BottomText = styled.div`
 	color: var(--black, #000);
-	font-family: Bold;
+	font-family: Pretendard;
 	font-size: 20px;
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
-	margin-bottom: 20px;
 `;
 
-const ContentBox = styled.div`
-	width: 100%;
-	max-width: 820px;
+const ActivityBox = styled.div`
+	width: 820px;
+	height: auto; /*194*/
 	display: flex;
-	flex-direction: row;
-	gap: 15px;
+	justify-content: space-between;
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		display: flex;
+		gap: 16px;
+		flex-direction: column;
+	}
 `;
-
-const dummyData = [
-	{
-		title: 'IT 연합 사이드 프로젝트 동아리 UMC 7기 부원 모집',
-		category: '동아리',
-		endDate: '2024.09.15까지',
-		image: 'https://i.ibb.co/R43nbpp/image.png',
-		url: 'https://www.makeus.in/umc',
-	},
-	{
-		title: '2024 NH투자증권 빅데이터 경진대회 (~10/11)',
-		category: '공모전/대회',
-		endDate: '2024.10.11까지',
-		image: 'https://i.ibb.co/6FRvK0F/415409-2.png',
-		url: 'https://link.mynamuhbegin.com/dgoe33',
-	},
-	{
-		title: '[매일경제] 대학생 서포터즈 14기 모집',
-		category: '대외활동',
-		endDate: '2024.09.18까지',
-		image: 'https://i.ibb.co/N9tkFXz/413647-2-1.png',
-		url: 'https://www.mk.co.kr/',
-	},
-	{
-		title: '게임프로그래머 실무자양성과정 직업훈련',
-		category: '교육',
-		endDate: '2024.09.30까지',
-		image: 'https://i.ibb.co/pvvzFTs/image-2238.png',
-		url: 'https://futureyou.modoo.at/?link=b99wuqf9',
-	},
-	{
-		title: '[끼적] iOS개발 채용전환형 인턴 모집(이면 좋겠다)',
-		category: '인턴',
-		endDate: '2024.08.23까지',
-		image: 'https://i.ibb.co/qgsgtdP/Frame-236.png',
-		url: 'https://www.instagram.com/kki.juk/',
-	},
-	{
-		title: '[캐시워크] 서비스기획 채용전환형 인턴',
-		category: '인턴',
-		endDate: '2024.09.02까지',
-		image: 'https://i.ibb.co/h9BKzSR/Frame-236-1.png',
-		url: 'https://cashwalk.com/',
-	},
-	{
-		title: '[애플코리아] Data Analyst Internship - Korea Finance',
-		category: '인턴',
-		endDate: '채용 시 마감',
-		image: 'https://i.ibb.co/K2L6HJ8/Frame-237.png',
-		url: 'https://www.apple.com/kr/',
-	},
-	{
-		title: '[펄어비스] QA Beginner 인턴 모집',
-		category: '인턴',
-		endDate: '2024.08.26까지',
-		image: 'https://i.ibb.co/94ttcmT/Frame-238.png',
-		url: 'https://www.pearlabyss.com/ko-KR/Company/Careers/NoticeDetail?_masterNo=32',
-	},
-];
 
 const bannerDummy = [
-	{ image: require('../assets/banner/beta_gift.png'), url: 'https://www.instagram.com/kki.juk/' },
-	{ image: require('../assets/banner/beta_test.png'), url: 'https://forms.gle/RuuoXu6DzMz9vpyk6' },
+	{
+		image: require('../assets/banner/serviceBanner1.png'),
+		url: 'https://docs.google.com/forms/d/e/1FAIpQLSfCNlO7_QQR7J3BYHV4tGhkpCyJp4VggIKX1bmBBhs7DYEzWQ/viewform?usp=sharing',
+	},
 	{ image: require('../assets/banner/main.png'), url: 'https://forms.gle/RuuoXu6DzMz9vpyk6' },
 ];
 
 export default function Home() {
 	const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
-	useAuthRedirect(); // ✅ 추가: 로그인 상태에 따라 자동 리디렉트 수행
-
-	//OnboardingModal 상태 관리
 	const [showOnboarding, setShowOnboarding] = useState(false);
 
 	//localStorage를 확인해서 오늘은 모달을 보이지 않도록 처리
@@ -142,31 +131,30 @@ export default function Home() {
 		setShowOnboarding(false);
 	};
 
-	const handleTimelineClick = () => {
-		window.scrollTo(0, 0);
-		navigate('/login-required'); // 로그아웃 상태일 시 로그인 페이지로 이동합니다.
-	};
-
 	return (
 		<>
 			{showOnboarding && <OnboardingModal onClose={handleCloseOnboarding} />}
 
-			<Body>
-				<Container1>
-					<LoginProfileBox />
-					<CareerTimeline />
-				</Container1>
-				{/* <Banner banners={bannerDummy} /> */}
-				<BannerComponent banners={bannerDummy} />
-
-				<Container2>
-					<Label>잠깐! 잊지 않으셨죠?</Label>
-					<ContentBox>
-						<DeadlineNoti />
-						<WritingNoti />
-					</ContentBox>
-				</Container2>
-			</Body>
+			<Container>
+				<Top>
+					<TopBox1>
+						<ProfileBox></ProfileBox>
+					</TopBox1>
+					<TopBox2>
+						<CareerTimeline />
+					</TopBox2>
+				</Top>
+				<Middle>
+					<BannerComponent banners={bannerDummy} />
+				</Middle>
+				<Bottom>
+					<BottomText>잠깐! 잊지 않으셨죠?</BottomText>
+					<ActivityBox>
+						<Noti></Noti>
+						<CLNoti></CLNoti>
+					</ActivityBox>
+				</Bottom>
+			</Container>
 		</>
 	);
 }
