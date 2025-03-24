@@ -1,5 +1,6 @@
 //ver2_오른쪽 대시보드
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getIntroduce } from '../../api/Home/getIntroduce';
 import DashboardNothing from './DashboardN';
@@ -79,6 +80,7 @@ const ListTag = styled.div`
 
 export default function CLNoti() {
 	const [introduceList, setIntroduceList] = useState([]);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchIntroduceData = async () => {
@@ -91,6 +93,15 @@ export default function CLNoti() {
 		};
 		fetchIntroduceData();
 	}, []);
+
+	const handleClick = (isEmpty, id) => {
+		window.scrollTo(0, 0);
+		if (isEmpty) {
+			navigate('/history/master');
+		} else {
+			navigate(`/history/others/${id}`);
+		}
+	};
 
 	const renderLists = () => {
 		if (introduceList.length === 0) {
@@ -110,9 +121,11 @@ export default function CLNoti() {
 		}
 
 		return listsToRender.map((item, index) => {
-			if (!item) {
+			const isEmpty = !item;
+
+			if (isEmpty) {
 				return (
-					<List key="empty">
+					<List key={`empty-${index}`} onClick={() => handleClick(true)}>
 						<ListText>공고를 추가해 주세요</ListText>
 					</List>
 				);
@@ -122,9 +135,9 @@ export default function CLNoti() {
 			const isDanger = ddayNumber <= 7;
 
 			return (
-				<List key={index}>
+				<List key={item.introduceId} onClick={() => handleClick(false, item.introduceId)}>
 					<ListText>{item.recruitTitle}</ListText>
-					<ListTag color={isDanger ? '#FA7C79' : undefined}>D-{item.deadline}</ListTag>
+					<ListTag color={isDanger ? '#FA7C79' : undefined}>{item.deadline}</ListTag>
 				</List>
 			);
 		});
