@@ -117,7 +117,7 @@ export default function Noti() {
 			return (
 				<List key={index}>
 					<ListText>{item.title}</ListText>
-					<ListTag color={isDanger ? '#FA7C79' : undefined}>{item.dday}</ListTag>
+					<ListTag color={isDanger ? '#FA7C79' : undefined}>D-{item.dday}</ListTag>
 				</List>
 			);
 		});
