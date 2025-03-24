@@ -83,6 +83,8 @@ export default function CLNoti() {
 	useEffect(() => {
 		const fetchIntroduceData = async () => {
 			const data = await getIntroduce();
+			console.log('📦 받아온 introduceList:', data); // ✅ 콘솔 로그 추가
+
 			if (data && Array.isArray(data)) {
 				setIntroduceList(data);
 			}
@@ -116,13 +118,13 @@ export default function CLNoti() {
 				);
 			}
 
-			const ddayNumber = item.dday; // 숫자 그대로 사용
+			const ddayNumber = item.deadline; // 숫자 그대로 사용
 			const isDanger = ddayNumber <= 7;
 
 			return (
 				<List key={index}>
-					<ListText>{item.title}</ListText>
-					<ListTag color={isDanger ? '#FA7C79' : undefined}>D-{item.dday}</ListTag>
+					<ListText>{item.recruitTitle}</ListText>
+					<ListTag color={isDanger ? '#FA7C79' : undefined}>D-{item.deadline}</ListTag>
 				</List>
 			);
 		});
