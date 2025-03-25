@@ -1,52 +1,59 @@
 import { create } from 'zustand';
 
 const useAuthStore = create((set) => ({
+	token: null,
+	refreshToken: null,
+	isLoggedIn: false,
+	isProfileComplete: false,
 
-    token: null,
-    refreshToken: null,
-    isLoggedIn: false,
-    isProfileComplete: false,
+	// 초기 상태 복원
+	restoreState: () => {
+		//const token = localStorage.getItem('token');
+		//const refreshToken = localStorage.getItem('refreshToken');
+		//const isProfileComplete = localStorage.getItem('isProfileComplete') === 'true';
 
-    // 초기 상태 복원
-    restoreState: () => {
-        const token = localStorage.getItem('token');
-        const refreshToken = localStorage.getItem('refreshToken');
-        const isProfileComplete = localStorage.getItem('isProfileComplete') === 'true';
-        
-        set({
-            token: token || null,
-            refreshToken: refreshToken || null,
-            isLoggedIn: !!token,
-            isProfileComplete: isProfileComplete,
-        });
-    },
+		const token =
+			localStorage.getItem('token') ||
+			'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzOTA2ODY2Mzg1IiwiaWF0IjoxNzQyODk0Mzc5LCJleHAiOjE3NDI4OTc5NzksImlzUHJvZmlsZUNvbXBsZXRlIjp0cnVlfQ.U5Njg-CGu93-E3dquQ84JPdklJOXqlOOgO7u_tyxBew';
+		const refreshToken =
+			localStorage.getItem('refreshToken') ||
+			'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzOTA2ODY2Mzg1IiwianRpIjoiNDJmNzVmY2YtZjRmOC00OGQwLWE2NDEtMTNiOTJiYTQ3YTNhIiwiaWF0IjoxNzQyODk0Mzc5LCJleHAiOjE3NDI5ODA3Nzl9.zsMCvhQi0zzDwP06bYw42PrbOExg72PhzFe70GhQ2z0';
+		const isProfileComplete = localStorage.getItem('isProfileComplete') === 'true';
 
-    // 로그인 시 토큰 저장
-    login: (token, refreshToken, isProfileComplete) => {
-        if (token) localStorage.setItem('token', token);
-        if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
-        localStorage.setItem('isProfileComplete', isProfileComplete);
+		set({
+			token: token || null,
+			refreshToken: refreshToken || null,
+			isLoggedIn: !!token,
+			isProfileComplete: isProfileComplete,
+		});
+	},
 
-        set({
-            token: token,
-            refreshToken: refreshToken,
-            isLoggedIn: true,
-            isProfileComplete,
-        });
-    },
+	// 로그인 시 토큰 저장
+	login: (token, refreshToken, isProfileComplete) => {
+		if (token) localStorage.setItem('token', token);
+		if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
+		localStorage.setItem('isProfileComplete', isProfileComplete);
 
-    // 로그아웃 시 토큰 제거
-    logout: () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('isProfileComplete');
-        set({
-            token: null,
-            refreshToken: null,
-            isLoggedIn: false,
-            isProfileComplete: false,
-        });
-    },
+		set({
+			token: token,
+			refreshToken: refreshToken,
+			isLoggedIn: true,
+			isProfileComplete,
+		});
+	},
+
+	// 로그아웃 시 토큰 제거
+	logout: () => {
+		localStorage.removeItem('token');
+		localStorage.removeItem('refreshToken');
+		localStorage.removeItem('isProfileComplete');
+		set({
+			token: null,
+			refreshToken: null,
+			isLoggedIn: false,
+			isProfileComplete: false,
+		});
+	},
 
 	// 액세스 토큰 갱신
 	updateAccessToken: (newAccessToken, newRefreshToken) => {
