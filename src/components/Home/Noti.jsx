@@ -1,5 +1,6 @@
 //ver2_왼쪽 대시보드
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getRecruitRemind } from '../../api/Home/getRecruitRemind';
 import DashboardNothing from './DashboardN';
@@ -51,6 +52,7 @@ const List = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	cursor: pointer;
 `;
 
 const ListText = styled.div`
@@ -79,6 +81,7 @@ const ListTag = styled.div`
 
 export default function Noti() {
 	const [recruitList, setRecruitList] = useState([]);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchRecruitData = async () => {
@@ -87,6 +90,16 @@ export default function Noti() {
 		};
 		fetchRecruitData();
 	}, []);
+
+	const handleClick = (isEmpty, id) => {
+		window.scrollTo(0, 0); // 페이지를 최상단으로 스크롤
+
+		if (isEmpty) {
+			navigate('/apply-schedule');
+		} else {
+			navigate(`/apply-detail/${id}`);
+		}
+	};
 
 	const renderLists = () => {
 		if (recruitList.length === 0) {
@@ -103,9 +116,11 @@ export default function Noti() {
 		}
 
 		return listsToRender.map((item, index) => {
-			if (!item) {
+			const isEmpty = !item;
+
+			if (isEmpty) {
 				return (
-					<List key="empty">
+					<List key={`empty-${index}`} onClick={() => handleClick(true)}>
 						<ListText>공고를 추가해 주세요</ListText>
 					</List>
 				);
@@ -115,9 +130,9 @@ export default function Noti() {
 			const isDanger = ddayNumber <= 7;
 
 			return (
-				<List key={index}>
+				<List key={item.id} onClick={() => handleClick(false, item.id)}>
 					<ListText>{item.title}</ListText>
-					<ListTag color={isDanger ? '#FA7C79' : undefined}>{item.dday}</ListTag>
+					<ListTag color={isDanger ? '#FA7C79' : undefined}>D-{item.dday}</ListTag>
 				</List>
 			);
 		});

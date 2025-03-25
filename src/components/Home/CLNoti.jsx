@@ -1,5 +1,6 @@
 //ver2_오른쪽 대시보드
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getIntroduce } from '../../api/Home/getIntroduce';
 import DashboardNothing from './DashboardN';
@@ -51,6 +52,7 @@ const List = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	cursor: pointer;
 `;
 
 const ListText = styled.div`
@@ -79,16 +81,28 @@ const ListTag = styled.div`
 
 export default function CLNoti() {
 	const [introduceList, setIntroduceList] = useState([]);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchIntroduceData = async () => {
 			const data = await getIntroduce();
+			console.log('📦 받아온 introduceList:', data); // ✅ 콘솔 로그 추가
+
 			if (data && Array.isArray(data)) {
 				setIntroduceList(data);
 			}
 		};
 		fetchIntroduceData();
 	}, []);
+
+	const handleClick = (isEmpty, id) => {
+		window.scrollTo(0, 0);
+		if (isEmpty) {
+			navigate('/history/master');
+		} else {
+			navigate(`/history/others/${id}`);
+		}
+	};
 
 	const renderLists = () => {
 		if (introduceList.length === 0) {
@@ -108,21 +122,23 @@ export default function CLNoti() {
 		}
 
 		return listsToRender.map((item, index) => {
-			if (!item) {
+			const isEmpty = !item;
+
+			if (isEmpty) {
 				return (
-					<List key="empty">
+					<List key={`empty-${index}`} onClick={() => handleClick(true)}>
 						<ListText>공고를 추가해 주세요</ListText>
 					</List>
 				);
 			}
 
-			const ddayNumber = item.dday; // 숫자 그대로 사용
+			const ddayNumber = item.deadline; // 숫자 그대로 사용
 			const isDanger = ddayNumber <= 7;
 
 			return (
-				<List key={index}>
-					<ListText>{item.title}</ListText>
-					<ListTag color={isDanger ? '#FA7C79' : undefined}>{item.dday}</ListTag>
+				<List key={item.introduceId} onClick={() => handleClick(false, item.introduceId)}>
+					<ListText>{item.recruitTitle}</ListText>
+					<ListTag color={isDanger ? '#FA7C79' : undefined}>{item.deadline}</ListTag>
 				</List>
 			);
 		});
