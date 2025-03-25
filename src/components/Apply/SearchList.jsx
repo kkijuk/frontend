@@ -234,20 +234,26 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
 
     const handleJobClick = async (ad) => { 
         console.log('Selected ad:', ad);
+    
         try {
+            // 공고 ID가 있으면 공고 상세 데이터 가져오기
             const response = await api.get(`/recruit/${ad.recruitId}`);
             const fullAdDetails = { 
                 ...response.data, 
                 id: ad.recruitId, 
-                introduceId: response.data.introduceId ?? 0 // introduceId 추가 (없으면 0 설정)
+                introduceId: response.data.introduceId ?? 0
             };
-
-            console.log('Full ad details with introduceId:', fullAdDetails);
+    
+            console.log('Full ad details:', fullAdDetails);
+    
+            // 공고 상세 페이지로 이동 (공고후기 클릭 시에도 공고 ID를 이용해서 이동)
             navigate(`/apply-detail/${ad.recruitId}`, { state: { job: fullAdDetails } });
+    
         } catch (error) {
             console.error('Failed to fetch recruit details:', error);
         }
     };
+    
     
     return (
         <BackgroundSection>
@@ -344,7 +350,7 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
                                         </RecruitTitleForReviewResult>
                                     </AdTitleContainer>
                                     {recruit.reviews.map((review) => (
-                                        <div key={review.reviewId}>
+                                        <div key={recruit.recruitId} onClick={() => handleJobClick(recruit)} style={{ cursor: 'pointer' }}>
                                             <ReviewHeader>
                                                 <ReviewTitle>{review.reviewTitle}</ReviewTitle>
                                                 <ReviewDate>{review.reviewDate}</ReviewDate>
