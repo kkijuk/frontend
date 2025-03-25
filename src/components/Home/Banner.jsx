@@ -13,7 +13,7 @@ const Container = styled.div`
 	width: 100%; /*820*/
 	max-width: 820px;
 	/*height: 188px;*/
-	max-height: 188x;
+	max-height: 188px;
 
 	flex-shrink: 0;
 	border-radius: 10px;
