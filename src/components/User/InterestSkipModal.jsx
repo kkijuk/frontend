@@ -86,6 +86,7 @@ const ConfirmButton = styled.button`
 	align-items: center;
 	justify-content: center;
 	margin-top: 5px;
+	color: #707070;
 
 	@media (max-width: ${theme.breakpoints.md}) {
       font-size: 14px;
