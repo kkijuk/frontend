@@ -11,6 +11,18 @@ const Container = styled.div`
 	display: flex;
 	gap: 9px;
 	flex-direction: column;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		display: flex;
+		padding: 0px 16px;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 9px;
+		align-self: stretch;
+		min-width: 326px;
+		min-height: 146px;
+	}
 `;
 
 const Top = styled.div`
@@ -44,6 +56,11 @@ const Bottom = styled.div`
 	display: flex;
 	gap: 12px;
 	flex-direction: column; /*세로배치 위해서 display 속성에 추가*/
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		min-width: 326px;
+		min-height: 96px;
+	}
 `;
 
 const ActivityBoxContainer = styled.div`
@@ -60,6 +77,10 @@ const ActivityBox = styled.div`
 	align-items: center;
 	border-radius: 10px;
 	background: var(--gray-06, #f5f5f5);
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 155px;
+	}
 `;
 
 const ActivityTextBox = styled.div`
@@ -115,6 +136,11 @@ const Button = styled.button`
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 325px;
+		height: 34px;
+	}
 `;
 
 export default function ProfileBox() {
