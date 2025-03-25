@@ -73,16 +73,16 @@ const TopBox2 = styled.div`
 	/*border: 1px solid var(--gray-03, #d9d9d9); 수정*/
 	background: var(--white, #fff);
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		/*width: 368px;*/ // ✅ TopBox1과 맞춰주기
+		/*width: 368px;*/ //TopBox1과 맞춰주기
 		width: 100%;
-		max-width: 560px;
+		/*max-width: 560px;*/
 		min-width: 368px;
 	}
 `;
 
 const Middle = styled.div`
 	width: 820px;
-	height: 188px;
+	height: auto; /*기존 188px*/
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
