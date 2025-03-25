@@ -18,9 +18,9 @@ const Box = styled.div`
 	color: ${({ selected }) => (selected ? '#3AAF85' : '#707070')};
 	cursor: pointer;
 	text-align: center;
-	font-family: Pretendard;
+	font-family: normal;
 	font-size: 16px;
-	font-style: normal;
+	
 	font-weight: 700;
 	line-height: normal;
 	transition: all 0.3s ease;
