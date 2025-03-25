@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../constants/theme';
 
@@ -14,6 +14,7 @@ const StyledModal = styled.div`
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.4);
 	z-index: 1000;
+	overflow: auto;
 
 	.modal-content {
 		background-color: #fefefe;
@@ -83,8 +84,21 @@ const StyledModal = styled.div`
 `;
 
 
-const AgreementModal = ({ show, handleModal }) => (
-	<StyledModal show={show}>
+const AgreementModal = ({ show, handleModal }) => {
+	useEffect(() => {
+		if (show) {
+			document.body.style.overflow = ''; // 모달이 열릴 때 배경 스크롤 방지
+		} else {
+			document.body.style.overflow = ''; // 모달이 닫히면 원래대로
+		}
+
+		return () => {
+			document.body.style.overflow = '';
+		};
+	}, [show]);
+  
+	return (
+	  <StyledModal show={show}>
 		<div className="modal-content">
 			<span className="close" onClick={handleModal}>
 				&times;
@@ -439,5 +453,5 @@ const AgreementModal = ({ show, handleModal }) => (
 		</div>
 	</StyledModal>
 );
-
+};
 export default AgreementModal;
