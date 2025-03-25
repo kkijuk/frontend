@@ -52,7 +52,7 @@ const CareerBoxContainer = styled.div`
 
 const CareerContentContainer = styled.div`
 	width: 720px;
-	height: ${(props) => (props.isEditing ? '175px' : '88px')}; /* 편집 상태에 따라 높이 변경 */
+	height: ${(props) => (props.isEditing ? '175px' : 'auto')}; /* 편집 상태에 따라 높이 변경 원래 auto 대신 88*/
 	margin-top: 32px;
 	margin-bottom: 28px;
 
