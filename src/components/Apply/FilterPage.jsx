@@ -178,7 +178,7 @@ const FilterPage = () => {
 	const fetchSearchResults = async (term) => {
 		if (!term.trim()) return; // 빈 검색어일 경우 실행 안 함
 	
-		try {
+		try { 
 			const { recruitResult, reviewResult } = await fetchRecruitList(term);
 	
 			let filteredRecruits = recruitResult || [];
@@ -195,9 +195,16 @@ const FilterPage = () => {
 				review.recruitTitle.includes(term) || 
 				(review.reviews && review.reviews.some(r => r.reviewTitle.includes(term))) // 후기 제목도 검색
 			);
+			let finalResults = [];
+			if (activeTab === '전체') {
+				finalResults = [...filteredRecruits, ...filteredReviews]; // 공고 + 후기
+			} else if (activeTab === '공고') {
+				finalResults = filteredRecruits; // 공고만
+			} else if (activeTab === '공고후기') {
+				finalResults = filteredReviews; // 후기만
+			}
 	
-			//  검색 결과를 합쳐서 설정 (공고 + 공고후기)
-			setRecruits([...filteredRecruits, ...filteredReviews]);
+			setRecruits(finalResults);
 	
 		} catch (error) {
 			console.error('Error fetching recruit list:', error);
@@ -226,7 +233,9 @@ const FilterPage = () => {
 	
 	const handleTabClick = (tab) => {
 		setActiveTab(tab);
+		fetchSearchResults(searchTerm); // 선택한 탭에 맞게 검색 결과를 다시 가져옴
 	};
+	
 
 	const handleSortChange = (order) => {
 		setSortOrder(order);
@@ -240,8 +249,11 @@ const FilterPage = () => {
 	};
 
 	useEffect(() => {
-		fetchSearchResults();  // activeTab이 변경될 때만 API 요청
-	}, [activeTab]);
+		if (isSearchClicked) {
+			fetchSearchResults(searchTerm);
+		}
+	}, [activeTab]); // activeTab 변경될 때마다 실행
+	
 
 	  useEffect(() => {
 		setRecruits((prevRecruits) => {
