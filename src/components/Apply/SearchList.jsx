@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import api from '../../Axios';
+import { getRecruitDetails } from '../../api/Apply/RecruitDetails'; // API 호출을 위해 import
 
 const BackgroundSection = styled.div`
     position: relative;
@@ -230,6 +232,23 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
     const recruitCount = recruits.filter((recruit) => !recruit.reviews || recruit.reviews.length === 0).length;
     const reviewCount = recruits.reduce((count, recruit) => count + (recruit.reviews ? recruit.reviews.length : 0), 0);
 
+    const handleJobClick = async (ad) => { 
+        console.log('Selected ad:', ad);
+        try {
+            const response = await api.get(`/recruit/${ad.recruitId}`);
+            const fullAdDetails = { 
+                ...response.data, 
+                id: ad.recruitId, 
+                introduceId: response.data.introduceId ?? 0 // introduceId 추가 (없으면 0 설정)
+            };
+
+            console.log('Full ad details with introduceId:', fullAdDetails);
+            navigate(`/apply-detail/${ad.recruitId}`, { state: { job: fullAdDetails } });
+        } catch (error) {
+            console.error('Failed to fetch recruit details:', error);
+        }
+    };
+    
     return (
         <BackgroundSection>
             <ContentSection>
@@ -257,7 +276,7 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
                         });
 
                         return (
-                            <AdItem key={recruit.recruitId}>
+                            <AdItem key={recruit.recruitId} onClick={() => handleJobClick(recruit)} style={{ cursor: 'pointer' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <TagContainer>
                                         {recruit.tags &&
