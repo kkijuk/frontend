@@ -223,7 +223,7 @@ export default function Confirm() {
 					{errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
 				</EmailBox>
 				<Button onClick={handleSubmit}>확인</Button>
-				{errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}{' '}
+				{/* {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>} */}
 			</Container>
 		</div>
 	);
