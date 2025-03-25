@@ -49,6 +49,13 @@ const TopBox1 = styled.div`
 	align-items: center;
 	border-radius: 10px;
 	border: 1px solid var(--gray-03, #d9d9d9);
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		padding: 20px 0px;
+		align-self: stretch;
+		min-width: 358px;
+	}
 `;
 
 const TopBox2 = styled.div`
@@ -56,7 +63,7 @@ const TopBox2 = styled.div`
 	height: 160px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	border: 1px solid var(--gray-03, #d9d9d9);
+	/*border: 1px solid var(--gray-03, #d9d9d9); 수정*/
 	background: var(--white, #fff);
 `;
 
