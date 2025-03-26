@@ -2,6 +2,7 @@
 // 화면 오른쪽 아래 +버튼
 import React from 'react';
 import styled from 'styled-components';
+import { theme } from '../../constants/theme';
 
 const Button = styled.button`
 	position: fixed;
@@ -16,9 +17,23 @@ const Button = styled.button`
 	font-size: 36px;
 	cursor: pointer;
 	z-index: 10;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	line-height: 1;
+	aspect-ratio: 1;
 
 	&:hover {
 		background-color: #3aaf85;
+	}
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 48px;
+		height: 48px;
+		font-size: 32px;
+		bottom: 16px;
+		right: 16px;
 	}
 `;
 
