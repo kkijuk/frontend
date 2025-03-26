@@ -7,6 +7,7 @@ import { theme } from '../../../constants/theme';
 
 const Container = styled.div`
 	width: 100%;
+	margin: 0 auto;
 	box-sizing: border-box;
 	padding: 0 15px;
 	display: grid;
