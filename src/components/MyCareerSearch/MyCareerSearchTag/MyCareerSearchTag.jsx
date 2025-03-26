@@ -11,6 +11,7 @@ import { NotExistSearchComponent } from '../NotExistSearchWrapper';
 import { formatDate } from '../../../utils/formateDate';
 import TagButton from '../../shared/TagButton';
 import { Container } from '../common';
+import { theme } from '../../../constants/theme';
 
 const Box = styled.div`
 	width: 98%;
@@ -22,7 +23,7 @@ const Box = styled.div`
 	cursor: pointer;
 	box-sizing: border-box;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		width: 95%;
 		padding: 10px;
 		margin: 8px auto;
@@ -45,7 +46,7 @@ const TopWrapper = styled.div`
 	flex-wrap: wrap;
 	gap: 5px;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		padding-top: 5px;
 	}
 `;
@@ -81,7 +82,7 @@ const MainWrapper = styled.div`
 	width: 100%;
 	box-sizing: border-box;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		padding: 0 5px;
 	}
 `;
@@ -98,7 +99,7 @@ const DetailWrapper = styled.div`
 		border-bottom: none;
 	}
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		padding: 12px 5px;
 	}
 `;
@@ -122,7 +123,7 @@ const DetailContent = styled.div`
 	margin-top: 16px;
 	word-break: break-word;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		font-size: 13px;
 		margin-top: 12px;
 	}
@@ -134,7 +135,7 @@ const BottomWrapper = styled.div`
 	flex-wrap: wrap;
 	gap: 8px;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		margin-top: 15px;
 	}
 `;

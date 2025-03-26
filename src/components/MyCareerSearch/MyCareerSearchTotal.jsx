@@ -22,12 +22,28 @@ const Title = styled.div`
 	line-height: normal;
 	margin-left: 20px;
 	margin-bottom: 0px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 16px;
+		margin-left: 10px;
+	}
 `;
 
 const Wrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	margin-bottom: 16px;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0 10px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding: 0 5px;
+		margin-bottom: 12px;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
 `;
 
 const ChangeViewButton = styled.button`
@@ -39,6 +55,11 @@ const ChangeViewButton = styled.button`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 12px;
+		padding: 5px 10px;
+	}
 `;
 
 export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewToggle }) {
