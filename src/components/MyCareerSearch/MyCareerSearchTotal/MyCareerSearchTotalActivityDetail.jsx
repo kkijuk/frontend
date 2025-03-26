@@ -3,6 +3,7 @@ import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
 import { useNavigate } from 'react-router-dom';
 import { highlightMatch } from '../../../utils/highlightMatch';
 import { formatDate } from '../../../utils/formateDate';
+import { theme } from '../../../constants/theme';
 
 const Container = styled.div`
 	width: 100%;
@@ -13,7 +14,7 @@ const Container = styled.div`
 	gap: 16px;
 	margin-bottom: 32px;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		padding: 0 10px;
 		gap: 12px;
 		margin-bottom: 24px;
@@ -30,7 +31,7 @@ const Box = styled.div`
 	cursor: pointer;
 	box-sizing: border-box;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		width: 100%;
 		padding: 15px;
 	}
@@ -43,7 +44,7 @@ const TopWrapper = styled.div`
 	flex-wrap: wrap;
 	gap: 8px;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		padding-top: 5px;
 	}
 `;
@@ -72,7 +73,7 @@ const DetailCareerTitle = styled.div`
 	margin-left: 5px;
 	word-break: break-word;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		font-size: 13px;
 		margin-left: 3px;
 	}
@@ -86,7 +87,7 @@ const DetailCareerDate = styled.div`
 	font-weight: 400;
 	line-height: normal;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		font-size: 11px;
 	}
 `;
@@ -98,7 +99,7 @@ const MainWrapper = styled.div`
 	width: 100%;
 	box-sizing: border-box;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		padding: 0 5px;
 	}
 `;
@@ -115,7 +116,7 @@ const DetailWrapper = styled.div`
 		border-bottom: none;
 	}
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		padding: 16px 8px;
 	}
 `;
@@ -128,7 +129,7 @@ const DetailTitle = styled.div`
 	line-height: normal;
 	word-break: break-word;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		font-size: 14px;
 	}
 `;
@@ -142,7 +143,7 @@ const DetailContent = styled.div`
 	margin-top: 16px;
 	word-break: break-word;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		font-size: 13px;
 		margin-top: 12px;
 	}
@@ -154,7 +155,7 @@ const BottomWrapper = styled.div`
 	gap: 8px;
 	margin-top: 16px;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		gap: 6px;
 		margin-top: 12px;
 	}
@@ -176,7 +177,7 @@ const DetailTag = styled.div`
 	color: #3aaf85;
 	border: 1px solid #f5f5f5;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		padding: 2px 12px;
 		font-size: 11px;
 	}

@@ -23,7 +23,7 @@ const Title = styled.div`
 	margin-left: 20px;
 	margin-bottom: 0px;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		font-size: 16px;
 		margin-left: 10px;
 	}
@@ -38,7 +38,7 @@ const Wrapper = styled.div`
 	box-sizing: border-box;
 	padding: 0 10px;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		padding: 0 5px;
 		margin-bottom: 12px;
 		flex-wrap: wrap;
@@ -56,7 +56,7 @@ const ChangeViewButton = styled.button`
 	font-weight: 400;
 	line-height: normal;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		font-size: 12px;
 		padding: 5px 10px;
 	}

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { highlightMatch } from '../../../utils/highlightMatch';
 import { formatDate } from '../../../utils/formateDate';
 import TagButton from '../../shared/TagButton';
+import { theme } from '../../../constants/theme';
 
 // 메인 컨테이너
 const Container = styled.div`
@@ -18,7 +19,7 @@ const Container = styled.div`
 	border-radius: 10px;
 	box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		padding: 15px;
 		margin-left: 0;
 	}
@@ -74,7 +75,7 @@ const ActivityItem = styled.div`
 		border-bottom: none;
 	}
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		padding: 15px 0;
 	}
 `;
@@ -91,7 +92,7 @@ const ActivityTop = styled.div`
 	width: 100%;
 	box-sizing: border-box;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		margin-bottom: 5px;
 	}
 `;
