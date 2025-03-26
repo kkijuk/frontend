@@ -50,7 +50,7 @@ export const SearchQueryResult = styled.h1`
 
 export const BackgroundSection = styled.div`
 	width: 100vw;
-	min-height: 80vh;
+	min-height: 100vh;
 	background-color: #f0f0f0;
 	position: relative;
 	box-sizing: border-box;

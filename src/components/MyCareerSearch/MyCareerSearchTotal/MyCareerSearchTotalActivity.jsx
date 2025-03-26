@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
 import { useNavigate } from 'react-router-dom';
+import { theme } from '../../../constants/theme';
 
 const ActivityContainer = styled.div`
 	width: 100%;
@@ -12,7 +13,7 @@ const ActivityContainer = styled.div`
 	gap: 20px 50px;
 	margin-bottom: 32px;
 
-	@media (max-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}}) {
 		grid-template-columns: 1fr; /* 화면이 작아지면 1열로 변경 */
 	}
 `;
@@ -22,7 +23,7 @@ const ActivityContent = styled.div`
 	flex-direction: row; /* 기본적으로 세로로 쌓이도록 설정 */
 	padding: 10px;
 
-	@media (min-width: 600px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		flex-direction: column; /* 화면이 커지면 가로로 배치 */
 	}
 `;

@@ -7,16 +7,11 @@ import { useFetchActivityDetail } from '../../hooks/MycareerSearch/useFetchActiv
 import MyCareerSearchTotalActivity from './MyCareerSearchTotal/MyCareerSearchTotalActivity';
 import MyCareerSearchTotalActivityDetail from './MyCareerSearchTotal/MyCareerSearchTotalActivityDetail';
 import { useFetchTagList } from '../../hooks/MycareerSearch/useFetchTagList';
+import { theme } from '../../constants/theme';
 
 import MyCareerSearchTotalActivityTags from './MyCareerSearchTotal/MyCareerSearchTotalActivityTags';
 import { NotExistSearchComponent } from './NotExistSearchWrapper';
-
-const Container = styled.div`
-	width: 100%;
-	max-width: 820px;
-	margin: 0 auto;
-	box-sizing: border-box;
-`;
+import { Container } from './common';
 
 const Title = styled.div`
 	color: var(--black, #000);

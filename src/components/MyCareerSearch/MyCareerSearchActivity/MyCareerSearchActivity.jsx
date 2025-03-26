@@ -3,17 +3,11 @@ import styled from 'styled-components';
 import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
 import { NotExistSearchComponent } from '../NotExistSearchWrapper';
 import { useFetchActivityDetail } from '../../../hooks/MycareerSearch/useFetchActivityDetail';
+import { Container } from '../common';
 
 import { useNavigate } from 'react-router-dom';
 import { highlightMatch } from '../../../utils/highlightMatch';
 import { formatDate } from '../../../utils/formateDate';
-
-const Container = styled.div`
-	width: 100%;
-	max-width: 820px;
-	margin: 0 auto;
-	box-sizing: border-box;
-`;
 
 const Box = styled.div`
 	width: 98%;
