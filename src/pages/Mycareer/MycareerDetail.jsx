@@ -268,6 +268,7 @@ const NoContents = styled.div`
 
 const ContentWrapper = styled.div`
 	display: flex;
+	gap: 16px;
 	align-items: center;
 	width: 100%; /* 부모 컨테이너 전체 너비 */
 `;
