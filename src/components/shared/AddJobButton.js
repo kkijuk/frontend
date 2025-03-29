@@ -19,6 +19,11 @@ const Button = styled.button`
 	&:hover {
 		background-color: #3aaf85;
 	}
+		@media (max-width: 768px) {
+		width: 48px;
+		height: 48px;
+		font-size: 32px;
+	}
 `;
 
 const AddJobButton = ({ onClick }) => {
