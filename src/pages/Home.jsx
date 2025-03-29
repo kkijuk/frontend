@@ -7,11 +7,9 @@ import BannerComponent from '../components/Home/Banner';
 import Noti from '../components/Home/Noti';
 import CLNoti from '../components/Home/CLNoti';
 
-import RecommendBox from '../components/Home/RecommendBox';
 import { useNavigate } from 'react-router-dom';
 
 import CareerTimeline from '../components/Mycareer/CareerTimeline';
-import useAuthRedirect from '../stores/useAuthRedirect';
 import OnboardingModal from '../components/Modal/OnboardingModal';
 import { theme } from '../constants/theme';
 
@@ -25,7 +23,8 @@ const Container = styled.div`
 	max-width: 820px;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		margin: 24px auto 24px;
+		margin: 24px auto;
+		padding: 0 16px;
 	}
 	/*border: 1px solid black;
 	box-sizing: border-box;*/
@@ -60,7 +59,7 @@ const TopBox1 = styled.div`
 	border: 1px solid var(--gray-03, #d9d9d9);
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 368px;
+		width: 100%;
 		padding: 20px 0px;
 	}
 `;
@@ -81,8 +80,9 @@ const TopBox2 = styled.div`
 `;
 
 const Middle = styled.div`
-	width: 820px;
+	width: auto; /*820px*/
 	height: auto; /*기존 188px*/
+	max-width: 820px;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
@@ -93,7 +93,9 @@ const Middle = styled.div`
 `;
 
 const Bottom = styled.div`
-	width: 820px;
+	width: auto; /*820*/
+	max-width: 820px;
+
 	height: auto; /*194*/
 	display: flex;
 	flex-direction: column;
@@ -114,23 +116,24 @@ const BottomText = styled.div`
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
-	/*align-self: flex-start;무조건 왼쪽 붙이려면 필요함*/
+\	align-self: flex-start;
 `;
 
 const ActivityBox = styled.div`
-	width: 820px;
+	width: auto; /*820*/
 	height: auto; /*194*/
 	display: flex;
 	justify-content: space-between;
+	gap: 16px;
+	box-sizing: border-box;
+
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
 		display: flex;
 		gap: 16px;
 		flex-direction: column;
-		align-items: center; /* 가운데 정렬 */
+		/*align-items: center;  가운데 정렬 */
 	}
-
-	/*border: 1px solid black;
-	box-sizing: border-box;*/
 `;
 
 const bannerDummy = [
