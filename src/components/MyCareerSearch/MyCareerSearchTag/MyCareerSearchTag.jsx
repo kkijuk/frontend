@@ -10,13 +10,8 @@ import { highlightMatch } from '../../../utils/highlightMatch';
 import { NotExistSearchComponent } from '../NotExistSearchWrapper';
 import { formatDate } from '../../../utils/formateDate';
 import TagButton from '../../shared/TagButton';
-
-const Container = styled.div`
-	width: 100%;
-	max-width: 820px;
-	margin: 0 auto;
-	box-sizing: border-box;
-`;
+import { Container } from '../common';
+import { theme } from '../../../constants/theme';
 
 const Box = styled.div`
 	width: 98%;
@@ -26,6 +21,13 @@ const Box = styled.div`
 	border-radius: 10px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	cursor: pointer;
+	box-sizing: border-box;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 95%;
+		padding: 10px;
+		margin: 8px auto;
+	}
 `;
 
 const TagWrapper = styled.div`
@@ -39,6 +41,14 @@ const TopWrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
 	padding-top: 10px;
+	width: 100%;
+	box-sizing: border-box;
+	flex-wrap: wrap;
+	gap: 5px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding-top: 5px;
+	}
 `;
 
 const TopLeft = styled.div`
@@ -69,6 +79,12 @@ const MainWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 0 10px;
+	width: 100%;
+	box-sizing: border-box;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding: 0 5px;
+	}
 `;
 
 const DetailWrapper = styled.div`
@@ -76,8 +92,15 @@ const DetailWrapper = styled.div`
 	flex-direction: column;
 	padding: 18px 10px;
 	border-bottom: 1px solid var(--gray-04, #e0e0e0);
+	width: 100%;
+	box-sizing: border-box;
+
 	&:last-child {
-		border-bottom: none; // 마지막 요소에는 선이 나타나지 않도록
+		border-bottom: none;
+	}
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding: 12px 5px;
 	}
 `;
 
@@ -98,11 +121,23 @@ const DetailContent = styled.div`
 	font-weight: 400;
 	line-height: normal;
 	margin-top: 16px;
+	word-break: break-word;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 13px;
+		margin-top: 12px;
+	}
 `;
 
 const BottomWrapper = styled.div`
 	display: flex;
 	margin-top: 25px;
+	flex-wrap: wrap;
+	gap: 8px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		margin-top: 15px;
+	}
 `;
 
 const DetailTag = styled.div`
@@ -171,7 +206,6 @@ export default function MyCareerSearchTag({ sortOrder, searchQuery, onViewToggle
 						<TagButton id={tag.tagId} isActive={selectedTag === tag.tagId} onClick={() => setSelectedTag(tag.tagId)}>
 							{highlightMatch(tag.tagName, searchQuery)}
 						</TagButton>
-						
 					))
 				)}
 			</TagWrapper>

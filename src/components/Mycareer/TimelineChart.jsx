@@ -80,7 +80,7 @@ const TimelineChart = () => {
 			dataLabels: {
 				enabled: true,
 				formatter: (val, opts) => opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].name,
-				style: { colors: ['#fff'] },
+				style: { colors: ['#fff'], textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
 			},
 			tooltip: {
 				custom: ({ seriesIndex, dataPointIndex, w }) => {

@@ -6,17 +6,23 @@ import { useNavigate } from 'react-router-dom';
 import { highlightMatch } from '../../../utils/highlightMatch';
 import { formatDate } from '../../../utils/formateDate';
 import TagButton from '../../shared/TagButton';
+import { theme } from '../../../constants/theme';
 
 // 메인 컨테이너
 const Container = styled.div`
 	width: 100%;
 	box-sizing: border-box;
-	padding: 20px 40px 32px 40px;
+	// padding: 20px 40px 32px 40px;
+	padding: 0 15px;
 	margin: 0 auto;
-	margin-left: 12px;
 	background-color: #fff;
 	border-radius: 10px;
 	box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding: 15px;
+		margin-bottom: 12px;
+	}
 `;
 
 // 태그 목록 Wrapper
@@ -62,9 +68,15 @@ const ActivityItem = styled.div`
 	flex-direction: column;
 	margin: 0;
 	padding: 24px 0;
+	width: 100%;
+	box-sizing: border-box;
 
 	&:last-child {
 		border-bottom: none;
+	}
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding: 15px 0;
 	}
 `;
 
@@ -75,6 +87,14 @@ const ActivityTop = styled.div`
 	height: auto;
 	align-items: center;
 	margin-bottom: 8px;
+	flex-wrap: wrap;
+	gap: 5px;
+	width: 100%;
+	box-sizing: border-box;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		margin-bottom: 5px;
+	}
 `;
 
 // 제목 (왼쪽)

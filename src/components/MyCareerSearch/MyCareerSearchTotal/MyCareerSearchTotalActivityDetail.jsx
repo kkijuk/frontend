@@ -3,15 +3,23 @@ import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
 import { useNavigate } from 'react-router-dom';
 import { highlightMatch } from '../../../utils/highlightMatch';
 import { formatDate } from '../../../utils/formateDate';
+import { theme } from '../../../constants/theme';
 
 const Container = styled.div`
 	width: 100%;
+	margin: 0 auto;
 	box-sizing: border-box;
 	padding: 0 15px;
 	display: grid;
 	grid-template-columns: repeat(1, 1fr);
 	gap: 16px;
 	margin-bottom: 32px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding: 0 10px;
+		gap: 12px;
+		margin-bottom: 24px;
+	}
 `;
 
 const Box = styled.div`
@@ -22,31 +30,54 @@ const Box = styled.div`
 	border-radius: 10px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	cursor: pointer;
+	box-sizing: border-box;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 100%;
+		padding: 15px;
+	}
 `;
 
 const TopWrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
 	padding-top: 10px;
+	flex-wrap: wrap;
+	gap: 8px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding-top: 5px;
+	}
 `;
 
 const DetailTopWrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 8px;
+	width: 100%;
 `;
 
 const TopLeft = styled.div`
 	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 5px;
 `;
 
 const DetailCareerTitle = styled.div`
 	color: var(--black, #000);
-	font-family: Pretenard;
+	font-family: Pretendard;
 	font-size: 14px;
-	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
 	margin-left: 5px;
+	word-break: break-word;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 13px;
+		margin-left: 3px;
+	}
 `;
 
 const DetailCareerDate = styled.div`
@@ -54,15 +85,24 @@ const DetailCareerDate = styled.div`
 	text-align: right;
 	font-family: Pretendard;
 	font-size: 12px;
-	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 11px;
+	}
 `;
 
 const MainWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 0 10px;
+	width: 100%;
+	box-sizing: border-box;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding: 0 5px;
+	}
 `;
 
 const DetailWrapper = styled.div`
@@ -70,8 +110,15 @@ const DetailWrapper = styled.div`
 	flex-direction: column;
 	padding: 24px 12px;
 	border-bottom: 1px solid var(--gray-04, #e0e0e0);
+	width: 100%;
+	box-sizing: border-box;
+
 	&:last-child {
-		border-bottom: none; // 마지막 요소에는 선이 나타나지 않도록
+		border-bottom: none;
+	}
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding: 16px 8px;
 	}
 `;
 
@@ -79,26 +126,40 @@ const DetailTitle = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
 	font-size: 16px;
-	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+	word-break: break-word;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 14px;
+	}
 `;
 
 const DetailContent = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
 	font-size: 14px;
-	font-style: normal;
 	font-weight: 400;
-	line-height: normal;
+	line-height: 1.5;
 	margin-top: 16px;
+	word-break: break-word;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 13px;
+		margin-top: 12px;
+	}
 `;
 
 const BottomWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
-	gap: 10px;
+	gap: 8px;
 	margin-top: 16px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		gap: 6px;
+		margin-top: 12px;
+	}
 `;
 
 const DetailTag = styled.div`
@@ -107,18 +168,20 @@ const DetailTag = styled.div`
 	font-family: Pretendard;
 	font-size: 12px;
 	font-weight: 400;
-	font-style: normal;
 	cursor: pointer;
 	text-align: center;
-
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	white-space: nowrap;
-
 	background: #f5f5f5;
 	color: #3aaf85;
 	border: 1px solid #f5f5f5;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding: 2px 12px;
+		font-size: 11px;
+	}
 
 	b {
 		display: inline;

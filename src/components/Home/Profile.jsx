@@ -12,6 +12,9 @@ const Container = styled.div`
 	gap: 9px;
 	flex-direction: column;
 
+	/*border: 1px solid black;*/
+	box-sizing: border-box;
+
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		display: flex;
 		padding: 0px 16px;
@@ -20,6 +23,7 @@ const Container = styled.div`
 		align-items: center;
 		gap: 9px;
 		align-self: stretch;
+		width: 100%;
 		min-width: 326px;
 		min-height: 146px;
 	}
@@ -59,6 +63,7 @@ const Bottom = styled.div`
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		min-width: 326px;
+		width: 100%;
 		min-height: 96px;
 	}
 `;
@@ -66,10 +71,17 @@ const Bottom = styled.div`
 const ActivityBoxContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
+	gap: 16px;
+	box-sizing: border-box;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const ActivityBox = styled.div`
 	display: flex;
+	flex: 1;
 	width: 105px;
 	height: 50px;
 	flex-direction: column;
@@ -79,7 +91,7 @@ const ActivityBox = styled.div`
 	background: var(--gray-06, #f5f5f5);
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 155px;
+		width: 100%; /* flex: 1로 이미 너비 분배됨 */
 	}
 `;
 
@@ -138,7 +150,8 @@ const Button = styled.button`
 	line-height: normal;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 325px;
+		width: 100%;
+		min-width: 325px;
 		height: 34px;
 	}
 `;
