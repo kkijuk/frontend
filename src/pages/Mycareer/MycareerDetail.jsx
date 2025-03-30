@@ -17,6 +17,7 @@ import { CareertextEdit } from '../../api/Mycareer/CareerEdit';
 import { trackEvent } from '../../utils/ga4';
 import { formatDate } from '../../utils/formateDate';
 import CareerDetailDeleteModal from '../../components/Modal/CareerDetailDeleteModal';
+import { theme } from '../../constants/theme';
 
 const Container = styled.div`
 	display: flex;
@@ -24,6 +25,7 @@ const Container = styled.div`
 	align-items: center;
 	width: 100%;
 	height: 30px;
+	box-sizing: border-box;
 `;
 
 const SearchIcon = styled.svg`
@@ -35,19 +37,25 @@ const SearchIcon = styled.svg`
 `;
 
 const CareerBoxContainer = styled.div`
-	width: 820px; /* 가로 스크롤을 위해 전체 너비 원래 100%..*/
+	width: 100%;
+	max-width: 820px;
 	height: 68px;
 	margin-top: 40px;
 	display: flex; /* 플렉스 박스를 사용 */
 	flex-wrap: nowrap; /* 줄 바꿈을 방지 */
 	gap: 10px; /* 박스 간격 */
-	overflow-x: hidden; /* 가로 스크롤 활성화 */
-	overflow-y: hidden; /* 세로 스크롤 방지 */
+	overflow-x: auto; /*가로 스크롤 활성화 */
+	overflow-y: hidden; /*세로 스크롤 방지 */
 	white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
 	position: relative; /* 제발*/
 
-	/*border: 1px solid black;
-	box-sizing: border-box;*/
+	border: 1px solid black;
+	box-sizing: border-box;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: 100%;
+		width: 100%;
+	}
 `;
 
 const CareerContentContainer = styled.div`
