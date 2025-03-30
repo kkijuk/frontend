@@ -1,52 +1,66 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { theme } from '../constants/theme';
 const Wrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 100vw;
-	// height: 100vh;
+	width: 100%;
+	flex-direction: column;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		align-items: stretch;
+	}
 `;
 
 const Container = styled.div`
-	display: flex; /* 가로로 자식들을 배치 */
+	display: flex;
 	width: 1280px;
-	max-width: 1280px; /* 최대 너비 설정 */
-
+	max-width: 1280px;
 	height: 100%;
 
-	/* 화면이 1280px 이하로 줄어들면 Section을 가운데 정렬 */
 	@media (max-width: 1280px) {
-		justify-content: center; /* Section을 가운데 정렬 */
+		justify-content: center;
+	}
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		flex-direction: column; /* 세로로 배치 */
+		width: 100%;
 	}
 `;
 
 const Top = styled.div`
 	width: 820px;
-	max-width: 820px; /* 최대 너비 설정 */
+	max-width: 820px;
 	height: 68px;
 
-	background-color: none;
-	@media (max-width: 820px) {
-		width: 100%; /* 작은 화면에서는 100% 너비를 차지 */
+	@media (max-width: 1280px) {
+		width: 100%;
 		box-sizing: border-box;
+	}
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		height: auto;
+		padding: 16px 0;
 	}
 `;
 
 const Section = styled.div`
-	width: 820px;
+	width: 100%;
+	max-width: 820px;
 	height: 100%;
 
 	display: flex;
 	flex-direction: column;
-	align-items: center; /* 컨텐츠를 가운데 정렬 */
+	align-items: center;
 
-	//background-color: #eba66e;
+	@media (max-width: 820px) {
+		width: 100%;
+		height: auto;
+	}
 
-	@media (max-width: 1280px) {
-		width: 100%; /* 작은 화면에서 Section이 전체 너비를 차지 */
-		height: auto; /* 높이 자동 */
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding: 0;
 	}
 `;
 
@@ -54,9 +68,8 @@ const RightAside = styled.div`
 	width: 230px;
 	height: 100%;
 
-	background-color: none;
 	@media (max-width: 1280px) {
-		display: none; /* 1280px보다 작을 때 숨김 */
+		display: none;
 	}
 `;
 
@@ -64,39 +77,38 @@ const LeftAside = styled.div`
 	width: 230px;
 	height: 100%;
 
-	background-color: none;
 	@media (max-width: 1280px) {
-		display: none; /* 1280px보다 작을 때 숨김 */
+		display: none;
 	}
 `;
 
 const TitleText = styled.div`
-    color: var(--black, #000);
-    font-family: Pretendard;
-    font-size: 28px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
+	color: var(--black, #000);
+	font-family: Pretendard;
+	font-size: 28px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
 
-    margin-top: 35px;
-'`;
+	margin-top: 35px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		text-align: center;
+	}
+`;
 
 export default function Layout({ title, children, leftAsideContent, rightAsideContent }) {
 	return (
 		<Wrapper>
 			<Container>
-				<LeftAside>
-					{leftAsideContent}
-				</LeftAside>
+				<LeftAside>{leftAsideContent}</LeftAside>
 				<Section>
 					<Top>
 						<TitleText>{title}</TitleText>
 					</Top>
 					{children}
 				</Section>
-				<RightAside>
-					{rightAsideContent}
-				</RightAside>
+				<RightAside>{rightAsideContent}</RightAside>
 			</Container>
 		</Wrapper>
 	);
