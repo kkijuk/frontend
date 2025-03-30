@@ -21,6 +21,7 @@ const Container = styled.div`
 	margin: 48px auto 48px;
 	width: 100%; /*얘랑 아랫줄 추가*/
 	max-width: 820px;
+	box-sizing: border-box;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		margin: 24px auto;
@@ -75,7 +76,6 @@ const TopBox2 = styled.div`
 		/*width: 368px;*/ //TopBox1과 맞춰주기
 		width: 100%;
 		/*max-width: 560px;*/
-		min-width: 368px;
 	}
 `;
 
