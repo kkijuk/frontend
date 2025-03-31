@@ -39,7 +39,7 @@ const getBackgroundColor = (category, selected) => {
 //};
 
 const CareerBox = styled.div`
-	width: 143px; 수정-> 원래 139
+	width: 143px; /*수정-> 원래 139*/
 
 	height: 58px;
 	padding: 6px; /*수정-> 원래 없었음*/

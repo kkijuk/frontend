@@ -68,12 +68,12 @@ const CareerContentContainer = styled.div`
 	margin-bottom: 28px;
 
 	box-sizing: border-box;
-
 	position: relative; /* 위치를 기준으로 자식 컴포넌트가 확장 */
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		max-width: 100%;
 		width: 100%;
+		height: auto;
 	}
 `;
 
@@ -176,6 +176,9 @@ const CareerListBox = styled.div`
 	/* overflow-y: auto; 삭제 */
 	overflow-x: hidden;
 
+	/*box-sizing: border-box;
+	border: 1px solid black;*/
+
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		max-width: 100%;
 		width: 100%;
@@ -192,9 +195,6 @@ const CareerPlus = styled.button`
 	color: white;
 	cursor: pointer;
 	position: sticky; /* fixed → absolute */
-
-	/*left: 50%;
-	transform: translateX(-50%);  중앙 정렬 */
 
 	left: 0;
 	right: 0;
@@ -226,17 +226,27 @@ const CareerPlus = styled.button`
 `;
 
 const EditActivityContent = styled.div`
-	width: 720px;
+	max-width: 720px;
+	width: 100%;
 	height: 106px;
 	box-sizing: border-box;
 
 	display: flex; /* 가로 배치 */
 	justify-content: space-between; /* 양쪽 끝에 배치 */
 	align-items: center; /* 세로 가운데 정렬 */
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		flex-direction: column;
+		align-items: stretch; /* 버튼 너비 100% */
+		height: auto;
+		gap: 16px;
+	}
 `;
 
 const Textbox = styled.textarea`
-	width: 625px;
+	max-width: 625px;
+	width: 100%;
 	height: 106px;
 	flex-shrink: 0;
 	padding: 10px; /* 텍스트 영역 내부 여백 */
@@ -246,15 +256,28 @@ const Textbox = styled.textarea`
 
 	border-radius: 10px;
 	background: #f5f5f5;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const EditBoxContainer = styled.div`
 	width: 80px;
-	height: 106px;
+	min-height: 106px;
 	gap: 6px;
 	display: flex;
 	flex-direction: column; /* 세로 배치 */
 	align-items: center; /* 버튼 가운데 정렬 */
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		min-height: auto;
+		height: auto;
+		flex-direction: row;
+		justify-content: space-between;
+		gap: 6px;
+	}
 `;
 
 const CancelButton = styled.button`
@@ -271,6 +294,11 @@ const CancelButton = styled.button`
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-basis: calc(50% - 3px);
+		height: 50px;
+	}
 `;
 
 const EditButton = styled.button`
@@ -289,6 +317,11 @@ const EditButton = styled.button`
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-basis: calc(50% - 3px);
+		height: 50px;
+	}
 `;
 
 const PageContainer = styled.div`
