@@ -41,7 +41,8 @@ const Top = styled.div`
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		height: auto;
-		padding: 16px 0;
+		padding: 0 16px;
+		box-sizing: border-box;
 	}
 `;
 
@@ -60,7 +61,8 @@ const Section = styled.div`
 	}
 
 	@media (max-width: ${theme.breakpoints.md}) {
-		padding: 0;
+		padding: 0 16px;
+		box-sizing: border-box;
 	}
 `;
 
