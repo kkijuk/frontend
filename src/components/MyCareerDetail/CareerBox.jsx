@@ -39,12 +39,7 @@ const getBackgroundColor = (category, selected) => {
 //};
 
 const CareerBox = styled.div`
-	/*width: 143px; 수정-> 원래 139*/
-
-	flex: 1 1 auto;
-	width: 100%;
-	min-width: 100px;
-	max-width: 143px;
+	width: 143px; 수정-> 원래 139
 
 	height: 58px;
 	padding: 6px; /*수정-> 원래 없었음*/
@@ -64,9 +59,7 @@ const CareerBox = styled.div`
 
 const Date = styled.div`
 	display: flex;
-	/*width: 143px;*/
-	width: 100%;
-
+	width: 143px;
 	height: 22.895px;
 	flex-direction: column;
 	justify-content: center;

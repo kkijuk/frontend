@@ -26,6 +26,8 @@ const Container = styled.div`
 	width: 100%;
 	height: 30px;
 	box-sizing: border-box;
+
+	box-sizing: border-box;
 `;
 
 const SearchIcon = styled.svg`
@@ -49,7 +51,6 @@ const CareerBoxContainer = styled.div`
 	white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
 	position: relative; /* 제발*/
 
-	border: 1px solid black;
 	box-sizing: border-box;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
@@ -59,15 +60,21 @@ const CareerBoxContainer = styled.div`
 `;
 
 const CareerContentContainer = styled.div`
-	width: 720px;
+	/*width: 720px;*/
+	width: 100%;
+	max-width: 720px;
 	height: ${(props) => (props.isEditing ? '175px' : 'auto')}; /* 편집 상태에 따라 높이 변경 원래 auto 대신 88*/
 	margin-top: 32px;
 	margin-bottom: 28px;
 
-	/*border: 1px solid black;
-	box-sizing: border-box;*/
+	box-sizing: border-box;
 
 	position: relative; /* 위치를 기준으로 자식 컴포넌트가 확장 */
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: 100%;
+		width: 100%;
+	}
 `;
 
 const TitleContainer = styled.div`
@@ -87,7 +94,25 @@ const TitleBox = styled.div`
 const IconWrapper = styled.div`
 	width: 30px;
 	height: 30px;
-	cursor: pointer; /* 클릭 가능한 아이콘 */
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	svg {
+		width: 30px;
+		height: 30px;
+	}
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 24px;
+		height: 24px;
+
+		svg {
+			width: 24px;
+			height: 24px;
+		}
+	}
 `;
 
 const Title = styled.div`
@@ -132,22 +157,34 @@ const Content = styled.div`
 `;
 
 const Line = styled.div`
-	width: 800px;
+	width: 100%;
+	max-width: 800px;
 	height: 6px;
 	margin-bottom: 2px; /*추가*/
-
 	background: var(--gray-03, #d9d9d9);
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: 100%;
+		width: 100%;
+	}
 `;
 
 const CareerListBox = styled.div`
-	width: 800px;
+	wideh: 100%;
+	max-width: 800px;
 	height: auto; /* 원래 560px */
 	/* overflow-y: auto; 삭제 */
 	overflow-x: hidden;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: 100%;
+		width: 100%;
+	}
 `;
 
 const CareerPlus = styled.button`
-	width: 720px;
+	max-width: 720px;
+	width: 100%;
 	height: 50px;
 	border-radius: 10px;
 	background: var(--main-01, #3aaf85);
@@ -181,6 +218,11 @@ const CareerPlus = styled.button`
 
 	background: ${(props) => (props.disabled ? 'var(--gray-03, #D9D9D9)' : 'var(--main-01, #3AAF85)')};
 	cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: 100%;
+		width: 100%;
+	}
 `;
 
 const EditActivityContent = styled.div`
@@ -257,7 +299,8 @@ const PageContainer = styled.div`
 `;
 
 const NoContents = styled.div`
-	width: 600px;
+	max-width: 600px;
+	width: 100%;
 	height: 300px;
 	display: flex;
 	flex-direction: column;
@@ -272,6 +315,11 @@ const NoContents = styled.div`
 	line-height: normal;
 	text-align: center;
 	position: relative;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: 100%;
+		width: 100%;
+	}
 `;
 
 const ContentWrapper = styled.div`
