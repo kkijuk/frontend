@@ -4,15 +4,21 @@ import { useNavigate } from 'react-router-dom';
 import AbilityTag from './AbilityTag';
 import DetailAddEdit from './DetailAddEdit';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
+import { theme } from '../../constants/theme';
 
 const Box = styled.div`
 	display: flex;
-	width: 720px;
+	max-width: 720px;
 	flex-direction: column;
 	align-items: flex-start;
 	gap: 16px;
 	padding: 24px 40px;
 	position: relative;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		padding: 12px 20px;
+	}
 `;
 
 const Title = styled.div`
@@ -58,6 +64,9 @@ const Line = styled.div`
 	width: 800px;
 	height: 2px;
 	background: var(--gray-03, #d9d9d9);
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: 100%;
+	}
 `;
 
 const SvgIcon = styled.svg`
