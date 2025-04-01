@@ -14,13 +14,27 @@ const Container = styled.div`
 	margin: 0 auto;
 	box-sizing: border-box;
 	padding: 0 15px;
-	background-color: #fff;
-	border-radius: 10px;
-	box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
+	margin-bottom: 24px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		padding: 0 10px;
 		margin-bottom: 12px;
+	}
+`;
+
+const Box = styled.div`
+	width: 98%;
+	margin: 0px auto;
+	padding: 20px 24px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+	box-sizing: border-box;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 100%;
+		padding: 15px;
 	}
 `;
 
@@ -136,13 +150,13 @@ export default function MyCareerSearchTotalActivityTags({
 	let totalDetailsRendered = 0; // 총 렌더링된 detail 개수를 추적
 
 	return (
-		<>
+		<Container>
 			{isActivityTagListLoading ? (
 				<p>로딩중...</p>
 			) : activityTagList?.data?.data.tagList.length === 0 ? (
 				<NotExistSearch>검색 결과가 없어요.</NotExistSearch>
 			) : (
-				<Container>
+				<Box>
 					<TagWrapper>
 						{/* 태그 목록 */}
 						{activityTagList?.data?.data.tagList.map((tag) => (
@@ -193,8 +207,8 @@ export default function MyCareerSearchTotalActivityTags({
 					) : (
 						<NotExistSearch>선택된 태그에 대한 활동이 없어요.</NotExistSearch>
 					)}
-				</Container>
+				</Box>
 			)}
-		</>
+		</Container>
 	);
 }
