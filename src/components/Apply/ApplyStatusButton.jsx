@@ -9,10 +9,30 @@ const StatusContainer = styled.div`
 	justify-content: flex-start;
 	padding: 10px 0px;
 	gap: 30px;
-	margin-left: 90px;
+	margin-left: 10px;
 	padding-right: 90px;
 	white-space: nowrap;
+
 `;
+const ScrollWrapper = styled.div`
+  width: 100%;
+
+  /* 기본 데스크탑에서는 영향 X */
+  overflow: visible;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+`;
+
 
 const StatusButton = styled.button`
 	display: flex;
@@ -36,6 +56,9 @@ const StatusButton = styled.button`
 	outline: none;
 	width: 130px;
 	height: 40px;
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	margin-bottom: -10px;
+	}
 `;
 
 const StatusText = styled.span`
@@ -59,6 +82,7 @@ const ApplyStatusButton = ({ activeStatus, onStatusClick, statusCounts }) => {
 	};
 
 	return (
+		<ScrollWrapper>
 		<StatusContainer>
 			<StatusButton
 				active={activeStatus === 'all'}
@@ -109,6 +133,7 @@ const ApplyStatusButton = ({ activeStatus, onStatusClick, statusCounts }) => {
 				불합격 <StatusText>({statusCounts.rejected})</StatusText>
 			</StatusButton>
 		</StatusContainer>
+		</ScrollWrapper>
 	);
 };
 

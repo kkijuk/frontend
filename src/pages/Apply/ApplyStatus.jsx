@@ -11,6 +11,11 @@ import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
 import { getValidRecruitList } from '../../api/Apply/RecruitValid';
 import ApplyStatusButton from '../../components/Apply/ApplyStatusButton';
 
+const PageWrapper = styled.div`
+  width: 100%;
+  overflow-x: hidden;
+`;
+
 export default function ApplyStatus() {
 	const [jobs, setJobs] = useState([]);
 	const location = useLocation();
@@ -133,6 +138,7 @@ export default function ApplyStatus() {
 	  
 
 	return (
+		<PageWrapper>
 		<Layout title="지원관리">
 			<TabMenu activeTab="status" onTabClick={() => navigate('/apply-schedule')} />
 			<ApplyStatusButton activeStatus={activeStatus} onStatusClick={handleStatusClick} statusCounts={statusCounts} />
@@ -140,5 +146,6 @@ export default function ApplyStatus() {
 			<AddJobButton onClick={() => setShowModal(true)} />
 			{showModal && <AddApplyModal onClose={() => setShowModal(false)} onSave={handleSaveRecruit} />}
 		</Layout>
+		</PageWrapper>
 	);
 }
