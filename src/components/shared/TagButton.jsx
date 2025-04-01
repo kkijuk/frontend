@@ -27,9 +27,11 @@ const StyledTag = styled.button`
 		background-color 0.3s ease,
 		color 0.3s ease;
 
-	&:hover {
-		background-color: ${(props) => (props.isActive ? theme.colors.primary : '#e0e0e0')};
-		border-color: ${(props) => (props.hasWhiteBackground ? '#fff' : '#e0e0e0')};
+	@media (hover: hover) {
+		&:hover {
+			background-color: ${(props) => (props.isActive ? '#fff' : '#e0e0e0')};
+			border-color: ${(props) => (props.hasWhiteBackground ? '#fff' : '#e0e0e0')};
+		}
 	}
 
 	pointer-events: ${(props) => (props.isActive ? 'none' : 'auto')};
