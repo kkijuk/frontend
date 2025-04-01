@@ -16,6 +16,10 @@ const ToggleContainer = styled.div`
 	justify-content: center;
 	width: 150px;
 	height: 35px;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 320px;
+}
 `;
 
 const ToggleButton = styled.button`
@@ -36,6 +40,9 @@ const ToggleButton = styled.button`
 	font-size: 14px;
 	font-style: normal;
 	transition: all 0.2s ease;
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 155px;
+}
 `;
 
 const ViewToggle = ({ view, onToggle }) => {
