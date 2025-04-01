@@ -6,6 +6,9 @@ const TitleStyled = styled.h1`
 	font-family: Pretendard;
 	font-size: 28px;
 	font-weight: 700;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 `;
 
 const Title = ({ children }) => {
