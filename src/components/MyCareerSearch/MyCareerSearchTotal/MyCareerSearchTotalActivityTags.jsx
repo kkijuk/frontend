@@ -11,16 +11,16 @@ import { theme } from '../../../constants/theme';
 // 메인 컨테이너
 const Container = styled.div`
 	width: 100%;
+	margin: 0 auto;
 	box-sizing: border-box;
 	// padding: 20px 40px 32px 40px;
 	padding: 0 15px;
-	margin: 0 auto;
 	background-color: #fff;
 	border-radius: 10px;
 	box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
 
 	@media (max-width: ${theme.breakpoints.md}) {
-		padding: 15px;
+		padding: 0 10px;
 		margin-bottom: 12px;
 	}
 `;
@@ -29,6 +29,7 @@ const Container = styled.div`
 const TagWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
+	margin-top: 20px;
 	gap: 10px;
 `;
 
