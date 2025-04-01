@@ -18,7 +18,7 @@ export const CategoryBox = styled.div`
 `;
 
 export const Category = styled.div`
-	width: 820px;
+	width: 100%;
 	display: flex;
 	align-items: center;
 	margin-bottom: 12px;
