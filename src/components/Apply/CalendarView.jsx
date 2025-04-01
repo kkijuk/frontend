@@ -180,6 +180,10 @@ const StyledCalendar = styled(Calendar)`
 			height: 22px;
 		}
 	}
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    width: 320px;
+  }
 `;
 
 const DayIndicatorContainer = styled.div`
@@ -266,6 +270,10 @@ const NavigationText = styled.span`
 	flex-grow: 1;
 	text-align: center;
 	font-family: ExtraLight;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 14px;
+  }
 `;
 
 const CustomNavigation = ({ date, setDate }) => {

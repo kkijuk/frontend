@@ -8,6 +8,10 @@ const TabMenuContainer = styled.div`
   margin-bottom: 20px;
   width: 100%;
   margin-top: 32px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	transform: none;
+}
+
 `;
 
 const TabMenuStyled = styled.div`
@@ -18,11 +22,25 @@ const TabMenuStyled = styled.div`
   max-width: 1000px; /* 컨테이너 최대 너비 설정 */
   margin: 0 auto;
   transform: translateX(-93px); /* 왼쪽으로 이동 */
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    align-items: flex-start;    
+    transform: none;             
+    gap: 0px;
+    padding-left: 10px;          
+  }
+    @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    align-items: flex-start;  
+    transform: none;             
+    gap: 0px;      
+  }
 `;
 
 const TabButtonContainer = styled.div`
   display: flex;
+  justify-content: center; 
 `;
+
 
 const TabButton = styled.button`
   padding: 10px 20px;
@@ -34,6 +52,10 @@ const TabButton = styled.button`
   font-weight: 700;
   white-space: nowrap;
   color: ${(props) => (props.active ? 'black' : '#E0E0E0')};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 24px; 
+  }
 `;
 
 const SearchContainer = styled.div`
@@ -55,6 +77,14 @@ const Underline = styled.div`
   width: 821px; /* 고정된 길이 */
   background: var(--gray-05, #F1F1F1);
   margin: 0 auto; /* 중앙 정렬 */
+
+   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    width: 350px;
+  }
+
+   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    width: 320px;
+  }
 `;
 
 
