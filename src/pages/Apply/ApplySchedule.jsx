@@ -14,6 +14,7 @@ import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
 import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
 import useAuthRedirect from '../../stores/useAuthRedirect'; 
 import { getValidRecruitList } from '../../api/Apply/RecruitValid';
+import { theme } from '../../constants/theme';
 
 const Title = styled.h1`
 	color: var(--black, #000);
@@ -30,11 +31,24 @@ const TopSection = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 20px;
+
+	
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		flex-direction: column;
+		align-items: center;  /* 가운데 정렬 핵심! */
+		justify-content: center;
+	}
 `;
 
 const StatusContainer = styled.div`
 	display: flex;
 	align-items: center;
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		width: 100%;
+		justify-content: center;
+		gap: 10px; 
+		margin-bottom: 8px;
+	}
 `;
 
 export default function ApplySchedule() {
