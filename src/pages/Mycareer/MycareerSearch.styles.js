@@ -21,7 +21,7 @@ export const SearchBox = styled.div`
 	box-sizing: border-box;
 
 	@media (max-width: ${theme.breakpoints.md}) {
-		lex-direction: column; /* 작은 화면에서는 세로로 정렬 */
+		flex-direction: column; /* 작은 화면에서는 세로로 정렬 */
 		align-items: flex-start; /* 왼쪽 정렬 */
 		height: auto; /* 높이 자동 조정 */
 		padding: 0 20px;
