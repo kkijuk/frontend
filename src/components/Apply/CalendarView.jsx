@@ -6,6 +6,7 @@ import CalendarListView from './CalendarListView';
 import { getRecruitCalendar } from '../../api/Apply/RecruitCalendar';
 import { getRecruitListEndDate } from '../../api/Apply/RecruitEndDate';
 import { useNavigate } from 'react-router-dom';
+import { theme } from '../../constants/theme'; // theme import 추가
 
 const AdCalendarStyled = styled.div`
 	margin-bottom: 20px;
@@ -156,6 +157,28 @@ const StyledCalendar = styled(Calendar)`
 		background-color: transparent !important;
 		color: inherit !important;
 		box-shadow: none !important;
+	}
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 360px;
+		font-size: 14px;
+		margin: 0 auto;
+
+		.react-calendar__tile {
+			width: 38px;
+			height: 45px;
+			font-size: 12px;
+		}
+
+		.react-calendar__month-view__weekdays {
+			font-size: 13px;
+			height: 36px;
+		}
+
+		.react-calendar__tile--active::before {
+			width: 22px;
+			height: 22px;
+		}
 	}
 `;
 

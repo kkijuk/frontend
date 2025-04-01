@@ -12,6 +12,11 @@ const StatusItem = styled.div`
 	width: 120px;
 	height: 15px;
 	cursor: pointer; 
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		margin-right: 0; 
+		 width: 136px;
+	}
 `;
 
 const StatusText = styled.span`
