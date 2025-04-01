@@ -13,11 +13,8 @@ const Container = styled.div`
 	width: 100%;
 	margin: 0 auto;
 	box-sizing: border-box;
-	padding: 0 15px
-	display: grid;
+	padding: 0 15px;
 	background-color: #fff;
-	grid-template-columns: repeat(1, 1fr);
-	gap:gap: 16px;
 	border-radius: 10px;
 	box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
 
