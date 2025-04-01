@@ -13,9 +13,11 @@ const Container = styled.div`
 	width: 100%;
 	margin: 0 auto;
 	box-sizing: border-box;
-	// padding: 20px 40px 32px 40px;
-	padding: 0 15px;
+	padding: 0 15px
+	display: grid;
 	background-color: #fff;
+	grid-template-columns: repeat(1, 1fr);
+	gap:gap: 16px;
 	border-radius: 10px;
 	box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
 
@@ -29,32 +31,8 @@ const Container = styled.div`
 const TagWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
-	margin-top: 20px;
+	padding-top: 20px;
 	gap: 10px;
-`;
-
-// 태그 버튼
-const Tag = styled.button`
-	padding: 2px 20px;
-	border-radius: 20px;
-	font-family: Pretendard;
-	font-size: 12px;
-	font-weight: 400;
-	font-style: normal;
-	cursor: pointer;
-
-	background: ${(props) => (props.isActive ? '#3aaf85' : '#f5f5f5')};
-	color: ${(props) => (props.isActive ? '#ffffff' : '#3aaf85')};
-	border: 1px solid ${(props) => (props.isActive ? '#3aaf85' : '#f5f5f5')};
-
-	transition:
-		background-color 0.3s ease,
-		color 0.3s ease;
-
-	&:hover {
-		background-color: #3aaf85;
-		color: #ffffff;
-	}
 `;
 
 // 활동 리스트 Wrapper
