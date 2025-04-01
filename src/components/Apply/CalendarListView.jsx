@@ -27,6 +27,17 @@ const CalendarAdListStyled = styled.div`
   width: 100%;  // 가로 너비 100% 설정
   flex-direction: column;  // 수직 정렬
   align-items: center;  // 내부 요소 가운데 정렬
+
+ @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    width: 350px;
+    justify-content: center;
+	  align-items: center;
+  }
+    @media (max-width: 350px) {
+    width: 320px;
+    justify-content: center;
+	align-items: center;
+  }
 `;
 const CalendarAdDate = styled.div`
   font-size: 14px;
@@ -42,6 +53,10 @@ const CalendarAdDate = styled.div`
   width: 100%;
   position: absolute;  // 리스트 위로 고정
   top: 30px;  // 리스트 위로 위치 조정  
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-left: 0px;
+  }
 `;
 
 
@@ -68,6 +83,11 @@ const CalendarAdTitleContainer = styled.div`
 	display: flex;
 	align-items: center;
 	margin-left: 16px;
+
+   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	margin-left: 10px;
+
+	}
 `;
 
 const CalendarAdTitle = styled.div`
@@ -78,6 +98,10 @@ const CalendarAdTitle = styled.div`
 	font-weight: 700;
 	line-height: normal;
 	margin-top: 5px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+   font-size: 16px;
+  }
 `;
 
 const CalendarTagContainer = styled.div`
@@ -95,6 +119,10 @@ const CalendarTag = styled.span`
 	font-size: 13px;
 	color: #707070;
 	font-family: Light;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+   font-size: 12px;
+  }
 `;
 
 const ReviewTag = styled.span`
@@ -119,6 +147,7 @@ const ReviewTag = styled.span`
 
 const CalendarStatusCircle = styled.span`
   display: inline-block;
+   aspect-ratio: 1;
   width: 15px;
   height: 15px;
   border-radius: 50%;
@@ -132,6 +161,11 @@ const CalendarStatusCircle = styled.span`
   }};
   margin-right: 10px;
   margin-top: 5px;
+
+   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 12px;
+  height: 12px;
+	}
 `;
 
 const CalendarListView = ({ date, data, count, onJobClick }) => {
