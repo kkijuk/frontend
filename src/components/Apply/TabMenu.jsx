@@ -64,6 +64,10 @@ const SearchContainer = styled.div`
   display: flex;
   align-items: center;
   margin-left: 170px; /* 서치바 왼쪽 간격 추가 */
+
+   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  margin-left: 40px;
+  }
 `;
 
 const InvisibleSearchBar = styled.div`

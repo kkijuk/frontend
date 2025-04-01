@@ -20,12 +20,23 @@ const ContentSection = styled.div`
   background-color: #f0f0f0;
   border-radius: 15px;
   position: relative;
+
+   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    width: 350px;
+    justify-content: center;
+	  align-items: center;
+  }
+    @media (max-width: 350px) {
+    width: 320px;
+    justify-content: center;
+	align-items: center;
+  }
 `;
 
 const AdListStyled = styled.div`
   padding: 20px;
   border-radius: 10px;
-  margin-top: -5px;  
+  margin-top: -40px;  
 `;
 
 const AdDateSection = styled.div`
@@ -39,6 +50,10 @@ const AdDate = styled.div`
   font-weight: 500;
   margin-bottom: 10px;
   margin-left: 5px;
+@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-left: 0px;
+  }
+  
 `;
 
 const AdItem = styled.div`
@@ -59,6 +74,11 @@ const AdTitleContainer = styled.div`
   display: flex;
   align-items: center;
   margin-left: 16px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	margin-left: 10px;
+
+	}
 `;
 
 const AdTitle = styled.div`
@@ -67,6 +87,10 @@ const AdTitle = styled.div`
   font-size: 18px;
   font-weight: 700;
   margin-top: 5px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+   font-size: 16px;
+  }
 `;
 
 const TagContainer = styled.div`
@@ -84,10 +108,15 @@ const DefaultTag = styled.span`
   font-size: 13px;
   color: #707070;
   font-family: Light;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+   font-size: 12px;
+  }
 `;
 
 const StatusCircle = styled.span`
   display: inline-block;
+  aspect-ratio: 1;
   width: 15px;
   height: 15px;
   border-radius: 50%;
@@ -101,6 +130,11 @@ const StatusCircle = styled.span`
   }};
   margin-right: 10px;
   margin-top: 5px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 12px;
+  height: 12px;
+	}
 `;
 
 const ReviewTag = styled.span`

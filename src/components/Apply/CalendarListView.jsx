@@ -33,7 +33,7 @@ const CalendarAdListStyled = styled.div`
     justify-content: center;
 	  align-items: center;
   }
-     @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    @media (max-width: 350px) {
     width: 320px;
     justify-content: center;
 	align-items: center;
