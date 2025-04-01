@@ -47,7 +47,7 @@ const TimelineChart = () => {
 				height: 350,
 				width: '100%',
 				type: 'rangeBar',
-				offsetX: -40,
+				offsetX: -30,
 				background: 'transparent',
 				zoom: { enabled: false },
 				toolbar: { show: false },
@@ -109,7 +109,7 @@ const TimelineChart = () => {
 				min: minDate, // ✅ minDate를 반영
 				max: maxDate, // ✅ maxDate를 반영
 				labels: {
-					offsetX: 20,
+					offsetX: 10,
 					formatter: (val) => moment(val).format('YYYY.MM'),
 				},
 				axisBorder: { show: false },
