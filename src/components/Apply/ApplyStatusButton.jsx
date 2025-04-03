@@ -56,6 +56,7 @@ const StatusButton = styled.button`
 	outline: none;
 	width: 130px;
 	height: 40px;
+	
 	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	margin-bottom: -10px;
 	}
