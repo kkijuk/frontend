@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
 import { useNavigate } from 'react-router-dom';
 import { theme } from '../../../constants/theme';
+import { formateDateDashToDot } from '../../../utils/formateDate';
 
 const ActivityContainer = styled.div`
 	width: 100%;
@@ -132,8 +133,8 @@ export default function MyCareerSearchTotalActivity({ activity, isActivityLoadin
 								</ActivityCareerTitle>
 							</ActivityContent>
 							<AcitivityDate>
-								{activity.startdate} ~<br />
-								{activity.unknown === true ? 'ing' : activity.enddate}
+								{formateDateDashToDot(activity.startdate)} ~<br />
+								{activity.unknown === true ? 'ing' : formateDateDashToDot(activity.enddate)}
 							</AcitivityDate>
 						</ActivityBox>
 					))}
