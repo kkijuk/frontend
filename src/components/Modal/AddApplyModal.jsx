@@ -29,6 +29,11 @@ const ModalContent = styled.div`
 	position: relative;
 	align-items: center;
 		z-index: 2000;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 320px;
+	height: 650px;
+	}
 `;
 
 const CloseButton = styled.button`
@@ -49,6 +54,12 @@ const ModalTitle = styled.h2`
 	margin-left: 100px;
 	font-family: 'Bold';
 	font-size: 24px;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		margin-left: 0;
+		text-align: center;
+		justify-content: center;
+	}
 `;
 
 const Divider = styled.div`
@@ -57,6 +68,10 @@ const Divider = styled.div`
 	background-color: #ccc;
 	margin-bottom: 20px;
 	margin: 0 auto 20px;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		display: none;
+	}
 `;
 
 const Label = styled.label`
@@ -71,6 +86,10 @@ const Label = styled.label`
 	&::after {
 		content: ' *';
 		color: #fc5555;
+	}
+		@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	margin-left: 0px;
+	margin-top: 10px;
 	}
 `;
 
@@ -87,6 +106,11 @@ const LabelStart = styled.label`
 		content: ' *';
 		color: #fc5555;
 	}
+		
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		margin-left: 0;
+		margin-top: 6px;
+	}
 `;
 
 const LabelEnd = styled.label`
@@ -102,12 +126,22 @@ const LabelEnd = styled.label`
 		content: ' *';
 		color: #fc5555;
 	}
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		margin-top: 6px;
+	}
 `;
 
 const InputWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	width: 100%;
+
+	
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+	justify-content: center;
+	}
 `;
 
 const Input = styled.input`
@@ -123,6 +157,9 @@ const Input = styled.input`
 	font-family: 'ExtraLight';
 	font-size: 16px;
 	outline: none;
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+	}
 `;
 
 const InputDateStart = styled.input`
@@ -139,6 +176,10 @@ const InputDateStart = styled.input`
 	font-family: 'ExtraLight';
 	font-size: 16px;
 	outline: none;
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		margin-left: 0;
+		
+	}
 `;
 
 const InputDateEnd = styled.input`
@@ -155,14 +196,24 @@ const InputDateEnd = styled.input`
 	font-family: 'ExtraLight';
 	font-size: 16px;
 	outline: none;
+	
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		margin-right: 0;
+	}
 `;
 
 const InputWrapperStart = styled.div`
 	margin-top: 30px;
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		margin-top: 20px;
+	}
 `;
 
 const InputWrapperEnd = styled.div`
 	margin-top: 30px;
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		margin-top: 20px;
+	}
 `;
 
 const Row = styled.div`
@@ -170,6 +221,10 @@ const Row = styled.div`
 	justify-content: center;
 	gap: 0px;
 	width: 100%;
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		flex-direction: column;
+		align-items: center;
+	}
 `;
 
 const ButtonWrapper = styled.div`
@@ -177,6 +232,7 @@ const ButtonWrapper = styled.div`
 	justify-content: center;
 	width: 100%;
 	margin-top: -20px;
+	
 `;
 
 const SaveButton = styled.button`
@@ -194,6 +250,7 @@ const SaveButton = styled.button`
 	margin-left: 105px;
 	font-family: 'ExtraLight';
 	font-size: 18px;
+	
 `;
 
 const LabelTag = styled.label`
@@ -209,6 +266,9 @@ const LabelTag = styled.label`
 		content: ' *';
 		color: #fc5555;
 	}
+		@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		margin-left: 0;
+	}
 `;
 
 const LabelLink = styled.label`
@@ -219,11 +279,19 @@ const LabelLink = styled.label`
 	margin-top: 25px;
 	font-family: 'ExtraLight';
 	font-size: 18px;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		margin-left: 0;
+	}
 `;
 
 const InputWrapperTag = styled.div`
 	margin-top: 20px;
 	margin-left: 90px;
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		margin-left: 0;
+		
+	}
 `;
 
 const InputWrapperLink = styled.div`
@@ -231,6 +299,10 @@ const InputWrapperLink = styled.div`
 	margin-left: 90px;
 	font-family: 'ExtraLight';
 	font-size: 16px;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		margin-left: 0;
+	}
 `;
 
 const TagBoxWrapper = styled.div`

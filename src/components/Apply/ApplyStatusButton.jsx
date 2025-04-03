@@ -12,8 +12,8 @@ const StatusContainer = styled.div`
 	margin-left: 10px;
 	padding-right: 90px;
 	white-space: nowrap;
-
 `;
+
 const ScrollWrapper = styled.div`
   width: 100%;
 
@@ -32,6 +32,7 @@ const ScrollWrapper = styled.div`
     }
   }
 `;
+
 
 
 const StatusButton = styled.button`
@@ -56,6 +57,7 @@ const StatusButton = styled.button`
 	outline: none;
 	width: 130px;
 	height: 40px;
+
 	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	margin-bottom: -10px;
 	}

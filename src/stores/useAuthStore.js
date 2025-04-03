@@ -5,10 +5,6 @@ const useAuthStore = create((set) => ({
 	refreshToken: null,
 	isLoggedIn: false,
 	isProfileComplete: false,
-	token: null,
-	refreshToken: null,
-	isLoggedIn: false,
-	isProfileComplete: false,
 
 	// 초기 상태 복원
 	restoreState: () => {
@@ -29,11 +25,6 @@ const useAuthStore = create((set) => ({
 		if (token) localStorage.setItem('token', token);
 		if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
 		localStorage.setItem('isProfileComplete', isProfileComplete);
-	// 로그인 시 토큰 저장
-	login: (token, refreshToken, isProfileComplete) => {
-		if (token) localStorage.setItem('token', token);
-		if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
-		localStorage.setItem('isProfileComplete', isProfileComplete);
 
 		set({
 			token: token,
@@ -42,26 +33,7 @@ const useAuthStore = create((set) => ({
 			isProfileComplete,
 		});
 	},
-		set({
-			token: token,
-			refreshToken: refreshToken,
-			isLoggedIn: true,
-			isProfileComplete,
-		});
-	},
 
-	// 로그아웃 시 토큰 제거
-	logout: () => {
-		localStorage.removeItem('token');
-		localStorage.removeItem('refreshToken');
-		localStorage.removeItem('isProfileComplete');
-		set({
-			token: null,
-			refreshToken: null,
-			isLoggedIn: false,
-			isProfileComplete: false,
-		});
-	},
 	// 로그아웃 시 토큰 제거
 	logout: () => {
 		localStorage.removeItem('token');
