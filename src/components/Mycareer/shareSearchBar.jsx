@@ -32,9 +32,13 @@ const SearchInput = styled.input`
 	font-size: 17px;
 	color: #707070;
 	font-family: Light;
+	-webkit-text-size-adjust: 100%;
+	font-size-adjust: none;
 
 	@media (max-width: ${theme.breakpoints.md}) {
-		font-size: 15px;
+		font-size: 16px;
+		-webkit-touch-callout: none;
+		-webkit-tap-highlight-color: transparent;
 	}
 `;
 
