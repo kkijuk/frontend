@@ -29,8 +29,7 @@ const TagInputContainer = styled.div`
   gap: 5px;
   font-family: Light;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-	
-		width:310px;
+		width:290px;
 	}
 `;
 
