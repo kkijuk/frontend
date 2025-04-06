@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import api from '../../Axios';
@@ -13,6 +13,10 @@ const BackgroundSection = styled.div`
     padding: 20px 0;
     min-height: 110vh;  
     box-sizing: border-box;
+
+     @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+     width: 450px;
+  }
 `;
 
 const ContentSection = styled.div`
@@ -21,7 +25,9 @@ const ContentSection = styled.div`
     padding: -40px;
     background-color: #f0f0f0;
     border-radius: 15px;
-    margin-top: -40px;
+    margin-top: -50px;
+    
+
 `;
 
 const AdListStyled = styled.div`
@@ -61,6 +67,9 @@ const RecruitTitleForRecruitResult = styled.div`
     font-weight: 500;
     line-height: normal;
     margin-top: 5px;
+    @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 16px;
+  }
 `;
 
 const RecruitTitleForReviewResult = styled.div`
@@ -78,6 +87,12 @@ const ReviewHeader = styled.div`
     align-items: center;
     justify-content: space-between;
     margin-top: 7px;
+    @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin-left: 29px;
+  }
 `;
 
 const ReviewTitle = styled.div`
@@ -89,6 +104,11 @@ const ReviewTitle = styled.div`
     line-height: normal;
     margin-top: 5px;
     margin-left: 29px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-left: 0px;
+    font-size: 16px;
+  }
 `;
 
 const ReviewContent = styled.div`
@@ -100,6 +120,10 @@ const ReviewContent = styled.div`
     line-height: normal;
     margin-top: 11px;
     margin-left: 29px;
+
+     @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 14px;
+  }
 `;
 
 const ReviewDate = styled.div`
@@ -111,6 +135,14 @@ const ReviewDate = styled.div`
    margin-right: 50px;
    font-size: 14px;
    font-style: normal;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-right: 0;
+    margin-left: 0;
+    text-align: left;
+    font-size: 12px;
+    align-self: flex-start;
+  }
 `;
 
 const TagContainer = styled.div`
@@ -172,6 +204,15 @@ const DateContainer = styled.div`
     margin-left: auto;
     align-self: center;
     padding-right: 15px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-left: 29px;
+    margin-top: 4px;
+    text-align: left;
+    padding-right: 0;
+    width: fit-content;
+    order: 1; 
+  }
 `;
 
 const CategoryTitle = styled.div`
@@ -184,10 +225,21 @@ const CategoryTitle = styled.div`
     margin-bottom: 10px;
     margin-top: 20px;
 `;
-
+const useIsMobile = () => {
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  
+    useEffect(() => {
+      const handleResize = () => setIsMobile(window.innerWidth <= 768);
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+  
+    return isMobile;
+  };
+  
 const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
     const navigate = useNavigate();
-
+    const isMobile = useIsMobile();
     if (isSearchClicked && (!recruits || recruits.length === 0)) {
         return (
             <BackgroundSection 
@@ -253,8 +305,7 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
             console.error('Failed to fetch recruit details:', error);
         }
     };
-    
-    
+
     return (
         <BackgroundSection>
             <ContentSection>
@@ -282,28 +333,39 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
                         });
 
                         return (
-                            <AdItem key={recruit.recruitId} onClick={() => handleJobClick(recruit)} style={{ cursor: 'pointer' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <TagContainer>
-                                        {recruit.tags &&
-                                            recruit.tags.map((tag, tagIdx) => (
-                                                <Tag key={tagIdx}>{tag}</Tag>
-                                            ))}
-                                    </TagContainer>
-                                    <DateContainer>
-                                        {formattedStartTime} ~ {formattedEndTime}
-                                    </DateContainer>
-                                </div>
+                           <AdItem key={recruit.recruitId} onClick={() => handleJobClick(recruit)}>
+  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <TagContainer>
+      {recruit.tags?.map((tag, idx) => (
+        <Tag key={idx}>{tag}</Tag>
+      ))}
+    </TagContainer>
 
-                                <AdDetails>
-                                    <AdTitleContainer>
-                                        <StatusCircleForRecruitResult status={recruit.status} />
-                                        <RecruitTitleForRecruitResult>
-                                            {recruit.recruitTitle}
-                                        </RecruitTitleForRecruitResult>
-                                    </AdTitleContainer>
-                                </AdDetails>
-                            </AdItem>
+    {/* 데스크탑일 때만 오른쪽 상단에 날짜 표시 */}
+    {!isMobile && (
+      <DateContainer>
+        {formattedStartTime} ~ {formattedEndTime}
+      </DateContainer>
+    )}
+  </div>
+
+  <AdDetails>
+    <AdTitleContainer>
+      <StatusCircleForRecruitResult status={recruit.status} />
+      <RecruitTitleForRecruitResult>
+        {recruit.recruitTitle}
+      </RecruitTitleForRecruitResult>
+    </AdTitleContainer>
+
+    {/* 반응형일 때만 제목 아래 날짜 표시 */}
+    {isMobile && (
+      <DateContainer style={{ marginTop: '6px', marginLeft: '29px' }}>
+        {formattedStartTime} ~ {formattedEndTime}
+      </DateContainer>
+    )}
+  </AdDetails>
+</AdItem>
+
                         );
                     })}
 
@@ -339,7 +401,7 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
                                             ))}
                                     </TagContainer>
                                     <DateContainer>
-                                        {formattedStartTime} ~ {formattedEndTime}
+                                      
                                     </DateContainer>
                                 </div>
                                 <AdDetails>
