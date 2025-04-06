@@ -24,7 +24,7 @@ const Container = styled.div`
 		gap: 9px;
 		align-self: stretch;
 		width: 100%;
-		min-width: 326px;
+		/*min-width: 326px;*/
 		min-height: 146px;
 	}
 `;
@@ -62,7 +62,7 @@ const Bottom = styled.div`
 	flex-direction: column; /*세로배치 위해서 display 속성에 추가*/
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		min-width: 326px;
+		/*min-width: 326px;*/
 		width: 100%;
 		min-height: 96px;
 	}
@@ -151,7 +151,7 @@ const Button = styled.button`
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
-		min-width: 325px;
+		/*min-width: 325px;*/
 		height: 34px;
 	}
 `;
