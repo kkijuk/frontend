@@ -13,15 +13,35 @@ const Box = styled.div`
 	margin-top: 15px;
 	margin-bottom: 13px;
 	position: relative; /* 자식 요소의 절대 위치를 위한 상대 위치 설정 */
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		box-sizing: border-box;
+	}
 `;
 
 const Row = styled.div`
-	display: flex;
+	/*display: flex;
 	align-items: center;
-	gap: 20px;
+	gap: 20px;*/
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	width: 100%;
+	flex-wrap: nowrap;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		/*width: 100%;
+		box-sizing: border-box;*/
+		flex-direction: row;
+		align-items: flex-start;
+		gap: 10px;
+	}
 `;
 
 const Text = styled.div`
+	white-space: nowrap;
+
 	width: 32px;
 	height: 21px;
 	margin-top: 5px;
@@ -36,7 +56,8 @@ const Text = styled.div`
 `;
 
 const TagInputContainer = styled.div`
-	width: 650px;
+	flex: 1;
+
 	flex-shrink: 0;
 	border-radius: 10px;
 	background: #f5f5f5;
@@ -47,6 +68,10 @@ const TagInputContainer = styled.div`
 	padding-left: 5px; /* 전체 컨테이너의 좌측에 패딩 추가 */
 	padding-top: 5px;
 	padding-bottom: 5px;
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		box-sizing: border-box;
+	}
 `;
 
 const TagInput = styled.input`
@@ -63,6 +88,11 @@ const TagInput = styled.input`
 	&:focus {
 		outline: none; /* 포커스 시 외곽선 제거 */
 		color: #000; /* 입력 시 텍스트 색상 변경 */
+	}
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		box-sizing: border-box;
 	}
 `;
 

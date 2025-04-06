@@ -10,6 +10,13 @@ const Box = styled.div`
 	height: auto; /*원래 384!*/
 	width: 800px;
 	padding: 24px 40px;
+	box-sizing: border-box;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		padding: 24px 20px;
+		box-sizing: border-box;
+	}
 `;
 
 const Top = styled.div`
@@ -18,25 +25,49 @@ const Top = styled.div`
 	height: 79px;
 	width: 720px;
 	margin-top: 22px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		height: 100%;
+		gap: 24px;
+		box-sizing: border-box;
+		flex-direction: column;
+	}
 `;
 
 const Middle = styled.div`
 	height: 142px;
 	width: 800px;
 	margin-top: 18px;
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		box-sizing: border-box;
+	}
 `;
 
 const Button = styled.div`
 	height: auto; /*원래 50*/
 	display: flex;
-	gap: 15px;
+	flex-direction: column; /* 버튼 + 에러 메시지를 세로로 */
+	align-items: flex-start;
+	gap: 8px;
 	margin-bottom: 24px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		/*flex-direction: row;
+		width: 100%;
+		box-sizing: border-box;
+	}
 `;
 
 const Title = styled.div`
+	flex: 1;
 	display: flex;
 	flex-direction: column;
 	margin-right: 20px;
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		margin-right: 0px;
+	}
 `;
 
 const Date = styled.div`
@@ -46,6 +77,8 @@ const Date = styled.div`
 `;
 
 const DateBox = styled.div`
+	flex: 1;
+
 	border-radius: 10px;
 	cursor: pointer;
 	height: 50px;
@@ -59,6 +92,9 @@ const DateBox = styled.div`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const Label = styled.div`
@@ -89,10 +125,15 @@ const Cancel = styled.div`
 	font-weight: 500;
 	line-height: normal;
 	cursor: pointer;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: calc(50% - 7.5px);
+	}
 `;
 
 const Save = styled.div`
-	width: 555px;
+	width: 100%;
+	max-width: 555px;
 	height: 50px;
 	flex-shrink: 0;
 	border-radius: 10px;
@@ -108,12 +149,21 @@ const Save = styled.div`
 	font-weight: 500;
 	line-height: normal;
 	cursor: pointer;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: calc(50% - 7.5px);
+	}
 `;
 
 const Line = styled.div`
 	width: 800px;
 	height: 2px;
 	background: var(--gray-03, #d9d9d9);
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		box-sizing: border-box;
+	}
 `;
 
 const Input = styled.input`
@@ -130,6 +180,11 @@ const Input = styled.input`
 	box-sizing: border-box; /* padding을 포함한 요소의 전체 크기를 설정된 width와 height에 맞춤 */
 	z-index: 1; /* z-index 추가 */
 	position: relative; /* z-index가 적용되도록 position 속성 추가 */
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		box-sizing: border-box;
+	}
 `;
 
 const TextArea = styled.textarea`
@@ -148,6 +203,18 @@ const TextArea = styled.textarea`
 	position: relative; /* z-index가 적용되도록 position 속성 추가 */
 	resize: none; /* 사용자가 텍스트 영역 크기 조절 못하도록 함 */
 	overflow-y: auto; /* 텍스트가 넘칠 경우 스크롤 생성 */
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		box-sizing: border-box;
+	}
+`;
+
+const ButtonRow = styled.div`
+	display: flex;
+	gap: 15px; /* 버튼 사이 간격 */
+	width: 100%;
+	justify-content: space-between;
 `;
 
 const ErrorMessage = styled.div`
@@ -158,12 +225,6 @@ const ErrorMessage = styled.div`
 	font-weight: 500;
 	line-height: normal;
 	margin-top: 9px;
-`;
-
-const SaveBox = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center; /* 가운데 정렬 */
 `;
 
 export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
@@ -263,8 +324,8 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 			</Middle>
 			<TagBox onTagListChange={setTagList} /> {/* 태그 박스에서 선택한 태그 관리 */}
 			<Button>
-				<Cancel onClick={onCancel}>취소</Cancel>
-				<SaveBox>
+				<ButtonRow>
+					<Cancel onClick={onCancel}>취소</Cancel>
 					<Save
 						onClick={() => {
 							trackEvent('add_confirm', {
@@ -277,8 +338,8 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 						}}>
 						저장
 					</Save>
-					{errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-				</SaveBox>
+				</ButtonRow>
+				{errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
 			</Button>
 			<Line></Line>
 		</Box>

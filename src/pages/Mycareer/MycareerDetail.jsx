@@ -27,7 +27,9 @@ const Container = styled.div`
 	height: 30px;
 	box-sizing: border-box;
 
-	box-sizing: border-box;
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		padding: 0 16px;
+	}
 `;
 
 const SearchIcon = styled.svg`
@@ -74,6 +76,7 @@ const CareerContentContainer = styled.div`
 		max-width: 100%;
 		width: 100%;
 		height: auto;
+		padding: 0 16px;
 	}
 `;
 
@@ -166,6 +169,7 @@ const Line = styled.div`
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		max-width: 100%;
 		width: 100%;
+		padding: 0 16px;
 	}
 `;
 
@@ -182,6 +186,7 @@ const CareerListBox = styled.div`
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		max-width: 100%;
 		width: 100%;
+		padding: 0 16px;
 	}
 `;
 
@@ -222,6 +227,7 @@ const CareerPlus = styled.button`
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		max-width: 100%;
 		width: 100%;
+		box-sizing: border-box;ㄴ
 	}
 `;
 
@@ -329,6 +335,11 @@ const PageContainer = styled.div`
 	flex-direction: column; /* 위에서 아래로 배치 */
 	align-items: center; /* 필요하면 가운데 정렬 */
 	width: 100%; /* 전체 너비 */
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		padding: 0 16px;
+		box-sizing: border-box;
+	}
 `;
 
 const NoContents = styled.div`
@@ -352,6 +363,7 @@ const NoContents = styled.div`
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		max-width: 100%;
 		width: 100%;
+		padding: 0 16px;
 	}
 `;
 
