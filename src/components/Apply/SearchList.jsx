@@ -15,7 +15,7 @@ const BackgroundSection = styled.div`
     box-sizing: border-box;
 
      @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-  width: 450px;
+     width: 450px;
   }
 `;
 
@@ -211,7 +211,7 @@ const DateContainer = styled.div`
     text-align: left;
     padding-right: 0;
     width: fit-content;
-    order: 1; // flex 정렬 순서 변경 시 사용 가능
+    order: 1; 
   }
 `;
 
@@ -357,7 +357,7 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
       </RecruitTitleForRecruitResult>
     </AdTitleContainer>
 
-    {/* ✅ 반응형일 때만 제목 아래 날짜 표시 */}
+    {/* 반응형일 때만 제목 아래 날짜 표시 */}
     {isMobile && (
       <DateContainer style={{ marginTop: '6px', marginLeft: '29px' }}>
         {formattedStartTime} ~ {formattedEndTime}

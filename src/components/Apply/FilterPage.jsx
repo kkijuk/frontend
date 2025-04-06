@@ -18,9 +18,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center; 
+
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-		width: 350px;
-		 margin: 0 auto;      
+	width: 350px;
+	margin: 0 auto;      
     position: static;     
     right: unset;  
 	}
@@ -95,9 +96,9 @@ const TopBar = styled.div`
 	gap: 10px;
 
 	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-		flex-direction: column;
-		width: 350px;
-		 margin: 0 auto;       
+	flex-direction: column;
+	width: 350px;
+	margin: 0 auto;       
     position: static;     
     right: unset;  
 	}
@@ -128,9 +129,8 @@ const SearchInput = styled.input`
 	color: #707070;
 	margin-left: 20px;
 @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-
-		width: 300px;
-		 margin: 0 auto;      
+    width: 300px;
+	margin: 0 auto;      
     position: static;     
     right: unset;  
 	}
