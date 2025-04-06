@@ -14,7 +14,7 @@ const Container = styled.div`
 	align-items: flex-start;
 	gap: 10px;
 	flex-shrink: 0;
-	box-sizing: border-box;
+	/*box-sizing: border-box;*/
 
 	border-radius: 10px;
 	background: var(--gray-06, #f5f5f5);

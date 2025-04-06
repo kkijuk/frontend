@@ -56,7 +56,6 @@ const Box = styled.div`
 
 const List = styled.div`
 	width: 100%;
-	min-width: 310px;
 	height: 40px;
 	flex-shrink: 0;
 	border-radius: 4px;
