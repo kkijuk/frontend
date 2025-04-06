@@ -18,6 +18,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center; 
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		width: 350px;
+		 margin: 0 auto;      
+    position: static;     
+    right: unset;  
+	}
 `;
 
 
@@ -61,6 +67,12 @@ const TabContainer = styled.div`
   width: 100%;
   max-width: 700px;
   margin-left: -90px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {      
+    position: static;     
+    right: unset;  
+	left: unset;
+	}
 `;
 
 
@@ -77,6 +89,21 @@ const TabButton = styled.button`
 	padding-left: 0px;  
 `;
 
+const TopBar = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		flex-direction: column;
+		width: 350px;
+		 margin: 0 auto;       
+    position: static;     
+    right: unset;  
+	}
+`;
+
+
 const SearchBarContainer = styled.div`
 	display: flex;
 	align-items: center;
@@ -85,6 +112,11 @@ const SearchBarContainer = styled.div`
 	border-radius: 12px;
 	margin-bottom: 10px;
 	margin-left: 140px;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		margin-left: 0;
+        width: 340px;
+	}
 `;
 
 const SearchInput = styled.input`
@@ -95,6 +127,13 @@ const SearchInput = styled.input`
 	font-size: 16px;
 	color: #707070;
 	margin-left: 20px;
+@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+
+		width: 300px;
+		 margin: 0 auto;      
+    position: static;     
+    right: unset;  
+	}
 `;
 
 const BackLink = styled(Link)`
@@ -107,6 +146,11 @@ const BackLink = styled(Link)`
 	text-decoration: none;
 	margin-left: 0px;
 	white-space: nowrap;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		width: 350px;
+		margin-left: -40px;
+	}
 `;
 
 const SortButtonsContainer = styled.div`
@@ -139,6 +183,10 @@ const SearchButton = styled.button`
 	cursor: pointer;
 	padding: 0; 
 `;
+const DividerWrapper = styled.div`
+ 
+  justify-content: center;
+`;
 
 const Divider = styled.div`
   height: 4px;
@@ -148,6 +196,14 @@ const Divider = styled.div`
   position: relative;
   align-items: center;
   right: 13px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    width: 375px;
+	margin: 0 auto;
+	right: 0;
+    justify-content: center;
+    right: -15px;
+  }
 `;
 
 const SearchResultsTitle = styled.h2`
@@ -303,12 +359,13 @@ const FilterPage = () => {
 			setIsTagSearch(false); //  한 번 실행 후 다시 false로 설정 (중복 실행 방지)
 		}
 	}, [searchTerm]); //  searchTerm이 변경될 때 실행
-	
+	  
 
 	return (
 		<Container>
 			<Layout >
 			<div style={{ display: 'flex', alignItems: 'center' }}>
+			<TopBar>
 				<BackLink to="/apply-status">
 					<img src={SvgIconBefore} alt="Back" width={20} height={13} />
 					지원현황
@@ -329,9 +386,12 @@ const FilterPage = () => {
 </SearchButton>
 
 				</SearchBarContainer>
+				</TopBar>
 			</div>
 			<TabContainer>
-			<Divider />
+			<DividerWrapper>
+    <Divider />
+  </DividerWrapper>
   <SearchResultsContainer>
   {isSearchClicked && displayedTerm && (
                             <SearchResultsTitle>
