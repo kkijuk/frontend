@@ -13,7 +13,8 @@ import { fetchLogindata, fetchEmail } from '../../api/Mypage/mypage';
 //내 정보 이메일 재입력
 
 const Container = styled.div`
-	width: 820px;
+	max-width: 820px;
+	width: 100%
 	height: auto;
 	display: flex;
 	flex-direction: column;
@@ -23,12 +24,19 @@ const Container = styled.div`
 	margin-right: auto;
 	margin-bottom: 50px;
 	margin-left: auto;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		padding: 0 16px;
+		box-sizing: border-box;
+	}
 `;
 
 const Text = styled.div`
 	/*설명 텍스트*/
-	width: 500px;
-	height: 19px;
+	max-width: 500px;
+	width: 100%;
+	height: 100%;
 	color: var(--black, #000);
 	text-align: center;
 	font-family: Pretendard;
@@ -38,23 +46,36 @@ const Text = styled.div`
 	line-height: normal;
 
 	margin-top: 52px;
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const EmailBox = styled.div`
-	width: 400px;
-	height: 81px;
+	max-width: 400px;
+	width: 100%;
+	height: 100%;
 
 	margin-top: 48px;
 	gap: 12px; /*input이랑 위에 이메일 글씨 사이에 12gap*/
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const EmailTextBox = styled.div`
-	width: 400px;
-	height: 31px;
+	max-width: 400px;
+	width: 100%;
+	height: 100%;
 	gap: 8px;
 
 	display: flex;
 	align-items: center;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const EmailText = styled.div`
@@ -108,6 +129,11 @@ const Input = styled.input`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		box-sizing: border-box;
+	}
 `;
 
 const ErrorMessage = styled.p`
@@ -119,7 +145,8 @@ const ErrorMessage = styled.p`
 `;
 
 const Button = styled.button`
-	width: 400px;
+	max-width: 400px;
+	width: 100%;
 	height: 50px;
 	border-radius: 10px;
 	background: var(--main-01, #3aaf85);
@@ -138,6 +165,12 @@ const Button = styled.button`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		padding: 0 16px;
+		box-sizing: border-box;
+	}
 `;
 
 export default function Confirm() {
