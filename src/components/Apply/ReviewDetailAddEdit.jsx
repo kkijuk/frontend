@@ -13,6 +13,7 @@ const Box = styled.div`
 	padding: 24px 40px;
 		@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	width: 320px;
+	 justify-content: center;
 	}
 `;
 const Top = styled.div`
@@ -32,6 +33,10 @@ const Button = styled.div`
 	display: flex;
 	gap: 15px;
 	margin-bottom: 24px;
+	 @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    justify-content: center;
+	width: 310px;
+  }
 `;
 const Title = styled.div`
 	display: flex;
@@ -89,7 +94,7 @@ const Cancel = styled.div`
 	line-height: normal;
 	cursor: pointer;
 	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-	width: 120px;
+	width: 100px;
 	}
 `;
 const Save = styled.div`
@@ -110,7 +115,7 @@ const Save = styled.div`
 	line-height: normal;
 	cursor: pointer;
 		@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-	width: 218px;
+	width: 210px;
 	}
 `;
 const Line = styled.div`

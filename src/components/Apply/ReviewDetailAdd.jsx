@@ -10,8 +10,11 @@ const Box = styled.div`
     height: 384px;
     width: 800px;
     padding: 24px 40px;
+
     	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	width: 320px;
+     justify-content: center;
+     
 	}
 `;
 
@@ -34,6 +37,10 @@ const Button = styled.div`
     display: flex;
     gap: 15px;
     margin-bottom: 24px;
+     @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    justify-content: center;
+    width: 310px;
+  }
 `;
 
 const Title = styled.div`
@@ -62,6 +69,9 @@ const DateBox = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+	}
 `;
 
 const Label = styled.div`
@@ -92,7 +102,7 @@ const Cancel = styled.div`
     font-weight: 500;
     line-height: normal;
     @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-	width: 120px;
+	width: 100px;
 	}
 `;
 
@@ -113,7 +123,7 @@ const Save = styled.div`
     font-weight: 500;
     line-height: normal;
     @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-	width: 218px;
+	width: 200px;
 	}
 `;
 
@@ -123,6 +133,7 @@ const Line = styled.div`
     background: var(--gray-03, #D9D9D9);
     @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	width: 350px;
+    width: 320px;
 	}
 `;
 
@@ -138,7 +149,7 @@ export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를
 		window.addEventListener('resize', handleResize);
 		return () => window.removeEventListener('resize', handleResize);
 	  }, []);
-      
+
     const handleDateClick = () => {
         setShowCalendar(!showCalendar);
     };

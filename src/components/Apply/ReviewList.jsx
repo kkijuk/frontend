@@ -17,6 +17,7 @@ const Box = styled.div`
 
 	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	width: 320px;
+	justify-content: center;
 	}
 `;
 
