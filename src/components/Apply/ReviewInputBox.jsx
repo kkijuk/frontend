@@ -29,6 +29,7 @@ const Input = styled.input`
     `}
     @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	width: 310px;
+     justify-content: center;
 	}
 `;
 
@@ -64,6 +65,7 @@ const Textarea = styled.textarea`
     `}
      @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	width: 310px;
+     justify-content: center;
 	}
 `;
 

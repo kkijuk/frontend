@@ -13,6 +13,8 @@ const Box = styled.div`
 
     	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	width: 320px;
+     justify-content: center;
+     
 	}
 `;
 
@@ -35,6 +37,10 @@ const Button = styled.div`
     display: flex;
     gap: 15px;
     margin-bottom: 24px;
+     @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    justify-content: center;
+    width: 310px;
+  }
 `;
 
 const Title = styled.div`
@@ -96,7 +102,7 @@ const Cancel = styled.div`
     font-weight: 500;
     line-height: normal;
     @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-	width: 120px;
+	width: 100px;
 	}
 `;
 
@@ -117,7 +123,7 @@ const Save = styled.div`
     font-weight: 500;
     line-height: normal;
     @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-	width: 218px;
+	width: 200px;
 	}
 `;
 
@@ -127,6 +133,7 @@ const Line = styled.div`
     background: var(--gray-03, #D9D9D9);
     @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	width: 350px;
+    width: 320px;
 	}
 `;
 
