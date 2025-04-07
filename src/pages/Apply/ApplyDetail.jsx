@@ -198,6 +198,7 @@ const ListTitle = styled.div`
 
 	 @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	margin-left: 0px;
+	white-space: nowrap;
 	}
 `;
 
@@ -223,6 +224,7 @@ const SubHeader = styled.div`
 
 	 @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	width: 350px;
+	align-self: center;
 	margin-left: 0px; 
 	}
 `;
@@ -336,6 +338,7 @@ const ApplyButton = styled.div`
 	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	margin-left: 0px; 
 	margin-right: 100px;
+	white-space: nowrap;
 	}
 `;
 
