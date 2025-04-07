@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ReviewInputBox from './ReviewInputBox';
 import ReactCalendar from './ReviewCalendar';
@@ -10,6 +10,9 @@ const Box = styled.div`
     height: 384px;
     width: 800px;
     padding: 24px 40px;
+    	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 320px;
+	}
 `;
 
 const Top = styled.div`
@@ -88,6 +91,9 @@ const Cancel = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+    @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 120px;
+	}
 `;
 
 const Save = styled.div`
@@ -106,12 +112,18 @@ const Save = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+    @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 218px;
+	}
 `;
 
 const Line = styled.div`
     width : 800px;
     height: 2px;
     background: var(--gray-03, #D9D9D9);
+    @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 350px;
+	}
 `;
 
 export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를 prop으로 받아옴.
@@ -119,7 +131,14 @@ export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를
     const [selectedDate, setSelectedDate] = useState('');
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+	
+	useEffect(() => {
+		const handleResize = () => setIsMobile(window.innerWidth < 768);
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	  }, []);
+      
     const handleDateClick = () => {
         setShowCalendar(!showCalendar);
     };
@@ -166,35 +185,76 @@ export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를
 
     return (
         <Box>
-            <Top>
-                <Title>
-                    <Label>전형</Label>
-                    <ReviewInputBox 
-                     height="50px" 
-                     width="460px" 
-                     placeholderText="전형 이름을 입력하세요." 
-                     value={title}
-                     onChange={(e) => setTitle(e.target.value)}
-                    type="text" //  전형 입력칸 → input 사용 (스크롤 없음)
-                     />
-                </Title>
-                <Date>
-                    <Label>날짜</Label>
-                    <DateBox onClick={handleDateClick}>{selectedDate || '날짜를 선택하세요'}</DateBox>
-                    {showCalendar && <ReactCalendar onChange={handleDateChange} />}
-                </Date>
-            </Top>
-            <Middle>
-                <Label>전형 후기</Label>  
-                <ReviewInputBox 
-                  height="100px" 
-                  width="720px" 
-                  placeholderText="전형 후기를 입력하세요.(선택)"  
-                 value={content}
-                 onChange={handleContentChange}
-                 type="textarea" // 전형 후기 입력칸 → textarea 사용 (스크롤 있음)
-                />
-            </Middle>
+    {isMobile ? (
+      <>
+        <Title>
+          <Label>전형</Label>
+          <ReviewInputBox 
+            height="50px" 
+            width="100%" 
+            placeholderText="전형 이름을 입력하세요." 
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            type="text"
+          />
+        </Title>
+        <Date>
+          <Label>날짜</Label>
+          <DateBox onClick={handleDateClick}>
+            {selectedDate || '날짜를 선택하세요'}
+          </DateBox>
+          {showCalendar && <ReactCalendar onChange={handleDateChange} />}
+        </Date>
+        <Middle>
+          <Label>전형 후기</Label>  
+          <ReviewInputBox 
+            height="100px" 
+            width="100%" 
+            placeholderText="전형 후기를 입력하세요.(선택)"  
+            value={content}
+            onChange={handleContentChange}
+            type="textarea"
+          />
+        </Middle>
+
+    
+      </>
+    ) : (
+      <>
+        <Top>
+          <Title>
+            <Label>전형</Label>
+            <ReviewInputBox 
+              height="50px" 
+              width="460px" 
+              placeholderText="전형 이름을 입력하세요." 
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              type="text"
+            />
+          </Title>
+          <Date>
+            <Label>날짜</Label>
+            <DateBox onClick={handleDateClick}>
+              {selectedDate || '날짜를 선택하세요'}
+            </DateBox>
+            {showCalendar && <ReactCalendar onChange={handleDateChange} />}
+          </Date>
+        </Top>
+
+        <Middle>
+          <Label>전형 후기</Label>  
+          <ReviewInputBox 
+            height="100px" 
+            width="720px" 
+            placeholderText="전형 후기를 입력하세요.(선택)"  
+            value={content}
+            onChange={handleContentChange}
+            type="textarea"
+          />
+        </Middle>
+        </>
+    )}
             <Button>
                 <Cancel onClick={() => onSave()}>취소</Cancel>
                 <Save onClick={handleSaveClick}>저장</Save>
