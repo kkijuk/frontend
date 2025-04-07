@@ -10,6 +10,7 @@ const Box = styled.div`
     height: 384px;
     width: 800px;
     padding: 24px 40px;
+
     	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	width: 320px;
 	}
@@ -62,6 +63,9 @@ const DateBox = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+	}
 `;
 
 const Label = styled.div`
@@ -138,7 +142,7 @@ export default function ReviewDetailAdd({ recruitId, onSave }) { // recruitId를
 		window.addEventListener('resize', handleResize);
 		return () => window.removeEventListener('resize', handleResize);
 	  }, []);
-      
+
     const handleDateClick = () => {
         setShowCalendar(!showCalendar);
     };
