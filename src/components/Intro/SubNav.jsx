@@ -69,12 +69,6 @@ const BaseDiv = styled.div`
         margin-left: auto;
         margin-right: auto;
     }
-
-    @media (max-width: ${theme.breakpoints.sm}) {
-        margin-top: 20px;
-        padding: 0 10px;
-        max-width: 100%;
-    }
 `;
 
 const Nav = styled.ul`
