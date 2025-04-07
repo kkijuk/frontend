@@ -50,6 +50,11 @@ const BaseDiv = styled.div`
 	max-width: 820px;
 	// background-color:#D9D9D9
 	position: relative;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		padding: 0 16px;
+	}
 `;
 const Nav = styled.ul`
 	list-style-type: none;

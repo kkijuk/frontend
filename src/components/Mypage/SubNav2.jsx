@@ -14,7 +14,7 @@ const SubNav = () => {
 	return (
 		<BackgroundDiv>
 			<BaseDiv>
-				<div style={{ width: '820px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+				<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 					<h1 style={{ marginBottom: '60px', display: 'inline-block' }}>마이페이지</h1>
 				</div>
 
@@ -37,16 +37,22 @@ const BackgroundDiv = styled.div`
 `;
 
 const BaseDiv = styled.div`
-	width: 820px;
+	max-width: 820px;
+	width: 100%;
 	// display:flex;
 	// margin-left:400px;
 	max-width: 820px;
 	// background-color:#D9D9D9
 	position: relative;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		padding: 0 16px;
+	}
 `;
 
 const Box = styled.div`
-	width: 820px;
+	width: 100%;
 	height: 20px;
 `;
 

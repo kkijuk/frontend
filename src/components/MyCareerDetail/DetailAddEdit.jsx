@@ -118,6 +118,10 @@ const Cancel = styled.div`
 	font-weight: 500;
 	line-height: normal;
 	cursor: pointer;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: calc(50% - 7.5px);
+	}
 `;
 
 const Save = styled.div`
@@ -138,6 +142,10 @@ const Save = styled.div`
 	font-weight: 500;
 	line-height: normal;
 	cursor: pointer;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: calc(50% - 7.5px);
+	}
 `;
 
 const Line = styled.div`
@@ -222,14 +230,9 @@ const BaseContainer = styled.div`
 
 const ButtonRow = styled.div`
 	display: flex;
-	gap: 15px;
+	gap: 15px; /* 버튼 사이 간격 */
 	width: 100%;
 	justify-content: space-between;
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		flex-direction: row;
-		flex-wrap: wrap;
-	}
 `;
 
 export default function DetailAddEdit({

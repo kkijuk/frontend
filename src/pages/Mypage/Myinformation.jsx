@@ -7,18 +7,24 @@ import axios from 'axios';
 import { fetchUserInfo, changeUserInfo, sendCode, verifyCode } from '../../api/Mypage/mypage';
 
 const ContentBox = styled.div`
-	width: 450px;
+	width: 100%;
+	max-width: 450px;
 	height: auto;
 	margin-bottom: 36px;
 `;
 
 const TitleBox = styled.div`
-	width: 540px;
+	max-width: 540px;
+	width: 100%
 	display: flex;
 	align-items: center; /* 수직 정렬 */
 
 	gap: 10px;
 	margin-bottom: 32px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const Tag = styled.div`
@@ -48,13 +54,25 @@ const ContentName = styled.div`
 `;
 
 const Box = styled.div`
-	width: 430px;
+	/*width: 430px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 
 	margin-left: 20px;
+	margin-bottom: 36px;*/
+
+	width: 100%;
+	max-width: 430px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-left: 20px;
 	margin-bottom: 36px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		margin-left: 0;
+	}
 `;
 
 const Content = styled.div`
@@ -91,6 +109,11 @@ const Container = styled.div`
 	align-items: center;
 	justify-content: center;
 	margin-top: 12px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		padding: 0 20px;
+	}
 `;
 
 //이메일 수정 클릭 시 나오는 컴포넌트
@@ -293,8 +316,15 @@ const Container1 = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-
 	margin-bottom: 30px;
+	width: 100%;
+	max-width: 820px;
+	padding: 0 40px;
+	margin: 0 auto;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		padding: 0 16px;
+	}
 `;
 
 const Text1 = styled.div`
@@ -377,9 +407,14 @@ const DeleteAccount = styled.div`
 `;
 
 const Bottom = styled.div`
-	width: 464px;
+	width: 100%;
+	max-width: 464px;
 	height: 196px;
 	margin-top: 18px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const NumInputWrapper = styled.div`
