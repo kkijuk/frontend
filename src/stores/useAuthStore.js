@@ -10,7 +10,6 @@ const useAuthStore = create((set) => ({
 	restoreState: () => {
 		const token = localStorage.getItem('token');
 		const refreshToken = localStorage.getItem('refreshToken');
-		('eyJhbGciOiJIUzI1NiJ9..FxFzWVUtPohU2ovwblaQDuZCj3fb8XZsIJI8fdgg7t8');
 		const isProfileComplete = localStorage.getItem('isProfileComplete') === 'true';
 
 		set({
