@@ -44,7 +44,6 @@ const BackgroundDiv = styled.div`
 `;
 
 const BaseDiv = styled.div`
-	width: 820px;
 	// display:flex;
 	// margin-left:400px;
 	max-width: 820px;

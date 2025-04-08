@@ -15,7 +15,7 @@ const ContentBox = styled.div`
 
 const TitleBox = styled.div`
 	max-width: 540px;
-	width: 100%
+	width: 100%;
 	display: flex;
 	align-items: center; /* 수직 정렬 */
 
@@ -69,9 +69,11 @@ const Box = styled.div`
 	align-items: center;
 	margin-left: 20px;
 	margin-bottom: 36px;
+	box-sizing: border-box; /*추가*/
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		margin-left: 0;
+		box-sizing: border-box; /*추가*/
 	}
 `;
 
@@ -148,7 +150,9 @@ const EmailInput = styled.input`
 `;
 
 const NumInput = styled.input`
-	width: 280px;
+	/*width: 280px;*/
+	max-width: 280px;
+	width: 100%;
 	height: 50px;
 	border-radius: 10px;
 	background: #f5f5f5;
@@ -164,6 +168,9 @@ const NumInput = styled.input`
 	box-sizing: border-box;
 
 	margin-top: 5px;
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		min-width: 180px;
+	}
 `;
 
 const RequestButton = styled.button`
