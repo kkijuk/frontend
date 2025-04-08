@@ -151,8 +151,7 @@ const EmailInput = styled.input`
 
 const NumInput = styled.input`
 	/*width: 280px;*/
-	max-width: 280px;
-	width: 100%;
+
 	height: 50px;
 	border-radius: 10px;
 	background: #f5f5f5;
@@ -168,9 +167,6 @@ const NumInput = styled.input`
 	box-sizing: border-box;
 
 	margin-top: 5px;
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		min-width: 180px;
-	}
 `;
 
 const RequestButton = styled.button`
@@ -254,7 +250,8 @@ const PhoneBox = styled.div`
 `;
 
 const PhoneInput = styled.input`
-	width: 86px;
+	max-width: 86px;
+	width: 100%;
 	height: 50px;
 	flex-shrink: 0;
 	border-radius: 10px;
@@ -270,6 +267,9 @@ const PhoneInput = styled.input`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		min-width: 60px;
+	}
 `;
 
 const ConfirmButton = styled.button`
@@ -428,7 +428,8 @@ const NumInputWrapper = styled.div`
 	position: relative;
 	display: flex;
 	align-items: center;
-	width: 280px; /* 기존 Input과 동일한 너비 */
+
+	width: 280px;
 `;
 
 const TimerText = styled.div`
