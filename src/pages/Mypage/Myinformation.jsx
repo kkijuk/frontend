@@ -6,6 +6,9 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { fetchUserInfo, changeUserInfo, sendCode, verifyCode } from '../../api/Mypage/mypage';
 
+//추가
+import DateInput from '../../components/Modal/AddCareerModal/DateInput';
+
 const ContentBox = styled.div`
 	width: 100%;
 	max-width: 450px;
@@ -250,6 +253,18 @@ const PhoneBox = styled.div`
 `;
 
 const PhoneInput = styled.input`
+	display: flex;
+	width: 280px;
+	height: 50px;
+	padding: 16px 20px;
+	align-items: center;
+	gap: 10px;
+	flex-shrink: 0;
+
+	border-radius: 10px;
+	background: #f5f5f5;
+`;
+/*const PhoneInput = styled.input`
 	max-width: 86px;
 	width: 100%;
 	height: 50px;
@@ -270,7 +285,7 @@ const PhoneInput = styled.input`
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		min-width: 60px;
 	}
-`;
+`;*/
 
 const ConfirmButton = styled.button`
 	display: flex;
