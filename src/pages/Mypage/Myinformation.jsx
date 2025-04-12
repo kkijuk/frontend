@@ -6,6 +6,9 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { fetchUserInfo, changeUserInfo, sendCode, verifyCode } from '../../api/Mypage/mypage';
 
+//추가
+import DateInput from '../../components/Modal/AddCareerModal/DateInput';
+
 const ContentBox = styled.div`
 	width: 100%;
 	max-width: 450px;
@@ -250,6 +253,18 @@ const PhoneBox = styled.div`
 `;
 
 const PhoneInput = styled.input`
+	display: flex;
+	width: 280px;
+	height: 50px;
+	padding: 16px 20px;
+	align-items: center;
+	gap: 10px;
+	flex-shrink: 0;
+
+	border-radius: 10px;
+	background: #f5f5f5;
+`;
+/*const PhoneInput = styled.input`
 	max-width: 86px;
 	width: 100%;
 	height: 50px;
@@ -270,6 +285,19 @@ const PhoneInput = styled.input`
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		min-width: 60px;
 	}
+`;*/
+
+const BirthInput = styled.input`
+	display: flex;
+	width: 280px;
+	height: 50px;
+	padding: 16px 20px;
+	align-items: center;
+	gap: 10px;
+	flex-shrink: 0;
+
+	border-radius: 10px;
+	background: #f5f5f5;
 `;
 
 const ConfirmButton = styled.button`
@@ -474,6 +502,7 @@ export default function MyInformation() {
 	const [prevEmail, setPrevEmail] = useState('');
 	const [prevPhoneInputs, setPrevPhoneInputs] = useState({ part1: '', part2: '', part3: '' });
 	const [prevBirthInputs, setPrevBirthInputs] = useState({ year: '', month: '', day: '' });
+	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
 	const [marketingAgreed, setMarketingAgreed] = useState(false);
 
@@ -500,8 +529,10 @@ export default function MyInformation() {
 
 				// Set initial values for inputs
 				setEmailInput(data.email);
-				const [part1, part2, part3] = data.phoneNumber.split('-');
-				setPhoneInputs({ part1, part2, part3 });
+
+				//삭제!!
+				//const [part1, part2, part3] = data.phoneNumber.split('-');
+				//setPhoneInputs({ part1, part2, part3 });
 
 				const [year, month, day] = data.birthDate.split('-');
 				setBirthInputs({ year, month, day });
@@ -619,30 +650,36 @@ export default function MyInformation() {
 
 	const handleSavePhone = () => {
 		const validPrefixes = ['010', '011', '012', '013', '014', '015', '016', '017', '018', '019'];
+		const onlyDigits = phoneInputs.replace(/\D/g, ''); // 숫자만 추출
 
-		//모든 입력값이 비어있다면
-		if (!phoneInputs.part1 && !phoneInputs.part2 && !phoneInputs.part3) {
+		// 1. 비어있는 경우
+		if (!onlyDigits) {
 			setPhoneError('연락처를 입력해주세요.');
 			return;
 		}
 
-		//앞자리 유효성 검사 후 에러 메시지 표시
-		if (!validPrefixes.includes(phoneInputs.part1)) {
+		// 2. 길이 확인 (11자리여야 함)
+		if (onlyDigits.length !== 11) {
 			setPhoneError('올바른 연락처를 입력해주세요.');
 			return;
 		}
 
-		//길이 검사 (3-4-4 형식 체크)
-		if (phoneInputs.part1.length !== 3 || phoneInputs.part2.length !== 4 || phoneInputs.part3.length !== 4) {
+		// 3. 유효한 앞자리 확인
+		const prefix = onlyDigits.slice(0, 3);
+		if (!validPrefixes.includes(prefix)) {
 			setPhoneError('올바른 연락처를 입력해주세요.');
 			return;
 		}
 
-		//에러가 없으면 저장 진행
+		// 4. 에러 없음 → 저장 진행
 		setPhoneError('');
-		// 저장 로직 실행
-		console.log('연락처 저장:', phoneInputs);
+
+		// 포맷팅하여 실제 저장
+		const formatted = `${onlyDigits.slice(0, 3)}-${onlyDigits.slice(3, 7)}-${onlyDigits.slice(7)}`;
+		setPhoneNumber(formatted); // 화면 표시용
 		setIsEditingPhone(false);
+
+		console.log('연락처 저장:', formatted);
 	};
 
 	const handleSaveBirth = () => {
@@ -765,18 +802,7 @@ export default function MyInformation() {
 						<ContentBox>
 							<PhoneBox>
 								<div>
-									<PhoneInput
-										value={phoneInputs.part1}
-										onChange={(e) => setPhoneInputs({ ...phoneInputs, part1: e.target.value })}
-									/>
-									<PhoneInput
-										value={phoneInputs.part2}
-										onChange={(e) => setPhoneInputs({ ...phoneInputs, part2: e.target.value })}
-									/>
-									<PhoneInput
-										value={phoneInputs.part3}
-										onChange={(e) => setPhoneInputs({ ...phoneInputs, part3: e.target.value })}
-									/>
+									<PhoneInput value={phoneInputs} onChange={(e) => setPhoneInputs(e.target.value)} />
 								</div>
 								<ConfirmButton onClick={handleSavePhone}>확인</ConfirmButton>
 								<CancelButton2 onClick={handleCancelEditPhone}>취소</CancelButton2>
@@ -796,20 +822,26 @@ export default function MyInformation() {
 					{isEditingBirth ? (
 						<ContentBox>
 							<PhoneBox>
-								<div>
-									<PhoneInput
-										value={birthInputs.year}
-										onChange={(e) => setBirthInputs({ ...birthInputs, year: e.target.value })}
+								<div style={{ position: 'relative' }}>
+									<BirthInput
+										value={`${birthInputs.year}-${birthInputs.month}-${birthInputs.day}`}
+										readOnly
+										onClick={() => setIsDatePickerOpen(true)}
 									/>
-									<PhoneInput
-										value={birthInputs.month}
-										onChange={(e) => setBirthInputs({ ...birthInputs, month: e.target.value })}
-									/>
-									<PhoneInput
-										value={birthInputs.day}
-										onChange={(e) => setBirthInputs({ ...birthInputs, day: e.target.value })}
-									/>
+									{isDatePickerOpen && (
+										<div style={{ position: 'absolute', top: '60px', left: 0, zIndex: 9999 }}>
+											<DateInput
+												onSelectDate={(selectedDate) => {
+													const [year, month, day] = selectedDate.split('-');
+													setBirthInputs({ year, month, day });
+													setIsDatePickerOpen(false);
+												}}
+												onClose={() => setIsDatePickerOpen(false)}
+											/>
+										</div>
+									)}
 								</div>
+
 								<ConfirmButton onClick={handleSaveBirth}>확인</ConfirmButton>
 								<CancelButton2 onClick={handleCancelEditBirth}>취소</CancelButton2>
 							</PhoneBox>
