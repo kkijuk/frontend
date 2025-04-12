@@ -355,7 +355,7 @@ const Container1 = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	margin-bottom: 50px; /*원래 30*/
+	margin-bottom: 50px; /**/
 	width: 100%;
 	max-width: 820px;
 	padding: 0 40px;
@@ -504,7 +504,6 @@ export default function MyInformation() {
 	const [birthInputs, setBirthInputs] = useState({ year: '', month: '', day: '' });
 
 	const [prevEmail, setPrevEmail] = useState('');
-	const [prevPhoneInputs, setPrevPhoneInputs] = useState({ part1: '', part2: '', part3: '' });
 	const [prevBirthInputs, setPrevBirthInputs] = useState({ year: '', month: '', day: '' });
 	const [birthTimestamp, setBirthTimestamp] = useState(null);
 
@@ -632,12 +631,11 @@ export default function MyInformation() {
 
 	//  핸드폰 번호 수정
 	const handleEditPhone = () => {
-		setPrevPhoneInputs(phoneInputs); // 기존 값 백업
 		setIsEditingPhone(true);
 	};
 
 	const handleCancelEditPhone = () => {
-		setPhoneInputs(prevPhoneInputs); // 기존 값 복원
+		setPhoneInput(phoneNumber.replace(/-/g, '')); // 기존 번호 다시 설정
 		setIsEditingPhone(false);
 	};
 
@@ -659,7 +657,7 @@ export default function MyInformation() {
 
 	const handleSavePhone = () => {
 		const validPrefixes = ['010', '011', '012', '013', '014', '015', '016', '017', '018', '019'];
-		const onlyDigits = phoneInputs.replace(/\D/g, ''); // 숫자만 추출
+		const onlyDigits = phoneInput.replace(/\D/g, ''); // 숫자만 추출
 
 		// 1. 비어있는 경우
 		if (!onlyDigits) {
