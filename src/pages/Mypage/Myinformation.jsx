@@ -152,6 +152,17 @@ const EmailInput = styled.input`
 	box-sizing: border-box;
 `;
 
+const EmailButtonGroup = styled.div`
+	display: flex;
+	gap: 6px;
+	margin-top: 8px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+`;
+
 const NumInput = styled.input`
 	/*width: 280px;*/
 
@@ -302,6 +313,17 @@ const BirthInput = styled.input`
 
 	border-radius: 10px;
 	background: #f5f5f5;
+`;
+
+const PhoneButtonGroup = styled.div`
+	display: flex;
+	gap: 6px;
+	margin-top: 8px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-direction: column;
+		align-items: flex-start;
+	}
 `;
 
 const ConfirmButton = styled.button`
@@ -758,10 +780,12 @@ export default function MyInformation() {
 						<EmailEditBox>
 							<InputContainer>
 								<EmailInput value={emailInput} onChange={(e) => setEmailInput(e.target.value)} />
-								<RequestButton onClick={handleRequestVerification}>
-									{isVerificationRequested ? '재전송' : '인증요청'}
-								</RequestButton>
-								<CancelButton onClick={handleCancelEditEmail}>취소</CancelButton>
+								<EmailButtonGroup>
+									<RequestButton onClick={handleRequestVerification}>
+										{isVerificationRequested ? '재전송' : '인증요청'}
+									</RequestButton>
+									<CancelButton onClick={handleCancelEditEmail}>취소</CancelButton>
+								</EmailButtonGroup>
 							</InputContainer>
 							{isVerificationRequested && (
 								<>
@@ -808,11 +832,11 @@ export default function MyInformation() {
 					{isEditingPhone ? (
 						<ContentBox>
 							<PhoneBox>
-								<div>
-									<PhoneInput value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)} />
-								</div>
-								<ConfirmButton onClick={handleSavePhone}>확인</ConfirmButton>
-								<CancelButton2 onClick={handleCancelEditPhone}>취소</CancelButton2>
+								<PhoneInput value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)} />
+								<PhoneButtonGroup>
+									<ConfirmButton onClick={handleSavePhone}>확인</ConfirmButton>
+									<CancelButton2 onClick={handleCancelEditPhone}>취소</CancelButton2>
+								</PhoneButtonGroup>
 							</PhoneBox>
 							{phoneError && <ErrorMessage>{phoneError}</ErrorMessage>} {/* 에러 메시지 표시 */}
 						</ContentBox>
