@@ -260,7 +260,8 @@ const PhoneInput = styled.input`
 	align-items: center;
 	gap: 10px;
 	flex-shrink: 0;
-
+	box-sizing: border-box;
+	border: none;
 	border-radius: 10px;
 	background: #f5f5f5;
 `;
@@ -295,6 +296,9 @@ const BirthInput = styled.input`
 	align-items: center;
 	gap: 10px;
 	flex-shrink: 0;
+
+	box-sizing: border-box;
+	border: none;
 
 	border-radius: 10px;
 	background: #f5f5f5;
@@ -351,7 +355,7 @@ const Container1 = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	margin-bottom: 30px;
+	margin-bottom: 50px; /*원래 30*/
 	width: 100%;
 	max-width: 820px;
 	padding: 0 40px;
@@ -496,12 +500,14 @@ export default function MyInformation() {
 	const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
 
 	const [emailInput, setEmailInput] = useState('');
-	const [phoneInputs, setPhoneInputs] = useState({ part1: '', part2: '', part3: '' });
+	const [phoneInput, setPhoneInput] = useState('');
 	const [birthInputs, setBirthInputs] = useState({ year: '', month: '', day: '' });
 
 	const [prevEmail, setPrevEmail] = useState('');
 	const [prevPhoneInputs, setPrevPhoneInputs] = useState({ part1: '', part2: '', part3: '' });
 	const [prevBirthInputs, setPrevBirthInputs] = useState({ year: '', month: '', day: '' });
+	const [birthTimestamp, setBirthTimestamp] = useState(null);
+
 	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
 	const [marketingAgreed, setMarketingAgreed] = useState(false);
@@ -524,7 +530,9 @@ export default function MyInformation() {
 				setEmail(data.email);
 				setName(data.name);
 				setPhoneNumber(data.phoneNumber);
+				setPhoneInput(data.phoneNumber.replace(/-/g, '')); //하이픈 제거한 값 input에 넣어주기
 				setBirthDate(data.birthDate);
+				setBirthTimestamp(new Date(data.birthDate).getTime());
 				setSocialType(data.socialType);
 
 				// Set initial values for inputs
@@ -597,8 +605,9 @@ export default function MyInformation() {
 	const handleSave = async () => {
 		const marketingAgree = marketingAgreed ? 'BOTH' : 'NONE';
 
-		const formattedPhoneNumber = `${phoneInputs.part1}-${phoneInputs.part2}-${phoneInputs.part3}`;
-		const formattedBirthDate = `${birthInputs.year}-${birthInputs.month}-${birthInputs.day}`;
+		const onlyDigits = phoneInput.replace(/\D/g, '');
+		const formattedPhoneNumber = `${onlyDigits.slice(0, 3)}-${onlyDigits.slice(3, 7)}-${onlyDigits.slice(7)}`;
+		const formattedBirthDate = new Date(birthTimestamp).toISOString().slice(0, 10);
 
 		try {
 			await changeUserInfo(emailInput, formattedPhoneNumber, formattedBirthDate, marketingAgree);
@@ -683,7 +692,7 @@ export default function MyInformation() {
 	};
 
 	const handleSaveBirth = () => {
-		const formattedBirth = `${birthInputs.year}-${birthInputs.month}-${birthInputs.day}`;
+		const formattedBirth = new Date(birthTimestamp).toISOString().slice(0, 10);
 		setBirthDate(formattedBirth);
 		setIsEditingBirth(false);
 	};
@@ -802,7 +811,7 @@ export default function MyInformation() {
 						<ContentBox>
 							<PhoneBox>
 								<div>
-									<PhoneInput value={phoneInputs} onChange={(e) => setPhoneInputs(e.target.value)} />
+									<PhoneInput value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)} />
 								</div>
 								<ConfirmButton onClick={handleSavePhone}>확인</ConfirmButton>
 								<CancelButton2 onClick={handleCancelEditPhone}>취소</CancelButton2>
@@ -822,26 +831,11 @@ export default function MyInformation() {
 					{isEditingBirth ? (
 						<ContentBox>
 							<PhoneBox>
-								<div style={{ position: 'relative' }}>
-									<BirthInput
-										value={`${birthInputs.year}-${birthInputs.month}-${birthInputs.day}`}
-										readOnly
-										onClick={() => setIsDatePickerOpen(true)}
-									/>
-									{isDatePickerOpen && (
-										<div style={{ position: 'absolute', top: '60px', left: 0, zIndex: 9999 }}>
-											<DateInput
-												onSelectDate={(selectedDate) => {
-													const [year, month, day] = selectedDate.split('-');
-													setBirthInputs({ year, month, day });
-													setIsDatePickerOpen(false);
-												}}
-												onClose={() => setIsDatePickerOpen(false)}
-											/>
-										</div>
-									)}
-								</div>
-
+								<DateInput
+									value={birthTimestamp}
+									onChange={(timestamp) => setBirthTimestamp(timestamp)}
+									disabled={false}
+								/>
 								<ConfirmButton onClick={handleSaveBirth}>확인</ConfirmButton>
 								<CancelButton2 onClick={handleCancelEditBirth}>취소</CancelButton2>
 							</PhoneBox>
