@@ -211,7 +211,7 @@ const RequestButton = styled.button`
 	line-height: normal;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 117.5px;
+		width: 137.5px;
 		margin-left: 0px;
 	}
 `;
@@ -238,7 +238,7 @@ const CancelButton = styled.button`
 	line-height: normal;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 117.5px;
+		width: 137.5px;
 	}
 `;
 
@@ -348,7 +348,7 @@ const PhoneButtonGroup = styled.div`
 const ConfirmButton = styled.button`
 	display: flex;
 	width: 70px;
-	height: 35px;
+	height: 40px;
 	padding: 6px 10px;
 	justify-content: center;
 	align-items: center;
@@ -368,14 +368,14 @@ const ConfirmButton = styled.button`
 	line-height: normal;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 117.5px;
+		width: 137.5px;
 	}
 `;
 
 const CancelButton2 = styled.button`
 	display: flex;
 	width: 70px;
-	height: 35px;
+	height: 40px;
 	padding: 6px 10px;
 	justify-content: center;
 	align-items: center;
@@ -395,7 +395,7 @@ const CancelButton2 = styled.button`
 	line-height: normal;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 117.5px;
+		width: 137.5px;
 	}
 `;
 
