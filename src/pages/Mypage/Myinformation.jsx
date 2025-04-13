@@ -133,6 +133,10 @@ const InputContainer = styled.div`
 	/*가로 배치*/
 	display: flex;
 	align-items: center;
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-direction: column;
+		align-items: flex-start;
+	}
 `;
 
 const EmailInput = styled.input`
@@ -158,8 +162,8 @@ const EmailButtonGroup = styled.div`
 	margin-top: 8px;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		flex-direction: column;
-		align-items: flex-start;
+		flex-direction: row;
+		width: 100%;
 	}
 `;
 
@@ -204,6 +208,10 @@ const RequestButton = styled.button`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: calc(50% - 3px);
+	}
 `;
 
 const CancelButton = styled.button`
@@ -226,6 +234,10 @@ const CancelButton = styled.button`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: calc(50% - 3px);
+	}
 `;
 
 const VerifyButton = styled.button`
@@ -321,8 +333,8 @@ const PhoneButtonGroup = styled.div`
 	margin-top: 8px;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		flex-direction: column;
-		align-items: flex-start;
+		flex-direction: row;
+		width: 100%;
 	}
 `;
 
@@ -347,6 +359,10 @@ const ConfirmButton = styled.button`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: calc(50% - 3px);
+	}
 `;
 
 const CancelButton2 = styled.button`
@@ -370,6 +386,10 @@ const CancelButton2 = styled.button`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: calc(50% - 3px);
+	}
 `;
 
 const Container1 = styled.div`
@@ -385,6 +405,7 @@ const Container1 = styled.div`
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		padding: 0 16px;
+		box-sizing: border-box; /*추가*/
 	}
 `;
 
