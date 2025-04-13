@@ -211,7 +211,8 @@ const RequestButton = styled.button`
 	line-height: normal;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		max-width: calc(50% - 3px);
+		width: 117.5px;
+		margin-left: 0px;
 	}
 `;
 
@@ -237,7 +238,7 @@ const CancelButton = styled.button`
 	line-height: normal;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		max-width: calc(50% - 3px);
+		max-width: 117.5px;
 	}
 `;
 
