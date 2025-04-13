@@ -238,7 +238,7 @@ const CancelButton = styled.button`
 	line-height: normal;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		max-width: 117.5px;
+		width: 117.5px;
 	}
 `;
 
@@ -368,7 +368,7 @@ const ConfirmButton = styled.button`
 	line-height: normal;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		max-width: calc(50% - 3px);
+		width: 117.5px;
 	}
 `;
 
@@ -395,7 +395,7 @@ const CancelButton2 = styled.button`
 	line-height: normal;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		max-width: calc(50% - 3px);
+		width: 117.5px;
 	}
 `;
 
@@ -540,6 +540,17 @@ const ErrorMessage = styled.p`
 	font-weight: 500;
 	line-height: normal;
 	margin-top: 5px;
+`;
+
+const BirthButtonGroup = styled.div`
+	display: flex;
+	gap: 6px;
+	margin-top: 8px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-direction: row;
+		width: 280px;
+	}
 `;
 
 export default function MyInformation() {
@@ -886,8 +897,10 @@ export default function MyInformation() {
 									onChange={(timestamp) => setBirthTimestamp(timestamp)}
 									disabled={false}
 								/>
-								<ConfirmButton onClick={handleSaveBirth}>확인</ConfirmButton>
-								<CancelButton2 onClick={handleCancelEditBirth}>취소</CancelButton2>
+								<BirthButtonGroup>
+									<ConfirmButton onClick={handleSaveBirth}>확인</ConfirmButton>
+									<CancelButton2 onClick={handleCancelEditBirth}>취소</CancelButton2>
+								</BirthButtonGroup>
 							</PhoneBox>
 						</ContentBox>
 					) : (
