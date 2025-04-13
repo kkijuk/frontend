@@ -136,6 +136,7 @@ const InputContainer = styled.div`
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		flex-direction: column;
 		align-items: flex-start;
+		width: 280px;
 	}
 `;
 
@@ -273,6 +274,11 @@ const PhoneBox = styled.div`
 	justify-content: flex-start; /* 수평 정렬 (필요에 따라 변경 가능) */
 	margin-left: 10px;
 	margin-bottom: 30px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-direction: column;
+		align-items: flex-start;
+	}
 `;
 
 const PhoneInput = styled.input`
