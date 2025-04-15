@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import AddEducationForm from '../addForms/AddEducationForm';
 import { KebabMenu2 } from '../KebabMenu';
+import { theme } from '../../../constants/theme';
 
 const EducationItem = ({ data, isLastItem, onSave, onUpdate, onDelete, onClose }) => {
 	const [isEditMode, setIsEditMode] = useState(false);
@@ -21,27 +22,27 @@ const EducationItem = ({ data, isLastItem, onSave, onUpdate, onDelete, onClose }
 					/>
 				</EditContainer>
 			) : (
-				<>
-				<TimeLine>
-					<Oval state={data.state}></Oval>
-					<Line isLastItem={isLastItem} status={data.state}></Line>
-				</TimeLine>
-				<Container>
-					<div>
-						<LevelTag status={data.state}>{data.category}</LevelTag>
-						<SchoolInfo>
-							<SchoolName>{data.schoolName}</SchoolName>
-							{data.major && <Department>{data.major}</Department>}
-							<Dates>
-								{data.admissionDate} ~ {data.graduationDate} <Status>({data.state})</Status>
-							</Dates>
-						</SchoolInfo>
-					</div>
-				</Container>
-				<EditButton id="edit">
-					<KebabMenu2 onModalOpen={() => setIsEditMode(true)} />
-				</EditButton>
-				</>
+				<ReadContainer>
+					<TimeLine>
+						<Oval state={data.state}></Oval>
+						<Line isLastItem={isLastItem} status={data.state}></Line>
+					</TimeLine>
+					<Container>
+						<div>
+							<LevelTag status={data.state}>{data.category}</LevelTag>
+							<SchoolInfo>
+								<SchoolName>{data.schoolName}</SchoolName>
+								{data.major && <Department>{data.major}</Department>}
+								<Dates>
+									{data.admissionDate} ~ {data.graduationDate} <Status>({data.state})</Status>
+								</Dates>
+							</SchoolInfo>
+						</div>
+					</Container>
+					<EditButton id="edit">
+						<KebabMenu2 onModalOpen={() => setIsEditMode(true)} />
+					</EditButton>
+				</ReadContainer>
 			)}
 	</FirstContainer>
 	);
@@ -51,11 +52,30 @@ export default EducationItem;
 
 // Styled Components
 
+
+
+const EditContainer = styled.div`
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	margin-bottom: 45px;
+	font-family: 'Regular';
+`
+
+const ReadContainer = styled.div`
+	width: 100%;
+	display: flex;
+`
 const TimeLine = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	margin: 0px 70px 0px 30px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		margin: 0px 24px 0px 20px;
+	}
 `;
 
 const Oval = styled.div`
@@ -66,11 +86,16 @@ const Oval = styled.div`
 	border: 3px solid #707070;
 	background-color: ${(props) =>
 		props.state === '중퇴' || props.status === '편입' || props.status === '졸업' ? '#707070' : '#FFF'};
+	
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 16px;
+		height: 16px;
+	}
 `;
 
 const Line = styled.div`
 	width: 2px;
-	height: 166px;
+	height: 100%;
 	border-top: none;
 	border-right: none;
 	border-bottom: none;
@@ -81,6 +106,10 @@ const Line = styled.div`
 				? '2px solid #707070'
 				: '2px dashed #707070'};
 	margin-left: 11px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		margin-left: 9px;
+	}
 `;
 
 const EditButton = styled.button`
@@ -93,17 +122,10 @@ const EditButton = styled.button`
 	padding: 0px 50px 70px 0px;
 `;
 
-const EditContainer = styled.div`
-	width: 820px;
-	display: flex;
-	justify-content: center;
-	align-items: flex-start;
-	margin-bottom: 45px;
-	font-family: 'Regular';
-`
+
 
 const Container = styled.div`
-	width: 820px;
+	width: 100%;
 	display: flex;
 	align-items: flex-start;
 	margin-bottom: 45px;
@@ -111,15 +133,7 @@ const Container = styled.div`
 	positon: relative;
 `;
 
-const FirstContainer = styled.div`
-	width: 100%;
-	display: flex;
-	position:relative;
-	&:hover ${EditButton} {
-		opacity: 1;
-		cursor: pointer;
-	}
-`;
+
 
 const LevelTag = styled.div`
 	width:80px;
@@ -136,6 +150,14 @@ const LevelTag = styled.div`
 	display:flex;
 	justify-content:center;
 	align-items:center;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 12px;
+		width: 70px;
+		height: 16px;
+		padding: 4px 10px;
+		font-weight: 700;
+	};
 `;
 
 const SchoolInfo = styled.div`
@@ -145,18 +167,41 @@ const SchoolInfo = styled.div`
 
 const SchoolName = styled.div`
 	font-size: 20px;
-	font-weight: bold;
+	font-weight: 700;
 	margin-bottom: 6px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 16px;
+	}
 `;
 
 const Department = styled.div`
 	font-size: 16px;
+	font-weight: 400;
 	color: #333;
 	margin-bottom: 6px;
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 14px;
+	}
 `;
 
 const Dates = styled.div`
 	font-size: 16px;
+	font-weight: 400;
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 14px;
+	}
 `;
 
 const Status = styled.span``;
+
+// edit button 먼저 정의
+const FirstContainer = styled.div`
+	width: 100%;
+	display: flex;
+	position:relative;
+	&:hover ${EditButton} {
+		opacity: 1;
+		cursor: pointer;
+	}
+`;

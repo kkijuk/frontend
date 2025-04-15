@@ -2,16 +2,15 @@ import api from '../../Axios';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import './history.css';
+// import './history.css';
 import SubNav from '../../components/Intro/SubNav';
 import Convert from '../../components/Intro/Convert';
 import Toggle from '../../components/Intro/Toggle';
 import ButtonOptions from '../../components/Intro/AddButton';
 import { string } from 'prop-types';
 // import { ContentCopySharp } from '@mui/icons-material'
+import { theme } from '../../constants/theme';
 
-//Todo
-//Number 주는 방법
 
 const Others = () => {
 	const navigate = useNavigate();
@@ -73,18 +72,19 @@ const Others = () => {
 					<RecruitTitle>
 						{contents.recruitTitle}
 					</RecruitTitle>
-					<Tag style={{ color: 'white' }}>{isCompleted ? '작성 완료' : '작성 중'}</Tag>
-					{contents.tags.map((tag) => (
-						<Tag 
-							key={tag}
-							style={{ background: '#F5F5F5', color: '#3AAF85', cursor: 'pointer' }}
-							onClick={() => navigate(`/filter?query=${tag}`)}
-						>
-							{tag}
-						</Tag>
-					))}
-
-					<div style={{ display: 'inline-block', position: 'absolute', right: 0 }}>
+					<div style={{display: 'flex', alignItems: 'center'}}>
+						<Tag style={{ color: 'white' }}>{isCompleted ? '작성 완료' : '작성 중'}</Tag>
+						{contents.tags.map((tag) => (
+							<Tag 
+								key={tag}
+								style={{ background: '#F5F5F5', color: '#3AAF85', cursor: 'pointer' }}
+								onClick={() => navigate(`/filter?query=${tag}`)}
+							>
+								{tag}
+							</Tag>
+						))}
+					</div>	
+					<DateWrapper>
 						<p 
 							className="lastUpdated" 
 							style={{ 
@@ -96,7 +96,7 @@ const Others = () => {
 						<p className="lastUpdated" style={{ marginTop: 0 }}>
 							마지막 수정일시: {contents.updatedAt}
 						</p>
-					</div>
+					</DateWrapper>
 				</ContentTitle>
 				<div>
 					{isQuestionListEmpty ? (
@@ -111,20 +111,20 @@ const Others = () => {
 					) : (
 						questions.map((question, index) => (
 							<div style={{ position: 'relative' }}>
-								<h3>
+								<QuestionTitle>
 									{index + 1}. {
 									question.title && question.title !== 'string' && question.title !== ''
 									? question.title
 									: '질문을 작성하세요.'
 									}
-								</h3>
-								<div style={{ minHeight:'100px', whiteSpace: 'pre-wrap', marginBottom: '20px' }}>
+								</QuestionTitle>
+								<QuestionContent>
 									<p>
 										{question.content && question.content !== 'string' && question.content !== ''
 										? question.content
 										: '답변을 작성하세요.'}
 									</p>
-								</div>
+								</QuestionContent>
 							</div>
 						))
 					)}
@@ -160,6 +160,9 @@ const BaseDiv = styled.div`
 	max-width: 820px;
 	// background-color:#D9D9D9
 	position: relative;
+	@media (max-width: ${theme.breakpoints.md}) {
+			width: 100%;
+	}
 `;
 
 const SButton = styled.button`
@@ -188,6 +191,10 @@ const ContentTitle = styled.div`
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	@media (max-width: ${theme.breakpoints.md}) {
+		flex-direction: column;
+		align-items: flex-start;
+	}
 `;
 
 const Tag = styled.div`
@@ -208,6 +215,22 @@ const Tag = styled.div`
 	font-weight: 400;
 	line-height: normal;
 `;
+
+const DateWrapper = styled.div`
+	display: 'inline-block', 
+	position: 'absolute', 
+	right: 0
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		position: static;
+		margin-top: 10px;
+		p {
+			font-size: 14px;
+			text-align: left;
+		}	
+	}
+`
+
 const EditButton = styled.button`
 	width: 60px;
 	height: 60px;
@@ -233,11 +256,43 @@ const Delete = styled.div`
 `;
 
 const RecruitTitle = styled.h1`
-  display: inline-block;
-  margin-right: 12px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 50%; 
-  position: relative;
+	display: inline-block;
+	margin-right: 12px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 50%; 
+	position: relative;
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 24px;
+		margin-bottom: 12px;
+	}
 `;
+
+const QuestionTitle = styled.div`
+	font-family: 'Semibold';
+	font-weight: 500;
+	font-size: 20px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-family: 'Regular';
+		font-size: 16px;
+	}
+`;
+
+const QuestionContent = styled.div`
+	width: 100%;
+	min-height:100px; 
+	white-space: pre-wrap; 
+	word-wrap: break-word;
+	margin-bottom: 20px;
+	font-family: Regular;
+	
+	@media (max-width: ${theme.breakpoints.md}) {
+		p {
+			width: 100%;
+			font-family: Regular;
+			font-size: 14px;
+		}
+	}
+`

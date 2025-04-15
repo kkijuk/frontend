@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import CustomCalendarPicker from "../CustomCalendarPicker";
 import { trackEvent } from "../../../utils/ga4";
+import { theme } from "../../../constants/theme";
 
 const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
@@ -120,7 +121,8 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 placeholder="자격증 or 어학 시험명(ex. OPIc 영어)"
                 value={formData.licenseName}
                 onChange={(e) => handleInputChange("licenseName", e.target.value)}
-                style={{ width: "275px" }}
+                width = '275px'
+                // style={{ width: "275px" }}
                 maxLength={30}
             />
             <Input
@@ -128,7 +130,8 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 placeholder="점수/등급"
                 value={formData.licenseGrade}
                 onChange={(e) => handleInputChange("licenseGrade", e.target.value)}
-                style={{ width: "120px" }}
+                width = '120px'
+                // style={{ width: "120px" }}
                 maxLength={10}
             />
             </Row>
@@ -138,14 +141,16 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 placeholder="수험번호/자격번호"
                 value={formData.licenseNumber}
                 onChange={(e) => handleInputChange("licenseNumber", e.target.value)}
-                style={{ width: "175px" }}
+                width = '175px'
+                // style={{ width: "175px" }}
             />
             <Input
                 type="text"
                 placeholder="주관처(선택)"
                 value={formData.administer}
                 onChange={(e) => handleInputChange("administer", e.target.value)}
-                style={{ width: "175px" }}
+                width = '175px'
+                // style={{ width: "175px" }}
                 maxLength={15}
             />
             <ButtonRow>
@@ -230,7 +235,6 @@ const RealFirstContainer = styled.div`
     align-items:center;
 `
 const FirstContainer = styled.div`
-    height:195px;
     width:100%;
     z-index:1000;
 `
@@ -252,6 +256,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 278px;
+    height: 294px;
+    padding: 16px;
+  }
 `;
 
 const TypeToggle = styled.div`
@@ -288,9 +297,14 @@ const Row = styled.div`
   display: flex;
   gap: 20px;
   align-items: center;
+  @media (max-width: ${theme.breakpoints.md}) {
+    flex-direction: column;
+    gap: 12px;
+  }
 `;
 
 const Input = styled.input`
+  width: ${(props) => props.width || "100%"};
   height: 45px;
   border-radius: 10px;
   border: none;
@@ -305,6 +319,12 @@ const Input = styled.input`
   &::placeholder {
     color: #d9d9d9;
   }
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: ${(props) => props.mdWidth || "238px"};
+    height: 17px;
+    padding: 12px 20px;
+  }
 `;
 
 const ButtonRow = styled.div`
@@ -315,6 +335,7 @@ const ButtonRow = styled.div`
 `;
 
 const Button = styled.button`
+  all: unset;
   width: 65px;
   height: 25px;
   border-radius: 10px;
@@ -325,6 +346,15 @@ const Button = styled.button`
 
   &:hover {
     opacity: 0.8;
+  }
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 93px;
+    height: 17px;
+    padding: 4px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
@@ -345,6 +375,11 @@ const DatePickerInput = styled.input.attrs({ type: "text" })`
   color: black;
   border: ${(props) => (props.isActive ? "1px solid var(--gray-02, #707070)" : "none")};
   cursor: pointer;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 238px;
+    height: 17px;
+    padding: 12px 20px;
+  }
 `;
 
 const DatePickerContainer = styled.div`

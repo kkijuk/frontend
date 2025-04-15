@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import { theme } from '../../../constants/theme';
 
 const DateInput = ({ value, onChange, disabled }) => {
 	const [showCalendar, setShowCalendar] = useState(false);
@@ -13,8 +14,15 @@ const DateInput = ({ value, onChange, disabled }) => {
   		// 내부 input에는 'YYYY-MM-DD' 형태로 표시
 		if (!timestamp) return '';
 		const dateObj = new Date(timestamp);
-		if (isNaN(dateObj)) return '';
-		return dateObj.toISOString().slice(0, 10); // 'YYYY-MM-DD'
+
+		// 시차를 맞추기 위해 setHours를 조정 (예: 9시간)
+		dateObj.setHours(dateObj.getHours() + dateObj.getTimezoneOffset() / 60);
+		return dateObj.toISOString().slice(0, 10);
+
+		// old code
+		// if (isNaN(dateObj)) return '';
+		// return dateObj.toISOString().slice(0, 10); // 'YYYY-MM-DD'
+		
 	};
 
 	const handleDateChange = (date) => {
@@ -82,6 +90,9 @@ export {DateInput2};
 const DateInputWrapper = styled.div`
 	position: relative;
 	width: 260px;
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 140px !important;
+	}
 `;
 
 const InputDate = styled.input`
@@ -98,6 +109,9 @@ const InputDate = styled.input`
 	color: ${(props) => (props.disabled ? '#A9A9A9' : '#000')};
 	height: 40px;
 	cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 // const CalendarWrapper = styled.div`
