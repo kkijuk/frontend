@@ -49,6 +49,7 @@ const Section = styled.div`
 	width: 100%;
 	max-width: 820px;
 	height: 100%;
+	padding: 20px;
 
 	display: flex;
 	flex-direction: column;
@@ -82,7 +83,7 @@ const LeftAside = styled.div`
 	}
 `;
 
-const TitleText = styled.div`
+const TitleText = styled.h1`
 	color: var(--black, #000);
 	font-family: Pretendard;
 	font-size: 28px;
@@ -90,23 +91,23 @@ const TitleText = styled.div`
 	font-weight: 700;
 	line-height: normal;
 
-	margin-top: 35px;
+	margin-top: 15.760px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
-		 text-align: ${({ isApply }) => (isApply ? 'left' : 'center')};
-	     margin-left: 28px;
-		 }
+		text-align: left;
+		margin-left: 0px;
+		margin-top: 18.760px;
+	}
 `;
 
 export default function Layout({ title, children, leftAsideContent, rightAsideContent }) {
-	const isApplyPage = title === '지원관리';
 	return (
 		<Wrapper>
 			<Container>
 				<LeftAside>{leftAsideContent}</LeftAside>
 				<Section>
 					<Top>
-					<TitleText isApply={isApplyPage}>{title}</TitleText>
+						<TitleText>{title}</TitleText>
 					</Top>
 					{children}
 				</Section>

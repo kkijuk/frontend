@@ -458,6 +458,11 @@ const Button = styled.button`
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		margin: 30px auto 0 auto; /* 위쪽 마진 + 좌우 자동 정렬 */
+	}
 `;
 
 // 모달 배경 (뒤 어둡게 처리)
@@ -498,7 +503,7 @@ const DeleteAccount = styled.div`
 const Bottom = styled.div`
 	width: 100%;
 	max-width: 464px;
-	height: 196px;
+	height: auto;
 	margin-top: 18px;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {

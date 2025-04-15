@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { theme } from "../../constants/theme";
 
 const CustomCalendarPicker = ({ value, onChange }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -96,6 +97,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   font-family: Regular;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 278px;
+  }
 `;
 
 const Header = styled.div`

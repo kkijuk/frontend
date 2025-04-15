@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import AddLicenseForm from '../addForms/AddLicenseForm';
 import { KebabMenu2 } from '../KebabMenu';
+import { theme } from '../../../constants/theme';
 
 const LicenseItem = ({ data, isSecondColumn, onSave, onUpdate, onDelete }) => {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -65,6 +66,9 @@ const Container = styled.div`
 		opacity: 1;
 		cursor: pointer;
 	}
+  @media (max-width: ${theme.breakpoints.md}) {
+    margin-bottom: 0px;
+  }
 `;
 
 const EditContainer = styled.div`
@@ -75,6 +79,9 @@ const EditContainer = styled.div`
 	// margin-bottom: 45px;
 	font-family: 'Regular';
   margin-left: ${({ isSecondColumn }) => (isSecondColumn ? '-365px' : '0')};
+  @media (max-width: ${theme.breakpoints.md}) {
+    margin-left: 0;
+  }
 `
 
 const LicenseInfo = styled.div`
@@ -85,6 +92,10 @@ const LicenseName = styled.div`
   font-size: 20px;
   font-weight: bold;
   font-family: 'Regular';
+  
+  @media (max-width: ${theme.breakpoints.md}) {
+    font-size: 16px;
+  }
 `;
 
 const LicenseDetails = styled.div`
@@ -92,6 +103,9 @@ const LicenseDetails = styled.div`
   color: var(--gray-02, #333);
   font-family: 'Regular';
   margin-top: 5px;
+  @media (max-width: ${theme.breakpoints.md}) {
+    font-size: 14px;
+  }
 `;
 
 // const EditButton = styled.button`

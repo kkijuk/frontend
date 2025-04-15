@@ -3,6 +3,7 @@ import styled from "styled-components";
 import FileSearch from "../FileSearch";
 import { trackEvent } from "../../../utils/ga4";
 import { downS3File } from "../../../api/Record/s3File";
+import { theme } from "../../../constants/theme";
 
 const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialData}) => {
   const [formData, setFormData] = useState({
@@ -89,7 +90,8 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                             placeholder="링크 제목(ex. 블로그, 링크드인 등)"
                             value={formData.urlTitle}
                             onChange={(e) => handleInputChange("urlTitle", e.target.value)}
-                            style={{ width: "610px" }}
+                            width = "610px"
+                            // style={{ width: "610px" }}
                             maxLength={20}
                         />
                     ) : (
@@ -98,7 +100,8 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                             placeholder="첨부파일 제목(ex. 포트폴리오, 경력기술서 등)"
                             value={formData.fileTitle}
                             onChange={(e) => handleInputChange("fileTitle", e.target.value)}
-                            style={{ width: "610px" }}
+                            width = "610px"
+                            // style={{ width: "610px" }}
                             maxLength={20}
                         />
                     )}
@@ -110,7 +113,8 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                         placeholder="링크를 입력해주세요."
                         value={formData.url}
                         onChange={(e) => handleInputChange("url", e.target.value)}
-                        style={{ width: "450px" }}
+                        width = "450px"
+                        // style={{ width: "450px" }}
                       />
                     ) : (
                       existingFileUrl ? (
@@ -121,7 +125,8 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                             value={formData.fileLinkTitle}
                             onClick = {()=>window.open(existingFileUrl, "_blank")}
                             readOnly
-                            style={{ width: "450px", cursor: "pointer" }}
+                            width = "450px"
+                            style={{cursor: "pointer" }}
                           />
                           <FileSelectButton 
                             onClick={()=>{
@@ -263,6 +268,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  @media (max-width: ${theme.breakpoints.md}) {
+      width: 278px;
+      height: 135px;
+      padding: 16px;
+      gap: 12px;
+  }
 `;
 
 const TypeToggle = styled.div`
@@ -299,6 +310,10 @@ const Row = styled.div`
   display: flex;
   gap: 20px;
   align-items: center;
+  @media (max-width: ${theme.breakpoints.md}) {
+      flex-direction: column;
+      gap: 12px;
+  }
 `;
 
 const Input = styled.input`
@@ -319,6 +334,12 @@ const Input = styled.input`
   &::placeholder {
     color: #d9d9d9;
   }
+
+  @media (max-width: ${theme.breakpoints.md}) {
+      width: ${(props) => props.mdWidth || "238px"};
+      height: 17px;
+      padding: 12px 20px;
+  }
 `;
 
 const ButtonRow = styled.div`
@@ -326,9 +347,13 @@ const ButtonRow = styled.div`
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
+  @media (max-width: ${theme.breakpoints.md}) {
+    margin-left: 0px;
+  }
 `;
 
 const Button = styled.button`
+  all: unset;
   width: 65px;
   height: 25px;
   border-radius: 10px;
@@ -339,6 +364,14 @@ const Button = styled.button`
 
   &:hover {
     opacity: 0.8;
+  }
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 93px;
+    height: 17px;
+    padding: 4px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
 

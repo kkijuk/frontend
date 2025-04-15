@@ -6,6 +6,7 @@ import { readMaster, updateMaster } from '../../api/Intro/master';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import { use } from 'react';
 import { trackEvent } from '../../utils/ga4';
+import { theme } from '../../constants/theme';
 
 const MasterRewrite = () => {
 	const navigate = useNavigate();
@@ -163,10 +164,10 @@ const MasterRewrite = () => {
 	return (
 		<BackgroundDiv>
 			{showLoadingSpinner && <LoadingSpinner message = "마스터 자소서 수정 중..."/>}
-			<div style={{ width: '820px', display: 'flex', gap: '20px', alignItems: 'center' }}>
-				<p style={{fontFamily: 'pretendard', fontSize: '28px', marginBottom: '20px', fontWeight: 700}}>
+			<Header>
+				<Title>
 					Master 자기소개서
-				</p>
+				</Title>
 				<Tag onClick={()=>{setDropdownOpened(!dropdownOpened)}} style={{ position:'relative', color: 'white', width: '60px', cursor: 'pointer' }}>
 						{data.state ? '작성 완료' : '작성 중'} ▼
 						{dropdownOpened && (
@@ -174,17 +175,17 @@ const MasterRewrite = () => {
 							<DropdownItem onClick={() => handleDropdownClick(0)}>작성 중</DropdownItem>
 							<DropdownItem onClick={() => handleDropdownClick(1)}>작성 완료</DropdownItem>
 						</Dropdown>
-						)};
+						)}
 				</Tag>
-			</div>
+			</Header>
 			<div></div>
-			<Linear style={{ width: '820px' }} />
+			<Linear/>
 			<BaseDiv>
 				<div style={{ position: 'relative' }}>
 					<InputTitle
 						id="oneLiner"
 						placeholder="한줄소개를 입력하세요"
-						style={{ height: '40px', marginBottom: '12px' }}
+						style={{ height: '40px', marginBottom: '12px', padding:'12px 16px' }}
 						value={data.oneLiner || ''}
 						onChange={(e) => handleOneLinerChange(e.target.id, e.target.value)}
 					/>
@@ -209,30 +210,38 @@ const MasterRewrite = () => {
 
 						return (
 						<div key={index} style={{position:'relative'}}>
-							<Delete
-								style={{ 
-									left: '10px',
-									top: '15px',
-									color: '#707070',
-									fontSize: '24px',
-									lineHeight: 'normal',
-									cursor: 'default',
-								}}>
-								{index + 1}
-							</Delete>
-							<Delete onClick={() => deleteItem(question.number)}>삭제</Delete>
-							<InputTitle
-							placeholder={titlePlaceholder}
-							style={{ width:'750px',height: '20px', marginBottom: '12px', paddingLeft: '50px' }}
-							value={currentTitle}
-							onChange={(e) => handleInputChange(index, 'title', e.target.value)}
-							/>
+							<TitleWrapper>
+								<TitleInputContainer>
+									<Delete
+										isDeleteButton = {false}
+										style={{ 
+											color: '#707070',
+											fontSize: '24px',
+											cursor: 'default',
+										}}>
+										{index + 1}
+									</Delete>
+									<Delete 
+										onClick={() => deleteItem(question.number)}
+										isDeleteButton={true}>
+											삭제
+									</Delete>
+									<InputTitle
+										placeholder={titlePlaceholder}
+										isTitle={true}
+										style={{height: '20px', marginBottom: '12px'}}
+										value={currentTitle}
+										onChange={(e) => handleInputChange(index, 'title', e.target.value)}
+									/>
+								</TitleInputContainer>
+							</TitleWrapper>
 							<InputWrapper>
 								<InputTitle
-								placeholder={contentPlaceholder}
-								style={{ height: '150px', marginBottom: '12px' }}
-								value={currentContent}
-								onChange={(e) => handleInputChange(index, 'content', e.target.value)}
+									placeholder={contentPlaceholder}
+									isTitle={false}
+									style={{ height: '150px', marginBottom: '12px' }}
+									value={currentContent}
+									onChange={(e) => handleInputChange(index, 'content', e.target.value)}
 								/>
 								<CharCount>
 									{currentContent.length} (공백 포함)
@@ -245,7 +254,7 @@ const MasterRewrite = () => {
 				<AddButton onClick={handleAddClick}>+</AddButton>
 				<div style={{ height: '70px' }}></div>
 				<div style={{display: 'flex', justifyContent: 'flex-end'}}>
-					<div style={{display: 'flex', flexDirection:'column', alignItems: 'center', position: 'relative'}}>
+					<div style={{width: '100%', display: 'flex', flexDirection:'column', alignItems: 'center', position: 'relative'}}>
 						{showAutoSaveMessage && (
 							<p style={{ fontFamily: 'pretendard', fontSize: '14px', color: '#707070', marginBottom: '10px', position:'absolute', top:'-40px' }}>
 								자동 저장을 완료했습니다. {autoSaveTime}
@@ -253,7 +262,7 @@ const MasterRewrite = () => {
 						)}
 						<Button
 							onClick={handleSubmit}
-							style={{ width: '185px', borderRadius: '10px', background: '#3AAF85', color: '#FFF' }}
+							style={{ borderRadius: '10px', background: '#3AAF85', color: '#FFF' }}
 						>
 							저장하고 나가기
 						</Button>
@@ -273,7 +282,9 @@ const BackgroundDiv = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items:center;
-
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const BaseDiv = styled.div`
@@ -283,15 +294,53 @@ const BaseDiv = styled.div`
 	max-width: 820px;
 	// background-color:#D9D9D9
 	position: relative;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
+const Header = styled.div`
+	width: 820px;
+	display: flex;
+	gap: 20px;
+	alignItems: center;
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 100%;
+		flex-direction: column;
+		gap: 12px;
+	}
+`
+
+const Title = styled.div`
+	font-family: pretendard;
+	font-size: 28px;
+	margin-bottom: 20px;
+	font-weight: 700;
+	@media (max-width: ${theme.breakpoints.md}) {
+		margin-bottom: 0px;
+	}
+`
+
+const TitleWrapper = styled.div`
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+`
+
+const TitleInputContainer = styled.div`
+	width: 100%;
+	position: relative;
+`
+
+
 const InputTitle = styled.textarea`
-	width: 780px;
+	width: ${({ isTitle }) => (isTitle === true ? '764px' : '780px')};
 	flex-shrink: 0;
 	border: none;
 	border-radius: 10px;
 	background: var(--gray-06, #f5f5f5);
-	padding: 20px 20px;
+	padding: ${({ isTitle }) => (isTitle === true ? '20px 20px 20px 36px' : '20px 20px')};
 	color: var(--gray-02, #707070);
 	font-family: Regular;
 	font-size: 16px;
@@ -306,13 +355,22 @@ const InputTitle = styled.textarea`
 	&::-webkit-scrollbar {
     	display: none; /* 웹킷 브라우저에서 스크롤바 숨기기 */
   	}
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: ${({ isTitle }) => (isTitle === true ? '338px' : '358px')};
+		padding: ${({ isTitle }) => (isTitle === true ? '12px 16px 12px 36px' : '15px 16px 0px 16px')};
+	}
 `;
 
 const Linear = styled.div`
+	width: 820px;
 	height: 4px;
 	background-color: #f1f1f1;
 	margin-top: 12px;
 	margin-bottom: 20px;
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 const Button = styled.button`
 	width: 185px;
@@ -322,6 +380,9 @@ const Button = styled.button`
 	cursor: pointer;
 	font-family: Regular;
 	font-size: 18px;
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const AddButton = styled.button`
@@ -335,6 +396,9 @@ const AddButton = styled.button`
 	color: #d9d9d9;
 	font-size: 30px;
 	cursor: pointer;
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const Tag = styled.div`
@@ -385,15 +449,21 @@ const Delete = styled.div`
 	font-family: Regular;
 	cursor: pointer;
 	position: absolute;
-	top: 20px;
-	right: 10px;
+	top: ${(props) => (props.isDeleteButton ? '20px' : '16px')};
+	right: ${(props) => (props.isDeleteButton ? '10px' : 'none')};
+	left: ${(props) => (props.isDeleteButton ? 'none' : '10px')};
+	@media (max-width: ${theme.breakpoints.md}) {
+		top: ${(props) => (props.isDeleteButton ? '12px' : '9px')};
+		right: ${(props) => (props.isDeleteButton ? '10px' : 'none')};
+		left: ${(props) => (props.isDeleteButton ? 'none' : '10px')};
+	}
 `;
 
 // InputTitle와 글자수를 함께 감쌀 컨테이너
 const InputWrapper = styled.div`
   position: relative;
   width: 100%;
-  margin-bottom: 12px;
+  margin-bottom: 32px;
 `;
 
 // 글자수 표시 스타일 (p 대신 div/span 등을 써도 무방)

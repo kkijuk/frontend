@@ -3,6 +3,7 @@ import styled from "styled-components";
 import CustomDropdown from "../CustomDropdown";
 import SvgIcon from "../../shared/SvgIcon";
 import { trackEvent } from "../../../utils/ga4";
+import { theme } from "../../../constants/theme";
 
 const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
@@ -98,6 +99,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           onChange={(value) => handleInputChange("skillTag", skillTagMapping[value])}
           onToggle={() => handleDropdownToggle("skillTag")}
           isOpen={showSkillTags}
+          width = 'auto'
           style={{width: "170px"}}
         />
         <Input
@@ -116,6 +118,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           onChange={(value) => handleInputChange("workmanship", skillLevelsMapping[value])}
           onToggle={() => handleDropdownToggle("skillLevel")}
           isOpen={showSkillLevels}
+          width = 'auto'
           style={{width: "170px"}}
         />
         <IconWrapper
@@ -225,12 +228,22 @@ const Container = styled.div`
   gap: 20px;
   position: relative;
   margin-bottom: 50px;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 278px;
+    height: 188px;
+    padding: 16px;
+    gap: 12px;
+  }
 `;
 
 const Row = styled.div`
   display: flex;
   gap: 20px;
   align-items: center;
+  @media (max-width: ${theme.breakpoints.md}) {
+    flex-direction: column;
+    gap: 12px;
+  }
 `;
 
 const Input = styled.input`
@@ -250,6 +263,12 @@ const Input = styled.input`
   &::placeholder {
     color: #d9d9d9;
   }
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: ${(props) => props.mdWidth || "238px"};
+    height: 17px;
+    padding: 12px 20px;
+  }
 `;
 
 const ButtonRow = styled.div`
@@ -258,9 +277,13 @@ const ButtonRow = styled.div`
   align-items: center;
   gap: 10px;
   margin-left:275px;
+  @media (max-width: ${theme.breakpoints.md}) {
+    margin-left: 0px;
+  }
 `;
 
 const Button = styled.button`
+  all: unset;
   width: 65px;
   height: 25px;
   border-radius: 10px;
@@ -268,10 +291,21 @@ const Button = styled.button`
   font-size: 14px;
   font-weight: 400;
   cursor: pointer;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 93px;
+    height: 17px;
+    padding: 4px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const IconWrapper = styled.div`
   position: relative;
+  @media (max-width: ${theme.breakpoints.md}) {
+    display: none;
+  }
 `;
 
 const GuideBoxContainer = styled.div`
@@ -282,6 +316,9 @@ const GuideBoxContainer = styled.div`
   flex-direction: column;
   align-items: center;
   z-index: 10;
+  @media (max-width: ${theme.breakpoints.md}) {
+    display: none;
+  }
 `;
 
 const GuideBox = styled.div`
@@ -299,6 +336,9 @@ const GuideBox = styled.div`
   p{
   font-size: 11px;
   font-family: Regular;
+  }
+  @media (max-width: ${theme.breakpoints.md}) {
+    display: none;
   }
 `;
 

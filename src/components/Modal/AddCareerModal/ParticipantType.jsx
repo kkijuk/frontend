@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { theme } from '../../../constants/theme';
 
 const ParticipantType = ({ isTeam, setIsTeam, teamSize, setTeamSize, contribution, setContribution }) => {
 	const handleSelection = (value, event) => {
@@ -44,11 +45,11 @@ const ParticipantType = ({ isTeam, setIsTeam, teamSize, setTeamSize, contributio
 	return (
 		<Container>
 			<LabelGroup>
-				<Label>
+				<Label alwaysVisible={true}>
 					인원 <span style={{ color: '#FC5555' }}>*</span>
 				</Label>
-				<Label style={{ marginLeft: '170px' }}>팀 인원</Label>
-				<Label style={{ left: '560px' }}>기여도</Label>
+				<Label isMobile={false} style={{ marginLeft: '170px' }}>팀 인원</Label>
+				<Label isMobile={false} style={{ left: '560px' }}>기여도</Label>
 			</LabelGroup>
 			<ContentGroup>
 				<ButtonGroup>
@@ -61,21 +62,31 @@ const ParticipantType = ({ isTeam, setIsTeam, teamSize, setTeamSize, contributio
 				</ButtonGroup>
 				<InputGroup>
 					{/* 1번 인풋 */}
-					<Input 
-						type="number" 
-						value={teamSize} 
-						onChange={handleTeamSizeChange} 
-						disabled={!isTeam} />
-					<span style={{marginRight:'10px'}}>명</span>
+					<InputSubGroup>
+						<Label isMobile={true} >팀 인원</Label>
+						<div style={{display:'flex', alignItems:'center'}}>
+							<Input 
+								type="number" 
+								value={teamSize} 
+								onChange={handleTeamSizeChange} 
+								disabled={!isTeam} />
+							<span style={{marginRight:'10px'}}>명</span>
+						</div>
+					</InputSubGroup>
 					{/* 2번 인풋 */}
-					<Input
-						type="number"
-						value={contribution}
-						onChange={handleContributionChange}
-						disabled={!isTeam}
-					/>
-					<span>%</span>
-					{errorMessage && <ErrorText>{errorMessage}</ErrorText>}
+					<InputSubGroup>
+						<Label isMobile={true}>기여도</Label>
+						<div style={{display:'flex', alignItems:'center'}}>
+							<Input
+								type="number"
+								value={contribution}
+								onChange={handleContributionChange}
+								disabled={!isTeam}
+							/>
+							<span>%</span>
+						</div>
+						{errorMessage && <ErrorText>{errorMessage}</ErrorText>}
+					</InputSubGroup>
 				</InputGroup>
 			</ContentGroup>
 		</Container>
@@ -100,6 +111,8 @@ const LabelGroup = styled.div`
 `;
 
 const Label = styled.label`
+	display: ${(props) =>
+    props.alwaysVisible ? 'block' : props.isMobile ? 'none' : 'block'};
 	font-size: 14px;
 	font-weight: bold;
 	font-family: 'Regular';
@@ -108,7 +121,11 @@ const Label = styled.label`
 	text-align: left;
 	line-height: 10px;
 	// margin-bottom: 5px;
-	
+	@media (max-width: ${theme.breakpoints.md}) {
+		display: ${(props) =>
+      props.alwaysVisible ? 'block' : props.isMobile ? 'block' : 'none'};
+	    font-size: 12px;
+	}
 `;
 
 const ContentGroup = styled.div`
@@ -116,6 +133,9 @@ const ContentGroup = styled.div`
 	align-items: center;
 	width: 100%;
 	gap: 40px;
+	@media (max-width: ${theme.breakpoints.md}) {
+		display: block;
+	}
 `;
 
 const ButtonGroup = styled.div`
@@ -140,6 +160,13 @@ const SelectButton = styled.div`
 	color: ${(props) => (props.selected ? '#3AAF85' : '#707070')};
 	border: ${(props) => (props.selected ? '2px solid #3AAF85' : 'none')};
 	text-align: center;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 29px;
+		height: 20px;
+		padding: 15px 40px;
+		line-height: 20px;
+	}
 `;
 
 const InputGroup = styled.div`
@@ -153,6 +180,9 @@ const InputGroup = styled.div`
 	span {
 		font-size: 14px;
 		margin-left:5px;
+	}
+	@media (max-width: ${theme.breakpoints.md}) {
+		margin-left: 0px;
 	}
 `;
 
@@ -171,6 +201,9 @@ const Input = styled.input`
 		border-color: #3aaf85;
 		outline: none;
 	}
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 100px !important;
+	}
 `;
 
 const ErrorText = styled.div`
@@ -181,4 +214,8 @@ const ErrorText = styled.div`
 	font-size: 13px;
 	color: #FF7979;
 	margin-left: 10px;
+`
+
+const InputSubGroup = styled.div`
+	display: block;
 `
