@@ -40,6 +40,7 @@ const getBackgroundColor = (category, selected) => {
 
 const CareerBox = styled.div`
 	width: 143px; /*수정-> 원래 139*/
+
 	height: 58px;
 	padding: 6px; /*수정-> 원래 없었음*/
 	border-radius: 10px;
@@ -74,6 +75,8 @@ const Date = styled.div`
 
 const Nickname = styled.div`
 	display: flex;
+	width: 100%;
+
 	max-width: calc(100% - 12px); /*부모의 padding 고려 */
 	height: auto; /*수정 ->22.895px*/
 	flex-direction: column;

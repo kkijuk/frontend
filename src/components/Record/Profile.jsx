@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { downS3File } from '../../api/Record/s3File';
+import { theme } from '../../constants/theme'; 
 
 const Profile = ({ profileKeyName, onProfileChange }) => {
     const [profileUrl, setProfileUrl] = useState('');

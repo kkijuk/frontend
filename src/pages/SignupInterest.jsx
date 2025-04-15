@@ -7,6 +7,7 @@ import InterestSkipModal from '../components/User/InterestSkipModal';
 import { saveInterests } from '../api/Signup/signupInterest';
 import { trackEvent } from '../utils/ga4';
 import useAuthStore from '../stores/useAuthStore';
+import { theme } from '../constants/theme';
 
 const ContentArea = styled.div`
   margin: 0 auto;
@@ -23,6 +24,11 @@ const ContentArea = styled.div`
   svg {
     display: none; 
   }
+ @media (max-width: ${theme.breakpoints.md}) {
+    width: 342px; 
+    padding: 10px;
+  }
+
 `;
 
 const InterestArea = styled.div`
@@ -33,6 +39,8 @@ const InterestArea = styled.div`
 	box-sizing: border-box;
 	gap: 10px;
 	justify-content: center;
+
+
 `;
 
 const CloseButton = styled.button`
@@ -99,7 +107,10 @@ const SaveButton = styled.button`
 	&:hover {
 		background-color: #35a576;
 	}
-
+ @media (max-width: ${theme.breakpoints.md}) {
+    width: 342px; 
+    
+  }
 `;
 
 const Logo = styled.img`

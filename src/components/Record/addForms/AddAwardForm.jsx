@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import CustomCalendarPicker from "../CustomCalendarPicker";
 import { trackEvent } from "../../../utils/ga4";
+import { theme } from "../../../constants/theme";
 
 const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
@@ -95,7 +96,8 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           placeholder="대회명"
           value={formData.competitionName}
           onChange={(e) => handleInputChange("competitionName", e.target.value)}
-          style={{width:'455px'}}
+          width = '455px'
+          // style={{width:'455px'}}
           maxLength={30}
         />
       </Row>
@@ -105,7 +107,8 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           placeholder="수상명"
           value={formData.awardName}
           onChange={(e) => handleInputChange("awardName", e.target.value)}
-          style={{width:'195px'}}
+          width= '195px'
+          // style={{width:'195px'}}
           maxLength={15}
         />
         <Input
@@ -113,7 +116,8 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           placeholder="수여기관"
           value={formData.administer}
           onChange={(e) => handleInputChange("administer", e.target.value)}
-          style={{width:'195px'}}
+          width= '195px'
+          // style={{width:'195px'}}
           maxLength={15}
         />
         <ButtonRow>
@@ -203,14 +207,24 @@ const Container = styled.div`
   gap: 10px;
   position: relative;
   margin-bottom: 50px;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 278px;
+    height: 241px;
+    padding: 16px;
+  }
 `;
 
 const Row = styled.div`
   display: flex;
   gap: 20px;
+  @media (max-width: ${theme.breakpoints.md}) {
+    flex-direction: column;
+    gap: 12px;
+  }
 `;
 
 const Input = styled.input`
+  width: ${(props) => props.width || "100%"};
   height: 45px;
   border-radius: 10px;
   border: none;
@@ -224,6 +238,11 @@ const Input = styled.input`
   padding-right: 10px;
   &::placeholder {
     color: #d9d9d9; /* Placeholder는 회색 */
+  }
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: ${(props) => props.mdWidth || "238px"};
+    height: 17px;
+    padding: 12px 20px;
   }
 `;
 
@@ -239,12 +258,20 @@ const DatePickerInput = styled.input.attrs({ type: "text" })`
   color: black;
   border: ${(props) => (props.isActive ? "1px solid var(--gray-02, #707070)" : "none")};
   cursor: pointer;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 238px;
+    height: 17px;
+    padding: 12px 20px;
+  }
 `;
 
 const DatePickerWrapper = styled.div`
   position: absolute;
   top:48px;
   z-index: 1000;
+  @media (max-width: ${theme.breakpoints.md}) {
+    top: 41px;    
+  }
 `;
 
 const DatePickerContainer = styled.div`
@@ -259,6 +286,7 @@ const ButtonRow = styled.div`
 `;
 
 const Button = styled.button`
+  all: unset;
   width: 65px;
   height: 25px;
   border-radius: 10px;
@@ -269,5 +297,14 @@ const Button = styled.button`
 
   &:hover {
     opacity: 0.8;
+  }
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 93px;
+    height: 17px;
+    padding: 4px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;

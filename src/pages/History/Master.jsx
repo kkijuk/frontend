@@ -9,7 +9,7 @@ import Toggle from '../../components/Intro/Toggle';
 import ButtonOptions from '../../components/Intro/AddButton';
 import { createMaster, readMaster } from '../../api/Intro/master';
 import { set } from 'react-hook-form';
-import { trackEvent } from '../../utils/ga4';
+import { theme } from '../../constants/theme';
 
 const Master = () => {
 	const navigate = useNavigate();
@@ -108,7 +108,9 @@ const Master = () => {
 
 					return (
 						<div key={index}>
-						<h3>{question.title && question.title !== 'string' && question.title !== '' ? question.title : defaultTitle}</h3>
+						<QuestionTitle>
+							{question.title && question.title !== 'string' && question.title !== '' ? question.title : defaultTitle}
+						</QuestionTitle>
 						<ContentBox>
 							{question.content && question.content !== 'string' && question.content !== '' ? question.content : defaultContent}
 						</ContentBox>
@@ -119,7 +121,12 @@ const Master = () => {
 					<p>아직 질문이 없습니다.</p>
 				)}
 
-				<EditButton onClick={() => navigate('/history/master/rewrite')} style={{ right: '100px' }}>
+				<EditButton 
+					onClick={() => {
+						navigate('/history/master/rewrite');
+					}} 
+					style={{ right: '100px' }}
+				>
 					<svg width="60" height="60" viewBox="2-2 80 70" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path
 							id="Vector"
@@ -142,6 +149,9 @@ const BackgroundDiv = styled.div`
 	display: flex;
 	// align-items:center;
 	justify-content: center;
+	@media (max-width: ${theme.breakpoints.md}) {
+		margin-top: 32px;
+	}
 `;
 
 const BaseDiv = styled.div`
@@ -151,6 +161,9 @@ const BaseDiv = styled.div`
 	max-width: 820px;
 	// background-color:#D9D9D9
 	position: relative;
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const SButton = styled.button`
@@ -180,6 +193,9 @@ const ContentTitle = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	@media (max-width: ${theme.breakpoints.md}) {
+		display: block;
+	}
 `;
 
 const OneLiner = styled.h1`
@@ -189,6 +205,10 @@ const OneLiner = styled.h1`
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 60%;
+  @media (max-width: ${theme.breakpoints.md}) {
+    font-size: 24px;
+	margin: 0;
+  }
 `;
 
 const LastUpdated = styled.p`
@@ -197,6 +217,22 @@ const LastUpdated = styled.p`
   top: 10px;
   right: 0;
   white-space: nowrap;
+  @media (max-width: ${theme.breakpoints.md}) {
+    position: static;
+	margin: 0;
+	font-size: 14px;
+  }
+`;
+
+const QuestionTitle = styled.div`
+	font-family: 'Semibold';
+	font-weight: 500;
+	font-size: 20px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-family: 'Regular';
+		font-size: 16px;
+	}
 `;
 
 const ContentBox = styled.div`
@@ -208,6 +244,7 @@ const ContentBox = styled.div`
 	line-height: normal;
 	margin-bottom: 60px;
 	white-space: pre-wrap;
+	word-break: break-word;
 `;
 const EditButton = styled.button`
 	width: 60px;
@@ -220,6 +257,9 @@ const EditButton = styled.button`
 	bottom: 20px;
 	cursor: pointer;
 	z-index: 10;
+	@media (max-width: ${theme.breakpoints.md}) {
+		bottom: 20px;
+	}
 `;
 
 const CreateIntroButton = styled.button`

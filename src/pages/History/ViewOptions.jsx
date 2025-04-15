@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Toggle from '../../components/Intro/Toggle';
 import AddButton from '../../components/Intro/AddButton';
 import { trackEvent } from '../../utils/ga4';
+import { theme } from '../../constants/theme';
 
 // Todo
 // - 옵션 로직 수정
@@ -154,6 +155,10 @@ const SButtonContainer = styled.div`
 
 	&::-webkit-scrollbar {
 		display: none; /* Safari and Chrome */
+	}
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 100%;
+		overflow-x: auto;
 	}
 `;
 

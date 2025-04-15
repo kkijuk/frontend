@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ListItem from '../../components/Intro/ListItem';
+import { theme } from '../../constants/theme';
 
 const List = () => {
 	let { state } = useParams(); // state 0(작성중), 1(작성완료), 2(보관중), 3(전체) 중 하나

@@ -27,6 +27,10 @@ const Input = styled.input`
         color: #b0b0b0;
         cursor: not-allowed;
     `}
+    @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+     justify-content: center;
+	}
 `;
 
 const Textarea = styled.textarea`
@@ -59,6 +63,10 @@ const Textarea = styled.textarea`
         color: #b0b0b0;
         cursor: not-allowed;
     `}
+     @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+     justify-content: center;
+	}
 `;
 
 export default function ReviewInputBox({ 

@@ -18,6 +18,7 @@ const TimelineChart = () => {
 				careerId: item.careerId,
 				category: item.category,
 				y: [new Date(item.startdate).getTime(), new Date(item.enddate).getTime()],
+				alias: item.alias,
 				name: item.title,
 				unknown: item.unknown,
 				fillColor: getColorByCategory(item.category.categoryKoName) || '#707070',
@@ -47,7 +48,7 @@ const TimelineChart = () => {
 				height: 350,
 				width: '100%',
 				type: 'rangeBar',
-				offsetX: -40,
+				offsetX: -30,
 				background: 'transparent',
 				zoom: { enabled: false },
 				toolbar: { show: false },
@@ -80,7 +81,7 @@ const TimelineChart = () => {
 			dataLabels: {
 				enabled: true,
 				formatter: (val, opts) => opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].name,
-				style: { colors: ['#fff'] },
+				style: { colors: ['#fff'], textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
 			},
 			tooltip: {
 				custom: ({ seriesIndex, dataPointIndex, w }) => {
@@ -88,6 +89,8 @@ const TimelineChart = () => {
 					const name = data.name;
 					const startDate = moment(data.y[0]).format('YYYY.MM.DD');
 					const endDate = data.unknown ? 'ing' : moment(data.y[1]).format('YYYY.MM.DD');
+					const alias = data.alias;
+
 					return `
                 <div style="
                     background: #333;
@@ -98,7 +101,7 @@ const TimelineChart = () => {
                     text-align: center;
                     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
                 ">
-                    <div>${name}</div>
+                    <div>${name} / ${alias}</div>
                     <div style="font-size: 12px; margin-top: 4px;">${startDate} ~ ${endDate}</div>
                 </div>`;
 				},
@@ -109,7 +112,7 @@ const TimelineChart = () => {
 				min: minDate, // ✅ minDate를 반영
 				max: maxDate, // ✅ maxDate를 반영
 				labels: {
-					offsetX: 20,
+					offsetX: 10,
 					formatter: (val) => moment(val).format('YYYY.MM'),
 				},
 				axisBorder: { show: false },
@@ -138,6 +141,7 @@ const TimelineChart = () => {
 				x: item.x,
 				y: item.y,
 				name: item.name,
+				alias: item.alias,
 				fillColor: item.fillColor,
 			})),
 		},

@@ -6,7 +6,7 @@ import Convert from './Convert';
 import Title from '../Apply/Title';
 import Layout from '../Layout';
 import { trackEvent } from '../../utils/ga4';
-import { theme } from '../../constants/theme'; // theme.js에서 불러온 theme 객체
+import { theme } from '../../constants/theme'; 
 
 const SubNav = () => {
     const navigate = useNavigate();
@@ -36,15 +36,17 @@ const SubNav = () => {
                     </ExportButton>
                 )}
                 <Nav>
-                    <NavItems onClick={() => navigate('/history')} active={isResumeActive}>
-                        이력서
-                    </NavItems>
-                    <NavItems onClick={() => navigate('/history/master')} active={!isResumeActive && !isPortfolioActive}>
-                        자기소개서
-                    </NavItems>
-                    <NavItems onClick={() => navigate('/history/portfolio')} active={isPortfolioActive}>
-                        포트폴리오
-                    </NavItems>
+                    <ItemsWrapper>
+                        <NavItems onClick={() => navigate('/history')} active={isResumeActive}>
+                            이력서
+                        </NavItems>
+                        <NavItems onClick={() => navigate('/history/master')} active={!isResumeActive && !isPortfolioActive}>
+                            자기소개서
+                        </NavItems>
+                        <NavItems onClick={() => navigate('/history/portfolio')} active={isPortfolioActive}>
+                            포트폴리오
+                        </NavItems>
+                    </ItemsWrapper>
                     <Linear />
                     <Section>
                         <Outlet />
@@ -61,28 +63,28 @@ const BaseDiv = styled.div`
     width: 100%;
     margin-top: 40px;
     position: relative;
-    padding: 0 15px;
 
     @media (max-width: ${theme.breakpoints.md}) {
         margin-top: 30px;
-        max-width: 720px;
-        margin-left: auto;
-        margin-right: auto;
+        
     }
 `;
 
 const Nav = styled.ul`
     list-style-type: none;
     padding-left: 0;
-    margin-top: 30px;
+    // margin-top: 30px;
 	// width: 100vw;
+`;
 
+const ItemsWrapper = styled.div`
     @media (max-width: ${theme.breakpoints.md}) {
-        margin-top: 20px;
-    }
-    
-    @media (max-width: ${theme.breakpoints.sm}) {
-        margin-top: 10px;
+        display: flex;
+        align-items: center;
+
+        & > *:not(:last-child) {
+            margin-right: 32px; /* 마지막 요소를 제외한 요소들에만 간격 추가 */
+        }
     }
 `;
 
@@ -97,15 +99,9 @@ const NavItems = styled.li`
     color: ${({ active }) => (active ? '#000000' : '#E0E0E0')};
 
     @media (max-width: ${theme.breakpoints.md}) {
-        font-size: 20px;
+        font-size: 24px;
         line-height: 24px;
-        margin-right: 30px;
-    }
-    
-    @media (max-width: ${theme.breakpoints.sm}) {
-        font-size: 18px;
-        line-height: 22px;
-        margin-right: 20px;
+        margin-right: 0px;
     }
 `;
 

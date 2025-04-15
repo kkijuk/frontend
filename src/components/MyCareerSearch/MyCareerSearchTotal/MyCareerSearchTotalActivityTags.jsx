@@ -6,48 +6,44 @@ import { useNavigate } from 'react-router-dom';
 import { highlightMatch } from '../../../utils/highlightMatch';
 import { formatDate } from '../../../utils/formateDate';
 import TagButton from '../../shared/TagButton';
+import { theme } from '../../../constants/theme';
 
 // 메인 컨테이너
 const Container = styled.div`
 	width: 100%;
-	box-sizing: border-box;
-	padding: 20px 40px 32px 40px;
 	margin: 0 auto;
-	margin-left: 12px;
-	background-color: #fff;
+	box-sizing: border-box;
+	padding: 0 15px;
+	margin-bottom: 24px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding: 0 10px;
+		margin-bottom: 12px;
+	}
+`;
+
+const Box = styled.div`
+	width: 98%;
+	margin: 0px auto;
+	padding: 20px 24px;
+	background-color: white;
 	border-radius: 10px;
-	box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+	box-sizing: border-box;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 100%;
+		padding: 15px;
+	}
 `;
 
 // 태그 목록 Wrapper
 const TagWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
+	padding-top: 20px;
 	gap: 10px;
-`;
-
-// 태그 버튼
-const Tag = styled.button`
-	padding: 2px 20px;
-	border-radius: 20px;
-	font-family: Pretendard;
-	font-size: 12px;
-	font-weight: 400;
-	font-style: normal;
-	cursor: pointer;
-
-	background: ${(props) => (props.isActive ? '#3aaf85' : '#f5f5f5')};
-	color: ${(props) => (props.isActive ? '#ffffff' : '#3aaf85')};
-	border: 1px solid ${(props) => (props.isActive ? '#3aaf85' : '#f5f5f5')};
-
-	transition:
-		background-color 0.3s ease,
-		color 0.3s ease;
-
-	&:hover {
-		background-color: #3aaf85;
-		color: #ffffff;
-	}
 `;
 
 // 활동 리스트 Wrapper
@@ -62,9 +58,15 @@ const ActivityItem = styled.div`
 	flex-direction: column;
 	margin: 0;
 	padding: 24px 0;
+	width: 100%;
+	box-sizing: border-box;
 
 	&:last-child {
 		border-bottom: none;
+	}
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding: 15px 0;
 	}
 `;
 
@@ -75,6 +77,14 @@ const ActivityTop = styled.div`
 	height: auto;
 	align-items: center;
 	margin-bottom: 8px;
+	flex-wrap: wrap;
+	gap: 5px;
+	width: 100%;
+	box-sizing: border-box;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		margin-bottom: 5px;
+	}
 `;
 
 // 제목 (왼쪽)
@@ -140,13 +150,13 @@ export default function MyCareerSearchTotalActivityTags({
 	let totalDetailsRendered = 0; // 총 렌더링된 detail 개수를 추적
 
 	return (
-		<>
+		<Container>
 			{isActivityTagListLoading ? (
 				<p>로딩중...</p>
 			) : activityTagList?.data?.data.tagList.length === 0 ? (
 				<NotExistSearch>검색 결과가 없어요.</NotExistSearch>
 			) : (
-				<Container>
+				<Box>
 					<TagWrapper>
 						{/* 태그 목록 */}
 						{activityTagList?.data?.data.tagList.map((tag) => (
@@ -197,8 +207,8 @@ export default function MyCareerSearchTotalActivityTags({
 					) : (
 						<NotExistSearch>선택된 태그에 대한 활동이 없어요.</NotExistSearch>
 					)}
-				</Container>
+				</Box>
 			)}
-		</>
+		</Container>
 	);
 }

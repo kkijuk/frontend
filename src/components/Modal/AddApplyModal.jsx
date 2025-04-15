@@ -29,6 +29,16 @@ const ModalContent = styled.div`
 	position: relative;
 	align-items: center;
 		z-index: 2000;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 320px;
+	height: 620px;
+	overflow-y: auto;
+	scrollbar-width: none; /* Firefox */
+-ms-overflow-style: none; /* IE 10+ */
+&::-webkit-scrollbar {
+	display: none; /* Chrome, Safari, Opera */
+	}
 `;
 
 const CloseButton = styled.button`
@@ -49,6 +59,12 @@ const ModalTitle = styled.h2`
 	margin-left: 100px;
 	font-family: 'Bold';
 	font-size: 24px;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		margin-left: 0;
+		text-align: center;
+		justify-content: center;
+	}
 `;
 
 const Divider = styled.div`
@@ -57,6 +73,10 @@ const Divider = styled.div`
 	background-color: #ccc;
 	margin-bottom: 20px;
 	margin: 0 auto 20px;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		display: none;
+	}
 `;
 
 const Label = styled.label`
@@ -72,6 +92,13 @@ const Label = styled.label`
 		content: ' *';
 		color: #fc5555;
 	}
+		@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+	margin: 0 auto;
+	text-align: left;
+	margin-bottom: 8px;
+}
+
 `;
 
 const LabelStart = styled.label`
@@ -87,6 +114,13 @@ const LabelStart = styled.label`
 		content: ' *';
 		color: #fc5555;
 	}
+		
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+	margin: 0 auto;
+	text-align: left;
+	margin-bottom: 8px;
+}
 `;
 
 const LabelEnd = styled.label`
@@ -102,12 +136,24 @@ const LabelEnd = styled.label`
 		content: ' *';
 		color: #fc5555;
 	}
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+	margin: 0 auto;
+	text-align: left;
+	margin-bottom: 8px;
+}
 `;
 
 const InputWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	width: 100%;
+
+	
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	justify-content: center;
+	}
 `;
 
 const Input = styled.input`
@@ -123,6 +169,17 @@ const Input = styled.input`
 	font-family: 'ExtraLight';
 	font-size: 16px;
 	outline: none;
+	
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+	margin: 0 auto;
+	box-sizing: border-box;
+	height: 55px;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+
 `;
 
 const InputDateStart = styled.input`
@@ -139,6 +196,17 @@ const InputDateStart = styled.input`
 	font-family: 'ExtraLight';
 	font-size: 16px;
 	outline: none;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+	margin: 0 auto;
+	box-sizing: border-box;
+	height: 55px;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+
 `;
 
 const InputDateEnd = styled.input`
@@ -155,14 +223,35 @@ const InputDateEnd = styled.input`
 	font-family: 'ExtraLight';
 	font-size: 16px;
 	outline: none;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+	margin: 0 auto;
+	box-sizing: border-box;
+	height: 55px;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+
 `;
 
 const InputWrapperStart = styled.div`
 	margin-top: 30px;
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+	margin: 0 auto;
+}
+
 `;
 
 const InputWrapperEnd = styled.div`
 	margin-top: 30px;
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+	margin: 0 auto;
+}
+
 `;
 
 const Row = styled.div`
@@ -170,6 +259,10 @@ const Row = styled.div`
 	justify-content: center;
 	gap: 0px;
 	width: 100%;
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		flex-direction: column;
+		align-items: center;
+	}
 `;
 
 const ButtonWrapper = styled.div`
@@ -177,6 +270,7 @@ const ButtonWrapper = styled.div`
 	justify-content: center;
 	width: 100%;
 	margin-top: -20px;
+	
 `;
 
 const SaveButton = styled.button`
@@ -194,6 +288,13 @@ const SaveButton = styled.button`
 	margin-left: 105px;
 	font-family: 'ExtraLight';
 	font-size: 18px;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		margin-left: 0;
+		box-sizing: border-box;
+	    height: 55px;
+		margin-top: 30px;
+	}
 `;
 
 const LabelTag = styled.label`
@@ -209,6 +310,12 @@ const LabelTag = styled.label`
 		content: ' *';
 		color: #fc5555;
 	}
+		@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+	margin: 0 auto;
+	margin-bottom: -12px;
+	text-align: left;
+}
 `;
 
 const LabelLink = styled.label`
@@ -219,11 +326,23 @@ const LabelLink = styled.label`
 	margin-top: 25px;
 	font-family: 'ExtraLight';
 	font-size: 18px;
+
+   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+	margin: 0 auto;
+	text-align: left;
+	margin-bottom: 8px;
+}
 `;
 
 const InputWrapperTag = styled.div`
 	margin-top: 20px;
 	margin-left: 90px;
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+	margin: 0 auto;
+}
+
 `;
 
 const InputWrapperLink = styled.div`
@@ -231,6 +350,12 @@ const InputWrapperLink = styled.div`
 	margin-left: 90px;
 	font-family: 'ExtraLight';
 	font-size: 16px;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 310px;
+	margin: 0 auto;
+}
+
 `;
 
 const TagBoxWrapper = styled.div`
@@ -244,6 +369,12 @@ const ErrorMessage = styled.p`
 	text-align: center;
 	font-family: 'Light';
 	font-size: 16px;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	margin: 0 auto;
+	margin-top: 10px;
+}
+
 `;
 
 const FieldWrapper = styled.div`
@@ -353,6 +484,15 @@ const AddApplyModal = ({ onClose, onSave }) => {
 		}
 	};
 
+	const getFirstError = () => {
+		if (errorMessages.title) return errorMessages.title;
+		if (errorMessages.startTime) return errorMessages.startTime;
+		if (errorMessages.endTime) return errorMessages.endTime;
+		if (errorMessages.endTimeOrder) return errorMessages.endTimeOrder;
+		if (errorMessages.link) return errorMessages.link;
+		return '';
+	};	
+
 	// 태그 변경 시 즉시 업데이트
 	const handleTagListChange = (newTags) => {
 		setTags(newTags);
@@ -418,11 +558,7 @@ const AddApplyModal = ({ onClose, onSave }) => {
 							onChange={(e) => setLink(e.target.value)}
 						/>
 					</InputWrapperLink>
-					{errorMessages.title && <ErrorMessage>{errorMessages.title}</ErrorMessage>}
-					{errorMessages.startTime && <ErrorMessage>{errorMessages.startTime}</ErrorMessage>}
-					{errorMessages.endTime && <ErrorMessage>{errorMessages.endTime}</ErrorMessage>}
-							{errorMessages.endTimeOrder && <ErrorMessage>{errorMessages.endTimeOrder}</ErrorMessage>}
-							{errorMessages.link && <ErrorMessage>{errorMessages.link}</ErrorMessage>}
+					{getFirstError() && <ErrorMessage>{getFirstError()}</ErrorMessage>}
 				</FieldWrapper>
 				<ButtonWrapper>
 					<SaveButton onClick={handleSave}>확인</SaveButton>

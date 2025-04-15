@@ -5,12 +5,13 @@ import AgreementModal1 from './AgreementModal1';
 import AgreementModal2 from './AgreementModal2';
 import AgreementModal3 from './AgreementModal3';
 import { trackEvent } from '../../utils/ga4';
+import { theme } from '../../constants/theme';
 
 const StyledButton = styled.button`
   width: 400px;
   height: 50px;
   padding: 10px;
-  margin: 10px 0;
+  margin: 10px auto;
   border: none;
   border-radius: 10px;
   background-color: ${({ disabled }) => (disabled ? '#D9D9D9' : '#3aaf85')};
@@ -22,9 +23,14 @@ const StyledButton = styled.button`
   align-items: center;
   justify-content: center;
   margin-top: 40px;
+  
   &:hover {
     background: ${({ disabled }) => (disabled ? '#D9D9D9' : '#2a9f72')};
   }
+    @media (max-width: ${theme.breakpoints.md}) {
+    width: 342px; /* 태블릿 이하에서는 342px 고정 */
+  }
+
 `;
 
 
@@ -88,6 +94,7 @@ const FormContainer = styled.div`
     cursor: pointer;
     margin-left: 5px;
   }
+   
 `;
 
 const Divider = styled.div`
@@ -98,6 +105,10 @@ const Divider = styled.div`
   margin: 5px auto;
   margin-top: -7px;
   margin-bottom: 20px;
+  
+  @media (max-width: ${theme.breakpoints.md}) {
+    max-width: 342px;
+  }
 `;
 
 const Title = styled.h2`
@@ -109,6 +120,12 @@ font-style: normal;
 font-weight: 400;
 line-height: normal;
 margin-bottom: 30px;
+
+ @media (max-width: ${theme.breakpoints.md}) {
+    font-size: 14px;
+    margin-bottom: 40px;
+  }
+
 `;
 
 const AllAgreementContainer = styled.div`
@@ -120,7 +137,7 @@ const AllAgreementContainer = styled.div`
   padding: 0 10px;
   stroke-width: 1px;
   stroke: var(--gray-03, #D9D9D9);
-  margin: 10px 0;
+   margin: 10px auto;
 
   input[type='checkbox'] {
     appearance: none;
@@ -159,6 +176,11 @@ const AllAgreementContainer = styled.div`
     white-space: nowrap;
     color: black;
     font-size: 14px;
+  }
+    
+  @media (max-width: ${theme.breakpoints.md}) {
+    max-width: 342px; /* 태블릿에서는 342px로 조정 */
+    
   }
 `;
 

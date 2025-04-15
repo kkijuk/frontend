@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { theme } from '../../constants/theme';
 
 const StyledModal = styled.div`
 	display: ${(props) => (props.show ? 'block' : 'none')};
@@ -25,7 +26,10 @@ const StyledModal = styled.div`
         flex-shrink: 0;
 		 overflow-y: auto; /* 세로 스크롤 기능 활성화 */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
-}
+@media (max-width: ${theme.breakpoints.md}) {
+			width: 325px;
+		}
+	}
 
 	.close {
 		color: #aaa;
@@ -48,6 +52,9 @@ const StyledModal = styled.div`
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+	@media (max-width: ${theme.breakpoints.md}) {
+      font-size: 20px;
+    }
 	}
 
 	p {
@@ -57,6 +64,9 @@ font-size: 14px;
 font-style: normal;
 font-weight: 400;
 line-height: normal;
+@media (max-width: ${theme.breakpoints.md}) {
+      font-size: 12px;
+    }
 	}
 `;
 

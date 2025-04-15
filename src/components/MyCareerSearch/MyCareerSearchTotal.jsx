@@ -7,16 +7,11 @@ import { useFetchActivityDetail } from '../../hooks/MycareerSearch/useFetchActiv
 import MyCareerSearchTotalActivity from './MyCareerSearchTotal/MyCareerSearchTotalActivity';
 import MyCareerSearchTotalActivityDetail from './MyCareerSearchTotal/MyCareerSearchTotalActivityDetail';
 import { useFetchTagList } from '../../hooks/MycareerSearch/useFetchTagList';
+import { theme } from '../../constants/theme';
 
 import MyCareerSearchTotalActivityTags from './MyCareerSearchTotal/MyCareerSearchTotalActivityTags';
 import { NotExistSearchComponent } from './NotExistSearchWrapper';
-
-const Container = styled.div`
-	width: 100%;
-	max-width: 820px;
-	margin: 0 auto;
-	box-sizing: border-box;
-`;
+import { Container } from './common';
 
 const Title = styled.div`
 	color: var(--black, #000);
@@ -27,12 +22,28 @@ const Title = styled.div`
 	line-height: normal;
 	margin-left: 20px;
 	margin-bottom: 0px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 16px;
+		margin-left: 10px;
+	}
 `;
 
 const Wrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	margin-bottom: 16px;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0 10px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding: 0 5px;
+		margin-bottom: 12px;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
 `;
 
 const ChangeViewButton = styled.button`
@@ -44,6 +55,11 @@ const ChangeViewButton = styled.button`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 12px;
+		padding: 5px 10px;
+	}
 `;
 
 export default function MyCareerSearchTotal({ sortOrder, searchQuery, onViewToggle }) {

@@ -1,21 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 import '../../pages/History/history.css';
+import { theme } from '../../constants/theme';
 
 const ListItem = ({ title, updated_at, deadline, state, timeSinceUpdate, onClick }) => {
 	return (
 		<ListBox onClick={onClick}>
 			<h3 style={{ fontWeight: 800, margin: '10px 0px', color: title === 'MASTER' ? '#3AAF85' : 'black' }}>{title}</h3>
-			<p className="lastupdated" style={{ color: '#707070', margin: '5px 0px', fontSize: '15px' }}>
-				마지막 수정 일시: {updated_at}
-			</p>
-			{title !== 'MASTER' && (
-				<p className="lastupdated" style={{ color: '#FA7C79', margin: '0px 0px', fontSize: '15px' }}>
-					공고 마감 일시: {deadline} <span style={{ fontWeight: 'Bold' }}>({timeSinceUpdate})</span>
-				</p>
-			)}
-
-			<Tag state={state}>{state === 0 ? '작성중' : state === 1 ? '작성완료' : state === 2 ? '보관' : ''}</Tag>
+			<InfoBox>
+				<div>
+					<p className="lastupdated" style={{ color: '#707070', margin: '5px 0px', fontSize: '15px' }}>
+						마지막 수정 일시: {updated_at}
+					</p>
+					{title !== 'MASTER' && (
+						<p className="lastupdated" style={{ color: '#FA7C79', margin: '0px 0px', fontSize: '15px' }}>
+							공고 마감 일시: {deadline} <span style={{ fontWeight: 'Bold' }}>({timeSinceUpdate})</span>
+						</p>
+					)}
+				</div>
+				<Tag state={state}>{state === 0 ? '작성중' : state === 1 ? '작성완료' : state === 2 ? '보관' : ''}</Tag>
+			</InfoBox>
 		</ListBox>
 	);
 };
@@ -30,6 +34,22 @@ const ListBox = styled.div`
 	position: relative;
 	margin: 15px 0px;
 	cursor: pointer;
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 310px;
+		height: auto;
+		padding: 16px 20px;
+		max-width: 100%;
+		padding: 10px 15px;
+		margin: 10px 0px;
+
+		h3 {
+			font-size: 18px;
+		}
+
+		p {
+			font-size: 12px;
+		}
+	}
 `;
 
 const Tag = styled.div`
@@ -66,4 +86,14 @@ const Tag = styled.div`
 				return '#FFF';
 		}
 	}};
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		position: static;
+	}
 `;
+
+const InfoBox = styled.div`
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+`

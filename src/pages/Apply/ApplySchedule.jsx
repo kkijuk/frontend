@@ -14,6 +14,12 @@ import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
 import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
 import useAuthRedirect from '../../stores/useAuthRedirect'; 
 import { getValidRecruitList } from '../../api/Apply/RecruitValid';
+import { theme } from '../../constants/theme';
+
+const PageWrapper = styled.div`
+  width: 100%;
+  overflow-x: hidden;
+`;
 
 const Title = styled.h1`
 	color: var(--black, #000);
@@ -23,6 +29,8 @@ const Title = styled.h1`
 	margin-top: 11px;
 	width: 820px;
 	margin-left: 18px;
+
+	}
 `;
 
 const TopSection = styled.div`
@@ -30,12 +38,30 @@ const TopSection = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 20px;
+
+	
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		flex-direction: column;
+		align-items: center;  
+		justify-content: center;
+	}
 `;
 
 const StatusContainer = styled.div`
 	display: flex;
 	align-items: center;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+		width: auto;
+		padding: 0 16px;      
+		box-sizing: border-box;
+		justify-content: center;
+		gap: 10px;
+		margin-bottom: 8px;
+		overflow-x: hidden;   
+	}
 `;
+
 
 export default function ApplySchedule() {
 	useAuthRedirect();
@@ -142,6 +168,7 @@ useEffect(() => {
 
 		fetchJobs();
 	}, []);
+	  
 
 	const handleJobClick = async (job) => {
 		try {
@@ -170,6 +197,7 @@ useEffect(() => {
 	const waitingJobs = jobs.filter((job) => job.status === 'UNAPPLIED' || job.status === 'PLANNED');
 
 	return (
+		<PageWrapper>
 		<Layout title="지원관리">
 			<TabMenu activeTab="schedule" onTabClick={() => navigate('/apply-status')} />
 			<TopSection>
@@ -185,5 +213,6 @@ useEffect(() => {
 			<AddJobButton onClick={() => setShowModal(true)} />
 			{showModal && <AddApplyModal onClose={() => setShowModal(false)} onSave={handleSaveRecruit} />}
 		</Layout>
+		</PageWrapper>
 	);
 }

@@ -17,6 +17,7 @@ import { CareertextEdit } from '../../api/Mycareer/CareerEdit';
 import { trackEvent } from '../../utils/ga4';
 import { formatDate } from '../../utils/formateDate';
 import CareerDetailDeleteModal from '../../components/Modal/CareerDetailDeleteModal';
+import { theme } from '../../constants/theme';
 
 const Container = styled.div`
 	display: flex;
@@ -24,6 +25,11 @@ const Container = styled.div`
 	align-items: center;
 	width: 100%;
 	height: 30px;
+	box-sizing: border-box;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		padding: 0 16px;
+	}
 `;
 
 const SearchIcon = styled.svg`
@@ -35,31 +41,43 @@ const SearchIcon = styled.svg`
 `;
 
 const CareerBoxContainer = styled.div`
-	width: 820px; /* 가로 스크롤을 위해 전체 너비 원래 100%..*/
+	width: 100%;
+	max-width: 820px;
 	height: 68px;
 	margin-top: 40px;
 	display: flex; /* 플렉스 박스를 사용 */
 	flex-wrap: nowrap; /* 줄 바꿈을 방지 */
 	gap: 10px; /* 박스 간격 */
-	overflow-x: hidden; /* 가로 스크롤 활성화 */
-	overflow-y: hidden; /* 세로 스크롤 방지 */
+	overflow-x: auto; /*가로 스크롤 활성화 */
+	overflow-y: hidden; /*세로 스크롤 방지 */
 	white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
 	position: relative; /* 제발*/
 
-	/*border: 1px solid black;
-	box-sizing: border-box;*/
+	box-sizing: border-box;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: 100%;
+		width: 100%;
+	}
 `;
 
 const CareerContentContainer = styled.div`
-	width: 720px;
-	height: ${(props) => (props.isEditing ? '175px' : '88px')}; /* 편집 상태에 따라 높이 변경 */
+	/*width: 720px;*/
+	width: 100%;
+	max-width: 720px;
+	height: ${(props) => (props.isEditing ? '175px' : 'auto')}; /* 편집 상태에 따라 높이 변경 원래 auto 대신 88*/
 	margin-top: 32px;
 	margin-bottom: 28px;
 
-	/*border: 1px solid black;
-	box-sizing: border-box;*/
-
+	box-sizing: border-box;
 	position: relative; /* 위치를 기준으로 자식 컴포넌트가 확장 */
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: 100%;
+		width: 100%;
+		height: auto;
+		padding: 0 16px;
+	}
 `;
 
 const TitleContainer = styled.div`
@@ -79,7 +97,25 @@ const TitleBox = styled.div`
 const IconWrapper = styled.div`
 	width: 30px;
 	height: 30px;
-	cursor: pointer; /* 클릭 가능한 아이콘 */
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	svg {
+		width: 30px;
+		height: 30px;
+	}
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 24px;
+		height: 24px;
+
+		svg {
+			width: 24px;
+			height: 24px;
+		}
+	}
 `;
 
 const Title = styled.div`
@@ -124,22 +160,39 @@ const Content = styled.div`
 `;
 
 const Line = styled.div`
-	width: 800px;
+	width: 100%;
+	max-width: 800px;
 	height: 6px;
 	margin-bottom: 2px; /*추가*/
-
 	background: var(--gray-03, #d9d9d9);
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: 100%;
+		width: 100%;
+		padding: 0 16px;
+	}
 `;
 
 const CareerListBox = styled.div`
-	width: 800px;
+	wideh: 100%;
+	max-width: 800px;
 	height: auto; /* 원래 560px */
 	/* overflow-y: auto; 삭제 */
 	overflow-x: hidden;
+
+	/*box-sizing: border-box;
+	border: 1px solid black;*/
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: 100%;
+		width: 100%;
+		padding: 0 16px;
+	}
 `;
 
 const CareerPlus = styled.button`
-	width: 720px;
+	max-width: 720px;
+	width: 100%;
 	height: 50px;
 	border-radius: 10px;
 	background: var(--main-01, #3aaf85);
@@ -147,9 +200,6 @@ const CareerPlus = styled.button`
 	color: white;
 	cursor: pointer;
 	position: sticky; /* fixed → absolute */
-
-	/*left: 50%;
-	transform: translateX(-50%);  중앙 정렬 */
 
 	left: 0;
 	right: 0;
@@ -173,20 +223,36 @@ const CareerPlus = styled.button`
 
 	background: ${(props) => (props.disabled ? 'var(--gray-03, #D9D9D9)' : 'var(--main-01, #3AAF85)')};
 	cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: 100%;
+		width: 100%;
+		box-sizing: border-box;ㄴ
+	}
 `;
 
 const EditActivityContent = styled.div`
-	width: 720px;
+	max-width: 720px;
+	width: 100%;
 	height: 106px;
 	box-sizing: border-box;
 
 	display: flex; /* 가로 배치 */
 	justify-content: space-between; /* 양쪽 끝에 배치 */
 	align-items: center; /* 세로 가운데 정렬 */
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		flex-direction: column;
+		align-items: stretch; /* 버튼 너비 100% */
+		height: auto;
+		gap: 16px;
+	}
 `;
 
 const Textbox = styled.textarea`
-	width: 625px;
+	max-width: 625px;
+	width: 100%;
 	height: 106px;
 	flex-shrink: 0;
 	padding: 10px; /* 텍스트 영역 내부 여백 */
@@ -196,15 +262,28 @@ const Textbox = styled.textarea`
 
 	border-radius: 10px;
 	background: #f5f5f5;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const EditBoxContainer = styled.div`
 	width: 80px;
-	height: 106px;
+	min-height: 106px;
 	gap: 6px;
 	display: flex;
 	flex-direction: column; /* 세로 배치 */
 	align-items: center; /* 버튼 가운데 정렬 */
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		min-height: auto;
+		height: auto;
+		flex-direction: row;
+		justify-content: space-between;
+		gap: 6px;
+	}
 `;
 
 const CancelButton = styled.button`
@@ -221,6 +300,11 @@ const CancelButton = styled.button`
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-basis: calc(50% - 3px);
+		height: 50px;
+	}
 `;
 
 const EditButton = styled.button`
@@ -239,6 +323,11 @@ const EditButton = styled.button`
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-basis: calc(50% - 3px);
+		height: 50px;
+	}
 `;
 
 const PageContainer = styled.div`
@@ -246,10 +335,16 @@ const PageContainer = styled.div`
 	flex-direction: column; /* 위에서 아래로 배치 */
 	align-items: center; /* 필요하면 가운데 정렬 */
 	width: 100%; /* 전체 너비 */
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		padding: 0 16px;
+		box-sizing: border-box;
+	}
 `;
 
 const NoContents = styled.div`
-	width: 600px;
+	max-width: 600px;
+	width: 100%;
 	height: 300px;
 	display: flex;
 	flex-direction: column;
@@ -264,10 +359,17 @@ const NoContents = styled.div`
 	line-height: normal;
 	text-align: center;
 	position: relative;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: 100%;
+		width: 100%;
+		padding: 0 16px;
+	}
 `;
 
 const ContentWrapper = styled.div`
 	display: flex;
+	gap: 16px;
 	align-items: center;
 	width: 100%; /* 부모 컨테이너 전체 너비 */
 `;

@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { theme } from '../../constants/theme';
 
 const StyledModal = styled.div`
-	display: ${(props) => (props.show ? 'block' : 'none')};
+	display: ${(props) => (props.show ? 'flex' : 'none')}; /* 중앙 정렬을 위해 flex 사용 */
+	justify-content: center;
+	align-items: center;
 	position: fixed;
 	z-index: 1;
 	left: 0;
@@ -11,17 +14,25 @@ const StyledModal = styled.div`
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.4);
 	z-index: 1000;
+	overflow: auto;
 
 	.modal-content {
 		background-color: #fefefe;
 		border-radius: 10px;
-		margin: 5% auto;
+		position: relative;
+		margin: 0; /* 기존 margin 제거 */
 		padding: 20px;
 		border: 2px solid #FFF;
 		width: 540px;
-		max-height: 80vh; /* 변경: 모달 콘텐츠 최대 높이 */
-		overflow-y: auto; /* 변경: 내부 스크롤 활성화 */
+		max-height: 80vh; 
+		overflow-y: auto; 
 		box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); 
+        -webkit-overflow-scrolling: touch;
+
+		 @media (max-width: ${theme.breakpoints.md}) {
+      width: 325px; 
+	  
+    }
 	}
 
 	.close {
@@ -53,6 +64,10 @@ const StyledModal = styled.div`
 		background-color: #fefefe;
 		padding: 8px 0;
 		z-index: 5;
+
+		@media (max-width: ${theme.breakpoints.md}) {
+      font-size: 20px;
+    }
 	}
 
 
@@ -62,12 +77,28 @@ const StyledModal = styled.div`
 		font-size: 14px;
 		font-weight: 400;
 		line-height: 1.5;
+		@media (max-width: ${theme.breakpoints.md}) {
+      font-size: 12px;
+    }
 	}
 `;
 
 
-const AgreementModal = ({ show, handleModal }) => (
-	<StyledModal show={show}>
+const AgreementModal = ({ show, handleModal }) => {
+	useEffect(() => {
+		if (show) {
+			document.body.style.overflow = ''; // 모달이 열릴 때 배경 스크롤 방지
+		} else {
+			document.body.style.overflow = ''; // 모달이 닫히면 원래대로
+		}
+
+		return () => {
+			document.body.style.overflow = '';
+		};
+	}, [show]);
+  
+	return (
+	  <StyledModal show={show}>
 		<div className="modal-content">
 			<span className="close" onClick={handleModal}>
 				&times;
@@ -422,5 +453,5 @@ const AgreementModal = ({ show, handleModal }) => (
 		</div>
 	</StyledModal>
 );
-
+};
 export default AgreementModal;

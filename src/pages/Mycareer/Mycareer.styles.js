@@ -6,7 +6,6 @@ export const Container = styled.div`
 	max-width: 820px;
 	margin: 0 auto;
 	background-color: white;
-	border-radius: 15px;
 	box-sizing: border-box;
 `;
 
@@ -37,7 +36,7 @@ export const SearchBox = styled.div`
 		flex-direction: column; /* 작은 화면에서는 세로로 정렬 */
 		align-items: flex-start; /* 왼쪽 정렬 */
 		height: auto; /* 높이 자동 조정 */
-		padding-left: 10px
+		padding: 0 20px;
 		margin-top: 20px; /* 위쪽 여백 조정 */
 	}
 `;

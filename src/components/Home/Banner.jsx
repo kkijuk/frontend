@@ -7,22 +7,35 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+//ver2
+
 const Container = styled.div`
-	width: 820px;
+	width: 100%; /*820*/
+	max-width: 820px;
 	height: 188px;
+
 	flex-shrink: 0;
 	border-radius: 10px;
-	background: var(--gray-05, #f1f1f1);
+	/*background: var(--gray-05, #f1f1f1);*/
 	z-index: 1;
+	overflow: hidden;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		height: auto;
+	}
 `;
 
-const Banner = styled.div``;
-
 const BannerImage = styled.img`
-	width: 820px;
-	height: 188px;
+	width: 100%; /*820*/
+	height: 188px; /*188*/
 	object-fit: cover;
 	cursor: pointer;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		height: auto; /* 자동으로 비율 유지 */
+		aspect-ratio: 820 / 188; /* 비율을 유지해주기 위해 */
+	}
 `;
 
 const BannerComponent = ({ banners }) => {

@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import CareerCategoryCircle from '../../Mycareer/CareerCategoryCircle';
 import { useNavigate } from 'react-router-dom';
+import { theme } from '../../../constants/theme';
+import { formateDateDashToDot } from '../../../utils/formateDate';
 
 const ActivityContainer = styled.div`
 	width: 100%;
@@ -8,22 +10,27 @@ const ActivityContainer = styled.div`
 	box-sizing: border-box;
 	padding: 0 15px;
 	display: grid;
-	grid-template-columns: repeat(2, 1fr); /* 기본적으로 2열 */
+	grid-template-columns: repeat(2, 1fr);
 	gap: 20px 50px;
 	margin-bottom: 32px;
 
-	@media (max-width: 600px) {
-		grid-template-columns: 1fr; /* 화면이 작아지면 1열로 변경 */
+	@media (max-width: ${theme.breakpoints.md}) {
+		grid-template-columns: 1fr;
+		gap: 15px;
+		padding: 0 10px;
+		margin-bottom: 24px;
 	}
 `;
 
 const ActivityContent = styled.div`
 	display: flex;
-	flex-direction: row; /* 기본적으로 세로로 쌓이도록 설정 */
+	align-items: center;
 	padding: 10px;
+	flex: 1;
+	min-width: 0; /* 텍스트 오버플로우 방지 */
 
-	@media (min-width: 600px) {
-		flex-direction: column; /* 화면이 커지면 가로로 배치 */
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding: 8px;
 	}
 `;
 
@@ -32,13 +39,19 @@ const ActivityBox = styled.div`
 	min-height: 52px;
 	display: flex;
 	align-items: center;
-	justify-content: space-between; /* 왼쪽, 오른쪽 정렬 */
+	justify-content: space-between;
 	padding: 0 10px;
 	background-color: white;
-	flex-shrink: 0;
 	border-radius: 10px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	cursor: pointer;
+	box-sizing: border-box;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding: 8px;
+		min-height: 45px;
+		flex-wrap: wrap; /* 필요시 줄바꿈 */
+	}
 `;
 
 const AcitivityDate = styled.div`
@@ -46,27 +59,38 @@ const AcitivityDate = styled.div`
 	text-align: right;
 	font-family: Pretendard;
 	font-size: 12px;
-	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
 	flex-shrink: 0;
 	margin-left: 10px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 11px;
+		margin-left: 8px;
+	}
 `;
 
 const ActivityCareerTitle = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
 	font-size: 16px;
-	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
 	margin-left: 5px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: -webkit-box;
-	-webkit-line-clamp: 2; /* 두 줄까지 표시 */
+	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
 	word-break: break-all;
+	flex: 1;
+	min-width: 0; /* 텍스트 오버플로우 방지 */
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 14px;
+		margin-left: 4px;
+		-webkit-line-clamp: 1; /* 모바일에서는 한 줄로 제한 */
+	}
 `;
 
 const NotExistSearch = styled.div`
@@ -76,6 +100,11 @@ const NotExistSearch = styled.div`
 	align-items: center;
 	padding: 20px;
 	padding-bottom: 40px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		padding: 15px;
+		padding-bottom: 30px;
+	}
 `;
 
 export default function MyCareerSearchTotalActivity({ activity, isActivityLoading }) {
@@ -104,8 +133,8 @@ export default function MyCareerSearchTotalActivity({ activity, isActivityLoadin
 								</ActivityCareerTitle>
 							</ActivityContent>
 							<AcitivityDate>
-								{activity.startdate} ~<br />
-								{activity.unknown === true ? 'ing' : activity.enddate}
+								{formateDateDashToDot(activity.startdate)} ~<br />
+								{activity.unknown === true ? 'ing' : formateDateDashToDot(activity.enddate)}
 							</AcitivityDate>
 						</ActivityBox>
 					))}

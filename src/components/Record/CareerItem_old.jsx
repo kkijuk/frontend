@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { editCareer } from '../../api/Mycareer/Career';
 import { KebabMenu1 } from './KebabMenu';
 import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
+import { theme } from '../../constants/theme';
 
 const CareerItem = ({ data, isLastItem, setIsOpen }) => {
 	// const today = new Date();
@@ -238,8 +239,9 @@ const EditButton = styled.button`
 	top:40px;
 	background-color: transparent;
 	opacity: 0;
-	// transition: opacity 0.2s ease;
+	transition: opacity 0.2s ease;
 	padding: 0px 50px 70px 0px;
+  }
 `;
 
 const Container = styled.div`
@@ -249,20 +251,12 @@ const Container = styled.div`
 	margin-bottom: 45px;
 	font-family: 'Regular';
 	position: relative;
-	&:hover ${EditButton} {
-		opacity: 1;
-		cursor: pointer;
-	}
 `;
 
 const FirstContainer = styled.div`
 	width: 100%;
 	display: flex;
 	position:relative;
-	&:hover ${EditButton} {
-		opacity: 1;
-		cursor: pointer;
-	}
 `;
 
 const LevelTag = styled.div`
