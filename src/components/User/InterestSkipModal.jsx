@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import MessageIcon from '../../assets/message.svg';
+import { theme } from '../../constants/theme';
 
 const Background = styled.div`
 	position: fixed;
@@ -26,6 +27,9 @@ const Modal = styled.div`
 	justify-content: center;
 	align-items: center;
 	text-align: center;
+	@media (max-width: ${theme.breakpoints.md}) {
+			width: 325px;
+		}
 `;
 
 /* 각자 수정하실 부분 - 모달 제목  */
@@ -37,6 +41,10 @@ font-size: 16px;
 font-style: normal;
 font-weight: 400;
 line-height: normal;
+
+@media (max-width: ${theme.breakpoints.md}) {
+      font-size: 14px;
+    }
 `;
 
 const ButtonContainer = styled.div`
@@ -59,6 +67,10 @@ const CancelButton = styled.button`
 	align-items: center;
 	justify-content: center;
 	margin-top: 5px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+      font-size: 14px;
+    }
 `;
 
 const ConfirmButton = styled.button`
@@ -74,6 +86,11 @@ const ConfirmButton = styled.button`
 	align-items: center;
 	justify-content: center;
 	margin-top: 5px;
+	color: #707070;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+      font-size: 14px;
+    }
 `;
 
 const Info = styled.div`
@@ -86,12 +103,21 @@ const Info = styled.div`
 	line-height: normal;
 
 	margin-top: 10px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+      font-size: 12px;
+    }
 `;
 
 const Icon = styled.img`
 	width: 24px;
 	height: 24px;
 	margin-bottom: 20px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+      width: 20px;
+	height: 20px;
+    }
 `;
 
 const ApplyDeleteModal = ({ onClose, onConfirm } /* 각자 수정하실 부분 함수 선언에 맞춰 이름을 변경해주세요 */) => (

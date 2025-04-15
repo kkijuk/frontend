@@ -6,6 +6,7 @@ import CalendarListView from './CalendarListView';
 import { getRecruitCalendar } from '../../api/Apply/RecruitCalendar';
 import { getRecruitListEndDate } from '../../api/Apply/RecruitEndDate';
 import { useNavigate } from 'react-router-dom';
+import { theme } from '../../constants/theme'; // theme import 추가
 
 const AdCalendarStyled = styled.div`
 	margin-bottom: 20px;
@@ -157,6 +158,32 @@ const StyledCalendar = styled(Calendar)`
 		color: inherit !important;
 		box-shadow: none !important;
 	}
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 360px;
+		font-size: 14px;
+		margin: 0 auto;
+
+		.react-calendar__tile {
+			width: 38px;
+			height: 45px;
+			font-size: 12px;
+		}
+
+		.react-calendar__month-view__weekdays {
+			font-size: 13px;
+			height: 36px;
+		}
+
+		.react-calendar__tile--active::before {
+			width: 22px;
+			height: 22px;
+		}
+	}
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    width: 320px;
+  }
 `;
 
 const DayIndicatorContainer = styled.div`
@@ -243,6 +270,10 @@ const NavigationText = styled.span`
 	flex-grow: 1;
 	text-align: center;
 	font-family: ExtraLight;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 14px;
+  }
 `;
 
 const CustomNavigation = ({ date, setDate }) => {

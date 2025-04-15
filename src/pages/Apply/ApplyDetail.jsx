@@ -140,6 +140,12 @@ const Container = styled.div`
 	padding: 24px 40px;
 	background-color: #fff;
 	border-radius: 8px; 
+	 @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 350px;
+	margin: 0 auto;      
+    position: static;     
+    right: unset;  
+	}
 `;
 
 const BackLink = styled(Link)`
@@ -150,6 +156,10 @@ const BackLink = styled(Link)`
 	margin-bottom: 20px;
 	text-decoration: none;
 	margin-left: 20px;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	margin-left: 0px; 
+	}
 `;
 
 const Title = styled.h1`
@@ -159,6 +169,10 @@ const Title = styled.h1`
 	font-weight: 700;
 	margin-bottom: 20px;
 	margin-left: 18px;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	margin-left: 0px; 
+	}
 `;
 
 const Header = styled.div`
@@ -181,6 +195,11 @@ const ListTitle = styled.div`
 	font-weight: 700;
 	margin-top: 16px;
 	margin-left: 70px;
+
+	 @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	margin-left: 0px;
+	white-space: nowrap;
+	}
 `;
 
 const EditDeleteContainer = styled.div`
@@ -203,7 +222,19 @@ const SubHeader = styled.div`
 	display: flex;
 	flex-direction: column;
 
-	
+	 @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 350px;
+	align-self: center;
+	margin-left: 0px; 
+	}
+`;
+const DateInfoContainer = styled.div`
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    flex-direction: column;
+    gap: 8px;
+	margin-bottom: -35px;
+  }
 `;
 
 const InfoLabelStart = styled.div`
@@ -214,6 +245,11 @@ const InfoLabelStart = styled.div`
 	position: absolute;
 	margin-left: 5px;
 	font-family: Bold;
+	 @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    position: static;     // absolute 해제
+    margin-left: 0;        // 왼쪽 마진 제거
+    margin-bottom: 10px;
+  }
 `;
 
 const InfoLabelEnd = styled.div`
@@ -224,6 +260,9 @@ const InfoLabelEnd = styled.div`
 	position: absolute;
 	margin-left: 300px;
 	font-family: Bold;
+	 @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    position: static;     // absolute 해제
+    margin-left: 0;        // 왼쪽 마진 제거
 `;
 
 const TagLabel = styled.div`
@@ -235,6 +274,11 @@ const TagLabel = styled.div`
 	margin-left: 6px;
 	font-family: Bold;
 	align-items: center;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-left: 0;        // 왼쪽 마진 제거
+
+  }
 `;
 
 const Tag = styled.div`
@@ -255,7 +299,10 @@ const Tag = styled.div`
 	color: var(--main-01, #3aaf85);
 	margin-left: 5px; 
 	margin-bottom: 5px; /* 줄바꿈 시 태그 간격을 위해 추가 */
-`;
+ @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	margin-bottom: -5px;
+  }
+	`;
 
 const DateText = styled.div`
 	color: ${({ isEndTime }) => (isEndTime ? 'red' : 'black')};
@@ -287,6 +334,12 @@ const ApplyButton = styled.div`
 	background: ${(props) => (props.hasLink ? 'white' : 'transparent')};
 	margin-left: 30px;
 	margin-bottom: -12px;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	margin-left: 0px; 
+	margin-right: 100px;
+	white-space: nowrap;
+	}
 `;
 
 const ApplyButtonText = styled.span`
@@ -310,11 +363,15 @@ const Button = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+
+	 @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    width: 350px;
 `;
 
 const EditIconStyled = styled(EditSvgIcon)`
 	cursor: pointer;
 	margin-right: 10px;
+	
 `;
 
 const DeleteIconStyled = styled(DeleteSvgIcon)`
@@ -350,6 +407,10 @@ const DropdownContainer = styled.div`
 	padding: 5px 10px;
 	color: white;
 	position: relative;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	margin-left: 0px;
+	}
 `;
 
 const Dropdown = styled.select`
@@ -543,6 +604,14 @@ const CountdownBox = styled.div`
     font-weight: 700;
     white-space: nowrap;
   }
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	position: static;
+    transform: none;
+    margin-top: 12px;
+    align-self: center;
+	width: 300px;
+	
+	}
 `;
 
 const StyledBackLink = styled(BackLink)`
@@ -569,7 +638,20 @@ const ApplyDetail = () => {
 	const [showReviewAdd, setShowReviewAdd] = useState(false);
 	const [gotoShow, setGotoShow] = useState(false);
 	const [timeLeft, setTimeLeft] = useState('');
+	const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
+	useEffect(() => {
+		const handleResize = () => setIsMobile(window.innerWidth < 768);
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	  }, []);
+
+	useEffect(() => {
+	  const handleResize = () => setIsMobile(window.innerWidth < 768);
+	  window.addEventListener('resize', handleResize);
+	  return () => window.removeEventListener('resize', handleResize);
+	}, []);
+	
 	const fetchJobDetails = async () => {
 		try {
 			const jobDetails = await getRecruitDetails(id);
@@ -843,6 +925,50 @@ const ApplyDetail = () => {
               지원공고 관리
             </StyledBackLink>
 			<Header>
+			{isMobile ? (
+        <>
+          <ListTitle>{job?.title}</ListTitle>
+
+          <DropdownAndDateContainer>
+            <DropdownContainer status={status}>
+              <Dropdown value={status} onChange={handleStatusChange}>
+                <option value="UNAPPLIED">미지원</option>
+                <option value="PLANNED">지원 예정</option>
+                <option value="APPLYING">진행 중</option>
+                <option value="ACCEPTED">합격</option>
+                <option value="REJECTED">불합격</option>
+              </Dropdown>
+              <DropdownIcon>▼</DropdownIcon>
+            </DropdownContainer>
+
+            {showCalendar ? (
+              <DateInputWrapper>
+                <DateInputField>지원 일자를 입력하세요</DateInputField>
+              </DateInputWrapper>
+            ) : applyDate ? (
+              <DateDisplay onClick={handleDateClick}>
+                지원일자: {applyDate.toLocaleDateString()}
+                <EditDateButton>수정</EditDateButton>
+              </DateDisplay>
+            ) : (
+              <DateInput onClick={handleDateClick}>지원한 날짜를 입력하세요.</DateInput>
+            )}
+          </DropdownAndDateContainer>
+
+          <div style={{ display: 'flex', gap: '10px', marginTop: '10px', marginBottom: '10px' }}>
+            <ApplyButton hasLink={Boolean(job?.link)} onClick={clickGotoApply}>
+              <ApplyButtonText>지원하러 가기</ApplyButtonText>
+              <SvgIcon hasLink={Boolean(job?.link)}>
+                <path d="M10.834 9.16732L17.6673 2.33398" />
+                <path d="M18.334 5.66602V1.66602H14.334" />
+                <path d="M9.16602 1.66602H7.49935C3.33268 1.66602 1.66602 3.33268 1.66602 7.49935V12.4993C1.66602 16.666 3.33268 18.3327 7.49935 18.3327H12.4993C16.666 18.3327 18.3327 16.666 18.3327 12.4993V10.8327" />
+              </SvgIcon>
+            </ApplyButton>
+            <EditSvgIcon onClick={handleEditClick} />
+            <DeleteSvgIcon onClick={handleDeleteClick} />
+          </div>
+        </>
+      ) : (
 				<TitleContainer>
 					<div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
 						<ListTitle>{job?.title}</ListTitle>
@@ -860,32 +986,36 @@ const ApplyDetail = () => {
 						<DeleteSvgIcon onClick={handleDeleteClick} />
 					</EditDeleteContainer>
 				</TitleContainer>
-				<DropdownAndDateContainer>
-					<DropdownContainer status={status}>
-						<Dropdown value={status} onChange={handleStatusChange}>
-							<option value="UNAPPLIED">미지원</option>
-							<option value="PLANNED">지원 예정</option>
-							<option value="APPLYING">진행 중</option>
-							<option value="ACCEPTED">합격</option>
-							<option value="REJECTED">불합격</option>
-						</Dropdown>
-						<DropdownIcon>▼</DropdownIcon>
-					</DropdownContainer>
-					{showCalendar ? (
-						<>
-							<DateInputWrapper>
-								<DateInputField>지원 일자를 입력하세요</DateInputField>
-							</DateInputWrapper>
-						</>
-					) : applyDate ? (
-						<DateDisplay onClick={handleDateClick}>
-							지원일자: {applyDate.toLocaleDateString()}
-							<EditDateButton>수정</EditDateButton>
-						</DateDisplay>
-					) : (
-						<DateInput onClick={handleDateClick}>지원한 날짜를 입력하세요.</DateInput>
-					)}
-				</DropdownAndDateContainer>
+				  )}
+				{/* 상태 + 지원일자 (모바일은 위쪽에 이미 렌더링함) */}
+{!isMobile && (
+  <DropdownAndDateContainer>
+    <DropdownContainer status={status}>
+      <Dropdown value={status} onChange={handleStatusChange}>
+        <option value="UNAPPLIED">미지원</option>
+        <option value="PLANNED">지원 예정</option>
+        <option value="APPLYING">진행 중</option>
+        <option value="ACCEPTED">합격</option>
+        <option value="REJECTED">불합격</option>
+      </Dropdown>
+      <DropdownIcon>▼</DropdownIcon>
+    </DropdownContainer>
+
+    {showCalendar ? (
+      <DateInputWrapper>
+        <DateInputField>지원 일자를 입력하세요</DateInputField>
+      </DateInputWrapper>
+    ) : applyDate ? (
+      <DateDisplay onClick={handleDateClick}>
+        지원일자: {applyDate.toLocaleDateString()}
+        <EditDateButton>수정</EditDateButton>
+      </DateDisplay>
+    ) : (
+      <DateInput onClick={handleDateClick}>지원한 날짜를 입력하세요.</DateInput>
+    )}
+  </DropdownAndDateContainer>
+)}
+
 				{showCalendar && (
 					<CalendarWrapper>
 						<Calendar
@@ -910,27 +1040,37 @@ const ApplyDetail = () => {
 					</CalendarWrapper>
 				)}
 				<SubHeader>
-		<InfoLabelStart>
-			접수 시작 <DateText>{formatDateTimeToLocal(job?.startTime)}</DateText>
-		</InfoLabelStart>
-		<InfoLabelEnd>
-			접수 마감 <DateText isEndTime>{formatDateTimeToLocal(job?.endTime)}</DateText>
-		</InfoLabelEnd>
-		{status === 'UNAPPLIED' && (
-      <CountdownBox>
-        <div className="label">마감까지</div>
-        <div className="time">{timeLeft}</div>
-      </CountdownBox>
-    )}
-	 <TagLabel>
-            태그
-            {job?.tags && job.tags.length > 0 &&
-                job.tags.map((tag, idx) => (
-                    <Tag key={idx} onClick={() => navigate(`/filter?tag=${encodeURIComponent(tag)}`)}>
-                        {tag}
-                    </Tag>
-                ))}
-        </TagLabel>
+				<DateInfoContainer>
+    <InfoLabelStart>
+      접수 시작 <DateText>{formatDateTimeToLocal(job?.startTime)}</DateText>
+    </InfoLabelStart>
+    <InfoLabelEnd>
+      접수 마감 <DateText isEndTime>{formatDateTimeToLocal(job?.endTime)}</DateText>
+    </InfoLabelEnd>
+  </DateInfoContainer>
+  {!isMobile && status === 'UNAPPLIED' && (
+    <CountdownBox>
+      <div className="label">마감까지</div>
+      <div className="time">{timeLeft}</div>
+    </CountdownBox>
+  )}
+
+  <TagLabel>
+    태그
+    {job?.tags?.map((tag, idx) => (
+      <Tag key={idx} onClick={() => navigate(`/filter?tag=${encodeURIComponent(tag)}`)}>
+        {tag}
+      </Tag>
+    ))}
+  </TagLabel>
+
+  {/*  모바일이면 여기로 위치 이동 */}
+  {isMobile && status === 'UNAPPLIED' && (
+    <CountdownBox>
+      <div className="label">마감까지</div>
+      <div className="time">{timeLeft}</div>
+    </CountdownBox>
+  )}
 </SubHeader>
 			</Header>
 

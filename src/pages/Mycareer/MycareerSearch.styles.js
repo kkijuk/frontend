@@ -12,6 +12,7 @@ export const Container = styled.div`
 export const SearchBox = styled.div`
 	width: 100%;
 	max-width: 820px;
+	height: 40px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -21,9 +22,10 @@ export const SearchBox = styled.div`
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		flex-direction: column; /* 작은 화면에서는 세로로 정렬 */
-		align-items: flex-start;
-		height: auto;
-		margin-top: 20px;
+		align-items: flex-start; /* 왼쪽 정렬 */
+		height: auto; /* 높이 자동 조정 */
+		padding: 0 20px;
+		margin-top: 20px; /* 위쪽 여백 조정 */
 	}
 `;
 
@@ -50,7 +52,7 @@ export const SearchQueryResult = styled.h1`
 
 export const BackgroundSection = styled.div`
 	width: 100vw;
-	min-height: 80vh;
+	min-height: 100vh;
 	background-color: #f0f0f0;
 	position: relative;
 	box-sizing: border-box;

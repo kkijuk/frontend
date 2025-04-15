@@ -9,15 +9,22 @@ const Container = styled.div`
 	display: flex;
 	gap: 12px;
 	width: 350px;
-	height: 114px;
 	padding: 20px 25px;
 	flex-direction: column;
 	align-items: flex-start;
 	gap: 10px;
 	flex-shrink: 0;
+	/*box-sizing: border-box;*/
 
 	border-radius: 10px;
 	background: var(--gray-06, #f5f5f5);
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		box-sizing: border-box;
+
+		padding: 20px 16px;
+	}
 `;
 
 const Title = styled.div`
@@ -37,26 +44,38 @@ const Box = styled.div`
 	flex-direction: column;
 	gap: 8px;
 
+	padding: 20px 24px;
+	box-sizing: border-box;
+
 	justify-content: center; // 가로 가운데 정렬
 	align-items: center; // 세로 가운데 정렬//추가
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const List = styled.div`
-	width: 310px;
+	width: 100%;
+	/*min-width: 310px;*/
 	height: 40px;
 	flex-shrink: 0;
 	border-radius: 4px;
 	border: 1px solid var(--gray-03, #d9d9d9);
 	background: var(--white, #fff);
 	padding: 0 20px;
+
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	cursor: pointer;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const ListText = styled.div`
-	color: var(--black, #000);
+	color: ${(props) => (props.empty ? '#d9d9d9' : 'var(--black, #000)')};
 	font-family: Pretendard;
 	font-size: 14px;
 	font-style: normal;
@@ -121,7 +140,7 @@ export default function Noti() {
 			if (isEmpty) {
 				return (
 					<List key={`empty-${index}`} onClick={() => handleClick(true)}>
-						<ListText>공고를 추가해 주세요</ListText>
+						<ListText empty>공고를 추가해 주세요</ListText>
 					</List>
 				);
 			}

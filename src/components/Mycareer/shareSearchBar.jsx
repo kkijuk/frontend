@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { trackEvent } from '../../utils/ga4';
+import { theme } from '../../constants/theme';
 
 const SearchBarContainer = styled.div`
 	display: flex;
@@ -16,7 +17,7 @@ const SearchBarContainer = styled.div`
 	width: 100%;
 	max-width: 400px;
 
-	@media (max-width: 768px) {
+	@media (max-width: ${theme.breakpoints.md}) {
 		max-width: 100%;
 		margin-left: 0;
 	}
@@ -31,9 +32,13 @@ const SearchInput = styled.input`
 	font-size: 17px;
 	color: #707070;
 	font-family: Light;
+	-webkit-text-size-adjust: 100%;
+	font-size-adjust: none;
 
-	@media (max-width: 480px) {
-		font-size: 15px;
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 16px;
+		-webkit-touch-callout: none;
+		-webkit-tap-highlight-color: transparent;
 	}
 `;
 

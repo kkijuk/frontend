@@ -32,7 +32,8 @@ const StepTwoContainer = styled.div`
     border-radius: 10px;
     background: #f5f5f5;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 700;
+    font-family: normal;
     color: #707070;
     cursor: pointer;
     transition: background 0.3s, color 0.3s;

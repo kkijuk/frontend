@@ -94,20 +94,7 @@ const NewSignup = () => {
     }
   }, [isProfileComplete, navigate]);
 
-  useEffect(() => {
-    const preventScroll = (e) => {
-      e.preventDefault();
-    };
-    const $body = document.querySelector('body');
-    $body.style.overflow = 'hidden'; // 스크롤바 숨기기
-    $body.addEventListener('wheel', preventScroll, { passive: false });
-    $body.addEventListener('touchmove', preventScroll, { passive: false });
-    return () => {
-      $body.removeEventListener('wheel', preventScroll);
-      $body.removeEventListener('touchmove', preventScroll);
-      $body.style.overflow = '';
-    };
-  }, []);
+  
 
   const handleAgreementChange = (key, value) => {
     setAgreements((prev) => ({ ...prev, [key]: value }));

@@ -14,6 +14,11 @@ const Box = styled.div`
 	gap: 14px;
 	padding: 24px 40px;
 	position: relative;
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 320px;
+	justify-content: center;
+	}
 `;
 
 const TitleWrapper = styled.div`
@@ -73,6 +78,10 @@ const Line = styled.div`
 	width: 800px;
 	height: 2px;
 	background: var(--gray-03, #d9d9d9);
+
+	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+	width: 350px;
+	}
 `;
 
 const EditIconStyled = styled.img`

@@ -3,14 +3,19 @@ import styled from 'styled-components';
 import ReactCalendar from './Calendar';
 import moment from 'moment';
 import TagBox from '../shared/TagBox';
-import { CareerDetailEdit } from '../../api/Mycareer/CareerDetailEdit';
-import { CareerDetailDelete } from '../../api/Mycareer/CareerDetailEdit';
+import { CareerDetailEdit, CareerDetailDelete } from '../../api/Mycareer/CareerDetailEdit';
 import CareerDetailDeleteModal from '../Modal/CareerDetailDeleteModal';
 
 const Box = styled.div`
-	height: 384px;
+	height: auto;
 	width: 800px;
 	padding: 24px 40px;
+	box-sizing: border-box;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		padding: 24px 20px;
+	}
 `;
 
 const Top = styled.div`
@@ -19,25 +24,43 @@ const Top = styled.div`
 	height: 79px;
 	width: 720px;
 	margin-top: 22px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-direction: column;
+		width: 100%;
+		height: 100%;
+		gap: 24px;
+	}
 `;
 
 const Middle = styled.div`
 	height: 142px;
 	width: 800px;
 	margin-top: 18px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const Button = styled.div`
 	height: auto;
 	display: flex;
-	gap: 15px;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 8px;
 	margin-bottom: 24px;
 `;
 
 const Title = styled.div`
+	flex: 1;
 	display: flex;
 	flex-direction: column;
 	margin-right: 20px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		margin-right: 0;
+	}
 `;
 
 const Date = styled.div`
@@ -47,6 +70,7 @@ const Date = styled.div`
 `;
 
 const DateBox = styled.div`
+	flex: 1;
 	border-radius: 10px;
 	cursor: pointer;
 	height: 50px;
@@ -60,6 +84,10 @@ const DateBox = styled.div`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const Label = styled.div`
@@ -90,10 +118,15 @@ const Cancel = styled.div`
 	font-weight: 500;
 	line-height: normal;
 	cursor: pointer;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: calc(50% - 7.5px);
+	}
 `;
 
 const Save = styled.div`
-	width: 555px;
+	width: 100%;
+	max-width: 555px;
 	height: 50px;
 	flex-shrink: 0;
 	border-radius: 10px;
@@ -109,14 +142,20 @@ const Save = styled.div`
 	font-weight: 500;
 	line-height: normal;
 	cursor: pointer;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: calc(50% - 7.5px);
+	}
 `;
 
 const Line = styled.div`
 	width: 800px;
 	height: 2px;
 	background: var(--gray-03, #d9d9d9);
-	position: relative; /* z-index를 적용하기 위해 position을 relative로 설정 */
-	z-index: 1; /* z-index 설정, 필요에 따라 값을 조정 */
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const Input = styled.input`
@@ -125,14 +164,18 @@ const Input = styled.input`
 	flex-shrink: 0;
 	height: ${(props) => props.height || 'auto'};
 	width: ${(props) => props.width || 'auto'};
-	border: none; /* 테두리를 없앰 */
+	border: none;
 	font-family: Pretendard;
 	font-size: 16px;
 	color: var(--black, #000);
-	padding: 15px 20px; /* 위아래 15px, 양옆 20px */
-	box-sizing: border-box; /* padding을 포함한 요소의 전체 크기를 설정된 width와 height에 맞춤 */
-	z-index: 1; /* z-index 추가 */
-	position: relative; /* z-index가 적용되도록 position 속성 추가 */
+	padding: 15px 20px;
+	box-sizing: border-box;
+	z-index: 1;
+	position: relative;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const TextArea = styled.textarea`
@@ -141,35 +184,32 @@ const TextArea = styled.textarea`
 	flex-shrink: 0;
 	height: ${(props) => props.height || 'auto'};
 	width: ${(props) => props.width || 'auto'};
-	border: none; /* 테두리를 없앰 */
+	border: none;
 	font-family: Pretendard;
 	font-size: 16px;
 	color: var(--black, #000);
-	padding: 15px 20px; /* 위아래 15px, 양옆 20px */
-	box-sizing: border-box; /* padding을 포함한 요소의 전체 크기를 설정된 width와 height에 맞춤 */
-	z-index: 1; /* z-index 추가 */
-	position: relative; /* z-index가 적용되도록 position 속성 추가 */
-	resize: none; /* 사용자가 텍스트 영역 크기 조절 못하도록 함 */
-	overflow-y: auto; /* 텍스트가 넘칠 경우 스크롤 생성 */
+	padding: 15px 20px;
+	box-sizing: border-box;
+	z-index: 1;
+	position: relative;
+	resize: none;
+	overflow-y: auto;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
+
 const ErrorMessage = styled.div`
 	color: var(--error, #ff7979);
 	font-family: Pretendard;
 	font-size: 14px;
-	font-style: normal;
 	font-weight: 500;
-	line-height: normal;
 	margin-top: 5px;
 `;
 
-const SaveBox = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center; /* 가운데 정렬 */
-`;
-
 const BlurContainer = styled.div`
-	position: fixed; /*원래 absolute*/
+	position: fixed;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
@@ -185,8 +225,14 @@ const BaseContainer = styled.div`
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-
 	z-index: 12;
+`;
+
+const ButtonRow = styled.div`
+	display: flex;
+	gap: 15px; /* 버튼 사이 간격 */
+	width: 100%;
+	justify-content: space-between;
 `;
 
 export default function DetailAddEdit({
@@ -203,41 +249,28 @@ export default function DetailAddEdit({
 	const [showCalendar, setShowCalendar] = useState(false);
 	const [selectedStartDate, setSelectedStartDate] = useState(initialStartDate || '');
 	const [selectedEndDate, setSelectedEndDate] = useState(initialEndDate || '');
-
 	const [title, setTitle] = useState(initialTitle);
 	const [contents, setContents] = useState(initialContents);
 	const [tagNames, setTagNames] = useState([]);
 	const [tagIds, setTagIds] = useState([]);
 	const [errorMessage, setErrorMessage] = useState('');
-	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 삭제 모달 상태 추가
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-	/*useEffect(() => {
-		// initialTags 배열의 tagName만 추출하여 tagNames 배열 생성
-		const extractedTagNames = initialTags.map((tag) => tag.tagName);
-		setTagNames(extractedTagNames);
-		console.log('initialTags:', initialTags);
-	}, [initialTags]); 아래로 수정*/
 	useEffect(() => {
-		// initialTags가 유효한 값인지 체크
 		if (initialTags && Array.isArray(initialTags) && initialTags.length > 0) {
 			const extractedTagNames = initialTags.map((tag) => tag.tagName);
 			setTagNames(extractedTagNames);
-			console.log('Passing to TagBox1:', extractedTagNames);
 		}
 	}, [initialTags]);
 
-	const handleDateClick = () => {
-		setShowCalendar(!showCalendar);
-	};
+	const handleDateClick = () => setShowCalendar(!showCalendar);
 
 	const handleDateChange = (date) => {
 		if (Array.isArray(date) && date.length === 2) {
-			// startDate와 endDate 분리
 			const [startDate, endDate] = date;
 			setSelectedStartDate(moment(startDate).format('YYYY-MM-DD'));
 			setSelectedEndDate(moment(endDate).format('YYYY-MM-DD'));
 		} else {
-			// 단일 날짜 선택 시 startDate만 설정
 			const formattedDate = moment(date).format('YYYY-MM-DD');
 			setSelectedStartDate(formattedDate);
 			setSelectedEndDate('');
@@ -245,36 +278,17 @@ export default function DetailAddEdit({
 		setShowCalendar(false);
 	};
 
-	const handleTitleChange = (event) => {
-		const inputText = event.target.value.slice(0, 30); // 30자 제한
-		setTitle(inputText);
-	};
-
-	const handleContentChange = (event) => {
-		const inputText = event.target.value.slice(0, 800); // 800자 제한
-		setContents(inputText);
-	};
-
 	const handleSave = async () => {
-		if (!title) {
-			setErrorMessage('제목을 입력해주세요.');
-			return;
-		}
-		if (!selectedStartDate) {
-			setErrorMessage('날짜를 선택해주세요.');
-			return;
-		}
-		if (!contents) {
-			setErrorMessage('입력한 내용이 없습니다.');
-			return;
-		}
+		if (!title) return setErrorMessage('제목을 입력해주세요.');
+		if (!selectedStartDate) return setErrorMessage('날짜를 선택해주세요.');
+		if (!contents) return setErrorMessage('입력한 내용이 없습니다.');
 
 		const data = {
 			title,
 			content: contents,
 			startDate: selectedStartDate,
-			endDate: selectedEndDate || null, // endDate 없으면 null
-			tagList: tagIds, // 태그의 id 리스트를 전송
+			endDate: selectedEndDate || null,
+			tagList: tagIds,
 		};
 
 		try {
@@ -287,16 +301,10 @@ export default function DetailAddEdit({
 		}
 	};
 
-	const handleCancel = () => {
-		// 삭제 모달 열기
-		setIsDeleteModalOpen(true);
-	};
-
 	const handleConfirmDelete = async () => {
-		// 삭제 API 호출
 		try {
 			await CareerDetailDelete(careerId, detailId);
-			setIsDeleteModalOpen(false); // 모달 닫기
+			setIsDeleteModalOpen(false);
 			onClose();
 			onUpdate();
 		} catch (error) {
@@ -306,23 +314,19 @@ export default function DetailAddEdit({
 
 	return (
 		<div>
-			<Line></Line>
+			<Line />
 			{isDeleteModalOpen && (
 				<BlurContainer>
 					<BaseContainer>
-						<CareerDetailDeleteModal
-							onCancel={() => setIsDeleteModalOpen(false)} // 취소 버튼 클릭 시 모달 닫기
-							onConfirm={handleConfirmDelete} // 삭제 버튼 클릭 시 삭제 수행
-						/>
+						<CareerDetailDeleteModal onCancel={() => setIsDeleteModalOpen(false)} onConfirm={handleConfirmDelete} />
 					</BaseContainer>
 				</BlurContainer>
 			)}
-
 			<Box>
 				<Top>
 					<Title>
 						<Label>제목</Label>
-						<Input height="50px" width="460px" value={title} onChange={handleTitleChange} />
+						<Input height="50px" width="460px" value={title} onChange={(e) => setTitle(e.target.value.slice(0, 30))} />
 					</Title>
 					<Date>
 						<Label>날짜</Label>
@@ -332,30 +336,29 @@ export default function DetailAddEdit({
 									? `${selectedStartDate} ~ ${selectedEndDate}`
 									: selectedStartDate
 								: '날짜를 선택하세요'}
-						</DateBox>{' '}
+						</DateBox>
 						{showCalendar && <ReactCalendar onChange={handleDateChange} />}
 					</Date>
 				</Top>
 				<Middle>
 					<Label>내용</Label>
-					<TextArea height="100px" width="720px" value={contents} onChange={handleContentChange} />
+					<TextArea
+						height="100px"
+						width="720px"
+						value={contents}
+						onChange={(e) => setContents(e.target.value.slice(0, 800))}
+					/>
 				</Middle>
-				{console.log('TagBox Props - externalTags:', tagNames)}
-
-				<TagBox
-					externalTags={tagNames}
-					externalSetTags={setTagNames}
-					onTagListChange={(ids) => setTagIds(ids)} // 태그 ID 리스트를 업데이트하는 콜백 함수
-				/>
+				<TagBox externalTags={tagNames} externalSetTags={setTagNames} onTagListChange={setTagIds} />
 				<Button>
-					<Cancel onClick={handleCancel}>삭제</Cancel>
-					<SaveBox>
+					<ButtonRow>
+						<Cancel onClick={() => setIsDeleteModalOpen(true)}>삭제</Cancel>
 						<Save onClick={handleSave}>저장</Save>
-						{errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-					</SaveBox>
+					</ButtonRow>
+					{errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
 				</Button>
 			</Box>
-			<Line></Line>
+			<Line />
 		</div>
 	);
 }

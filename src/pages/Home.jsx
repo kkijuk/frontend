@@ -7,11 +7,9 @@ import BannerComponent from '../components/Home/Banner';
 import Noti from '../components/Home/Noti';
 import CLNoti from '../components/Home/CLNoti';
 
-import RecommendBox from '../components/Home/RecommendBox';
 import { useNavigate } from 'react-router-dom';
 
 import CareerTimeline from '../components/Mycareer/CareerTimeline';
-import useAuthRedirect from '../stores/useAuthRedirect';
 import OnboardingModal from '../components/Modal/OnboardingModal';
 import { theme } from '../constants/theme';
 
@@ -21,19 +19,30 @@ const Container = styled.div`
 	gap: 32px;
 	flex-direction: column;
 	margin: 48px auto 48px;
+	width: 100%; /*얘랑 아랫줄 추가*/
+	max-width: 820px;
+	box-sizing: border-box;
 
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		margin: 24px auto;
+		padding: 0 16px;
+	}
 	/*border: 1px solid black;
 	box-sizing: border-box;*/
 `;
 
 const Top = styled.div`
-	width: 820px;
+	width: 100%;
+	max-width: 820px;
 	height: auto; /*160*/
 	display: flex;
 	gap: 20px;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+
 		flex-direction: column;
+		align-items: center;
 	}
 
 	/*border: 1px solid black;
@@ -49,6 +58,11 @@ const TopBox1 = styled.div`
 	align-items: center;
 	border-radius: 10px;
 	border: 1px solid var(--gray-03, #d9d9d9);
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		padding: 20px 0px;
+	}
 `;
 
 const TopBox2 = styled.div`
@@ -56,13 +70,19 @@ const TopBox2 = styled.div`
 	height: 160px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	border: 1px solid var(--gray-03, #d9d9d9);
+	/*border: 1px solid var(--gray-03, #d9d9d9); 수정*/
 	background: var(--white, #fff);
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		/*width: 368px;*/ //TopBox1과 맞춰주기
+		width: 100%;
+		/*max-width: 560px;*/
+	}
 `;
 
 const Middle = styled.div`
-	width: 820px;
-	height: 188px;
+	width: auto; /*820px*/
+	height: auto; /*기존 188px*/
+	max-width: 820px;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
@@ -73,7 +93,9 @@ const Middle = styled.div`
 `;
 
 const Bottom = styled.div`
-	width: 820px;
+	width: auto; /*820*/
+	max-width: 820px;
+
 	height: auto; /*194*/
 	display: flex;
 	flex-direction: column;
@@ -81,6 +103,10 @@ const Bottom = styled.div`
 
 	/*border: 1px solid black;
 	box-sizing: border-box;*/
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		align-items: center; /*가운데 정렬 */
+	}
 `;
 
 const BottomText = styled.div`
@@ -90,17 +116,23 @@ const BottomText = styled.div`
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
+\	align-self: flex-start;
 `;
 
 const ActivityBox = styled.div`
-	width: 820px;
+	width: auto; /*820*/
 	height: auto; /*194*/
 	display: flex;
 	justify-content: space-between;
+	gap: 16px;
+	box-sizing: border-box;
+
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
 		display: flex;
 		gap: 16px;
 		flex-direction: column;
+		/*align-items: center;  가운데 정렬 */
 	}
 `;
 

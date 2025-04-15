@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../assets/logo.png';
 import { logout } from '../api/Login/Logout'; 
+import { theme } from '../constants/theme';
 
 const HeaderWrapper = styled.div`
 	position: fixed;  
@@ -68,6 +69,13 @@ const Nav = styled.nav`
 			margin: 0 15px;
 			font-size: 18px;
 		}
+			
+	 @media (max-width: ${theme.breakpoints.md}) {
+    font-size: 16px;
+	margin-left: 30px;
+		margin-right: -10px;
+  }
+
 	}
 
 	li:hover {
@@ -87,7 +95,9 @@ const Nav = styled.nav`
 		left: 0;
 
 		@media (max-width: 855px) {
-			bottom: -24px;
+		height: 4px;
+		
+			bottom: -27px;
 		}
 	}
 `;
@@ -105,6 +115,12 @@ const UserProfileButton = styled.button`
 	align-items: center;
 	justify-content: center;
 	position: relative;
+
+	 @media (max-width: ${theme.breakpoints.md}) {
+      width: 30px;
+      height: 30px;
+	  margin-left: 33px;
+    }
 `;
 
 const DropdownMenu = styled.div`
@@ -144,6 +160,14 @@ const LogoContainer = styled.span`
 	align-items: center;
 	cursor: pointer;
 	margin-right: 45px;
+
+	img {
+    @media (max-width: ${theme.breakpoints.md}) {
+      width: 50px;
+      height: 25px;
+      margin-right: -53px;
+    }
+  }
 `;
 
 export default function Header() {

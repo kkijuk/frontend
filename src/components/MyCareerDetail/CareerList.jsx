@@ -4,15 +4,22 @@ import { useNavigate } from 'react-router-dom';
 import AbilityTag from './AbilityTag';
 import DetailAddEdit from './DetailAddEdit';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
+import { theme } from '../../constants/theme';
 
 const Box = styled.div`
 	display: flex;
-	width: 720px;
+	max-width: 720px;
 	flex-direction: column;
 	align-items: flex-start;
 	gap: 16px;
 	padding: 24px 40px;
 	position: relative;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		padding: 12px 15px;
+		box-sizing: border-box;
+	}
 `;
 
 const Title = styled.div`
@@ -58,6 +65,9 @@ const Line = styled.div`
 	width: 800px;
 	height: 2px;
 	background: var(--gray-03, #d9d9d9);
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: 100%;
+	}
 `;
 
 const SvgIcon = styled.svg`
@@ -67,6 +77,16 @@ const SvgIcon = styled.svg`
 	bottom: 24px;
 	right: 40px;
 	cursor: pointer;
+`;
+
+const AbilityTagWrapper = styled.div`
+	width: 100%;
+	padding-right: 40px; /* SvgIcon이 위치한 곳 만큼 패딩 줌 */
+	box-sizing: border-box;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		padding-right: 30px; /* 모바일에선 적절히 줄임 */
+	}
 `;
 
 export default function CareerList({ title, date, contents, detailTag, careerId, detailId, categoryEnName, onUpdate }) {
@@ -168,10 +188,9 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
 						<p key={index}>{line}</p>
 					))}
 				</Contents>
-				<AbilityTag
-					tags={detailTag.map((tag) => tag.tagName)}
-					onTagClick={handleTagClick} // 태그 클릭 이벤트 핸들러 추가
-				/>
+				<AbilityTagWrapper>
+					<AbilityTag tags={detailTag.map((tag) => tag.tagName)} onTagClick={handleTagClick} />
+				</AbilityTagWrapper>
 				<SvgIcon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" onClick={handleEditClick}>
 					<path
 						d="M0 15.8339V20H4.16609L16.4533 7.71282L12.2872 3.54673L0 15.8339ZM19.675 4.49104C20.1083 4.05777 20.1083 3.35787 19.675 2.92459L17.0754 0.324955C16.6421 -0.108318 15.9422 -0.108318 15.509 0.324955L13.4759 2.35801L17.642 6.52409L19.675 4.49104Z"
