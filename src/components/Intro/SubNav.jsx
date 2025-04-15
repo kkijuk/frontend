@@ -65,7 +65,7 @@ const BaseDiv = styled.div`
     position: relative;
 
     @media (max-width: ${theme.breakpoints.md}) {
-        margin-top: 30px;
+        margin-top: -10px;
         
     }
 `;
