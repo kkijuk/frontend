@@ -93,18 +93,20 @@ const TitleText = styled.div`
 	margin-top: 35px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
-		text-align: center;
-	}
+		 text-align: ${({ isApply }) => (isApply ? 'left' : 'center')};
+	     margin-left: 28px;
+		 }
 `;
 
 export default function Layout({ title, children, leftAsideContent, rightAsideContent }) {
+	const isApplyPage = title === '지원관리';
 	return (
 		<Wrapper>
 			<Container>
 				<LeftAside>{leftAsideContent}</LeftAside>
 				<Section>
 					<Top>
-						<TitleText>{title}</TitleText>
+					<TitleText isApply={isApplyPage}>{title}</TitleText>
 					</Top>
 					{children}
 				</Section>
