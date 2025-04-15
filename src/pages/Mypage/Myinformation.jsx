@@ -6,19 +6,28 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { fetchUserInfo, changeUserInfo, sendCode, verifyCode } from '../../api/Mypage/mypage';
 
+//추가
+import DateInput from '../../components/Modal/AddCareerModal/DateInput';
+
 const ContentBox = styled.div`
-	width: 450px;
+	width: 100%;
+	max-width: 450px;
 	height: auto;
 	margin-bottom: 36px;
 `;
 
 const TitleBox = styled.div`
-	width: 540px;
+	max-width: 540px;
+	width: 100%;
 	display: flex;
 	align-items: center; /* 수직 정렬 */
 
 	gap: 10px;
 	margin-bottom: 32px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const Tag = styled.div`
@@ -48,13 +57,27 @@ const ContentName = styled.div`
 `;
 
 const Box = styled.div`
-	width: 430px;
+	/*width: 430px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 
 	margin-left: 20px;
+	margin-bottom: 36px;*/
+
+	width: 100%;
+	max-width: 430px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-left: 20px;
 	margin-bottom: 36px;
+	box-sizing: border-box; /*추가*/
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		margin-left: 0;
+		box-sizing: border-box; /*추가*/
+	}
 `;
 
 const Content = styled.div`
@@ -91,6 +114,11 @@ const Container = styled.div`
 	align-items: center;
 	justify-content: center;
 	margin-top: 12px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		padding: 0 20px;
+	}
 `;
 
 //이메일 수정 클릭 시 나오는 컴포넌트
@@ -105,6 +133,11 @@ const InputContainer = styled.div`
 	/*가로 배치*/
 	display: flex;
 	align-items: center;
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-direction: column;
+		align-items: flex-start;
+		width: 280px;
+	}
 `;
 
 const EmailInput = styled.input`
@@ -124,8 +157,20 @@ const EmailInput = styled.input`
 	box-sizing: border-box;
 `;
 
+const EmailButtonGroup = styled.div`
+	display: flex;
+	gap: 6px;
+	margin-top: 8px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-direction: row;
+		width: 100%;
+	}
+`;
+
 const NumInput = styled.input`
-	width: 280px;
+	/*width: 280px;*/
+
 	height: 50px;
 	border-radius: 10px;
 	background: #f5f5f5;
@@ -164,6 +209,11 @@ const RequestButton = styled.button`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 137.5px;
+		margin-left: 0px;
+	}
 `;
 
 const CancelButton = styled.button`
@@ -186,6 +236,10 @@ const CancelButton = styled.button`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 137.5px;
+	}
 `;
 
 const VerifyButton = styled.button`
@@ -221,10 +275,29 @@ const PhoneBox = styled.div`
 	justify-content: flex-start; /* 수평 정렬 (필요에 따라 변경 가능) */
 	margin-left: 10px;
 	margin-bottom: 30px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-direction: column;
+		align-items: flex-start;
+	}
 `;
 
 const PhoneInput = styled.input`
-	width: 86px;
+	display: flex;
+	width: 280px;
+	height: 50px;
+	padding: 16px 20px;
+	align-items: center;
+	gap: 10px;
+	flex-shrink: 0;
+	box-sizing: border-box;
+	border: none;
+	border-radius: 10px;
+	background: #f5f5f5;
+`;
+/*const PhoneInput = styled.input`
+	max-width: 86px;
+	width: 100%;
 	height: 50px;
 	flex-shrink: 0;
 	border-radius: 10px;
@@ -240,12 +313,42 @@ const PhoneInput = styled.input`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		min-width: 60px;
+	}
+`;*/
+
+const BirthInput = styled.input`
+	display: flex;
+	width: 280px;
+	height: 50px;
+	padding: 16px 20px;
+	align-items: center;
+	gap: 10px;
+	flex-shrink: 0;
+
+	box-sizing: border-box;
+	border: none;
+
+	border-radius: 10px;
+	background: #f5f5f5;
+`;
+
+const PhoneButtonGroup = styled.div`
+	display: flex;
+	gap: 6px;
+	margin-top: 8px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-direction: row;
+		width: 100%;
+	}
 `;
 
 const ConfirmButton = styled.button`
 	display: flex;
 	width: 70px;
-	height: 35px;
+	height: 40px;
 	padding: 6px 10px;
 	justify-content: center;
 	align-items: center;
@@ -263,12 +366,16 @@ const ConfirmButton = styled.button`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 137.5px;
+	}
 `;
 
 const CancelButton2 = styled.button`
 	display: flex;
 	width: 70px;
-	height: 35px;
+	height: 40px;
 	padding: 6px 10px;
 	justify-content: center;
 	align-items: center;
@@ -286,6 +393,10 @@ const CancelButton2 = styled.button`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 137.5px;
+	}
 `;
 
 const Container1 = styled.div`
@@ -293,8 +404,16 @@ const Container1 = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	margin-bottom: 50px; /**/
+	width: 100%;
+	max-width: 820px;
+	padding: 0 40px;
+	margin: 0 auto;
 
-	margin-bottom: 30px;
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		padding: 0 16px;
+		box-sizing: border-box; /*추가*/
+	}
 `;
 
 const Text1 = styled.div`
@@ -339,6 +458,11 @@ const Button = styled.button`
 	font-style: normal;
 	font-weight: 500;
 	line-height: normal;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		margin: 30px auto 0 auto; /* 위쪽 마진 + 좌우 자동 정렬 */
+	}
 `;
 
 // 모달 배경 (뒤 어둡게 처리)
@@ -377,16 +501,22 @@ const DeleteAccount = styled.div`
 `;
 
 const Bottom = styled.div`
-	width: 464px;
-	height: 196px;
+	width: 100%;
+	max-width: 464px;
+	height: auto;
 	margin-top: 18px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const NumInputWrapper = styled.div`
 	position: relative;
 	display: flex;
 	align-items: center;
-	width: 280px; /* 기존 Input과 동일한 너비 */
+
+	width: 280px;
 `;
 
 const TimerText = styled.div`
@@ -417,6 +547,17 @@ const ErrorMessage = styled.p`
 	margin-top: 5px;
 `;
 
+const BirthButtonGroup = styled.div`
+	display: flex;
+	gap: 6px;
+	margin-top: 8px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		flex-direction: row;
+		width: 280px;
+	}
+`;
+
 export default function MyInformation() {
 	const [isEditingEmail, setIsEditingEmail] = useState(false);
 	const [isVerificationRequested, setIsVerificationRequested] = useState(false);
@@ -425,12 +566,14 @@ export default function MyInformation() {
 	const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
 
 	const [emailInput, setEmailInput] = useState('');
-	const [phoneInputs, setPhoneInputs] = useState({ part1: '', part2: '', part3: '' });
+	const [phoneInput, setPhoneInput] = useState('');
 	const [birthInputs, setBirthInputs] = useState({ year: '', month: '', day: '' });
 
 	const [prevEmail, setPrevEmail] = useState('');
-	const [prevPhoneInputs, setPrevPhoneInputs] = useState({ part1: '', part2: '', part3: '' });
 	const [prevBirthInputs, setPrevBirthInputs] = useState({ year: '', month: '', day: '' });
+	const [birthTimestamp, setBirthTimestamp] = useState(null);
+
+	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
 	const [marketingAgreed, setMarketingAgreed] = useState(false);
 
@@ -452,13 +595,17 @@ export default function MyInformation() {
 				setEmail(data.email);
 				setName(data.name);
 				setPhoneNumber(data.phoneNumber);
+				setPhoneInput(data.phoneNumber.replace(/-/g, '')); //하이픈 제거한 값 input에 넣어주기
 				setBirthDate(data.birthDate);
+				setBirthTimestamp(new Date(data.birthDate).getTime());
 				setSocialType(data.socialType);
 
 				// Set initial values for inputs
 				setEmailInput(data.email);
-				const [part1, part2, part3] = data.phoneNumber.split('-');
-				setPhoneInputs({ part1, part2, part3 });
+
+				//삭제!!
+				//const [part1, part2, part3] = data.phoneNumber.split('-');
+				//setPhoneInputs({ part1, part2, part3 });
 
 				const [year, month, day] = data.birthDate.split('-');
 				setBirthInputs({ year, month, day });
@@ -523,8 +670,9 @@ export default function MyInformation() {
 	const handleSave = async () => {
 		const marketingAgree = marketingAgreed ? 'BOTH' : 'NONE';
 
-		const formattedPhoneNumber = `${phoneInputs.part1}-${phoneInputs.part2}-${phoneInputs.part3}`;
-		const formattedBirthDate = `${birthInputs.year}-${birthInputs.month}-${birthInputs.day}`;
+		const onlyDigits = phoneInput.replace(/\D/g, '');
+		const formattedPhoneNumber = `${onlyDigits.slice(0, 3)}-${onlyDigits.slice(3, 7)}-${onlyDigits.slice(7)}`;
+		const formattedBirthDate = new Date(birthTimestamp).toISOString().slice(0, 10);
 
 		try {
 			await changeUserInfo(emailInput, formattedPhoneNumber, formattedBirthDate, marketingAgree);
@@ -549,12 +697,11 @@ export default function MyInformation() {
 
 	//  핸드폰 번호 수정
 	const handleEditPhone = () => {
-		setPrevPhoneInputs(phoneInputs); // 기존 값 백업
 		setIsEditingPhone(true);
 	};
 
 	const handleCancelEditPhone = () => {
-		setPhoneInputs(prevPhoneInputs); // 기존 값 복원
+		setPhoneInput(phoneNumber.replace(/-/g, '')); // 기존 번호 다시 설정
 		setIsEditingPhone(false);
 	};
 
@@ -576,34 +723,40 @@ export default function MyInformation() {
 
 	const handleSavePhone = () => {
 		const validPrefixes = ['010', '011', '012', '013', '014', '015', '016', '017', '018', '019'];
+		const onlyDigits = phoneInput.replace(/\D/g, ''); // 숫자만 추출
 
-		//모든 입력값이 비어있다면
-		if (!phoneInputs.part1 && !phoneInputs.part2 && !phoneInputs.part3) {
+		// 1. 비어있는 경우
+		if (!onlyDigits) {
 			setPhoneError('연락처를 입력해주세요.');
 			return;
 		}
 
-		//앞자리 유효성 검사 후 에러 메시지 표시
-		if (!validPrefixes.includes(phoneInputs.part1)) {
+		// 2. 길이 확인 (11자리여야 함)
+		if (onlyDigits.length !== 11) {
 			setPhoneError('올바른 연락처를 입력해주세요.');
 			return;
 		}
 
-		//길이 검사 (3-4-4 형식 체크)
-		if (phoneInputs.part1.length !== 3 || phoneInputs.part2.length !== 4 || phoneInputs.part3.length !== 4) {
+		// 3. 유효한 앞자리 확인
+		const prefix = onlyDigits.slice(0, 3);
+		if (!validPrefixes.includes(prefix)) {
 			setPhoneError('올바른 연락처를 입력해주세요.');
 			return;
 		}
 
-		//에러가 없으면 저장 진행
+		// 4. 에러 없음 → 저장 진행
 		setPhoneError('');
-		// 저장 로직 실행
-		console.log('연락처 저장:', phoneInputs);
+
+		// 포맷팅하여 실제 저장
+		const formatted = `${onlyDigits.slice(0, 3)}-${onlyDigits.slice(3, 7)}-${onlyDigits.slice(7)}`;
+		setPhoneNumber(formatted); // 화면 표시용
 		setIsEditingPhone(false);
+
+		console.log('연락처 저장:', formatted);
 	};
 
 	const handleSaveBirth = () => {
-		const formattedBirth = `${birthInputs.year}-${birthInputs.month}-${birthInputs.day}`;
+		const formattedBirth = new Date(birthTimestamp).toISOString().slice(0, 10);
 		setBirthDate(formattedBirth);
 		setIsEditingBirth(false);
 	};
@@ -671,10 +824,12 @@ export default function MyInformation() {
 						<EmailEditBox>
 							<InputContainer>
 								<EmailInput value={emailInput} onChange={(e) => setEmailInput(e.target.value)} />
-								<RequestButton onClick={handleRequestVerification}>
-									{isVerificationRequested ? '재전송' : '인증요청'}
-								</RequestButton>
-								<CancelButton onClick={handleCancelEditEmail}>취소</CancelButton>
+								<EmailButtonGroup>
+									<RequestButton onClick={handleRequestVerification}>
+										{isVerificationRequested ? '재전송' : '인증요청'}
+									</RequestButton>
+									<CancelButton onClick={handleCancelEditEmail}>취소</CancelButton>
+								</EmailButtonGroup>
 							</InputContainer>
 							{isVerificationRequested && (
 								<>
@@ -721,22 +876,11 @@ export default function MyInformation() {
 					{isEditingPhone ? (
 						<ContentBox>
 							<PhoneBox>
-								<div>
-									<PhoneInput
-										value={phoneInputs.part1}
-										onChange={(e) => setPhoneInputs({ ...phoneInputs, part1: e.target.value })}
-									/>
-									<PhoneInput
-										value={phoneInputs.part2}
-										onChange={(e) => setPhoneInputs({ ...phoneInputs, part2: e.target.value })}
-									/>
-									<PhoneInput
-										value={phoneInputs.part3}
-										onChange={(e) => setPhoneInputs({ ...phoneInputs, part3: e.target.value })}
-									/>
-								</div>
-								<ConfirmButton onClick={handleSavePhone}>확인</ConfirmButton>
-								<CancelButton2 onClick={handleCancelEditPhone}>취소</CancelButton2>
+								<PhoneInput value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)} />
+								<PhoneButtonGroup>
+									<ConfirmButton onClick={handleSavePhone}>확인</ConfirmButton>
+									<CancelButton2 onClick={handleCancelEditPhone}>취소</CancelButton2>
+								</PhoneButtonGroup>
 							</PhoneBox>
 							{phoneError && <ErrorMessage>{phoneError}</ErrorMessage>} {/* 에러 메시지 표시 */}
 						</ContentBox>
@@ -753,22 +897,15 @@ export default function MyInformation() {
 					{isEditingBirth ? (
 						<ContentBox>
 							<PhoneBox>
-								<div>
-									<PhoneInput
-										value={birthInputs.year}
-										onChange={(e) => setBirthInputs({ ...birthInputs, year: e.target.value })}
-									/>
-									<PhoneInput
-										value={birthInputs.month}
-										onChange={(e) => setBirthInputs({ ...birthInputs, month: e.target.value })}
-									/>
-									<PhoneInput
-										value={birthInputs.day}
-										onChange={(e) => setBirthInputs({ ...birthInputs, day: e.target.value })}
-									/>
-								</div>
-								<ConfirmButton onClick={handleSaveBirth}>확인</ConfirmButton>
-								<CancelButton2 onClick={handleCancelEditBirth}>취소</CancelButton2>
+								<DateInput
+									value={birthTimestamp}
+									onChange={(timestamp) => setBirthTimestamp(timestamp)}
+									disabled={false}
+								/>
+								<BirthButtonGroup>
+									<ConfirmButton onClick={handleSaveBirth}>확인</ConfirmButton>
+									<CancelButton2 onClick={handleCancelEditBirth}>취소</CancelButton2>
+								</BirthButtonGroup>
 							</PhoneBox>
 						</ContentBox>
 					) : (
