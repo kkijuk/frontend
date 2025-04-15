@@ -3,6 +3,7 @@ import styled from "styled-components";
 import CustomDropdown from "../CustomDropdown";
 import CustomDatePicker from "../CustomDatePicker";
 import { trackEvent } from "../../../utils/ga4";
+import { theme } from '../../../constants/theme';
 
 const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
@@ -130,43 +131,45 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
           onToggle={() => handleDropdownToggle("state")}
           isOpen={showEducationStatusDropdown}
         />
-        <DatePickerContainer>
-          <DatePickerInput
-            readOnly
-            type="text"
-            placeholder="입학년월"
-            value={formData.admissionDate}
-            onClick={() => handleDatePickerToggle("admissionDate")}
-          />
-          {showAdmissionDatePicker && (
-            <DatePickerWrapper>
-              <CustomDatePicker
-                value={formData.admissionDate}
-                onChange={(value) => handleDateChange("admissionDate", value)}
-                onClose={() => setShowAdmissionDatePicker(false)}
-              />
-            </DatePickerWrapper>
-          )}
-        </DatePickerContainer>
-        
-        <DatePickerContainer>
-          <DatePickerInput
-            readOnly
-            type="text"
-            placeholder="졸업년월"
-            value={formData.graduationDate}
-            onClick={() => handleDatePickerToggle("graduationDate")}
-          />
-          {showGraduationDatePicker && (
-            <DatePickerWrapper>
-              <CustomDatePicker
-                value={formData.graduationDate}
-                onChange={(value) => handleDateChange("graduationDate", value)}
-                onClose={() => setShowGraduationDatePicker(false)}
-              />
-            </DatePickerWrapper>
-          )}
-        </DatePickerContainer>
+        <PeriodWrapper>
+          <DatePickerContainer>
+            <DatePickerInput
+              readOnly
+              type="text"
+              placeholder="입학년월"
+              value={formData.admissionDate}
+              onClick={() => handleDatePickerToggle("admissionDate")}
+            />
+            {showAdmissionDatePicker && (
+              <DatePickerWrapper isGraduation={false}>
+                <CustomDatePicker
+                  value={formData.admissionDate}
+                  onChange={(value) => handleDateChange("admissionDate", value)}
+                  onClose={() => setShowAdmissionDatePicker(false)}
+                />
+              </DatePickerWrapper>
+            )}
+          </DatePickerContainer>
+          <p>~</p>
+          <DatePickerContainer>
+            <DatePickerInput
+              readOnly
+              type="text"
+              placeholder="졸업년월"
+              value={formData.graduationDate}
+              onClick={() => handleDatePickerToggle("graduationDate")}
+            />
+            {showGraduationDatePicker && (
+              <DatePickerWrapper isGraduation={true}>
+                <CustomDatePicker
+                  value={formData.graduationDate}
+                  onChange={(value) => handleDateChange("graduationDate", value)}
+                  onClose={() => setShowGraduationDatePicker(false)}
+                />
+              </DatePickerWrapper>
+            )}
+          </DatePickerContainer>
+        </PeriodWrapper>
 
 
         <ButtonRow>
@@ -255,11 +258,20 @@ const Container = styled.div`
   gap: 10px;
   position: relative;
   margin-bottom: 50px;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 270px;
+    height: 294px;
+    padding: 16px;
+  }
 `;
 
 const Row = styled.div`
   display: flex;
   gap: 20px;
+  @media (max-width: ${theme.breakpoints.md}) {
+    flex-direction: column;
+    gap: 12px;
+  }
 `;
 
 
@@ -281,6 +293,19 @@ const Input = styled.input`
   &::placeholder {
     color: #d9d9d9; /* Placeholder는 회색 */
   }
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 230px;
+    height: 17px;
+    padding: 12px 20px;
+  }
+  
+`;
+
+const PeriodWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  height: 41px;
 `;
 
 const DatePickerInput = styled.input.attrs({ type: "text" })`
@@ -295,6 +320,11 @@ const DatePickerInput = styled.input.attrs({ type: "text" })`
   color: black;
   border: ${(props) => (props.isActive ? "1px solid var(--gray-02, #707070)" : "none")};
   cursor:pointer;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 92.5px;
+    height: 17px;
+    padding: 12px 16px;
+  }
 `;
 
 const DatePickerWrapper = styled.div`
@@ -303,6 +333,10 @@ const DatePickerWrapper = styled.div`
   left: 0;
   z-index: 1000;
   transform: translateY(10px);
+  @media (max-width: ${theme.breakpoints.md}) {
+   top: 32.5px;
+   left: ${({ isGraduation }) => (isGraduation ? "-75px" : "0")};
+  }
 `;
 
 const DatePickerContainer = styled.div`
@@ -314,9 +348,13 @@ const ButtonRow = styled.div`
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
+  @media (max-width: ${theme.breakpoints.md}) {
+    gap: 12px;
+  }
 `;
 
 const Button = styled.button`
+  all: unset;
   width: 65px;
   height: 25px;
   border-radius: 10px;
@@ -327,5 +365,13 @@ const Button = styled.button`
 
   &:hover {
     opacity: 0.8;
+  }
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 89px;
+    height: 17px;
+    padding: 4px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;

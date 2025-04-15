@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { theme } from '../../constants/theme';
 
 const Toggle = ({ checked, onChange }) => {
 	return (
@@ -30,6 +31,9 @@ const ToggleContainer = styled.div`
 	position: relative;
 	width: 150px;
 	height: 35px;
+	@media (max-width: ${theme.breakpoints.md}) {
+		top: -199px;
+	}
 `;
 
 const ToggleCheckbox = styled.input`

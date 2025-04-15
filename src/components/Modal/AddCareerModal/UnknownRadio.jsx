@@ -31,7 +31,7 @@ const RadioWrapper = styled.div`
 
 const HiddenRadio = styled.input.attrs({ type: 'radio' })`
 	opacity: 0;
-	width: 0;
+	width: 0 !important;
 	height: 0;
 `;
 

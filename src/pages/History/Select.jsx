@@ -8,7 +8,7 @@ import { createIntro } from "../../api/Intro/intro";
 import AddApplyModal from "../../components/Modal/AddApplyModal";
 import LoadingSpinner from "../../components/shared/LoadingSpinner";
 import { trackEvent } from "../../utils/ga4";
-
+import { theme } from "../../constants/theme";
 
 const Select = () => {
   const navigate = useNavigate();
@@ -128,70 +128,78 @@ const Select = () => {
           onSave = {(id) => {handleAddApply(id)}}
       />}
       {isLoading && <LoadingSpinner message="자기소개서 생성 중 ..."/>}
-      <ContentWrapper>
-        {/* <div style={{height:'100px'}}/> */}
-        <h2>자기소개서를 작성할 공고를 선택해주세요.</h2>
-        <ListBox>
-          <ColumnHeaderSection>
-            <ColumnHeader style={{marginRight:'80px'}}>공고 이름</ColumnHeader>
-            <ColumnHeader style={{marginRight:'136px'}}>접수 마감</ColumnHeader>
-            <ColumnHeader style={{marginRight:'184px'}}>태그</ColumnHeader>
-            <ColumnHeader>공고 링크</ColumnHeader>
-          </ColumnHeaderSection>
+      <SectionPadding>
+        <ContentWrapper>
+          {/* <div style={{height:'100px'}}/> */}
+          <RecruitTitle isMobile={false}><h2>자기소개서를 작성할 공고를 선택해주세요.</h2></RecruitTitle>
+          <RecruitTitleWrapper style={{width:'280px'}}>
+            <RecruitTitle isMobile={true}>자기소개서를 작성할 공고를</RecruitTitle>
+            <RecruitTitle isMobile={true}>선택해주세요.</RecruitTitle>
+          </RecruitTitleWrapper>
+          <ListBox>
+            <ColumnHeaderSection>
+              <ColumnHeader style={{marginRight:'80px'}}>공고 이름</ColumnHeader>
+              <ColumnHeader style={{marginRight:'136px'}}>접수 마감</ColumnHeader>
+              <ColumnHeader style={{marginRight:'184px'}}>태그</ColumnHeader>
+              <ColumnHeader>공고 링크</ColumnHeader>
+            </ColumnHeaderSection>
 
-          <ListSection>
-            {recruitList.map((recruit) => (
-              <ListItem
-                key={recruit.id}
-                onClick={() => handleSelectJob(recruit.id)}
-                isSelected={selectedJob === recruit.id}
-              >
-                  <Title>
-                    {recruit.title.length > 20 ? `${recruit.title.slice(0, 20)}...` : recruit.title}
-                  </Title>
-                  <DueDate isUrgent={parseInt(calculateDaysLeft(recruit.endTime).replace("D-", "")) <= 7}>
-                    {calculateDaysLeft(recruit.endTime)}
-                  </DueDate>
-                  <TagContainer>
-                    {recruit.tags.map((tag) => (
-                      <Tag key={tag}>{tag}</Tag>
-                    ))}
-                  </TagContainer>
-                  <JobLinkBox 
-                    onClick={
-                      recruit.link
-                      ? (e) => { 
-                        e.stopPropagation(); 
-                        window.open(recruit.link, '_blank'); 
-                      }
-                      : undefined
-                   }
-                   disabled={!recruit.link}
-                  >
-                    공고 보러가기
-                    <SvgIcon name="jobLink" size={15} color="var(--gray-02, #707070)"/>
-                  </JobLinkBox>
-              </ListItem>
-            ))}
-          </ListSection>
-        </ListBox>
-        <AddNewJob onClick = {() => {
-          setIsModalOpen(true);
-          trackEvent('add_click', {
-            category: 'coverletter',
-            detail: 'add_recruit',
-            action_type: 'add',
-            label: '공고 추가',
-          });
-        }}>
-          + 새로운 공고 추가
-        </AddNewJob>
-        <NextButton
-          onClick={handleNextClick}
-          disabled = {!selectedJob}>
-          다음
-        </NextButton>
-      </ContentWrapper>
+            <ListSection>
+              {recruitList.map((recruit) => (
+                <ListItem
+                  key={recruit.id}
+                  onClick={() => handleSelectJob(recruit.id)}
+                  isSelected={selectedJob === recruit.id}
+                >
+                    <Header>
+                      <Title>
+                        {recruit.title.length > 20 ? `${recruit.title.slice(0, 20)}...` : recruit.title}
+                      </Title>
+                      <DueDate isUrgent={parseInt(calculateDaysLeft(recruit.endTime).replace("D-", "")) <= 7}>
+                        {calculateDaysLeft(recruit.endTime)}
+                      </DueDate>
+                    </Header>
+                    <TagContainer>
+                      {recruit.tags.map((tag) => (
+                        <Tag key={tag}>{tag}</Tag>
+                      ))}
+                    </TagContainer>
+                    <JobLinkBox 
+                      onClick={
+                        recruit.link
+                        ? (e) => { 
+                          e.stopPropagation(); 
+                          window.open(recruit.link, '_blank'); 
+                        }
+                        : undefined
+                    }
+                    disabled={!recruit.link}
+                    >
+                      공고 보러가기
+                      <SvgIcon name="jobLink" size={15} color="var(--gray-02, #707070)"/>
+                    </JobLinkBox>
+                </ListItem>
+              ))}
+            </ListSection>
+          </ListBox>
+          <AddNewJob onClick = {() => {
+            setIsModalOpen(true);
+            trackEvent('add_click', {
+              category: 'coverletter',
+              detail: 'add_recruit',
+              action_type: 'add',
+              label: '공고 추가',
+            });
+          }}>
+            + 새로운 공고 추가
+          </AddNewJob>
+          <NextButton
+            onClick={handleNextClick}
+            disabled = {!selectedJob}>
+            다음
+          </NextButton>
+        </ContentWrapper>
+      </SectionPadding>
       {/* <div style={{height:'500px'}}>dfawe</div> */}
     </Layout>
   )
@@ -199,15 +207,23 @@ const Select = () => {
 
 export default Select;
 
+const SectionPadding = styled.div`
+  width: 100%;
+  padding: 20px;
+`;
+
 const ContentWrapper = styled.div`
   width: 740px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 100%;
+  }
 `
 
 const ListBox = styled.div`
-  width: 100%;
+  width: 704px;
   height:409px;
   padding: 10px;
   display: flex;
@@ -217,12 +233,45 @@ const ListBox = styled.div`
   border: 1px solid var(--gray-03, #D9D9D9);
   font-family: Regular;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 100%;
+    padding: 20px 18px;
+  } 
 `
+const Header = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`
+
+const RecruitTitleWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+
+    font-family: 'Bold';
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 28.64px;
+`
+
+const RecruitTitle = styled.div`
+  display: ${(props) => (props.isMobile ? 'none' : 'block')};
+  @media (max-width: ${theme.breakpoints.md}) {
+    display: ${(props) => (props.isMobile ? 'block' : 'none')};
+    white-space: nowrap;
+  }
+`
+
 const ColumnHeaderSection = styled.div`
   width: 100%;
   display: flex;
   padding-left: 95px;
   margin-top:25px;
+  @media (max-width: ${theme.breakpoints.md}) {
+    display: none;
+  }
 `
 
 const ColumnHeader = styled.div`
@@ -237,7 +286,6 @@ const ColumnHeader = styled.div`
 `
 
 const ListSection = styled.div`
-  width: calc(100% - 10px);
   margin-top: 10px;
   // padding-top: 280px;
   display: flex;
@@ -268,8 +316,14 @@ const ListItem = styled.div`
   font-family: Regular;
   cursor: pointer;
 
-    & > div {
+  & > div {
     line-height: 28px; /* 텍스트가 높이 기준으로 수직 중앙 정렬 */
+  }
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    flex-direction: column;
+    height: auto;
+    gap: 12px;
   }
 `
 
@@ -362,6 +416,9 @@ const AddNewJob = styled.div`
   font-weight: 400;
   line-height: normal;
   cursor: pointer;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 100%;
+  }
 `
 
 const NextButton = styled.div`
@@ -382,4 +439,7 @@ const NextButton = styled.div`
   font-weight: 500;
   line-height: normal;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 100%;
+  }
 `

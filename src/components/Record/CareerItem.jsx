@@ -6,6 +6,7 @@ import { editCareerSummary } from '../../api/Mycareer/Career';
 import { KebabMenu1 } from './KebabMenu';
 import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
 import { trackEvent } from '../../utils/ga4';
+import { theme } from '../../constants/theme';
 
 const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 	// const today = new Date();
@@ -172,11 +173,18 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 										placeholder={detailPlaceHolder}
 										value = {detail}
 										onChange={(e) => setDetail(e.target.value)}
-										></DetailTextArea>
-									<DetailSaveButton
-										onClick={handleDetailSave}>
-										확인
-									</DetailSaveButton>
+									/>
+									<ButtonWrapper>
+										<DetailSaveButton
+											onClick={() => {setIsSummaryEditMode(false);}}
+											style={{backgroundColor:'#FFF', color:'#77AFF2', border: '1px solid var(--sub-bu, #77AFF2)'}}>
+											취소
+										</DetailSaveButton>
+										<DetailSaveButton
+											onClick={handleDetailSave}>
+											확인
+										</DetailSaveButton>
+									</ButtonWrapper>
 								</DetailWrapper>
 							) : (
 								<>
@@ -206,6 +214,12 @@ const TimeLine = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	margin: 0px 70px 0px 30px;
+	height: auto;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		margin: 0px 24px 0px 20px;
+		height: auto;
+	}
 `;
 
 const Oval = styled.div`
@@ -247,16 +261,27 @@ const Oval = styled.div`
 									: props.category === '기타'
 										? '3px solid #707070'
 										: '#000000'};
+		@media (max-width: ${theme.breakpoints.md}) {
+			width: 16px;
+			height: 16px;
+		}
     }
 `;
 
 const Line = styled.div`
 	width: 2px;
-	height: ${(props) => (props.isSummaryEditMode ? '220px' : '166px')};
+	flex-grow: 1;
+	// height: ${(props) => (props.isSummaryEditMode ? '220px' : '166px')};
+	// height: 100%;
 	border-top: none;
 	border-right: none;
 	border-bottom: none;
-	margin-left: 11px;
+	margin-left: 9.5px;
+	@media (max-width: ${theme.breakpoints.md}) {
+		margin-left: 9.5px;
+		// height: ${(props) => (props.isSummaryEditMode ? '303px' : '166px')};
+		// height: 100%;
+	}
 	border-left: ${(props) =>
 		props.isLastItem
 			? 'none'
@@ -304,6 +329,7 @@ const EditButton = styled.button`
 
 const Container = styled.div`
 	display: flex;
+	height: auto;
 	flex-direction: row;
 	margin-bottom: 45px;
 	font-family: 'Regular';
@@ -315,15 +341,6 @@ const Container = styled.div`
 	}
 `;
 
-const FirstContainer = styled.div`
-	width: 100%;
-	display: flex;
-	position:relative;
-	&:hover ${EditButton} {
-		opacity: 1;
-		cursor: pointer;
-	}
-`;
 
 const LevelTag = styled.div`
 	width: 80px;
@@ -352,6 +369,13 @@ const LevelTag = styled.div`
 	align-items: center;
 	justify-content: center;
 	line-height: 25px;
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 12px;
+		width: 70px;
+		height: 16px;
+		padding: 4px 10px;
+		font-weight: 700;
+	};
 `;
 
 const SchoolInfo = styled.div`
@@ -363,12 +387,19 @@ const SchoolName = styled.div`
 	font-size: 20px;
 	font-weight: bold;
 	margin-bottom: 5px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 16px;
+	}
 `;
 
 const Department = styled.div`
 	font-size: 14px;
 	color: #333;
 	margin-bottom: 5px;
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 14px;
+	}
 `;
 
 const Dates = styled.div`
@@ -391,6 +422,9 @@ const DetailLabel = styled.div`
 	font-weight: 600;
 	margin-right: 30px;
 	flex-shrink: 0;
+	@media (max-width: ${theme.breakpoints.md}) {
+		margin-right: 20px;
+	}
 `
 
 const DetailWrapper = styled.div`
@@ -398,6 +432,9 @@ const DetailWrapper = styled.div`
 	flex-direction: row;
 	align-items: flex-start;
 	// margin-top: 10px;
+	@media (max-width: ${theme.breakpoints.md}) {
+		flex-direction: column;
+	}
 `
 
 const DetailTextArea = styled.textarea`
@@ -416,9 +453,23 @@ const DetailTextArea = styled.textarea`
 		font-size: 16px;
 		white-space: pre-line;
 	}
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 205px;
+		height: 119px;
+		padding: 16px;
+		font-size: 14px;
+		margin-bottom: 15px;
+	}
+`
+
+const ButtonWrapper = styled.div`
+	display: flex;
+	flex-direction: row;
+	gap: 12px;
 `
 
 const DetailSaveButton = styled.button`
+	all: unset;
 	width: 67px;
 	height: 96px;
 	margin-left: 10px;
@@ -434,4 +485,22 @@ const DetailSaveButton = styled.button`
 	font-size: 12px;
 	color: white;
 	cursor: pointer;
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 72.5px;
+		height: 17px;
+		padding: 4px 20px;
+		font-size: 14px;
+		border-radius: 10px;
+		margin-left: 0px;
+	}
 `
+const FirstContainer = styled.div`
+	width: 100%;
+	height: auto;
+	display: flex;
+	position:relative;
+	&:hover ${EditButton} {
+		opacity: 1;
+		cursor: pointer;
+	}
+`;

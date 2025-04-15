@@ -15,6 +15,7 @@ import { Form } from 'react-router-dom';
 import moment from 'moment'; // moment 라이브러리 임포트(세연)
 import DeletePopup from './DeletePopup';
 import { trackEvent } from '../../../utils/ga4';
+import { theme } from '../../../constants/theme';
 
 const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 	const navigate = useNavigate();
@@ -214,12 +215,12 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						</FormItem>
 
 						{/* 시작날짜 */}
-						<FormItem>
+						<FormItem isPeriod={true}>
 							<DateInput value={startdate} onChange={setStartdate} />
 							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
 						</FormItem>
 						{/* 종료날짜 */}
-						<FormItem>
+						<FormItem isPeriod={true}>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
 							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
@@ -297,12 +298,12 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						</FormItem>
 
 						{/* 시작날짜 */}
-						<FormItem>
+						<FormItem isPeriod={true}>
 							<DateInput value={startdate} onChange={setStartdate} />
 							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
 						</FormItem>
 						{/* 종료날짜 */}
-						<FormItem>
+						<FormItem isPeriod={true}>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
 							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
@@ -392,12 +393,12 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						</FormItem>
 
 						{/* 시작날짜 */}
-						<FormItem>
+						<FormItem isPeriod={true}>
 							<DateInput value={startdate} onChange={setStartdate} />
 							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
 						</FormItem>
 						{/* 종료날짜 */}
-						<FormItem>
+						<FormItem isPeriod={true}>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
 							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
@@ -476,12 +477,12 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						</FormItem>
 
 						{/* 시작날짜 */}
-						<FormItem>
+						<FormItem isPeriod={true}>
 							<DateInput value={startdate} onChange={setStartdate} />
 							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
 						</FormItem>
 						{/* 종료날짜 */}
-						<FormItem>
+						<FormItem isPeriod={true}>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
 							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
@@ -575,12 +576,12 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						</FormItem>
 
 						{/* 시작날짜 */}
-						<FormItem>
+						<FormItem isPeriod={true}>
 							<DateInput value={startdate} onChange={setStartdate} />
 							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
 						</FormItem>
 						{/* 종료날짜 */}
-						<FormItem>
+						<FormItem isPeriod={true}>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
 							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
@@ -655,12 +656,12 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						</FormItem>
 
 						{/* 시작날짜 */}
-						<FormItem>
+						<FormItem isPeriod={true}>
 							<DateInput value={startdate} onChange={setStartdate} />
 							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
 						</FormItem>
 						{/* 종료날짜 */}
-						<FormItem>
+						<FormItem isPeriod={true}>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
 							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
@@ -744,12 +745,12 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 						</FormItem>
 
 						{/* 시작날짜 */}
-						<FormItem>
+						<FormItem isPeriod={true}>
 							<DateInput value={startdate} onChange={setStartdate} />
 							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
 						</FormItem>
 						{/* 종료날짜 */}
-						<FormItem>
+						<FormItem isPeriod={true}>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
 							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
 							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
@@ -993,6 +994,14 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		onClose();
 	};
 
+	// 모달 열릴 때마다 스크롤 잠금
+	useEffect(() => {
+		document.body.style.overflow = 'hidden';
+		return () => {
+			document.body.style.overflow = 'unset';
+		};
+	}, []);
+
 	return (
 		<ModalBackground>
 			{/* 삭제 팝업 */}
@@ -1006,10 +1015,12 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				/>
 			)}
 			<ModalContainer>
-				<CloseButton onClick={onClose}>
-					<SvgIcon name="close" size={20} color="#999" />
-				</CloseButton>
-				<h1 style={{ textAlign: 'center' }}>{isEditMode ? '활동 수정' : '활동 추가'}</h1>
+				<Header>
+					<CloseButton onClick={onClose}>
+						<SvgIcon name="close" size={20} color="#999" />
+					</CloseButton>
+					<ModalTitle style={{ textAlign: 'center' }}>{isEditMode ? '활동 수정' : '활동 추가'}</ModalTitle>
+				</Header>
 				<ButtonContainer>
 					{Object.keys(categoryMap).map((key) => (
 						<CategoryButton
@@ -1070,6 +1081,9 @@ const ModalForm = styled.form`
 	&::-webkit-scrollbar {
 		display: none; /* Chrome, Safari, Opera */
 	}
+	@media (max-width: ${theme.breakpoints.md}) {
+		column-gap: 30px;
+	};
 `;
 
 // 전체 너비를 차지하는 폼 요소 (활동명, 별칭 등)
@@ -1085,12 +1099,20 @@ const FormItem = styled.div`
 	// width: 560px;
 	position: relative;
 
+	@media (max-width: ${theme.breakpoints.md}) {
+		grid-column: ${(props) => (props.isPeriod ? 'span 1' : 'span 2')}; 
+	}
+
 	label {
 		margin-bottom: 8px;
 		margin-top: 22px;
 		font-size: 18px;
 		// font-weight: 400;
 		font-family: 'SemiBold';
+		@media (max-width: ${theme.breakpoints.md}) {
+			font-size: 16px;
+			font-weight: 400;
+		}
 	}
 	input {
 		height: 30px;
@@ -1101,15 +1123,26 @@ const FormItem = styled.div`
 		border-radius: 10px;
 		background: #f5f5f5;
 		// width: 100%;
+		@media (max-width: ${theme.breakpoints.md}) {
+			width: ${(props) => (props.isPeriod ? '140px' : '333px')};
+			font-size: 14px;
+		}
 	}
 `;
 
 const ButtonContainer = styled.div`
 	display: flex;
+	flex-direction: row;
 	width: 100%;
 	gap: 10px; /* 버튼들 간의 간격 설정 */
 	justify-content: space-between; /* 버튼을 가운데 정렬 */
-	flex-wrap: wrap; /* 버튼들이 화면에 맞지 않을 경우 줄바꿈 처리 */
+	// flex-wrap: wrap; /* 버튼들이 화면에 맞지 않을 경우 줄바꿈 처리 */
+	@media (max-width: ${theme.breakpoints.md}) {
+		flex-direction: row;
+		white-space: nowrap;
+		overflow-x: auto;
+		gap: 12px;
+	}
 `;
 
 const CategoryButton = styled.button`
@@ -1132,6 +1165,21 @@ const CategoryButton = styled.button`
 		outline: none;
 	}
 `;
+
+const ModalBackground = styled.div`
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 999;
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 100%;
+		height: 100%;
+	}
+`;
+
 const ModalContainer = styled.div`
 	position: fixed;
 	top: 50%;
@@ -1149,22 +1197,18 @@ const ModalContainer = styled.div`
 	align-items: center;
 	justify-content: space-between;
 
-	@media (max-width: 768px) {
+	@media (max-width: ${theme.breakpoints.md}) {
+		${ModalBackground} {
+			background-color: transparent; // 배경 비활성화
+		}
+
 		width: 100%;
-		max-height: 90%;
-		overflow-y: auto;
+		height: 100%;
+		border-radius: 0;
+		justify-content: center;
 	}
 `;
 
-const ModalBackground = styled.div`
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.5);
-	z-index: 999;
-`;
 
 const SaveButton = styled.button`
 	width: 580px;
@@ -1180,6 +1224,9 @@ const SaveButton = styled.button`
 	margin-top: 30px;
 	font-size: 18px;
 	font-family: 'Regular';
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 100%;
+	}
 `;
 
 const DeleteButton = styled.button`
@@ -1199,6 +1246,25 @@ const DeleteButton = styled.button`
 	font-family: 'Regular';
 `;
 
+const Header = styled.div`
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		position: relative;
+	}
+`
+
+const ModalTitle = styled.h2`
+	font-size: 28px;
+	font-family: 'Bold';
+	margin-bottom: 20px;
+	text-align: center;
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 24px;
+	}
+`;
+
 const CloseButton = styled.button`
 	position: absolute;
 	top: 20px;
@@ -1209,6 +1275,13 @@ const CloseButton = styled.button`
 	font-weight: bold;
 	cursor: pointer;
 	color: #999999;
+	@media (max-width: ${theme.breakpoints.md}) {
+		position: relative;
+		// top: -100px;
+		width: 100%;
+		display: flex;
+		justify-content: right;
+	}
 `;
 
 const ErrorText = styled.div`

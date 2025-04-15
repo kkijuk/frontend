@@ -28,6 +28,7 @@ import useAuthRedirect from '../../stores/useAuthRedirect';
 import { trackEvent } from '../../utils/ga4';
 import { isEqual } from 'lodash';
 import { useDebounce } from 'use-debounce';
+import { theme } from '../../constants/theme'; 
 
 const History = () => {
     useAuthRedirect();
@@ -75,6 +76,8 @@ const History = () => {
 		FOREIGNLANGUAGE: skills.filter(skill => skill.skillTag === 'FOREIGNLANGUAGE'),
 		ETC: skills.filter(skill => skill.skillTag === 'ETC'),
 	};
+	const URLSection = files.filter(item => item.fileType === 'URL');
+	const fileSection = files.filter(item => item.fileType === 'File');
 
 	// useState
 	const [showCreateButton, setShowCreateButton] = useState(false); // 이력서 생성 여부
@@ -224,7 +227,7 @@ const History = () => {
 				</CreateRecordButton>
 			) : (
 
-					<div style={{width:'100%', minHeight:'100vh'}}>
+					<div style={{width:'100%', minHeight:'100vh',}}>
 						{/* <AddCareerModal></AddCareerModal> */}
 						<ScrollNavigatorContainer>
 							<ScrollNavigator
@@ -240,58 +243,57 @@ const History = () => {
 								onClose={() => setIsCareerModalOpen(false)}
 							/>
 						}
-						<div style={{display:'flex', marginBlock:'30px'}}>
-						{/* <ProfileBox/> */}
-						<div
-							id = {sections[0].id}	
-							key = {sections[0].id}	
-						/>
-						<Profile
-							profileKeyName={profileImageUrl}
-							onProfileChange={handleProfileChange}
-						/>
-						<UserInfoWrapper>
-							<div style={{width:'100%'}}>
-								<UpdatedAt>마지막 수정 일시: {updated_at}</UpdatedAt>
-							</div>
-							<InfoTable>
-								<InfoLabel>이름</InfoLabel>
-								<InfoValue>{name}</InfoValue>
+						<UserDetailsContainer>
+							<div
+								id = {sections[0].id}	
+								key = {sections[0].id}	
+							/>
+							<UpdatedAt>마지막 수정 일시: {updated_at}</UpdatedAt>
+							<ProfileAndInfoWrapper>
+								<Profile
+									profileKeyName={profileImageUrl}
+									onProfileChange={handleProfileChange}
+								/>
+								<UserInfoWrapper>
+									<InfoTable>
+										<InfoLabel>이름</InfoLabel>
+										<InfoValue>{name}</InfoValue>
 
-								<InfoLabel>생년월일</InfoLabel>
-								<InfoValue>{birthday}</InfoValue>
+										<InfoLabel>생년월일</InfoLabel>
+										<InfoValue>{birthday}</InfoValue>
 
-								<InfoLabel>전화번호</InfoLabel>
-								<InfoValue>{phone}</InfoValue>
+										<InfoLabel>전화번호</InfoLabel>
+										<InfoValue>{phone}</InfoValue>
 
-								<InfoLabel>이메일</InfoLabel>
-								{/* <InfoValue>
-									<EmailAndAddress
-										type="email"
-										userData={email}
-										onSave={(data) => handleEmailOrAddressChange(data)}
-									/>
-								</InfoValue> */}
-								<InfoValue>{email}</InfoValue>
+										<InfoLabel>이메일</InfoLabel>
+										{/* <InfoValue>
+											<EmailAndAddress
+												type="email"
+												userData={email}
+												onSave={(data) => handleEmailOrAddressChange(data)}
+											/>
+										</InfoValue> */}
+										<InfoValue>{email}</InfoValue>
 
-								<InfoLabel>주소</InfoLabel>
-								<InfoValue>
-									<EmailAndAddress
-										type="address"
-										userData={address}
-										onSave={(data) => handleEmailOrAddressChange(data)}
-									/>
-								</InfoValue>
-							</InfoTable>
-						</UserInfoWrapper>
-						</div>
+										<InfoLabel>주소</InfoLabel>
+										<InfoValue>
+											<EmailAndAddress
+												type="address"
+												userData={address}
+												onSave={(data) => handleEmailOrAddressChange(data)}
+											/>
+										</InfoValue>
+									</InfoTable>
+								</UserInfoWrapper>
+							</ProfileAndInfoWrapper>
+						</UserDetailsContainer>
 						<Line></Line>
 						<SectionWrapper>
 							<SectionHeader
 								id = {sections[1].id}
 								key = {sections[1].id}
 							>
-								<h2>학력</h2>
+								<SectionTitle>학력</SectionTitle>
 								<AddButton onClick={() => {
 									trackEvent('add_click', {
 										category: 'resume',
@@ -330,7 +332,7 @@ const History = () => {
 								id = {sections[2].id}
 								key = {sections[2].id}
 							>
-								<h2>경력</h2>
+								<SectionTitle>경력</SectionTitle>
 								<AddButton onClick={()=> {
 									trackEvent('add_click', {
 										category: 'resume',
@@ -363,7 +365,7 @@ const History = () => {
 								id = {sections[3].id}
 								key = {sections[3].id}
 							>
-								<h2>활동 및 경험</h2>
+								<SectionTitle>활동 및 경험</SectionTitle>
 								<AddButton onClick={()=> {
 									trackEvent('add_click', {
 										category: 'resume',
@@ -396,7 +398,7 @@ const History = () => {
 								id = {sections[4].id}
 								key = {sections[4].id}
 							>
-								<h2>프로젝트</h2>
+								<SectionTitle>프로젝트</SectionTitle>
 								<AddButton onClick={()=> {
 									trackEvent('add_click', {
 										category: 'resume',
@@ -429,7 +431,7 @@ const History = () => {
 								id = {sections[5].id}
 								key = {sections[5].id}
 							>
-								<h2>교육</h2>
+								<SectionTitle>교육</SectionTitle>
 								<AddButton onClick={()=> {
 									trackEvent('add_click', {
 										category: 'resume',
@@ -462,7 +464,7 @@ const History = () => {
 								id = {sections[6].id}
 								key = {sections[6].id}
 							>
-								<h2>수상</h2>
+								<SectionTitle>수상</SectionTitle>
 								<AddButton onClick={() => {
 									trackEvent('add_click', {
 										category: 'resume',
@@ -500,7 +502,7 @@ const History = () => {
 								id = {sections[7].id}
 								key = {sections[7].id}
 							>
-								<h2>자격증 · 외국어</h2>
+								<SectionTitle>자격증 · 외국어</SectionTitle>
 								<AddButton onClick={() => {
 									trackEvent('add_click', {
 										category: 'resume',
@@ -512,11 +514,13 @@ const History = () => {
 								}}>+</AddButton>
 							</SectionHeader>
 							<ContentWrapper style={{gap:'50px'}}>
-								{openedForms.add.licenses &&
-								<AddLicenseForm
-									onSave={(updates) => addItem('licenses', recordId, updates)}
-									onClose={() => toggleAddForm('licenses')}
-								/>}
+								<div style={{height: 'auto'}}>
+									{openedForms.add.licenses &&
+									<AddLicenseForm
+										onSave={(updates) => addItem('licenses', recordId, updates)}
+										onClose={() => toggleAddForm('licenses')}
+									/>}
+								</div>
 								{licenseSection.length === 0 && foreignSection.length === 0 && 
 								<NoneContentBox>
 									새로운 활동을 추가해주세요!
@@ -559,7 +563,7 @@ const History = () => {
 								id = {sections[8].id}
 								key = {sections[8].id}
 							>
-								<h2>스킬</h2>
+								<SectionTitle>스킬</SectionTitle>
 								<AddButton onClick={() => {
 									trackEvent('add_click', {
 										category: 'resume',
@@ -602,22 +606,22 @@ const History = () => {
 						<Line></Line>
 
 						<SectionWrapper>
-						<SectionHeader
-							id = {sections[9].id}
-							key = {sections[9].id}
-						>
-							<h2>추가자료</h2>
-							<AddButton onClick={() => {
-								trackEvent('add_click', {
-									category: 'resume',
-									detail: 'add_attachment',
-									action_type: 'add',
-									label: '추가자료 추가',
-								});
-								toggleAddForm('files');
-							}}>+</AddButton>
+							<SectionHeader
+								id = {sections[9].id}
+								key = {sections[9].id}
+							>
+								<SectionTitle>추가자료</SectionTitle>
+								<AddButton onClick={() => {
+									trackEvent('add_click', {
+										category: 'resume',
+										detail: 'add_attachment',
+										action_type: 'add',
+										label: '추가자료 추가',
+									});
+									toggleAddForm('files');
+								}}>+</AddButton>
 							</SectionHeader>
-							<ContentWrapper>
+							<ContentWrapper style={{gap:'50px'}}>
 								{openedForms.add.files &&
 									<AddFileForm
 										onClose={() => toggleAddForm('files')}
@@ -628,13 +632,31 @@ const History = () => {
 								<NoneContentBox>
 									새로운 활동을 추가해주세요!
 								</NoneContentBox>}
-								{files.map((file, index)=>(
-									<FileItem
-										data={file}
-										onDelete={(data) => deleteEtcItem(data)}
-										onUpdate={(oldData, newData) => updateEtcItem(oldData, newData)}
-									/>
-								))}
+								<Section>
+									{URLSection.length !== 0 && <Tag>URL</Tag>}
+									<ItemsWrapper style={{gridTemplateColumns: 'repeat(1, minmax(0, 1fr))'}}>
+										{URLSection.map((file, index) => (
+											<FileItem
+												data={file}
+												onDelete={(data) => deleteEtcItem(data)}
+												onUpdate={(oldData, newData) => updateEtcItem(oldData, newData)}
+										/>
+										))}
+									</ItemsWrapper>
+								</Section>
+
+								<Section>
+									{fileSection.length !== 0 && <Tag>첨부파일</Tag>}
+									<ItemsWrapper style={{gridTemplateColumns: 'repeat(1, minmax(0, 1fr))'}}>
+										{fileSection.map((file, index) => (
+											<FileItem
+												data={file}
+												onDelete={(data) => deleteEtcItem(data)}
+												onUpdate={(oldData, newData) => updateEtcItem(oldData, newData)}
+										/>
+										))}
+									</ItemsWrapper>
+								</Section>
 							</ContentWrapper>
 						</SectionWrapper>
 					</div>
@@ -652,20 +674,97 @@ const CreateRecordButton = styled.button`
 	font-size: 24px;
 	font-family: 'Regular'
 `
+const UserDetailsContainer = styled.div`
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-block: 30px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		display: block;
+		margin-left: 0px;
+	}
+`
+const ProfileAndInfoWrapper = styled.div`
+	width: 100%;
+	display: flex;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		flex-direction: column;
+	}	
+
+`
+
+const UpdatedAt = styled.div`
+  width: 100%;
+  position: relative;
+  top: 0;
+  right: 20px;
+  font-size: 14px;
+  color: #707070;
+  font-family: Regular;
+  text-align: right;
+`;
+
+const UserInfoWrapper = styled.div`
+	width: 100%;
+	display:flex;
+	flex-direction:column;
+	margin-left: 40px;
+	position: relative;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		margin-left: 0px;
+	}
+`
+
+const InfoTable = styled.div`
+	display: grid;
+	grid-template-columns: auto 1fr; 
+	row-gap: 15px; 
+	column-gap: 30px;
+	margin-top: 20px;
+`
+
+const InfoLabel = styled.div`
+  font-size: 18px;
+  color: #707070;
+  font-family: Regular;
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    font-size: 14px;
+  }
+`;
+
+const InfoValue = styled.div`
+  font-size: 14px;
+  color: #707070;
+  font-family: Regular;
+`;
 
 const SectionWrapper = styled.div`
   margin-bottom: 40px;
-  width:820px;
+  width:100%;
   padding-top:25px;
   padding-bottom:25px;
 `;
 
+const SectionTitle = styled.h2`
+  font-size: 24px;
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    font-size: 20px;
+  }
+`;
+
 const SectionHeader = styled.div`
-width:820px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin:0px;
+	width:100%;
+	height: auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin:0px;
 .
   h2 {
     font-size: 24px;
@@ -718,23 +817,30 @@ const AddButton = styled.div`
 `
 
 const Line = styled.div`
-	width: 820px;
+	width: 100%;
 	height: 2px;
 	background:#F1F1F1;
 `
 
 const Section = styled.div`
 	width:100%;
-  display: flex;
-  align-items: flex-start;
-  gap: 40px;
+	display: flex;
+	align-items: flex-start;
+	gap: 40px;
+	@media (max-width: ${theme.breakpoints.md}) {
+		gap: 20px;
+	}	
 `;
 
 const ItemsWrapper = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(2, minmax(100px, 1fr)); /* 2열 배치 */
-  gap: 25px;
+//   gap: 25px;
+
+  @media (max-width: ${theme.breakpoints.md}) {
+	grid-template-columns: 1fr; /* 모바일에서는 1열 배치 */
+  }	
 `;
 
 const Tag = styled.div`
@@ -758,42 +864,6 @@ const ProfileBox = styled.div`
 	background: var(--gray-05, #F1F1F1);
 `
 
-const UserInfoWrapper = styled.div`
-	width: 650px;
-	display:flex;
-	flex-direction:column;
-	margin-left: 40px;
-	position: relative;
-`
-const UpdatedAt = styled.div`
-  width: 250px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 14px;
-  color: #707070;
-  font-family: Regular;
-`;
-
-const InfoTable = styled.div`
-	display: grid;
-	grid-template-columns: auto 1fr; 
-	row-gap: 15px; 
-	column-gap: 30px;
-	margin-top: 20px;
-`
-
-const InfoLabel = styled.div`
-  font-size: 18px;
-  color: #707070;
-  font-family: Regular;
-`;
-
-const InfoValue = styled.div`
-  font-size: 14px;
-  color: #707070;
-  font-family: Regular;
-`;
 
 const NullModeAddress = styled.span`
   text-decoration: underline;

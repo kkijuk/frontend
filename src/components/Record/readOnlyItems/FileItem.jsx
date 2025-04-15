@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { downS3File } from "../../../api/Record/s3File";
 import AddFileForm from "../addForms/AddFileForm";
+import { theme } from "../../../constants/theme";
 
 const FileItem = ({ id, data, onSave, onUpdate, onDelete }) => {
 
@@ -65,7 +66,7 @@ const FileItem = ({ id, data, onSave, onUpdate, onDelete }) => {
 export default FileItem;
 
 const FileOrURLName = styled.div`
-    width: 120px;
+    // width: 120px;
     color: #000;
     font-family: Regular;
     font-size: 20px;
@@ -120,11 +121,17 @@ const Container = styled.div`
     align-items: center;
     gap: 20px;
     position: relative;
+    padding: 10px;
 
     &:hover ${DeleteButton} {
         opacity: 1;
         cursor: pointer;
-	}
+	  }
+    @media (max-width: ${theme.breakpoints.md}){
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
 `;
 
 const EditContainer = styled.div`

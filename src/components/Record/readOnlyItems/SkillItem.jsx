@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import AddSkillForm from '../addForms/AddSkillForm';
 import { KebabMenu2 } from '../KebabMenu';
+import { theme } from '../../../constants/theme';
 
 const SkillItem = ({ data, isSecondColumn, onSave, onUpdate, onDelete }) => {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -70,6 +71,9 @@ const EditContainer = styled.div`
 	// margin-bottom: 45px;
 	font-family: 'Regular';
   margin-left: ${({ isSecondColumn }) => (isSecondColumn ? '-345px' : '0')};
+  @media (max-width: ${theme.breakpoints.md}) {
+    margin-left: 0px;
+  }
 `
 
 const SkillInfo = styled.div`
@@ -79,6 +83,9 @@ const SkillInfo = styled.div`
 const SkillName = styled.div`
   font-size: 20px;
   font-weight: bold;
+  @media (max-width: ${theme.breakpoints.md}) {
+    font-size: 16px;
+  };
 `;
 
 // const EditButton = styled.button`

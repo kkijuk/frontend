@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { theme } from "../../constants/theme";
 
 const CustomDropdown = ({ options, placeholder, value, onChange, isOpen, onToggle, width = "135px" }) => {
   const handleOptionClick = (option) => {
@@ -48,6 +49,11 @@ const DropdownHeader = styled.div`
   font-weight: 400;
   color: ${(props) => (props.children === "학력구분" || props.children === "학력상태" ? "#d9d9d9" : "black")};
   cursor: pointer;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 230px;
+    height: 17px;
+    padding: 12px 20px;
+  }
 `;
 
 const Text = styled.span`
@@ -75,6 +81,11 @@ const DropdownList = styled.ul`
   padding: 10px 0;
   margin: 0;
   z-index:1000;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 230px;
+    padding: 10px 20px;
+    top: 43px;
+  }
 `;
 
 const DropdownItem = styled.li`

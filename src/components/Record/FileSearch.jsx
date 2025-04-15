@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
+import { theme } from "../../constants/theme"; // theme import
 
 const FileSearch = ({onFileSelect}) => {
   const fileInputRef = useRef(null); // 숨겨진 파일 입력 필드 참조
@@ -63,6 +64,9 @@ const Container = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 10px;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: auto;
+  }
 `
 
 const FileNameField = styled.div`
@@ -83,6 +87,12 @@ const FileNameField = styled.div`
     font-family: 'Regular';
     font-weight: 400;
     margin:0;
+  }
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: ${(props) => props.mdWidth || "238px"};
+    height: 17px;
+    padding: 12px 20px;
   }
 `;
 

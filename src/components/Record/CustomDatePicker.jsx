@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { theme } from "../../constants/theme";
 
 const CustomDatePicker = ({ value, onChange, onClose }) => {
   const currentYear = new Date().getFullYear();
@@ -102,6 +103,7 @@ const ScrollWrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 20px;
+  background: white;
 `;
 
 const ScrollContainer = styled.div`

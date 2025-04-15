@@ -2,6 +2,7 @@ import React, { useState }from 'react';
 import styled from 'styled-components';
 import AddAwardForm from '../addForms/AddAwardForm';
 import { KebabMenu2 } from '../KebabMenu';
+import { theme } from '../../../constants/theme';
 
 const AwardItem = ({ data, onSave, onUpdate, onDelete, onClose }) => {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -69,6 +70,9 @@ const TimeLine = styled.div`
 	display: flex;
 	flex-direction: column;
 	margin: 0px 70px 0px 30px;
+  @media (max-width: ${theme.breakpoints.md}) {
+		margin: 0px 24px 0px 20px;
+	}
 `;
 
 const Oval = styled.div`
@@ -78,6 +82,10 @@ const Oval = styled.div`
 	border-radius: 50%;
 	border: 3px solid #707070;
 	background-color: '#FFF';
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 16px;
+    height: 16px;
+  }
 `;
 
 const AwardInfo = styled.div`
@@ -87,12 +95,18 @@ const AwardInfo = styled.div`
 const AwardName = styled.div`
   font-size: 20px;
   font-weight: bold;
+  @media (max-width: ${theme.breakpoints.md}) {
+		font-size: 16px;
+	}
 `;
 
 const AwardDetails = styled.div`
   font-size: 16px;
   color: var(--gray-02, #333);
   margin-top: 5px;
+  @media (max-width: ${theme.breakpoints.md}) {
+		font-size: 14px;
+	}
 `;
 
 
