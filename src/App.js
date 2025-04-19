@@ -55,6 +55,8 @@ import NumError from './pages/Error/NumError';
 
 import DeleteAccount from './pages/Mypage/DeleteAccount';
 
+import ServiceMaintenence from './pages/Error/ServiceMaintenence';
+
 const AppContainer = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -103,6 +105,7 @@ const App = () => {
 		'/signupsuccess',
 		'/agree',
 		'/delete-account',
+		'/serviceMaintenence',
 	];
 	const hideHeader = hideHeaderRoutes.includes(location.pathname);
 	const hideHeaderFooterRoutes = ['/browser-error', '/'];
@@ -130,6 +133,7 @@ const App = () => {
 			{/* 헤더는 조건부 렌더링 */}
 			<MainContent hasHeader={!hideHeader && !hideHeaderFooter}>
 				<Routes>
+					<Route path="/serviceMaintenence" element={<ServiceMaintenence />} />
 					<Route path="/mycareer/:careerId/:category" element={<MycareerDetail />} />
 					<Route path="/mycareer_search" element={<MycareerSearch />} />
 					<Route path="/home" element={<Home />} />
