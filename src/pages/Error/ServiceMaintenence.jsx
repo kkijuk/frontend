@@ -8,10 +8,11 @@ const Container = styled.div`
 	align-items: center;
 
 	gap: 40px;
-	margin-top: 40px;
+	margin-top: 120px;
 `;
 
 const Box = styled.div`
+	display: flex;
 	gap: 16px;
 `;
 
@@ -69,6 +70,15 @@ const Button = styled.button`
 	gap: 4px;
 	border-radius: 12px;
 	background: var(--gray-04, #e0e0e0);
+	border: none;
+
+	color: var(--black, #000);
+	text-align: center;
+	font-family: Pretendard;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 100%; /* 18px */
 `;
 
 const CheckIcon = () => (
@@ -96,7 +106,6 @@ export default function ServiceMaintenence() {
 				</DateRow>
 				<Text>곧 다시 만나요!</Text>
 			</Box>
-			<Button>이전 화면으로</Button>
 		</Container>
 	);
 }
