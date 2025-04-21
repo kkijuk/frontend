@@ -188,8 +188,7 @@ export default function AppWrapper() {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<ThemeProvider theme={theme}>
-				{' '}
-				{/* ✅ 여기서 감싸줌 */}
+				{/*여기서 감싸줌 */}
 				<Router>
 					<App />
 				</Router>
