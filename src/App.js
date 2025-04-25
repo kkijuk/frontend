@@ -177,6 +177,8 @@ const App = () => {
 					<Route path="/error" element={<Error />} />
 					<Route path="/numerror" element={<NumError />} />
 					<Route path="/delete-account" element={<DeleteAccount />} />
+					{/*404 처리용 */}
+					<Route path="*" element={<NumError />} />
 				</Routes>
 			</MainContent>
 			{showPageFooter ? <PageFooter /> : !hideHeaderFooter && <Footer />}
