@@ -17,6 +17,13 @@ const Container = styled.div`
 	align-items: center;
 
 	position: relative; /* CloseButton 위치 기준 */
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 90%;
+		height: auto;
+		padding: 24px 16px;
+		box-sizing: border-box;
+	}
 `;
 
 const CloseButton = styled.div`
