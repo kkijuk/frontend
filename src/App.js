@@ -55,6 +55,8 @@ import NumError from './pages/Error/NumError';
 
 import DeleteAccount from './pages/Mypage/DeleteAccount';
 
+import ServiceMaintenence from './pages/Error/ServiceMaintenence';
+
 const AppContainer = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -103,6 +105,7 @@ const App = () => {
 		'/signupsuccess',
 		'/agree',
 		'/delete-account',
+		'/serviceMaintenence',
 	];
 	const hideHeader = hideHeaderRoutes.includes(location.pathname);
 	const hideHeaderFooterRoutes = ['/browser-error', '/'];
@@ -130,6 +133,7 @@ const App = () => {
 			{/* 헤더는 조건부 렌더링 */}
 			<MainContent hasHeader={!hideHeader && !hideHeaderFooter}>
 				<Routes>
+					<Route path="/serviceMaintenence" element={<ServiceMaintenence />} />
 					<Route path="/mycareer/:careerId/:category" element={<MycareerDetail />} />
 					<Route path="/mycareer_search" element={<MycareerSearch />} />
 					<Route path="/home" element={<Home />} />
@@ -173,6 +177,8 @@ const App = () => {
 					<Route path="/error" element={<Error />} />
 					<Route path="/numerror" element={<NumError />} />
 					<Route path="/delete-account" element={<DeleteAccount />} />
+					{/*404 처리용 */}
+					<Route path="*" element={<NumError />} />
 				</Routes>
 			</MainContent>
 			{showPageFooter ? <PageFooter /> : !hideHeaderFooter && <Footer />}
@@ -184,8 +190,7 @@ export default function AppWrapper() {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<ThemeProvider theme={theme}>
-				{' '}
-				{/* ✅ 여기서 감싸줌 */}
+				{/*여기서 감싸줌 */}
 				<Router>
 					<App />
 				</Router>
