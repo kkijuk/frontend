@@ -481,6 +481,11 @@ const ModalOverlay = styled.div`
 
 // QuitMember 모달을 가운데 정렬
 const ModalContainer = styled.div`
+	/*추가*/
+	display: flex
+	justify-content: center;
+	align-items: center;
+
 	position: relative;
 	width: auto;
 	height: auto;
