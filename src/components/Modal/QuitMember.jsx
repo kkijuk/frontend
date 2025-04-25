@@ -65,6 +65,15 @@ const Text = styled.div`
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+
+	/*추가*/
+	text-align: center;
+	word-break: keep-all;
+
+	@media (...) {
+		font-size: 14px;
+		line-height: 1.4;
+	}
 `;
 
 const CheckContainer = styled.div`
@@ -118,6 +127,10 @@ const Button = styled.button`
 	font-weight: 500;
 	line-height: normal;
 	cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 80%;
+	}
 `;
 
 export default function QuitMember({ onClose }) {
