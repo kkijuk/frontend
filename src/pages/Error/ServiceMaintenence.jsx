@@ -13,6 +13,7 @@ const Container = styled.div`
 
 const Box = styled.div`
 	display: flex;
+	flex-direction: column;
 	gap: 16px;
 `;
 
