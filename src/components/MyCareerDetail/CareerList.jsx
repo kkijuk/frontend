@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import AbilityTag from './AbilityTag';
 import DetailAddEdit from './DetailAddEdit';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
+import { formatDate } from '@/utils/formateDate';
 import { theme } from '../../constants/theme';
 
 const Box = styled.div`
@@ -89,7 +90,18 @@ const AbilityTagWrapper = styled.div`
 	}
 `;
 
-export default function CareerList({ title, date, contents, detailTag, careerId, detailId, categoryEnName, onUpdate }) {
+export default function CareerList({
+	title,
+	contents,
+	detailTag,
+	careerId,
+	detailId,
+	categoryEnName,
+	onUpdate,
+	startDate,
+	endDate,
+	unknown,
+}) {
 	const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
 	const [detailData, setDetailData] = useState(null);
 	const [currentCareerId, setCurrentCareerId] = useState(careerId);
@@ -181,7 +193,7 @@ export default function CareerList({ title, date, contents, detailTag, careerId,
 			<Box>
 				<TitleDateContainer>
 					<Title>{title}</Title>
-					<Date>{date}</Date>
+					<Date>{formatDate(startDate, endDate, unknown)}</Date>
 				</TitleDateContainer>
 				<Contents>
 					{contents.split('\n').map((line, index) => (
