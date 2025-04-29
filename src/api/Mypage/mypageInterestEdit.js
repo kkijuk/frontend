@@ -1,16 +1,9 @@
-import axios from 'axios';
+import api from '../../Axios';
 
-const APIURL = `${process.env.REACT_APP_API_URL}/member/myPage/field`;
-
+// 마이페이지 - 관심 분야 수정
 export const mypageInterestEdit = async (interestsData) => {
 	try {
-		const response = await axios.post(APIURL, JSON.stringify(interestsData), {
-			withCredentials: true,
-			headers: {
-				'Content-Type': 'application/json; charset=utf-8',
-				'Authorization': `Bearer ${localStorage.getItem('token')}`,
-			},
-		});
+		const response = await api.post('/member/myPage/field', interestsData);
 		console.log('관심 분야 저장 완료:', response.data);
 		return response.data;
 	} catch (error) {

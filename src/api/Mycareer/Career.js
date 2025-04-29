@@ -1,5 +1,4 @@
 //무원 생성
-import React, { useState } from 'react';
 import api from '../../Axios';
 
 // 활동 생성
@@ -162,7 +161,7 @@ export const deleteCareer = async (category, careerId) => {
 //활동 summary 수정
 export const editCareerSummary = async (id, payload) => {
 	console.log('editCareerSummary:', id, payload);
-	try{
+	try {
 		const response = await api.patch(`/career/${id}`, payload);
 		console.log('Success-editCareerSummary:', response.data);
 		return response.data;
@@ -177,4 +176,4 @@ export const editCareerSummary = async (id, payload) => {
 			console.error('Error setting up request:', error.message);
 		}
 	}
-}
+};
