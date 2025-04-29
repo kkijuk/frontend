@@ -767,11 +767,9 @@ export default function MycareerDetail() {
 									<CareerList
 										key={detail.detailId}
 										title={detail.title}
-										date={
-											detail.startDate === detail.endDate || !detail.endDate
-												? detail.startDate
-												: `${detail.startDate} ~ ${detail.endDate}`
-										}
+										startDate={detail.startDate}
+										endDate={detail.endDate}
+										unknown={detail.unknown}
 										contents={detail.content}
 										detailTag={detail.detailTag || []}
 										careerId={careerId}
