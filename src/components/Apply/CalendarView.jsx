@@ -19,6 +19,7 @@ const AdCalendarStyled = styled.div`
 const StyledCalendar = styled(Calendar)`
 	width: 100%;
 	max-width: 800px;
+	 min-width: 800px;
 	background: white;
 	border: 0.5px solid rgba(0, 0, 0, 0.1);
 	border-radius: 15px;
@@ -162,6 +163,7 @@ const StyledCalendar = styled(Calendar)`
 	@media (max-width: ${theme.breakpoints.md}) {
 		width: 360px;
 		font-size: 14px;
+		  min-width: 0; 
 		margin: 0 auto;
 
 		.react-calendar__tile {
