@@ -103,7 +103,7 @@ export default function ServiceMaintenence() {
 				<Text>점검 완료 시점</Text>
 				<DateRow>
 					<CheckIcon />
-					<Date>2025.04.08.(화) 18:00</Date>
+					<Date>2025.04.30.(수) 18:00</Date>
 				</DateRow>
 				<Text>곧 다시 만나요!</Text>
 			</Box>
