@@ -1,17 +1,12 @@
-import axios from 'axios';
+import api from '../../Axios';
 
+// 마이페이지 - 관심 분야 가져오기
 export const mypageInterest = async () => {
 	try {
-		const response = await axios.get(`${process.env.REACT_APP_API_URL}/member/myPage/field`, {
-			withCredentials: true,
-			headers: {
-				'Content-Type': 'application/json; charset=utf-8',
-				'Authorization': `Bearer ${localStorage.getItem('token')}`,
-			},
-		});
+		const response = await api.get('/member/myPage/field');
 		return response.data.field;
 	} catch (error) {
-		console.error('Error', error.message);
+		console.error('mypageInterest API 호출 중 오류:', error.message);
 		throw error;
 	}
 };

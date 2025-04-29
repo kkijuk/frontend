@@ -1,74 +1,52 @@
-import axios from 'axios';
+import api from '../../Axios'; // 수정: api 인스턴스 사용
 
-//여기서 전해야 할건 태그박스 리스트에서 여태까지 썼던 태그들을 GET요청으로 받아와야 함
-
+// 태그 리스트 가져오기
 export const TagBoxFetchList = async () => {
 	try {
-		const response = await axios.get('https://api.kkijuk.com/career/tag', {
-			withCredentials: true,
-
-			headers: {
-				'Content-Type': 'application/json; charset=utf-8',
-				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
-			},
-		});
-		console.log('통신 완료: ', response.data);
-		return response.data.data.tagList; // 태그 목록 반환
+		const response = await api.get('/career/tag');
+		console.log('태그 리스트 가져오기 완료: ', response.data);
+		return response.data.data.tagList; // ✅ tagList만 반환
 	} catch (error) {
-		console.log('Error', error.message);
+		console.error('Error fetching tag list:', error.message);
 		if (error.response) {
-			console.log('서버 오류 응답 데이터:', error.response.data);
-			console.log('서버 오류 상태 코드:', error.response.status);
-			console.log('서버 오류 헤더:', error.response.headers);
+			console.error('서버 오류 응답 데이터:', error.response.data);
+			console.error('서버 오류 상태 코드:', error.response.status);
+			console.error('서버 오류 헤더:', error.response.headers);
 		}
-		return [];
+		return []; // 실패 시 빈 배열 반환
 	}
 };
 
+// 새 태그 추가하기
 export const TagBoxCreateTag = async (tagName) => {
 	try {
-		const response = await axios.post(
-			'https://api.kkijuk.com/career/tag',
-			{ tagName }, //POST할 때 보내는 데이터에 tagName을 포함하기 때문에
-
-			{
-				withCredentials: true,
-
-				headers: {
-					'Content-Type': 'application/json; charset=utf-8',
-					'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
-				},
-			},
-		);
-		console.log('통신 완료: ', response.data);
+		const response = await api.post('/career/tag', { tagName });
+		console.log('태그 생성 완료: ', response.data);
 		return response.data;
 	} catch (error) {
-		console.log('Errpr', error.message);
+		console.error('Error creating tag:', error.message);
 		if (error.response) {
-			console.log('서버 오류 응답 데이터:', error.response.data);
-			console.log('서버 오류 상태 코드:', error.response.status);
-			console.log('서버 오류 헤더:', error.response.headers);
+			console.error('서버 오류 응답 데이터:', error.response.data);
+			console.error('서버 오류 상태 코드:', error.response.status);
+			console.error('서버 오류 헤더:', error.response.headers);
 		}
+		throw error;
 	}
 };
 
+// 태그 삭제하기
 export const TagBoxDeleteTag = async (tagId) => {
 	try {
-		const response = await axios.delete(`https://api.kkijuk.com/career/tag/${tagId}`, {
-			withCredentials: true,
-
-			headers: {
-				'Content-Type': 'application/json; charset=utf-8',
-				'Authorization': `Bearer ${localStorage.getItem('token')}`, // Authorization 헤더에 토큰 포함
-			},
-		});
+		const response = await api.delete(`/career/tag/${tagId}`);
 		console.log('태그 삭제 완료: ', response.data);
+		return response.data;
 	} catch (error) {
-		console.log('Errpr', error.message);
+		console.error('Error deleting tag:', error.message);
 		if (error.response) {
-			console.log('서버 오류 응답 데이터:', error.response.data);
-			console.log('서버 오류 상태 코드:', error.response.status);
-			console.log('서버 오류 헤더:', error.response.headers);
+			console.error('서버 오류 응답 데이터:', error.response.data);
+			console.error('서버 오류 상태 코드:', error.response.status);
+			console.error('서버 오류 헤더:', error.response.headers);
 		}
+		throw error;
 	}
 };
