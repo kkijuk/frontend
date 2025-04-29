@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { theme } from '../constants/theme';
+
 const Wrapper = styled.div`
 	display: flex;
 	justify-content: center;
@@ -24,7 +25,7 @@ const Container = styled.div`
 	}
 
 	@media (max-width: ${theme.breakpoints.md}) {
-		flex-direction: column; /* 세로로 배치 */
+		flex-direction: column;
 		width: 100%;
 	}
 `;
@@ -47,10 +48,8 @@ const Top = styled.div`
 
 const Section = styled.div`
 	width: 100%;
-	max-width: 820px;
+	max-width: ${({ isApply }) => (isApply ? '100%' : '820px')};
 	height: 100%;
-	padding: 20px;
-
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -60,7 +59,7 @@ const Section = styled.div`
 		height: auto;
 	}
 
-	@media (max-width: ${theme.breakpoints.md}) {
+	@media (max-width: 768px) {
 		box-sizing: border-box;
 	}
 `;
@@ -83,31 +82,31 @@ const LeftAside = styled.div`
 	}
 `;
 
-const TitleText = styled.h1`
+const TitleText = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
 	font-size: 28px;
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
-
-	margin-top: 15.760px;
+	margin-top: 35px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
-		text-align: left;
-		margin-left: 0px;
-		margin-top: 18.760px;
+		text-align: ${({ isApply }) => (isApply ? 'left' : 'center')};
+		margin-left: ${({ isApply }) => (isApply ? '28px' : '0px')};
 	}
 `;
 
 export default function Layout({ title, children, leftAsideContent, rightAsideContent }) {
+	const isApplyPage = title === '지원관리';
+
 	return (
 		<Wrapper>
 			<Container>
 				<LeftAside>{leftAsideContent}</LeftAside>
 				<Section>
 					<Top>
-						<TitleText>{title}</TitleText>
+						<TitleText isApply={isApplyPage}>{title}</TitleText>
 					</Top>
 					{children}
 				</Section>
