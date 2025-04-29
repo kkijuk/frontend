@@ -22,14 +22,14 @@ const SocialRedirect = ({ provider }) => {
       );
       return JSON.parse(jsonPayload);
     } catch (error) {
-      console.error('토큰 디코딩 중 오류 발생:', error);
+      
       return null;
     }
   };
 
   useEffect(() => {
     if (!code) {
-      console.error('인가 코드가 없습니다.');
+     
       return;
     }
 
@@ -54,7 +54,7 @@ const SocialRedirect = ({ provider }) => {
           return response.json();
         })
         .then((data) => {
-          console.log(`${provider} 로그인 성공:`, data);
+        
 
           if (data && data.accessToken && data.refreshToken) {
             const { accessToken, refreshToken } = data;
@@ -62,7 +62,7 @@ const SocialRedirect = ({ provider }) => {
 
             // 토큰 디코딩
             const decodedToken = decodeToken(accessToken);
-            console.log('디코딩된 토큰:', decodedToken);
+           
 
             // zustand를 이용해 토큰 및 프로필 입력여부 저장 
             const isProfileComplete = decodedToken?.isProfileComplete || false;
@@ -75,11 +75,11 @@ const SocialRedirect = ({ provider }) => {
               navigate('/signup'); // 추가 정보 입력 페이지로 리다이렉트
             }
           } else {
-            console.error('토큰이 없습니다.');
+          
           }
         })
         .catch((error) => {
-          console.error(`${provider} 로그인 실패:`, error.message);
+          
           alert(`${provider} 로그인 처리 중 문제가 발생했습니다: ${error.message}`);
         });
     }

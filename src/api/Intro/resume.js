@@ -1,3 +1,5 @@
+import api from '../../Axios';
+
 //이력서 pdf 내보내기에 추가할 정보
 const createIntro = async () => {
 	try {
