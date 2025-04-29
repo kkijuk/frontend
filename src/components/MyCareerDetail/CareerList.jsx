@@ -90,7 +90,18 @@ const AbilityTagWrapper = styled.div`
 	}
 `;
 
-export default function CareerList({ title, date, contents, detailTag, careerId, detailId, categoryEnName, onUpdate }) {
+export default function CareerList({
+	title,
+	contents,
+	detailTag,
+	careerId,
+	detailId,
+	categoryEnName,
+	onUpdate,
+	startDate,
+	endDate,
+	unknown,
+}) {
 	const [isDetailAddVisible, setIsDetailAddVisible] = useState(false);
 	const [detailData, setDetailData] = useState(null);
 	const [currentCareerId, setCurrentCareerId] = useState(careerId);

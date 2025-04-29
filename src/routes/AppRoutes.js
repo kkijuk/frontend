@@ -13,7 +13,7 @@ import { shouldShowPageFooter, shouldHideHeader, shouldHideHeaderFooter } from '
 
 //페이지 점검 관련 코드 추가
 const isMaintenanceMode = process.env.REACT_APP_MAINTENANCE_MODE === 'true';
-const maintenancePath = '/maintenance';
+const maintenancePath = '/serviceMaintenence';
 
 // Loading fallback component
 const LoadingFallback = () => (
