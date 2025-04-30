@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useAuthStore from '../stores/useAuthStore'; // zustand 상태 관리 import
+import useAuthStore from '../stores/useAuthStore'; 
 
 const SocialRedirect = ({ provider }) => {
   const navigate = useNavigate();
@@ -8,6 +8,7 @@ const SocialRedirect = ({ provider }) => {
   const login = useAuthStore((state) => state.login); // zustand의 login 메서드 가져오기
   const code = new URL(window.location.href).searchParams.get('code');
   const state = new URL(window.location.href).searchParams.get('state');
+  const redirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URI;
 
   // 토큰 디코딩 함수
   const decodeToken = (token) => {
@@ -28,14 +29,11 @@ const SocialRedirect = ({ provider }) => {
   };
 
   useEffect(() => {
-    if (!code) {
-     
-      return;
-    }
+    if (!code) return;
 
     const apiUrl =
       provider === 'kakao'
-        ? `${process.env.REACT_APP_API_URL}/auth/kakao/login?code=${code}`
+        ? `${process.env.REACT_APP_API_URL}/auth/kakao/login?code=${code}&redirect_uri=${encodeURIComponent(redirectUri)}`
         : provider === 'naver'
         ? `${process.env.REACT_APP_API_URL}/auth/naver/login?code=${code}&state=${state}`
         : null;
@@ -43,7 +41,9 @@ const SocialRedirect = ({ provider }) => {
     if (apiUrl) {
       fetch(apiUrl, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
       })
         .then((response) => {
           if (!response.ok) {
@@ -54,32 +54,21 @@ const SocialRedirect = ({ provider }) => {
           return response.json();
         })
         .then((data) => {
-        
-
           if (data && data.accessToken && data.refreshToken) {
             const { accessToken, refreshToken } = data;
-          
-
-            // 토큰 디코딩
             const decodedToken = decodeToken(accessToken);
-           
-
-            // zustand를 이용해 토큰 및 프로필 입력여부 저장 
             const isProfileComplete = decodedToken?.isProfileComplete || false;
+
             login(accessToken, refreshToken, isProfileComplete);
 
-            // 프로필 완료 여부 확인 (디코딩된 토큰에서 직접 확인)
             if (isProfileComplete) {
-              navigate('/home'); // 홈 화면으로 리다이렉트
+              navigate('/home');
             } else {
-              navigate('/signup'); // 추가 정보 입력 페이지로 리다이렉트
+              navigate('/signup');
             }
-          } else {
-          
           }
         })
         .catch((error) => {
-          
           alert(`${provider} 로그인 처리 중 문제가 발생했습니다: ${error.message}`);
         });
     }
