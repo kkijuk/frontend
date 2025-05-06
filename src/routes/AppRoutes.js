@@ -11,6 +11,10 @@ import { setupApiInterceptors } from '@/Axios';
 import { getAllRoutes } from './index';
 import { shouldShowPageFooter, shouldHideHeader, shouldHideHeaderFooter } from './routeUtils';
 
+//페이지 점검 관련 코드 추가
+const isMaintenanceMode = process.env.REACT_APP_MAINTENANCE_MODE === 'true';
+const maintenancePath = '/serviceMaintenence';
+
 // Loading fallback component
 const LoadingFallback = () => (
 	<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>로딩 중...</div>
@@ -31,6 +35,13 @@ const AppRoutes = () => {
 
 	// GA4 초기화
 	useGA4();
+
+	// 점검시 리다이렉트
+	useEffect(() => {
+		if (isMaintenanceMode && location.pathname !== maintenancePath) {
+			navigate(maintenancePath, { replace: true });
+		}
+	}, [location.pathname]);
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
