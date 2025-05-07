@@ -5,6 +5,7 @@ import editIcon from '../../assets/edit.svg';
 import linkIcon from '../../assets/link.svg';
 import { ReviewAdd } from '../../api/Apply/ReviewAdd'; 
 import { useNavigate } from 'react-router-dom';
+import { formateDateDashToDot } from '../../utils/formateDate';
 
 const Box = styled.div`
 	display: flex;
@@ -152,7 +153,8 @@ export default function ReviewList({ recruitId, reviewId, title, date, content =
 							</LinkButton>
 						)}
 					</TitleWrapper>
-					<Date>{date}</Date>
+					<Date>{formateDateDashToDot(date)}</Date>
+
 				</TitleDateContainer>
 
 				<Contents>
