@@ -6,6 +6,7 @@ import Header from '@components/Header';
 import Footer from '@components/Footer';
 import PageFooter from '@components/PageFooter';
 import useGA4 from '@hooks/useGA4';
+import LoadingSpinner from '@components/shared/LoadingSpinner';
 
 import { setupApiInterceptors } from '@/Axios';
 import { getAllRoutes } from './index';
@@ -14,11 +15,6 @@ import { shouldShowPageFooter, shouldHideHeader, shouldHideHeaderFooter } from '
 //페이지 점검 관련 코드 추가
 const isMaintenanceMode = process.env.REACT_APP_MAINTENANCE_MODE === 'true';
 const maintenancePath = '/serviceMaintenence';
-
-// Loading fallback component
-const LoadingFallback = () => (
-	<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>로딩 중...</div>
-);
 
 const MainContent = styled.div`
 	flex: 1;
@@ -78,7 +74,7 @@ const AppRoutes = () => {
 		<>
 			{!hideHeader && !hideHeaderFooter && <Header />}
 			<MainContent $hasHeader={!hideHeader && !hideHeaderFooter}>
-				<Suspense fallback={<LoadingFallback />}>{routes}</Suspense>
+				<Suspense fallback={<LoadingSpinner message="조금만 기다려주세요..!" />}>{routes}</Suspense>
 			</MainContent>
 			{showPageFooter ? <PageFooter /> : !hideHeaderFooter && <Footer />}
 		</>
