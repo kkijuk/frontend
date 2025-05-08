@@ -1,24 +1,22 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { trackEvent } from '../../utils/ga4';
-import useAuthRedirect from '../../stores/useAuthRedirect';
+import { trackEvent } from '@utils/ga4';
+import useAuthRedirect from '@stores/useAuthRedirect';
 
-import { mycareerMock } from './mock';
-
-import Title from '../../components/Apply/Title';
-import CareerView from '../../components/Mycareer/CareerView';
-import CareerViewYear from '../../components/Mycareer/CareerViewYear';
-import CareerViewCategory from '../../components/Mycareer/CareerViewCategory';
-import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
-import SearchBar from '../../components/Mycareer/shareSearchBar';
-import CareerTimeline from '../../components/Mycareer/CareerTimeline';
-import AddActivityButton from '../../components/Mycareer/AddActivityButton';
-import { useFetchMycareerActivity } from '../../hooks/Mycareer/useFetchMycareerActivity';
-import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import Title from '@components/Apply/Title';
+import CareerView from '@components/Mycareer/CareerView';
+import CareerViewYear from '@components/Mycareer/CareerViewYear';
+import CareerViewCategory from '@components/Mycareer/CareerViewCategory';
+import AddCareerModal from '@components/Modal/AddCareerModal/AddCareerModal';
+import SearchBar from '@components/Mycareer/shareSearchBar';
+import CareerTimeline from '@components/Mycareer/CareerTimeline';
+import AddActivityButton from '@components/Mycareer/AddActivityButton';
+import { useFetchMycareerActivity } from '@hooks/Mycareer/useFetchMycareerActivity';
+import LoadingSpinner from '@components/shared/LoadingSpinner';
 import { Container, BackgroundSection, SearchBox } from './Mycareer.styles';
 
-// 메모이제이션된 컴포넌트 생성
+// 메모이제이션 컴포넌트 생성
 const MemoizedCareerViewYear = React.memo(CareerViewYear);
 const MemoizedCareerViewCategory = React.memo(CareerViewCategory);
 const MemoizedCareerView = React.memo(CareerView);
