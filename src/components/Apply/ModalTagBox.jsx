@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { fetchModalTags, addModalTag, deleteModalTag } from '../../api/ApplyTag/Tag.js';
+import TagDeleteModal from './TagDeleteModal';
 
 const Box = styled.div`
   width: 833px;
@@ -98,6 +99,9 @@ export default function ModalTagBox({ onTagListChange, initialTags = [], isWhite
   const [isTagBoxVisible, setIsTagBoxVisible] = useState(false);
   const tagBoxRef = useRef(null);
   const [allTags, setAllTags] = useState([]);
+  const [tagToDelete, setTagToDelete] = useState(null); 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
+
 
 //  태그 박스 외부 클릭 시 닫히도록 처리
 useEffect(() => {
@@ -178,17 +182,25 @@ useEffect(() => {
   };
 
   // 태그 박스에서 삭제 (API 호출 o)  
-  const handleTagRemoveFromBox = async (tagName) => {
+  const handleDeleteClick = (e, tagName) => {
+    e.stopPropagation(); // 부모 클릭 방지
+    setTagToDelete(tagName);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDeleteTag = async () => {
+    if (!tagToDelete) return;
     try {
-      await deleteModalTag(tagName);
-
-      const updatedTags = tags.filter((tag) => tag !== tagName);
+      await deleteModalTag(tagToDelete);
+      const updatedTags = tags.filter((tag) => tag !== tagToDelete);
       setTags(updatedTags);
-      setAllTags(allTags.filter((tag) => tag !== tagName)); // 태그 박스에서도 삭제
+      setAllTags(allTags.filter((tag) => tag !== tagToDelete));
       onTagListChange(updatedTags);
-
     } catch (error) {
       console.error('태그 삭제 오류:', error);
+    } finally {
+      setIsDeleteModalOpen(false);
+      setTagToDelete(null);
     }
   };
 
@@ -199,7 +211,7 @@ useEffect(() => {
           {tags.map((tag) => (
             <Tag key={tag} isWhite={isWhiteBackground}>
               {tag}
-              <CloseButton onClick={() => handleTagRemoveFromInput(tag)}>x</CloseButton> {/* ✅ UI에서만 삭제 */}
+              <CloseButton onClick={() => handleTagRemoveFromInput(tag)}>x</CloseButton> 
             </Tag>
           ))}
           <TagInput
@@ -216,11 +228,25 @@ useEffect(() => {
             {allTags.map((tag) => (
               <Tag key={tag} onClick={() => handleTagSelect(tag)}> {/*  태그 클릭 시 입력칸에 추가 */}
                 {tag}
-                <CloseButton onClick={() => handleTagRemoveFromBox(tag)}>x</CloseButton> {/* ✅ 서버에서도 삭제 */}
+                <CloseButton onClick={(e) => {
+  e.stopPropagation(); // 부모 클릭 이벤트 방지
+  setTagToDelete(tag);
+  setIsDeleteModalOpen(true);
+}}>
+  x
+</CloseButton>
+
               </Tag>
             ))}
           </TagBoxListContainer>
         </TagBoxList>
+      )}
+       {isDeleteModalOpen && (
+        <TagDeleteModal
+          tagName={tagToDelete}
+          onCancel={() => setIsDeleteModalOpen(false)}
+          onConfirm={confirmDeleteTag}
+        />
       )}
     </Box>
   );
