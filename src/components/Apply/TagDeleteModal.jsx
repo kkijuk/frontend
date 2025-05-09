@@ -70,7 +70,7 @@ const ConfirmButton = styled.button`
 	margin-top: 45px;
 `;
 
-const TagDeleteModal = ({ onClose, onConfirm }) => (
+const TagDeleteModal = ({ onCancel, onConfirm }) => (
 	<Background>
 		<Modal>
 			<ModalTitle>
@@ -81,7 +81,7 @@ const TagDeleteModal = ({ onClose, onConfirm }) => (
 				그래도 삭제하시겠습니까?
 			</ModalTitle>
 			<ButtonContainer>
-				<CancelButton onClick={onClose} style={{ border: '1.5px solid #E0E0E0', background: '#FFF', color: '#707070' }}>
+				<CancelButton onClick={onCancel} style={{ border: '1.5px solid #E0E0E0', background: '#FFF', color: '#707070' }}>
 					취소
 				</CancelButton>
 				<ConfirmButton onClick={onConfirm} style={{ border: '1.5px solid #FF7979', background: '#FF7979', color: 'white' }}>
