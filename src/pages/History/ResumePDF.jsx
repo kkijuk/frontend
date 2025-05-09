@@ -87,7 +87,15 @@ export default function ResumePdf() {
 						/>
 					</Box2>
 					<Button
-						onClick={handleButtonClick}
+						onClick={()=>{
+							handleButtonClick;
+							trackEvent('btn_click', {
+								category: 'resume',
+								detail: 'export_resume',
+								action_type: 'click',
+								label: '확인',
+							});
+						}}
 						disabled={!selectedResume} // 선택되지 않으면 비활성화
 					>
 						확인

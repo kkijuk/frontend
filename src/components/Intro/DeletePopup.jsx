@@ -3,11 +3,7 @@ import ReactDOM from "react-dom";
 import styled from "styled-components";
 
 function DeletePopup({ onConfirm, onClose }) {
-    const message = `
-                    활동과 작성한 기록이 모두 삭제되며,
-                    이 작업은 복구할 수 없습니다. 
-                    그래도 삭제하시겠습니까?
-    `
+    const message = '이 자기소개서를 정말 삭제하시겠습니까?'
 
     return ReactDOM.createPortal(
         <PopupOverlay>
