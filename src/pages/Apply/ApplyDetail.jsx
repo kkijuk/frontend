@@ -1070,9 +1070,20 @@ const ApplyDetail = () => {
   )}
 </SubHeader>
 			</Header>
+			{showReviewAdd && (
+	<ReviewDetailAdd
+		recruitId={job?.id}
+		onSave={handleReviewSave}
+		onCancel={handleCancelReviewAdd}
+		fetchData={fetchJobDetails} 
+	/>
+)}
 
 			{job && job.reviews && job.reviews.length > 0 && (
-	job.reviews.map((review, index) => (
+	job.reviews
+	.slice()
+	.sort((a, b) => new Date(b.date) - new Date(a.date))
+	.map((review, index) => (
 		<ReviewList
 			key={index}
 			recruitId={job.id}
@@ -1087,17 +1098,6 @@ const ApplyDetail = () => {
 		/>
 	))
 )}
-
-{showReviewAdd && (
-	<ReviewDetailAdd
-		recruitId={job?.id}
-		onSave={handleReviewSave}
-		onCancel={handleCancelReviewAdd}
-		fetchData={fetchJobDetails} 
-	/>
-)}
-
-
 			<ButtonContainer>
 			<Button 
         onClick={!showReviewAdd && !isEditModalOpen ? handleAddReviewClick : null} 
