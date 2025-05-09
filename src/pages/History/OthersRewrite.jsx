@@ -44,7 +44,10 @@ const OthersRewrite = () => {
 
 
 	useEffect(() => {
-		setCharCounts(questions.map((question) => question.content.length));
+		setCharCounts(
+			questions.map((question) => 
+				question.content && question.content !== 'string' ? question.content.length : 0
+		));
 	}, [questions]);
 
 	useEffect(() => {

@@ -24,7 +24,10 @@ const MasterRewrite = () => {
 
 	// 글자 수 계산
 	useEffect(() => {
-		setCharCounts(data.questions.map((question) => question.content.length));
+		setCharCounts(
+			data.questions.map((question) => 
+				question.content && question.content !== 'string' ? question.content.length : 0
+		));
 	}, [data.questions]);
 
 	// 기타 상태
