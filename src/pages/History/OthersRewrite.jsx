@@ -31,18 +31,18 @@ const OthersRewrite = () => {
 		updatedAt: '',
 		state: 0,
 	});
-	const [modalOpend, setModalOpend] = useState(false);
-	const [dropdownOpend, setDropdownOpend] = useState(false);
-	const [isCompleted, setIsCompleted] = useState(0);
-	const [isEditApplyModalOpend, setIsEditApplyModalOpend] = useState(false);
+	const [modalOpend, setModalOpend] = useState(false); //삭제하시겠습니까?
+	const [dropdownOpend, setDropdownOpend] = useState(false); //작성 상태 드롭다운
+	const [isCompleted, setIsCompleted] = useState(0); // 작성 상태(0: 작성 중, 1: 작성 완료)
+	const [isEditApplyModalOpend, setIsEditApplyModalOpend] = useState(false); // 공고 모달
 	// const [show, setShow] = useState(false);
 	// const [gotoShow, setGotoShow] = useState(false);
-	const [charCounts, setCharCounts] = useState([]);
+	const [charCounts, setCharCounts] = useState([]); //글자수
 	const [nextQuestionId, setNextQuestionId] = useState(1);
 	const [showAutoSaveMessage, setShowAutoSaveMessage] = useState(false); // 자동 저장 메시지
 	const [autoSaveTime, setAutoSaveTime] = useState(''); // 자동 저장 시간
 
-
+	// 글자 수 계산
 	useEffect(() => {
 		setCharCounts(
 			questions.map((question) => 
@@ -50,6 +50,7 @@ const OthersRewrite = () => {
 		));
 	}, [questions]);
 
+	// 자소서 내용 불러오기
 	useEffect(() => {
 		api
 			.get(`/history/intro/detail/${id}`)
@@ -107,15 +108,19 @@ const OthersRewrite = () => {
 	};
 
 	const handleInputChange = (number, field, event) => {
+		// const value = event.target.value;
 		const newQuestions = questions.map((question) =>
-			question.number === number ? { ...question, [field]: event.target.value } : question,
+			question.number === number ? { ...question, [field]: event.target.value } : question
 		);
 		setQuestions(newQuestions);
 		console.log('InputChange Result: ', questions);
 		// Corrected charCounts update logic
-		setCharCounts((prev) =>
-			prev.map((count, i) => (questions[i].number === number ? event.target.value.length : count)),
-		);
+		// setCharCounts((prev) =>
+		// 	prev.map((count, i) => (questions[i].number === number ? event.target.value.length : count)),
+		// );
+		setCharCounts(newQuestions.map((question) =>
+			question.content && question.content !== 'string' ? question.content.length : 0
+		))
 	};
 
 	const submitData = async () => {
@@ -126,7 +131,7 @@ const OthersRewrite = () => {
 		console.log('자소서 수정 데이터: ', Data);
 		console.log('이력서 ID: ', contents.id);
 		try{
-			const response = await api.patch(`history/intro/${contents.id}`, Data);
+			const response = await api.patch(`/history/intro/${contents.id}`, Data);
 			// console.log(response.data);
 
 			setAutoSaveTime(new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}));
@@ -185,18 +190,42 @@ const OthersRewrite = () => {
 		setDropdownOpend(!dropdownOpend);
 	};
 
+	// const handleAddClick = () => {
+	// 	let count = 0;
+	// 	questions.map((question) => {
+	// 		if (!question.subTitle && !question.content) {
+	// 			count++;
+	// 			console.log(question.number);
+	// 		}
+	// 	});
+	// 	if (count < 3) {
+	// 		setQuestions([...questions, { number: nextQuestionId, subTitle: '', content: '' }]);
+	// 		setNextQuestionId((prevId) => prevId + 1);
+	// 	} else showLimiter();
+	// };
+
 	const handleAddClick = () => {
-		let count = 0;
-		questions.map((question) => {
-			if (!question.subTitle && !question.content) {
-				count++;
-				console.log(question.number);
-			}
-		});
-		// if (count < 3) {
-		// 	setQuestions([...questions, { number: nextQuestionId, subTitle: '', content: '' }]);
-		// 	setNextQuestionId((prevId) => prevId + 1);
-		// } else showLimiter();
+		const maxNumber = questions.length 
+			? Math.max(...questions.map((question) => question.number))
+			: -1;
+			
+		const newQuestion = {
+			title: '',
+			content: '',
+			number: maxNumber + 1,
+		};
+
+		setQuestions((prevQuestions) => [...prevQuestions, newQuestion]);
+
+	};
+
+	const deleteItem =(number) => {
+		const updatedQuestions = questions.filter((question) => question.number !== number);
+		setQuestions(updatedQuestions);
+		// setCharCounts((prev) => prev.filter((_, i) => questions[i].number !== number));
+		setCharCounts(updatedQuestions.map((question) =>
+			question.content && question.content !== 'string' ? question.content.length : 0
+		))
 	};
 
 	const handleEditApply = async (data) => {
@@ -234,10 +263,6 @@ const OthersRewrite = () => {
 	// 	}, 3000);
 	// };
 
-	const deleteItem = (number) => {
-		const deletedQuestions = questions.filter((question) => question.number !== number);
-		setQuestions(deletedQuestions);
-	};
 
 	const clickGotoApply = () => {
 		if (contents.link) {
@@ -360,8 +385,10 @@ const OthersRewrite = () => {
 					</p>
 				</LastUpdatedDate>
 				<form>
-					{questions.map((question, index) => (
-						<div key={question.number + '_' + index} style={{ position: 'relative' }}>
+					{questions.map((question, index) => {
+
+						return (
+						<div key={question.number} style={{ position: 'relative' }}>
 							<TitleWrapper>
 								<TitleInputContainer>
 									<Delete
@@ -409,7 +436,8 @@ const OthersRewrite = () => {
 								</CharCount>
 							</InputWrapper>
 						</div>
-					))}
+					);
+					})}
 				</form>
 				<AddButton onClick={handleAddClick}>+</AddButton>
 				<div style={{ height: '70px' }}></div>
