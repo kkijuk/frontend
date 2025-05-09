@@ -78,12 +78,17 @@ const List = () => {
 
 	return (
 		<BaseDiv>
-			<ListItem
-				title="MASTER"
-				updated_at={masterData.updated_at}
-				state={masterData.state}
-				onClick={() => navigate('/history/master')}
-			/>
+			{/* 마스터 자소서 */}
+			{(state === '3' || state === String(masterData.state))&&(
+				<ListItem
+					title="MASTER"
+					updated_at={masterData.updated_at}
+					state={masterData.state}
+					onClick={() => navigate('/history/master')}
+				/>
+			)}
+
+			{/* 자기소개서 목록 */}
 			{sortedData
 				.filter((item) => item.state !== 2) // state가 2가 아닌 항목만 필터링
 				.map((item) => (
@@ -98,6 +103,7 @@ const List = () => {
 					/>
 				))}
 
+			{/* 만료된 자기소개서 목록 */}
 			<br></br>
 			{expiredRecruits.length > 0 && (
 				<div>
