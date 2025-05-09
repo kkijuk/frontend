@@ -10,6 +10,7 @@ import ButtonOptions from '../../components/Intro/AddButton.jsx';
 import Alert from '../../components/Intro/Alert';
 import EditApplyModal from '../../components/Intro/EditApplyModal.jsx';
 import { updateRecruit } from '../../api/Apply/RecruitUpdate.js';
+import { getRecruitDetails } from '@/api/Apply/RecruitDetails.js';
 import { trackEvent } from '../../utils/ga4.js';
 import SvgIcon from '../../components/shared/SvgIcon.jsx';
 import { theme } from '../../constants/theme.js';
@@ -82,6 +83,26 @@ const OthersRewrite = () => {
 				console.log(error);
 			});
 	}, [id]);
+
+	// 공고 정보 불러오기
+	useEffect(() => {
+		if(!contents.recruitId) return;
+		
+		getRecruitDetails(contents.recruitId)
+			.then((response) => {
+				console.log('공고 정보: ', response);
+				setContents((prevContents) => ({
+					...prevContents,
+					title: response.title,
+					startTime: response.startTime,
+					endTime: response.endTime,
+				}));
+				setIsCompleted(response.status);
+			})
+			.catch((error) => {
+				console.error('Error fetching recruit details:', error);
+			});
+	}, [contents.recruitId]);
 
 	const deleteResume = () => {
 		api
@@ -314,7 +335,7 @@ const OthersRewrite = () => {
 								<EditApplyModal
 									onClose={toggleEditApplyModal}
 									onSave={(data) => handleEditApply(data)}
-									contents={contents}
+									job={contents}
 									style={{ position: 'relative', zIndex: 1000 }}
 								></EditApplyModal>
 							)}
