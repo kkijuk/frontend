@@ -56,6 +56,16 @@ export default function DetailAddEdit({
 
 	const handleDateClick = () => setShowCalendar(!showCalendar);
 
+	const handleContentChange = (e) => {
+		const inputText = e.target.value.slice(0, 800); // 800자 제한
+		setContents(inputText);
+
+		// 높이 자동 조절
+		const textarea = e.target;
+		textarea.style.height = 'auto'; // 높이 초기화
+		textarea.style.height = `${textarea.scrollHeight}px`; // 내용만큼 늘리기
+	};
+
 	const handleDateChange = (date) => {
 		if (Array.isArray(date) && date.length === 2) {
 			const [startDate, endDate] = date;
@@ -133,12 +143,7 @@ export default function DetailAddEdit({
 				</Top>
 				<Middle>
 					<Label>내용</Label>
-					<TextArea
-						height="100px"
-						width="720px"
-						value={contents}
-						onChange={(e) => setContents(e.target.value.slice(0, 800))}
-					/>
+					<TextArea width="720px" value={contents} onChange={handleContentChange} />
 				</Middle>
 				<TagBox externalTags={tagNames} externalSetTags={setTagNames} onTagListChange={setTagIds} />
 				<Button>
