@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import AbilityTag from './AbilityTag';
+import AbilityTag from './AbilityTag.jsx';
 import DetailAddEdit from './DetailAddEdit';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 import { formatDate } from '@/utils/formateDate';
