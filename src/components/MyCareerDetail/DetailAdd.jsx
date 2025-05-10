@@ -6,226 +6,23 @@ import TagBox from '../shared/TagBox';
 import { AddDetail } from '../../api/Mycareer/AddDetail';
 import { trackEvent } from '../../utils/ga4';
 
-const Box = styled.div`
-	height: auto; /*원래 384!*/
-	width: 800px;
-	padding: 24px 40px;
-	box-sizing: border-box;
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 100%;
-		padding: 24px 20px;
-		box-sizing: border-box;
-	}
-`;
-
-const Top = styled.div`
-	display: flex;
-	justify-content: space-between;
-	height: 79px;
-	width: 720px;
-	margin-top: 22px;
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 100%;
-		height: 100%;
-		gap: 24px;
-		box-sizing: border-box;
-		flex-direction: column;
-	}
-`;
-
-const Middle = styled.div`
-	height: 142px;
-	width: 800px;
-	margin-top: 18px;
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 100%;
-		box-sizing: border-box;
-	}
-`;
-
-const Button = styled.div`
-	height: auto; /*원래 50*/
-	display: flex;
-	flex-direction: column; /* 버튼 + 에러 메시지를 세로로 */
-	align-items: flex-start;
-	gap: 8px;
-	margin-bottom: 24px;
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		/*flex-direction: row;
-		width: 100%;
-		box-sizing: border-box;
-	}
-`;
-
-const Title = styled.div`
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	margin-right: 20px;
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		margin-right: 0px;
-	}
-`;
-
-const Date = styled.div`
-	display: flex;
-	flex-direction: column;
-	position: relative;
-`;
-
-const DateBox = styled.div`
-	flex: 1;
-
-	border-radius: 10px;
-	cursor: pointer;
-	height: 50px;
-	width: 240px;
-	padding: 15px 20px;
-	box-sizing: border-box;
-	background: #f5f5f5;
-	color: var(--gray-02, #707070);
-	font-family: Pretendard;
-	font-size: 16px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: normal;
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 100%;
-	}
-`;
-
-const Label = styled.div`
-	color: var(--black, #000);
-	font-family: semibold;
-	font-size: 18px;
-	font-style: normal;
-	font-weight: 500;
-	line-height: normal;
-	margin-bottom: 8px;
-`;
-
-const Cancel = styled.div`
-	width: 150px;
-	height: 50px;
-	flex-shrink: 0;
-	border-radius: 10px;
-	border: 1.5px solid var(--sub-rd, #fa7c79);
-	box-sizing: border-box;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: var(--sub-rd, #fa7c79);
-	text-align: center;
-	font-family: Pretendard;
-	font-size: 18px;
-	font-style: normal;
-	font-weight: 500;
-	line-height: normal;
-	cursor: pointer;
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: calc(50% - 7.5px);
-	}
-`;
-
-const Save = styled.div`
-	width: 100%;
-	max-width: 555px;
-	height: 50px;
-	flex-shrink: 0;
-	border-radius: 10px;
-	background: var(--main-01, #3aaf85);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: #fff;
-	text-align: center;
-	font-family: Pretendard;
-	font-size: 18px;
-	font-style: normal;
-	font-weight: 500;
-	line-height: normal;
-	cursor: pointer;
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: calc(50% - 7.5px);
-	}
-`;
-
-const Line = styled.div`
-	width: 800px;
-	height: 2px;
-	background: var(--gray-03, #d9d9d9);
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 100%;
-		box-sizing: border-box;
-	}
-`;
-
-const Input = styled.input`
-	border-radius: 10px;
-	background: #f5f5f5;
-	flex-shrink: 0;
-	height: ${(props) => props.height || 'auto'};
-	width: ${(props) => props.width || 'auto'};
-	border: none; /* 테두리를 없앰 */
-	font-family: Pretendard;
-	font-size: 16px;
-	color: var(--black, #000);
-	padding: 15px 20px; /* 위아래 15px, 양옆 20px */
-	box-sizing: border-box; /* padding을 포함한 요소의 전체 크기를 설정된 width와 height에 맞춤 */
-	z-index: 1; /* z-index 추가 */
-	position: relative; /* z-index가 적용되도록 position 속성 추가 */
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 100%;
-		box-sizing: border-box;
-	}
-`;
-
-const TextArea = styled.textarea`
-	border-radius: 10px;
-	background: #f5f5f5;
-	flex-shrink: 0;
-	height: ${(props) => props.height || 'auto'};
-	width: ${(props) => props.width || 'auto'};
-	border: none; /* 테두리를 없앰 */
-	font-family: Pretendard;
-	font-size: 16px;
-	color: var(--black, #000);
-	padding: 15px 20px; /* 위아래 15px, 양옆 20px */
-	box-sizing: border-box; /* padding을 포함한 요소의 전체 크기를 설정된 width와 height에 맞춤 */
-	z-index: 1; /* z-index 추가 */
-	position: relative; /* z-index가 적용되도록 position 속성 추가 */
-	resize: none; /* 사용자가 텍스트 영역 크기 조절 못하도록 함 */
-	overflow-y: auto; /* 텍스트가 넘칠 경우 스크롤 생성 */
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 100%;
-		box-sizing: border-box;
-	}
-`;
-
-const ButtonRow = styled.div`
-	display: flex;
-	gap: 15px; /* 버튼 사이 간격 */
-	width: 100%;
-	justify-content: space-between;
-`;
-
-const ErrorMessage = styled.div`
-	color: var(--error, #ff7979);
-	font-family: Pretendard;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: 500;
-	line-height: normal;
-	margin-top: 9px;
-`;
+import {
+	Box,
+	Top,
+	Middle,
+	Button,
+	Title,
+	Date,
+	DateBox,
+	Label,
+	Cancel,
+	Save,
+	Line,
+	Input,
+	TextArea,
+	ButtonRow,
+	ErrorMessage,
+} from './DetailAdd.styles';
 
 export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 	// careerId도 prop으로 받음
@@ -235,6 +32,8 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 	const [content, setContent] = useState('');
 	const [tagList, setTagList] = useState([]); // 태그 ID 리스트를 상태로 관리
 	const [errorMessage, setErrorMessage] = useState('');
+
+	const [textAreaHeight, setTextAreaHeight] = useState('100px');
 
 	console.log('careerId:', careerId);
 	const handleDateClick = () => {
@@ -297,6 +96,11 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 		const inputText = event.target.value.slice(0, 800); // 800자 제한
 
 		setContent(inputText);
+
+		// height 자동 조절
+		const textarea = event.target;
+		textarea.style.height = 'auto'; // 높이 초기화
+		textarea.style.height = `${textarea.scrollHeight}px`; // 내용에 따라 늘리기
 	};
 
 	return (
@@ -314,13 +118,7 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 			</Top>
 			<Middle>
 				<Label>내용</Label>
-				<TextArea
-					height="100px"
-					width="720px"
-					placeholder="활동 세부 내용을 작성하세요"
-					value={content}
-					onChange={saveContent}
-				/>
+				<TextArea width="720px" placeholder="활동 세부 내용을 작성하세요" value={content} onChange={saveContent} />
 			</Middle>
 			<TagBox onTagListChange={setTagList} /> {/* 태그 박스에서 선택한 태그 관리 */}
 			<Button>
