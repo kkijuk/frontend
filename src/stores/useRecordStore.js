@@ -35,7 +35,7 @@ const useRecordStore = create((set, get) => ({
 	eduCareers: [],
 	files: [],
 	recordId: null,
-	
+	memberId: null,
 	status: 'idle',
 	error: null,
 
@@ -65,7 +65,8 @@ const useRecordStore = create((set, get) => ({
                     address:data.address
                 },
                 updated_at:data.updatedAt,
-				recordId: data.record_id,
+				recordId: data.recordId,
+				memberId: data.memberId,
 				educations: data.educationList,
 				licenses: data.licenses,
 				awards: data.awards,
@@ -82,7 +83,7 @@ const useRecordStore = create((set, get) => ({
 				status: 'succeeded',
 				error: null,
 			});
-			console.log('Record Id:', data.record_id);
+			console.log('Record Id:', data.recordId);
 		} catch (error) {
 			set({ status: 'failed', error: "Record not created" });
 			console.error('Fetch Record Error: ', error);
@@ -390,7 +391,7 @@ const useRecordStore = create((set, get) => ({
 		}
 	},
 
-	updateUserData: async (recordId, data) => {
+	updateUserData: async (recordId, data, memberId) => {
 		// data : {address: adderss, profileImageFile: file}
 		console.log('data:', data);
 		try {
@@ -427,7 +428,7 @@ const useRecordStore = create((set, get) => ({
 				}
 				// 2-2) Presigned URL 발급
 				const {keyName, signedURL} = await createPresignedUrl({
-					fileTitle: `profileImage_${recordId}`,
+					fileTitle: `profileImage_${memberId}`,
 				})
                 // 2-3) s3 업로드
 				await uploadFileToS3(data.profileImageFile, signedURL);
@@ -435,12 +436,12 @@ const useRecordStore = create((set, get) => ({
 				// 2-4) keyName 저장
 				const savedNewProfileData = await saveKeyName(
 					keyName,
-					`profileImage_${recordId}`,
+					`profileImage_${memberId}`,
 					data.profileImageFile.name
 				);
 				console.log('savedNewProfileData:', savedNewProfileData)
 				//2-5) 사용자정보업데이트
-				const newProfileImageUrl = `profileImage_${recordId}`;
+				const newProfileImageUrl = `profileImage_${memberId}`;
 				const response = await updateUserData(recordId, {
 					email,                   // email은 고정
 					address: oldAddress,     // 기존 주소 유지
