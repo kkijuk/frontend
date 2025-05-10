@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Box = styled.div`
+export const Box = styled.div`
 	height: auto; /*원래 384!*/
 	width: 800px;
 	padding: 24px 40px;
@@ -13,7 +13,7 @@ const Box = styled.div`
 	}
 `;
 
-const Top = styled.div`
+export const Top = styled.div`
 	display: flex;
 	justify-content: space-between;
 	height: 79px;
@@ -29,7 +29,7 @@ const Top = styled.div`
 	}
 `;
 
-const Middle = styled.div`
+export const Middle = styled.div`
 	height: 142px;
 	width: 800px;
 	margin-top: 18px;
@@ -39,7 +39,7 @@ const Middle = styled.div`
 	}
 `;
 
-const Button = styled.div`
+export const Button = styled.div`
 	height: auto; /*원래 50*/
 	display: flex;
 	flex-direction: column; /* 버튼 + 에러 메시지를 세로로 */
@@ -54,7 +54,7 @@ const Button = styled.div`
 	}
 `;
 
-const Title = styled.div`
+export const Title = styled.div`
 	flex: 1;
 	display: flex;
 	flex-direction: column;
@@ -64,13 +64,13 @@ const Title = styled.div`
 	}
 `;
 
-const Date = styled.div`
+export const Date = styled.div`
 	display: flex;
 	flex-direction: column;
 	position: relative;
 `;
 
-const DateBox = styled.div`
+export const DateBox = styled.div`
 	flex: 1;
 
 	border-radius: 10px;
@@ -91,7 +91,7 @@ const DateBox = styled.div`
 	}
 `;
 
-const Label = styled.div`
+export const Label = styled.div`
 	color: var(--black, #000);
 	font-family: semibold;
 	font-size: 18px;
@@ -101,7 +101,7 @@ const Label = styled.div`
 	margin-bottom: 8px;
 `;
 
-const Cancel = styled.div`
+export const Cancel = styled.div`
 	width: 150px;
 	height: 50px;
 	flex-shrink: 0;
@@ -125,7 +125,7 @@ const Cancel = styled.div`
 	}
 `;
 
-const Save = styled.div`
+export const Save = styled.div`
 	width: 100%;
 	max-width: 555px;
 	height: 50px;
@@ -149,7 +149,7 @@ const Save = styled.div`
 	}
 `;
 
-const Line = styled.div`
+export const Line = styled.div`
 	width: 800px;
 	height: 2px;
 	background: var(--gray-03, #d9d9d9);
@@ -160,7 +160,7 @@ const Line = styled.div`
 	}
 `;
 
-const Input = styled.input`
+export const Input = styled.input`
 	border-radius: 10px;
 	background: #f5f5f5;
 	flex-shrink: 0;
@@ -181,7 +181,7 @@ const Input = styled.input`
 	}
 `;
 
-const TextArea = styled.textarea`
+export const TextArea = styled.textarea`
 	border-radius: 10px;
 	background: #f5f5f5;
 	flex-shrink: 0;
@@ -204,14 +204,14 @@ const TextArea = styled.textarea`
 	}
 `;
 
-const ButtonRow = styled.div`
+export const ButtonRow = styled.div`
 	display: flex;
 	gap: 15px; /* 버튼 사이 간격 */
 	width: 100%;
 	justify-content: space-between;
 `;
 
-const ErrorMessage = styled.div`
+export const ErrorMessage = styled.div`
 	color: var(--error, #ff7979);
 	font-family: Pretendard;
 	font-size: 14px;
