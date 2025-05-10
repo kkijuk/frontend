@@ -13,6 +13,11 @@ body {
 	height: 100%; /* React 애플리케이션이 화면 전체를 차지하도록 설정 */
 }
 
+* {
+	box-sizing: border-box;
+  }
+  
+
 @font-face {
 	font-family: 'Black';
 	src: url('assets/fonts/Pretendard-Black.woff') format('woff');

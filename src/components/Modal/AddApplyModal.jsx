@@ -1,6 +1,6 @@
 //pages/Apply/ApplySchedule, Intro/Select
 //공고 추가 모달
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ModalTagBox from '../Apply/ModalTagBox';  // 일관성 있게 사용
 import { createRecruit } from '../../api/Apply/Recruit';

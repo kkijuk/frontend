@@ -267,6 +267,14 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
 	const [tags, setTags] = useState([]);
 	const [link, setLink] = useState('');
 
+	// 모달 열릴 때마다 스크롤 잠금
+	useEffect(() => {
+		document.body.style.overflow = 'hidden';
+		return () => {
+			document.body.style.overflow = 'unset';
+		};
+	}, []);
+
 	useEffect(() => {
 		if (job) {
 			setTitle(job.title || '');
