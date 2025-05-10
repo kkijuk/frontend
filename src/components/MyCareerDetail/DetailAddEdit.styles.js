@@ -28,7 +28,7 @@ export const Top = styled.div`
 `;
 
 export const Middle = styled.div`
-	height: 142px;
+	height: auto;
 	width: 800px;
 	margin-top: 18px;
 
@@ -176,7 +176,8 @@ export const TextArea = styled.textarea`
 	border-radius: 10px;
 	background: #f5f5f5;
 	flex-shrink: 0;
-	height: ${(props) => props.height || 'auto'};
+	/*height: ${(props) => props.height || 'auto'};*/
+	min-height: 100px;
 	width: ${(props) => props.width || 'auto'};
 	border: none;
 	font-family: Pretendard;
@@ -187,7 +188,7 @@ export const TextArea = styled.textarea`
 	z-index: 1;
 	position: relative;
 	resize: none;
-	overflow-y: auto;
+	/*overflow-y: auto;*/
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
