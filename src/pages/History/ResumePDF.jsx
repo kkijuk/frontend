@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import SelectContent from '../../components/ResumeExport/SelectContent';
 import SelectResume from '../../components/ResumeExport/SelectResume';
 import Modal from '../../components/ResumeExport/Modal';
-import { trackEvent } from '../../utils/ga4'; // GA 이벤트 추적 함수
+// import { trackEvent } from '../../utils/ga4'; // GA 이벤트 추적 함수
 const Section = styled.div`
 	width: 820px;
 	height: 100%;
@@ -89,12 +89,12 @@ export default function ResumePdf() {
 					<Button
 						onClick={()=>{
 							handleButtonClick;
-							trackEvent('btn_click', {
-								category: 'resume',
-								detail: 'export_resume',
-								action_type: 'click',
-								label: '확인',
-							});
+							// trackEvent('btn_click', {
+							// 	category: 'resume',
+							// 	detail: 'export_resume',
+							// 	action_type: 'click',
+							// 	label: '확인',
+							// });
 						}}
 						disabled={!selectedResume} // 선택되지 않으면 비활성화
 					>

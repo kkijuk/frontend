@@ -35,6 +35,7 @@ const useRecordStore = create((set, get) => ({
 	eduCareers: [],
 	files: [],
 	recordId: null,
+	
 	status: 'idle',
 	error: null,
 
