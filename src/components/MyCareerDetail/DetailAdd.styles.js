@@ -30,7 +30,8 @@ export const Top = styled.div`
 `;
 
 export const Middle = styled.div`
-	height: 142px;
+	/*height: 142px;*/
+	height: auto;
 	width: 800px;
 	margin-top: 18px;
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
