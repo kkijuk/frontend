@@ -13,11 +13,7 @@ const DateInput = ({ value, onChange, disabled }) => {
 		// value: 숫자(타임스탬프) 혹은 null
   		// 내부 input에는 'YYYY-MM-DD' 형태로 표시
 		if (!timestamp) return '';
-		const dateObj = new Date(timestamp);
-
-		// 시차를 맞추기 위해 setHours를 조정 (예: 9시간)
-		dateObj.setHours(dateObj.getHours() + dateObj.getTimezoneOffset() / 60);
-		return dateObj.toISOString().slice(0, 10);
+		return moment(timestamp).format('YYYY-MM-DD');
 
 		// old code
 		// if (isNaN(dateObj)) return '';
@@ -26,8 +22,12 @@ const DateInput = ({ value, onChange, disabled }) => {
 	};
 
 	const handleDateChange = (date) => {
-		onChange(new Date(date).getTime()); // 부모 컴포넌트에 날짜 전달
+		const adjusted = moment(date).startOf('day').valueOf(); // 날짜를 자정으로 설정
+		onChange(adjusted); // 부모 컴포넌트에 날짜 전달
 		setShowCalendar(false);
+		// console.log('selected date:', date);
+		// console.log('timestamp:', adjusted);
+		// console.log('adjusted date:', new Date(adjusted));
 	};
 
 	const handleClickOutside = (event) => {
