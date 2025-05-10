@@ -188,7 +188,7 @@ export const TextArea = styled.textarea`
 	z-index: 1;
 	position: relative;
 	resize: none;
-	/*overflow-y: auto;*/
+	overflow-y: hidden;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
