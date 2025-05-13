@@ -41,6 +41,7 @@ const History = () => {
 		updateItem,
 		deleteItem,
 		recordId,
+		memberId,
 		addEtcItem,
 		deleteEtcItem,
 		updateEtcItem,
@@ -188,7 +189,7 @@ const History = () => {
 		if(file) {
 			updateUserData(recordId, {
 				profileImageFile: file,
-			})
+			},memberId);
 		}
 	}
 
@@ -197,7 +198,7 @@ const History = () => {
 		if(data.type === 'address'){
 			updateUserData(recordId, {
 				address: data.data,
-			});
+			}, memberId);
 		}
 	};
 
