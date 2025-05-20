@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // useNavigate import
+import { useNavigate } from 'react-router-dom'; 
 import styled from 'styled-components';
 import signupLogo from '../assets/signuplogo.svg';
 import InterestBox from '../components/shared/InterestBox';
@@ -8,6 +8,7 @@ import { saveInterests } from '../api/Signup/signupInterest';
 import { trackEvent } from '../utils/ga4';
 import useAuthStore from '../stores/useAuthStore';
 import { theme } from '../constants/theme';
+import messageIcon from '../assets/main/message.svg';
 
 const ContentArea = styled.div`
   margin: 0 auto;
@@ -120,11 +121,31 @@ const Logo = styled.img`
   cursor: pointer;
 `;
 
+const Popup = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 24px 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Regular;
+  font-size: 16px;
+  gap: 16px;
+  text-align: center;
+`;
+
 const SignupInterest = ({ onSave = () => {} }) => {
 	const [interestingList, setSelectedInterest] = useState([]);
 	const navigate = useNavigate();
 	const [showModal, setShowModal] = useState(false);
 	const { isProfileComplete } = useAuthStore();
+	const [showCompletePopup, setShowCompletePopup] = useState(false);
 	
 	useEffect(() => {
 		// 프로필 완료된 경우 홈으로 리다이렉트
@@ -153,27 +174,28 @@ const SignupInterest = ({ onSave = () => {} }) => {
 			alert('관심분야를 선택해 주세요!');
 			return;
 		}
-
+	
 		try {
 			const result = await saveInterests(interestingList);
-			console.log('Response:', result);
-			console.log('Interest list being sent:', interestingList);
-
-			// GA 트래킹 추가 (완료 버튼 클릭)
+	
 			trackEvent('btn_click', {
 				category: 'interests',
 				detail: 'done',
 				action_type: 'click',
 				label: '완료',
 			});
-
-			onSave(result); // API 응답 데이터를 처리할 필요가 있으면 사용
-			navigate('/home');
+	
+			onSave(result);
+			setShowCompletePopup(true); // 팝업
+	
+			setTimeout(() => {
+				navigate('/home'); // 3초 뒤 홈 이동
+			}, 3000);
 		} catch (error) {
-			console.error('Error occurred while saving interests:', error.message);
-			console.error('Stack Trace:', error.stack); 
+			console.error('관심분야 저장 오류:', error.message);
 		}
 	};
+	
 
 	const handleClose = () => {
 		// GA 트래킹 추가 (건너뛰기 버튼 클릭)
@@ -233,7 +255,15 @@ const SignupInterest = ({ onSave = () => {} }) => {
 			</InterestArea>
 			<SaveButton onClick={handleSave}>완료</SaveButton>
 			<CloseButton onClick={() => setShowModal(true)}>건너뛰기</CloseButton>
-			{showModal && <InterestSkipModal onClose={handleModalClose} onConfirm={handleModalConfirm} />}
+			{showModal && (
+				<InterestSkipModal onClose={handleModalClose} onConfirm={handleModalConfirm} />
+			)}
+			{showCompletePopup && (
+			<Popup>
+    <img src={messageIcon} alt="등록 완료 아이콘" width={20} height={20} />
+    관심분야를 저장했어요. 끼적에 오신 것을 환영합니다!
+  </Popup>
+			)}
 		</ContentArea>
 	);
 };
