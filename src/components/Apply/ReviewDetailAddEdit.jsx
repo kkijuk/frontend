@@ -24,7 +24,8 @@ const Top = styled.div`
 	margin-top: 22px;
 `;
 const Middle = styled.div`
-	height: 142px;
+	/*height: 142px;*/
+	height: auto;
 	width: 800px;
 	margin-top: 18px;
 `;
