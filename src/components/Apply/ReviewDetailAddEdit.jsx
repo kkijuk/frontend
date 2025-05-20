@@ -8,7 +8,8 @@ import { deleteReview } from '../../api/Apply/DeleteReview';
 import ReviewDeleteModal from '../../components/Apply/ReviewDeleteModal';
 
 const Box = styled.div`
-	height: 384px;
+	/*height: 142px;*/
+	height: auto;
 	width: 800px;
 	padding: 24px 40px;
 		@media (max-width: ${({ theme }) => theme.breakpoints.md}) {

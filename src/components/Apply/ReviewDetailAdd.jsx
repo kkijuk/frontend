@@ -7,7 +7,8 @@ import { ReviewAdd } from '../../api/Apply/ReviewAdd';
 import { trackEvent } from '../../utils/ga4';
 
 const Box = styled.div`
-    height: 384px;
+    /*height: 142px;*/
+	height: auto;
     width: 800px;
     padding: 24px 40px;
 
