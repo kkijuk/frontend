@@ -1,6 +1,6 @@
 //pages/Apply/ApplySchedule, Intro/Select
 //공고 추가 모달
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ModalTagBox from '../Apply/ModalTagBox';  // 일관성 있게 사용
 import { createRecruit } from '../../api/Apply/Recruit';
@@ -455,7 +455,7 @@ const AddApplyModal = ({ onClose, onSave }) => {
 			const day = String(date.getDate()).padStart(2, '0');
 			const hours = String(date.getHours()).padStart(2, '0');
 			const minutes = String(date.getMinutes()).padStart(2, '0');
-			return `${year}.${month}.${day} ${hours}:${minutes}`;
+			return `${year}-${month}-${day} ${hours}:${minutes}`;
 		};
 
 		const formattedStartTime = formatDateTime(startTime);
@@ -568,4 +568,4 @@ const AddApplyModal = ({ onClose, onSave }) => {
 	);
 };
 
-export default AddApplyModal;
+export default AddApplyModal; 
