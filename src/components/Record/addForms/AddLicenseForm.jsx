@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import CustomCalendarPicker from "../CustomCalendarPicker";
 import { trackEvent } from "../../../utils/ga4";
-import { theme } from "../../../constants/theme";
+import { BaseFormInput, BaseFormButton } from "../styles/ResumeForm.styles";
 
 const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
@@ -155,31 +155,22 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
             />
             <ButtonRow>
               {mode === "edit" ? (
-                <Button
+                <BaseFormButton
                   onClick={()=>onDelete(id)}
-                  style={{
-                    border: "1px solid var(--sub-bu, #FA7C79)",
-                    background: "var(--white, #FFF)",
-                    color: "#FA7C79",
-                  }}
+                  variant="delete"
                 >
                   삭제
-                </Button>
+                </BaseFormButton>
               ) : (
-                <Button
+                <BaseFormButton
                   onClick={onClose}
-                  style={{
-                    border: "1px solid var(--sub-bu, #77AFF2)",
-                    background: "var(--white, #FFF)",
-                    color: "#77AFF2",
-                  }}
+                  variant="close"
                 >
                   취소
-                </Button>
+                </BaseFormButton>
               )}
               {mode === "edit" ? (
-                <Button 
-                  primary 
+                <BaseFormButton
                   onClick={() => {
                     if (hasEmptyField(formData)) {
                       alert("입력하지 않은 항목이 있습니다.");
@@ -194,12 +185,12 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                       label: '활동 수정하기',
                     });
                   }}
-                  style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+                  variant="save"
+                >
                   저장
-                </Button>
+                </BaseFormButton>
                 ) : (
-                <Button 
-                  primary 
+                <BaseFormButton
                   onClick={() => {
                     if (hasEmptyField(formData)) {
                       alert("입력하지 않은 항목이 있습니다.");
@@ -214,9 +205,10 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                       label: '추가',
                     });
                   }}
-                  style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+                  variant="create"
+                >
                   추가
-                </Button>
+                </BaseFormButton>
               )}
             </ButtonRow>
             </Row>
@@ -305,26 +297,7 @@ const Row = styled.div`
 
 const Input = styled.input`
   width: ${(props) => props.width || "100%"};
-  height: 45px;
-  border-radius: 10px;
-  border: none;
-  background: var(--white, #fff);
-  text-align: left;
-  font-family: Regular;
-  font-size: 16px;
-  font-weight: 400;
-  color: black;
   padding: 0px 20px;
-
-  &::placeholder {
-    color: #d9d9d9;
-  }
-
-  @media (max-width: ${theme.breakpoints.md}) {
-    width: ${(props) => props.mdWidth || "238px"};
-    height: 17px;
-    padding: 12px 20px;
-  }
 `;
 
 const ButtonRow = styled.div`

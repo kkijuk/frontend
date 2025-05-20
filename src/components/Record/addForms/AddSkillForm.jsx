@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CustomDropdown from "../CustomDropdown";
 import SvgIcon from "../../shared/SvgIcon";
 import { trackEvent } from "../../../utils/ga4";
-import { theme } from "../../../constants/theme";
+import { BaseFormInput, BaseFormButton } from "../styles/ResumeForm.styles";
 
 const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
@@ -144,31 +144,22 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
         </IconWrapper>
         <ButtonRow>
           {mode === "edit" ? (
-            <Button
+            <BaseFormButton
               onClick={()=>onDelete(id)}
-              style={{
-                border: "1px solid var(--sub-bu, #FA7C79)",
-                background: "var(--white, #FFF)",
-                color: "#FA7C79",
-              }}
+              variant="delete"
             >
               삭제
-            </Button>
+            </BaseFormButton>
           ) : (
-            <Button
+            <BaseFormButton
               onClick={onClose}
-              style={{
-                border: "1px solid var(--sub-bu, #77AFF2)",
-                background: "var(--white, #FFF)",
-                color: "#77AFF2",
-              }}
+              variant="close"
             >
               취소
-            </Button>
+            </BaseFormButton>
             )}
             {mode === "edit" ? (
-              <Button 
-                primary 
+              <BaseFormButton
                 onClick={() => {
                   if (hasEmptyField(formData)) {
                     alert("입력하지 않은 항목이 있습니다.");
@@ -183,12 +174,12 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
                     label: '활동 수정하기',
                   });
                 }}
-                style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+                variant="save"
+              >
                 저장
-              </Button>
+              </BaseFormButton>
               ) : (
-              <Button 
-                primary 
+              <BaseFormButton
                 onClick={() => {
                   if (hasEmptyField(formData)) {
                     alert("입력하지 않은 항목이 있습니다.");
@@ -203,9 +194,10 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
                     label: '추가',
                   });
                 }}
-                style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+                variant="create"
+              >
                 추가
-              </Button>
+              </BaseFormButton>
             )}
         </ButtonRow>
       
@@ -247,28 +239,7 @@ const Row = styled.div`
 `;
 
 const Input = styled.input`
-  height: 45px;
   width: 430px;
-  border-radius: 10px;
-  border: none;
-  background: var(--white, #fff);
-  text-align: left;
-  font-family: Regular;
-  font-size: 16px;
-  font-weight: 400;
-  color: black;
-  padding-left: 10px;
-  padding-right: 10px;
-
-  &::placeholder {
-    color: #d9d9d9;
-  }
-
-  @media (max-width: ${theme.breakpoints.md}) {
-    width: ${(props) => props.mdWidth || "238px"};
-    height: 17px;
-    padding: 12px 20px;
-  }
 `;
 
 const ButtonRow = styled.div`
