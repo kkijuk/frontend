@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import AddAwardForm from '../addForms/AddAwardForm';
 import { KebabMenu2 } from '../KebabMenu';
 import { theme } from '../../../constants/theme';
+import { formatDate } from '../../../utils/formatDate';
+import { formateDateDashToDot } from '@/utils/formateDate';
 
 const AwardItem = ({ data, onSave, onUpdate, onDelete, onClose }) => {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -29,7 +31,7 @@ const AwardItem = ({ data, onSave, onUpdate, onDelete, onClose }) => {
           <AwardInfo>
             <AwardName>{data.competitionName} / {data.awardName}</AwardName>
             <AwardDetails>
-              {data.acquireDate} ・ {data.administer}
+              {formateDateDashToDot(data.acquireDate)} ・ {data.administer}
             </AwardDetails>
           </AwardInfo>
           <EditButton id="edit">

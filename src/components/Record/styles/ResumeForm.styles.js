@@ -33,6 +33,10 @@ export const BaseFormButton = styled.button`
     width: 65px;
     height: 25px;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     border-radius: 10px;
     font-family: Regular;
     font-size: 14px;

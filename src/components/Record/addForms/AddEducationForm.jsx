@@ -4,6 +4,7 @@ import CustomDropdown from "../CustomDropdown";
 import CustomDatePicker from "../CustomDatePicker";
 import { trackEvent } from "../../../utils/ga4";
 import { BaseFormInput, BaseFormButton } from "../styles/ResumeForm.styles";
+import { formateDateDashToDot } from "@/utils/formateDate";
 
 const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
@@ -69,15 +70,6 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
     }
   };
 
-  const calculatePickerPosition = (ref) => {
-    if (!ref.current) return { top: 0, left: 0 };
-    const rect = ref.current.getBoundingClientRect();
-    return {
-      top: rect.bottom + window.scrollY -151, // Input 아래 5px
-      left: rect.left + window.scrollX -357,
-    };
-  };
-
   const hasEmptyField =(data)=>{
     const { id, educationId, isCurrent, ...fields } = data; //id, isCurrent 제외
     return Object.values(fields).some((value) => {
@@ -137,7 +129,7 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
               readOnly
               type="text"
               placeholder="입학년월"
-              value={formData.admissionDate}
+              value={formateDateDashToDot(formData.admissionDate || "")}
               onClick={() => handleDatePickerToggle("admissionDate")}
             />
             {showAdmissionDatePicker && (
@@ -156,7 +148,7 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
               readOnly
               type="text"
               placeholder="졸업년월"
-              value={formData.graduationDate}
+              value={formateDateDashToDot(formData.graduationDate || "")}
               onClick={() => handleDatePickerToggle("graduationDate")}
             />
             {showGraduationDatePicker && (

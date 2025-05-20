@@ -3,6 +3,7 @@ import styled from "styled-components";
 import CustomCalendarPicker from "../CustomCalendarPicker";
 import { trackEvent } from "../../../utils/ga4";
 import { BaseFormInput, BaseFormButton } from "../styles/ResumeForm.styles";
+import { formateDateDashToDot } from "@/utils/formateDate";
 
 const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
@@ -47,14 +48,6 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
     setShowDatePicker(false);
   };
 
-  const calculatePickerPosition = (ref) => {
-    if (!ref.current) return { top: 0, left: 0 };
-    const rect = ref.current.getBoundingClientRect();
-    return {
-      top: rect.bottom + window.scrollY + 10, // Input 아래 10px
-      left: rect.left + window.scrollX,
-    };
-  };
 
   // Log formData whenever it changes
   useEffect(() => {
@@ -103,7 +96,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                     readOnly
                     type="text"
                     placeholder="응시일자"
-                    value={formData.acquireDate || ""}
+                    value={formateDateDashToDot(formData.acquireDate) || ""}
                     onClick={handleDatePickerToggle}
                 />
                 {showDatePicker && (

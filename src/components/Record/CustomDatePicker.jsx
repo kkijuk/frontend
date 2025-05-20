@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { theme } from "../../constants/theme";
+import { formateDateDashToDot } from "@/utils/formateDate";
 
 const CustomDatePicker = ({ value, onChange, onClose }) => {
   const currentYear = new Date().getFullYear();
@@ -26,10 +27,11 @@ const CustomDatePicker = ({ value, onChange, onClose }) => {
   }, [value]);
 
   const handleConfirm = () => {
-    const formattedValue = `${selectedYear}-${String(selectedMonth).padStart(
+    const rawValue = `${selectedYear}-${String(selectedMonth).padStart(
       2,
       "0"
     )}`;
+    const formattedValue = formateDateDashToDot(rawValue);
     onChange(formattedValue);
     onClose();
   };

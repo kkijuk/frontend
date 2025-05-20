@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import AddLicenseForm from '../addForms/AddLicenseForm';
 import { KebabMenu2 } from '../KebabMenu';
 import { theme } from '../../../constants/theme';
+import { formateDateDashToDot } from '@/utils/formateDate';
+import { format } from 'url';
 
 const LicenseItem = ({ data, isSecondColumn, onSave, onUpdate, onDelete }) => {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -13,7 +15,7 @@ const LicenseItem = ({ data, isSecondColumn, onSave, onUpdate, onDelete }) => {
         <LicenseInfo>
           <LicenseName>{data.licenseName}</LicenseName>
           <LicenseDetails>
-            {data.acquireDate} 
+            {format(new Date(data.acquireDate))} 
             {data.administer && data.administer !== '' ?  ` ・ ${data.administer}` : ''} 
             {data.licenseNumber && data.licenseNumber !== '' ? ` ・ ${data.licenseNumber}` : ''}
           </LicenseDetails>

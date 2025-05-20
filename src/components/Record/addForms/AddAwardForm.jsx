@@ -3,6 +3,7 @@ import styled from "styled-components";
 import CustomCalendarPicker from "../CustomCalendarPicker";
 import { trackEvent } from "../../../utils/ga4";
 import { BaseFormInput, BaseFormButton } from "../styles/ResumeForm.styles";
+import { formateDateDashToDot } from "@/utils/formateDate";
 
 const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
@@ -38,20 +39,12 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
     const month = (`0${dateObj.getMonth() + 1}`).slice(-2);
     const day = (`0${dateObj.getDate()}`).slice(-2);
 
-    const formattedDate = `${year}-${month}-${day}`;
+    const formattedDate = `${year}.${month}.${day}`;
     
     handleInputChange("acquireDate", formattedDate);
     setShowDatePicker(false);
   };
 
-  // const calculatePickerPosition = (ref) => {
-  //   if (!ref.current) return { top: 0, left: 0 };
-  //   const rect = ref.current.getBoundingClientRect();
-  //   return {
-  //     top: rect.bottom + window.scrollY + 10, // Input 아래 10px
-  //     left: rect.left + window.scrollX,
-  //   };
-  // };
 
   // Log formData whenever it changes
   useEffect(() => {
@@ -78,7 +71,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
             readOnly
             type="text"
             placeholder="수상일자"
-            value={formData.acquireDate || ""}
+            value={formateDateDashToDot(formData.acquireDate || "")}
             onClick={handleDatePickerToggle}
           />
           {showDatePicker && (

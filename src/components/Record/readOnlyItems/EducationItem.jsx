@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import AddEducationForm from '../addForms/AddEducationForm';
 import { KebabMenu2 } from '../KebabMenu';
 import { theme } from '../../../constants/theme';
+import { formateDateDashToDot } from '@/utils/formateDate';
 
 const EducationItem = ({ data, isLastItem, onSave, onUpdate, onDelete, onClose }) => {
 	const [isEditMode, setIsEditMode] = useState(false);
@@ -34,7 +35,7 @@ const EducationItem = ({ data, isLastItem, onSave, onUpdate, onDelete, onClose }
 								<SchoolName>{data.schoolName}</SchoolName>
 								{data.major && <Department>{data.major}</Department>}
 								<Dates>
-									{data.admissionDate} ~ {data.graduationDate} <Status>({data.state})</Status>
+									{formateDateDashToDot(data.admissionDate)} ~ {formateDateDashToDot(data.graduationDate)} <Status>({data.state})</Status>
 								</Dates>
 							</SchoolInfo>
 						</div>
