@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import moment from 'moment';
 import 'react-calendar/dist/Calendar.css';
-import { CalendarWrapper, ChevronDownIcon } from './ReactCalendar.styles';
+import { CalendarWrapper, ChevronDownIcon } from './Calendar.styles';
 
 export default function ReactCalendar({ onChange }) {
 	const [value, setValue] = useState([new Date(), new Date()]);
