@@ -8,9 +8,7 @@ import DashboardNothing from './DashboardN';
 const Container = styled.div`
 	display: flex;
 	gap: 12px;
-	/*width: 350px;*/
-	width: 100%;
-
+	width: calc(50% - 8px);
 	padding: 20px 25px;
 	flex-direction: column;
 	align-items: flex-start;
