@@ -24,6 +24,7 @@ const TitleBox = styled.div`
 
 	gap: 10px;
 	margin-bottom: 32px;
+	justify-content: flex-start; /* 왼쪽 정렬 */
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
@@ -114,6 +115,8 @@ const Container = styled.div`
 	align-items: center;
 	justify-content: center;
 	margin-top: 12px;
+	width: 100%;
+	max-width: 464px;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
