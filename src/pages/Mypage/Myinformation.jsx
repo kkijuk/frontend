@@ -321,22 +321,6 @@ const PhoneInput = styled.input`
 	}
 `;*/
 
-const BirthInput = styled.input`
-	display: flex;
-	width: 280px;
-	height: 50px;
-	padding: 16px 20px;
-	align-items: center;
-	gap: 10px;
-	flex-shrink: 0;
-
-	box-sizing: border-box;
-	border: none;
-
-	border-radius: 10px;
-	background: #f5f5f5;
-`;
-
 const PhoneButtonGroup = styled.div`
 	display: flex;
 	gap: 6px;
@@ -516,6 +500,7 @@ const Bottom = styled.div`
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
+		padding: 0 20px;
 	}
 `;
 

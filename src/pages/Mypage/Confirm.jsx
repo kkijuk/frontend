@@ -52,6 +52,7 @@ const Text = styled.div`
 `;
 
 const EmailBox = styled.div`
+	display: flex;
 	max-width: 400px;
 	width: 100%;
 	height: 100%;
