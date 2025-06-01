@@ -8,13 +8,13 @@ import DashboardNothing from './DashboardN';
 const Container = styled.div`
 	display: flex;
 	gap: 12px;
-	width: 350px;
+	width: calc(50% - 8px);
 	padding: 20px 25px;
 	flex-direction: column;
 	align-items: flex-start;
 	gap: 10px;
 	flex-shrink: 0;
-	/*box-sizing: border-box;*/
+	box-sizing: border-box;
 
 	border-radius: 10px;
 	background: var(--gray-06, #f5f5f5);

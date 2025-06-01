@@ -17,4 +17,7 @@ module.exports = {
 			// 필요 시 추가
 		},
 	},
+	babel: {
+		plugins: [['babel-plugin-styled-components', { displayName: true }]],
+	},
 };

@@ -16,4 +16,5 @@ export const miscRoutes = [
 	{ path: ROUTES.ERROR, element: <Error /> },
 	{ path: ROUTES.NUM_ERROR, element: <NumError /> },
 	{ path: ROUTES.SERVICE_MAINTENANCE, element: <ServiceMaintenence /> },
+	{ path: '*', element: <NumError /> },
 ];
