@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import { theme } from "../../../constants/theme";
 import CustomDropdown from "../CustomDropdown";
 import CustomDatePicker from "../CustomDatePicker";
 import { trackEvent } from "../../../utils/ga4";
@@ -171,14 +172,14 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
                 onDelete();
                 onClose();
               }}
-              variant="delete"
+              variantType="delete"
             >
               삭제
             </BaseFormButton>
           ) : (
             <BaseFormButton
               onClick={onClose}
-              variant="close"
+              variantType="close"
             >
               취소
             </BaseFormButton>
@@ -199,7 +200,7 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
                 label: '활동 수정하기',
               });
             }}
-            variant="save"  
+            variantType="save"
           >
             저장
           </BaseFormButton>
@@ -219,7 +220,7 @@ const AddEducationForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelet
                 label: '추가',
               });
             }}
-            variant="create"
+            variantType="create"
           >
             추가
           </BaseFormButton>
@@ -312,28 +313,5 @@ const ButtonRow = styled.div`
   gap: 10px;
   @media (max-width: ${theme.breakpoints.md}) {
     gap: 12px;
-  }
-`;
-
-const Button = styled.button`
-  all: unset;
-  width: 65px;
-  height: 25px;
-  border-radius: 10px;
-  font-family: Regular;
-  font-size: 14px;
-  font-weight: 400;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.8;
-  }
-  @media (max-width: ${theme.breakpoints.md}) {
-    width: 89px;
-    height: 17px;
-    padding: 4px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 `;

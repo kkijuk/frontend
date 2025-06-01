@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { theme } from "../../../constants/theme";
 import CustomDropdown from "../CustomDropdown";
 import SvgIcon from "../../shared/SvgIcon";
 import { trackEvent } from "../../../utils/ga4";
@@ -99,8 +100,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           onChange={(value) => handleInputChange("skillTag", skillTagMapping[value])}
           onToggle={() => handleDropdownToggle("skillTag")}
           isOpen={showSkillTags}
-          width = 'auto'
-          style={{width: "170px"}}
+          width = '170px'
         />
         <Input
           type="text"
@@ -108,6 +108,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           value={formData.skillName}
           onChange={(e) => handleInputChange("skillName", e.target.value)}
           maxLength={30}
+          width = '420px'
         />
       </Row>
       <Row>
@@ -118,8 +119,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           onChange={(value) => handleInputChange("workmanship", skillLevelsMapping[value])}
           onToggle={() => handleDropdownToggle("skillLevel")}
           isOpen={showSkillLevels}
-          width = 'auto'
-          style={{width: "170px"}}
+          width = '170px'
         />
         <IconWrapper
           onMouseEnter={() => setIsGuideVisible(true)}
@@ -146,14 +146,14 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           {mode === "edit" ? (
             <BaseFormButton
               onClick={()=>onDelete(id)}
-              variant="delete"
+              variantType="delete"
             >
               삭제
             </BaseFormButton>
           ) : (
             <BaseFormButton
               onClick={onClose}
-              variant="close"
+              variantType="close"
             >
               취소
             </BaseFormButton>
@@ -174,7 +174,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
                     label: '활동 수정하기',
                   });
                 }}
-                variant="save"
+                variantType="save"
               >
                 저장
               </BaseFormButton>
@@ -194,7 +194,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
                     label: '추가',
                   });
                 }}
-                variant="create"
+                variantType="create"
               >
                 추가
               </BaseFormButton>
@@ -211,7 +211,7 @@ export default AddSkillForm;
 
 // Styled Components
 const Container = styled.div`
-  width: 610px;
+  width: 650px;
   padding: 20px;
   background: var(--gray-06, #f5f5f5);
   border-radius: 10px;
@@ -238,16 +238,16 @@ const Row = styled.div`
   }
 `;
 
-const Input = styled.input`
+const Input = styled(BaseFormInput)`
   width: 430px;
 `;
 
 const ButtonRow = styled.div`
+  width: 65%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
-  margin-left:275px;
   @media (max-width: ${theme.breakpoints.md}) {
     margin-left: 0px;
   }
@@ -294,7 +294,7 @@ const GuideBoxContainer = styled.div`
 
 const GuideBox = styled.div`
   width: 300px;
-  height: 150px;
+  height: 250px;
   flex-shrink: 0;
   border-radius: 10px;
   background: var(--gray-02, #707070);

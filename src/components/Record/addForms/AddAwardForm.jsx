@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import { theme } from "../../../constants/theme";
 import CustomCalendarPicker from "../CustomCalendarPicker";
 import { trackEvent } from "../../../utils/ga4";
 import { BaseFormInput, BaseFormButton } from "../styles/ResumeForm.styles";
@@ -100,7 +101,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           placeholder="수상명"
           value={formData.awardName}
           onChange={(e) => handleInputChange("awardName", e.target.value)}
-          width= '195px'
+          width= '215px'
           // style={{width:'195px'}}
           maxLength={15}
         />
@@ -109,7 +110,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           placeholder="수여기관"
           value={formData.administer}
           onChange={(e) => handleInputChange("administer", e.target.value)}
-          width= '195px'
+          width= '215px'
           // style={{width:'195px'}}
           maxLength={15}
         />
@@ -120,14 +121,14 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
                   onDelete();
                   onClose();
                 }}
-                variant="delete"
+                variantType="delete"
               >
                 삭제
               </BaseFormButton>
             ) : (
               <BaseFormButton
                 onClick={onClose}
-                variant="close"
+                variantType="close"
               >
                 취소
               </BaseFormButton>
@@ -147,8 +148,8 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
                   action_type: 'edit',
                   label: '활동 수정하기',
                 });
-              }}>
-              variant="save"
+              }}
+              variantType="save">
               저장
             </BaseFormButton>
             ) : (
@@ -167,7 +168,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
                   label: '추가',
                 });
               }}
-              variant="create"
+              variantType="create"
             >
               추가
             </BaseFormButton>
@@ -182,13 +183,14 @@ export default AddAwardForm;
 
 // Styled Components
 const Container = styled.div`
-  width: 610px;
+  width: 650px;
+  height: 150px;
   padding: 20px;
   background: var(--gray-06, #f5f5f5);
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   position: relative;
   margin-bottom: 50px;
   @media (max-width: ${theme.breakpoints.md}) {
@@ -201,6 +203,7 @@ const Container = styled.div`
 const Row = styled.div`
   display: flex;
   gap: 20px;
+
   @media (max-width: ${theme.breakpoints.md}) {
     flex-direction: column;
     gap: 12px;
@@ -245,31 +248,10 @@ const DatePickerContainer = styled.div`
 
 const ButtonRow = styled.div`
   display: flex;
-  justify-content: flex-end;
   align-items: center;
   gap: 10px;
 `;
 
-const Button = styled.button`
+const Button = styled(BaseFormButton)`
   all: unset;
-  width: 65px;
-  height: 25px;
-  border-radius: 10px;
-  font-family: Regular;
-  font-size: 14px;
-  font-weight: 400;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.8;
-  }
-
-  @media (max-width: ${theme.breakpoints.md}) {
-    width: 93px;
-    height: 17px;
-    padding: 4px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 `;

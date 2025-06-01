@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import { theme } from "../../../constants/theme";
 import CustomCalendarPicker from "../CustomCalendarPicker";
 import { trackEvent } from "../../../utils/ga4";
 import { BaseFormInput, BaseFormButton } from "../styles/ResumeForm.styles";
@@ -114,7 +115,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 placeholder="자격증 or 어학 시험명(ex. OPIc 영어)"
                 value={formData.licenseName}
                 onChange={(e) => handleInputChange("licenseName", e.target.value)}
-                width = '275px'
+                width = '295px'
                 // style={{ width: "275px" }}
                 maxLength={30}
             />
@@ -123,7 +124,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 placeholder="점수/등급"
                 value={formData.licenseGrade}
                 onChange={(e) => handleInputChange("licenseGrade", e.target.value)}
-                width = '120px'
+                width = '140px'
                 // style={{ width: "120px" }}
                 maxLength={10}
             />
@@ -134,7 +135,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 placeholder="수험번호/자격번호"
                 value={formData.licenseNumber}
                 onChange={(e) => handleInputChange("licenseNumber", e.target.value)}
-                width = '175px'
+                width = '215px'
                 // style={{ width: "175px" }}
             />
             <Input
@@ -142,7 +143,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 placeholder="주관처(선택)"
                 value={formData.administer}
                 onChange={(e) => handleInputChange("administer", e.target.value)}
-                width = '175px'
+                width = '215px'
                 // style={{ width: "175px" }}
                 maxLength={15}
             />
@@ -150,14 +151,14 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
               {mode === "edit" ? (
                 <BaseFormButton
                   onClick={()=>onDelete(id)}
-                  variant="delete"
+                  variantType="delete"
                 >
                   삭제
                 </BaseFormButton>
               ) : (
                 <BaseFormButton
                   onClick={onClose}
-                  variant="close"
+                  variantType="close"
                 >
                   취소
                 </BaseFormButton>
@@ -178,7 +179,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                       label: '활동 수정하기',
                     });
                   }}
-                  variant="save"
+                  variantType="save"
                 >
                   저장
                 </BaseFormButton>
@@ -198,7 +199,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                       label: '추가',
                     });
                   }}
-                  variant="create"
+                  variantType="create"
                 >
                   추가
                 </BaseFormButton>
@@ -234,7 +235,7 @@ const TypeWrapper = styled.div`
 `
 
 const Container = styled.div`
-  width: 610px;
+  width: 650px;
   padding: 20px;
   background: var(--gray-06, #f5f5f5);
   border-radius: 0px 10px 10px 10px;
@@ -288,7 +289,7 @@ const Row = styled.div`
   }
 `;
 
-const Input = styled.input`
+const Input = styled(BaseFormInput)`
   width: ${(props) => props.width || "100%"};
   padding: 0px 20px;
 `;
