@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import React from 'react';
-import logo from '../assets/logo.png';
-import instagramLogo from '../assets/instagramLogo.png';
-import paperplaneicon from '../assets/paperplaneicon.png';
+import logo from '@assets/logo.png';
+import instagramLogo from '@assets/instagramLogo.png';
+import paperplaneicon from '@assets/paperplaneicon.png';
 
 const Box = styled.div`
     width: 100%;
@@ -24,7 +24,7 @@ const Content = styled.div`
 `;
 
 const Title = styled.div`
-	color: ${(props) => props.color || 'var(--black, #000)'};
+	color: ${(props) => props.theme.colors.black};
 	font-family: Pretendard;
 	font-size: ${(props) => props.fontSize || '28px'}; /* props로 폰트 사이즈 처리, 기본값 28px */
 	font-style: normal;
@@ -50,12 +50,8 @@ export default function CommingSoon({ titleColor, titleFontSize }) {
 		<Box>
 			<Content>
 				<img style={{ width: '280px', height: '120px' }} src={logo} alt="로고" />
-				<Title color="#3AAF85" fontSize="32px">
-					서비스 준비중입니다
-				</Title>
-				<Title color="#3AAF85" fontSize="25px">
-					The service is coming soon
-				</Title>
+				<Title fontSize="32px">서비스 준비중입니다</Title>
+				<Title fontSize="25px">The service is coming soon</Title>
 				<LogoBox>
 					<img
 						style={{ width: '30px', height: '30px', cursor: 'pointer' }}

@@ -10,25 +10,24 @@ import useAuthStore from '../stores/useAuthStore';
 import { theme } from '../constants/theme';
 
 const ContentArea = styled.div`
-  margin: 0 auto;
-  padding: 20px;
-  background-color: white;
-  width: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  flex-direction: column;
-  overflow-y: auto;
+	margin: 0 auto;
+	padding: 20px;
+	background-color: white;
+	width: 400px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	flex-direction: column;
+	overflow-y: auto;
 
-  svg {
-    display: none; 
-  }
- @media (max-width: ${theme.breakpoints.md}) {
-    width: 342px; 
-    padding: 10px;
-  }
-
+	svg {
+		display: none;
+	}
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 342px;
+		padding: 10px;
+	}
 `;
 
 const InterestArea = styled.div`
@@ -39,12 +38,10 @@ const InterestArea = styled.div`
 	box-sizing: border-box;
 	gap: 10px;
 	justify-content: center;
-
-
 `;
 
 const CloseButton = styled.button`
-	color: #707070;
+	color: ${(props) => props.theme.colors.gray03};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 16px;
@@ -62,17 +59,17 @@ const CloseButton = styled.button`
 
 const Title = styled.h2`
 	margin-bottom: 10px;
-	color: var(--black, #000);
-    text-align: center;
-    font-family: Pretendard;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
+	color: ${(props) => props.theme.colors.black};
+	text-align: center;
+	font-family: Pretendard;
+	font-size: 24px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
 `;
 
 const Label = styled.label`
-	color: #707070;
+	color: ${(props) => props.theme.colors.gray03};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 16px;
@@ -87,7 +84,7 @@ const SaveButton = styled.button`
 	width: 100%;
 	height: 52px;
 	flex-shrink: 0;
-	background-color: #3aaf85;
+	background-color: ${(props) => props.theme.colors.main01};
 	color: white;
 	padding: 10px 20px;
 	border: none;
@@ -105,19 +102,18 @@ const SaveButton = styled.button`
 	margin-top: 30px;
 
 	&:hover {
-		background-color: #35a576;
+		background-color: ${(props) => props.theme.colors.main01};
 	}
- @media (max-width: ${theme.breakpoints.md}) {
-    width: 342px; 
-    
-  }
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 342px;
+	}
 `;
 
 const Logo = styled.img`
-  width: 80px; 
-  height: auto;
-  margin-bottom: 40px;
-  cursor: pointer;
+	width: 80px;
+	height: auto;
+	margin-bottom: 40px;
+	cursor: pointer;
 `;
 
 const SignupInterest = ({ onSave = () => {} }) => {
@@ -125,20 +121,20 @@ const SignupInterest = ({ onSave = () => {} }) => {
 	const navigate = useNavigate();
 	const [showModal, setShowModal] = useState(false);
 	const { isProfileComplete } = useAuthStore();
-	
+
 	useEffect(() => {
 		// 프로필 완료된 경우 홈으로 리다이렉트
 		if (isProfileComplete) {
-		  navigate('/home');
+			navigate('/home');
 		}
-	  }, [isProfileComplete, navigate]);
+	}, [isProfileComplete, navigate]);
 
 	useEffect(() => {
-		const unwantedSvg = document.querySelector("body > svg");
+		const unwantedSvg = document.querySelector('body > svg');
 		if (unwantedSvg) {
-		  unwantedSvg.parentNode.removeChild(unwantedSvg);
+			unwantedSvg.parentNode.removeChild(unwantedSvg);
 		}
-	  }, []);
+	}, []);
 
 	const handleInterestSelect = (interest) => {
 		setSelectedInterest((prevSelectedInterests) =>
@@ -171,7 +167,7 @@ const SignupInterest = ({ onSave = () => {} }) => {
 			navigate('/home');
 		} catch (error) {
 			console.error('Error occurred while saving interests:', error.message);
-			console.error('Stack Trace:', error.stack); 
+			console.error('Stack Trace:', error.stack);
 		}
 	};
 
@@ -196,8 +192,8 @@ const SignupInterest = ({ onSave = () => {} }) => {
 	};
 
 	const handleLogoClick = () => {
-		navigate('/'); 
-	  };
+		navigate('/');
+	};
 
 	return (
 		<ContentArea>

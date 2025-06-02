@@ -21,7 +21,7 @@ const SignupSuccessScreen = styled.div`
 
 	p {
 		margin-bottom: 10px;
-		color: var(--main-01, #3aaf85);
+		color: ${(props) => props.theme.colors.main01};
 		text-align: center;
 		font-family: Regular;
 		font-size: 27px;
@@ -29,9 +29,9 @@ const SignupSuccessScreen = styled.div`
 		font-weight: 700;
 		line-height: normal;
 
-		 @media (max-width: ${theme.breakpoints.md}) {
-      font-size: 18px; 
-    }
+		@media (max-width: ${theme.breakpoints.md}) {
+			font-size: 18px;
+		}
 	}
 
 	.button {
@@ -42,7 +42,7 @@ const SignupSuccessScreen = styled.div`
 		margin: 10px 0;
 		border: none;
 		border-radius: 10px;
-		background-color: #3aaf85;
+		background-color: ${(props) => props.theme.colors.main01};
 		color: white;
 		font-family: 'Light';
 		font-size: 19px;
@@ -51,14 +51,14 @@ const SignupSuccessScreen = styled.div`
 		margin-top: 15px;
 
 		@media (max-width: ${theme.breakpoints.md}) {
-      width: 220px; 
-      height: 52px;
-      font-size: 18px;
-    }
+			width: 220px;
+			height: 52px;
+			font-size: 18px;
+		}
 	}
 
 	.Interests-text1 {
-		color: #707070;
+		color: ${(props) => props.theme.colors.gray03};
 		text-align: center;
 		font-family: Light;
 		font-size: 19px;
@@ -67,47 +67,47 @@ const SignupSuccessScreen = styled.div`
 		margin-top: 60px;
 
 		@media (max-width: ${theme.breakpoints.md}) {
-      font-size: 14px; 
-    }
+			font-size: 14px;
+		}
 	}
 
 	.Interests-text2 {
 		margin-top: -5px;
-		color: #707070;
+		color: ${(props) => props.theme.colors.gray03};
 		text-align: center;
 		font-family: Light;
 		font-size: 19px;
 		font-weight: 400;
 		line-height: normal;
 		@media (max-width: ${theme.breakpoints.md}) {
-      font-size: 14px; 
-    }
+			font-size: 14px;
+		}
 	}
 `;
 const Logo = styled.img`
-  width: 80px; 
-  height: auto;
-  margin-top: -150px; 
-  margin-bottom: 100px;
-  cursor: pointer;
+	width: 80px;
+	height: auto;
+	margin-top: -150px;
+	margin-bottom: 100px;
+	cursor: pointer;
 `;
 
 const HomeLink = styled.div`
-  color: var(--gray-02, #707070);
-  text-align: center;
-  font-family: Regular;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  text-decoration-line: underline;
-  text-decoration-style: solid;
-  text-decoration-skip-ink: auto;
-  text-decoration-thickness: auto;
-  text-underline-offset: auto;
-  text-underline-position: from-font;
-  cursor: pointer;
-  margin-top: 40px;
+	color: ${(props) => props.theme.colors.gray02};
+	text-align: center;
+	font-family: Regular;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	text-decoration-line: underline;
+	text-decoration-style: solid;
+	text-decoration-skip-ink: auto;
+	text-decoration-thickness: auto;
+	text-underline-offset: auto;
+	text-underline-position: from-font;
+	cursor: pointer;
+	margin-top: 40px;
 `;
 
 const SignupSuccess = () => {
@@ -120,10 +120,9 @@ const SignupSuccess = () => {
 	useEffect(() => {
 		// 프로필 완료된 경우 홈으로 리다이렉트
 		if (isProfileComplete) {
-		  navigate('/home');
+			navigate('/home');
 		}
-	  }, [isProfileComplete, navigate]);
-
+	}, [isProfileComplete, navigate]);
 
 	useEffect(() => {
 		const preventScroll = (e) => {
@@ -146,7 +145,7 @@ const SignupSuccess = () => {
 			$body.removeEventListener('touchmove', preventScroll);
 			$body.style.overflow = '';
 		};
-	}, [hasCalled]); 
+	}, [hasCalled]);
 
 	const handleButtonClick = () => {
 		// "관심분야 등록" 버튼 클릭 GA 이벤트 추가
@@ -160,10 +159,10 @@ const SignupSuccess = () => {
 	};
 
 	const handleLogoClick = () => {
-		navigate('/'); 
-	  };
+		navigate('/');
+	};
 
-	  const handleHomeClick = () => {
+	const handleHomeClick = () => {
 		// "홈으로" 버튼 클릭 GA 이벤트 추가
 		trackEvent('btn_click', {
 			category: 'signup',

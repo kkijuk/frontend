@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import ProfileBox from '../components/Home/Profile';
+import ProfileBox from '@components/Home/Profile';
 
-import BannerComponent from '../components/Home/Banner';
-import Noti from '../components/Home/Noti';
-import CLNoti from '../components/Home/CLNoti';
+import BannerComponent from '@components/Home/Banner';
+import Noti from '@components/Home/Noti';
+import CLNoti from '@components/Home/CLNoti';
 
-import { useNavigate } from 'react-router-dom';
-
-import CareerTimeline from '../components/Mycareer/CareerTimeline';
-import OnboardingModal from '../components/Modal/OnboardingModal';
-import { theme } from '../constants/theme';
+import CareerTimeline from '@components/Mycareer/CareerTimeline';
+import OnboardingModal from '@components/Modal/OnboardingModal';
 
 const Container = styled.div`
 	display: flex;
@@ -57,7 +55,7 @@ const TopBox1 = styled.div`
 	justify-content: center;
 	align-items: center;
 	border-radius: 10px;
-	border: 1px solid var(--gray-03, #d9d9d9);
+	border: 1px solid ${(props) => props.theme.colors.gray05};
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
@@ -71,7 +69,7 @@ const TopBox2 = styled.div`
 	flex-shrink: 0;
 	border-radius: 10px;
 	/*border: 1px solid var(--gray-03, #d9d9d9); 수정*/
-	background: var(--white, #fff);
+	background: ${(props) => props.theme.colors.white};
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		/*width: 368px;*/ //TopBox1과 맞춰주기
 		width: 100%;
@@ -110,7 +108,7 @@ const Bottom = styled.div`
 `;
 
 const BottomText = styled.div`
-	color: var(--black, #000);
+	color: ${(props) => props.theme.colors.black};
 	font-family: Pretendard;
 	font-size: 20px;
 	font-style: normal;
