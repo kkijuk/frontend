@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { theme } from "../../../constants/theme";
 import CustomDropdown from "../CustomDropdown";
 import SvgIcon from "../../shared/SvgIcon";
 import { trackEvent } from "../../../utils/ga4";
-import { theme } from "../../../constants/theme";
+import { BaseFormInput, BaseFormButton } from "../styles/ResumeForm.styles";
 
 const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
@@ -99,8 +100,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           onChange={(value) => handleInputChange("skillTag", skillTagMapping[value])}
           onToggle={() => handleDropdownToggle("skillTag")}
           isOpen={showSkillTags}
-          width = 'auto'
-          style={{width: "170px"}}
+          width = '170px'
         />
         <Input
           type="text"
@@ -108,6 +108,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           value={formData.skillName}
           onChange={(e) => handleInputChange("skillName", e.target.value)}
           maxLength={30}
+          width = '420px'
         />
       </Row>
       <Row>
@@ -118,8 +119,7 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           onChange={(value) => handleInputChange("workmanship", skillLevelsMapping[value])}
           onToggle={() => handleDropdownToggle("skillLevel")}
           isOpen={showSkillLevels}
-          width = 'auto'
-          style={{width: "170px"}}
+          width = '170px'
         />
         <IconWrapper
           onMouseEnter={() => setIsGuideVisible(true)}
@@ -144,31 +144,22 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
         </IconWrapper>
         <ButtonRow>
           {mode === "edit" ? (
-            <Button
+            <BaseFormButton
               onClick={()=>onDelete(id)}
-              style={{
-                border: "1px solid var(--sub-bu, #FA7C79)",
-                background: "var(--white, #FFF)",
-                color: "#FA7C79",
-              }}
+              variantType="delete"
             >
               삭제
-            </Button>
+            </BaseFormButton>
           ) : (
-            <Button
+            <BaseFormButton
               onClick={onClose}
-              style={{
-                border: "1px solid var(--sub-bu, #77AFF2)",
-                background: "var(--white, #FFF)",
-                color: "#77AFF2",
-              }}
+              variantType="close"
             >
               취소
-            </Button>
+            </BaseFormButton>
             )}
             {mode === "edit" ? (
-              <Button 
-                primary 
+              <BaseFormButton
                 onClick={() => {
                   if (hasEmptyField(formData)) {
                     alert("입력하지 않은 항목이 있습니다.");
@@ -183,12 +174,12 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
                     label: '활동 수정하기',
                   });
                 }}
-                style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+                variantType="save"
+              >
                 저장
-              </Button>
+              </BaseFormButton>
               ) : (
-              <Button 
-                primary 
+              <BaseFormButton
                 onClick={() => {
                   if (hasEmptyField(formData)) {
                     alert("입력하지 않은 항목이 있습니다.");
@@ -203,9 +194,10 @@ const AddSkillForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
                     label: '추가',
                   });
                 }}
-                style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+                variantType="create"
+              >
                 추가
-              </Button>
+              </BaseFormButton>
             )}
         </ButtonRow>
       
@@ -219,7 +211,7 @@ export default AddSkillForm;
 
 // Styled Components
 const Container = styled.div`
-  width: 610px;
+  width: 650px;
   padding: 20px;
   background: var(--gray-06, #f5f5f5);
   border-radius: 10px;
@@ -246,37 +238,16 @@ const Row = styled.div`
   }
 `;
 
-const Input = styled.input`
-  height: 45px;
+const Input = styled(BaseFormInput)`
   width: 430px;
-  border-radius: 10px;
-  border: none;
-  background: var(--white, #fff);
-  text-align: left;
-  font-family: Regular;
-  font-size: 16px;
-  font-weight: 400;
-  color: black;
-  padding-left: 10px;
-  padding-right: 10px;
-
-  &::placeholder {
-    color: #d9d9d9;
-  }
-
-  @media (max-width: ${theme.breakpoints.md}) {
-    width: ${(props) => props.mdWidth || "238px"};
-    height: 17px;
-    padding: 12px 20px;
-  }
 `;
 
 const ButtonRow = styled.div`
+  width: 65%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
-  margin-left:275px;
   @media (max-width: ${theme.breakpoints.md}) {
     margin-left: 0px;
   }
@@ -323,7 +294,7 @@ const GuideBoxContainer = styled.div`
 
 const GuideBox = styled.div`
   width: 300px;
-  height: 150px;
+  height: 250px;
   flex-shrink: 0;
   border-radius: 10px;
   background: var(--gray-02, #707070);

@@ -136,19 +136,20 @@ const useRecordStore = create((set, get) => ({
 						}));
 					}
 					break;
+
+				// 내커리어 항목 api 호출은 AddCareerModal에서 처리
 				case 'activitiesAndExperiences':
 				case 'employments':
 				case 'projects':
 				case 'eduCareers':
-					response = await createCareer(item);
 					set((state) => ({
-                        [category]: [...state[category], response.data],
+                        [category]: [...state[category], item],
                     }));
 					break;
 				default:
 					throw new Error('Invalid category');
 			}
-			// window.location.reload();
+
 		} catch (error) {
 			console.error('Add Item Error:', error);
 		}
@@ -207,11 +208,12 @@ const useRecordStore = create((set, get) => ({
                         }));
                     }
 					break;
+
+				// 내커리어 항목 api 호출은 AddCareerModal에서 처리
 				case 'activitiesAndExperiences':
 				case 'employments':
 				case 'projects':
 				case 'eduCareers':
-					response = await CareerEdit(id, updates);
 					set((state) => ({
 						[category]: state[category].map((item) => (item.id === id ? { ...item, ...updates } : item)),
 					}));
@@ -277,11 +279,12 @@ const useRecordStore = create((set, get) => ({
                         }));
                     }
 					break;
+
+				// 내커리어 항목 api 호출은 AddCareerModal에서 처리
 				case 'activitiesAndExperiences':
 				case 'employments':
 				case 'projects':
 				case 'eduCareers':
-					await CareerDelete(id);
 					set((state) => ({
 						[category]: state[category].filter((item) => item.id !== id),
 					}));

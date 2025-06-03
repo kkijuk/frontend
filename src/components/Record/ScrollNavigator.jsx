@@ -32,13 +32,13 @@ export default ScrollNavigator;
 const Container = styled.nav`
     position: fixed;
     top: 210px;
-    left: 160px;
+    left: 130px;
     padding: 25px 15px;
-    width: 121px;
+    width: 141px;
     border: none;
     border-radius: 16px;
     background: var(--gray-05, #F1F1F1);
-    height: 490px;
+    height: 520px;
 `
 
 const List = styled.ul`

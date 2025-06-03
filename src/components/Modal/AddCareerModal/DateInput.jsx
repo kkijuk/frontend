@@ -99,7 +99,7 @@ const InputDate = styled.input`
 	// position: absolute;
 	font-family: Regular;
 	font-size: 16px;
-	width: 240px;
+	width: 260px;
 	height: 60px;
 	// padding: 10px;
 	margin-bottom: 25px;

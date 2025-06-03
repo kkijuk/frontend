@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import AddEducationForm from '../addForms/AddEducationForm';
 import { KebabMenu2 } from '../KebabMenu';
 import { theme } from '../../../constants/theme';
+import { formateDateDashToDot } from '@/utils/formateDate';
 
 const EducationItem = ({ data, isLastItem, onSave, onUpdate, onDelete, onClose }) => {
 	const [isEditMode, setIsEditMode] = useState(false);
@@ -24,17 +25,22 @@ const EducationItem = ({ data, isLastItem, onSave, onUpdate, onDelete, onClose }
 			) : (
 				<ReadContainer>
 					<TimeLine>
-						<Oval state={data.state}></Oval>
+						<Oval status={data.state}></Oval>
 						<Line isLastItem={isLastItem} status={data.state}></Line>
 					</TimeLine>
 					<Container>
 						<div>
-							<LevelTag status={data.state}>{data.category}</LevelTag>
+							<LevelTag 
+								status={data.state}
+								category={data.category}
+							>
+									{data.category}
+								</LevelTag>
 							<SchoolInfo>
 								<SchoolName>{data.schoolName}</SchoolName>
 								{data.major && <Department>{data.major}</Department>}
 								<Dates>
-									{data.admissionDate} ~ {data.graduationDate} <Status>({data.state})</Status>
+									{formateDateDashToDot(data.admissionDate)} ~ {formateDateDashToDot(data.graduationDate)} <Status>({data.state})</Status>
 								</Dates>
 							</SchoolInfo>
 						</div>
@@ -85,7 +91,7 @@ const Oval = styled.div`
 	border-radius: 50%;
 	border: 3px solid #707070;
 	background-color: ${(props) =>
-		props.state === '중퇴' || props.status === '편입' || props.status === '졸업' ? '#707070' : '#FFF'};
+		props.status === '중퇴' || props.status === '편입' || props.status === '졸업' ? '#707070' : '#FFF'};
 	
 	@media (max-width: ${theme.breakpoints.md}) {
 		width: 16px;
@@ -105,7 +111,7 @@ const Line = styled.div`
 			: props.status === '중퇴' || props.status === '편입' || props.status === '졸업'
 				? '2px solid #707070'
 				: '2px dashed #707070'};
-	margin-left: 11px;
+	margin-left: 9.3px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		margin-left: 9px;
@@ -133,14 +139,20 @@ const Container = styled.div`
 	positon: relative;
 `;
 
-
+const widthByLevelTagCategory = {
+	'고등학교': '88px',
+	'대학교': '88px',
+	'전문대학교': '95px',
+	'대학원(석사)': '110px',
+	'대학원(박사)': '110px',
+}
 
 const LevelTag = styled.div`
-	width:80px;
-	height: 20px;
+	width: ${(props) => widthByLevelTagCategory[props.category] || 'fit-content'};
+	height: 22px;
 	background-color: #707070;
 	color: white;
-	padding: 5px 10px;
+	padding: 2px 16px;
 	border-radius: 5px;
 	font-size: 14px;
 	font-family: Bold;

@@ -427,7 +427,16 @@ export default function MycareerDetail() {
 					활동 기록 추가
 				</CareerPlus>
 				{isModalOpen && modalData && (
-					<AddCareerModal onClose={closeModal} data={modalData} mode="edit" initialData={modalData} />
+					<AddCareerModal 
+						onClose={closeModal} 
+						// data={modalData} 
+						mode="edit" 
+						initialData={modalData} 
+						onRefresh={async () => {
+							console.log('Modal closed, refreshing career details...');
+      						await fetchCareerDetails(careerId, categoryToTypeMap[category]);
+						}}
+					/>
 				)}
 			</PageContainer>
 		</Layout>

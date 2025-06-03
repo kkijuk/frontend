@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import useRecordStore from '@/stores/useRecordStore';
 import { Affiliation1 } from './Affiliation';
 import { Affiliation2 } from './Affiliation';
 import SvgIcon from '../../shared/SvgIcon';
@@ -17,7 +18,7 @@ import DeletePopup from './DeletePopup';
 import { trackEvent } from '../../../utils/ga4';
 import { theme } from '../../../constants/theme';
 
-const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
+const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 	const navigate = useNavigate();
 	const currentLocation = useLocation(); // 기존의 `location`과 충돌 방지
 
@@ -33,6 +34,15 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		6: '교육',
 		7: '기타',
 	};
+	const categoryMapForRecordStore = {
+		CIRCLE: 'activitiesAndExperiences',
+		ACTIVITY: 'activitiesAndExperiences',
+		ETC: 'activitiesAndExperiences',
+		PROJECT: 'projects',
+		COM: 'projects',
+		EMP: 'employments',
+		EDU: 'eduCareers',
+	}
 	const categoryColors = {
 		1: '#FCC400',
 		2: '#77AFF2',
@@ -43,12 +53,35 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 		7: '#707070',
 	};
 
+	const store = useRecordStore();
+	const {
+		// api call
+		addItem,
+		updateItem,
+		deleteItem,
+		recordId,
+		memberId,
+		//사용자 정보
+		userData,
+
+		// ** 내 커리어 카테고리
+		employments, // 경력
+		activitiesAndExperiences, //활동 및 경험
+		projects, // 프로젝트
+		eduCareers, // 교육
+
+		// 업데이트 날짜
+		updated_at,
+		status,
+		error,
+	} = store;
+
 	// 현재 모달 모드(활동 추가 or 활동 수정)
 	const isEditMode = mode === 'edit';
 
-	// 현재 선택된 카테고리 (기본값은 1)
+	// 기본정보: 현재 선택된 카테고리 (기본값은 1)
 	const [selectedCategory, setSelectedCategory] = useState(1);
-
+	const [storeCategory, setStoreCategory] = useState(''); //store 사용 관련
 	// 폼 에러 상태 (필드명: 에러 메세지)
 	const [formErrors, setFormErrors] = useState({});
 
@@ -74,8 +107,41 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 			} else if (initialData.category.categoryEnName === 'ETC') {
 				setSelectedCategory(7);
 			}
+
+			setStoreCategory(categoryMapForRecordStore[initialData.category.categoryEnName]);
 		}
 	}, [initialData]);
+
+	useEffect(() => {
+		if (selectedCategory) {
+			// 카테고리에 따라 storeCategory 업데이트
+			switch (selectedCategory) {
+				case 1: // 동아리
+					setStoreCategory('activitiesAndExperiences');
+					break;
+				case 2: // 대외활동
+					setStoreCategory('activitiesAndExperiences');
+					break;
+				case 3: // 공모전/대회	
+					setStoreCategory('projects');
+					break;
+				case 4: // 프로젝트
+					setStoreCategory('projects');
+					break;
+				case 5: // 경력
+					setStoreCategory('employments');
+					break;
+				case 6: // 교육
+					setStoreCategory('eduCareers');
+					break;
+				case 7: // 기타
+					setStoreCategory('activitiesAndExperiences');
+					break;
+				default:
+					setStoreCategory('activitiesAndExperiences'); // 기본값 설정
+			}
+		}
+	}, [selectedCategory]);
 
 	//12가지 유형의 form Data 상태관리
 	const [name, setName] = useState(''); //활동명
@@ -213,12 +279,13 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 								기간 <span style={{ color: '#FC5555' }}>*</span>
 							</label>
 						</FormItem>
-
+						
 						{/* 시작날짜 */}
 						<FormItem isPeriod={true}>
 							<DateInput value={startdate} onChange={setStartdate} />
 							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
 						</FormItem>
+						
 						{/* 종료날짜 */}
 						<FormItem isPeriod={true}>
 							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
@@ -938,8 +1005,22 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				console.log('Sending data:', filteredData);
 				const response = await editCareer(selectedCategory, careerId, filteredData);
 				console.log('Success - 활동 수정: ', response);
-				// onClose();
-				window.location.reload();
+				
+				// 현재 경로에 따라 상태 변경 또는 페이지 이동
+				if(currentLocation.pathname === '/history') { // 이력서 페이지
+					console.log('storeCategory:', storeCategory, 'id:',response.data.id, 'data:',response.data);
+					updateItem(storeCategory, response.data.id, response.data);
+					onClose();
+				} else if (currentLocation.pathname !== '/history') { // 내커리어 페이지
+					// setTimeout(() => {
+					// 	window.location.reload();
+					// }, 100); // 100ms 후 실행 (리액트 상태 업데이트 이후 확실하게 새로고침)
+					console.log('storeCategory:', storeCategory, 'id:',response.data.id, 'data:',response.data);
+					updateItem(storeCategory, response.data.id, response.data);
+					onRefresh?.();
+					onClose();
+				}
+
 			} catch (error) {
 				console.error('수정모드에서 id 추가 중 오류 발생: ', error);
 			}
@@ -949,19 +1030,21 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 				console.log('Sending data:', filteredData);
 				const response = await createCareer(selectedCategory, filteredData);
 				console.log('Success - 활동 추가: ', response);
-				// onClose();
-				//window.location.reload();
-				//navigate('/mycareer'); //세연 추가
-				// 현재 경로가 `/mycareer`라면 새로고침, `/home`이라면 `/mycareer`로 이동
-				if (currentLocation.pathname === '/mycareer' || currentLocation.pathname === '/history') {
-					setTimeout(() => {
-						window.location.reload();
-					}, 100); // 100ms 후 실행 (리액트 상태 업데이트 이후 확실하게 새로고침)
+
+				// 현재 경로에 따라 상태 변경 또는 페이지 이동
+				if (currentLocation.pathname === '/history') { // 이력서 페이지
+					console.log('storeCategory:', storeCategory, 'id:',response.data.id, 'data:',response.data);
+					addItem(storeCategory, response.data.id, response.data);
+					onClose();
+				}
+				if (currentLocation.pathname === '/mycareer') { // 내커리어 페이지
+					console.log('storeCategory:', storeCategory, 'id:',response.data.id, 'data:',response.data);
+					addItem(storeCategory, response.data.id, response.data);
+					onRefresh?.();
+					onClose();
 				} else if (currentLocation.pathname === '/home') {
 					navigate('/mycareer');
 				}
-
-				onClose();
 			} catch (error) {
 				console.error('createCareer 호출 중 오류 발생: ', error.response ? error.response.data : error.message);
 			}
@@ -977,21 +1060,22 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData }) => {
 			try {
 				const careerId = initialData.id;
 				const response = await deleteCareer(selectedCategory, careerId);
-				console.log('Success - 활동 삭제: ', response);
-				// onClose();
-				// navigate('/mycareer');
-				// 현재 경로가 '/history'가 아니라면 '/mycareer'로 이동
-                if (currentLocation.pathname !== '/history') {
+				console.log(`Success - 활동 삭제(${careerId}): `, response);
+
+				// 현재 경로에 따라 상태 변경 또는 페이지 이동
+				// '/history'가 아니라면 '/mycareer'로 이동
+                if (currentLocation.pathname !== '/history') { // 내커리어 페이지
 					console.log('loaction.pathname: ', currentLocation.pathname);
+					deleteItem(storeCategory, careerId);
                     navigate('/mycareer');
-                } else {
-                    window.location.reload();
+                } else { // 이력서 페이지
+                    deleteItem(storeCategory, careerId);
+					onClose();
                 }
 			} catch (error) {
 				console.error('deleteCareer 호출 중 오류 발생: ', error.response ? error.response.data : error.message);
 			}
 		}
-		onClose();
 	};
 
 	// 모달 열릴 때마다 스크롤 잠금
@@ -1115,7 +1199,7 @@ const FormItem = styled.div`
 		}
 	}
 	input {
-		height: 30px;
+		height: 48px;
 		padding: 10px;
 		font-size: 16px;
 		font-family: 'Regular';
@@ -1185,7 +1269,7 @@ const ModalContainer = styled.div`
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	width: 580px;
+	width: 820px;
 	max-width: 90%;
 	background-color: #fff;
 	border-radius: 10px;

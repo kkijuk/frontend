@@ -28,9 +28,10 @@ export default function Mycareer() {
 
 	const [view, setView] = useState('year');
 	const [showModal, setShowModal] = useState(false);
+	const [refreshKey, setRefreshKey] = useState(0); // fetch 트리거 키
 	const navigate = useNavigate();
 
-	const { data: careers, isLoading, error } = useFetchMycareerActivity(view);
+	const { data: careers, isLoading, error } = useFetchMycareerActivity(view, refreshKey);
 
 	// Mock data
 	// const isLoading = false;
@@ -79,8 +80,9 @@ export default function Mycareer() {
 				<MemoizedCareerTimeline />
 				<MemoizedCareerView view={view} onToggle={handleToggleView} />
 				<MemoizedAddActivityButton onClick={() => setShowModal(true)} data={careers?.data.data} />
-
-				{showModal && <AddCareerModal onClose={handleCloseModal} />}
+				
+				{/* 활동 추가/삭제 성공 시 refreshKey를 증가시켜서 서버 fetch를 트리거 */}
+				{showModal && <AddCareerModal onClose={handleCloseModal} onRefresh={()=>setRefreshKey(prev => prev+1)}/>}
 			</Container>
 
 			<BackgroundSection>

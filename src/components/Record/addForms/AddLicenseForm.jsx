@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import { theme } from "../../../constants/theme";
 import CustomCalendarPicker from "../CustomCalendarPicker";
 import { trackEvent } from "../../../utils/ga4";
-import { theme } from "../../../constants/theme";
+import { BaseFormInput, BaseFormButton } from "../styles/ResumeForm.styles";
+import { formateDateDashToDot } from "@/utils/formateDate";
 
 const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, initialData }) => {
   const [formData, setFormData] = useState({
@@ -47,14 +49,6 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
     setShowDatePicker(false);
   };
 
-  const calculatePickerPosition = (ref) => {
-    if (!ref.current) return { top: 0, left: 0 };
-    const rect = ref.current.getBoundingClientRect();
-    return {
-      top: rect.bottom + window.scrollY + 10, // Input 아래 10px
-      left: rect.left + window.scrollX,
-    };
-  };
 
   // Log formData whenever it changes
   useEffect(() => {
@@ -103,7 +97,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                     readOnly
                     type="text"
                     placeholder="응시일자"
-                    value={formData.acquireDate || ""}
+                    value={formateDateDashToDot(formData.acquireDate) || ""}
                     onClick={handleDatePickerToggle}
                 />
                 {showDatePicker && (
@@ -121,7 +115,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 placeholder="자격증 or 어학 시험명(ex. OPIc 영어)"
                 value={formData.licenseName}
                 onChange={(e) => handleInputChange("licenseName", e.target.value)}
-                width = '275px'
+                width = '295px'
                 // style={{ width: "275px" }}
                 maxLength={30}
             />
@@ -130,7 +124,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 placeholder="점수/등급"
                 value={formData.licenseGrade}
                 onChange={(e) => handleInputChange("licenseGrade", e.target.value)}
-                width = '120px'
+                width = '140px'
                 // style={{ width: "120px" }}
                 maxLength={10}
             />
@@ -141,7 +135,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 placeholder="수험번호/자격번호"
                 value={formData.licenseNumber}
                 onChange={(e) => handleInputChange("licenseNumber", e.target.value)}
-                width = '175px'
+                width = '215px'
                 // style={{ width: "175px" }}
             />
             <Input
@@ -149,37 +143,28 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 placeholder="주관처(선택)"
                 value={formData.administer}
                 onChange={(e) => handleInputChange("administer", e.target.value)}
-                width = '175px'
+                width = '215px'
                 // style={{ width: "175px" }}
                 maxLength={15}
             />
             <ButtonRow>
               {mode === "edit" ? (
-                <Button
+                <BaseFormButton
                   onClick={()=>onDelete(id)}
-                  style={{
-                    border: "1px solid var(--sub-bu, #FA7C79)",
-                    background: "var(--white, #FFF)",
-                    color: "#FA7C79",
-                  }}
+                  variantType="delete"
                 >
                   삭제
-                </Button>
+                </BaseFormButton>
               ) : (
-                <Button
+                <BaseFormButton
                   onClick={onClose}
-                  style={{
-                    border: "1px solid var(--sub-bu, #77AFF2)",
-                    background: "var(--white, #FFF)",
-                    color: "#77AFF2",
-                  }}
+                  variantType="close"
                 >
                   취소
-                </Button>
+                </BaseFormButton>
               )}
               {mode === "edit" ? (
-                <Button 
-                  primary 
+                <BaseFormButton
                   onClick={() => {
                     if (hasEmptyField(formData)) {
                       alert("입력하지 않은 항목이 있습니다.");
@@ -194,12 +179,12 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                       label: '활동 수정하기',
                     });
                   }}
-                  style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+                  variantType="save"
+                >
                   저장
-                </Button>
+                </BaseFormButton>
                 ) : (
-                <Button 
-                  primary 
+                <BaseFormButton
                   onClick={() => {
                     if (hasEmptyField(formData)) {
                       alert("입력하지 않은 항목이 있습니다.");
@@ -214,9 +199,10 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                       label: '추가',
                     });
                   }}
-                  style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+                  variantType="create"
+                >
                   추가
-                </Button>
+                </BaseFormButton>
               )}
             </ButtonRow>
             </Row>
@@ -249,7 +235,7 @@ const TypeWrapper = styled.div`
 `
 
 const Container = styled.div`
-  width: 610px;
+  width: 650px;
   padding: 20px;
   background: var(--gray-06, #f5f5f5);
   border-radius: 0px 10px 10px 10px;
@@ -303,28 +289,9 @@ const Row = styled.div`
   }
 `;
 
-const Input = styled.input`
+const Input = styled(BaseFormInput)`
   width: ${(props) => props.width || "100%"};
-  height: 45px;
-  border-radius: 10px;
-  border: none;
-  background: var(--white, #fff);
-  text-align: left;
-  font-family: Regular;
-  font-size: 16px;
-  font-weight: 400;
-  color: black;
   padding: 0px 20px;
-
-  &::placeholder {
-    color: #d9d9d9;
-  }
-
-  @media (max-width: ${theme.breakpoints.md}) {
-    width: ${(props) => props.mdWidth || "238px"};
-    height: 17px;
-    padding: 12px 20px;
-  }
 `;
 
 const ButtonRow = styled.div`
