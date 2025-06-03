@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -14,6 +14,8 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 	// const isPastDue = data.endDate < formattedToday; //true: 기한 경과, false: 기한 내
 
 	const navigate = useNavigate();
+
+	console.log('CareerItem: ', data);
 
 	// 상태 관리
 	const [careerData, setCareerData] = useState(data);

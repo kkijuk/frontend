@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { theme } from "../../constants/theme";
-import { formateDateDashToDot } from "@/utils/formateDate";
+import { Color } from "@/constants/color";
 
 const CustomDatePicker = ({ value, onChange, onClose }) => {
   const currentYear = new Date().getFullYear();
@@ -27,11 +27,10 @@ const CustomDatePicker = ({ value, onChange, onClose }) => {
   }, [value]);
 
   const handleConfirm = () => {
-    const rawValue = `${selectedYear}-${String(selectedMonth).padStart(
+    const formattedValue = `${selectedYear}-${String(selectedMonth).padStart(
       2,
       "0"
     )}`;
-    const formattedValue = formateDateDashToDot(rawValue);
     onChange(formattedValue);
     onClose();
   };
@@ -88,9 +87,11 @@ export default CustomDatePicker;
 
 // Styled Components
 const PickerContainer = styled.div`
-  width: 180px;
+  width: 200px;
+  height: 191px;
   background: white;
   border-radius: 10px;
+  border: 1px solid var(--gray-02, ${Color.gray03});
   padding: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -127,8 +128,8 @@ const YearItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${(props) => (props.isSelected ? "var(--gray-06, #f5f5f5)" : "white")};
-  color: ${(props) => (props.isSelected ? "black" : "gray")};
+  background: ${(props) => (props.isSelected ? Color.gray05 : "white")};
+  color: ${(props) => (props.isSelected ? "black" : Color.gray02)};
   font-family: Regular;
   cursor: pointer;
   border-radius: 10px;

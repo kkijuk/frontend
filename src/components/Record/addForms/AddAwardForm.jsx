@@ -40,7 +40,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
     const month = (`0${dateObj.getMonth() + 1}`).slice(-2);
     const day = (`0${dateObj.getDate()}`).slice(-2);
 
-    const formattedDate = `${year}.${month}.${day}`;
+    const formattedDate = `${year}-${month}-${day}`;
     
     handleInputChange("acquireDate", formattedDate);
     setShowDatePicker(false);
