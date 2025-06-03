@@ -401,8 +401,8 @@ const DropdownContainer = styled.div`
 				return '#707070';
 		}
 	}};
-	width: ${({ status }) => (status === 'PLANNED' ? '70px' : '65px')};
-	height: 10px;
+	width: ${({ status }) => (status === 'PLANNED' ? '90px' : '85px')};
+	height: 20px;
 	border-radius: 10px;
 	padding: 0px 5px;
 	font-size: 12px;
