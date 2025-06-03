@@ -7,6 +7,7 @@ import { KebabMenu1 } from './KebabMenu';
 import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
 import { trackEvent } from '../../utils/ga4';
 import { theme } from '../../constants/theme';
+import { formateDateDashToDot } from '../../utils/formateDate';
 
 const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 	// const today = new Date();
@@ -164,7 +165,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 							<span style={{fontWeight:'normal'}}> / {data.alias}</span>
 						</SchoolName>
 						<Dates>
-							{data.startdate ? data.startdate : '시작 날짜 없음'} ~ {endDateToDisplay}
+							{formateDateDashToDot(data.startdate) ? formateDateDashToDot(data.startdate) : '시작 날짜 없음'} ~ {formateDateDashToDot(endDateToDisplay)}
 							<Status>{statusToDisplay}</Status>
 						</Dates>
 						<DetailContainer>

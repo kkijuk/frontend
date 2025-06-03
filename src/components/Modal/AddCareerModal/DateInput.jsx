@@ -4,6 +4,7 @@ import moment from 'moment';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { theme } from '../../../constants/theme';
+import { formateDateDashToDot } from '@/utils/formateDate';
 
 const DateInput = ({ value, onChange, disabled }) => {
 	const [showCalendar, setShowCalendar] = useState(false);
@@ -13,7 +14,7 @@ const DateInput = ({ value, onChange, disabled }) => {
 		// value: 숫자(타임스탬프) 혹은 null
   		// 내부 input에는 'YYYY-MM-DD' 형태로 표시
 		if (!timestamp) return '';
-		return moment(timestamp).format('YYYY-MM-DD');
+		return moment(timestamp).format('YYYY.MM.DD');
 
 		// old code
 		// if (isNaN(dateObj)) return '';
@@ -47,7 +48,7 @@ const DateInput = ({ value, onChange, disabled }) => {
 		<DateInputWrapper>
 			<InputDate
 				type="text"
-				placeholder="YYYY-MM-DD"
+				placeholder="YYYY.MM.DD"
 				value={formatToInputValue(value)}
 				onClick={() => setShowCalendar(!showCalendar)}
 				readOnly
