@@ -725,6 +725,10 @@ const UpdatedAt = styled.div`
   color: #707070;
   font-family: Regular;
   text-align: right;
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    margin-bottom: 24px;
+  }
 `;
 
 const UserInfoWrapper = styled.div`

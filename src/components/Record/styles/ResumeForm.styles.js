@@ -22,7 +22,7 @@ export const BaseFormInput = styled.input`
     }
 
     @media (max-width: ${theme.breakpoints.md}) {
-	    width: ${(props) => props.mdWidth || "238px"};
+	    width: 238px;
 	    height: 17px;
 	    padding: 12px 20px;
     }

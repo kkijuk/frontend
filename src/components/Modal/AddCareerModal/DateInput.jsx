@@ -92,7 +92,7 @@ const DateInputWrapper = styled.div`
 	position: relative;
 	width: 260px;
 	@media (max-width: ${theme.breakpoints.md}) {
-		width: 140px !important;
+		width: 153px !important;
 	}
 `;
 
@@ -100,9 +100,9 @@ const InputDate = styled.input`
 	// position: absolute;
 	font-family: Regular;
 	font-size: 16px;
-	width: 260px;
+	width: 245px;
 	height: 60px;
-	// padding: 10px;
+	padding: 15px 20px;
 	margin-bottom: 25px;
 	border: 1px solid #f5f5f5;
 	border-radius: 10px;
@@ -111,7 +111,9 @@ const InputDate = styled.input`
 	height: 40px;
 	cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
 	@media (max-width: ${theme.breakpoints.md}) {
-		width: 100%;
+		width: 113px;
+		height: 18px;
+		padding: 15px 20px !important;
 	}
 `;
 
@@ -140,6 +142,12 @@ const CalendarWrapper = styled.div`
 		position: absolute;
 		z-index: 10000;
 		top: 51px;
+
+		@media (max-width: ${theme.breakpoints.md}) {
+			width: 160px;
+			height: auto;
+			font-size: 12px;
+		}
 	}
 
 	.react-calendar__navigation {
@@ -147,11 +155,23 @@ const CalendarWrapper = styled.div`
 		gap: 15px;
 		height: 20px;
 		margin-top: 15px;
+
+		@media (max-width: ${theme.breakpoints.md}) {
+			font-size: 12px;
+			gap: 5px;
+			margin-bottom: 20px;
+		}
 	}
 
 	.react-calendar__navigation__button {
 		width: 20px;
 		height: 20px;
+	}
+
+	.react-calendar__navigation__label {
+		@media (max-width: ${theme.breakpoints.md}) {
+			font-size: 12px;
+		}	
 	}
 
 	.react-calendar__month-view__weekdays abbr {
@@ -180,6 +200,7 @@ const CalendarWrapper = styled.div`
 		align-items: center;
 		justify-content: center;
 		z-index: 10000;
+
 	}
 
 	.react-calendar__tile--now {
@@ -213,6 +234,9 @@ const CalendarWrapper = styled.div`
 		color: rgba(66, 66, 66, 0.3);
 		font-size: 14px;
 		font-weight: 400;
+		@media (max-width: ${theme.breakpoints.md}) {
+			font-size: 12px;
+		}
 	}
 `;
 

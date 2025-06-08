@@ -87,9 +87,10 @@ const SelectButton = styled.div`
 	border: ${(props) => (props.state ? '2px solid #3AAF85' : 'none')};
 
 	@media (max-width: ${theme.breakpoints.md}) {
-		width: 29px;
+		width: 25px;
 		height: 20px;
 		padding: 15px 40px;
 		line-height: 20px;
+		font-size: 14px;
 	}
 `;

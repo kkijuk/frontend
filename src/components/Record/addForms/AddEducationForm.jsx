@@ -244,8 +244,8 @@ const Container = styled.div`
   position: relative;
   margin-bottom: 50px;
   @media (max-width: ${theme.breakpoints.md}) {
-    width: 270px;
-    height: 294px;
+    width: 278px;
+    // height: 294px;
     padding: 16px;
   }
 `;
@@ -262,6 +262,10 @@ const Row = styled.div`
 
 const Input = styled(BaseFormInput)`
   width: ${(props) => (props.fullWidth ? "590px" : "435px")};
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 238px;
+  }
 `;
 
 const PeriodWrapper = styled.div`
@@ -284,7 +288,7 @@ const DatePickerInput = styled.input.attrs({ type: "text" })`
   border: ${(props) => (props.isActive ? "1px solid var(--gray-02, #707070)" : "none")};
   cursor:pointer;
   @media (max-width: ${theme.breakpoints.md}) {
-    width: 92.5px;
+    width: 96.5px;
     height: 17px;
     padding: 12px 16px;
   }

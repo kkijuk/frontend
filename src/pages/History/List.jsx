@@ -138,6 +138,9 @@ const BaseDiv = styled.div`
 	width: 820px;
 	max-width: 820px;
 	position: relative;
+	@media (max-width: ${theme.breakpoints.md}) {
+		width: 310px;
+	}
 `;
 
 const ToggleButton = styled.div`

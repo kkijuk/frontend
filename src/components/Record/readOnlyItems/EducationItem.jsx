@@ -126,6 +126,10 @@ const EditButton = styled.button`
 	background-color: transparent;
 	opacity: 0;
 	padding: 0px 50px 70px 0px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		opacity: 1;
+	}
 `;
 
 
@@ -147,6 +151,15 @@ const widthByLevelTagCategory = {
 	'대학원(박사)': '110px',
 }
 
+const mdWidthByLevelCategory = {
+	'고등학교': '70px',	
+	'대학교': '70px',
+	'전문대학교': '80px',
+	'대학원(석사)': '85px',
+	'대학원(박사)': '85px',
+}
+
+
 const LevelTag = styled.div`
 	width: ${(props) => widthByLevelTagCategory[props.category] || 'fit-content'};
 	height: 22px;
@@ -165,9 +178,9 @@ const LevelTag = styled.div`
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		font-size: 12px;
-		width: 70px;
+		width: ${(props) => mdWidthByLevelCategory[props.category] || 'fit-content'};
 		height: 16px;
-		padding: 4px 10px;
+		padding: 2px 10px;
 		font-weight: 700;
 	};
 `;

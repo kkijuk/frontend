@@ -151,6 +151,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 	const today = new Date();
 	const checkPastDue = data.enddate ? new Date(data.enddate) < today : false;
 
+
 	return (
 		<FirstContainer>
 			<TimeLine>
@@ -328,6 +329,10 @@ const EditButton = styled.button`
 	opacity: 0;
 	// transition: opacity 0.2s ease;
 	padding: 0px 50px 70px 0px;
+	@media (max-width: ${theme.breakpoints.md}) {
+		opacity: 1;
+		top: 0px;
+	}
 `;
 
 const Container = styled.div`
@@ -374,7 +379,7 @@ const LevelTag = styled.div`
 	line-height: 25px;
 	@media (max-width: ${theme.breakpoints.md}) {
 		font-size: 12px;
-		width: 70px;
+		width: 80px;
 		height: 16px;
 		padding: 4px 10px;
 		font-weight: 700;

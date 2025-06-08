@@ -1208,7 +1208,7 @@ const FormItem = styled.div`
 		background: #f5f5f5;
 		// width: 100%;
 		@media (max-width: ${theme.breakpoints.md}) {
-			width: ${(props) => (props.isPeriod ? '140px' : '333px')};
+			width: ${(props) => (props.isPeriod ? '113px' : '310px')};
 			font-size: 14px;
 		}
 	}
@@ -1222,6 +1222,7 @@ const ButtonContainer = styled.div`
 	justify-content: space-between; /* 버튼을 가운데 정렬 */
 	// flex-wrap: wrap; /* 버튼들이 화면에 맞지 않을 경우 줄바꿈 처리 */
 	@media (max-width: ${theme.breakpoints.md}) {
+		height: 100px;
 		flex-direction: row;
 		white-space: nowrap;
 		overflow-x: auto;
@@ -1259,8 +1260,8 @@ const ModalBackground = styled.div`
 	background-color: rgba(0, 0, 0, 0.5);
 	z-index: 999;
 	@media (max-width: ${theme.breakpoints.md}) {
-		width: 100%;
-		height: 100%;
+		width: 100vw;
+		height: 100vh;
 	}
 `;
 
@@ -1269,11 +1270,11 @@ const ModalContainer = styled.div`
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	width: 820px;
+	width: 580px;
 	max-width: 90%;
 	background-color: #fff;
 	border-radius: 10px;
-	padding: 50px 120px;
+	padding: 40px 120px;
 	z-index: 1000;
 
 	display: flex;
@@ -1285,8 +1286,8 @@ const ModalContainer = styled.div`
 		${ModalBackground} {
 			background-color: transparent; // 배경 비활성화
 		}
-
-		width: 100%;
+		padding-top: 90px;
+		width: 100vw;
 		height: 100%;
 		border-radius: 0;
 		justify-content: center;
