@@ -231,7 +231,6 @@ const Container = styled.div`
 const Row = styled.div`
   display: flex;
   gap: 20px;
-  align-items: center;
   @media (max-width: ${theme.breakpoints.md}) {
     flex-direction: column;
     gap: 12px;
@@ -240,6 +239,9 @@ const Row = styled.div`
 
 const Input = styled(BaseFormInput)`
   width: 430px;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 238px;
+  }
 `;
 
 const ButtonRow = styled.div`
@@ -250,6 +252,7 @@ const ButtonRow = styled.div`
   gap: 10px;
   @media (max-width: ${theme.breakpoints.md}) {
     margin-left: 0px;
+    width: 100%;
   }
 `;
 

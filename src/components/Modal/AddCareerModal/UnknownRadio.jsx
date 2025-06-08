@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { theme } from '../../../constants/theme';
 
 const UnknownRadio = ({ isUnknown, onToggle }) => {
 	return (
@@ -21,6 +22,10 @@ const RadioContainer = styled.div`
 	align-items: center;
 	position: relative;
 	top: -30px;
+	@media (max-width: ${theme.breakpoints.md}) {
+		right: 10px;
+		top: -20px;
+	}
 `;
 
 const RadioWrapper = styled.div`

@@ -315,6 +315,11 @@ const Input = styled(BaseFormInput)`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 238px;
+    height: 17px;
+    padding: 12px 20px;
+  }
 `;
 
 const ButtonRow = styled.div`

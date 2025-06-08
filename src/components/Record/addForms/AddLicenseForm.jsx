@@ -75,14 +75,14 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
         <TypeWrapper>
             <TypeToggle>
                 <TypeButton
-                active={formData.licenseTag === "LICENSE"}
-                onClick={() => handleInputChange("licenseTag", "LICENSE")}
+                  active={formData.licenseTag === "LICENSE"}
+                  onClick={() => handleInputChange("licenseTag", "LICENSE")}
                 >
                 자격증
                 </TypeButton>
                 <TypeButton
-                active={formData.licenseTag === "FOREIGN"}
-                onClick={() => handleInputChange("licenseTag", "FOREIGN")}
+                  active={formData.licenseTag === "FOREIGN"}
+                  onClick={() => handleInputChange("licenseTag", "FOREIGN")}
                 >
                 외국어
                 </TypeButton>
@@ -135,7 +135,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 placeholder="수험번호/자격번호"
                 value={formData.licenseNumber}
                 onChange={(e) => handleInputChange("licenseNumber", e.target.value)}
-                width = '215px'
+                width = '195px'
                 // style={{ width: "175px" }}
             />
             <Input
@@ -143,7 +143,7 @@ const AddLicenseForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete,
                 placeholder="주관처(선택)"
                 value={formData.administer}
                 onChange={(e) => handleInputChange("administer", e.target.value)}
-                width = '215px'
+                width = '195px'
                 // style={{ width: "175px" }}
                 maxLength={15}
             />
@@ -292,6 +292,11 @@ const Row = styled.div`
 const Input = styled(BaseFormInput)`
   width: ${(props) => props.width || "100%"};
   padding: 0px 20px;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 238px;
+    height: 17px;
+    padding: 12px 20px;
+  }
 `;
 
 const ButtonRow = styled.div`

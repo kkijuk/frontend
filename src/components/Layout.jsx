@@ -92,13 +92,15 @@ const TitleText = styled.div`
 	margin-top: 35px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
-		text-align: ${({ isApply }) => (isApply ? 'left' : 'center')};
-		margin-left: ${({ isApply }) => (isApply ? '28px' : '0px')};
+		text-align: ${({ isLeftAlign }) => (isLeftAlign ? 'left' : 'center')};
+		margin-left: ${({ isLeftAlign }) => (isLeftAlign ? '20px' : '0px')};
+		// margin-bottom: ${({ isLeftAlign }) => (isLeftAlign ? '32px' : '0px')};
 	}
 `;
 
 export default function Layout({ title, children, leftAsideContent, rightAsideContent }) {
 	const isApplyPage = title === '지원관리';
+	const isHistoryPage = title === '서류준비';
 
 	return (
 		<Wrapper>
@@ -106,7 +108,7 @@ export default function Layout({ title, children, leftAsideContent, rightAsideCo
 				<LeftAside>{leftAsideContent}</LeftAside>
 				<Section>
 					<Top>
-						<TitleText isApply={isApplyPage}>{title}</TitleText>
+						<TitleText isLeftAlign={isApplyPage || isHistoryPage}>{title}</TitleText>
 					</Top>
 					{children}
 				</Section>

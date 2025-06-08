@@ -35,11 +35,10 @@ const ListBox = styled.div`
 	margin: 15px 0px;
 	cursor: pointer;
 	@media (max-width: ${theme.breakpoints.md}) {
-		width: 310px;
+		width: 100%;
 		height: auto;
 		padding: 16px 20px;
 		max-width: 100%;
-		padding: 10px 15px;
 		margin: 10px 0px;
 
 		h3 {

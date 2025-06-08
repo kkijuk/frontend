@@ -101,7 +101,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           placeholder="수상명"
           value={formData.awardName}
           onChange={(e) => handleInputChange("awardName", e.target.value)}
-          width= '215px'
+          width= '195px' //padding 고려
           // style={{width:'195px'}}
           maxLength={15}
         />
@@ -110,7 +110,7 @@ const AddAwardForm = ({ id, mode = "add", onClose, onSave, onUpdate, onDelete, i
           placeholder="수여기관"
           value={formData.administer}
           onChange={(e) => handleInputChange("administer", e.target.value)}
-          width= '215px'
+          width= '195px'
           // style={{width:'195px'}}
           maxLength={15}
         />
@@ -184,7 +184,7 @@ export default AddAwardForm;
 // Styled Components
 const Container = styled.div`
   width: 650px;
-  height: 150px;
+  height: 110px;
   padding: 20px;
   background: var(--gray-06, #f5f5f5);
   border-radius: 10px;
@@ -212,6 +212,11 @@ const Row = styled.div`
 
 const Input = styled(BaseFormInput)`
   width: ${(props) => props.width || "100%"};
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 238px;
+    height: 17px;
+    padding: 12px 20px;
+  }
 `;
 
 const DatePickerInput = styled.input.attrs({ type: "text" })`

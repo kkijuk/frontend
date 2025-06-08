@@ -53,6 +53,10 @@ const EditButton = styled.button`
 	background-color: transparent;
 	opacity: 0;
 	padding: 0px 50px 70px 0px;
+  
+  @media (max-width: ${theme.breakpoints.md}) {
+    opacity: 1;
+  }
 `;
 
 const Container = styled.div`
