@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import AddAwardForm from '../addForms/AddAwardForm';
 import { KebabMenu2 } from '../KebabMenu';
 import { theme } from '../../../constants/theme';
+import { formateDateDashToDot } from '@/utils/formateDate';
 
 const AwardItem = ({ data, onSave, onUpdate, onDelete, onClose }) => {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -29,7 +30,7 @@ const AwardItem = ({ data, onSave, onUpdate, onDelete, onClose }) => {
           <AwardInfo>
             <AwardName>{data.competitionName} / {data.awardName}</AwardName>
             <AwardDetails>
-              {data.acquireDate} ・ {data.administer}
+              {formateDateDashToDot(data.acquireDate)} ・ {data.administer}
             </AwardDetails>
           </AwardInfo>
           <EditButton id="edit">
@@ -52,6 +53,10 @@ const EditButton = styled.button`
 	background-color: transparent;
 	opacity: 0;
 	padding: 0px 50px 70px 0px;
+  
+  @media (max-width: ${theme.breakpoints.md}) {
+    opacity: 1;
+  }
 `;
 
 const Container = styled.div`

@@ -70,8 +70,8 @@ const Container = styled.div`
 `
 
 const FileNameField = styled.div`
-  width: 410px;
-  height: 25px;
+  width: 450px;
+  height: 45px;
   flex-shrink: 0;
   padding: 10px 20px;
   border:none;

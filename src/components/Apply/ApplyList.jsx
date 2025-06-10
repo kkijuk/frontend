@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom';
 
 const StatusItem = styled.div`
 	background-color: #f5f5f5;
-	border-radius: 12px;
+	border-radius: 13px;
 	padding: 9px;
 	margin-right: 369px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 120px;
-	height: 15px;
+	width: 138px;
+	height: 33px;
 	cursor: pointer; 
 	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 		margin-right: 0; 

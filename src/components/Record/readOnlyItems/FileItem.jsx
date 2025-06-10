@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { downS3File } from "../../../api/Record/s3File";
 import AddFileForm from "../addForms/AddFileForm";
+import { KebabMenu2 } from "../KebabMenu";
 import { theme } from "../../../constants/theme";
 
 const FileItem = ({ id, data, onSave, onUpdate, onDelete }) => {
@@ -56,7 +57,9 @@ const FileItem = ({ id, data, onSave, onUpdate, onDelete }) => {
           <ContentLink onClick={handleContentLinkClick}>
             {isTypeURL ? data.url : data.fileLinkTitle}
           </ContentLink>
-          <DeleteButton onClick = {()=>setIsEditMode(true)}>수정</DeleteButton>
+          <EditButton id="edit">
+            <KebabMenu2 onModalOpen={() => setIsEditMode(true)} />
+          </EditButton>
         </Container>
       )}
     </div>
@@ -64,6 +67,20 @@ const FileItem = ({ id, data, onSave, onUpdate, onDelete }) => {
 };
 
 export default FileItem;
+
+const EditButton = styled.button`
+  border: none;
+  position: absolute;
+  right: 0;
+  top:10px;
+  background-color: transparent;
+  opacity: 0;
+  padding: 0px 50px 70px 0px;
+  
+  @media (max-width: ${theme.breakpoints.md}) {
+    opacity: 1;
+  }
+`;
 
 const FileOrURLName = styled.div`
     // width: 120px;
@@ -123,7 +140,7 @@ const Container = styled.div`
     position: relative;
     padding: 10px;
 
-    &:hover ${DeleteButton} {
+    &:hover ${EditButton} {
         opacity: 1;
         cursor: pointer;
 	  }

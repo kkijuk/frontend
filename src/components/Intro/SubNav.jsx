@@ -17,7 +17,7 @@ const SubNav = () => {
     const shouldHideConvert = location.pathname.startsWith('/history/list');
 
     return (
-        <Layout title="서류준비">
+        <Layout title="서류준비" >
             <BaseDiv>
                 {isResumeActive && (
                     <ExportButton
@@ -65,14 +65,14 @@ const BaseDiv = styled.div`
     position: relative;
 
     @media (max-width: ${theme.breakpoints.md}) {
-        margin-top: -10px;
-        
+        margin-top: 32px;
     }
 `;
 
 const Nav = styled.ul`
     list-style-type: none;
-    padding-left: 0;
+    padding-left: 20px;
+    padding-right: 20px;
     // margin-top: 30px;
 	// width: 100vw;
 `;
@@ -152,18 +152,11 @@ const ExportButton = styled.button`
     cursor: pointer;
     
     @media (max-width: ${theme.breakpoints.md}) {
-        width: 130px;
-        height: 32px;
-        font-size: 16px;
-        top: -45px;
+        width: 150px;
+        height: 33px;
+        padding: 4px 18px;
+        font-size: 18px;
+        top: -65px;
         right: 15px;
-    }
-    
-    @media (max-width: ${theme.breakpoints.sm}) {
-        width: 110px;
-        height: 30px;
-        font-size: 14px;
-        top: -40px;
-        right: 10px;
     }
 `;

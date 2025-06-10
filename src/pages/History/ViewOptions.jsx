@@ -136,9 +136,9 @@ const ViewOptions = () => {
 					</>
 				)}
 			</SButtonContainer>
-			<div style={{ position: 'absolute', right: 0, top: 90, display: 'inline-block' }}>
+			<ToggleWrapper>
 				<Toggle checked={isChecked} onChange={handleToggleClick} />
-			</div>
+			</ToggleWrapper>
 			<AddButton 
 				onClick={() => {
 					trackEvent('add_click', {
@@ -190,5 +190,17 @@ const SButton = styled.button`
 	&:first-child {
 		background-color: #e1faed;
 		color: #000000;
+	}
+`;
+
+const ToggleWrapper = styled.div`
+	display: inline-block;
+	position: absolute;
+	right: 20px;
+	top: 90px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		top: 130px;
+		right: 10px;
 	}
 `;
