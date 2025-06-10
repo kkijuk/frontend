@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import AgreementModal1 from '../components/User/AgreementModal1';
-import AgreementModal2 from '../components/User/AgreementModal2';
 import logo from '../assets/logo.png';
 import instagramLogo from '../assets/instagramLogo.png';
 import paperplaneicon from '../assets/paperplaneicon.png';
-
+import { ROUTES } from '../constants/routes'; 
 
 const FooterStyle = styled.div`
   width: 100%;
@@ -32,6 +30,7 @@ const FooterStyle = styled.div`
 
       span {
         margin-right: 10px;
+        z-index: 1000;
         &:hover {
           text-decoration: underline;
         }
@@ -93,8 +92,6 @@ const FooterStyle = styled.div`
 
 export default function Footer() {
   const navigate = useNavigate();
-  const [isModal1Open, setModal1Open] = useState(false);
-  const [isModal2Open, setModal2Open] = useState(false);
 
   const goInsta = () => {
     window.open('https://www.instagram.com/kki.juk/?utm_source=ig_web_button_share_sheet', '_blank');
@@ -103,14 +100,20 @@ export default function Footer() {
   const goEmail = () => {
     window.open('mailto:kkijuk30@gmail.com', '_blank');
   };
+ const handleServiceAgreeClick = () => {
+        navigate(ROUTES.SERVICE_AGREE); 
+    };
 
+    const handlePrivacyPolicyClick = () => {
+        navigate(ROUTES.PRIVACY_POLICY); 
+    };
   return (
     <>
       <FooterStyle>
         <div className="left">
           <div className="links">
-            <span onClick={() => setModal1Open(true)}>서비스 이용약관</span>
-            <span onClick={() => navigate('/agree')}>개인정보 처리방침</span>
+             <span onClick={handleServiceAgreeClick}>서비스 이용약관</span>
+             <span onClick={handlePrivacyPolicyClick}>개인정보 처리방침</span>
           </div>
           <div className="logo">
             <img src={logo} alt="끼적 로고" />
@@ -134,8 +137,6 @@ export default function Footer() {
         </div>
       </FooterStyle>
 
-      {/* 모달 상태와 prop 통일 */}
-      <AgreementModal1 show={isModal1Open} handleModal={() => setModal1Open(false)} />
     </>
   );
 }
