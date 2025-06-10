@@ -1,171 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { getUserInfo } from '../../api/Home/getUserInfo';
 import { trackEvent } from '../../utils/ga4';
 import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
+import { useUserInfo } from '../../hooks/Home/useUserInfo'; // react-query 사용 코드로 변경
 //v2
-const Container = styled.div`
-	width: 220px;
-	height: 138px;
-	display: flex;
-	gap: 9px;
-	flex-direction: column;
 
-	/*border: 1px solid black;*/
-	box-sizing: border-box;
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		display: flex;
-		padding: 0px 16px;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		gap: 9px;
-		align-self: stretch;
-		width: 100%;
-		/*min-width: 326px;*/
-		min-height: 146px;
-	}
-`;
-
-const Top = styled.div`
-	display: flex;
-	flex-direction: column; /*세로배치 위해서 display 속성에 추가*/
-`;
-
-const Text = styled.div`
-	color: var(--black, #000);
-	text-align: center;
-	font-family: Pretendard;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: normal;
-`;
-
-const BoldText = styled.div`
-	color: ${(props) => props.color || 'var(--black, #000)'};
-	font-family: Pretendard;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: 700;
-	line-height: normal;
-	display: inline;
-`;
-
-const Bottom = styled.div`
-	width: 220px;
-	height: 92px;
-	display: flex;
-	gap: 12px;
-	flex-direction: column; /*세로배치 위해서 display 속성에 추가*/
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		/*min-width: 326px;*/
-		width: 100%;
-		min-height: 96px;
-	}
-`;
-
-const ActivityBoxContainer = styled.div`
-	display: flex;
-	justify-content: space-between;
-	gap: 16px;
-	box-sizing: border-box;
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 100%;
-	}
-`;
-
-const ActivityBox = styled.div`
-	display: flex;
-	flex: 1;
-	width: 105px;
-	height: 50px;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	border-radius: 10px;
-	background: var(--gray-06, #f5f5f5);
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 100%; /* flex: 1로 이미 너비 분배됨 */
-	}
-`;
-
-const ActivityTextBox = styled.div`
-	width: auto;
-	height: auto;
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-`;
-
-const CenteredTextRow = styled.span`
-	display: block;
-	text-align: center;
-`;
-
-const ActivityTitle = styled.div`
-	align-self: stretch;
-	color: var(--black, #000);
-	text-align: center;
-	font-family: Pretendard;
-	font-size: 12px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: normal;
-`;
-
-const ActivityNum = styled.div`
-	align-self: stretch;
-	color: var(--black, #000);
-	text-align: center;
-	font-family: Pretendard;
-	font-size: 12px;
-	font-style: normal;
-	font-weight: 700;
-	line-height: normal;
-`;
-
-const Button = styled.button`
-	display: inline-flex;
-	height: 30px;
-	width: 220px;
-	justify-content: center;
-	align-items: center;
-	flex-shrink: 0;
-	border: none;
-	border-radius: 10px;
-	background: var(--main-01, #3aaf85);
-
-	color: var(--white, #fff);
-	text-align: center;
-	font-family: Pretendard;
-	font-size: 12px;
-	font-style: normal;
-	font-weight: 700;
-	line-height: normal;
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 100%;
-		/*min-width: 325px;*/
-		height: 34px;
-	}
-`;
+import {
+	Container,
+	Top,
+	Text,
+	BoldText,
+	Bottom,
+	ActivityBoxContainer,
+	ActivityBox,
+	ActivityTextBox,
+	CenteredTextRow,
+	ActivityTitle,
+	ActivityNum,
+	Button,
+} from './Profile.styles';
 
 export default function ProfileBox() {
 	const navigate = useNavigate();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
+	//react-query 사용 코드 추가
+	const { data: userInfo, isLoading, isError } = useUserInfo();
+
+	if (isLoading) return <div>로딩 중...</div>;
+	if (isError || !userInfo) return <div>사용자 정보를 불러오지 못했습니다.</div>;
+
+	const { userName, monthDuration, careerCount, recruitCount } = userInfo;
+
+	/*
 	const [userInfo, setUserInfo] = useState({
 		userName: '',
 		monthDuration: 0,
 		careerCount: 0,
 		recruitCount: 0,
 	});
+
 
 	useEffect(() => {
 		const fetchUserInfo = async () => {
@@ -191,6 +65,7 @@ export default function ProfileBox() {
 
 	const { userName, monthDuration, careerCount, recruitCount } = userInfo;
 
+	*/
 	const goCareer = () => {
 		window.scrollTo(0, 0);
 		navigate('/mycareer');
