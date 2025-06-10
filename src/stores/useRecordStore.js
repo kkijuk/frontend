@@ -4,13 +4,10 @@ import { createEducation, updateEducation, deleteEducation } from '../api/Record
 import { createLicense, updateLicense, deleteLicense } from '../api/Record/license.js'; // default export
 import { createSkill, updateSkill, deleteSkill } from '../api/Record/skill.js';
 import { readRecord } from '../api/Record/record.js'; // default export
-import { createCareer } from '../api/Mycareer/Career.js';
-import * as CareerEditAPI from '../api/Mycareer/CareerEdit.js';
-import { CareerEdit, CareerDelete } from '../api/Mycareer/CareerEdit.js';
 import { createPresignedUrl, saveKeyName, deleteS3File, uploadFileToS3, changeFileTitle } from '../api/Record/s3File.js';
 import { addURL, deleteURL } from '../api/Record/url.js';
-import { updateRecord } from '../api/Record/record.js';
 import { updateUserData } from '../api/Record/user.js';
+import { editCareerSummary } from '@/api/Mycareer/Career.js';
 
 // 기존 코드 유지
 const useRecordStore = create((set, get) => ({
@@ -294,6 +291,21 @@ const useRecordStore = create((set, get) => ({
 			}
 		} catch (error) {
 			console.error('Delete Item Error:', error);
+		}
+	},
+
+	editCareerSummary: async (id, payload, category) => {
+		try {
+			const response = await editCareerSummary(id, payload);
+			console.log('Success-editCareerSummary:', response.data);
+			console.log('category:', get()[category]);
+			set((state) => ({
+				[category]: state[category].map((item) =>
+					item.id === id ? { ...item, summary: payload.summary } : item
+				),
+			}));
+		} catch (error) {
+			console.error('Error-editCareerSummary:', error);
 		}
 	},
 

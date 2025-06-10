@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import styled from 'styled-components';
 import { editCareerSummary } from '../../api/Mycareer/Career';
 import { KebabMenu1 } from './KebabMenu';
@@ -8,6 +7,18 @@ import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
 import { trackEvent } from '../../utils/ga4';
 import { theme } from '../../constants/theme';
 import { formateDateDashToDot } from '../../utils/formateDate';
+import useRecordStore from '@/stores/useRecordStore';
+
+const categoryMap = {
+	'CIRCLE': 'activitiesAndExperiences',
+	'ACTIVITY': 'activitiesAndExperiences',
+	'ETC': 'activitiesAndExperiences',
+	'PROJECT': 'projects',
+	'COM': 'projects',
+	'EMP': 'employments',
+	'EDU': 'eduCareers',
+
+}
 
 const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 	// const today = new Date();
@@ -15,6 +26,15 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 	// const isPastDue = data.endDate < formattedToday; //true: 기한 경과, false: 기한 내
 
 	const navigate = useNavigate();
+
+	const store = useRecordStore();
+	const { 
+		editCareerSummary,
+		activitesAndExperiences,
+		projects,
+		employments,
+		eduCareers,
+	} = store;
 
 	console.log('CareerItem: ', data);
 
@@ -76,6 +96,10 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 		}
 	}
 
+	useEffect(() => {
+		console.log(store[categoryMap[data.category.categoryEnName]]?.find((item) => item.id === data.id)?.summary);
+	}, [data.id, data.category.categoryEnName, store]);
+
 	// 활동 내역 수정
 	const handleDetailSave = async () => {
 		try{
@@ -84,13 +108,12 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 				type: data.category.categoryEnName,
 				summary: detail
 			};
-			await editCareerSummary(data.id, updatedData);
+			// await editCareerSummary(data.id, updatedData);
+			await editCareerSummary(data.id, updatedData, categoryMap[data.category.categoryEnName]);
 			setIsSummaryEditMode(false);
 			setIsKebabMenuOpen(false);
 			
-			// 수정된 데이터로 상태 업데이트
-			// setDetail(updatedData.summary);
-			window.location.reload();
+			// window.location.reload();
 			trackCategoryEvent(data.category.categoryEnName);
 		} catch (error) {
 			console.error('활동내역 수정 실패: ', error);
@@ -181,7 +204,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 									<ButtonWrapper>
 										<DetailSaveButton
 											onClick={() => {setIsSummaryEditMode(false);}}
-											style={{backgroundColor:'#FFF', color:'#77AFF2', border: '1px solid var(--sub-bu, #77AFF2)'}}>
+											style={{backgroundColor:'#FFF', color:'#707070', border: '1px solid var(--sub-bu, #D0D0D0)'}}>
 											취소
 										</DetailSaveButton>
 										<DetailSaveButton
@@ -192,7 +215,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 								</DetailWrapper>
 							) : (
 								<>
-									{data.summary}
+									{store[categoryMap[data.category.categoryEnName]]?.find((item) => item.id === data.id)?.summary}
 								</>
 							)}
 						</DetailContainer>
@@ -221,7 +244,7 @@ const TimeLine = styled.div`
 	height: auto;
 
 	@media (max-width: ${theme.breakpoints.md}) {
-		margin: 0px 24px 0px 20px;
+		margin: 0px 24px 0px 0px;
 		height: auto;
 	}
 `;
@@ -471,18 +494,27 @@ const DetailTextArea = styled.textarea`
 `
 
 const ButtonWrapper = styled.div`
+	padding: 15px 0px;
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	gap: 12px;
+	align-items: center;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		flex-direction: row;
+		gap: 12px;
+		padding: 0px;
+	}
 `
 
 const DetailSaveButton = styled.button`
 	all: unset;
-	width: 67px;
-	height: 96px;
+	width: 25px;
+	height: 17px;
+	padding: 4px 20px;
 	margin-left: 10px;
 	flex-shrink: 0;
-	border-radius: 7px;
+	border-radius: 10px;
 	border: none;
 	background: var(--main-01, #3AAF85);	
 	cursor = pointer;
@@ -490,7 +522,7 @@ const DetailSaveButton = styled.button`
 	justify-content: center;
 	align-items: center;
 	font-family: 'Regular';
-	font-size: 12px;
+	font-size: 14px;
 	color: white;
 	cursor: pointer;
 	@media (max-width: ${theme.breakpoints.md}) {
