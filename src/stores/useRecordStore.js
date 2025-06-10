@@ -426,7 +426,7 @@ const useRecordStore = create((set, get) => ({
 				// await deleteS3File({fileTitle: `profileImage_${recordId}`});
 				console.log('oldprofileImage: ', oldProfileImageUrl);
 				// 2-1) 기존 이미지가 있으면 s3에서 먼저 삭제
-				if(oldProfileImageUrl && oldProfileImageUrl !== 'string'){
+				if(oldProfileImageUrl && oldProfileImageUrl !== 'string' && !oldProfileImageUrl.includes('null')) {
 					await deleteS3File({fileTitle: oldProfileImageUrl});
 				}
 				// 2-2) Presigned URL 발급

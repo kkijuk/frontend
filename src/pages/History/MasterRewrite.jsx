@@ -83,7 +83,13 @@ const MasterRewrite = () => {
 	}, [data]); 
 
 	// 변경 내용 onChange
-	const handleInputChange = (index, field, value) => {
+	const handleInputChange = (index, field, event) => {
+		const textarea = event.target;
+		const value = textarea.value;
+
+		textarea.style.height = 'auto'; // 높이 초기화
+		textarea.style.height = `${textarea.scrollHeight}px`; // 높이 조정
+
 		const updatedQuestions = data.questions.map((q, i) =>
 			i === index ? { ...q, [field]: value } : q
 		);
@@ -205,6 +211,7 @@ const MasterRewrite = () => {
 				<div style={{ position: 'relative' }}>
 					<InputTitle
 						id="oneLiner"
+						isTitle={true}
 						placeholder="한줄소개를 입력하세요"
 						style={{ height: '40px', marginBottom: '12px', padding:'12px 16px' }}
 						value={data.oneLiner || ''}
@@ -252,7 +259,7 @@ const MasterRewrite = () => {
 										isTitle={true}
 										style={{height: '20px', marginBottom: '12px'}}
 										value={currentTitle}
-										onChange={(e) => handleInputChange(index, 'title', e.target.value)}
+										onChange={(e) => handleInputChange(index, 'title', e)}
 									/>
 								</TitleInputContainer>
 							</TitleWrapper>
@@ -260,9 +267,9 @@ const MasterRewrite = () => {
 								<InputTitle
 									placeholder={contentPlaceholder}
 									isTitle={false}
-									style={{ height: '150px', marginBottom: '12px' }}
+									style={{ marginBottom: '12px' }}
 									value={currentContent}
-									onChange={(e) => handleInputChange(index, 'content', e.target.value)}
+									onChange={(e) => handleInputChange(index, 'content', e)}
 								/>
 								<CharCount>
 									{currentContent.length} (공백 포함)
@@ -357,6 +364,9 @@ const TitleInputContainer = styled.div`
 
 const InputTitle = styled.textarea`
 	width: ${({ isTitle }) => (isTitle === true ? '764px' : '780px')};
+	height: ${({ isTitle }) => (isTitle === true ? '20px' : 'auto')};
+	min-height: ${({ isTitle }) => (isTitle === true ? '20px' : '150px')};
+	max-height: 400px;
 	flex-shrink: 0;
 	border: none;
 	border-radius: 10px;

@@ -33,6 +33,7 @@ export const ROUTES = {
 	HISTORY_SELECT: '/history/select',
 	HISTORY_ADD_APPLY: '/history/add_apply',
 	HISTORY_RESUME_EXPORT: '/history/resumeExport',
+	HISTORY_ADMIN: '/history/admin',
 
 	// 커리어 관련 라우트
 	MYCAREER: '/mycareer',
