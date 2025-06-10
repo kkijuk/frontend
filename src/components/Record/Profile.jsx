@@ -21,7 +21,10 @@ const Profile = ({ profileKeyName, onProfileChange }) => {
                     }
                     console.log('Profile image downloaded successfully:', response);
                 })
-                .catch((error) => console.error('Error:', error));
+                .catch((error) => {
+                    console.error('Error:', error);
+                    setProfileUrl(''); 
+                });
         }
     }, [profileKeyName]);
 

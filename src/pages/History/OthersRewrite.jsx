@@ -130,15 +130,17 @@ const OthersRewrite = () => {
 
 	const handleInputChange = (number, field, event) => {
 		// const value = event.target.value;
+		const textarea = event.target;
+		const value = textarea.value;
+
+		textarea.style.height = 'auto'; // 높이 초기화
+		textarea.style.height = `${textarea.scrollHeight}px`; // 높이 조정
+
 		const newQuestions = questions.map((question) =>
-			question.number === number ? { ...question, [field]: event.target.value } : question
+			question.number === number ? { ...question, [field]: value } : question
 		);
+
 		setQuestions(newQuestions);
-		console.log('InputChange Result: ', questions);
-		// Corrected charCounts update logic
-		// setCharCounts((prev) =>
-		// 	prev.map((count, i) => (questions[i].number === number ? event.target.value.length : count)),
-		// );
 		setCharCounts(newQuestions.map((question) =>
 			question.content && question.content !== 'string' ? question.content.length : 0
 		))
@@ -445,7 +447,7 @@ const OthersRewrite = () => {
 								<InputTitle
 									placeholder='답변을 작성하세요'
 									isTitle={false}
-									style={{ height: '150px', marginBottom: '35px'}}
+									style={{ marginBottom: '35px'}}
 									value={
 										question.content && question.content !== 'string' 
 										? question.content
@@ -616,6 +618,9 @@ const Linear = styled.div`
 
 const InputTitle = styled.textarea`
 	width: ${({ isTitle }) => (isTitle === true ? '764px' : '780px')};
+	height: ${({ isTitle }) => (isTitle === true ? '20px' : 'auto')};
+	min-height: ${({ isTitle }) => (isTitle === true ? '20px' : '150px')};
+	max-height: 400px;
 	flex-shrink: 0;
 	border: none;
 	border-radius: 10px;

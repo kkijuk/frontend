@@ -14,6 +14,7 @@ const OthersRewrite = lazy(() => import('@pages/History/OthersRewrite'));
 const Select = lazy(() => import('@pages/History/Select'));
 const AddApply = lazy(() => import('@pages/History/AddApply'));
 const ResumePdf = lazy(() => import('@pages/History/ResumePDF'));
+const HistoryAdmin = lazy(() => import('@pages/History/HistoryAdminPage'));
 
 export const historyRoutes = [
 	{
@@ -44,4 +45,5 @@ export const historyRoutes = [
 	{ path: ROUTES.HISTORY_SELECT, element: <Select /> },
 	{ path: ROUTES.HISTORY_ADD_APPLY, element: <AddApply /> },
 	{ path: ROUTES.HISTORY_RESUME_EXPORT, element: <ResumePdf /> },
+	{ path: ROUTES.HISTORY_ADMIN, element: <HistoryAdmin />},
 ];
