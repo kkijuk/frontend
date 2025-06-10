@@ -6,78 +6,7 @@ import InterestBox from '../../components/shared/InterestBox';
 import { mypageInterestEdit } from '../../api/Mypage/mypageInterestEdit';
 import { mypageInterest } from '../../api/Mypage/mypageInterest';
 
-const Box = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-`;
-
-const Top = styled.div`
-	width: 464px;
-	margin-top: 7px;
-	margin-bottim: 31px;
-`;
-
-const ContentArea = styled.div`
-	margin: 0 auto;
-	background-color: white;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-
-	flex-direction: column;
-	overflow-y: auto;
-`;
-
-const InterestArea = styled.div`
-	display: grid;
-	width: 100%;
-	grid-template-columns: repeat(2, 1fr);
-	grid-template-rows: repeat(8, auto);
-	box-sizing: border-box;
-	gap: 10px;
-	justify-content: center;
-`;
-
-const Title = styled.h2`
-	color: var(--black, #000);
-	font-family: Pretendard;
-	font-size: 20px;
-	font-style: normal;
-	font-weight: 700;
-	line-height: normal;
-`;
-
-const SaveButton = styled.button`
-	width: 100%;
-	height: 52px;
-	flex-shrink: 0;
-	background-color: #3aaf85;
-	color: white;
-	padding: 10px 20px;
-	border: none;
-	border-radius: 10px;
-	cursor: pointer;
-	font-size: 18px;
-
-	margin-top: 32px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-bottom: 30px;
-
-	text-align: center;
-	font-family: Pretendard;
-	font-style: normal;
-	font-weight: 500;
-	line-height: normal;
-
-	&:hover {
-		background-color: #35a576;
-	}
-`;
+import { Box, Top, Title, ContentArea, InterestArea, SaveButton } from './FieldEdit.styles.js';
 
 const FieldEdit = ({ onSave }) => {
 	const [interestingList, setSelectedInterest] = useState([]);
