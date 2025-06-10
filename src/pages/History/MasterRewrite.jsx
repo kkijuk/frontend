@@ -24,7 +24,10 @@ const MasterRewrite = () => {
 
 	// 글자 수 계산
 	useEffect(() => {
-		setCharCounts(data.questions.map((question) => question.content.length));
+		setCharCounts(
+			data.questions.map((question) => 
+				question.content && question.content !== 'string' ? question.content.length : 0
+		));
 	}, [data.questions]);
 
 	// 기타 상태
@@ -39,6 +42,24 @@ const MasterRewrite = () => {
 			try{
 				const response = await readMaster();
 				console.log('내용조회: ', response);
+
+				const updatedQuestions = response.questionList.map((q, i) => {
+					let title = q.title;
+					let content = q.content;
+
+					if(!title || title === 'string') {
+						if (i === 0) title = '지원동기 및 포부 [소제목]';
+						else if (i === 1) title = '장단점 [소제목]';
+						else if (i === 2) title = '직무적합성 [소제목]';
+						else title = '';
+					}
+
+					return {
+						...q,
+						title: title,
+						content: content,
+					}
+				})
 
 				setData({
 					oneLiner: response.oneLiner,

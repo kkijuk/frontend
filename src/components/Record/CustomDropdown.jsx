@@ -34,6 +34,11 @@ const DropdownContainer = styled.div`
   position: relative;
   width: ${(props) => props.width};
   font-family: Regular;
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 238px;
+    height: 17px;
+    margin-bottom: 26px;
+  }
 `;
 
 const DropdownHeader = styled.div`
@@ -50,7 +55,7 @@ const DropdownHeader = styled.div`
   color: ${(props) => (props.children === "학력구분" || props.children === "학력상태" ? "#d9d9d9" : "black")};
   cursor: pointer;
   @media (max-width: ${theme.breakpoints.md}) {
-    width: 230px;
+    width: 238px;
     height: 17px;
     padding: 12px 20px;
   }
@@ -84,7 +89,7 @@ const DropdownList = styled.ul`
   @media (max-width: ${theme.breakpoints.md}) {
     width: 230px;
     padding: 10px 20px;
-    top: 43px;
+    top: 45px;
   }
 `;
 

@@ -19,6 +19,8 @@ import ReviewDeleteModal from '../../components/Apply/ReviewDeleteModal';
 import { updateRecruitApplyDate } from '../../api/Apply/RecruitApplydate';
 import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
 import { trackEvent } from '../../utils/ga4';
+import { formatDate, formateDateDashToDot } from '../../utils/formateDate';
+
 
 const SvgIcon = styled.svg`
 	width: 20px;
@@ -399,8 +401,8 @@ const DropdownContainer = styled.div`
 				return '#707070';
 		}
 	}};
-	width: ${({ status }) => (status === 'PLANNED' ? '70px' : '65px')};
-	height: 10px;
+	width: ${({ status }) => (status === 'PLANNED' ? '90px' : '85px')};
+	height: 20px;
 	border-radius: 10px;
 	padding: 0px 5px;
 	font-size: 12px;
@@ -676,16 +678,12 @@ const ApplyDetail = () => {
 	useEffect(() => {
 		const updateJobState = async () => {
 			if (location.state?.job) {
-		
 				const jobDetails = await fetchJobDetails();
-	
 				if (!jobDetails || jobDetails.updatedAt <= location.state.job.updatedAt) {
-					// 프론트엔드 상태가 더 최신이면 유지
 					setJob(location.state.job);
 					setStatus(location.state.job.status);
 					setApplyDate(location.state.job.applyDate ? new Date(location.state.job.applyDate) : null);
 				} else {
-					// 백엔드 데이터가 최신이면 업데이트
 					setJob(jobDetails);
 					setStatus(jobDetails.status);
 					setApplyDate(jobDetails.applyDate ? new Date(jobDetails.applyDate) : null);
@@ -697,7 +695,6 @@ const ApplyDetail = () => {
 	
 		updateJobState();
 	}, [id]);
-	
 
 	useEffect(() => {
 		if (!job?.endTime) return;
@@ -894,7 +891,7 @@ const ApplyDetail = () => {
 		const minutes = String(localDate.getMinutes()).padStart(2, '0');
 
 		// 'YYYY-MM-DD HH:MM' 형식으로 변환하여 반환
-		return `${year}-${month}-${day} ${hours}:${minutes}`;
+		return `${year}.${month}.${day} ${hours}:${minutes}`;
 	};
 
 	const handleBackClick = () => {
@@ -1073,9 +1070,20 @@ const ApplyDetail = () => {
   )}
 </SubHeader>
 			</Header>
+			{showReviewAdd && (
+	<ReviewDetailAdd
+		recruitId={job?.id}
+		onSave={handleReviewSave}
+		onCancel={handleCancelReviewAdd}
+		fetchData={fetchJobDetails} 
+	/>
+)}
 
 			{job && job.reviews && job.reviews.length > 0 && (
-	job.reviews.map((review, index) => (
+	job.reviews
+	.slice()
+	.sort((a, b) => new Date(b.date) - new Date(a.date))
+	.map((review, index) => (
 		<ReviewList
 			key={index}
 			recruitId={job.id}
@@ -1090,17 +1098,6 @@ const ApplyDetail = () => {
 		/>
 	))
 )}
-
-{showReviewAdd && (
-	<ReviewDetailAdd
-		recruitId={job?.id}
-		onSave={handleReviewSave}
-		onCancel={handleCancelReviewAdd}
-		fetchData={fetchJobDetails} 
-	/>
-)}
-
-
 			<ButtonContainer>
 			<Button 
         onClick={!showReviewAdd && !isEditModalOpen ? handleAddReviewClick : null} 

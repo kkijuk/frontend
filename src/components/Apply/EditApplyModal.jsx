@@ -151,7 +151,7 @@ const Input = styled.input`
 	background: #f5f5f5;
 	font-size: 1em;
 	margin-top: 10px;
-	height: 25px;
+	height: 50px;
 	font-family: 'ExtraLight';
 	font-size: 16px;
 	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -165,9 +165,9 @@ const Input = styled.input`
 `;
 
 const InputDateStart = styled.input`
-	width: 300px;
-	padding: 12px;
-	height: 25px;
+	width: 305px;
+	padding: 13px;
+	height: 50px;
 	margin-bottom: 10px;
 	margin-left: 85px;
 	border: 1px solid #f5f5f5;
@@ -189,9 +189,9 @@ const InputDateStart = styled.input`
 `;
 
 const InputDateEnd = styled.input`
-	width: 300px;
-	height: 25px;
-	padding: 12px;
+	width: 305px;
+	height: 50px;
+	padding: 13px;
 	margin-bottom: 15px;
 	margin-right: 75px;
 	border: 1px solid #f5f5f5;
@@ -368,7 +368,7 @@ const formatDateTimeToLocal = (dateString) => {
 	const hours = String(utcDate.getHours()).padStart(2, '0');
 	const minutes = String(utcDate.getMinutes()).padStart(2, '0');
 
-	return `${year}-${month}-${day}T${hours}:${minutes}`;
+	return `${year}.${month}.${day}T${hours}:${minutes}`;
 };
 
 

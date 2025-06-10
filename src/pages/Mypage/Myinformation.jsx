@@ -24,6 +24,7 @@ const TitleBox = styled.div`
 
 	gap: 10px;
 	margin-bottom: 32px;
+	justify-content: flex-start; /* 왼쪽 정렬 */
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
@@ -114,6 +115,8 @@ const Container = styled.div`
 	align-items: center;
 	justify-content: center;
 	margin-top: 12px;
+	width: 100%;
+	max-width: 464px;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
@@ -318,22 +321,6 @@ const PhoneInput = styled.input`
 	}
 `;*/
 
-const BirthInput = styled.input`
-	display: flex;
-	width: 280px;
-	height: 50px;
-	padding: 16px 20px;
-	align-items: center;
-	gap: 10px;
-	flex-shrink: 0;
-
-	box-sizing: border-box;
-	border: none;
-
-	border-radius: 10px;
-	background: #f5f5f5;
-`;
-
 const PhoneButtonGroup = styled.div`
 	display: flex;
 	gap: 6px;
@@ -513,6 +500,7 @@ const Bottom = styled.div`
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
+		padding: 0 20px;
 	}
 `;
 

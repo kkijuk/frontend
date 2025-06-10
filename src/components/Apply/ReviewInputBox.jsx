@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 const Input = styled.input`
@@ -80,6 +80,14 @@ export default function ReviewInputBox({
 }) {
     
     const maxLength = type === "textarea" ? 1000 : 30;
+    const textareaRef = useRef(null);
+
+useEffect(() => {
+    if (type === 'textarea' && textareaRef.current) {
+        textareaRef.current.style.height = 'auto'; // 초기화
+        textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+}, [value]);
 
     // 글자수 초과 입력 방지
     const handleChange = (e) => {
@@ -89,15 +97,21 @@ export default function ReviewInputBox({
     };
     
     return type === "textarea" ? (
-        <Textarea 
-            height={height} 
-            width={width} 
-            placeholder={placeholderText} 
-            value={value} 
-            onChange={handleChange} 
-            disabled={disabled} // 추가: 서류 후기 비활성화 적용
-            readOnly={disabled} // 추가: 서류 제목 비활성화 적용
-        />
+       <Textarea 
+    ref={textareaRef} //  추가
+    height={height} 
+    width={width} 
+    placeholder={placeholderText} 
+    value={value} 
+    onChange={handleChange} 
+    onInput={() => { //  추가
+        textareaRef.current.style.height = 'auto';
+        textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }}
+    disabled={disabled}
+    readOnly={disabled}
+/>
+
     ) : (
         <Input 
             height={height} 

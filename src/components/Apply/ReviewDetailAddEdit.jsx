@@ -8,7 +8,8 @@ import { deleteReview } from '../../api/Apply/DeleteReview';
 import ReviewDeleteModal from '../../components/Apply/ReviewDeleteModal';
 
 const Box = styled.div`
-	height: 384px;
+	/*height: 142px;*/
+	height: auto;
 	width: 800px;
 	padding: 24px 40px;
 		@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -24,7 +25,8 @@ const Top = styled.div`
 	margin-top: 22px;
 `;
 const Middle = styled.div`
-	height: 142px;
+	/*height: 142px;*/
+	height: auto;
 	width: 800px;
 	margin-top: 18px;
 `;
@@ -32,6 +34,7 @@ const Button = styled.div`
 	height: 50px;
 	display: flex;
 	gap: 15px;
+	margin-top: 20px;
 	margin-bottom: 24px;
 	 @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     justify-content: center;

@@ -17,7 +17,7 @@ const ViewOptions = () => {
 	//(Data) 토글 체크, 현재 선택한 공고, 리스트 조회 상태, 자기소개서 목록
 	const [isChecked, setIsChecked] = useState(location.path !== '/history/list');
 	const [currentApply, setCurrentApply] = useState('master');
-	const [state, setState] = useState(3);
+	const [state, setState] = useState(3); //3: 전체, 0: 작성중, 1: 작성완료, 2: 보관
 	const [recruits, setRecruits] = useState([]);
 
 	//(API) 자기소개서 목록 불러오기
@@ -38,19 +38,32 @@ const ViewOptions = () => {
 	//토글 클릭
 	const handleToggleClick = () => {
 		isChecked ? navigate('/history/list/3') : navigate('/history/master');
-		setIsChecked(!isChecked);
+		// setIsChecked(!isChecked);
 		window.scrollTo(0, 0); // 스크롤을 최상단으로 이동
 	};
 
+	// 현재 선택된 자기소개서
 	useEffect(() => {
 		if (location.pathname === '/history/master') {
 			setCurrentApply('master');
 		} else if (location.pathname.startsWith('/history/others/')) {
 			const match = location.pathname.match(/\/history\/others\/(\d+)/);
 			if (match) {
-				setCurrentApply(match[1]);
-				console.log(match[1]);
+				setCurrentApply(match[1]); //n번 자소서로 이동
+				// console.log(match[1]);
 			}
+		}
+	}, [location.pathname]);
+
+	// location 변경에 따른 toggle 상태 변경
+	useEffect(() => {
+		if(location.pathname.startsWith('/history/list/')) {
+			setIsChecked(false);
+		} else if (
+			location.pathname === '/history/master' ||
+			location.pathname.startsWith('/history/others/')
+		) {
+			setIsChecked(true);
 		}
 	}, [location.pathname]);
 
@@ -123,9 +136,9 @@ const ViewOptions = () => {
 					</>
 				)}
 			</SButtonContainer>
-			<div style={{ position: 'absolute', right: 0, top: 134, display: 'inline-block' }}>
+			<ToggleWrapper>
 				<Toggle checked={isChecked} onChange={handleToggleClick} />
-			</div>
+			</ToggleWrapper>
 			<AddButton 
 				onClick={() => {
 					trackEvent('add_click', {
@@ -177,5 +190,17 @@ const SButton = styled.button`
 	&:first-child {
 		background-color: #e1faed;
 		color: #000000;
+	}
+`;
+
+const ToggleWrapper = styled.div`
+	display: inline-block;
+	position: absolute;
+	right: 20px;
+	top: 90px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		top: 130px;
+		right: 10px;
 	}
 `;

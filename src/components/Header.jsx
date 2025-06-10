@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../assets/logo.png';
@@ -131,9 +131,9 @@ const DropdownMenu = styled.div`
 	border: 1px solid #ccc;
 	border-radius: 10px;
 	box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-	width: 110px;
-	height: 70px;
-	padding: 10px;
+	width: 125px;
+	height: 85px;
+	padding: 8px;
 	z-index: 100;
 
 	display: flex;
@@ -145,7 +145,7 @@ const DropdownMenu = styled.div`
 		color: #000;
 		font-family: Regular;
 		font-size: 16px;
-		padding: 8px 0;
+		padding: 7px 0;
 		width: 100%;
 		text-align: center;
 	}
@@ -200,6 +200,18 @@ export default function Header() {
 		}
 	};
 
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+				setIsDropdownOpen(false);
+			}
+		};
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
+
 	return (
 		<HeaderWrapper>
 			<HeaderStyle>
@@ -225,18 +237,23 @@ export default function Header() {
 								지원관리
 							</li>
 						</ul>
-						<UserProfileButton onClick={handleUserProfileButtonClick}>
-						<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
-  <path d="M15 15C18.4518 15 21.25 12.2018 21.25 8.75C21.25 5.29822 18.4518 2.5 15 2.5C11.5482 2.5 8.75 5.29822 8.75 8.75C8.75 12.2018 11.5482 15 15 15Z" stroke="#707070" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M25.7367 27.5C25.7367 22.6625 20.9242 18.75 14.9992 18.75C9.07421 18.75 4.26172 22.6625 4.26172 27.5" stroke="#707070" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+
+						
+						<div ref={dropdownRef} style={{ position: 'relative' }}>
+							<UserProfileButton onClick={handleUserProfileButtonClick}>
+								<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+									<path d="M15 15C18.4518 15 21.25 12.2018 21.25 8.75C21.25 5.29822 18.4518 2.5 15 2.5C11.5482 2.5 8.75 5.29822 8.75 8.75C8.75 12.2018 11.5482 15 15 15Z" stroke="#707070" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+									<path d="M25.7367 27.5C25.7367 22.6625 20.9242 18.75 14.9992 18.75C9.07421 18.75 4.26172 22.6625 4.26172 27.5" stroke="#707070" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+								</svg>
+							</UserProfileButton>
+
 							{isDropdownOpen && (
-								<DropdownMenu ref={dropdownRef}>
+								<DropdownMenu>
 									<a onClick={() => handleNavigation('/mypage/authentication')}>마이페이지</a>
 									<a onClick={handleLogout}>로그아웃</a>
 								</DropdownMenu>
 							)}
-						</UserProfileButton>
+						</div>
 					</Nav>
 				</NavContainer>
 			</HeaderStyle>

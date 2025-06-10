@@ -1,24 +1,22 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { trackEvent } from '../../utils/ga4';
-import useAuthRedirect from '../../stores/useAuthRedirect';
+import { trackEvent } from '@utils/ga4';
+import useAuthRedirect from '@stores/useAuthRedirect';
 
-import { mycareerMock } from './mock';
-
-import Title from '../../components/Apply/Title';
-import CareerView from '../../components/Mycareer/CareerView';
-import CareerViewYear from '../../components/Mycareer/CareerViewYear';
-import CareerViewCategory from '../../components/Mycareer/CareerViewCategory';
-import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
-import SearchBar from '../../components/Mycareer/shareSearchBar';
-import CareerTimeline from '../../components/Mycareer/CareerTimeline';
-import AddActivityButton from '../../components/Mycareer/AddActivityButton';
-import { useFetchMycareerActivity } from '../../hooks/Mycareer/useFetchMycareerActivity';
-import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import Title from '@components/Apply/Title';
+import CareerView from '@components/Mycareer/CareerView';
+import CareerViewYear from '@components/Mycareer/CareerViewYear';
+import CareerViewCategory from '@components/Mycareer/CareerViewCategory';
+import AddCareerModal from '@components/Modal/AddCareerModal/AddCareerModal';
+import SearchBar from '@components/Mycareer/shareSearchBar';
+import CareerTimeline from '@components/Mycareer/CareerTimeline';
+import AddActivityButton from '@components/Mycareer/AddActivityButton';
+import { useFetchMycareerActivity } from '@hooks/Mycareer/useFetchMycareerActivity';
+import LoadingSpinner from '@components/shared/LoadingSpinner';
 import { Container, BackgroundSection, SearchBox } from './Mycareer.styles';
 
-// 메모이제이션된 컴포넌트 생성
+// 메모이제이션 컴포넌트 생성
 const MemoizedCareerViewYear = React.memo(CareerViewYear);
 const MemoizedCareerViewCategory = React.memo(CareerViewCategory);
 const MemoizedCareerView = React.memo(CareerView);
@@ -30,9 +28,10 @@ export default function Mycareer() {
 
 	const [view, setView] = useState('year');
 	const [showModal, setShowModal] = useState(false);
+	const [refreshKey, setRefreshKey] = useState(0); // fetch 트리거 키
 	const navigate = useNavigate();
 
-	const { data: careers, isLoading, error } = useFetchMycareerActivity(view);
+	const { data: careers, isLoading, error } = useFetchMycareerActivity(view, refreshKey);
 
 	// Mock data
 	// const isLoading = false;
@@ -81,8 +80,9 @@ export default function Mycareer() {
 				<MemoizedCareerTimeline />
 				<MemoizedCareerView view={view} onToggle={handleToggleView} />
 				<MemoizedAddActivityButton onClick={() => setShowModal(true)} data={careers?.data.data} />
-
-				{showModal && <AddCareerModal onClose={handleCloseModal} />}
+				
+				{/* 활동 추가/삭제 성공 시 refreshKey를 증가시켜서 서버 fetch를 트리거 */}
+				{showModal && <AddCareerModal onClose={handleCloseModal} onRefresh={()=>setRefreshKey(prev => prev+1)}/>}
 			</Container>
 
 			<BackgroundSection>

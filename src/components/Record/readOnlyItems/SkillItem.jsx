@@ -47,6 +47,9 @@ const EditButton = styled.button`
 	opacity: 0;
 	padding: 0px 50px 70px 0px;
   z-index: 1000;
+  @media (max-width: ${theme.breakpoints.md}) {
+    opacity: 1;
+  }
 `;
 
 const Container = styled.div`

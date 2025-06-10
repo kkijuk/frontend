@@ -426,12 +426,12 @@ const NextButton = styled.div`
   height: 50px;
   margin-top: 50px;
   border-radius: 10px;
-  background: var(--main-01, #3AAF85);
-    display: flex;
+  background: ${(props) => (props.disabled ? '#BDBDBD' : '#3AAF85')};
+  display: flex;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  color: #FFF;
+  color: ${(props) => (props.disabled ? '#707070' : '#FFFFFF')};
   text-align: center;
   font-family: Regular;
   font-size: 18px;

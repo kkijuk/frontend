@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import AddLicenseForm from '../addForms/AddLicenseForm';
 import { KebabMenu2 } from '../KebabMenu';
 import { theme } from '../../../constants/theme';
+import { formateDateDashToDot } from '@/utils/formateDate';
 
 const LicenseItem = ({ data, isSecondColumn, onSave, onUpdate, onDelete }) => {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -13,7 +14,7 @@ const LicenseItem = ({ data, isSecondColumn, onSave, onUpdate, onDelete }) => {
         <LicenseInfo>
           <LicenseName>{data.licenseName}</LicenseName>
           <LicenseDetails>
-            {data.acquireDate} 
+            {formateDateDashToDot(data.acquireDate)} 
             {data.administer && data.administer !== '' ?  ` ・ ${data.administer}` : ''} 
             {data.licenseNumber && data.licenseNumber !== '' ? ` ・ ${data.licenseNumber}` : ''}
           </LicenseDetails>
@@ -52,6 +53,9 @@ const EditButton = styled.button`
 	opacity: 0;
 	padding: 0px 50px 70px 0px;
   z-index: 1000;
+  @media (max-width: ${theme.breakpoints.md}) {
+    opacity: 1;
+  }
 `;
 
 const Container = styled.div`
@@ -80,7 +84,8 @@ const EditContainer = styled.div`
 	font-family: 'Regular';
   margin-left: ${({ isSecondColumn }) => (isSecondColumn ? '-365px' : '0')};
   @media (max-width: ${theme.breakpoints.md}) {
-    margin-left: 0;
+    position: relative;
+    left: ${({ isSecondColumn }) => (isSecondColumn ? '300px' : '-60px')};
   }
 `
 

@@ -16,7 +16,12 @@ const KebabMenu1 = ({onModalOpen, onDetailOpen}) => {
           {isKebabMenuOpen && (
             <DropDown>
               <MenuItem onClick={onModalOpen}>활동 수정하기</MenuItem>
-              <MenuItem onClick={onDetailOpen}>활동내역 수정하기</MenuItem>
+              <MenuItem onClick={()=>{
+                setIsKebabMenuOpen(false);
+                onDetailOpen();
+              }}>
+                활동내역 수정하기
+              </MenuItem>
             </DropDown>
           )}
         </Container>
@@ -66,6 +71,9 @@ const DropDown = styled.div`
     top: 24px;
     display: flex;
     flex-direction: column;
+    @media (max-width: ${theme.breakpoints.md}) {
+        right: 0px;
+    }
 `
 const MenuItem = styled.div`
     width: 100%;

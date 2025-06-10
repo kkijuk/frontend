@@ -29,6 +29,7 @@ import { trackEvent } from '../../utils/ga4';
 import { isEqual } from 'lodash';
 import { useDebounce } from 'use-debounce';
 import { theme } from '../../constants/theme'; 
+import SvgIcon from '@/components/shared/SvgIcon';
 
 const History = () => {
     useAuthRedirect();
@@ -41,6 +42,7 @@ const History = () => {
 		updateItem,
 		deleteItem,
 		recordId,
+		memberId,
 		addEtcItem,
 		deleteEtcItem,
 		updateEtcItem,
@@ -188,7 +190,7 @@ const History = () => {
 		if(file) {
 			updateUserData(recordId, {
 				profileImageFile: file,
-			})
+			},memberId);
 		}
 	}
 
@@ -197,7 +199,7 @@ const History = () => {
 		if(data.type === 'address'){
 			updateUserData(recordId, {
 				address: data.data,
-			});
+			}, memberId);
 		}
 	};
 
@@ -302,7 +304,9 @@ const History = () => {
 										label: '학력 추가',
 									});
 									toggleAddForm('educations');
-								}}>+</AddButton>
+								}}>
+									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+								</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{openedForms.add.educations && 
@@ -341,7 +345,9 @@ const History = () => {
 										label: '경력 추가',
 									});
 									handleOpenCareerModal("EMP");
-								}}>+</AddButton>
+								}}>
+									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+								</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{employments.length === 0 && 
@@ -374,7 +380,9 @@ const History = () => {
 										label: '활동 및 경험 추가',
 									});
 									handleOpenCareerModal("ACTIVITY");
-								}}>+</AddButton>
+								}}>
+									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+								</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{activitiesAndExperiences.length === 0 && 
@@ -407,7 +415,9 @@ const History = () => {
 										label: '프로젝트 추가',
 									});
 									handleOpenCareerModal("PROJECT");
-								}}>+</AddButton>
+								}}>
+									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+								</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{projects.length === 0 && 
@@ -440,7 +450,9 @@ const History = () => {
 										label: '교육 추가',
 									});
 									handleOpenCareerModal("EDU");
-								}}>+</AddButton>
+								}}>
+									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+								</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{eduCareers.length === 0 && 
@@ -473,7 +485,9 @@ const History = () => {
 										label: '수상 추가',
 									});
 									toggleAddForm('awards');
-								}}>+</AddButton>
+								}}>
+									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+								</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{openedForms.add.awards &&
@@ -511,7 +525,9 @@ const History = () => {
 										label: '자격증/외국어 추가',
 									});
 									toggleAddForm('licenses');
-								}}>+</AddButton>
+								}}>
+									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+								</AddButton>
 							</SectionHeader>
 							<ContentWrapper style={{gap:'50px'}}>
 								<div style={{height: 'auto'}}>
@@ -572,7 +588,9 @@ const History = () => {
 										label: '스킬 추가',
 									});
 									toggleAddForm('skills');
-								}}>+</AddButton>
+								}}>
+									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+								</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
 								{openedForms.add.skills &&
@@ -619,7 +637,9 @@ const History = () => {
 										label: '추가자료 추가',
 									});
 									toggleAddForm('files');
-								}}>+</AddButton>
+								}}>
+									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+								</AddButton>
 							</SectionHeader>
 							<ContentWrapper style={{gap:'50px'}}>
 								{openedForms.add.files &&
@@ -705,10 +725,13 @@ const UpdatedAt = styled.div`
   color: #707070;
   font-family: Regular;
   text-align: right;
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    margin-bottom: 24px;
+  }
 `;
 
 const UserInfoWrapper = styled.div`
-	width: 100%;
 	display:flex;
 	flex-direction:column;
 	margin-left: 40px;
@@ -798,8 +821,8 @@ const ItemList = styled.div`
 `;
 
 const AddButton = styled.div`
-	width: 47px;
-	height: 37px;
+	width: 42px;
+	height: 42px;
 	flex-shrink: 0;
 	border-radius: 10px;
 	border: 1px solid var(--gray-03, #D9D9D9);
@@ -813,7 +836,6 @@ const AddButton = styled.div`
 	justify-content: center;
 	align-items: center;
 	cursor:pointer;
-	padding-bottom:5px;
 `
 
 const Line = styled.div`

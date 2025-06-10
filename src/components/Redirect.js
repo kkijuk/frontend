@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useAuthStore from '../stores/useAuthStore'; 
+import useAuthStore from '../stores/useAuthStore';
 
-const SocialRedirect = ({ provider }) => {
+const SocialRedirect = ({ provider }: { provider: 'kakao' | 'naver' }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const login = useAuthStore((state) => state.login); // zustand의 login 메서드 가져오기
+  const [hasRequested, setHasRequested] = useState(false); 
+  const login = useAuthStore((state) => state.login);
+
   const code = new URL(window.location.href).searchParams.get('code');
   const state = new URL(window.location.href).searchParams.get('state');
   const redirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URI;
 
-  // 토큰 디코딩 함수
-  const decodeToken = (token) => {
+  const decodeToken = (token: string) => {
     try {
       const base64Url = token.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -23,13 +24,17 @@ const SocialRedirect = ({ provider }) => {
       );
       return JSON.parse(jsonPayload);
     } catch (error) {
-      
       return null;
     }
   };
 
   useEffect(() => {
-    if (!code) return;
+    if (!code || hasRequested) {
+      setLoading(false);
+      return;
+    }
+
+    setHasRequested(true); // 재요청 방지
 
     const apiUrl =
       provider === 'kakao'
@@ -38,51 +43,58 @@ const SocialRedirect = ({ provider }) => {
         ? `${process.env.REACT_APP_API_URL}/auth/naver/login?code=${code}&state=${state}`
         : null;
 
-    if (apiUrl) {
-      fetch(apiUrl, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            return response.json().then((err) => {
-              throw new Error(err.message || `HTTP error! status: ${response.status}`);
-            });
-          }
-          return response.json();
-        })
-        .then((data) => {
-          if (data && data.accessToken && data.refreshToken) {
-            const { accessToken, refreshToken } = data;
-            const decodedToken = decodeToken(accessToken);
-            const isProfileComplete = decodedToken?.isProfileComplete || false;
-
-            login(accessToken, refreshToken, isProfileComplete);
-
-            if (isProfileComplete) {
-              navigate('/home');
-            } else {
-              navigate('/signup');
-            }
-          }
-        })
-        .catch((error) => {
-          alert(`${provider} 로그인 처리 중 문제가 발생했습니다: ${error.message}`);
-        });
+    if (!apiUrl) {
+      alert('지원하지 않는 로그인 방식입니다.');
+      setLoading(false);
+      return;
     }
-  }, [code, state, provider, login, navigate]);
+
+    fetch(apiUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((err) => {
+            throw new Error(err.message || `HTTP ${res.status}`);
+          });
+        }
+        return res.json();
+      })
+      .then((data) => {
+        const { accessToken, refreshToken } = data;
+        if (!accessToken || !refreshToken) {
+          throw new Error('토큰이 누락되었습니다.');
+        }
+
+        const decoded = decodeToken(accessToken);
+        const isProfileComplete = decoded?.isProfileComplete || false;
+
+        login(accessToken, refreshToken, isProfileComplete);
+
+         window.history.replaceState({}, document.title, window.location.pathname);
+
+        navigate(isProfileComplete ? '/home' : '/signup');
+      })
+      .catch((err) => {
+        alert(`${provider} 로그인 실패: ${err.message}`);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [code, state, provider, login, navigate, hasRequested]);
 
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <div className="spinner"></div>
+        <div className="spinner">로그인 처리 중...</div>
       </div>
     );
   }
 
-  return null; // 로그인 중 화면 출력 제거
+  return null;
 };
 
 export default SocialRedirect;

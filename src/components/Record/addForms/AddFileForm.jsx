@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { theme } from "../../../constants/theme";
 import FileSearch from "../FileSearch";
 import { trackEvent } from "../../../utils/ga4";
 import { downS3File } from "../../../api/Record/s3File";
-import { theme } from "../../../constants/theme";
+import { BaseFormInput, BaseFormButton } from "../styles/ResumeForm.styles";
 
 const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialData}) => {
   const [formData, setFormData] = useState({
@@ -91,7 +92,6 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                             value={formData.urlTitle}
                             onChange={(e) => handleInputChange("urlTitle", e.target.value)}
                             width = "610px"
-                            // style={{ width: "610px" }}
                             maxLength={20}
                         />
                     ) : (
@@ -144,34 +144,25 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                     )}
                     <ButtonRow>
                     {mode === "edit" ? (
-                      <Button
+                      <BaseFormButton
                         onClick={()=>{
                           onDelete(formData);
                           onClose();
                         }}
-                        style={{
-                          border: "1px solid var(--sub-bu, #FA7C79)",
-                          background: "var(--white, #FFF)",
-                          color: "#FA7C79",
-                        }}
+                        variantType="delete"
                       >
                         삭제
-                      </Button>
+                      </BaseFormButton>
                     ) : (
-                      <Button
+                      <BaseFormButton
                         onClick={onClose}
-                        style={{
-                          border: "1px solid var(--sub-bu, #77AFF2)",
-                          background: "var(--white, #FFF)",
-                          color: "#77AFF2",
-                        }}
+                        variantType="close"
                       >
                         취소
-                      </Button>
+                      </BaseFormButton>
                     )}
                     {mode === "edit" ? (
-                      <Button 
-                        primary 
+                      <BaseFormButton
                         onClick={() => {
                           // 제목 확인
                           if(formData.fileType === "URL" && (!formData.urlTitle || !formData.urlTitle.trim())){
@@ -196,12 +187,12 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                             label: '활동 수정하기',
                           });
                         }}
-                        style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+                        variantType="save"
+                      >
                         저장
-                      </Button>
+                      </BaseFormButton>
                       ) : (
-                      <Button 
-                        primary 
+                      <BaseFormButton
                         onClick={() => {
                           // 제목 확인
                           if(formData.fileType === "URL" && (!formData.urlTitle || !formData.urlTitle.trim())){
@@ -226,9 +217,10 @@ const AddFileForm = ({ mode="add", onClose, onSave, onUpdate, onDelete, initialD
                             label: '추가',
                           });
                         }}
-                        style={{border:'1px solid var(--sub-bu, #3AAF85)', background:'var(--white, #3AAF85)', color: '#FFFFFF'}}>
+                        variantType="create"
+                      >
                         추가
-                      </Button>
+                      </BaseFormButton>
                     )}
                     </ButtonRow>
                 </Row>
@@ -252,16 +244,16 @@ const FirstContainer = styled.div`
 `
 
 const TypeWrapper = styled.div`
-width: 224px;
-height: 45px;
-flex-shrink: 0;
-border-radius: 10px 10px 0px 0px;
-background: var(--gray-06, #F5F5F5);
-position: relative;
+  width: 224px;
+  height: 45px;
+  flex-shrink: 0;
+  border-radius: 10px 10px 0px 0px;
+  background: var(--gray-06, #F5F5F5);
+  position: relative;
 `
 
 const Container = styled.div`
-  width: 610px;
+  width: 650px;
   padding: 20px;
   background: var(--gray-06, #f5f5f5);
   border-radius: 0px 10px 10px 10px;
@@ -316,29 +308,17 @@ const Row = styled.div`
   }
 `;
 
-const Input = styled.input`
-  height: 45px;
-  border-radius: 10px;
-  border: none;
-  background: var(--white, #fff);
-  text-align: left;
-  font-family: Regular;
-  font-size: 16px;
-  font-weight: 400;
-  color: black;
+const Input = styled(BaseFormInput)`
+  width: ${(props) => props.width || "100%"};
   padding-left: 10px;
+  padding-right: 0px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
-  &::placeholder {
-    color: #d9d9d9;
-  }
-
   @media (max-width: ${theme.breakpoints.md}) {
-      width: ${(props) => props.mdWidth || "238px"};
-      height: 17px;
-      padding: 12px 20px;
+    width: 238px;
+    height: 17px;
+    padding: 12px 20px;
   }
 `;
 
@@ -373,29 +353,6 @@ const Button = styled.button`
     justify-content: center;
     align-items: center;
   }
-`;
-
-const DatePickerWrapper = styled.div`
-  position: absolute;
-  z-index: 1000;
-`;
-
-const DatePickerInput = styled.input.attrs({ type: "text" })`
-  height: 45px;
-  width: 135px;
-  border-radius: 10px;
-  background: var(--white, #fff);
-  text-align: center;
-  font-family: Regular;
-  font-size: 16px;
-  font-weight: 400;
-  color: black;
-  border: ${(props) => (props.isActive ? "1px solid var(--gray-02, #707070)" : "none")};
-  cursor: pointer;
-`;
-
-const DatePickerContainer = styled.div`
-	position: relative;
 `;
 
 const InputWrapper = styled.div`

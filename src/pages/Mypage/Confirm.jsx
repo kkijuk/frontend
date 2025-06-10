@@ -52,6 +52,8 @@ const Text = styled.div`
 `;
 
 const EmailBox = styled.div`
+	display: flex;
+	flex-direction: column;
 	max-width: 400px;
 	width: 100%;
 	height: 100%;
