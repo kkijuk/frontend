@@ -298,7 +298,7 @@ const useRecordStore = create((set, get) => ({
 		try {
 			const response = await editCareerSummary(id, payload);
 			console.log('Success-editCareerSummary:', response.data);
-			console.log('category:', get()[category]);
+			// console.log('category:', get()[category]);
 			set((state) => ({
 				[category]: state[category].map((item) =>
 					item.id === id ? { ...item, summary: payload.summary } : item
@@ -439,7 +439,16 @@ const useRecordStore = create((set, get) => ({
 				console.log('oldprofileImage: ', oldProfileImageUrl);
 				// 2-1) 기존 이미지가 있으면 s3에서 먼저 삭제
 				if(oldProfileImageUrl && oldProfileImageUrl !== 'string' && !oldProfileImageUrl.includes('null')) {
-					await deleteS3File({fileTitle: oldProfileImageUrl});
+					try {
+						await deleteS3File({fileTitle: oldProfileImageUrl});
+					} catch (error) {
+						const status = error.response?.status;
+						if (status === 500) {
+							console.warn('기존 프로필 이미지 삭제 중 500 에러 발생, 무시하고 계속 진행', error);
+						} else {
+							throw error;
+						}
+					}
 				}
 				// 2-2) Presigned URL 발급
 				const {keyName, signedURL} = await createPresignedUrl({
