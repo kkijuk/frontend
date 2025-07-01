@@ -6,89 +6,18 @@ import DetailAddEdit from './DetailAddEdit';
 import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 import { formatDate } from '@/utils/formateDate';
 import { theme } from '../../constants/theme';
+import {
+  Box,
+  Title,
+  Contents,
+  Date,
+  TitleDateContainer,
+  Line,
+  SvgIcon,
+  AbilityTagWrapper,
+} from './CareerList.styles';
 
-const Box = styled.div`
-	display: flex;
-	max-width: 720px;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: 16px;
-	padding: 24px 40px;
-	position: relative;
 
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 100%;
-		padding: 12px 15px;
-		box-sizing: border-box;
-	}
-`;
-
-const Title = styled.div`
-	color: var(--black, #000);
-	font-family: Pretendard;
-	font-size: 16px;
-	font-style: normal;
-	font-weight: 700;
-	line-height: normal;
-`;
-
-const Contents = styled.div`
-	color: var(--black, #000);
-	font-family: Pretendard;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: normal;
-
-	p {
-		font-family: regular;
-		margin: 0;
-	}
-`;
-
-const Date = styled.div`
-	color: var(--gray-02, #707070);
-	text-align: right;
-	font-family: Pretendard;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: normal;
-`;
-
-const TitleDateContainer = styled.div`
-	display: flex;
-	width: 100%;
-	justify-content: space-between;
-`;
-
-const Line = styled.div`
-	width: 800px;
-	height: 2px;
-	background: var(--gray-03, #d9d9d9);
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		max-width: 100%;
-	}
-`;
-
-const SvgIcon = styled.svg`
-	width: 20px;
-	height: 20px;
-	position: absolute;
-	bottom: 24px;
-	right: 40px;
-	cursor: pointer;
-`;
-
-const AbilityTagWrapper = styled.div`
-	width: 100%;
-	padding-right: 40px; /* SvgIcon이 위치한 곳 만큼 패딩 줌 */
-	box-sizing: border-box;
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		padding-right: 30px; /* 모바일에선 적절히 줄임 */
-	}
-`;
 
 export default function CareerList({
 	title,
