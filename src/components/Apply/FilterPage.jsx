@@ -423,7 +423,7 @@ const FilterPage = () => {
 </TabContainer>
 
 			<ResultsContainer>
-			<SearchList recruits={recruits} activeTab={activeTab} searchTerm={displayedTerm} isSearchClicked={isSearchClicked} />
+			<SearchList recruits={recruits} activeTab={activeTab} searchTerm={displayedTerm} isSearchClicked={isSearchClicked} onTabChange={(tab) => setActiveTab(tab)} />
 			</ResultsContainer>
 			</Layout> 
 		</Container>
