@@ -343,8 +343,10 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked, onTabCha
                     )}
 
                     {/* 공고 리스트 */}
-                    {recruits.map((recruit) => {
-                        if (recruit.reviews && recruit.reviews.length > 0) return null;
+                    {(activeTab === '전체'
+  ? recruits.filter((recruit) => !recruit.reviews || recruit.reviews.length === 0).slice(0, 3)
+  : recruits.filter((recruit) => !recruit.reviews || recruit.reviews.length === 0)
+).map((recruit) => {
 
                         const formattedStartTime = new Date(recruit.startTime).toLocaleDateString('ko-KR', {
                             year: 'numeric',
@@ -416,19 +418,25 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked, onTabCha
                     )}
 
                                         {/* 후기 리스트 */}
-                                        {recruits.map((recruit) => {
-                        if (!recruit.reviews || recruit.reviews.length === 0) return null;
+                                       {(() => {
+  // ✅ [수정된 부분 #1] 전체 탭일 경우, 공고후기(recruit + reviews 포함)에서 상위 3개만 추출
+  const reviewRecruits =
+    activeTab === '전체'
+      ? recruits.filter((recruit) => recruit.reviews && recruit.reviews.length > 0).slice(0, 3)
+      : recruits.filter((recruit) => recruit.reviews && recruit.reviews.length > 0); // ✅ [원래대로] 공고후기 탭이면 전체 출력
 
-                        const formattedStartTime = new Date(recruit.startTime).toLocaleDateString('ko-KR', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                        });
-                        const formattedEndTime = new Date(recruit.endTime).toLocaleDateString('ko-KR', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                        });
+  // ✅ [수정된 부분 #2] 위에서 추출한 reviewRecruits를 map으로 렌더링
+  return reviewRecruits.map((recruit) => {
+    const formattedStartTime = new Date(recruit.startTime).toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+    const formattedEndTime = new Date(recruit.endTime).toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
 
                         return (
                             <AdItem key={recruit.recruitId}>
@@ -463,7 +471,8 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked, onTabCha
                                 </AdDetails>
                             </AdItem>
                         );
-                    })}
+                    });
+})()}
                 </AdListStyled>
             </ContentSection>
         </BackgroundSection>
