@@ -3,14 +3,14 @@ import styled from 'styled-components';
 
 const StatusItem = styled.div`
 	background-color: #f5f5f5;
-	border-radius: 13px;
+	border-radius: 12px;
 	padding: 9px;
 	margin-right: 24px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 138px;
-	height: 33px;
+	width: 120px;
+	height: 15px;
 	cursor: pointer; 
 
 	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {

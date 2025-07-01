@@ -14,6 +14,7 @@ import rightStarSvg from '../assets/main/rightstar.svg';
 import useAuthRedirect from '../stores/useAuthRedirect';
 import { trackEvent } from '../utils/ga4';
 import { theme } from '../constants/theme';
+import { ROUTES } from '../constants/routes'; 
 
 const PageContainer = styled.div`
   display: flex;
@@ -52,6 +53,8 @@ const CustomFooter = styled.div`
   align-items: center;
   font-size: 16px;
   color: #333;
+  z-index: 10; s
+  position: relative;
 `;
 
 const FooterStyle = styled.div`
@@ -384,7 +387,13 @@ const handleNaverLogin = () => {
 	});
 	window.location.href = naverLoginUrl;
 };
+ const handleServiceAgreeClick = () => {
+        navigate(ROUTES.SERVICE_AGREE); 
+    };
 
+    const handlePrivacyPolicyClick = () => {
+        navigate(ROUTES.PRIVACY_POLICY); 
+    };
   return (
     <PageContainer>
 		
@@ -436,8 +445,8 @@ const handleNaverLogin = () => {
         <FooterStyle>
           <div className="left">
             <div className="links">
-              <span onClick={() => setModal1Open(true)}>서비스 이용약관</span>
-              <span onClick={() => navigate('/agree')}>개인정보 처리방침</span>
+              <span onClick={handleServiceAgreeClick}>서비스 이용약관</span>
+             <span onClick={handlePrivacyPolicyClick}>개인정보 처리방침</span>
             </div>
             <div className="logo">
               <img src={logo} alt="끼적 로고" />
