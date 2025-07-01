@@ -3,21 +3,18 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import './history.css';
-import SubNav from '../../components/Intro/SubNav';
-import Convert from '../../components/Intro/Convert';
-import Toggle from '../../components/Intro/Toggle';
-import ButtonOptions from '../../components/Intro/AddButton.jsx';
 import Alert from '../../components/Intro/Alert';
 import EditApplyModal from '../../components/Intro/EditApplyModal.jsx';
-import { updateRecruit } from '../../api/Apply/RecruitUpdate.js';
-import { getRecruitDetails } from '@/api/Apply/RecruitDetails.js';
 import { trackEvent } from '../../utils/ga4.js';
 import SvgIcon from '../../components/shared/SvgIcon.jsx';
 import { theme } from '../../constants/theme.js';
+import { useReadIntro, useUpdateIntro, useReadRecruitAtIntro, useUpdateRecruitAtIntro } from '@/hooks/Intro/useIntro.js';
 
 const OthersRewrite = () => {
+	// 1. 기본 설정 & 초기값
 	const navigate = useNavigate();
 	const { id } = useParams();
+	const introId = Number(id);
 
 	const [questions, setQuestions] = useState([]);
 	const [contents, setContents] = useState({
@@ -43,67 +40,77 @@ const OthersRewrite = () => {
 	const [showAutoSaveMessage, setShowAutoSaveMessage] = useState(false); // 자동 저장 메시지
 	const [autoSaveTime, setAutoSaveTime] = useState(''); // 자동 저장 시간
 
-	// 글자 수 계산
-	useEffect(() => {
-		setCharCounts(
-			questions.map((question) => 
-				question.content && question.content !== 'string' ? question.content.length : 0
-		));
-	}, [questions]);
 
-	// 자소서 내용 불러오기
 	useEffect(() => {
-		api
-			.get(`/history/intro/detail/${id}`)
-			.then((response) => {
-				console.log(response.data);
-				const Data = response.data.data;
-				// setQuestions(Data.questionList);
-				setQuestions(
-					Data.questionList.map((q, index) => ({
-						...q,
-						number: index + 1,
-					})),
-				);
-				setNextQuestionId(Data.questionList.length + 1);
-				setContents({
-					id: Data.id,
-					recruitId: Data.recruitId,
-					memberId: Data.memberId,
-					recruitTitle: Data.recruitTitle,
-					deadline: Data.deadline,
-					link: Data.link,
-					tags: Data.tags,
-					timeSinceUpdate: Data.timeSinceUpdate,
-					updatedAt: Data.updatedAt,
-				});
-				setIsCompleted(Data.state);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	}, [id]);
+		console.log('isCompleted:', isCompleted);
+	}, [isCompleted]);
 
-	// 공고 정보 불러오기
+	// 2. 서버 통신 
+	// query hooks(useIntro) 연결
+	const { data: introData, isLoading: introLoading } = useReadIntro(introId); // others 자기소개서 조회
+	const { mutate: mutateIntro, isLoading: updatingIntro } = useUpdateIntro(); // others 자기소개서 수정
+
+	const recruitId = introData?.recruitId; 
+	const { data: recruitData, isLoading: recruitAtIntroLoading } = useReadRecruitAtIntro(recruitId); // 자기소개서에 연결된 공고 정보 조회
+	const { mutate: mutateRecruit, isLoading: updatingRecruit } = useUpdateRecruitAtIntro(); // 공고 정보 수정
+
+
+	// 자소서 내용 조회 결과 로컬 state에 저장
 	useEffect(() => {
-		if(!contents.recruitId) return;
+		if (!introData) return;
+		console.log('자기소개서 데이터: ', introData);
+
+		setQuestions(introData.questionList.map((q, index) => ({
+			...q,
+			number: index + 1,
+		})));
+		setNextQuestionId(introData.questionList.length + 1);
+		setContents({
+			id: introData.id,
+			recruitId: introData.recruitId,
+			memberId: introData.memberId,
+			recruitTitle: introData.recruitTitle,
+			deadline: introData.deadline,
+			link: introData.link,
+			tags: introData.tags,
+			timeSinceUpdate: introData.timeSinceUpdate,
+			updatedAt: introData.updatedAt,
+		});
+		setIsCompleted(introData.state);
+	}, [introData]);
+
+	// 공고 정보 조회 결과 로컬 state에 저장
+	useEffect(() => {
+		if(!recruitData) return;
+		console.log('공고 데이터: ', recruitData);
 		
-		getRecruitDetails(contents.recruitId)
-			.then((response) => {
-				console.log('공고 정보: ', response);
-				setContents((prevContents) => ({
-					...prevContents,
-					title: response.title,
-					startTime: response.startTime,
-					endTime: response.endTime,
-				}));
-				setIsCompleted(response.status);
-			})
-			.catch((error) => {
-				console.error('Error fetching recruit details:', error);
-			});
-	}, [contents.recruitId]);
+		setContents((prev) => ({
+			...prev,
+			title: recruitData.title,
+			startTime: recruitData.startTime,
+			endTime: recruitData.endTime,
+		}));
+	}, [recruitData]);
 
+	// 자소서 수정
+	const handleSaveIntro =  () => {
+		const payload = { oneLiner: "oneLiner", questionList: questions, state: isCompleted };
+
+		mutateIntro(
+			{ introId, data: payload },
+			{
+				onSuccess: () => {
+					setAutoSaveTime(new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}));
+					setShowAutoSaveMessage(true);
+					setTimeout(() => {
+						setShowAutoSaveMessage(false);
+					}, 3000);
+				},
+			},
+		);
+	};
+
+	// 자소서 삭제
 	const deleteResume = () => {
 		api
 			.delete(`/history/intro/${id}`)
@@ -117,6 +124,7 @@ const OthersRewrite = () => {
 			});
 	};
 
+	// 작성중 or 작성완료 상태 변경
 	const changeState = () => {
 		api
 			.patch(`/recruit/${contents.recruitId}`, { status: 'unapplied' })
@@ -128,6 +136,55 @@ const OthersRewrite = () => {
 			});
 	};
 
+	// 공고 수정 
+	const handleEditApply = (data) => {
+		// UI 즉시 반영
+		setContents((prevContents) => ({
+			...prevContents,
+			recruitTitle: data.title,
+			deadline: data.endTime,
+			link: data.link,
+			tags: data.tags,
+		}));
+		
+		// 뮤테이션 호출
+		const status = contents.state === 0 ? 'unapplied' : 'planned';
+		const updatedApply = {
+			title: data.title,
+			startTime: data.startTime,
+			endTime: data.endTime,
+			status: status,
+			tags: data.tags,
+			link: data.link,
+		};
+
+		mutateRecruit(
+			{ recruitId: contents.recruitId, introId, data: updatedApply },
+			{
+				onSuccess: () => {
+					console.log('공고 수정 성공');
+					trackEvent('edit_click', {
+						category: 'coverletter',
+						detail: 'edit_recruit',
+						action_type: 'edit',
+						label: '공고 수정',
+					});
+				}
+			},
+		);
+	};
+
+	// 3. 핸들링 함수
+
+	// 글자 수 계산
+	useEffect(() => {
+		setCharCounts(
+			questions.map((question) => 
+				question.content && question.content !== 'string' ? question.content.length : 0
+		));
+	}, [questions]);
+
+	// 입력값 변경 핸들러
 	const handleInputChange = (number, field, event) => {
 		// const value = event.target.value;
 		const textarea = event.target;
@@ -146,44 +203,53 @@ const OthersRewrite = () => {
 		))
 	};
 
-	const submitData = async () => {
-		const Data = {
-			questionList: questions,
-			state: isCompleted,
+	// 질문 추가
+	const handleAddClick = () => {
+		const maxNumber = questions.length 
+			? Math.max(...questions.map((question) => question.number))
+			: -1;
+			
+		const newQuestion = {
+			title: '',
+			content: '',
+			number: maxNumber + 1,
 		};
-		console.log('자소서 수정 데이터: ', Data);
-		console.log('이력서 ID: ', contents.id);
-		try{
-			const response = await api.patch(`/history/intro/${contents.id}`, Data);
-			// console.log(response.data);
 
-			setAutoSaveTime(new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}));
-			setShowAutoSaveMessage(true);
-			setTimeout(() => {
-				setShowAutoSaveMessage(false);
-			}, 3000);
-		} catch (error) {
-			console.log(error);
-		}
+		setQuestions((prevQuestions) => [...prevQuestions, newQuestion]);
+
 	};
 
-	// 자동 저장
+	// 질문 삭제
+	const deleteItem =(number) => {
+		const updatedQuestions = questions.filter((question) => question.number !== number);
+		setQuestions(updatedQuestions);
+		// setCharCounts((prev) => prev.filter((_, i) => questions[i].number !== number));
+		setCharCounts(updatedQuestions.map((question) =>
+			question.content && question.content !== 'string' ? question.content.length : 0
+		))
+	};
+
+	// 자소서 자동 저장
 	useEffect(() => {
 		const interval = setInterval(() => {
-			submitData();
+			handleSaveIntro();
 		}, 60000);
 		return () => clearInterval(interval);
 	}, [questions]); 
 
+	// 자소서 수동 저장
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		try{
-			await submitData();
-		} catch (error) {
-			console.error('Error:', error);
-		} finally {
-			navigate(`/history/others/${id}`);
-		}
+
+		const payload = { oneLiner: "oneLiner", questionList: questions, state: isCompleted };
+		mutateIntro(
+			{ introId, data: payload },
+			{
+				onSuccess: () => {
+					navigate(`/history/others/${id}`);
+				},
+			},
+		);
 	};
 
 	const toggleEditApplyModal = () => {
@@ -192,6 +258,10 @@ const OthersRewrite = () => {
 
 	const toggleModal = () => {
 		setModalOpend(!modalOpend);
+	};
+
+	const toggleDropdown = () => {
+		setDropdownOpend(!dropdownOpend);
 	};
 
 	const handleDropdownClick = (isCompleted) => {
@@ -209,84 +279,7 @@ const OthersRewrite = () => {
 		toggleDropdown();
 	};
 
-	const toggleDropdown = () => {
-		setDropdownOpend(!dropdownOpend);
-	};
-
-	// const handleAddClick = () => {
-	// 	let count = 0;
-	// 	questions.map((question) => {
-	// 		if (!question.subTitle && !question.content) {
-	// 			count++;
-	// 			console.log(question.number);
-	// 		}
-	// 	});
-	// 	if (count < 3) {
-	// 		setQuestions([...questions, { number: nextQuestionId, subTitle: '', content: '' }]);
-	// 		setNextQuestionId((prevId) => prevId + 1);
-	// 	} else showLimiter();
-	// };
-
-	const handleAddClick = () => {
-		const maxNumber = questions.length 
-			? Math.max(...questions.map((question) => question.number))
-			: -1;
-			
-		const newQuestion = {
-			title: '',
-			content: '',
-			number: maxNumber + 1,
-		};
-
-		setQuestions((prevQuestions) => [...prevQuestions, newQuestion]);
-
-	};
-
-	const deleteItem =(number) => {
-		const updatedQuestions = questions.filter((question) => question.number !== number);
-		setQuestions(updatedQuestions);
-		// setCharCounts((prev) => prev.filter((_, i) => questions[i].number !== number));
-		setCharCounts(updatedQuestions.map((question) =>
-			question.content && question.content !== 'string' ? question.content.length : 0
-		))
-	};
-
-	const handleEditApply = async (data) => {
-		try {
-			setContents((prevContents) => ({
-				...prevContents,
-				recruitTitle: data.title,
-				deadline: data.endTime,
-				link: data.link,
-				tags: data.tags,
-			}));
-
-			const status = contents.state === 0 ? 'unapplied' : 'planned';
-
-			const updatedApply = {
-				title: data.title,
-				startTime: data.startTime,
-				endTime: data.endTime,
-				status: status,
-				tags: data.tags,
-				link: data.link,
-			};
-
-			await updateRecruit(contents.recruitId, updatedApply);
-			console.log('Recruit updated successfully');
-		} catch (error) {
-			console.error('Failed to update recruit:', error);
-		}
-	};
-
-	// const showLimiter = () => {
-	// 	setShow(true);
-	// 	setTimeout(() => {
-	// 		setShow(false);
-	// 	}, 3000);
-	// };
-
-
+	// 공고 보러가기 클릭
 	const clickGotoApply = () => {
 		if (contents.link) {
 			window.open(contents.link);
@@ -299,6 +292,8 @@ const OthersRewrite = () => {
 		// }
 	};
 
+
+	// 4. util 함수
 	const isDeadlineWithin7Days =()=>{
 		if(!contents.deadline) return false;
 		const deadlineDate = new Date(contents.deadline);

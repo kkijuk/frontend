@@ -3,56 +3,29 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import './history.css';
-import SubNav from '../../components/Intro/SubNav';
-import Convert from '../../components/Intro/Convert';
-import Toggle from '../../components/Intro/Toggle';
-import ButtonOptions from '../../components/Intro/AddButton';
 import { createMaster, readMaster } from '../../api/Intro/master';
 import { set } from 'react-hook-form';
 import { theme } from '../../constants/theme';
+import { useReadMaster } from '@/hooks/Intro/useMaster';
 
 const Master = () => {
 	const navigate = useNavigate();
 
-	//(Data) 한줄소개, 지원동기및포부 제목 및 내용, 장단점 제목 및 내용, 직무적합성 제목 및 내용
-	// const [questions, setQuestions] = useState({
-	// 	oneLiner: '',
-	// 	motive_title: '',
-	// 	motive: '',
-	// 	prosAndCons_title: '',
-	// 	prosAndCons: '',
-	// 	job_fit_title: '',
-	// 	job_fit: '',
-	// 	updated_at: '',
-	// });
-	const [data, setData] = useState({
-		oneLiner: '',
-		questions:[],
-		updated_at: '',
-		state: 0,
-	});
+	const { data: masterData, isLoading, isError } = useReadMaster();
+	// console.log('masterData:', masterData);
+	const data = {
+		oneLiner: masterData?.oneLiner || '',
+		questions: masterData?.questionList || [],
+		updated_at: masterData?.updated_at || '',
+		state: masterData?.state || 0,
+	}
 	const [showCreateButton, setShowCreateButton] = useState(false); // 자소서 생성 여부
 
-	//(API) 마스터 조회
 	useEffect(() => {
-		const fetchIntro = async () => {
-			try{
-				const response = await readMaster();
-				console.log('내용조회: ', response);
-
-				setData({
-					oneLiner: response.oneLiner,
-					questions: response.questionList,
-					updated_at: response.updatedAt,
-					state: response.state,
-				});
-			} catch (error) {
-				console.error('Error:', error);
-				setShowCreateButton(true);
-			}
+		if (!isLoading && (isError || !masterData)) {
+			setShowCreateButton(true);
 		}
-		fetchIntro();
-	}, []);	
+	}, [isLoading, isError, masterData]);
 
 	const handleCreateIntro = async () => {	
 		try {
@@ -70,7 +43,6 @@ const Master = () => {
 			console.error('Error:', error);
 		}
 	}
-
 
 	return (
 		<BackgroundDiv>

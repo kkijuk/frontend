@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Color } from '@/constants/color';
 
 const Convert = () => {
 	return <Button>문서로 내보내기</Button>;
@@ -12,8 +13,8 @@ const Button = styled.button`
 	height: 35px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	background: var(--main-01, #3aaf85);
-	color: var(--white, #fff);
+	background: ${Color.main01};
+	color: ${Color.white};
 	text-align: center;
 	font-family: Regular;
 	font-size: 18px;

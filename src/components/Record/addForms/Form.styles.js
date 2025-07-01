@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { theme } from '../../../constants/theme';
-import { Color } from '../../../constants/color';
+import { theme } from '@/constants/theme';
+import { Color } from '@/constants/color';
 
 export const BaseFormInput = styled.input`
     height: 45px;
@@ -75,7 +75,7 @@ export const BaseFormButton = styled.button.attrs(props => ({
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+  }   
 `;
 
 

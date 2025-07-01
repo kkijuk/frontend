@@ -14,7 +14,7 @@ import AddLicenseForm from '../../components/Record/addForms/AddLicenseForm';
 import AddFileForm from '../../components/Record/addForms/AddFileForm';
 import EducationItem from '../../components/Record/readOnlyItems/EducationItem';
 // import ActivityItem from '../../components/Record/readOnlyItems/ActivityItem';
-import CareerItem from '../../components/Record/CareerItem';
+import CareerItem from '../../components/Record/readOnlyItems/CareerItem';
 import AwardItem from '../../components/Record/readOnlyItems/AwardItem';
 import LicenseItem from '../../components/Record/readOnlyItems/LicenseItem';
 import SkillItem from '../../components/Record/readOnlyItems/SkillItem';

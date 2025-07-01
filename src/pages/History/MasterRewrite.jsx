@@ -7,9 +7,17 @@ import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import { use } from 'react';
 import { trackEvent } from '../../utils/ga4';
 import { theme } from '../../constants/theme';
+import { useReadMaster, useUpdateMaster } from '@/hooks/Intro/useMaster';
 
 const MasterRewrite = () => {
+	// 1. 기본 설정 & 초기값
 	const navigate = useNavigate();
+
+	const [charCounts, setCharCounts] = useState([]); // 글자 수
+	const [showLoadingSpinner, setShowLoadingSpinner] = useState(false);
+	const [dropdownOpened, setDropdownOpened] = useState(false); // 드롭다운 열림
+	const [showAutoSaveMessage, setShowAutoSaveMessage] = useState(false); // 자동 저장 메시지
+	const [autoSaveTime, setAutoSaveTime] = useState(''); // 자동 저장 시간
 
 	//(Data) 한줄소개, 지원동기및포부 제목 및 내용, 장단점 제목 및 내용, 직무적합성 제목 및 내용
 	const [data, setData] = useState({
@@ -18,9 +26,65 @@ const MasterRewrite = () => {
 		updated_at: '',
 		state: 0,
 	});
-	// 글자 수
-	const [charCounts, setCharCounts] = useState([]);
-	const [showLoadingSpinner, setShowLoadingSpinner] = useState(false);
+
+	// 2. 서버 통신
+	const { data: masterData, isLoading, isError } = useReadMaster();
+	const { mutate: updateMasterData } = useUpdateMaster();
+	console.log('masterData:', masterData);
+
+
+	// masterData 상태 업데이트
+	useEffect(() => {
+		if (masterData) {
+			const updatedQuestions = masterData.questionList.map((q, i) => {
+				let title = q.title;
+				let content = q.content;
+
+				if(!title || title === 'string') {
+					if (i === 0) title = '지원동기 및 포부 [소제목]';
+					else if (i === 1) title = '장단점 [소제목]';
+					else if (i === 2) title = '직무적합성 [소제목]';
+					else title = '';
+				}
+
+				return {
+					...q,
+					title: title,
+					content: content,
+				}
+			})
+
+			setData({
+				oneLiner: masterData.oneLiner,
+				questions: masterData.questionList,
+				updated_at: masterData.updatedAt,
+				state: masterData.state,
+			});
+		}
+	}, [masterData]);	
+
+	//(API) 마스터 수정
+	const submitData = async () => {
+		if (!data) return;
+
+		const dataToSubmit = {
+			oneLiner: data.oneLiner,
+			questionList: data.questions,
+			state: data.state,
+		};
+
+		updateMasterData(dataToSubmit, {
+			onSuccess: () => {
+				setAutoSaveTime(new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}));
+				setShowAutoSaveMessage(true);
+				setTimeout(() => {
+					setShowAutoSaveMessage(false);
+				}, 3000);
+			}
+		});
+	};
+	
+	// 3. 핸들링 함수
 
 	// 글자 수 계산
 	useEffect(() => {
@@ -30,59 +94,7 @@ const MasterRewrite = () => {
 		));
 	}, [data.questions]);
 
-	// 기타 상태
-	const [dropdownOpened, setDropdownOpened] = useState(false); // 드롭다운 열림
-	const [showAutoSaveMessage, setShowAutoSaveMessage] = useState(false); // 자동 저장 메시지
-	const [autoSaveTime, setAutoSaveTime] = useState(''); // 자동 저장 시간
-
-	//1. 마스터 저장 내용 불러오기
-	//(API) 마스터 조회
-	useEffect(() => {
-		const fetchIntro = async () => {
-			try{
-				const response = await readMaster();
-				console.log('내용조회: ', response);
-
-				const updatedQuestions = response.questionList.map((q, i) => {
-					let title = q.title;
-					let content = q.content;
-
-					if(!title || title === 'string') {
-						if (i === 0) title = '지원동기 및 포부 [소제목]';
-						else if (i === 1) title = '장단점 [소제목]';
-						else if (i === 2) title = '직무적합성 [소제목]';
-						else title = '';
-					}
-
-					return {
-						...q,
-						title: title,
-						content: content,
-					}
-				})
-
-				setData({
-					oneLiner: response.oneLiner,
-					questions: response.questionList,
-					updated_at: response.updatedAt,
-					state: response.state,
-				});
-			} catch (error) {
-				console.error('Error:', error);
-			}
-		}
-		fetchIntro();
-	}, []);	
-
-	// 자동 저장
-	useEffect(() => {
-		const interval = setInterval(() => {
-			submitData();
-		}, 60000);
-		return () => clearInterval(interval);
-	}, [data]); 
-
-	// 변경 내용 onChange
+	// 질문-답변 변경 핸들러
 	const handleInputChange = (index, field, event) => {
 		const textarea = event.target;
 		const value = textarea.value;
@@ -95,56 +107,10 @@ const MasterRewrite = () => {
 		);
 		setData({ ...data, questions: updatedQuestions });
 	};
-	// 한줄 소개 onChange
+
+	// 한줄 변경 핸들러
 	const handleOneLinerChange = (field, value) => {
 		setData({ ...data, [field]: value });
-	};
-
-
-
-	//(API) 마스터 수정
-	const submitData = async () => {
-		const dataToSubmit = {
-			oneLiner: data.oneLiner,
-			questionList: data.questions,
-			state: data.state,
-		};
-		console.log('data to submit: ', dataToSubmit);
-
-		try{
-			const response = await updateMaster(dataToSubmit);
-
-			setAutoSaveTime(new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}));
-			setShowAutoSaveMessage(true);
-			setTimeout(() => {
-				setShowAutoSaveMessage(false);
-			}, 3000);
-
-			console.log('마스터 자소서 수정 완료: ', response);
-		} catch (error) {
-			console.error('Error:', error);
-		}
-	};
-
-	// 저장 버튼 클릭 시
-	const handleSubmit = async (event) => {
-		event.preventDefault();
-		setShowLoadingSpinner(true);
-		try{
-			await submitData();
-		} catch (error) {
-			console.error('Error:', error);
-		} finally {
-			setShowLoadingSpinner(false);
-			navigate('/history/master');
-
-			trackEvent('add_confirm', {
-				category: 'coverletter',
-				detail: 'add_coverletter',
-				action_type: 'confirm',
-				label: '저장하고 나가기',
-			});
-		}
 	};
 
 	// 질문 추가
@@ -175,18 +141,41 @@ const MasterRewrite = () => {
 		}));
 	};
 
+	// 마스터 자소서 자동 저장
+	useEffect(() => {
+		const interval = setInterval(() => {
+			submitData();
+		}, 60000);
+		return () => clearInterval(interval);
+	}, [data]); 
+
+	// 마스터 자소서 수동 저장
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+		setShowLoadingSpinner(true);
+		try{
+			await submitData();
+		} catch (error) {
+			console.error('Error:', error);
+		} finally {
+			setShowLoadingSpinner(false);
+			navigate('/history/master');
+
+			trackEvent('add_confirm', {
+				category: 'coverletter',
+				detail: 'add_coverletter',
+				action_type: 'confirm',
+				label: '저장하고 나가기',
+			});
+		}
+	};
+
 	// 드롭다운 클릭
 	const handleDropdownClick = (isCompleted) => {
 		setDropdownOpened(true);
 		setData({ ...data, state: isCompleted });
 		setDropdownOpened(false);
 	};
-
-	// data 변경 시 로그
-	useEffect(() => {
-		console.log('data:', data);
-	}
-	, [data]);
 
 	return (
 		<BackgroundDiv>
