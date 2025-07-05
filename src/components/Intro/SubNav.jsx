@@ -7,6 +7,7 @@ import Title from '../Apply/Title';
 import Layout from '../Layout';
 import { trackEvent } from '../../utils/ga4';
 import { theme } from '../../constants/theme'; 
+import { Color } from '../../constants/color';
 
 const SubNav = () => {
     const navigate = useNavigate();
@@ -96,7 +97,7 @@ const NavItems = styled.li`
     display: inline-block;
     margin-right: 50px;
     cursor: pointer;
-    color: ${({ active }) => (active ? '#000000' : '#E0E0E0')};
+    color: ${({ active }) => (active ? Color.black : Color.gray05)};
 
     @media (max-width: ${theme.breakpoints.md}) {
         font-size: 24px;
@@ -107,7 +108,7 @@ const NavItems = styled.li`
 
 const Linear = styled.div`
     height: 4px;
-    background-color: #f1f1f1;
+    background-color: ${Color.gray05};
     margin-top: 12px;
     margin-bottom: 28px;
     
@@ -142,7 +143,7 @@ const ExportButton = styled.button`
     position: absolute;
     right: 15px;
     top: -50px;
-    color: #fff;
+    color: ${Color.white};
     text-align: center;
     font-family: Regular;
     font-size: 18px;

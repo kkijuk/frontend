@@ -1,61 +1,40 @@
-import api from '../../Axios';
+// import api from '../../Axios';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-// import './history.css';
-import SubNav from '../../components/Intro/SubNav';
-import Convert from '../../components/Intro/Convert';
-import Toggle from '../../components/Intro/Toggle';
-import ButtonOptions from '../../components/Intro/AddButton';
-import { string } from 'prop-types';
-// import { ContentCopySharp } from '@mui/icons-material'
 import { theme } from '../../constants/theme';
+import { Color } from '@/constants/color';
+import { useReadIntro } from '@/hooks/Intro/useIntro';
+import LoadingSpinner from '@/components/shared/LoadingSpinner';
 
 
 const Others = () => {
 	const navigate = useNavigate();
 	const { id } = useParams();
 
-	// (Data) questions: 질문 목록, contents: 질문 외 정보
-	const [questions, setQuestions] = useState([]);
-	const [contents, setContents] = useState({
-		id: 0,
-		recruitId: 0,
-		memberId: 0,
-		recruitTitle: '',
-		deadline: '',
-		link: '',
-		tags: [],
-		timeSinceUpdate: '',
-		updatedAt: '',
-	});
-	const [isCompleted, setIsCompleted] = useState(0); //작성중or작성완료
+	// others 자기소개서 조회
+	const { data: introData, isLoading, isError } = useReadIntro(id);
+	console.log('introData:', introData);
 
-	// 자소서 조회
-	useEffect(() => {
-		api
-			.get(`/history/intro/detail/${id}`)
-			.then((response) => {
-				console.log(response.data);
-				const Data = response.data.data;
-				setQuestions(Data.questionList);
-				setContents({
-					id: Data.id,
-					recruitId: Data.recruitId,
-					memberId: Data.memberId,
-					recruitTitle: Data.recruitTitle,
-					deadline: Data.deadline,
-					link: Data.link,
-					tags: Data.tags,
-					timeSinceUpdate: Data.timeSinceUpdate,
-					updatedAt: Data.updatedAt,
-				});
-				setIsCompleted(Data.state);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	}, []);
+	const questions = introData?.questionList || [];
+	const contents = {
+		id: introData?.id || 0,
+		recruitId: introData?.recruitId || 0,
+		memberId: introData?.memberId || 0,
+		recruitTitle: introData?.recruitTitle || '',
+		deadline: introData?.deadline || '',
+		link: introData?.link || '',
+		tags: introData?.tags || [],
+		timeSinceUpdate: introData?.timeSinceUpdate || '',
+		updatedAt: introData?.updatedAt || '',
+	};
+
+	const isCompleted = introData?.state || 0; // 작성중 or 작성완료
+
+	// 로딩 상태 처리
+	if (isLoading) {
+		return <LoadingSpinner message = '자기소개서를 불러오는 중입니다...'/>;
+	}
 
 	const isQuestionListEmpty = questions.length === 0 || (questions.length === 1 && questions[0].title === 'string' && questions[0].content === 'string');
 
@@ -77,7 +56,7 @@ const Others = () => {
 						{contents.tags.map((tag) => (
 							<Tag 
 								key={tag}
-								style={{ background: '#F5F5F5', color: '#3AAF85', cursor: 'pointer' }}
+								style={{ background: `${Color.gray06}`, color: `${Color.main01}`, cursor: 'pointer' }}
 								onClick={() => navigate(`/filter?query=${tag}`)}
 							>
 								{tag}
@@ -88,7 +67,7 @@ const Others = () => {
 						<p 
 							className="lastUpdated" 
 							style={{ 
-								color: isDeadlineWithin7Days() ? '#FA7C79' : '#707070', 
+								color: isDeadlineWithin7Days() ? `${Color.subRd}` : `${Color.gray02}`, 
 								marginBottom: '8px' 
 						}}>
 							공고 마감 일시 : {contents.deadline}
@@ -158,7 +137,6 @@ const BaseDiv = styled.div`
 	// display:flex;
 	// margin-left:400px;
 	max-width: 820px;
-	// background-color:#D9D9D9
 	position: relative;
 	@media (max-width: ${theme.breakpoints.md}) {
 			width: 100%;
@@ -172,16 +150,16 @@ const SButton = styled.button`
 	font-family: 'Regular';
 	border: none;
 	border-radius: 10px;
-	border-color: #ffffff;
+	border-color: ${Color.white};
 	padding: 6px 16px 6px 16px;
 	gap: 10px;
-	background-color: #f5f5f5;
-	color: #707070;
+	background-color: ${Color.gray06};
+	color: ${Color.gray02};
 	cursor: pointer;
 
 	&: first-child {
-		background-color: #e1faed;
-		color: #000000;
+		background-color: ${Color.main03};
+		color: ${Color.black};
 	}
 `;
 const ContentTitle = styled.div`
@@ -208,7 +186,7 @@ const Tag = styled.div`
 	margin-right: 12px;
 
 	border-radius: 20px;
-	background: #3aaf85;
+	background: ${Color.main01};
 	font-family: 'Regular';
 	font-size: 12px;
 	text-align: center;
@@ -236,23 +214,11 @@ const EditButton = styled.button`
 	height: 60px;
 	border: none;
 	border-radius: 50%;
-	background-color: #b0b0b0;
+	background-color: ${Color.gray03};
 	color: white;
 	position: fixed;
 	bottom: 20px;
 	cursor: pointer;
-`;
-
-const Delete = styled.div`
-	width: 30px;
-	height: 20px;
-	color: #707070;
-	font-size: 15px;
-	font-family: Regular;
-	cursor: pointer;
-	position: absolute;
-	top: 16px;
-	right: 10px;
 `;
 
 const RecruitTitle = styled.h1`

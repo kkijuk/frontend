@@ -1,6 +1,14 @@
 import React, {useState} from "react";
-import styled from "styled-components";
-import { theme } from "../../constants/theme";
+import {
+    NullModeAddress,
+    HoverWrapper,
+    EditButton,
+    EditAddressContainer,
+    AddressInput,
+    ButtonGroup,
+    SaveButton,
+    CancelButton
+} from './Components.styles';
 
 const EmailAndAddress = ({type, userData, onSave}) => {
     const [data, setData] = useState(userData);
@@ -44,107 +52,3 @@ const EmailAndAddress = ({type, userData, onSave}) => {
 
 export default EmailAndAddress;
 
-const NullModeAddress = styled.span`
-  text-decoration: underline;
-  cursor: pointer;
-  color: #999;
-`;
-
-const HoverWrapper = styled.div`
-  display: inline-block;
-  position: relative;
-  @media (max-width: ${theme.breakpoints.md}) {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    justify-content: flex-start;
-  }
-`;
-
-const EditButton = styled.button`
-	width: 40px;
-	height: 19px;
-	border-radius: 7px;
-	color: var(--gray-02, #707070);
-	font-size: 12px;
-	background: var(--gray-06, #F5F5F5);
-	cursor: pointer;
-	border:none;
-	margin-left: 20px;
-	justify-content:center;
-  @media (max-width: ${theme.breakpoints.md}) {
-    margin-left: 0px;
-  }
-`;
-
-const EditAddressContainer = styled.div`
-  display: flex;
-  gap: 8px;
-  @media (max-width: ${theme.breakpoints.md}) {
-    flex-direction: column; /* 두 줄로 배치 */
-  }
-`;
-
-const AddressInput = styled.input`
-  width: 200px;
-  padding: 4px 8px;
-  border:none;
-  border-radius: 7px;
-  color:#000000;  
-  font-size: 14px;
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  background: #F5F5F5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-self: stretch;
-  @media (max-width: ${theme.breakpoints.md}) {
-    width: 250px; 
-  }
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  gap: 10px;
-  @media (max-width: ${theme.breakpoints.md}) {
-    flex-direction: row-reverse; 
-    justify-content: flex-end; 
-  }
-`;
-
-const SaveButton = styled.button`
-	width: 45px;
-	height: 20px;
-	border-radius: 7px;
-	color: var(--gray-02, #FFF);
-	font-size: 12px;
-  font-weight: 400;
-  font-family: 'Regular';
-  line-height: normal;
-	background: var(--gray-06, #3AAF85);
-	cursor: pointer;
-	border:none;
-	display:flex;
-	justify-content:center;
-  align-items:center;
-`;
-
-const CancelButton = styled.button`
-	width: 45px;
-	height: 20px;
-	border-radius: 7px;
-	color: var(--gray-02, #707070);
-	font-size: 12px;
-  font-weight: 400;
-  font-family: 'Regular';
-  line-height: normal;
-	background: var(--gray-06, #FFF);
-	cursor: pointer;
-	border: 1px solid var(--gray-02, #707070);
-	display:flex;
-	justify-content:center;
-  align-items:center;
-`;

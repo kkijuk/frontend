@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import {
+    EditButton,
+    Container,
+    EditContainer,
+    SkillInfo,
+    SkillName
+} from './styles/Skill.styles';
 import AddSkillForm from '../addForms/AddSkillForm';
 import { KebabMenu2 } from '../KebabMenu';
-import { theme } from '../../../constants/theme';
 
 const SkillItem = ({ data, isSecondColumn, onSave, onUpdate, onDelete }) => {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -37,67 +42,4 @@ const SkillItem = ({ data, isSecondColumn, onSave, onUpdate, onDelete }) => {
 
 export default SkillItem;
 
-// Styled Components
-const EditButton = styled.button`
-	border: none;
-	position: absolute;
-	right: 0;
-	top:10px;
-	background-color: transparent;
-	opacity: 0;
-	padding: 0px 50px 70px 0px;
-  z-index: 1000;
-  @media (max-width: ${theme.breakpoints.md}) {
-    opacity: 1;
-  }
-`;
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width:100%;
-  padding: 10px;
-  font-family:Regular;
-  margin-bottom: 20px;
-  position: relative;
-	&:hover ${EditButton} {
-		opacity: 1;
-		cursor: pointer;
-	}
-`;
-
-const EditContainer = styled.div`
-	width: 820px;
-	display: flex;
-	// justify-content: center;
-	align-items: flex-start;
-	// margin-bottom: 45px;
-	font-family: 'Regular';
-  margin-left: ${({ isSecondColumn }) => (isSecondColumn ? '-345px' : '0')};
-  @media (max-width: ${theme.breakpoints.md}) {
-    margin-left: 0px;
-  }
-`
-
-const SkillInfo = styled.div`
-  flex: 1;
-`;
-
-const SkillName = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  @media (max-width: ${theme.breakpoints.md}) {
-    font-size: 16px;
-  };
-`;
-
-// const EditButton = styled.button`
-//   visibility: hidden;
-//   background: var(--sub-bu, #77aff2);
-//   color: var(--white, #FFF);
-//   border: none;
-//   border-radius: 10px;
-//   padding: 5px 10px;
-//   cursor: pointer;
-//   transition: visibility 0.2s ease-in-out;
-// `;

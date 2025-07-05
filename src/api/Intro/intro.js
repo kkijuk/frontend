@@ -26,9 +26,9 @@ const createIntro = async (recruitId, data) => {
 // [others 자기소개서 조회]
 const readIntro = async (introId) => {
 	try {
-		const response = await api.get(`/history/intro/detail/?introId=${introId}`);
+		const response = await api.get(`/history/intro/detail/${introId}`);
 		console.log('Success-readIntro:', response.data);
-		return response.data;
+		return response.data.data;
 	} catch (error) {
 		console.error('Error-readIntro: ', error);
 		if (error.response) {
@@ -47,8 +47,9 @@ const readIntro = async (introId) => {
 
 // [others 자기소개서 수정]
 const updateIntro = async (introId, data) => {
+	console.log('updateIntro called with introId:', introId, 'and data:', data);
 	try {
-		const response = await api.patch(`/history/intro?introId=${introId}`, data);
+		const response = await api.patch(`/history/intro/${introId}`, data);
 		console.log('Success-updateIntro:', response.data);
 		return response.data;
 	} catch (error) {

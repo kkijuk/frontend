@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { theme } from '../../constants/theme';
+import { Color } from '../../constants/color';
 
 const Toggle = ({ checked, onChange }) => {
 	return (
@@ -52,7 +53,7 @@ const ToggleLabel = styled.label`
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: #f5f5f5;
+	background-color: ${Color.gray06};
 	border-radius: 10px;
 	transition: background-color 0.4s;
 `;
@@ -68,11 +69,11 @@ const ToggleText = styled.span`
 	z-index: 2;
 
 	&.individual {
-		color: ${(props) => (!props.checked ? '#000000' : '#D9D9D9')};
+		color: ${(props) => (!props.checked ? Color.black : Color.gray03)};
 	}
 
 	&.list {
-		color: ${(props) => (!props.checked ? '#D9D9D9' : '#000000')};
+		color: ${(props) => (!props.checked ? Color.gray03 : Color.black)};
 	}
 `;
 
@@ -82,7 +83,7 @@ const ToggleSwitch = styled.span`
 	z-index: 1;
 	height: 25px;
 	width: 65px;
-	background-color: white;
+	background-color: ${Color.white};
 	border-radius: 10px;
 	transition: transform 0.4s;
 	left: 8px;
