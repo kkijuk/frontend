@@ -9,6 +9,7 @@ import AddApplyModal from "../../components/Modal/AddApplyModal";
 import LoadingSpinner from "../../components/shared/LoadingSpinner";
 import { trackEvent } from "../../utils/ga4";
 import { theme } from "../../constants/theme";
+import { Color } from "../../constants/color";
 
 const Select = () => {
   const navigate = useNavigate();
@@ -176,7 +177,7 @@ const Select = () => {
                     disabled={!recruit.link}
                     >
                       공고 보러가기
-                      <SvgIcon name="jobLink" size={15} color="var(--gray-02, #707070)"/>
+                      <SvgIcon name="jobLink" size={15} />
                     </JobLinkBox>
                 </ListItem>
               ))}
@@ -230,7 +231,7 @@ const ListBox = styled.div`
   flex-direction: column;
   margin-top:30px;
   border-radius: 12px;
-  border: 1px solid var(--gray-03, #D9D9D9);
+  border: 1px solid ${Color.gray03};
   font-family: Regular;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
   @media (max-width: ${theme.breakpoints.md}) {
@@ -276,7 +277,7 @@ const ColumnHeaderSection = styled.div`
 
 const ColumnHeader = styled.div`
   font-family: Regular;
-  color: var(--gray-02, #707070);
+  color: ${Color.gray02};
   font-size: 14px;
   font-style: normal;
   font-weight: 700;
@@ -310,9 +311,9 @@ const ListItem = styled.div`
   // justify-content: center;
   gap: 32px;
   border-radius: 10px;
-  border: ${(props) => (props.isSelected ? '2px solid #3AAF85' : '2px solid #F5F5F5')};
-  background: var(--gray-06, #F5F5F5);
-  background: ${(props) => (props.isSelected ? '#E1FAED' : '#F5F5F5')};
+  border: ${(props) => (props.isSelected ? `2px solid ${Color.main01}` : `2px solid ${Color.gray06}`)};
+  background: ${Color.gray06};
+  background: ${(props) => (props.isSelected ? Color.main03 : Color.gray06)};
   font-family: Regular;
   cursor: pointer;
 
@@ -332,7 +333,7 @@ const Title = styled.div`
   max-width: 190px;
   height: 17px;
   font-size: 14px;
-  color: var(--gray-02, #707070);
+  color: ${Color.gray02};
 
   text-overflow: ellipsis; /* 넘치는 내용을 말줄임표(...)로 표시 */
 `
@@ -341,7 +342,7 @@ const DueDate = styled.div`
   width: 35px;
   height: 17px;
   font-size: 14px;
-  color: ${(props) => (props.isUrgent ? "#FC5555" : "var(--gray-02, #707070)")};
+  color: ${(props) => (props.isUrgent ? "#FC5555" : Color.gray02)};
   font-family: Bold;
   font-weight: 700;
   // margin-right:50px;
@@ -374,8 +375,8 @@ const Tag = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  background: #FFF;
-  color: #3AAF85;
+  background: ${Color.white};
+  color: ${Color.main01};
   text-align: center;
   font-size:12px;
   white-space: nowrap;
@@ -389,11 +390,11 @@ const JobLinkBox = styled.div`
   gap: 4px;
   justify-content: center;
   align-items: center;
-  background: #FFFFFF;
+  background: ${Color.white};
   border-radius: 12px;
-  border: 2.3px solid var(--gray-03, #707070);
+  border: 2.3px solid ${Color.gray03};
   font-size: 12px;
-  color: var(--gray-02, #707070);
+  color: ${Color.gray02};
   cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
 `
 
@@ -403,12 +404,12 @@ const AddNewJob = styled.div`
   margin-top: 20px;
   flex-shrink: 0;
   border-radius: 10px;
-  border: 1px solid #D9D9D9;
-  background: #FFF;
+  border: 1px solid ${Color.gray04};
+  background: ${Color.white};
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #707070;
+  color: ${Color.gray02};
   text-align: center;
   font-family: Regular;
   font-size: 16px;
@@ -426,12 +427,12 @@ const NextButton = styled.div`
   height: 50px;
   margin-top: 50px;
   border-radius: 10px;
-  background: ${(props) => (props.disabled ? '#BDBDBD' : '#3AAF85')};
+  background: ${(props) => (props.disabled ? Color.gray03 : Color.main01)};
   display: flex;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  color: ${(props) => (props.disabled ? '#707070' : '#FFFFFF')};
+  color: ${(props) => (props.disabled ? Color.gray02 : Color.white)};
   text-align: center;
   font-family: Regular;
   font-size: 18px;

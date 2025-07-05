@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { Color } from '@constants/color';
 
 const Alert = ({ closeModal, deleteResume }) => {
 	const navigate = useNavigate();

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../../constants/theme';
+import { Color } from '@/constants/color'; // Assuming you have a color constants file
 
 const ParticipantType = ({ isTeam, setIsTeam, teamSize, setTeamSize, contribution, setContribution }) => {
 	const handleSelection = (value, event) => {
@@ -156,9 +157,9 @@ const SelectButton = styled.div`
 	display: inline-block;
 	// margin-right: 10px;
 
-	background-color: ${(props) => (props.selected ? '#E1FAED' : '#f5f5f5')};
-	color: ${(props) => (props.selected ? '#3AAF85' : '#707070')};
-	border: ${(props) => (props.selected ? '2px solid #3AAF85' : 'none')};
+	background-color: ${(props) => (props.selected ? Color.main03_30 : Color.gray06)};
+	color: ${(props) => (props.selected ? Color.main01 : Color.gray02)};
+	border: ${(props) => (props.selected ? `2px solid ${Color.main01}` : 'none')};
 	text-align: center;
 
 	@media (max-width: ${theme.breakpoints.md}) {
@@ -192,14 +193,14 @@ const Input = styled.input`
 	height: 50px;
 	padding: 5px;
 	font-size: 14px;
-	border: 1px solid #ccc;
+	border: 1px solid ${Color.gray05};
 	border-radius: 5px;
-	background-color: ${(props) => (props.disabled ? '#f5f5f5' : '#fff')};
-	color: ${(props) => (props.disabled ? '#a9a9a9' : '#000')};
+	background-color: ${(props) => (props.disabled ? Color.gray06 : Color.white)};
+	color: ${(props) => (props.disabled ? Color.gray02 : Color.black)};
 	text-align: center;
 
 	&:focus {
-		border-color: #3aaf85;
+		border-color: ${Color.main01};
 		outline: none;
 	}
 	@media (max-width: ${theme.breakpoints.md}) {
@@ -213,7 +214,7 @@ const ErrorText = styled.div`
 	left: 110px;
 	font-family: 'Regular';
 	font-size: 13px;
-	color: #FF7979;
+	color: ${Color.subRd};
 	margin-left: 10px;
 `
 

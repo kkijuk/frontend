@@ -30,7 +30,7 @@ export default ListItem;
 const ListBox = styled.div`
 	width: 780px;
 	border-radius: 10px;
-	box-shadow: 0px 4px 10px rgba(${Color.black}, 0.15);
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
 	padding: 15px 20px;
 	position: relative;
 	margin: 15px 0px;

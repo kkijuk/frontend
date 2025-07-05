@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../../constants/theme';
+import { Color } from '@/constants/color'; 
 
 // 첫 번째 버전: 교내, 교외만
 const Affiliation1 = ({ onAffiliationChange }) => {
@@ -82,9 +83,9 @@ const SelectButton = styled.div`
 	// justify-content: center;
 	// align-items: center;
 
-	background-color: ${(props) => (props.state ? '#E1FAED' : '#F5F5F5')};
-	color: ${(props) => (props.state ? '#3AAF85' : '#707070')};
-	border: ${(props) => (props.state ? '2px solid #3AAF85' : 'none')};
+	background-color: ${(props) => (props.state ? Color.main03_30 : Color.gray06)};
+	color: ${(props) => (props.state ? Color.main01 : Color.gray02 )};
+	border: ${(props) => (props.state ? `2px solid ${Color.main01}` : 'none')};
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		width: 25px;

@@ -8,8 +8,8 @@ const useAuthStore = create((set) => ({
 
 	// 초기 상태 복원
 	restoreState: () => {
-		const token = localStorage.getItem('token') || 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzOTA2OTA1MTk3IiwiaWF0IjoxNzUxMjkyNzQ0LCJleHAiOjE3NTEyOTYzNDQsImlzUHJvZmlsZUNvbXBsZXRlIjp0cnVlfQ.T0B4wvrfKKxlDk9Xf8YfuWfmzVahR9oxVUVaXQI9P7U';
-		const refreshToken = localStorage.getItem('refreshToken') || 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzOTA2OTA1MTk3IiwianRpIjoiZTEzNWUzOTgtMDQyYy00OTU4LWJlMjMtYWVhOWU3YjBhOTBlIiwiaWF0IjoxNzUxMjkyNzQ0LCJleHAiOjE3NTEzNzkxNDR9.2AXoy7w3J0VCaYuw8IQZf9KClr9wz4rvwpzkNBW25E4';
+		const token = localStorage.getItem('token');
+		const refreshToken = localStorage.getItem('refreshToken');
 		const isProfileComplete = localStorage.getItem('isProfileComplete') === 'true';
 
 		set({

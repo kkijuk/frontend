@@ -8,6 +8,7 @@ import EditApplyModal from '../../components/Intro/EditApplyModal.jsx';
 import { trackEvent } from '../../utils/ga4.js';
 import SvgIcon from '../../components/shared/SvgIcon.jsx';
 import { theme } from '../../constants/theme.js';
+import { Color } from '../../constants/color.js';
 import { useReadIntro, useUpdateIntro, useReadRecruitAtIntro, useUpdateRecruitAtIntro } from '@/hooks/Intro/useIntro.js';
 
 const OthersRewrite = () => {
@@ -319,7 +320,7 @@ const OthersRewrite = () => {
 								</Dropdown>
 							)}
 							{contents.tags.map((tag) => (
-								<Tag key={tag} style={{ background: '#F5F5F5', color: '#3AAF85' }}>
+								<Tag key={tag} style={{ background: `${Color.gray06}`, color: `${Color.main01}` }}>
 									{tag}
 								</Tag>
 							))}
@@ -345,7 +346,7 @@ const OthersRewrite = () => {
 								className="lastUpdated"
 								style={{ 
 									display: 'inline-block', 
-									color: isDeadlineWithin7Days() ? '#FA7C79' : '#707070',
+									color: isDeadlineWithin7Days() ? `${Color.subRd}` : `${Color.gray02}`,
 									margin: '0 20px 8px 0px', 
 									textAlign: 'left' }}
 							>
@@ -369,7 +370,7 @@ const OthersRewrite = () => {
 								disabled = {!contents.link}
 							>
 								공고 보러가기
-								<SvgIcon name="jobLink" size={15} color="var(--gray-02, #707070)"/>
+								<SvgIcon name="jobLink" size={15}/>
 							</JobLinkBox>
 					</IntroInfoWrapper>
 					<svg
@@ -412,7 +413,7 @@ const OthersRewrite = () => {
 									<Delete
 										isDeleteButton = {false}
 										style={{
-											color: '#707070',
+											color: `${Color.gray02}`,
 											fontSize: '24px',
 											lineHeight: 'normal',
 											cursor: 'default',
@@ -464,24 +465,24 @@ const OthersRewrite = () => {
 						onClick={toggleModal}
 						style={{
 							width: '160px',
-							border: '1.5px solid #FF7979',
+							border: `1.5px solid ${Color.subRd}`,
 							borderRadius: '10px',
-							background: '#FFF',
-							color: 'red',
+							background: `${Color.white}`,
+							color: `${Color.error}`,
 						}}
 					>
 						삭제
 					</Button>
 					<div style={{display: 'flex', flexDirection:'column', alignItems: 'center', position: 'relative'}}>
 						{showAutoSaveMessage && (
-							<p style={{ fontFamily: 'pretendard', fontSize: '14px', color: '#707070', marginBottom: '10px', position:'absolute', top:'-40px' }}>
+							<p style={{ fontFamily: 'pretendard', fontSize: '14px', color: `${Color.gray02}`, marginBottom: '10px', position:'absolute', top:'-40px' }}>
 								자동 저장을 완료했습니다. {autoSaveTime}
 							</p>
 						)}
 						
 						<Button
 							onClick={handleSubmit}
-							style={{ width: '185px', borderRadius: '10px', background: '#3AAF85', color: '#FFF' }}
+							style={{ width: '185px', borderRadius: '10px', background: `${Color.main01}`, color: `${Color.white}` }}
 						>
 							저장하고 나가기
 						</Button>
@@ -572,7 +573,7 @@ const Tag = styled.div`
 	gap: 10px;
 	flex-shrink: 0;
 	border-radius: 20px;
-	background: #3aaf85;
+	background: ${Color.main01};
 	font-family: Regular;
 	font-size: 12px;
 	text-align: center;
@@ -602,7 +603,7 @@ const LastUpdatedDate = styled.div`
 
 const Linear = styled.div`
 	height: 4px;
-	background-color: #f1f1f1;
+	background-color: ${Color.gray06};
 	margin-top: 12px;
 	margin-bottom: 20px;
 
@@ -619,9 +620,9 @@ const InputTitle = styled.textarea`
 	flex-shrink: 0;
 	border: none;
 	border-radius: 10px;
-	background: var(--gray-06, #f5f5f5);
+	background: ${Color.gray06};
 	padding: ${({ isTitle }) => (isTitle === true ? '20px 20px 20px 36px' : '20px 20px')};
-	color: var(--gray-02, #707070);
+	color: ${Color.gray02};
 	font-family: Regular;
 	font-size: 16px;
 	font-weight: 400;
@@ -647,10 +648,10 @@ const AddButton = styled.button`
 	height: 50px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	border: 1px solid var(--gray-03, #d9d9d9);
+	border: 1px solid ${Color.gray03};
 	text-align: center;
-	background: #fff;
-	color: #d9d9d9;
+	background: ${Color.white};
+	color: ${Color.gray04};
 	font-size: 30px;
 	cursor: pointer;
 	@media (max-width: ${theme.breakpoints.md}) {
@@ -675,14 +676,14 @@ const Dropdown = styled.div`
 	height: 70px;
 	flex-shrink: 0;
 	border-radius: 13px;
-	border: 1px solid var(--gray-02, #707070);
-	background: #fff;
+	border: 1px solid ${Color.gray02};
+	background: ${Color.white};
 	position: absolute;
 	top: 23px;
 `;
 
 const DropdownItem = styled.p`
-	color: var(--gray-01, #424242);
+	color: ${Color.gray01};
 	text-align: center;
 	font-family: Regular;
 	font-size: 13px;
@@ -693,7 +694,7 @@ const DropdownItem = styled.p`
 const Limiter = styled.div`
 	width: 200px;
 	height: 80px;
-	background-color: RGBA(0, 0, 0, 0.7);
+	background-color: rgba(0, 0, 0, 0.7);
 	color: white;
 	font-family: Regular;
 	font-size: 16px;
@@ -710,7 +711,7 @@ const Limiter = styled.div`
 const Delete = styled.div`
 	width: 30px;
 	height: 20px;
-	color: #707070;
+	color: ${Color.gray02};
 	font-size: 15px;
 	font-family: Regular;
 	cursor: pointer;
@@ -741,13 +742,13 @@ const CharCount = styled.div`
 	right: 0px;
 	font-family: Regular;
 	font-size: 16px;
-	color: #707070;
+	color: ${Color.gray02};
 	width: 780px;
 	height: 25px;
 	flex-shrink: 0;
 	border: none;
 	border-radius: 0px 0px 10px 10px;
-	background: var(--gray-06, #f5f5f5);
+	background: ${Color.gray06};
 	padding: 0px 20px;
 	line-height: normal;
 	white-space: pre-wrap;
@@ -762,10 +763,10 @@ const JobLinkBox = styled.div`
   gap: 4px;
   justify-content: center;
   align-items: center;
-  background: #FFFFFF;
+  background: ${Color.white};
   border-radius: 12px;
-  border: 2.3px solid var(--gray-03, #707070);
+  border: 2.3px solid ${Color.gray03};
   font-size: 12px;
-  color: var(--gray-02, #707070);
+  color: ${Color.gray02};
   cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
 `;

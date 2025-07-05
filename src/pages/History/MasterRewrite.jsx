@@ -7,6 +7,7 @@ import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import { use } from 'react';
 import { trackEvent } from '../../utils/ga4';
 import { theme } from '../../constants/theme';
+import { Color } from '@/constants/color';
 import { useReadMaster, useUpdateMaster } from '@/hooks/Intro/useMaster';
 
 const MasterRewrite = () => {
@@ -232,7 +233,7 @@ const MasterRewrite = () => {
 									<Delete
 										isDeleteButton = {false}
 										style={{ 
-											color: '#707070',
+											color: `${Color.gray02}`,
 											fontSize: '24px',
 											cursor: 'default',
 										}}>
@@ -273,13 +274,13 @@ const MasterRewrite = () => {
 				<div style={{display: 'flex', justifyContent: 'flex-end'}}>
 					<div style={{width: '100%', display: 'flex', flexDirection:'column', alignItems: 'center', position: 'relative'}}>
 						{showAutoSaveMessage && (
-							<p style={{ fontFamily: 'pretendard', fontSize: '14px', color: '#707070', marginBottom: '10px', position:'absolute', top:'-40px' }}>
+							<p style={{ fontFamily: 'pretendard', fontSize: '14px', color: `${Color.gray02}`, marginBottom: '10px', position:'absolute', top:'-40px' }}>
 								자동 저장을 완료했습니다. {autoSaveTime}
 							</p>
 						)}
 						<Button
 							onClick={handleSubmit}
-							style={{ borderRadius: '10px', background: '#3AAF85', color: '#FFF' }}
+							style={{ borderRadius: '10px', background: `${Color.main01}`, color: `${Color.white}` }}
 						>
 							저장하고 나가기
 						</Button>
@@ -309,7 +310,6 @@ const BaseDiv = styled.div`
 	// display:flex;
 	// margin-left:400px;
 	max-width: 820px;
-	// background-color:#D9D9D9
 	position: relative;
 
 	@media (max-width: ${theme.breakpoints.md}) {
@@ -359,9 +359,9 @@ const InputTitle = styled.textarea`
 	flex-shrink: 0;
 	border: none;
 	border-radius: 10px;
-	background: var(--gray-06, #f5f5f5);
+	background: ${Color.gray06};
 	padding: ${({ isTitle }) => (isTitle === true ? '20px 20px 20px 36px' : '20px 20px')};
-	color: var(--gray-02, #707070);
+	color: ${Color.gray02};
 	font-family: Regular;
 	font-size: 16px;
 	font-weight: 400;
@@ -385,7 +385,7 @@ const InputTitle = styled.textarea`
 const Linear = styled.div`
 	width: 820px;
 	height: 4px;
-	background-color: #f1f1f1;
+	background-color: ${Color.gray06};
 	margin-top: 12px;
 	margin-bottom: 20px;
 	@media (max-width: ${theme.breakpoints.md}) {
@@ -410,10 +410,10 @@ const AddButton = styled.button`
 	height: 50px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	border: 1px solid var(--gray-03, #d9d9d9);
+	border: 1px solid ${Color.gray03};
 	text-align: center;
-	background: #fff;
-	color: #d9d9d9;
+	background: ${Color.white};
+	color: ${Color.gray04};
 	font-size: 30px;
 	cursor: pointer;
 	@media (max-width: ${theme.breakpoints.md}) {
@@ -431,7 +431,7 @@ const Tag = styled.div`
 	flex-shrink: 0;
 	margin-right: 12px;
 	border-radius: 20px;
-	background: #3aaf85;
+	background: ${Color.main01};
 	font-family: Regular;
 	font-size: 12px;
 	text-align: center;
@@ -444,8 +444,8 @@ const Dropdown = styled.div`
 	height: 70px;
 	flex-shrink: 0;
 	border-radius: 13px;
-	border: 1px solid var(--gray-02, #707070);
-	background: #fff;
+	border: 1px solid ${Color.gray02};
+	background: ${Color.white};
 	position: absolute;
 	top: 23px;
 	margin-top: 20px;
@@ -453,7 +453,7 @@ const Dropdown = styled.div`
 `;
 
 const DropdownItem = styled.p`
-	color: var(--gray-01, #424242);
+	color: ${Color.gray01};
 	text-align: center;
 	font-family: Regular;
 	font-size: 13px;
@@ -464,7 +464,7 @@ const DropdownItem = styled.p`
 const Delete = styled.div`
 	width: 30px;
 	height: 20px;
-	color: #707070;
+	color: ${Color.gray02};
 	font-size: 15px;
 	font-family: Regular;
 	cursor: pointer;
@@ -493,13 +493,13 @@ const CharCount = styled.div`
 	right: 0px;
 	font-family: Regular;
 	font-size: 16px;
-	color: #707070;
+	color: ${Color.gray02};
 	width: 780px;
 	height: 25px;
 	flex-shrink: 0;
 	border: none;
 	border-radius: 0px 0px 10px 10px;
-	background: var(--gray-06, #f5f5f5);
+	background: ${Color.gray06};
 	padding: 0px 20px;
 	line-height: normal;
 	white-space: pre-wrap;

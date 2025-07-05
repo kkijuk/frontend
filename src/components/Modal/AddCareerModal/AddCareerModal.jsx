@@ -17,6 +17,7 @@ import moment from 'moment'; // moment 라이브러리 임포트(세연)
 import DeletePopup from './DeletePopup';
 import { trackEvent } from '../../../utils/ga4';
 import { theme } from '../../../constants/theme';
+import { Color } from '../../../constants/color';
 
 const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 	const navigate = useNavigate();
@@ -44,13 +45,13 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 		EDU: 'eduCareers',
 	}
 	const categoryColors = {
-		1: '#FCC400',
-		2: '#77AFF2',
-		3: '#C48DEF',
-		4: '#78D333',
-		5: '#FA7C79',
-		6: '#F99538',
-		7: '#707070',
+		1: Color.subYe,
+		2: Color.subBu,
+		3: Color.subPu,
+		4: Color.subGn,
+		5: Color.subRd,
+		6: Color.subOg,
+		7: Color.gray02,
 	};
 
 	const store = useRecordStore();
@@ -241,7 +242,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -259,7 +260,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
 									동아리의 정식 명칭을 작성해주세요.
 								</span>
 							</label>
@@ -327,7 +328,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -344,7 +345,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
 									대외활동의 정식 명칭을 작성해주세요.
 								</span>
 							</label>
@@ -422,7 +423,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -439,7 +440,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
 									공모전/대회의 정식 명칭을 작성해주세요.
 								</span>
 							</label>
@@ -506,7 +507,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -523,7 +524,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
 									프로젝트의 이름을 작성해주세요.
 								</span>
 							</label>
@@ -606,7 +607,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						<FormItem>
 							<label>
 								근무처 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
 									근무한 곳의 이름을 작성해주세요.
 								</span>
 							</label>
@@ -622,7 +623,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
 									경력의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -685,7 +686,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -702,7 +703,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
 									교육의 정식 명칭을 작성해주세요.
 								</span>
 							</label>
@@ -774,7 +775,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -791,7 +792,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						<FormItem spanTwoColumns>
 							<label>
 								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: '#3AAF85', fontSize: '14px', marginLeft: '10px' }}>
+								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
 									활동의 정식 명칭을 작성해주세요.
 								</span>
 							</label>
@@ -1148,7 +1149,7 @@ export default AddCareerModal;
 // Modal 전체 레이아웃
 const ModalForm = styled.form`
 	border-radius: 10px;
-	background: #fff;
+	background: ${Color.white};
 	display: grid;
 	grid-template-columns: repeat(2, 1fr); /* 두 개의 열 */
 	grid-gap: 20px; /* 요소들 간의 간격 */
@@ -1205,7 +1206,7 @@ const FormItem = styled.div`
 		font-family: 'Regular';
 		border: none;
 		border-radius: 10px;
-		background: #f5f5f5;
+		background: ${Color.gray06};
 		// width: 100%;
 		@media (max-width: ${theme.breakpoints.md}) {
 			width: ${(props) => (props.isPeriod ? '113px' : '310px')};
@@ -1243,8 +1244,8 @@ const CategoryButton = styled.button`
 	cursor: pointer;
 	border: none;
 
-	background-color: ${(props) => (props.isSelected ? props.bgColor : '#F5F5F5')};
-	color: ${(props) => (props.isSelected ? '#FFF' : '#707070')};
+	background-color: ${(props) => (props.isSelected ? props.bgColor : Color.gray06)};
+	color: ${(props) => (props.isSelected ? Color.white : Color.gray02)};
 
 	&:focus {
 		outline: none;
@@ -1272,7 +1273,7 @@ const ModalContainer = styled.div`
 	transform: translate(-50%, -50%);
 	width: 580px;
 	max-width: 90%;
-	background-color: #fff;
+	background-color: ${Color.white};
 	border-radius: 10px;
 	padding: 40px 120px;
 	z-index: 1000;
@@ -1298,7 +1299,7 @@ const ModalContainer = styled.div`
 const SaveButton = styled.button`
 	width: 580px;
 	height: 50px;
-	background-color: #3aaf85;
+	background-color: ${Color.main01};
 	border: none;
 	border-radius: 10px;
 	color: white;
@@ -1317,10 +1318,10 @@ const SaveButton = styled.button`
 const DeleteButton = styled.button`
 	width: 140px;
 	height: 50px;
-	background-color: #fff;
+	background-color: ${Color.white};
 	border-radius: 10px;
-	border: 1.5px solid var(--sub-rd, #fa7c79);
-	color: #fa7c79;
+	border: 1.5px solid ${Color.subRd};
+	color: ${Color.subRd};
 	cursor: pointer;
 	display: flex;
 	justify-content: center;
@@ -1359,7 +1360,7 @@ const CloseButton = styled.button`
 	font-size: 24px;
 	font-weight: bold;
 	cursor: pointer;
-	color: #999999;
+	color: ${Color.gray03};
 	@media (max-width: ${theme.breakpoints.md}) {
 		position: relative;
 		// top: -100px;
@@ -1374,6 +1375,6 @@ const ErrorText = styled.div`
 	top: 80px;
 	font-family: 'Regular';
 	font-size: 13px;
-	color: #ff7979;
+	color: ${Color.error};
 	margin-left: 10px;
 `;

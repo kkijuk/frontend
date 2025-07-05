@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from '../../constants/theme';
+import { Color } from '@/constants/color';
 import { useReadIntro } from '@/hooks/Intro/useIntro';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 
@@ -55,7 +56,7 @@ const Others = () => {
 						{contents.tags.map((tag) => (
 							<Tag 
 								key={tag}
-								style={{ background: '#F5F5F5', color: '#3AAF85', cursor: 'pointer' }}
+								style={{ background: `${Color.gray06}`, color: `${Color.main01}`, cursor: 'pointer' }}
 								onClick={() => navigate(`/filter?query=${tag}`)}
 							>
 								{tag}
@@ -66,7 +67,7 @@ const Others = () => {
 						<p 
 							className="lastUpdated" 
 							style={{ 
-								color: isDeadlineWithin7Days() ? '#FA7C79' : '#707070', 
+								color: isDeadlineWithin7Days() ? `${Color.subRd}` : `${Color.gray02}`, 
 								marginBottom: '8px' 
 						}}>
 							공고 마감 일시 : {contents.deadline}
@@ -136,7 +137,6 @@ const BaseDiv = styled.div`
 	// display:flex;
 	// margin-left:400px;
 	max-width: 820px;
-	// background-color:#D9D9D9
 	position: relative;
 	@media (max-width: ${theme.breakpoints.md}) {
 			width: 100%;
@@ -150,16 +150,16 @@ const SButton = styled.button`
 	font-family: 'Regular';
 	border: none;
 	border-radius: 10px;
-	border-color: #ffffff;
+	border-color: ${Color.white};
 	padding: 6px 16px 6px 16px;
 	gap: 10px;
-	background-color: #f5f5f5;
-	color: #707070;
+	background-color: ${Color.gray06};
+	color: ${Color.gray02};
 	cursor: pointer;
 
 	&: first-child {
-		background-color: #e1faed;
-		color: #000000;
+		background-color: ${Color.main03};
+		color: ${Color.black};
 	}
 `;
 const ContentTitle = styled.div`
@@ -186,7 +186,7 @@ const Tag = styled.div`
 	margin-right: 12px;
 
 	border-radius: 20px;
-	background: #3aaf85;
+	background: ${Color.main01};
 	font-family: 'Regular';
 	font-size: 12px;
 	text-align: center;
@@ -214,23 +214,11 @@ const EditButton = styled.button`
 	height: 60px;
 	border: none;
 	border-radius: 50%;
-	background-color: #b0b0b0;
+	background-color: ${Color.gray03};
 	color: white;
 	position: fixed;
 	bottom: 20px;
 	cursor: pointer;
-`;
-
-const Delete = styled.div`
-	width: 30px;
-	height: 20px;
-	color: #707070;
-	font-size: 15px;
-	font-family: Regular;
-	cursor: pointer;
-	position: absolute;
-	top: 16px;
-	right: 10px;
 `;
 
 const RecruitTitle = styled.h1`
