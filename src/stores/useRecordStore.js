@@ -4,13 +4,10 @@ import { createEducation, updateEducation, deleteEducation } from '../api/Record
 import { createLicense, updateLicense, deleteLicense } from '../api/Record/license.js'; // default export
 import { createSkill, updateSkill, deleteSkill } from '../api/Record/skill.js';
 import { readRecord } from '../api/Record/record.js'; // default export
-import { createCareer } from '../api/Mycareer/Career.js';
-import * as CareerEditAPI from '../api/Mycareer/CareerEdit.js';
-import { CareerEdit, CareerDelete } from '../api/Mycareer/CareerEdit.js';
 import { createPresignedUrl, saveKeyName, deleteS3File, uploadFileToS3, changeFileTitle } from '../api/Record/s3File.js';
 import { addURL, deleteURL } from '../api/Record/url.js';
-import { updateRecord } from '../api/Record/record.js';
 import { updateUserData } from '../api/Record/user.js';
+import { editCareerSummary } from '@/api/Mycareer/Career.js';
 
 // 기존 코드 유지
 const useRecordStore = create((set, get) => ({
@@ -297,6 +294,21 @@ const useRecordStore = create((set, get) => ({
 		}
 	},
 
+	editCareerSummary: async (id, payload, category) => {
+		try {
+			const response = await editCareerSummary(id, payload);
+			console.log('Success-editCareerSummary:', response.data);
+			// console.log('category:', get()[category]);
+			set((state) => ({
+				[category]: state[category].map((item) =>
+					item.id === id ? { ...item, summary: payload.summary } : item
+				),
+			}));
+		} catch (error) {
+			console.error('Error-editCareerSummary:', error);
+		}
+	},
+
 	// 기타 항목 추가
 	addEtcItem: async(data) => {
 		try{
@@ -426,8 +438,17 @@ const useRecordStore = create((set, get) => ({
 				// await deleteS3File({fileTitle: `profileImage_${recordId}`});
 				console.log('oldprofileImage: ', oldProfileImageUrl);
 				// 2-1) 기존 이미지가 있으면 s3에서 먼저 삭제
-				if(oldProfileImageUrl && oldProfileImageUrl !== 'string'){
-					await deleteS3File({fileTitle: oldProfileImageUrl});
+				if(oldProfileImageUrl && oldProfileImageUrl !== 'string' && !oldProfileImageUrl.includes('null')) {
+					try {
+						await deleteS3File({fileTitle: oldProfileImageUrl});
+					} catch (error) {
+						const status = error.response?.status;
+						if (status === 500) {
+							console.warn('기존 프로필 이미지 삭제 중 500 에러 발생, 무시하고 계속 진행', error);
+						} else {
+							throw error;
+						}
+					}
 				}
 				// 2-2) Presigned URL 발급
 				const {keyName, signedURL} = await createPresignedUrl({

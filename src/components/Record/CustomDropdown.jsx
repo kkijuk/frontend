@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { theme } from "../../constants/theme";
+import { Color } from "@/constants/color";
 
 const CustomDropdown = ({ options, placeholder, value, onChange, isOpen, onToggle, width = "135px" }) => {
   const handleOptionClick = (option) => {
@@ -44,15 +45,15 @@ const DropdownContainer = styled.div`
 const DropdownHeader = styled.div`
   height: 45px;
   border-radius: 10px;
-  border: ${(props) => (props.isActive ? "1px solid var(--gray-02, #707070)" : "none")};
-  background: var(--white, #fff);
+  border: ${(props) => (props.isActive ? `1px solid ${Color.gray02}` : "none")};
+  background: ${Color.white};
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 10px;
   font-size: 16px;
   font-weight: 400;
-  color: ${(props) => (props.children === "학력구분" || props.children === "학력상태" ? "#d9d9d9" : "black")};
+  color: ${(props) => (props.children === "학력구분" || props.children === "학력상태" ? Color.gray03 : Color.black )};
   cursor: pointer;
   @media (max-width: ${theme.breakpoints.md}) {
     width: 238px;
@@ -69,7 +70,7 @@ const Text = styled.span`
 const Arrow = styled.div`
   width: 5px;
   height: 5px;
-  border: solid #d9d9d9;
+  border: solid ${Color.gray03};
   border-width: 0 2px 2px 0;
   transform: ${(props) => (props.isOpen ? "rotate(45deg)" : "rotate(135deg)")};
   transition: transform 0.2s;
@@ -79,9 +80,9 @@ const DropdownList = styled.ul`
   position: absolute;
   top: 50px;
   width: 100%;
-  border: 1px solid var(--gray-02, #707070);
+  border: 1px solid ${Color.gray02};
   border-radius: 10px;
-  background: var(--white, #fff);
+  background: ${Color.white};
   list-style: none;
   padding: 10px 0;
   margin: 0;
@@ -102,7 +103,7 @@ const DropdownItem = styled.li`
   background: white;
 
   &:hover {
-    background: var(--gray-06, #f5f5f5);
+    background: ${Color.gray06};
   }
 
   & + & {

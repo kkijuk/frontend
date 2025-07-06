@@ -79,7 +79,7 @@ const RecruitTitleForReviewResult = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    margin-top: -41px;
+    margin-top: -10px;
 `;
 
 const ReviewHeader = styled.div`
@@ -97,10 +97,10 @@ const ReviewHeader = styled.div`
 
 const ReviewTitle = styled.div`
     color: var(--black, #000);
-    font-family: Pretendard;
+    font-family: Medium;
     font-size: 18px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 500;
     line-height: normal;
     margin-top: 5px;
     margin-left: 29px;
@@ -113,8 +113,8 @@ const ReviewTitle = styled.div`
 
 const ReviewContent = styled.div`
     color: var(--black, #000);
-    font-family: Pretendard;
-    font-size: 16px;
+     font-family: Regular;
+    font-size: 15px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -191,7 +191,7 @@ const StatusCircleForReviewResult = styled.span`
     }};
     margin-left: -5px; 
     margin-right: 9px;
-    margin-top: -41px;
+    margin-top: -10px;
 `;
 
 
@@ -225,6 +225,17 @@ const CategoryTitle = styled.div`
     margin-bottom: 10px;
     margin-top: 20px;
 `;
+
+const ReviewDivider = styled.div`
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 16px 0 10px 29px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-left: 0;
+  }
+`;
+
 const useIsMobile = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   
@@ -237,7 +248,7 @@ const useIsMobile = () => {
     return isMobile;
   };
   
-const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
+const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked, onTabChange }) => {
     const navigate = useNavigate();
     const isMobile = useIsMobile();
     if (isSearchClicked && (!recruits || recruits.length === 0)) {
@@ -312,14 +323,30 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
                 <AdListStyled>
                     {/* 공고 제목 표시 */}
                     {activeTab === '전체' && recruitCount > 0 && (
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <CategoryTitle>
                             공고 ({recruitCount})
                         </CategoryTitle>
+                         <button
+                onClick={() => onTabChange?.('공고')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#707070',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                }}
+              >
+                결과 전체보기
+              </button>
+            </div>
                     )}
 
                     {/* 공고 리스트 */}
-                    {recruits.map((recruit) => {
-                        if (recruit.reviews && recruit.reviews.length > 0) return null;
+                    {(activeTab === '전체'
+  ? recruits.filter((recruit) => !recruit.reviews || recruit.reviews.length === 0).slice(0, 3)
+  : recruits.filter((recruit) => !recruit.reviews || recruit.reviews.length === 0)
+).map((recruit) => {
 
                         const formattedStartTime = new Date(recruit.startTime).toLocaleDateString('ko-KR', {
                             year: 'numeric',
@@ -371,25 +398,45 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
 
                     {/* 공고후기 제목 표시 */}
                     {activeTab === '전체' && reviewCount > 0 && (
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <CategoryTitle>
                             공고후기 ({reviewCount})
                         </CategoryTitle>
+                        <button
+                onClick={() => onTabChange?.('공고후기')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#707070',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                }}
+              >
+                결과 전체보기
+              </button>
+            </div>
                     )}
 
                                         {/* 후기 리스트 */}
-                                        {recruits.map((recruit) => {
-                        if (!recruit.reviews || recruit.reviews.length === 0) return null;
+                                       {(() => {
+  // ✅ [수정된 부분 #1] 전체 탭일 경우, 공고후기(recruit + reviews 포함)에서 상위 3개만 추출
+  const reviewRecruits =
+    activeTab === '전체'
+      ? recruits.filter((recruit) => recruit.reviews && recruit.reviews.length > 0).slice(0, 3)
+      : recruits.filter((recruit) => recruit.reviews && recruit.reviews.length > 0); // ✅ [원래대로] 공고후기 탭이면 전체 출력
 
-                        const formattedStartTime = new Date(recruit.startTime).toLocaleDateString('ko-KR', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                        });
-                        const formattedEndTime = new Date(recruit.endTime).toLocaleDateString('ko-KR', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                        });
+  // ✅ [수정된 부분 #2] 위에서 추출한 reviewRecruits를 map으로 렌더링
+  return reviewRecruits.map((recruit) => {
+    const formattedStartTime = new Date(recruit.startTime).toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+    const formattedEndTime = new Date(recruit.endTime).toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
 
                         return (
                             <AdItem key={recruit.recruitId}>
@@ -411,8 +458,9 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
                                             {recruit.recruitTitle}
                                         </RecruitTitleForReviewResult>
                                     </AdTitleContainer>
-                                    {recruit.reviews.map((review) => (
+                                    {recruit.reviews.map((review, index) => (
                                         <div key={recruit.recruitId} onClick={() => handleJobClick(recruit)} style={{ cursor: 'pointer' }}>
+                                            {index > 0 && <ReviewDivider />}
                                             <ReviewHeader>
                                                 <ReviewTitle>{review.reviewTitle}</ReviewTitle>
                                                 <ReviewDate>{review.reviewDate}</ReviewDate>
@@ -423,7 +471,8 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked }) => {
                                 </AdDetails>
                             </AdItem>
                         );
-                    })}
+                    });
+})()}
                 </AdListStyled>
             </ContentSection>
         </BackgroundSection>

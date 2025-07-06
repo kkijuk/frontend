@@ -6,6 +6,7 @@ import Toggle from '../../components/Intro/Toggle';
 import AddButton from '../../components/Intro/AddButton';
 import { trackEvent } from '../../utils/ga4';
 import { theme } from '../../constants/theme';
+import { Color } from '../../constants/color';
 
 // Todo
 // - 옵션 로직 수정
@@ -87,7 +88,7 @@ const ViewOptions = () => {
 					<SButton
 						type="button"
 						onClick={() => handleApplyClick('master')}
-						style={{ backgroundColor: currentApply === 'master' ? '#E1FAED' : '#F5F5F5' }}
+						style={{ backgroundColor: currentApply === 'master' ? `${Color.main03}` : `${Color.gray06}` }}
 					>
 						Master
 					</SButton>
@@ -98,7 +99,7 @@ const ViewOptions = () => {
 							type="button"
 							key={resume.id}
 							onClick={() => handleApplyClick(resume.id)}
-							style={{ backgroundColor: currentApply === String(resume.id) ? '#E1FAED' : '#F5F5F5' }}
+							style={{ backgroundColor: currentApply === String(resume.id) ? `${Color.main03}` : `${Color.gray06}` }}
 						>
 							{resume.recruitTitle}
 						</SButton>
@@ -108,28 +109,28 @@ const ViewOptions = () => {
 						<SButton
 							type="button"
 							onClick={() => handleStateClick(3)}
-							style={{ backgroundColor: state === 3 ? '#E1FAED' : '#F5F5F5' }}
+							style={{ backgroundColor: state === 3 ? `${Color.main03}` : `${Color.gray06}` }}
 						>
 							전체
 						</SButton>
 						<SButton
 							type="button"
 							onClick={() => handleStateClick(0)}
-							style={{ backgroundColor: state === 0 ? '#E1FAED' : '#F5F5F5' }}
+							style={{ backgroundColor: state === 0 ? `${Color.main03}` : `${Color.gray06}` }}
 						>
 							작성중
 						</SButton>
 						<SButton
 							type="button"
 							onClick={() => handleStateClick(1)}
-							style={{ backgroundColor: state === 1 ? '#E1FAED' : '#F5F5F5' }}
+							style={{ backgroundColor: state === 1 ? `${Color.main03}` : `${Color.gray06}` }}
 						>
 							작성완료
 						</SButton>
 						<SButton
 							type="button"
 							onClick={() => handleStateClick(2)}
-							style={{ backgroundColor: state === 2 ? '#E1FAED' : '#F5F5F5' }}
+							style={{ backgroundColor: state === 2 ? `${Color.main03}` : `${Color.gray06}` }}
 						>
 							보관
 						</SButton>
@@ -182,14 +183,14 @@ const SButton = styled.button`
 	border: none;
 	border-radius: 10px;
 	padding: 6px 16px;
-	background-color: #f5f5f5;
-	color: #707070;
+	background-color: ${Color.gray06};
+	color: ${Color.gray02};
 	cursor: pointer;
 	white-space: nowrap;
 
 	&:first-child {
-		background-color: #e1faed;
-		color: #000000;
+		background-color: ${Color.main03};
+		color: ${Color.black};
 	}
 `;
 

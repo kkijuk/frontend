@@ -7,9 +7,18 @@ import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import { use } from 'react';
 import { trackEvent } from '../../utils/ga4';
 import { theme } from '../../constants/theme';
+import { Color } from '@/constants/color';
+import { useReadMaster, useUpdateMaster } from '@/hooks/Intro/useMaster';
 
 const MasterRewrite = () => {
+	// 1. 기본 설정 & 초기값
 	const navigate = useNavigate();
+
+	const [charCounts, setCharCounts] = useState([]); // 글자 수
+	const [showLoadingSpinner, setShowLoadingSpinner] = useState(false);
+	const [dropdownOpened, setDropdownOpened] = useState(false); // 드롭다운 열림
+	const [showAutoSaveMessage, setShowAutoSaveMessage] = useState(false); // 자동 저장 메시지
+	const [autoSaveTime, setAutoSaveTime] = useState(''); // 자동 저장 시간
 
 	//(Data) 한줄소개, 지원동기및포부 제목 및 내용, 장단점 제목 및 내용, 직무적합성 제목 및 내용
 	const [data, setData] = useState({
@@ -18,9 +27,65 @@ const MasterRewrite = () => {
 		updated_at: '',
 		state: 0,
 	});
-	// 글자 수
-	const [charCounts, setCharCounts] = useState([]);
-	const [showLoadingSpinner, setShowLoadingSpinner] = useState(false);
+
+	// 2. 서버 통신
+	const { data: masterData, isLoading, isError } = useReadMaster();
+	const { mutate: updateMasterData } = useUpdateMaster();
+	console.log('masterData:', masterData);
+
+
+	// masterData 상태 업데이트
+	useEffect(() => {
+		if (masterData) {
+			const updatedQuestions = masterData.questionList.map((q, i) => {
+				let title = q.title;
+				let content = q.content;
+
+				if(!title || title === 'string') {
+					if (i === 0) title = '지원동기 및 포부 [소제목]';
+					else if (i === 1) title = '장단점 [소제목]';
+					else if (i === 2) title = '직무적합성 [소제목]';
+					else title = '';
+				}
+
+				return {
+					...q,
+					title: title,
+					content: content,
+				}
+			})
+
+			setData({
+				oneLiner: masterData.oneLiner,
+				questions: masterData.questionList,
+				updated_at: masterData.updatedAt,
+				state: masterData.state,
+			});
+		}
+	}, [masterData]);	
+
+	//(API) 마스터 수정
+	const submitData = async () => {
+		if (!data) return;
+
+		const dataToSubmit = {
+			oneLiner: data.oneLiner,
+			questionList: data.questions,
+			state: data.state,
+		};
+
+		updateMasterData(dataToSubmit, {
+			onSuccess: () => {
+				setAutoSaveTime(new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}));
+				setShowAutoSaveMessage(true);
+				setTimeout(() => {
+					setShowAutoSaveMessage(false);
+				}, 3000);
+			}
+		});
+	};
+	
+	// 3. 핸들링 함수
 
 	// 글자 수 계산
 	useEffect(() => {
@@ -30,115 +95,23 @@ const MasterRewrite = () => {
 		));
 	}, [data.questions]);
 
-	// 기타 상태
-	const [dropdownOpened, setDropdownOpened] = useState(false); // 드롭다운 열림
-	const [showAutoSaveMessage, setShowAutoSaveMessage] = useState(false); // 자동 저장 메시지
-	const [autoSaveTime, setAutoSaveTime] = useState(''); // 자동 저장 시간
+	// 질문-답변 변경 핸들러
+	const handleInputChange = (index, field, event) => {
+		const textarea = event.target;
+		const value = textarea.value;
 
-	//1. 마스터 저장 내용 불러오기
-	//(API) 마스터 조회
-	useEffect(() => {
-		const fetchIntro = async () => {
-			try{
-				const response = await readMaster();
-				console.log('내용조회: ', response);
+		textarea.style.height = 'auto'; // 높이 초기화
+		textarea.style.height = `${textarea.scrollHeight}px`; // 높이 조정
 
-				const updatedQuestions = response.questionList.map((q, i) => {
-					let title = q.title;
-					let content = q.content;
-
-					if(!title || title === 'string') {
-						if (i === 0) title = '지원동기 및 포부 [소제목]';
-						else if (i === 1) title = '장단점 [소제목]';
-						else if (i === 2) title = '직무적합성 [소제목]';
-						else title = '';
-					}
-
-					return {
-						...q,
-						title: title,
-						content: content,
-					}
-				})
-
-				setData({
-					oneLiner: response.oneLiner,
-					questions: response.questionList,
-					updated_at: response.updatedAt,
-					state: response.state,
-				});
-			} catch (error) {
-				console.error('Error:', error);
-			}
-		}
-		fetchIntro();
-	}, []);	
-
-	// 자동 저장
-	useEffect(() => {
-		const interval = setInterval(() => {
-			submitData();
-		}, 60000);
-		return () => clearInterval(interval);
-	}, [data]); 
-
-	// 변경 내용 onChange
-	const handleInputChange = (index, field, value) => {
 		const updatedQuestions = data.questions.map((q, i) =>
 			i === index ? { ...q, [field]: value } : q
 		);
 		setData({ ...data, questions: updatedQuestions });
 	};
-	// 한줄 소개 onChange
+
+	// 한줄 변경 핸들러
 	const handleOneLinerChange = (field, value) => {
 		setData({ ...data, [field]: value });
-	};
-
-
-
-	//(API) 마스터 수정
-	const submitData = async () => {
-		const dataToSubmit = {
-			oneLiner: data.oneLiner,
-			questionList: data.questions,
-			state: data.state,
-		};
-		console.log('data to submit: ', dataToSubmit);
-
-		try{
-			const response = await updateMaster(dataToSubmit);
-
-			setAutoSaveTime(new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}));
-			setShowAutoSaveMessage(true);
-			setTimeout(() => {
-				setShowAutoSaveMessage(false);
-			}, 3000);
-
-			console.log('마스터 자소서 수정 완료: ', response);
-		} catch (error) {
-			console.error('Error:', error);
-		}
-	};
-
-	// 저장 버튼 클릭 시
-	const handleSubmit = async (event) => {
-		event.preventDefault();
-		setShowLoadingSpinner(true);
-		try{
-			await submitData();
-		} catch (error) {
-			console.error('Error:', error);
-		} finally {
-			setShowLoadingSpinner(false);
-			navigate('/history/master');
-
-			trackEvent('add_confirm', {
-				category: 'coverletter',
-				detail: 'add_coverletter',
-				action_type: 'confirm',
-				label: '저장하고 나가기',
-			});
-		}
 	};
 
 	// 질문 추가
@@ -169,18 +142,41 @@ const MasterRewrite = () => {
 		}));
 	};
 
+	// 마스터 자소서 자동 저장
+	useEffect(() => {
+		const interval = setInterval(() => {
+			submitData();
+		}, 60000);
+		return () => clearInterval(interval);
+	}, [data]); 
+
+	// 마스터 자소서 수동 저장
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+		setShowLoadingSpinner(true);
+		try{
+			await submitData();
+		} catch (error) {
+			console.error('Error:', error);
+		} finally {
+			setShowLoadingSpinner(false);
+			navigate('/history/master');
+
+			trackEvent('add_confirm', {
+				category: 'coverletter',
+				detail: 'add_coverletter',
+				action_type: 'confirm',
+				label: '저장하고 나가기',
+			});
+		}
+	};
+
 	// 드롭다운 클릭
 	const handleDropdownClick = (isCompleted) => {
 		setDropdownOpened(true);
 		setData({ ...data, state: isCompleted });
 		setDropdownOpened(false);
 	};
-
-	// data 변경 시 로그
-	useEffect(() => {
-		console.log('data:', data);
-	}
-	, [data]);
 
 	return (
 		<BackgroundDiv>
@@ -205,6 +201,7 @@ const MasterRewrite = () => {
 				<div style={{ position: 'relative' }}>
 					<InputTitle
 						id="oneLiner"
+						isTitle={true}
 						placeholder="한줄소개를 입력하세요"
 						style={{ height: '40px', marginBottom: '12px', padding:'12px 16px' }}
 						value={data.oneLiner || ''}
@@ -236,7 +233,7 @@ const MasterRewrite = () => {
 									<Delete
 										isDeleteButton = {false}
 										style={{ 
-											color: '#707070',
+											color: `${Color.gray02}`,
 											fontSize: '24px',
 											cursor: 'default',
 										}}>
@@ -252,7 +249,7 @@ const MasterRewrite = () => {
 										isTitle={true}
 										style={{height: '20px', marginBottom: '12px'}}
 										value={currentTitle}
-										onChange={(e) => handleInputChange(index, 'title', e.target.value)}
+										onChange={(e) => handleInputChange(index, 'title', e)}
 									/>
 								</TitleInputContainer>
 							</TitleWrapper>
@@ -260,9 +257,9 @@ const MasterRewrite = () => {
 								<InputTitle
 									placeholder={contentPlaceholder}
 									isTitle={false}
-									style={{ height: '150px', marginBottom: '12px' }}
+									style={{ marginBottom: '12px' }}
 									value={currentContent}
-									onChange={(e) => handleInputChange(index, 'content', e.target.value)}
+									onChange={(e) => handleInputChange(index, 'content', e)}
 								/>
 								<CharCount>
 									{currentContent.length} (공백 포함)
@@ -277,13 +274,13 @@ const MasterRewrite = () => {
 				<div style={{display: 'flex', justifyContent: 'flex-end'}}>
 					<div style={{width: '100%', display: 'flex', flexDirection:'column', alignItems: 'center', position: 'relative'}}>
 						{showAutoSaveMessage && (
-							<p style={{ fontFamily: 'pretendard', fontSize: '14px', color: '#707070', marginBottom: '10px', position:'absolute', top:'-40px' }}>
+							<p style={{ fontFamily: 'pretendard', fontSize: '14px', color: `${Color.gray02}`, marginBottom: '10px', position:'absolute', top:'-40px' }}>
 								자동 저장을 완료했습니다. {autoSaveTime}
 							</p>
 						)}
 						<Button
 							onClick={handleSubmit}
-							style={{ borderRadius: '10px', background: '#3AAF85', color: '#FFF' }}
+							style={{ borderRadius: '10px', background: `${Color.main01}`, color: `${Color.white}` }}
 						>
 							저장하고 나가기
 						</Button>
@@ -313,7 +310,6 @@ const BaseDiv = styled.div`
 	// display:flex;
 	// margin-left:400px;
 	max-width: 820px;
-	// background-color:#D9D9D9
 	position: relative;
 
 	@media (max-width: ${theme.breakpoints.md}) {
@@ -357,12 +353,15 @@ const TitleInputContainer = styled.div`
 
 const InputTitle = styled.textarea`
 	width: ${({ isTitle }) => (isTitle === true ? '764px' : '780px')};
+	height: ${({ isTitle }) => (isTitle === true ? '20px' : 'auto')};
+	min-height: ${({ isTitle }) => (isTitle === true ? '20px' : '150px')};
+	max-height: 400px;
 	flex-shrink: 0;
 	border: none;
 	border-radius: 10px;
-	background: var(--gray-06, #f5f5f5);
+	background: ${Color.gray06};
 	padding: ${({ isTitle }) => (isTitle === true ? '20px 20px 20px 36px' : '20px 20px')};
-	color: var(--gray-02, #707070);
+	color: ${Color.gray02};
 	font-family: Regular;
 	font-size: 16px;
 	font-weight: 400;
@@ -386,7 +385,7 @@ const InputTitle = styled.textarea`
 const Linear = styled.div`
 	width: 820px;
 	height: 4px;
-	background-color: #f1f1f1;
+	background-color: ${Color.gray06};
 	margin-top: 12px;
 	margin-bottom: 20px;
 	@media (max-width: ${theme.breakpoints.md}) {
@@ -411,10 +410,10 @@ const AddButton = styled.button`
 	height: 50px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	border: 1px solid var(--gray-03, #d9d9d9);
+	border: 1px solid ${Color.gray03};
 	text-align: center;
-	background: #fff;
-	color: #d9d9d9;
+	background: ${Color.white};
+	color: ${Color.gray04};
 	font-size: 30px;
 	cursor: pointer;
 	@media (max-width: ${theme.breakpoints.md}) {
@@ -432,7 +431,7 @@ const Tag = styled.div`
 	flex-shrink: 0;
 	margin-right: 12px;
 	border-radius: 20px;
-	background: #3aaf85;
+	background: ${Color.main01};
 	font-family: Regular;
 	font-size: 12px;
 	text-align: center;
@@ -445,8 +444,8 @@ const Dropdown = styled.div`
 	height: 70px;
 	flex-shrink: 0;
 	border-radius: 13px;
-	border: 1px solid var(--gray-02, #707070);
-	background: #fff;
+	border: 1px solid ${Color.gray02};
+	background: ${Color.white};
 	position: absolute;
 	top: 23px;
 	margin-top: 20px;
@@ -454,7 +453,7 @@ const Dropdown = styled.div`
 `;
 
 const DropdownItem = styled.p`
-	color: var(--gray-01, #424242);
+	color: ${Color.gray01};
 	text-align: center;
 	font-family: Regular;
 	font-size: 13px;
@@ -465,7 +464,7 @@ const DropdownItem = styled.p`
 const Delete = styled.div`
 	width: 30px;
 	height: 20px;
-	color: #707070;
+	color: ${Color.gray02};
 	font-size: 15px;
 	font-family: Regular;
 	cursor: pointer;
@@ -494,13 +493,13 @@ const CharCount = styled.div`
 	right: 0px;
 	font-family: Regular;
 	font-size: 16px;
-	color: #707070;
+	color: ${Color.gray02};
 	width: 780px;
 	height: 25px;
 	flex-shrink: 0;
 	border: none;
 	border-radius: 0px 0px 10px 10px;
-	background: var(--gray-06, #f5f5f5);
+	background: ${Color.gray06};
 	padding: 0px 20px;
 	line-height: normal;
 	white-space: pre-wrap;

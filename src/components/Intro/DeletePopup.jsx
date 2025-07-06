@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
+import { Color } from "@/constants/color";
 
 function DeletePopup({ onConfirm, onClose }) {
     const message = '이 자기소개서를 정말 삭제하시겠습니까?'
@@ -35,7 +36,7 @@ const PopupOverlay = styled.div`
 const PopupContainer = styled.div`
     width: 300px;
     height: 240px;
-    background: #fff;
+    background: ${Color.white};
     border-radius: 10px;
     text-align: center;
     color: black;
@@ -68,10 +69,10 @@ const ConfirmButton = styled.button`
     width: 120px;
     height: 35px;
     padding: 8px 16px;
-    background: white;
+    background: ${Color.white};
     border-radius: 10px;
-    border: 1px solid var(--sub-bu, #FA7C79);
-    color: var(--sub-bu, #FA7C79);
+    border: 1px solid ${Color.subRd};
+    color: ${Color.subRd};
     font-family: 'Regular';
     font-size: 14px;
     font-weight: 500;
@@ -87,8 +88,8 @@ const CancelButton = styled.button`
     padding: 8px 16px;
     background: white;
     border-radius: 10px;
-    border: 1px solid var(--sub-bu, #77AFF2);
-    color: var(--sub-bu, #77AFF2);
+    border: 1px solid ${Color.subRBu};
+    color: ${Color.subRBu};
     font-family: 'Regular';
     font-size: 14px;
     font-weight: 500;

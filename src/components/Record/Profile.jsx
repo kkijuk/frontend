@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import {
+    ProfileContainer,
+    ProfileImage,
+    Placeholder,
+    HiddenSymbolArea,
+    SvgPlaceholder
+} from './Components.styles';
 import { downS3File } from '../../api/Record/s3File';
-import { theme } from '../../constants/theme'; 
 
 const Profile = ({ profileKeyName, onProfileChange }) => {
     const [profileUrl, setProfileUrl] = useState('');
-
-    // useEffect(() => {
-    //     if (typeof profileBlob === 'string') { // presigned GET URL
-    //         setProfileUrl(profileBlob);
-    //     } 
-    // }, [profileBlob]);
 
     useEffect(()=>{
         if(profileKeyName && profileKeyName !== 'string'){
@@ -21,7 +20,10 @@ const Profile = ({ profileKeyName, onProfileChange }) => {
                     }
                     console.log('Profile image downloaded successfully:', response);
                 })
-                .catch((error) => console.error('Error:', error));
+                .catch((error) => {
+                    console.error('Error:', error);
+                    setProfileUrl(''); 
+                });
         }
     }, [profileKeyName]);
 
@@ -83,37 +85,3 @@ const Profile = ({ profileKeyName, onProfileChange }) => {
 
 export default Profile;
 
-// Styled Components
-const ProfileContainer = styled.div`
-    width: 150px;
-    height: 200px;
-    overflow: hidden;
-    cursor: pointer;
-`;
-
-const ProfileImage = styled.img`
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-`;
-
-const Placeholder = styled.div`
-    width: 150px;
-    height: 200px;
-    flex-shrink: 0;
-    background: var(--gray-05, #F1F1F1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-
-const HiddenSymbolArea = styled.svg`
-    width: 0;
-    height: 0;
-    display: none;
-`;
-
-const SvgPlaceholder = styled.svg`
-    width: 45px;
-    height: 45px;
-`;

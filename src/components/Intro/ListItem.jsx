@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import '../../pages/History/history.css';
 import { theme } from '../../constants/theme';
+import { Color } from '../../constants/color';
 
 const ListItem = ({ title, updated_at, deadline, state, timeSinceUpdate, onClick }) => {
 	return (
@@ -63,26 +64,26 @@ const Tag = styled.div`
 	justify-content: center;
 	align-items: center;
 	border-radius: 20px;
-	border: ${(props) => (props.state === 1 ? '1px solid #707070' : 'none')};
+	border: ${(props) => (props.state === 1 ? `1px solid ${Color.gray02}` : 'none')};
 	background: ${(props) => {
 		switch (props.state) {
 			case 0:
-				return '#3AAF85';
+				return Color.subRd;
 			case 1:
-				return '#FFF';
+				return Color.white;
 			case 2:
-				return '#707070';
+				return Color.gray02;
 		}
 	}};
 
 	color: ${(props) => {
 		switch (props.state) {
 			case 0:
-				return '#FFF';
+				return Color.white;
 			case 1:
-				return '#707070';
+				return Color.gray02;
 			case 2:
-				return '#FFF';
+				return Color.white;
 		}
 	}};
 

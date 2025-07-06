@@ -1,444 +1,255 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useCareerList, useCareerDetail } from '@/hooks/MycareerDetail/useCareerQueries';
 import { useLocation } from 'react-router-dom';
-import styled from 'styled-components';
 import Layout from '../../components/Layout';
 import DetailAdd from '../../components/MyCareerDetail/DetailAdd';
 import DetailAddEdit from '../../components/MyCareerDetail/DetailAddEdit';
 import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal';
-import { useParams } from 'react-router-dom';
-
 import Careerbox from '../../components/MyCareerDetail/CareerBox';
 import CareerList from '../../components/MyCareerDetail/CareerList';
 import SearchBar from '../../components/Mycareer/shareSearchBar';
-
-import { CareerViewSelect } from '../../api/Mycareer/CareerviewSelect';
-import { ViewCareerDetail } from '../../api/Mycareer/ViewCareerDetail';
 import { CareertextEdit } from '../../api/Mycareer/CareerEdit';
 import { trackEvent } from '../../utils/ga4';
 import { formatDate } from '../../utils/formateDate';
-import CareerDetailDeleteModal from '../../components/Modal/CareerDetailDeleteModal';
-import { theme } from '../../constants/theme';
-
 import {
-	Container,
-	SearchIcon,
-	CareerBoxContainer,
-	CareerContentContainer,
-	TitleContainer,
-	TitleBox,
-	IconWrapper,
-	Title,
-	Date,
-	Content,
-	Line,
-	CareerListBox,
-	CareerPlus,
-	EditActivityContent,
-	Textbox,
-	EditBoxContainer,
-	CancelButton,
-	EditButton,
-	PageContainer,
-	NoContents,
-	ContentWrapper,
-	EditTag,
-	NameTag,
-	categoryToColorMap,
+  Container, SearchIcon, CareerBoxContainer, CareerContentContainer, TitleContainer, TitleBox,
+  IconWrapper, Title, Date, Content, Line, CareerListBox, CareerPlus, EditActivityContent, Textbox,
+  EditBoxContainer, CancelButton, EditButton, PageContainer, NoContents, ContentWrapper, EditTag,
+  NameTag, categoryToColorMap,
 } from './MycareerDetail.styles';
 
+const categoryToTypeMap = {
+  대외활동: 'activity',
+  동아리: 'circle',
+  프로젝트: 'project',
+  교육: 'edu',
+  공모전대회: 'competition',
+  경력: 'employment',
+  기타: 'etc',
+};
+
 export default function MycareerDetail() {
-	const location = useLocation();
-	const { careerId, category } = location.state || {};
-	const [details, setDetails] = useState(null);
-	const [careerList, setCareerList] = useState([]);
-	const [selectedCareer, setSelectedCareer] = useState({ id: careerId || null, type: category || null });
-	const [isEditing, setIsEditing] = useState(false); // 편집 상태 추가
-	const [isAdding, setIsAdding] = useState(false); // 상태 추가  const [editingDetailId, setEditingDetailId] = useState(null); // 현재 DetailAddEdit 상태인 detailId
-	const [editingDetailId, setEditingDetailId] = useState(null); // 현재 DetailAddEdit 상태인 detailId
-	const [isModalOpen, setIsModalOpen] = useState(false); // 수정 모달 상태 관리
-	const [modalData, setModalData] = useState(null); // 모달에 전달할 데이터
-	const [isAnyEditing, setIsAnyEditing] = useState(false); //편집 상태를 확인
-	const [isSearchOpen, setIsSearchOpen] = useState(false); // 검색창 상태 추가
-	const [isFixed, setIsFixed] = useState(false);
+  const location = useLocation();
+  const { careerId, category } = location.state || {};
 
-	/* 커리어박스 드래그 기능 추가 */
-	const careerBoxRef = useRef(null);
-	let isDragging = false;
-	let startX, scrollLeft;
+  const [selectedCareer, setSelectedCareer] = useState({ id: careerId || null, type: category || null });
+  const { data: careerList = [] } = useCareerList();
+  const { data: details, refetch: refetchDetails } = useCareerDetail(selectedCareer.id, selectedCareer.type);
 
-	const handleMouseDown = (e) => {
-		isDragging = true;
-		startX = e.pageX - careerBoxRef.current.offsetLeft;
-		scrollLeft = careerBoxRef.current.scrollLeft;
-		careerBoxRef.current.style.cursor = 'grabbing';
-	};
+  const [summary, setSummary] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [editingDetailId, setEditingDetailId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isFixed, setIsFixed] = useState(false);
 
-	const handleMouseMove = (e) => {
-		if (!isDragging) return;
-		e.preventDefault();
-		const x = e.pageX - careerBoxRef.current.offsetLeft;
-		const walk = (x - startX) * 2; // 드래그 속도 조절
-		careerBoxRef.current.scrollLeft = scrollLeft - walk;
-	};
+  useEffect(() => {
+    if (details) {
+      setSummary(details.summary || '');
+    }
+  }, [details]);
 
-	const handleMouseUp = () => {
-		isDragging = false;
-		careerBoxRef.current.style.cursor = 'grab';
-	};
-	/*추가 완 */
+  const careerBoxRef = useRef(null);
+  let isDragging = false;
+  let startX, scrollLeft;
 
-	useEffect(() => {
-		const handleScroll = () => {
-			const scrollY = window.scrollY;
-			const viewportHeight = window.innerHeight;
-			const documentHeight = document.documentElement.scrollHeight;
-			const remainingHeight = documentHeight - (scrollY + viewportHeight);
+  const handleMouseDown = (e) => {
+    isDragging = true;
+    startX = e.pageX - careerBoxRef.current.offsetLeft;
+    scrollLeft = careerBoxRef.current.scrollLeft;
+    careerBoxRef.current.style.cursor = 'grabbing';
+  };
 
-			// 남은 높이가 200px 이하일 때 푸터 위로 고정
-			setIsFixed(remainingHeight <= 220);
-		};
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - careerBoxRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    careerBoxRef.current.scrollLeft = scrollLeft - walk;
+  };
 
-		window.addEventListener('scroll', handleScroll);
-		return () => window.removeEventListener('scroll', handleScroll);
-	}, []);
+  const handleMouseUp = () => {
+    isDragging = false;
+    careerBoxRef.current.style.cursor = 'grab';
+  };
 
-	const categoryToTypeMap = {
-		대외활동: 'activity',
-		동아리: 'circle',
-		프로젝트: 'project',
-		교육: 'edu',
-		공모전대회: 'competition',
-		경력: 'employment',
-		기타: 'etc',
-	};
+  useEffect(() => {
+    const handleScroll = () => {
+      const remainingHeight = document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
+      setIsFixed(remainingHeight <= 220);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-	const fetchCareerDetails = async (id, type) => {
-		try {
-			// 한글 타입을 영어 타입으로 변환
-			const convertedType = categoryToTypeMap[type] || type;
+  const handleAddButtonClick = () => setIsAdding(true);
+  const handleCancelAdd = async () => {
+    setIsAdding(false);
+    await refetchDetails();
+  };
+  const handleSaveAdd = async () => {
+    setIsAdding(false);
+    await refetchDetails();
+  };
 
-			const response = await ViewCareerDetail(id, convertedType);
-			console.log('가져온 Career Details:', response.data); // 데이터 확인
+  const handleCareerBoxClick = (id, type) => {
+    if (isEditing) setIsEditing(false);
+    setSelectedCareer({ id, type });
+    setIsAdding(false);
+  };
 
-			// startDate -> startdate로 변환
-			const formattedData = {
-				...response.data,
-				startdate: response.data.startdate || response.data.startDate, // startDate가 있으면 startdate로 변환
-				endDate: response.data.endDate || response.data.enddate, // enddate도 일관성 유지
-			};
+  const handleEditClick = () => setIsEditing(true);
+  const handleCancelClick = () => setIsEditing(false);
 
-			setDetails(formattedData);
-		} catch (error) {
-			console.error('Error fetching career details:', error);
-		}
-	};
+  const handleSaveClick = async () => {
+    try {
+      await CareertextEdit(selectedCareer.id, details?.category?.categoryEnName, summary);
+      alert('활동 내역이 성공적으로 저장되었습니다.');
+      setIsEditing(false);
+      await refetchDetails();
+    } catch (error) {
+      alert('활동 내역 저장에 실패했습니다.');
+    }
+  };
 
-	useEffect(() => {
-		if (careerId && category) {
-			const type = categoryToTypeMap[category]; // 항상 영어로 변환
-			if (type) {
-				fetchCareerDetails(careerId, type);
-			} else {
-				console.error(`Invalid category: ${category}`);
-			}
-		}
-	}, [careerId, category]);
+  const handleCloseEdit = async () => {
+    setEditingDetailId(null);
+    await refetchDetails();
+  };
 
-	useEffect(() => {
-		const fetchAllCareers = async () => {
-			try {
-				const response = await CareerViewSelect('all');
-				if (Array.isArray(response.data)) {
-					const formattedData = response.data.map((career) => ({
-						...career,
-						startdate: career.startdate || career.startDate, // startDate가 있으면 startdate로 변환
-					}));
-					setCareerList(formattedData);
-				}
-			} catch (error) {
-				console.error('Error fetching all careers:', error);
-			}
-		};
+  const openModal = () => {
+    setModalData({ ...details });
+    setIsModalOpen(true);
+  };
+  const closeModal = () => setIsModalOpen(false);
 
-		fetchAllCareers();
-	}, []);
+  return (
+    <Layout
+      title={
+        <Container>
+          <span>내 커리어</span>
+          {isSearchOpen ? <SearchBar onClose={() => setIsSearchOpen(false)} /> : <SearchIcon onClick={() => setIsSearchOpen(true)} />}
+        </Container>
+      }
+    >
+      <PageContainer>
+        <CareerBoxContainer
+          ref={careerBoxRef}
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseUp}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+        >
+          {careerList.map((career) => (
+            <Careerbox
+              key={career.id}
+              id={career.id}
+              startdate={career.startdate}
+              enddate={career.enddate}
+              unknown={career.unknown}
+              careerName={career.name}
+              category={career.category.categoryKoName}
+              selected={career.id === selectedCareer.id && career.category.categoryKoName === selectedCareer.type}
+              onClick={() => handleCareerBoxClick(career.id, career.category.categoryKoName)}
+            />
+          ))}
+        </CareerBoxContainer>
 
-	const handleAddButtonClick = () => {
-		setIsAdding(true); // DetailAdd 표시
-	};
+        <CareerContentContainer isEditing={isEditing}>
+          <TitleContainer>
+            <TitleBox>
+              <Title>{details?.alias || '제목 없음'}</Title>
+              <NameTag bgColor={categoryToColorMap[details?.category?.categoryKoName] || categoryToColorMap['default']}>
+                {details?.name || 'No Name'}
+              </NameTag>
+            </TitleBox>
+            <IconWrapper onClick={openModal}>
+              <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                <path d="M0 23.7509V30H6.24913L24.6799 11.5692L18.4308 5.32009L0 23.7509ZM29.5126 6.73656C30.1625 6.08665 30.1625 5.0368 29.5126 4.38689L25.6131 0.487432C24.9632 -0.162477 23.9133 -0.162477 23.2634 0.487432L20.2139 3.53701L26.463 9.78614L29.5126 6.73656Z" fill="#707070" />
+              </svg>
+            </IconWrapper>
+          </TitleContainer>
+          <Date>{formatDate(details?.startdate, details?.endDate, details?.unknown)}</Date>
+          {isEditing ? (
+            <EditActivityContent>
+              <Textbox value={summary} onChange={(e) => e.target.value.length <= 500 && setSummary(e.target.value)} maxLength={500} />
+              <EditBoxContainer>
+                <CancelButton onClick={handleCancelClick}>취소</CancelButton>
+                <EditButton onClick={handleSaveClick}>저장</EditButton>
+              </EditBoxContainer>
+            </EditActivityContent>
+          ) : (
+            <ContentWrapper>
+              {details?.summary ? (
+                <>
+                  <Content hasSummary>{details.summary}</Content>
+                  <EditTag onClick={handleEditClick}>수정</EditTag>
+                </>
+              ) : (
+                <Content onClick={handleEditClick} style={{ textDecoration: 'underline', cursor: 'pointer' }}>활동내역을 작성해주세요.</Content>
+              )}
+            </ContentWrapper>
+          )}
+        </CareerContentContainer>
 
-	const handleCancelAdd = async () => {
-		setIsAdding(false); // DetailAdd 숨기기
-		await fetchCareerDetails(careerId, categoryToTypeMap[category]); // 데이터 새로고침
-	};
+        <Line />
 
-	const handleSaveAdd = async () => {
-		setIsAdding(false); // DetailAdd 숨기기
-		await fetchCareerDetails(careerId, categoryToTypeMap[category]); // 데이터 새로고침
-	};
+        <CareerListBox>
+          {isAdding && (
+            <DetailAdd onCancel={handleCancelAdd} onSave={handleSaveAdd} careerId={selectedCareer.id} careerType={categoryToTypeMap[selectedCareer.type]} />
+          )}
 
-	const handleCareerBoxClick = (id, type) => {
-		if (isEditing) {
-			setIsEditing(false); // 편집 모드 종료
-		}
+          {details?.detailList?.length > 0 ? (
+            details.detailList.map((detail) => (
+              editingDetailId === detail.detailId ? (
+                <DetailAddEdit
+                  key={detail.detailId}
+                  initialTitle={detail.title}
+                  initialDate={detail.startDate}
+                  initialEndDate={detail.endDate}
+                  initialUnknown={detail.unknown}
+                  initialContents={detail.content}
+                  initialTags={detail.detailTag || []}
+                  careerId={selectedCareer.id}
+                  detailId={detail.detailId}
+                  onClose={handleCloseEdit}
+                  onUpdate={refetchDetails}
+                />
+              ) : (
+                <CareerList
+                  key={detail.detailId}
+                  title={detail.title}
+                  startDate={detail.startDate}
+                  endDate={detail.endDate}
+                  unknown={detail.unknown}
+                  contents={detail.content}
+                  detailTag={detail.detailTag || []}
+                  careerId={selectedCareer.id}
+                  detailId={detail.detailId}
+                  categoryEnName={details?.category?.categoryEnName}
+                  onClose={handleCloseEdit}
+                  onUpdate={refetchDetails}
+                  onEditClick={() => setEditingDetailId(detail.detailId)}
+                />
+              )
+            ))
+          ) : (
+            <NoContents>등록된 활동 기록이 없습니다. <br />아래 버튼을 눌러 활동 기록을 추가해주세요!</NoContents>
+          )}
+        </CareerListBox>
 
-		setSelectedCareer({ id, type });
-		setIsAdding(false);
-	};
+        <CareerPlus onClick={() => {
+          trackEvent('add_click', { category: 'mycareer', detail: 'career_detail', action_type: 'add', label: '활동 기록 추가' });
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          handleAddButtonClick();
+        }} disabled={editingDetailId !== null}>활동 기록 추가</CareerPlus>
 
-	useEffect(() => {
-		if (selectedCareer.id && selectedCareer.type) {
-			fetchCareerDetails(selectedCareer.id, selectedCareer.type);
-		}
-	}, [selectedCareer]);
-
-	const handleEditClick = () => {
-		setIsEditing(true); // 편집 모드로 변경
-	};
-
-	const handleSaveClick = async () => {
-		try {
-			await CareertextEdit(
-				careerId, // 현재 활동 ID
-				details?.category?.categoryEnName, // 카테고리 이름
-				details?.summary || '', // 빈 문자열도 저장 가능하게 수정
-			);
-
-			alert('활동 내역이 성공적으로 저장되었습니다.');
-			setIsEditing(false); // 편집 모드 종료
-
-			// 수정 후 바로 데이터 새로고침
-			await fetchCareerDetails(careerId, selectedCareer.type);
-		} catch (error) {
-			alert('활동 내역 저장에 실패했습니다.');
-		}
-	};
-
-	const handleCancelClick = () => {
-		setIsEditing(false); // 편집 모드 종료
-	};
-
-	const handleCloseEdit = async () => {
-		setEditingDetailId(null); // DetailAddEdit 닫기
-		const convertedType = categoryToTypeMap[selectedCareer.type] || selectedCareer.type;
-		await fetchCareerDetails(careerId, selectedCareer.type);
-	};
-
-	const openModal = () => {
-		// 모달 열기 + 데이터 설정, 데이터 다보내기
-		setModalData({ ...details }); // 전체 details 데이터를 modalData로 설정
-		setIsModalOpen(true);
-		console.log('Generated initialData for AddCareerModal:', modalData);
-	};
-
-	const closeModal = () => {
-		setIsModalOpen(false); // 모달 닫기
-	};
-
-	return (
-		<Layout
-			title={
-				<Container>
-					<span>내 커리어</span>
-					{isSearchOpen ? (
-						<SearchBar onClose={() => setIsSearchOpen(false)} /> // 검색바 표시
-					) : (
-						<SearchIcon
-							xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 25 25"
-							fill="none"
-							onClick={() => setIsSearchOpen(true)} // 클릭 시 검색바 표시
-						>
-							<path
-								d="M22.5852 23.8578L14.6307 16.3683C13.9205 16.9033 13.1037 17.3268 12.1804 17.6389C11.2571 17.9509 10.2746 18.107 9.23295 18.107C6.65246 18.107 4.46875 17.2657 2.68182 15.5833C0.893939 13.8999 0 11.8435 0 9.41384C0 6.98422 0.893939 4.92774 2.68182 3.24439C4.46875 1.56193 6.65246 0.720703 9.23295 0.720703C11.8134 0.720703 13.9976 1.56193 15.7855 3.24439C17.5724 4.92774 18.4659 6.98422 18.4659 9.41384C18.4659 10.3946 18.3002 11.3196 17.9687 12.189C17.6373 13.0583 17.1875 13.8273 16.6193 14.496L24.6094 22.0189C24.8698 22.2641 25 22.565 25 22.9216C25 23.2783 24.858 23.5903 24.5739 23.8578C24.3134 24.103 23.982 24.2256 23.5795 24.2256C23.1771 24.2256 22.8456 24.103 22.5852 23.8578ZM9.23295 15.4322C11.0085 15.4322 12.518 14.8473 13.7614 13.6775C15.0038 12.5068 15.625 11.0856 15.625 9.41384C15.625 7.74208 15.0038 6.32087 13.7614 5.15019C12.518 3.98041 11.0085 3.39551 9.23295 3.39551C7.45739 3.39551 5.94792 3.98041 4.70454 5.15019C3.46212 6.32087 2.84091 7.74208 2.84091 9.41384C2.84091 11.0856 3.46212 12.5068 4.70454 13.6775C5.94792 14.8473 7.45739 15.4322 9.23295 15.4322Z"
-								fill="#707070"
-							/>
-						</SearchIcon>
-					)}
-				</Container>
-			}>
-			<PageContainer>
-				<CareerBoxContainer
-					ref={careerBoxRef}
-					onMouseDown={handleMouseDown}
-					onMouseLeave={handleMouseUp}
-					onMouseUp={handleMouseUp}
-					onMouseMove={handleMouseMove}>
-					{careerList.map((career) => (
-						<Careerbox
-							key={career.id}
-							id={career.id}
-							startdate={career.startdate}
-							enddate={career.enddate}
-							unknown={career.unknown}
-							careerName={career.name}
-							category={career.category.categoryKoName}
-							selected={career.id === selectedCareer.id && career.category.categoryKoName === selectedCareer.type}
-							onClick={() => handleCareerBoxClick(career.id, career.category.categoryKoName)}
-						/>
-					))}
-				</CareerBoxContainer>
-				<CareerContentContainer isEditing={isEditing}>
-					<TitleContainer>
-						<TitleBox>
-							<Title>{details?.alias || '제목 없음'}</Title>
-							<NameTag bgColor={categoryToColorMap[details?.category?.categoryKoName] || categoryToColorMap['default']}>
-								{details?.name || 'No Name'}
-							</NameTag>
-						</TitleBox>
-
-						<IconWrapper onClick={openModal}>
-							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
-								<path
-									d="M0 23.7509V30H6.24913L24.6799 11.5692L18.4308 5.32009L0 23.7509ZM29.5126 6.73656C30.1625 6.08665 30.1625 5.0368 29.5126 4.38689L25.6131 0.487432C24.9632 -0.162477 23.9133 -0.162477 23.2634 0.487432L20.2139 3.53701L26.463 9.78614L29.5126 6.73656Z"
-									fill="#707070"
-								/>
-							</svg>
-						</IconWrapper>
-					</TitleContainer>
-					<Date>{formatDate(details?.startdate, details?.endDate, details?.unknown)}</Date>
-					{isEditing ? (
-						<EditActivityContent>
-							<Textbox
-								value={details?.summary || ''} // defaultValue → value 변경
-								onChange={(e) => {
-									const text = e.target.value;
-									if (text.length <= 500) {
-										setDetails({ ...details, summary: text });
-									}
-								}}
-								maxLength={500} // HTML 기본 maxLength 추가
-							/>
-							<EditBoxContainer>
-								<CancelButton onClick={handleCancelClick}>취소</CancelButton>
-								<EditButton
-									onClick={() => {
-										trackEvent('btn_click', {
-											category: 'career',
-											detail: 'career_summary',
-											action_type: 'confirm',
-											label: '확인',
-										});
-										handleSaveClick();
-									}}>
-									저장
-								</EditButton>
-							</EditBoxContainer>
-						</EditActivityContent>
-					) : (
-						<ContentWrapper>
-							{details?.summary ? (
-								<>
-									<Content hasSummary>{details.summary}</Content>
-									<EditTag onClick={handleEditClick}>수정</EditTag>
-								</>
-							) : (
-								<Content
-									style={{ textDecoration: 'underline', cursor: 'pointer' }}
-									onClick={() => {
-										trackEvent('add_conrifm', {
-											category: 'mycareer',
-											detail: 'career_summary',
-											action_type: 'add',
-											label: '활동 내역 추가',
-										});
-										handleEditClick();
-									}}>
-									활동내역을 작성해주세요.
-								</Content>
-							)}
-						</ContentWrapper>
-					)}
-				</CareerContentContainer>
-				<Line></Line>
-				<CareerListBox>
-					{isAdding && ( //항상 맨 위에 DetailAdd를 추가
-						<DetailAdd
-							onCancel={handleCancelAdd}
-							onSave={handleSaveAdd}
-							careerId={careerId}
-							careerType={categoryToTypeMap[category]}
-						/>
-					)}
-
-					{details?.detailList?.length > 0 ? ( // 활동 내역이 존재하면 리스트 보여주기
-						<>
-							{details.detailList.map((detail) =>
-								editingDetailId === detail.detailId ? (
-									<DetailAddEdit
-										key={detail.detailId}
-										initialTitle={detail.title}
-										initialDate={detail.startDate}
-										initialEndDate={detail.endDate} // endDate 추가
-										initialUnknown={detail.unknown}
-										initialContents={detail.content}
-										initialTags={detail.detailTag || []}
-										careerId={careerId}
-										detailId={detail.detailId}
-										onClose={handleCloseEdit}
-										onUpdate={() => {
-											const convertedType = categoryToTypeMap[selectedCareer.type] || selectedCareer.type;
-											fetchCareerDetails(careerId, convertedType);
-										}}
-									/>
-								) : (
-									<CareerList
-										key={detail.detailId}
-										title={detail.title}
-										startDate={detail.startDate}
-										endDate={detail.endDate}
-										unknown={detail.unknown}
-										contents={detail.content}
-										detailTag={detail.detailTag || []}
-										careerId={careerId}
-										detailId={detail.detailId}
-										categoryEnName={details?.category?.categoryEnName}
-										onClose={handleCloseEdit}
-										onUpdate={() => {
-											const convertedType = categoryToTypeMap[selectedCareer.type] || selectedCareer.type;
-											fetchCareerDetails(careerId, convertedType);
-										}}
-										onEditClick={() => handleEditClick(detail.detailId)}
-									/>
-								),
-							)}
-						</>
-					) : (
-						// 활동이 없을 때만 NoContents 표시 (DetailAdd 중복 방지)
-						<NoContents>
-							등록된 활동 기록이 없습니다. <br />
-							아래 버튼을 눌러 활동 기록을 추가해주세요!
-						</NoContents>
-					)}
-				</CareerListBox>
-
-				<CareerPlus
-					onClick={() => {
-						trackEvent('add_click', {
-							category: 'mycareer',
-							detail: 'career_detail',
-							action_type: 'add',
-							label: '활동 기록 추가',
-						});
-						window.scrollTo({ top: 0, behavior: 'smooth' });
-						handleAddButtonClick();
-					}}
-					disabled={editingDetailId !== null}>
-					활동 기록 추가
-				</CareerPlus>
-				{isModalOpen && modalData && (
-					<AddCareerModal 
-						onClose={closeModal} 
-						// data={modalData} 
-						mode="edit" 
-						initialData={modalData} 
-						onRefresh={async () => {
-							console.log('Modal closed, refreshing career details...');
-      						await fetchCareerDetails(careerId, categoryToTypeMap[category]);
-						}}
-					/>
-				)}
-			</PageContainer>
-		</Layout>
-	);
+        {isModalOpen && modalData && (
+          <AddCareerModal onClose={closeModal} mode="edit" initialData={modalData} onRefresh={refetchDetails} />
+        )}
+      </PageContainer>
+    </Layout>
+  );
 }

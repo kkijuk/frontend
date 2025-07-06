@@ -39,6 +39,7 @@ export const setupApiInterceptors = (navigate) => {
 		(response) => response,
 		async (error) => {
 			const { logout } = useAuthStore.getState();
+			const currentPath = window.location.pathname;
 
 			if (error.response?.status === 403) {
 				console.log(' Unauthorized - 토큰 재발급 시작');
@@ -95,6 +96,10 @@ export const setupApiInterceptors = (navigate) => {
 				} finally {
 					isRefreshing = false; // 재발급 프로세스 종료
 				}
+			}
+			// history 페이지에서는 리다이렉트 무시
+			else if(currentPath.startsWith('/history')){
+				return Promise.reject(error);
 			}
 			// 404 → numerror 페이지로 이동
 			else if (error.response?.status === 404) {

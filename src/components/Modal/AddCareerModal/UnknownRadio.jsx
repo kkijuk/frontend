@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { theme } from '../../../constants/theme';
+import { Color } from '@/constants/color';
 
 const UnknownRadio = ({ isUnknown, onToggle }) => {
 	return (
@@ -43,18 +44,18 @@ const HiddenRadio = styled.input.attrs({ type: 'radio' })`
 const StyledRadio = styled.div`
 	width: 16px;
 	height: 16px;
-	background: ${(props) => (props.isUnknown ? '#3AAF85' : '#F5F5F5')};
+	background: ${(props) => (props.isUnknown ? Color.main01 : Color.gray06)};
 	border-radius: 50%;
 	transition: all 150ms;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
-	border: 1px solid ${(props) => (props.isUnknown ? '#3AAF85' : '#ccc')};
+	border: 1px solid ${(props) => (props.isUnknown ? Color.main01 : Color.gray04 )};
 
 	&:after {
 		content: '';
-		display: ${(props) => (props.isUnknown ? 'block' : 'none')};
+		display: ${(props) => (props.isUnknown ? Color.black : 'none')};
 		width: 10px;
 		height: 10px;
 		border-radius: 50%;
@@ -63,7 +64,7 @@ const StyledRadio = styled.div`
 `;
 
 const Info = styled.div`
-	color: var(--main-01, #3aaf85);
+	color: ${Color.main01};
 	font-family: Regular;
 	font-size: 16px;
 	font-style: normal;

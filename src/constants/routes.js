@@ -9,7 +9,8 @@ export const ROUTES = {
 	PRIVACY_AGREED: '/agree',
 	KAKAO_REDIRECT: '/login/oauth2/code/kakao',
 	NAVER_REDIRECT: '/login/oauth2/code/naver',
-
+    PRIVACY_POLICY: '/privacy-policy',
+	SERVICE_AGREE: '/terms',
 	// 마이페이지 관련 라우트
 	MYPAGE: '/mypage',
 	MYPAGE_AUTHENTICATION: '/mypage/authentication',
@@ -33,6 +34,7 @@ export const ROUTES = {
 	HISTORY_SELECT: '/history/select',
 	HISTORY_ADD_APPLY: '/history/add_apply',
 	HISTORY_RESUME_EXPORT: '/history/resumeExport',
+	HISTORY_ADMIN: '/history/admin',
 
 	// 커리어 관련 라우트
 	MYCAREER: '/mycareer',
