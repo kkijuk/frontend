@@ -267,15 +267,15 @@ const OthersRewrite = () => {
 
 	const handleDropdownClick = (isCompleted) => {
 		setIsCompleted(isCompleted);
-		const status = isCompleted ? 'applying' : 'planned';
-		api
-			.patch(`/recruit/${contents.recruitId}`, { status: status })
-			.then((response) => {
-				console.log('상태 변경 결과: ', response.data);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		// const status = isCompleted ? 'applying' : 'planned';
+		// api
+		// 	.patch(`/recruit/${contents.recruitId}`, { status: status })
+		// 	.then((response) => {
+		// 		console.log('상태 변경 결과: ', response.data);
+		// 	})
+		// 	.catch((error) => {
+		// 		console.log(error);
+		// 	});
 
 		toggleDropdown();
 	};
