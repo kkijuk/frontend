@@ -6,7 +6,7 @@ const readIntroList = async () => {
 	try {
 		const response = await api.get(`/history/intro/list`);
 		console.log('Success-readIntroList: ', response.data);
-		return response.data;
+		return response.data.data;
 	} catch (error) {
 		console.error('Error-readIntroList: ', error);
 		if (error.response) {
@@ -21,4 +21,8 @@ const readIntroList = async () => {
 			console.error('Error setting up request: ', error.message);
 		}
 	}
+};
+
+export {
+	readIntroList,
 };

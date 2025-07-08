@@ -4,6 +4,7 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Toggle from '../../components/Intro/Toggle';
 import AddButton from '../../components/Intro/AddButton';
+import { readIntroList } from '@/api/Intro/introList';
 import { trackEvent } from '../../utils/ga4';
 import { theme } from '../../constants/theme';
 import { Color } from '../../constants/color';
@@ -22,18 +23,31 @@ const ViewOptions = () => {
 	const [recruits, setRecruits] = useState([]);
 
 	//(API) 자기소개서 목록 불러오기
+	// useEffect(() => {
+	// 	api
+	// 		.get('/history/intro/list')
+	// 		.then((response) => {
+	// 			console.log(response.data);
+	// 			const Data = response.data.data;
+	// 			setRecruits(Data);
+	// 			console.log(Data);
+	// 		})
+	// 		.catch((error) => {
+	// 			console.log(error);
+	// 		});
+	// }, []);
+
 	useEffect(() => {
-		api
-			.get('/history/intro/list')
-			.then((response) => {
-				console.log(response.data);
-				const Data = response.data.data;
+		const fetchIntroList = async () => {
+			try {
+				const Data = await readIntroList();
+				console.log('자소서 목록 조회:', Data);
 				setRecruits(Data);
-				console.log(Data);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+			} catch (error) {
+				console.error('Error:', error);
+			}
+		}
+		fetchIntroList();
 	}, []);
 
 	//토글 클릭
