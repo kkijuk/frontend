@@ -231,7 +231,6 @@ const History = () => {
 			) : (
 
 					<div style={{width:'100%', minHeight:'100vh',}}>
-						{/* <AddCareerModal></AddCareerModal> */}
 						<ScrollNavigatorContainer>
 							<ScrollNavigator
 								sections = {sections}

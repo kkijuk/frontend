@@ -23,20 +23,6 @@ const ViewOptions = () => {
 	const [recruits, setRecruits] = useState([]);
 
 	//(API) 자기소개서 목록 불러오기
-	// useEffect(() => {
-	// 	api
-	// 		.get('/history/intro/list')
-	// 		.then((response) => {
-	// 			console.log(response.data);
-	// 			const Data = response.data.data;
-	// 			setRecruits(Data);
-	// 			console.log(Data);
-	// 		})
-	// 		.catch((error) => {
-	// 			console.log(error);
-	// 		});
-	// }, []);
-
 	useEffect(() => {
 		const fetchIntroList = async () => {
 			try {

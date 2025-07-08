@@ -8,7 +8,7 @@ const useAuthStore = create((set) => ({
 
 	// 초기 상태 복원
 	restoreState: () => {
-		const token = localStorage.getItem('token');
+		const token = localStorage.getItem('token')
 		const refreshToken = localStorage.getItem('refreshToken');
 		const isProfileComplete = localStorage.getItem('isProfileComplete') === 'true';
 

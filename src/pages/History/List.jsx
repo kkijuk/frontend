@@ -19,24 +19,7 @@ const List = () => {
 
 	// 0. 마스터 마지막 수정 일시 가져오기
 	const [masterData, setMasterData] = useState({});
-	// 1안
-	// useEffect(() => {
-	// 	api
-	// 		.get('/history/intro/master')
-	// 		.then((response) => {
-	// 			const Data = response.data.data;
-	// 			console.log('내용조회: ', Data);
-	// 			setMasterData({
-	// 				updated_at: Data.updatedAt,
-	// 				state: Data.state,
-	// 			});
-	// 		})
-	// 		.catch((error) => {
-	// 			console.log('Error:', error);
-	// 		});
-	// }, []);
 
-	// 2안
 	useEffect(() => {
 		const fetchMaster = async () => {
 			try{
@@ -54,34 +37,6 @@ const List = () => {
 	}, []);
 
 	// 1. 자기소개서 목록 조회
-	// 1안
-	// useEffect(() => {
-	// 	api
-	// 		.get('/history/intro/list')
-	// 		.then((response) => {
-	// 			console.log(response.data);
-	// 			const Data = response.data.data;
-
-	// 			// 현재 날짜
-	// 			const now = new Date();
-
-				
-	// 			const expiredItems = Data.filter((item) => new Date(item.deadline) < now); // 경과한 공고 목록 필터링
-	// 			const activeItems =  Data.filter((item) => new Date(item.deadline) >= now); // 경과하지 않은 공고 목록 필터링
-	// 			//  setExpiredRecruits(expiredItems);
-
-	// 			// 상태 업데이트
-	// 			console.log('진행중인 공고 목록:', activeItems);
-	// 			setRecruits(activeItems);
-	// 			console.log('경과한 공고 목록:', expiredItems);
-	// 			setExpiredRecruits(expiredItems);
-	// 		})
-	// 		.catch((error) => {
-	// 			console.log(error);
-	// 		});
-	// }, []);
-
-	// 2안
 	useEffect(() => {
 		const fetchIntroLIst = async () => {
 			try {
