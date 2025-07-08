@@ -7,6 +7,7 @@ const History = lazy(() => import('@pages/History/History'));
 const ViewOptions = lazy(() => import('@pages/History/ViewOptions'));
 const Master = lazy(() => import('@pages/History/Master'));
 const Others = lazy(() => import('@pages/History/Others'));
+const List = lazy(() => import('@pages/History/List'));
 const Portfolio = lazy(() => import('@pages/History/Portfolio'));
 const MasterRewrite = lazy(() => import('@pages/History/MasterRewrite'));
 const OthersRewrite = lazy(() => import('@pages/History/OthersRewrite'));
@@ -32,6 +33,7 @@ export const historyRoutes = [
 			{
 				path: 'list/:state',
 				element: <ViewOptions />,
+				children: [{ path: '', element: <List/>}]
 			},
 			{ path: 'portfolio', element: <Portfolio /> },
 		],

@@ -109,7 +109,7 @@ const MasterRewrite = () => {
 		setData({ ...data, questions: updatedQuestions });
 	};
 
-	// 한줄 변경 핸들러
+	// 한줄 소개 변경 핸들러
 	const handleOneLinerChange = (field, value) => {
 		setData({ ...data, [field]: value });
 	};
