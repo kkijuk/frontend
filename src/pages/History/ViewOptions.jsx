@@ -162,6 +162,7 @@ const SButtonContainer = styled.div`
 	overflow-x: auto;
 	white-space: nowrap;
 	padding-bottom: 10px;
+	margin-top: 20px;
 
 	/* Hide scrollbar for all browsers */
 	scrollbar-width: none; /* Firefox */
@@ -171,6 +172,7 @@ const SButtonContainer = styled.div`
 		display: none; /* Safari and Chrome */
 	}
 	@media (max-width: ${theme.breakpoints.md}) {
+		margin-top: 16px;
 		width: 100%;
 		overflow-x: auto;
 	}
@@ -179,12 +181,16 @@ const SButtonContainer = styled.div`
 const SButton = styled.button`
 	height: 35px;
 	margin-right: 12px;
-	font-family: 'Regular';
+	padding: 6px 16px;
 	border: none;
 	border-radius: 10px;
-	padding: 6px 16px;
-	background-color: ${Color.gray06};
+
+	font-family: 'Regular';
+	font-size: 14px;
 	color: ${Color.gray02};
+
+	background-color: ${Color.gray06};
+
 	cursor: pointer;
 	white-space: nowrap;
 
@@ -197,8 +203,8 @@ const SButton = styled.button`
 const ToggleWrapper = styled.div`
 	display: inline-block;
 	position: absolute;
-	right: 20px;
-	top: 90px;
+	right: 0px;
+	top: 80px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		top: 130px;
