@@ -70,7 +70,7 @@ const Others = () => {
 								color: isDeadlineWithin7Days() ? `${Color.subRd}` : `${Color.gray02}`, 
 								marginBottom: '8px' 
 						}}>
-							공고 마감 일시 : {contents.deadline}
+							공고 마감 일시 : {contents.deadline} ({contents.timeSinceUpdate})
 						</p>
 						<p className="lastUpdated" style={{ marginTop: 0 }}>
 							마지막 수정일시: {contents.updatedAt}
@@ -126,21 +126,17 @@ export default Others;
 const BackgroundDiv = styled.div`
 	width: 100%;
 	height: 100%;
-	margin-top: 40px;
 	display: flex;
-	// align-items:center;
 	justify-content: center;
+	@media (max-width: ${theme.breakpoints.md}) {
+		margin-top: 32px;
+	}
 `;
 
 const BaseDiv = styled.div`
 	width: 820px;
-	// display:flex;
-	// margin-left:400px;
 	max-width: 820px;
 	position: relative;
-	@media (max-width: ${theme.breakpoints.md}) {
-			width: 100%;
-	}
 `;
 
 const SButton = styled.button`
@@ -164,8 +160,7 @@ const SButton = styled.button`
 `;
 const ContentTitle = styled.div`
 	position: relative;
-	margin-top: 10px;
-	margin-bottom: 33px;
+	margin-block: 40px;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -195,15 +190,19 @@ const Tag = styled.div`
 `;
 
 const DateWrapper = styled.div`
-	display: 'inline-block', 
-	position: 'absolute', 
-	right: 0
+	position: absolute;
+	right: 0px;
+	font-family: 'Regular';
+	font-size: 14px;
+
+	p {
+		text-align: right;
+	}
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		position: static;
 		margin-top: 10px;
 		p {
-			font-size: 14px;
 			text-align: left;
 		}	
 	}
@@ -221,11 +220,13 @@ const EditButton = styled.button`
 	cursor: pointer;
 `;
 
-const RecruitTitle = styled.h1`
+const RecruitTitle = styled.p`
+	font-family: 'Semibold';
+	font-weight: 700;
+	font-size: 28px;
 	display: inline-block;
-	margin-right: 12px;
+	margin-right: 24px;
 	white-space: nowrap;
-	overflow: hidden;
 	text-overflow: ellipsis;
 	max-width: 50%; 
 	position: relative;
@@ -239,20 +240,25 @@ const QuestionTitle = styled.div`
 	font-family: 'Semibold';
 	font-weight: 500;
 	font-size: 20px;
+	margin-bottom: 24px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		font-family: 'Regular';
 		font-size: 16px;
+		margin-bottom: 16px;
 	}
 `;
 
 const QuestionContent = styled.div`
-	width: 100%;
+	// width: 100%;
 	min-height:100px; 
 	white-space: pre-wrap; 
 	word-wrap: break-word;
-	margin-bottom: 20px;
+	margin-bottom: 60px;
 	font-family: Regular;
+	font-size: 16px;
+	padding: 0px 20px;
+	color: ${Color.gray02};
 	
 	@media (max-width: ${theme.breakpoints.md}) {
 		p {

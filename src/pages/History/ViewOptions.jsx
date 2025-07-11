@@ -82,7 +82,7 @@ const ViewOptions = () => {
 	};
 
 	return (
-		<>
+		<BaseDiv>
 			<SButtonContainer>
 				{isChecked && (
 					<SButton
@@ -150,18 +150,24 @@ const ViewOptions = () => {
 					});
 				}}
 			/>
-			<Outlet key={location.pathname} />
-		</>
+			<Section>
+				<Outlet key={location.pathname} />
+			</Section>
+		</BaseDiv>
 	);
 };
 export default ViewOptions;
+
+const BaseDiv = styled.div`
+	width: 100%;
+`;
 
 const SButtonContainer = styled.div`
 	width: 650px;
 	display: flex;
 	overflow-x: auto;
 	white-space: nowrap;
-	padding-bottom: 10px;
+	// padding-bottom: 10px;
 	margin-top: 20px;
 
 	/* Hide scrollbar for all browsers */
@@ -210,4 +216,13 @@ const ToggleWrapper = styled.div`
 		top: 130px;
 		right: 10px;
 	}
+`;
+
+const Section = styled.div`
+    height: 100%;
+    width: 100%;
+    
+    @media (max-width: ${theme.breakpoints.md}) {
+        padding: 0;
+    }
 `;

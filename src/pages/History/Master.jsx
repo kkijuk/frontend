@@ -17,7 +17,7 @@ const Master = () => {
 	const data = {
 		oneLiner: masterData?.oneLiner || '',
 		questions: masterData?.questionList || [],
-		updated_at: masterData?.updated_at || '',
+		updated_at: masterData?.updatedAt || '',
 		state: masterData?.state || 0,
 	}
 	const [showCreateButton, setShowCreateButton] = useState(false); // 자소서 생성 여부
@@ -81,12 +81,12 @@ const Master = () => {
 
 					return (
 						<div key={index}>
-						<QuestionTitle>
-							{question.title && question.title !== 'string' && question.title !== '' ? question.title : defaultTitle}
-						</QuestionTitle>
-						<ContentBox>
-							{question.content && question.content !== 'string' && question.content !== '' ? question.content : defaultContent}
-						</ContentBox>
+							<QuestionTitle>
+								{question.title && question.title !== 'string' && question.title !== '' ? question.title : defaultTitle}
+							</QuestionTitle>
+							<ContentBox>
+								{question.content && question.content !== 'string' && question.content !== '' ? question.content : defaultContent}
+							</ContentBox>
 						</div>
 					);
 					})
@@ -118,9 +118,7 @@ export default Master;
 const BackgroundDiv = styled.div`
 	width: 100%;
 	height: 100%;
-	margin-top: 40px;
 	display: flex;
-	// align-items:center;
 	justify-content: center;
 	@media (max-width: ${theme.breakpoints.md}) {
 		margin-top: 32px;
@@ -128,14 +126,9 @@ const BackgroundDiv = styled.div`
 `;
 
 const BaseDiv = styled.div`
-	width: 820px;
-	// display:flex;
-	// margin-left:400px;
+	width: 100%;
 	max-width: 820px;
 	position: relative;
-	@media (max-width: ${theme.breakpoints.md}) {
-		width: 100%;
-	}
 `;
 
 const SButton = styled.button`
@@ -160,8 +153,7 @@ const SButton = styled.button`
 
 const ContentTitle = styled.div`
 	position: relative;
-	margin-top: 10px;
-	margin-bottom: 33px;
+	margin-block: 40px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -170,11 +162,13 @@ const ContentTitle = styled.div`
 	}
 `;
 
-const OneLiner = styled.h1`
+const OneLiner = styled.p`
+  font-family: 'Semibold';
+  font-weight: 700;
+  font-size: 28px;
   display: inline-block;
   flex: 1;
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
   max-width: 60%;
   @media (max-width: ${theme.breakpoints.md}) {
@@ -185,14 +179,13 @@ const OneLiner = styled.h1`
 
 const LastUpdated = styled.p`
   display: inline-block;
-  position: absolute;
-  top: 10px;
-  right: 0;
   white-space: nowrap;
+  margin-block-start: 0;
   @media (max-width: ${theme.breakpoints.md}) {
     position: static;
 	margin: 0;
 	font-size: 14px;
+	margin-block-start: 8px;
   }
 `;
 
@@ -200,10 +193,12 @@ const QuestionTitle = styled.div`
 	font-family: 'Semibold';
 	font-weight: 500;
 	font-size: 20px;
+	margin-bottom: 24px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		font-family: 'Regular';
 		font-size: 16px;
+		margin-bottom: 16px;
 	}
 `;
 
@@ -217,6 +212,10 @@ const ContentBox = styled.div`
 	margin-bottom: 60px;
 	white-space: pre-wrap;
 	word-break: break-word;
+	padding: 0px 20px;
+	@media (max-width: ${theme.breakpoints.md}) {
+		font-size: 14px;
+	}
 `;
 const EditButton = styled.button`
 	width: 60px;
