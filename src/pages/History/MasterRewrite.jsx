@@ -294,14 +294,15 @@ const MasterRewrite = () => {
 export default MasterRewrite;
 
 const BackgroundDiv = styled.div`
-	width: 100%;
+	// width: 100%;
 	height: 100%;
 	margin-top: 40px;
 	display: flex;
 	flex-direction: column;
 	align-items:center;
+	
 	@media (max-width: ${theme.breakpoints.md}) {
-		width: 100%;
+		padding: 0 20px;
 	}
 `;
 
