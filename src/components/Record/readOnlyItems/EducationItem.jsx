@@ -44,7 +44,7 @@ const EducationItem = ({ data, isLastItem, onSave, onUpdate, onDelete, onClose }
 						<Oval status={data.state}></Oval>
 						<Line isLastItem={isLastItem} status={data.state}></Line>
 					</TimeLine>
-					<Container>
+					<Container isLastItem={isLastItem}>
 						<div>
 							<LevelTag 
 								status={data.state}

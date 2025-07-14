@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ListItem from '../../components/Intro/ListItem';
+import { readMaster } from '../../api/Intro/master';
+import { readIntroList } from '@/api/Intro/introList';
 import { theme } from '../../constants/theme';
 
 const List = () => {
@@ -17,48 +19,49 @@ const List = () => {
 
 	// 0. 마스터 마지막 수정 일시 가져오기
 	const [masterData, setMasterData] = useState({});
+
 	useEffect(() => {
-		api
-			.get('/history/intro/master')
-			.then((response) => {
-				const Data = response.data.data;
-				console.log('내용조회: ', Data);
+		const fetchMaster = async () => {
+			try{
+				const Data = await readMaster();
+				console.log('마스터 자기소개서 조회:', Data);
 				setMasterData({
 					updated_at: Data.updatedAt,
 					state: Data.state,
 				});
-			})
-			.catch((error) => {
-				console.log('Error:', error);
-			});
+			} catch (error) {
+				console.error('Error:', error);
+			}
+		}
+		fetchMaster();	
 	}, []);
 
 	// 1. 자기소개서 목록 조회
 	useEffect(() => {
-		api
-			.get('/history/intro/list')
-			.then((response) => {
-				console.log(response.data);
-				const Data = response.data.data;
+		const fetchIntroLIst = async () => {
+			try {
+				const Data = await readIntroList();
+				console.log('자소서 목록 조회:', Data);
 
 				// 현재 날짜
 				const now = new Date();
 
-				
+				// 필터링
 				const expiredItems = Data.filter((item) => new Date(item.deadline) < now); // 경과한 공고 목록 필터링
 				const activeItems =  Data.filter((item) => new Date(item.deadline) >= now); // 경과하지 않은 공고 목록 필터링
-				//  setExpiredRecruits(expiredItems);
 
 				// 상태 업데이트
 				console.log('진행중인 공고 목록:', activeItems);
 				setRecruits(activeItems);
 				console.log('경과한 공고 목록:', expiredItems);
 				setExpiredRecruits(expiredItems);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+			} catch (error) {
+				console.error('Error:', error);
+			}
+		}
+		fetchIntroLIst();
 	}, []);
+			
 
 	const filterdData = state === '3' ? recruits : recruits.filter((item) => item.state.toString() === state);
 

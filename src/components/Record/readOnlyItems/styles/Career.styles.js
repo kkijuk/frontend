@@ -129,14 +129,19 @@ const Container = styled.div`
 	display: flex;
 	height: auto;
 	flex-direction: row;
-	margin-bottom: 45px;
+	margin-bottom: ${({ isLastItem }) => (isLastItem ? '0' : '42px')};
 	font-family: 'Regular';
 	position: relative;
 	cursor: pointer;
+	
 	&:hover ${EditButton} {
 		opacity: 1;
 		cursor: pointer;
 	}
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		margin-bottom: ${({ isLastItem }) => (isLastItem ? '0' : '40px')};
+	};
 `;
 
 

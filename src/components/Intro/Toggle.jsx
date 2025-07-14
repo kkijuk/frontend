@@ -30,8 +30,9 @@ const Toggle = ({ checked, onChange }) => {
 
 const ToggleContainer = styled.div`
 	position: relative;
-	width: 150px;
-	height: 35px;
+	width: 132px;
+	height: 25px;
+	padding: 5px 8px;
 	@media (max-width: ${theme.breakpoints.md}) {
 		top: -199px;
 	}
@@ -41,6 +42,7 @@ const ToggleCheckbox = styled.input`
 	opacity: 0;
 	width: 0;
 	height: 0;
+	margin: 0;
 `;
 
 const ToggleLabel = styled.label`
@@ -78,15 +80,18 @@ const ToggleText = styled.span`
 `;
 
 const ToggleSwitch = styled.span`
-	content: '';
+	width: 49px;
+	height: 17px;
+	padding: 4px 8px;
+
 	position: absolute;
 	z-index: 1;
-	height: 25px;
-	width: 65px;
+	left: 6px;
+
 	background-color: ${Color.white};
 	border-radius: 10px;
 	transition: transform 0.4s;
-	left: 8px;
+
 	transform: ${(props) => (!props.checked ? 'translateX(70px)' : 'none')};
 `;
 
