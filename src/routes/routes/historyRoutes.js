@@ -12,7 +12,6 @@ const Portfolio = lazy(() => import('@pages/History/Portfolio'));
 const MasterRewrite = lazy(() => import('@pages/History/MasterRewrite'));
 const OthersRewrite = lazy(() => import('@pages/History/OthersRewrite'));
 const Select = lazy(() => import('@pages/History/Select'));
-const AddApply = lazy(() => import('@pages/History/AddApply'));
 const ResumePdf = lazy(() => import('@pages/History/ResumePDF'));
 
 export const historyRoutes = [
@@ -34,7 +33,7 @@ export const historyRoutes = [
 			{
 				path: 'list/:state',
 				element: <ViewOptions />,
-				children: [{ path: '', element: <List /> }],
+				children: [{ path: '', element: <List/>}]
 			},
 			{ path: 'portfolio', element: <Portfolio /> },
 		],
@@ -42,6 +41,5 @@ export const historyRoutes = [
 	{ path: ROUTES.HISTORY_MASTER_REWRITE, element: <MasterRewrite /> },
 	{ path: ROUTES.HISTORY_OTHERS_REWRITE, element: <OthersRewrite /> },
 	{ path: ROUTES.HISTORY_SELECT, element: <Select /> },
-	{ path: ROUTES.HISTORY_ADD_APPLY, element: <AddApply /> },
 	{ path: ROUTES.HISTORY_RESUME_EXPORT, element: <ResumePdf /> },
 ];

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { theme } from '../../../constants/theme';
+import { Color } from '@/constants/color'; // Assuming you have a color constants file
 
 const CareerTypeDropdown = ({ onchange }) => {
 	const [selectedCareerType, setSelectedCareerType] = useState('');
@@ -81,27 +83,27 @@ const Select = styled.select`
   border-radius: 10px;
   border: ${(props) =>
     props.className === "경력 구분을 선택해주세요"
-      ? "1px solid var(--gray-02, #707070)"
+      ? `1px solid ${Color.gray02}`
       : "none"};
   background: ${(props) =>
-    props.className === "경력 구분을 선택해주세요" ? "var(--white, #FFF)" : "#F5F5F5"};
+    props.className === "경력 구분을 선택해주세요" ? Color.white : Color.gray06};
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 10px;
   font-size: 16px;
   font-weight: 400;
-  color: ${(props) => (props.className === "placeholder" ? "#d9d9d9" : "black")};
+  color: ${(props) => (props.className === "placeholder" ? Color.gray04 : Color.black)};
   cursor: pointer;
 `;
 
 const Option = styled.option`
-	background-color: #fff;
-	color: #707070;
+	background-color: ${Color};
+	color: ${Color.gray02};
 	font-family:'Regular';
 
 	&[value=''] {
-		color: #a9a9a9; /* placeholder 색상 */
+		color: ${Color.gray02}; /* placeholder 색상 */
 	}
 `;
 
@@ -115,15 +117,15 @@ const DropdownContainer = styled.div`
 const DropdownHeader = styled.div`
   height: 45px;
   border-radius: 10px;
-  border: 1px solid #707070;
-  background: var(--white, #fff);
+  border: 1px solid ${Color.gray02};
+  background: ${Color.white};
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 10px;
   font-size: 16px;
   font-weight: 400;
-  color: ${(props) => (props.isPlaceholder ? "#d9d9d9" : "black")};
+  color: ${(props) => (props.isPlaceholder ? Color.gray04 : Color.black)};
   cursor: pointer;
 `;
 
@@ -135,7 +137,7 @@ const Text = styled.span`
 const Arrow = styled.div`
   width: 5px;
   height: 5px;
-  border: solid #d9d9d9;
+  border: solid ${Color.gray04};
   border-width: 0 2px 2px 0;
   transform: ${(props) => (props.isOpen ? "rotate(45deg)" : "rotate(135deg)")};
   transition: transform 0.2s;
@@ -145,9 +147,9 @@ const DropdownList = styled.ul`
   position: absolute;
   top: 50px;
   width: 100%;
-  border: 1px solid var(--gray-02, #707070);
+  border: 1px solid ${Color.gray02};
   border-radius: 10px;
-  background: var(--white, #fff);
+  background: ${Color.white};
   list-style: none;
   padding: 10px 0;
   margin: 0;
@@ -161,10 +163,10 @@ const DropdownItem = styled.li`
   text-align: center;
   cursor: pointer;
   color: black;
-  background: white;
+  background: ${Color.white};
 
   &:hover {
-    background: var(--gray-06, #f5f5f5);
+    background: ${Color.gray06};
   }
 
   & + & {

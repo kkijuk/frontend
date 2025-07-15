@@ -2,24 +2,28 @@ import React from 'react';
 import styled from 'styled-components';
 import '../../pages/History/history.css';
 import { theme } from '../../constants/theme';
+import { Color } from '../../constants/color';
 
 const ListItem = ({ title, updated_at, deadline, state, timeSinceUpdate, onClick }) => {
+	const daysLeft = Math.ceil((new Date(deadline) - new Date()) / (1000 * 60 * 60 * 24));
+	const deadlineColor = daysLeft <= 7 ? Color.subRd : Color.gray02;
+
 	return (
-		<ListBox onClick={onClick}>
-			<h3 style={{ fontWeight: 800, margin: '10px 0px', color: title === 'MASTER' ? '#3AAF85' : 'black' }}>{title}</h3>
-			<InfoBox>
-				<div>
-					<p className="lastupdated" style={{ color: '#707070', margin: '5px 0px', fontSize: '15px' }}>
-						마지막 수정 일시: {updated_at}
-					</p>
-					{title !== 'MASTER' && (
-						<p className="lastupdated" style={{ color: '#FA7C79', margin: '0px 0px', fontSize: '15px' }}>
-							공고 마감 일시: {deadline} <span style={{ fontWeight: 'Bold' }}>({timeSinceUpdate})</span>
-						</p>
-					)}
-				</div>
-				<Tag state={state}>{state === 0 ? '작성중' : state === 1 ? '작성완료' : state === 2 ? '보관' : ''}</Tag>
-			</InfoBox>
+		<ListBox title={title} onClick={onClick}>
+			<LeftSide>
+				<h3>{title}</h3>
+				<InfoBox>
+					<div>
+						<p style={{color: `${Color.gray02}`}}>마지막 수정 일시: {updated_at}</p>
+						{title !== 'MASTER' && (
+							<p style={{color: deadlineColor}}>
+								공고 마감 일시: {deadline} <span style={{ fontWeight: 'Bold' }}>({timeSinceUpdate})</span>
+							</p>
+						)}
+					</div>
+				</InfoBox>
+			</LeftSide>
+			<Tag state={state}>{state === 0 ? '작성중' : state === 1 ? '작성완료' : state === 2 ? '보관' : ''}</Tag>
 		</ListBox>
 	);
 };
@@ -27,67 +31,46 @@ const ListItem = ({ title, updated_at, deadline, state, timeSinceUpdate, onClick
 export default ListItem;
 
 const ListBox = styled.div`
-	width: 780px;
+	flex: 1;
+	padding: ${props => (props.title === 'MASTER' ? '20px 30px' : '10px 30px')};
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+
 	border-radius: 10px;
-	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-	padding: 15px 20px;
-	position: relative;
-	margin: 15px 0px;
+	box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
+
 	cursor: pointer;
+
+	h3 {
+		font-size: 18px;
+		font-family: 'Regular';
+		font-weight: 700;
+		margin: 0px;
+		color: ${(props) => (props.title == "MASTER" ? Color.main01 : Color.black)};
+	}
+
+	p {
+		font-family: 'Regular';
+		font-size: 12px;
+		margin: 0px;
+	}
+
 	@media (max-width: ${theme.breakpoints.md}) {
-		width: 100%;
 		height: auto;
-		padding: 16px 20px;
-		max-width: 100%;
-		margin: 10px 0px;
-
-		h3 {
-			font-size: 18px;
-		}
-
-		p {
-			font-size: 12px;
-		}
+		padding: ${props => (props.title === 'MASTER' ? '16px 20px' : '12px 20px')};
+		align-items: flex-end;
 	}
 `;
 
-const Tag = styled.div`
-	height: 22px;
-	padding: 0px 16px;
-	position: absolute;
-	top: 70px;
-	right: 10px;
-	font-size: 12px;
-	font-family: Regular;
+const LeftSide = styled.div`
 	display: flex;
-	justify-content: center;
-	align-items: center;
-	border-radius: 20px;
-	border: ${(props) => (props.state === 1 ? '1px solid #707070' : 'none')};
-	background: ${(props) => {
-		switch (props.state) {
-			case 0:
-				return '#3AAF85';
-			case 1:
-				return '#FFF';
-			case 2:
-				return '#707070';
-		}
-	}};
-
-	color: ${(props) => {
-		switch (props.state) {
-			case 0:
-				return '#FFF';
-			case 1:
-				return '#707070';
-			case 2:
-				return '#FFF';
-		}
-	}};
+	flex-direction: column;
+	gap: 8px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
-		position: static;
+		// width: 100%;
 	}
 `;
 
@@ -96,3 +79,43 @@ const InfoBox = styled.div`
 	flex-direction: row;
 	align-items: center;
 `
+
+const Tag = styled.div`
+	height: 22px;
+	padding: 0px 16px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	font-size: 12px;
+	font-family: Regular;
+	border-radius: 20px;
+	border: ${(props) => (props.state === 1 ? `1px solid ${Color.gray02}` : 'none')};
+	background: ${(props) => {
+		switch (props.state) {
+			case 0:
+				return Color.main01;
+			case 1:
+				return Color.white;
+			case 2:
+				return Color.gray02;
+		}
+	}};
+
+	color: ${(props) => {
+		switch (props.state) {
+			case 0:
+				return Color.white;
+			case 1:
+				return Color.gray02;
+			case 2:
+				return Color.white;
+		}
+	}};
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		position: static;
+	}
+`;
+
+

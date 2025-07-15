@@ -1,5 +1,9 @@
 import React from "react";
-import styled from "styled-components";
+import {
+    Container,
+    List,
+    Button
+} from './Components.styles';
 
 const ScrollNavigator =({ sections, activeSection, onClick})=>{
 
@@ -29,42 +33,5 @@ const ScrollNavigator =({ sections, activeSection, onClick})=>{
 
 export default ScrollNavigator;
 
-const Container = styled.nav`
-    position: fixed;
-    top: 210px;
-    left: 130px;
-    padding: 25px 15px;
-    width: 141px;
-    border: none;
-    border-radius: 16px;
-    background: var(--gray-05, #F1F1F1);
-    height: 520px;
-`
 
-const List = styled.ul`
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-`
-
-const Button = styled.button`
-    width: 100%;
-    height: 35px;
-    background: ${({ isActive }) => (isActive ? "#fff" : "transparent")};
-    color: black;
-    border:none;
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: left;
-    font-size: 16px;
-    font-family: 'SemiBold';
-    font-weight: 500;
-    transition: background 0.3s ease;
-
-    &:hover {
-        background: #e0e0e0;
-    }
-`
 

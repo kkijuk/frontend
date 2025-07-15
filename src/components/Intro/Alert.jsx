@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { Color } from '@constants/color';
 
 const Alert = ({ closeModal, deleteResume }) => {
 	const navigate = useNavigate();
@@ -15,7 +16,7 @@ const Alert = ({ closeModal, deleteResume }) => {
 				<h3>자기소개서를 삭제하면 복구할 수 없습니다.</h3>
 				<h3>이 자기소개서를 정말로 삭제하시겠습니까?</h3>
 				<ButtonGroup>
-					<Button onClick={closeModal} style={{ border: '1px solid #77AFF2', color: '#77AFF2' }}>
+					<Button onClick={closeModal} style={{ border: `1px solid ${Color.subBu}`, color: `${Color.subBu}` }}>
 						취소
 					</Button>
 					<Button onClick={deleteResume} style={{ border: '1px solid #FA7C79', color: 'red' }}>

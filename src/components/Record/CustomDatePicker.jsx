@@ -91,7 +91,7 @@ const PickerContainer = styled.div`
   height: 191px;
   background: white;
   border-radius: 10px;
-  border: 1px solid var(--gray-02, ${Color.gray03});
+  border: 1px solid ${Color.gray03};
   padding: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -128,13 +128,13 @@ const YearItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${(props) => (props.isSelected ? Color.gray05 : "white")};
-  color: ${(props) => (props.isSelected ? "black" : Color.gray02)};
+  background: ${(props) => (props.isSelected ? Color.gray05 : Color.white)};
+  color: ${(props) => (props.isSelected ? Color.black : Color.gray02)};
   font-family: Regular;
   cursor: pointer;
   border-radius: 10px;
   &:hover {
-    background: var(--gray-06, #f5f5f5);
+    background: ${Color.gray06};
   }
 `;
 
@@ -143,18 +143,18 @@ const MonthItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${(props) => (props.isSelected ? "var(--gray-06, #f5f5f5)" : "white")};
-  color: ${(props) => (props.isSelected ? "black" : "gray")};
+  background: ${(props) => (props.isSelected ? Color.gray06 : Color.white)};
+  color: ${(props) => (props.isSelected ? Color.black : Color.gray02)};
   font-family: Regular;
   cursor: pointer;
   border-radius: 10px;
   &:hover {
-    background: var(--gray-06, #f5f5f5);
+    background: ${Color.gray06};
   }
 `;
 
 const ConfirmButton = styled.button`
-  background: var(--green, #3AAF85);
+  background: ${Color.main01};
   width:180px;
   color: white;
   border: none;
@@ -164,6 +164,6 @@ const ConfirmButton = styled.button`
   font-family: Regular;
   cursor: pointer;
   &:hover {
-    background: var(--dark-green, #3AAF85);
+    background: ${Color.main01};
   }
 `;

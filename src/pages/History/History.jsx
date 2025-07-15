@@ -14,7 +14,7 @@ import AddLicenseForm from '../../components/Record/addForms/AddLicenseForm';
 import AddFileForm from '../../components/Record/addForms/AddFileForm';
 import EducationItem from '../../components/Record/readOnlyItems/EducationItem';
 // import ActivityItem from '../../components/Record/readOnlyItems/ActivityItem';
-import CareerItem from '../../components/Record/CareerItem';
+import CareerItem from '../../components/Record/readOnlyItems/CareerItem';
 import AwardItem from '../../components/Record/readOnlyItems/AwardItem';
 import LicenseItem from '../../components/Record/readOnlyItems/LicenseItem';
 import SkillItem from '../../components/Record/readOnlyItems/SkillItem';
@@ -29,6 +29,7 @@ import { trackEvent } from '../../utils/ga4';
 import { isEqual } from 'lodash';
 import { useDebounce } from 'use-debounce';
 import { theme } from '../../constants/theme'; 
+import { Color } from '@/constants/color';
 import SvgIcon from '@/components/shared/SvgIcon';
 
 const History = () => {
@@ -230,7 +231,6 @@ const History = () => {
 			) : (
 
 					<div style={{width:'100%', minHeight:'100vh',}}>
-						{/* <AddCareerModal></AddCareerModal> */}
 						<ScrollNavigatorContainer>
 							<ScrollNavigator
 								sections = {sections}
@@ -305,7 +305,7 @@ const History = () => {
 									});
 									toggleAddForm('educations');
 								}}>
-									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+									<SvgIcon name='addButton'size='16' />
 								</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
@@ -346,7 +346,7 @@ const History = () => {
 									});
 									handleOpenCareerModal("EMP");
 								}}>
-									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+									<SvgIcon name='addButton'size='16'/>
 								</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
@@ -381,7 +381,7 @@ const History = () => {
 									});
 									handleOpenCareerModal("ACTIVITY");
 								}}>
-									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+									<SvgIcon name='addButton'size='16'/>
 								</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
@@ -416,7 +416,7 @@ const History = () => {
 									});
 									handleOpenCareerModal("PROJECT");
 								}}>
-									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+									<SvgIcon name='addButton'size='16'/>
 								</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
@@ -451,7 +451,7 @@ const History = () => {
 									});
 									handleOpenCareerModal("EDU");
 								}}>
-									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+									<SvgIcon name='addButton'size='16'/>
 								</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
@@ -486,7 +486,7 @@ const History = () => {
 									});
 									toggleAddForm('awards');
 								}}>
-									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+									<SvgIcon name='addButton'size='16'/>
 								</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
@@ -526,7 +526,7 @@ const History = () => {
 									});
 									toggleAddForm('licenses');
 								}}>
-									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+									<SvgIcon name='addButton'size='16'/>
 								</AddButton>
 							</SectionHeader>
 							<ContentWrapper style={{gap:'50px'}}>
@@ -589,7 +589,7 @@ const History = () => {
 									});
 									toggleAddForm('skills');
 								}}>
-									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+									<SvgIcon name='addButton'size='16'/>
 								</AddButton>
 							</SectionHeader>
 							<ContentWrapper>
@@ -638,7 +638,7 @@ const History = () => {
 									});
 									toggleAddForm('files');
 								}}>
-									<SvgIcon name='addButton'size='16' color='#D9D9D9'/>
+									<SvgIcon name='addButton'size='16'/>
 								</AddButton>
 							</SectionHeader>
 							<ContentWrapper style={{gap:'50px'}}>
@@ -699,11 +699,12 @@ const UserDetailsContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-block: 30px;
+	margin-block: 20px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		display: block;
 		margin-left: 0px;
+		margin-block: 24px;
 	}
 `
 const ProfileAndInfoWrapper = styled.div`
@@ -718,11 +719,8 @@ const ProfileAndInfoWrapper = styled.div`
 
 const UpdatedAt = styled.div`
   width: 100%;
-  position: relative;
-  top: 0;
-  right: 20px;
   font-size: 14px;
-  color: #707070;
+  color: ${Color.gray02};
   font-family: Regular;
   text-align: right;
 
@@ -745,14 +743,20 @@ const UserInfoWrapper = styled.div`
 const InfoTable = styled.div`
 	display: grid;
 	grid-template-columns: auto 1fr; 
-	row-gap: 15px; 
-	column-gap: 30px;
-	margin-top: 20px;
+	row-gap: 16px; 
+	column-gap: 32px;
+	margin-top: 15.5px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		row-gap: 12px;
+		column-gap: 20px;
+		margin-top: 24px;
+	}
 `
 
 const InfoLabel = styled.div`
   font-size: 18px;
-  color: #707070;
+  color: ${Color.gray02};
   font-family: Regular;
 
   @media (max-width: ${theme.breakpoints.md}) {
@@ -762,19 +766,19 @@ const InfoLabel = styled.div`
 
 const InfoValue = styled.div`
   font-size: 14px;
-  color: #707070;
+  color: ${Color.gray02};
   font-family: Regular;
 `;
 
 const SectionWrapper = styled.div`
-  margin-bottom: 40px;
-  width:100%;
-  padding-top:25px;
-  padding-bottom:25px;
+	margin-block: 32px;
 `;
 
 const SectionTitle = styled.h2`
   font-size: 24px;
+  font-family: 'normal';
+  font-weight: 700;
+  line-height: normal;
 
   @media (max-width: ${theme.breakpoints.md}) {
     font-size: 20px;
@@ -782,21 +786,15 @@ const SectionTitle = styled.h2`
 `;
 
 const SectionHeader = styled.div`
-	width:100%;
-	height: auto;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin:0px;
-.
-  h2 {
-    font-size: 24px;
-    font-weight: bold;
-  }
+	margin-bottom: 24px;
+	padding: 0px;
 
   button {
-    background: var(--main-01, #3AAF85);
-    color: var(--white, #FFF);
+    background: ${Color.main01};
+    color: ${Color.white};
     border: none;
     border-radius: 10px;
     padding: 5px 10px;
@@ -809,7 +807,6 @@ const ContentWrapper = styled.div`
     flex-direction: column;
     align-items: center; /* 수평 가운데 정렬 */
     justify-content: center; /* 수직 가운데 정렬 (필요 시) */
-    margin-top: 20px; /* SectionHeader와 간격 조절 */
     width: 100%; /* 부모 컨테이너의 너비 사용 */
 `;
 
@@ -825,9 +822,9 @@ const AddButton = styled.div`
 	height: 42px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	border: 1px solid var(--gray-03, #D9D9D9);
-	background:#FFFFFF;
-	color: var(--gray-03, #D9D9D9);
+	border: 1px solid ${Color.gray03};
+	background: ${Color.white};
+	color: ${Color.gray03};
 	font-family: Pretendard;
 	font-size: 32px;
 	font-style: normal;
@@ -841,7 +838,7 @@ const AddButton = styled.div`
 const Line = styled.div`
 	width: 100%;
 	height: 2px;
-	background:#F1F1F1;
+	background: ${Color.gray05};
 `
 
 const Section = styled.div`
@@ -869,8 +866,8 @@ const Tag = styled.div`
 	width: 81px;
 	height: 22px;
 	flex-shrink: 0;
-	background:#707070;
-	color: var(--white, #FFF);
+	background: ${Color.gray02};
+	color: ${Color.white};
 	font-family: Regular;
 	font-size: 14px;
 	display: flex;
@@ -883,14 +880,14 @@ const Tag = styled.div`
 const ProfileBox = styled.div`
 	width: 150px;
 	height: 200px;
-	background: var(--gray-05, #F1F1F1);
+	background: ${Color.gray05};
 `
 
 
 const NullModeAddress = styled.span`
   text-decoration: underline;
   cursor: pointer;
-  color: #999;
+  color: ${Color.gray03};
 `;
 
 // 주소가 존재할 때 hover 시 '수정' 버튼 보이기
@@ -904,9 +901,9 @@ const EditButton = styled.button`
 	width: 40px;
 	height: 19px;
 	border-radius: 7px;
-	color: var(--gray-02, #707070);
+	color: ${Color.gray02};
 	font-size: 12px;
-	background: var(--gray-06, #F5F5F5);
+	background: ${Color.gray06};
 	cursor: pointer;
 	border:none;
 	margin-left: 20px;
@@ -921,7 +918,7 @@ const EditAddressContainer = styled.div`
 
 const AddressInput = styled.input`
   font-size: 14px;
-  color:#707070;
+  color: ${Color.gray02};
   width: 200px;
   border:none;
 `;
@@ -935,9 +932,9 @@ const SaveButton = styled.button`
 	width: 42px;
 	height: 19px;
 	border-radius: 7px;
-	color: var(--gray-02, #707070);
+	color: ${Color.gray02};
 	font-size: 12px;
-	background: var(--gray-06, #F5F5F5);
+	background: ${Color.gray06};
 	cursor: pointer;
 	border:none;
 	display:flex;
@@ -948,9 +945,9 @@ const CancelButton = styled.button`
 	width: 42px;
 	height: 19px;
 	border-radius: 7px;
-	color: var(--gray-02, #F5F5F5);
+	color: ${Color.gray02};
 	font-size: 12px;
-	background: var(--gray-06, #707070);
+	background: ${Color.gray06};
 	cursor: pointer;
 		border:none;
 	display:flex;

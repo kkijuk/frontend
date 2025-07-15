@@ -1,24 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { Color } from '@/constants/color'; // Color 상수 파일에서 색상 상수 가져오기
 
 const Container = styled.div`
 	width: 380px;
-	border: 1px solid var(--gray-02, #707070); /* 컨테이너에 보더 추가 */
+	border: 1px solid ${Color.gray02} /* 컨테이너에 보더 추가 */
 	display: flex;
 	flex-direction: column;
 	align-items: center; /* 자식 요소들을 수평 가운데 정렬 */
-	background: var(--gray-04, #e0e0e0);
+	background: ${Color.gray04};
 `;
 
 const Title = styled.div`
-	color: var(--black, #000);
+	color: ${Color.black};
 	font-family: Pretendard;
 	font-size: 20px;
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
 
-	border: 1px solid black;
+	border: 1px solid ${Color.black};
 	margin-top: 30px;
 	margin-bottom: 25px;
 	text-align: center; /* 텍스트 가운데 정렬 */
@@ -34,7 +35,7 @@ const Nav = styled.div`
 `;
 
 const NavText = styled.div`
-	color: ${(props) => (props.isSelected ? 'var(--black, #000)' : 'var(--gray-02, #707070)')};
+	color: ${(props) => (props.isSelected ? Color.black : Color.gray02)};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 20px;
@@ -52,14 +53,14 @@ const Underline = styled.div`
 	left: ${(props) => props.position}px;
 	width: ${(props) => props.width}px;
 	height: 5px;
-	background: var(--main-01, #3aaf85);
+	background: ${Color.subRd};
 `;
 
 const SearchWrapper = styled.div`
 	position: relative;
 	width: 325px;
 	margin: 20px 0;
-	border: 1px solid black;
+	border: 1px solid ${Color.black};
 `;
 
 const Search = styled.input`
@@ -68,8 +69,8 @@ const Search = styled.input`
 	padding: 7px 12px; /* 내부 패딩 */
 	padding-right: 40px; /* 오른쪽 아이콘 공간 확보 */
 	border-radius: 10px;
-	background: #fff;
-	border: 1px solid var(--gray-02, #707070);
+	background: ${Color.white};
+	border: 1px solid ${Color.gray02};
 	box-sizing: border-box; /* 패딩과 보더 포함 */
 `;
 
@@ -80,7 +81,7 @@ const Icon = styled.svg`
 	transform: translateY(-50%);
 	width: 25px;
 	height: 25px;
-	fill: #707070;
+	fill: ${Color.gray02};
 	cursor: pointer;
 `;
 

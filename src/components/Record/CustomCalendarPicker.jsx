@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../constants/theme";
+import { Color } from "@/constants/color";
 
 const CustomCalendarPicker = ({ value, onChange }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -90,8 +91,8 @@ const Container = styled.div`
   width: 261px;
   height: 280px;
   border-radius: 10px;
-  border: 1px solid var(--gray-03, #d9d9d9);
-  background: var(--white, #fff);
+  border: 1px solid ${Color.gray03};
+  background: ${Color.white};
   padding: 10px;
   box-sizing: border-box;
   display: flex;
@@ -131,7 +132,7 @@ const DayLabel = styled.div`
   font-size: 14px;
   font-family: Bold;
   color: ${(props) =>
-    props.day === "일" ? "#FA7C79" : props.day === "토" ? "#77AFF2" : "var(--gray-02, #707070)"};
+    props.day === "일" ? Color.subRd : props.day === "토" ? Color.subBu : Color.gray02};
 `;
 
 const CalendarGrid = styled.div`
@@ -145,12 +146,12 @@ const CalendarDay = styled.div`
   padding: 8px 0;
   border-radius: 5px;
   font-size: 14px;
-  color: ${(props) => (props.isCurrentMonth ? "black" : "var(--gray-02, #707070)")};
+  color: ${(props) => (props.isCurrentMonth ? Color.black : Color.gray02)};
   cursor: pointer;
-  background: ${(props) => (props.isCurrentMonth ? "white" : "transparent")};
+  background: ${(props) => (props.isCurrentMonth ? Color.white : "transparent")};
 
   &:hover {
-    background: var(--gray-04, #eaeaea);
+    background: ${Color.gray04};
   }
 `;
 
