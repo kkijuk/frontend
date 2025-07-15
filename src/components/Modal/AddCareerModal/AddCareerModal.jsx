@@ -241,8 +241,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 활동명 */}
 						<FormItem spanTwoColumns>
 							<label>
-								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
+								활동명 <SvgIcon name="ellipse"/>
+								<span>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -259,8 +259,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 별칭 */}
 						<FormItem spanTwoColumns>
 							<label>
-								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
+								별칭 <SvgIcon name="ellipse"/>
+								<span>
 									동아리의 정식 명칭을 작성해주세요.
 								</span>
 							</label>
@@ -277,28 +277,31 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 기간 */}
 						<FormItem spanTwoColumns>
 							<label>
-								기간 <span style={{ color: '#FC5555' }}>*</span>
+								기간 <SvgIcon name="ellipse"/>
 							</label>
-						</FormItem>
-						
-						{/* 시작날짜 */}
-						<FormItem isPeriod={true}>
-							<DateInput value={startdate} onChange={setStartdate} />
-							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
-						</FormItem>
-						
-						{/* 종료날짜 */}
-						<FormItem isPeriod={true}>
-							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
-							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
-							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
-							{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
+							<PeriodWrapper>
+								{/* 시작날짜 */}
+								<FormItem isPeriod={true}>
+									<DateInput value={startdate} onChange={setStartdate} />
+									{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
+								</FormItem>
+								<Tilide>~</Tilide>
+								{/* 종료날짜 */}
+								<FormItem isPeriod={true}>
+									<EnddateWrapper>
+										<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
+										<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
+										{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
+										{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
+									</EnddateWrapper>
+								</FormItem>
+							</PeriodWrapper>
 						</FormItem>
 
 						{/* 소속 */}
 						<FormItem>
-							<label style={{ marginBottom: '5px' }}>
-								소속 <span style={{ color: '#FC5555' }}>*</span>
+							<label>
+								소속 <SvgIcon name="ellipse"/>
 							</label>
 							<Affiliation1
 								value={location}
@@ -311,7 +314,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 
 						{/* 역할 */}
 						<FormItem>
-							<label style={{ marginBottom: '5px' }}>역할</label>
+							<label>역할</label>
 							<input
 								type="text"
 								value={role}
@@ -327,8 +330,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 활동명 */}
 						<FormItem spanTwoColumns>
 							<label>
-								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
+								활동명 <SvgIcon name="ellipse"/>
+								<span>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -344,8 +347,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 별칭 */}
 						<FormItem spanTwoColumns>
 							<label>
-								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
+								별칭 <SvgIcon name="ellipse"/>
+								<span>
 									대외활동의 정식 명칭을 작성해주세요.
 								</span>
 							</label>
@@ -361,27 +364,33 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 기간 */}
 						<FormItem spanTwoColumns>
 							<label>
-								기간 <span style={{ color: '#FC5555' }}>*</span>
+								기간 <SvgIcon name="ellipse"/>
 							</label>
+							<PeriodWrapper>
+								{/* 시작날짜 */}
+								<FormItem isPeriod={true}>
+									<DateInput value={startdate} onChange={setStartdate} />
+									{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
+								</FormItem>
+								<Tilide>~</Tilide>
+								{/* 종료날짜 */}
+								<FormItem isPeriod={true}>
+									<EnddateWrapper>
+										<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
+										<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
+										{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
+										{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
+									</EnddateWrapper>
+								</FormItem>
+							</PeriodWrapper>
 						</FormItem>
 
-						{/* 시작날짜 */}
-						<FormItem isPeriod={true}>
-							<DateInput value={startdate} onChange={setStartdate} />
-							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
-						</FormItem>
-						{/* 종료날짜 */}
-						<FormItem isPeriod={true}>
-							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
-							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
-							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
-							{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
-						</FormItem>
+
 
 						{/* 주최 */}
 						<FormItem>
 							<label>
-								주최 <span style={{ color: '#FC5555' }}>*</span>
+								주최 <SvgIcon name="ellipse"/>
 							</label>
 							<input
 								type="text"
@@ -422,8 +431,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 활동명 */}
 						<FormItem spanTwoColumns>
 							<label>
-								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
+								활동명 <SvgIcon name="ellipse"/>
+								<span>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -439,8 +448,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 별칭 */}
 						<FormItem spanTwoColumns>
 							<label>
-								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
+								별칭 <SvgIcon name="ellipse"/>
+								<span>
 									공모전/대회의 정식 명칭을 작성해주세요.
 								</span>
 							</label>
@@ -456,27 +465,31 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 기간 */}
 						<FormItem spanTwoColumns>
 							<label>
-								기간 <span style={{ color: '#FC5555' }}>*</span>
+								기간 <SvgIcon name="ellipse"/>
 							</label>
-						</FormItem>
-
-						{/* 시작날짜 */}
-						<FormItem isPeriod={true}>
-							<DateInput value={startdate} onChange={setStartdate} />
-							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
-						</FormItem>
-						{/* 종료날짜 */}
-						<FormItem isPeriod={true}>
-							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
-							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
-							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
-							{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
+							<PeriodWrapper>
+								{/* 시작날짜 */}
+								<FormItem isPeriod={true}>
+									<DateInput value={startdate} onChange={setStartdate} />
+									{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
+								</FormItem>
+								<Tilide>~</Tilide>
+								{/* 종료날짜 */}
+								<FormItem isPeriod={true}>
+									<EnddateWrapper>
+										<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
+										<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
+										{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
+										{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
+									</EnddateWrapper>
+								</FormItem>
+							</PeriodWrapper>
 						</FormItem>
 
 						{/* 주최 */}
 						<FormItem spanTwoColumns>
 							<label>
-								주최 <span style={{ color: '#FC5555' }}>*</span>
+								주최 <SvgIcon name="ellipse"/>
 							</label>
 							<input
 								type="text"
@@ -506,8 +519,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 활동명 */}
 						<FormItem spanTwoColumns>
 							<label>
-								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
+								활동명 <SvgIcon name="ellipse"/>
+								<span>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -523,8 +536,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 별칭 */}
 						<FormItem spanTwoColumns>
 							<label>
-								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
+								별칭 <SvgIcon name="ellipse"/>
+								<span>
 									프로젝트의 이름을 작성해주세요.
 								</span>
 							</label>
@@ -540,27 +553,33 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 기간 */}
 						<FormItem spanTwoColumns>
 							<label>
-								기간 <span style={{ color: '#FC5555' }}>*</span>
+								기간 <SvgIcon name="ellipse"/>
 							</label>
+							<PeriodWrapper>
+								{/* 시작날짜 */}
+								<FormItem isPeriod={true}>
+									<DateInput value={startdate} onChange={setStartdate} />
+									{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
+								</FormItem>
+								<Tilide>~</Tilide>
+								{/* 종료날짜 */}
+								<FormItem isPeriod={true}>
+									<EnddateWrapper>
+										<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
+										<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
+										{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
+										{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
+									</EnddateWrapper>
+								</FormItem>
+							</PeriodWrapper>
 						</FormItem>
 
-						{/* 시작날짜 */}
-						<FormItem isPeriod={true}>
-							<DateInput value={startdate} onChange={setStartdate} />
-							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
-						</FormItem>
-						{/* 종료날짜 */}
-						<FormItem isPeriod={true}>
-							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
-							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
-							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
-							{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
-						</FormItem>
+						
 
 						{/* 소속 */}
 						<FormItem spanTwoColumns>
 							<label style={{ marginBottom: '5px' }}>
-								소속 <span style={{ color: '#FC5555' }}>*</span>
+								소속 <SvgIcon name="ellipse"/>
 							</label>
 							<Affiliation2
 								onAffiliationChange={(newLocation) => {
@@ -589,9 +608,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 분류 */}
 						<FormItem>
 							<label>
-								분류 <span style={{ color: '#FC5555' }}>*</span>
+								분류 <SvgIcon name="ellipse"/>
 							</label>
-							{/* <CareerTypeDropdown onChange={(e)=>setCareerType(e.target.value)}></CareerTypeDropdown> */}
 							<CareerTypeDropdown2
 								options={careerOptions}
 								placeholder="경력 구분을 선택해주세요."
@@ -606,8 +624,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 근무처 */}
 						<FormItem>
 							<label>
-								근무처 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
+								근무처 <SvgIcon name="ellipse"/>
+								<span>
 									근무한 곳의 이름을 작성해주세요.
 								</span>
 							</label>
@@ -622,8 +640,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 활동명 */}
 						<FormItem spanTwoColumns>
 							<label>
-								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
+								활동명 <SvgIcon name="ellipse"/>
+								<span>
 									경력의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -639,21 +657,25 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 기간 */}
 						<FormItem spanTwoColumns>
 							<label>
-								기간 <span style={{ color: '#FC5555' }}>*</span>
+								기간 <SvgIcon name="ellipse"/>
 							</label>
-						</FormItem>
-
-						{/* 시작날짜 */}
-						<FormItem isPeriod={true}>
-							<DateInput value={startdate} onChange={setStartdate} />
-							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
-						</FormItem>
-						{/* 종료날짜 */}
-						<FormItem isPeriod={true}>
-							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
-							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
-							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
-							{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
+							<PeriodWrapper>
+								{/* 시작날짜 */}
+								<FormItem isPeriod={true}>
+									<DateInput value={startdate} onChange={setStartdate} />
+									{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
+								</FormItem>
+								<Tilide>~</Tilide>
+								{/* 종료날짜 */}
+								<FormItem isPeriod={true}>
+									<EnddateWrapper>
+										<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
+										<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
+										{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
+										{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
+									</EnddateWrapper>
+								</FormItem>
+							</PeriodWrapper>
 						</FormItem>
 
 						{/* 직급/직위 */}
@@ -685,8 +707,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 활동명 */}
 						<FormItem spanTwoColumns>
 							<label>
-								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
+								활동명 <SvgIcon name="ellipse"/>
+								<span>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -702,8 +724,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 별칭 */}
 						<FormItem spanTwoColumns>
 							<label>
-								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
+								별칭 <SvgIcon name="ellipse"/>
+								<span>
 									교육의 정식 명칭을 작성해주세요.
 								</span>
 							</label>
@@ -719,27 +741,31 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 기간 */}
 						<FormItem spanTwoColumns>
 							<label>
-								기간 <span style={{ color: '#FC5555' }}>*</span>
+								기간 <SvgIcon name="ellipse"/>
 							</label>
-						</FormItem>
-
-						{/* 시작날짜 */}
-						<FormItem isPeriod={true}>
-							<DateInput value={startdate} onChange={setStartdate} />
-							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
-						</FormItem>
-						{/* 종료날짜 */}
-						<FormItem isPeriod={true}>
-							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
-							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
-							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
-							{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
+							<PeriodWrapper>
+								{/* 시작날짜 */}
+								<FormItem isPeriod={true}>
+									<DateInput value={startdate} onChange={setStartdate} />
+									{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
+								</FormItem>
+								<Tilide>~</Tilide>
+								{/* 종료날짜 */}
+								<FormItem isPeriod={true}>
+									<EnddateWrapper>
+										<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
+										<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
+										{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
+										{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
+									</EnddateWrapper>
+								</FormItem>
+							</PeriodWrapper>
 						</FormItem>
 
 						{/* 주최 */}
 						<FormItem>
 							<label>
-								주최 <span style={{ color: '#FC5555' }}>*</span>
+								주최 <SvgIcon name="ellipse"/>
 							</label>
 							<input
 								type="text"
@@ -753,7 +779,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 교육 시간 */}
 						<FormItem>
 							<label>
-								교육 시간 <span style={{ color: '#FC5555' }}>*</span>
+								교육 시간 <SvgIcon name="ellipse"/>
 							</label>
 							<input
 								type="text"
@@ -774,8 +800,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 활동명 */}
 						<FormItem spanTwoColumns>
 							<label>
-								활동명 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
+								활동명 <SvgIcon name="ellipse"/>
+								<span>
 									활동의 성격이 잘 드러나도록 작성해주세요.
 								</span>
 							</label>
@@ -791,8 +817,8 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 별칭 */}
 						<FormItem spanTwoColumns>
 							<label>
-								별칭 <span style={{ color: '#FC5555' }}>*</span>
-								<span style={{ color: `${Color.main01}`, fontSize: '14px', marginLeft: '10px' }}>
+								별칭 <SvgIcon name="ellipse"/>
+								<span>
 									활동의 정식 명칭을 작성해주세요.
 								</span>
 							</label>
@@ -808,22 +834,28 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 						{/* 기간 */}
 						<FormItem spanTwoColumns>
 							<label>
-								기간 <span style={{ color: '#FC5555' }}>*</span>
+								기간 <SvgIcon name="ellipse"/>
 							</label>
+							<PeriodWrapper>
+								{/* 시작날짜 */}
+								<FormItem isPeriod={true}>
+									<DateInput value={startdate} onChange={setStartdate} />
+									{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
+								</FormItem>
+								<Tilide>~</Tilide>
+								{/* 종료날짜 */}
+								<FormItem isPeriod={true}>
+									<EnddateWrapper>
+										<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
+										<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
+										{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
+										{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
+									</EnddateWrapper>
+								</FormItem>
+							</PeriodWrapper>
 						</FormItem>
 
-						{/* 시작날짜 */}
-						<FormItem isPeriod={true}>
-							<DateInput value={startdate} onChange={setStartdate} />
-							{formErrors.startdate && <ErrorText style={{ top: '60px' }}>{formErrors.startdate}</ErrorText>}
-						</FormItem>
-						{/* 종료날짜 */}
-						<FormItem isPeriod={true}>
-							<DateInput value={enddate} onChange={setEnddate} disabled={unknown} />
-							<UnknownRadio isUnknown={unknown} onToggle={() => setUnknown(!unknown)} />
-							{formErrors.enddate && <ErrorText style={{ top: '60px' }}>{formErrors.enddate}</ErrorText>}
-							{hasError && <ErrorText style={{ top: '70px' }}>{formErrors.invalidPeriodError}</ErrorText>}
-						</FormItem>
+						
 					</>
 				);
 			default:
@@ -1152,7 +1184,7 @@ const ModalForm = styled.form`
 	background: ${Color.white};
 	display: grid;
 	grid-template-columns: repeat(2, 1fr); /* 두 개의 열 */
-	grid-gap: 20px; /* 요소들 간의 간격 */
+	grid-gap: 24px; /* 요소들 간의 간격 */
 	column-gap: 50px;
 	width: 100%;
 
@@ -1167,7 +1199,7 @@ const ModalForm = styled.form`
 		display: none; /* Chrome, Safari, Opera */
 	}
 	@media (max-width: ${theme.breakpoints.md}) {
-		column-gap: 30px;
+		column-gap: 24px;
 	};
 `;
 
@@ -1189,10 +1221,10 @@ const FormItem = styled.div`
 	}
 
 	label {
-		margin-bottom: 8px;
-		margin-top: 22px;
+		margin-bottom: 4px;
+		display: flex;
+		gap: 4px;
 		font-size: 18px;
-		// font-weight: 400;
 		font-family: 'SemiBold';
 		@media (max-width: ${theme.breakpoints.md}) {
 			font-size: 16px;
@@ -1200,8 +1232,8 @@ const FormItem = styled.div`
 		}
 	}
 	input {
-		height: 48px;
-		padding: 10px;
+		height: 18px;
+		padding: 15px 20px;
 		font-size: 16px;
 		font-family: 'Regular';
 		border: none;
@@ -1213,7 +1245,29 @@ const FormItem = styled.div`
 			font-size: 14px;
 		}
 	}
+	span {
+		color: ${Color.main01};
+		font-size: 14px;
+	}
 `;
+
+
+const PeriodWrapper = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	gap: 20px; /* 날짜 입력 필드 간의 간격 설정 */
+`
+const EnddateWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+`
+
+const Tilide = styled.div`
+	position: relative;
+	top: 10px;
+`
 
 const ButtonContainer = styled.div`
 	display: flex;
@@ -1223,7 +1277,6 @@ const ButtonContainer = styled.div`
 	justify-content: space-between; /* 버튼을 가운데 정렬 */
 	// flex-wrap: wrap; /* 버튼들이 화면에 맞지 않을 경우 줄바꿈 처리 */
 	@media (max-width: ${theme.breakpoints.md}) {
-		height: 100px;
 		flex-direction: row;
 		white-space: nowrap;
 		overflow-x: auto;

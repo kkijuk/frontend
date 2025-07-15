@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../../constants/theme';
 import { Color } from '@/constants/color'; // Assuming you have a color constants file
+import SvgIcon from '@/components/shared/SvgIcon';
 
 const ParticipantType = ({ isTeam, setIsTeam, teamSize, setTeamSize, contribution, setContribution }) => {
 	const handleSelection = (value, event) => {
@@ -45,51 +46,65 @@ const ParticipantType = ({ isTeam, setIsTeam, teamSize, setTeamSize, contributio
 
 	return (
 		<Container>
-			<LabelGroup>
+			{/* <LabelGroup>
 				<Label alwaysVisible={true}>
-					인원 <span style={{ color: '#FC5555' }}>*</span>
+					인원 <SvgIcon name="ellipse"/>
 				</Label>
-				<Label isMobile={false} style={{ marginLeft: '170px' }}>팀 인원</Label>
-				<Label isMobile={false} style={{ left: '560px' }}>기여도</Label>
-			</LabelGroup>
-			<ContentGroup>
-				<ButtonGroup>
-					<SelectButton selected={!isTeam} onClick={(e) => handleSelection('개인', e)}>
-						개인
-					</SelectButton>
-					<SelectButton selected={isTeam} onClick={(e) => handleSelection('팀', e)}>
-						팀
-					</SelectButton>
-				</ButtonGroup>
-				<InputGroup>
-					{/* 1번 인풋 */}
-					<InputSubGroup>
-						<Label isMobile={true} >팀 인원</Label>
-						<div style={{display:'flex', alignItems:'center'}}>
-							<Input 
-								type="number" 
-								value={teamSize} 
-								onChange={handleTeamSizeChange} 
-								disabled={!isTeam} />
-							<span style={{marginRight:'10px'}}>명</span>
-						</div>
-					</InputSubGroup>
-					{/* 2번 인풋 */}
-					<InputSubGroup>
-						<Label isMobile={true}>기여도</Label>
-						<div style={{display:'flex', alignItems:'center'}}>
-							<Input
-								type="number"
-								value={contribution}
-								onChange={handleContributionChange}
-								disabled={!isTeam}
-							/>
-							<span>%</span>
-						</div>
-						{errorMessage && <ErrorText>{errorMessage}</ErrorText>}
-					</InputSubGroup>
-				</InputGroup>
-			</ContentGroup>
+				{/* <Label isMobile={false} style={{ marginLeft: '170px' }}>팀 인원</Label>
+				<Label isMobile={false} style={{ left: '560px' }}>기여도</Label> */}
+			{/* </LabelGroup> */} 
+			<FormGroupWrapper>
+				<FormGroup>
+					<Label alwaysVisible={true}>
+							인원 <SvgIcon name="ellipse"/>
+					</Label>
+					<ButtonGroup>
+						<SelectButton selected={!isTeam} onClick={(e) => handleSelection('개인', e)}>
+							개인
+						</SelectButton>
+						<SelectButton selected={isTeam} onClick={(e) => handleSelection('팀', e)}>
+							팀
+						</SelectButton>
+					</ButtonGroup>
+				</FormGroup>
+
+				<MobilVerGroup>
+					<FormGroup>
+						<Label alwaysVisible={true}>
+								팀 인원
+						</Label>
+						<InputSubGroup>
+							{/* <Label isMobile={true} >팀 인원</Label> */}
+							<div style={{display:'flex', alignItems:'center'}}>
+								<Input 
+									type="number" 
+									value={teamSize} 
+									onChange={handleTeamSizeChange} 
+									disabled={!isTeam} />
+								<span style={{marginRight:'10px'}}> 명</span>
+							</div>
+						</InputSubGroup>
+					</FormGroup>
+
+					<FormGroup>
+						<Label alwaysVisible={true}>
+								기여도
+						</Label>
+						<InputSubGroup>
+							<div style={{display:'flex', alignItems:'center'}}>
+								<Input
+									type="number"
+									value={contribution}
+									onChange={handleContributionChange}
+									disabled={!isTeam}
+								/>
+								<span> %</span>
+							</div>
+							{errorMessage && <ErrorText>{errorMessage}</ErrorText>}
+						</InputSubGroup>
+					</FormGroup>	
+				</MobilVerGroup>
+			</FormGroupWrapper>
 		</Container>
 	);
 };
@@ -103,24 +118,48 @@ const Container = styled.div`
 	width: 100%;
 `;
 
+const FormGroupWrapper = styled.div`
+	display: flex;
+	flex-direction: row;
+	gap: 22px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		flex-direction: column;
+		gap: 24px;
+	}
+`
+
+const FormGroup = styled.div`
+	// display: flex;
+	// align-items: center;
+	// justify-content: space-between;
+	// width: 100%;
+	// margin-bottom: 10px;
+`;
+
+const MobilVerGroup = styled.div`
+	display: flex;
+	flex-direction: row;
+`
+
 const LabelGroup = styled.div`
 	display: flex;
 	justify-content: space-between;
-	margin-bottom: 5px;
 	width: 100%;
 	position: relative;
 `;
 
 const Label = styled.label`
-	display: ${(props) =>
-    props.alwaysVisible ? 'block' : props.isMobile ? 'none' : 'block'};
+	// display: ${(props) =>props.alwaysVisible ? 'block' : props.isMobile ? 'none' : 'block'};
+	display: flex;
+	align-items: center;
 	font-size: 14px;
-	font-weight: bold;
+	font-weight: Regular;
 	font-family: 'Regular';
 	// position: absolute;
 	width: 120px;
 	text-align: left;
-	line-height: 10px;
+	// line-height: 10px;
 	// margin-bottom: 5px;
 	@media (max-width: ${theme.breakpoints.md}) {
 		display: ${(props) =>
@@ -189,7 +228,7 @@ const InputGroup = styled.div`
 `;
 
 const Input = styled.input`
-	width: 90px;
+	width: 70px;
 	height: 50px;
 	padding: 5px;
 	font-size: 14px;
