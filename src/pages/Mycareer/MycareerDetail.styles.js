@@ -34,8 +34,12 @@ export const CareerBoxContainer = styled.div`
 	overflow-y: hidden; /*세로 스크롤 방지 */
 	white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
 	position: relative; /* 제발*/
-
 	box-sizing: border-box;
+
+	scrollbar-width: none; /* Firefox */
+	&::-webkit-scrollbar {
+		display: none; /* Chrome/Safari */
+	}
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		max-width: 100%;
@@ -174,7 +178,7 @@ export const CareerListBox = styled.div`
 
 export const CareerPlus = styled.button`
   position: fixed;
-  bottom: 20px;
+  bottom: 80px; //원래 20 -> footer 가림
   left: 50%;
   transform: translateX(-50%);
 
