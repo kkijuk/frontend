@@ -120,9 +120,6 @@ const BackgroundDiv = styled.div`
 	height: 100%;
 	display: flex;
 	justify-content: center;
-	@media (max-width: ${theme.breakpoints.md}) {
-		margin-top: 32px;
-	}
 `;
 
 const BaseDiv = styled.div`
@@ -159,6 +156,7 @@ const ContentTitle = styled.div`
 	align-items: center;
 	@media (max-width: ${theme.breakpoints.md}) {
 		display: block;
+		margin-block: 32px;
 	}
 `;
 
