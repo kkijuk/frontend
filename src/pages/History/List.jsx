@@ -6,6 +6,7 @@ import ListItem from '../../components/Intro/ListItem';
 import { readMaster } from '../../api/Intro/master';
 import { readIntroList } from '@/api/Intro/introList';
 import { theme } from '../../constants/theme';
+import Others from './Others';
 
 const List = () => {
 	let { state } = useParams(); // state 0(작성중), 1(작성완료), 2(보관중), 3(전체) 중 하나
@@ -13,11 +14,11 @@ const List = () => {
 	const navigate = useNavigate();
 
 	// (Data) 지원 공고 목록
-	const [recruits, setRecruits] = useState([]);
+	const [recruits, setRecruits] = useState([]); // 진행 중인 공고 목록
 	const [expiredRecruits, setExpiredRecruits] = useState([]); // 경과한 공고 목록
 	const [isExpiredRecruitsVisible, setIsExpiredRecruitsVisible] = useState(false); // 경과한 공고 목록 토글
 
-	// 0. 마스터 마지막 수정 일시 가져오기
+	// 0. 마스터 자소서 정보(마지막 수정일시, 작성 상태) 가져오기
 	const [masterData, setMasterData] = useState({});
 
 	useEffect(() => {
@@ -35,6 +36,9 @@ const List = () => {
 		}
 		fetchMaster();	
 	}, []);
+
+	// state가 '3'일 때나, 현재 작성 상태와 param의 state가 일치할 때 마스터 자소서 표시
+	const showMaster = state === '3' || state === String(masterData.state);
 
 	// 1. 자기소개서 목록 조회
 	useEffect(() => {
@@ -62,7 +66,7 @@ const List = () => {
 		fetchIntroLIst();
 	}, []);
 			
-
+	// 필터링된 데이터
 	const filterdData = state === '3' ? recruits : recruits.filter((item) => item.state.toString() === state);
 
 	// 공고 마감일시가 빠른 순서대로 정렬(마감일이 지나지 않은 자소서)
@@ -81,41 +85,48 @@ const List = () => {
 
 	return (
 		<BaseDiv>
-			{/* 마스터 자소서 */}
-			{(state === '3' || state === String(masterData.state))&&(
-				<ListItem
-					title="MASTER"
-					updated_at={masterData.updated_at}
-					state={masterData.state}
-					onClick={() => navigate('/history/master')}
-				/>
-			)}
+			<MasterAndOthersWrapper>
+				{/* 마스터 자소서 */}
+				{showMaster && (
+					<MasterWrapper>
+						<ListItem
+							title="MASTER"
+							updated_at={masterData.updated_at}
+							state={masterData.state}
+							onClick={() => navigate('/history/master')}
+						/>
+					</MasterWrapper>
+				)}
 
-			{/* 자기소개서 목록 */}
-			{sortedData
-				.filter((item) => item.state !== 2) // state가 2가 아닌 항목만 필터링
-				.map((item) => (
-					<ListItem
-						key={item.id}
-						title={item.recruitTitle}
-						updated_at={item.updatedAt}
-						deadline={item.deadline}
-						state={item.state}
-						timeSinceUpdate={item.timeSinceUpdate}
-						onClick={() => navigate(`/history/others/${item.id}`)}
-					/>
-				))}
+				{/* 자기소개서 목록 */}
+				<OthersWrapper>
+					{sortedData
+						.filter((item) => item.state !== 2) // state가 2가 아닌 항목만 필터링
+						.map((item) => (
+							<ListItem
+								key={item.id}
+								title={item.recruitTitle}
+								updated_at={item.updatedAt}
+								deadline={item.deadline}
+								state={item.state}
+								timeSinceUpdate={item.timeSinceUpdate}
+								onClick={() => navigate(`/history/others/${item.id}`)}
+							/>
+						))
+					}
+				</OthersWrapper>
+			</MasterAndOthersWrapper>
 
 			{/* 만료된 자기소개서 목록 */}
-			<br></br>
+			{/* <br></br> */}
 			{expiredRecruits.length > 0 && (
-				<div>
-					<div style={{display:'flex', justifyContent:'space-between', alignItems:'center', height:'20px'}}>					
-						<h3 style={{ marginLeft: 10 }}>마감일이 지난 자기소개서 보기</h3>
+				<ExpiredRecruitsWrapper>
+					<ExpiredListHeader>					
+						<h3>마감일이 지난 자기소개서 보기</h3>
 						<ToggleButton onClick={()=>setIsExpiredRecruitsVisible(!isExpiredRecruitsVisible)}>
 							{isExpiredRecruitsVisible ? '▲' : '▼'}
 						</ToggleButton>
-					</div>
+					</ExpiredListHeader>
 					<AnimatedDiv isVisible={isExpiredRecruitsVisible}>
 						{sortedExpiredData.map((item) => (
 							<ListItem
@@ -129,7 +140,7 @@ const List = () => {
 							/>
 						))}
 					</AnimatedDiv>
-				</div>
+				</ExpiredRecruitsWrapper>
 			)}
 		</BaseDiv>
 	);
@@ -138,13 +149,47 @@ const List = () => {
 export default List;
 
 const BaseDiv = styled.div`
-	width: 820px;
-	max-width: 820px;
 	position: relative;
-	@media (max-width: ${theme.breakpoints.md}) {
-		width: 310px;
-	}
 `;
+
+const MasterAndOthersWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin-block: 40px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		margin-block: 32px 40px;
+	}
+`
+
+const MasterWrapper = styled.div`
+	padding: 0px;
+	margin-bottom: 32px;
+`
+
+const OthersWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		gap: 16px;
+	}
+`
+
+const ExpiredRecruitsWrapper = styled.div`
+	margin: 0px;
+`
+
+const ExpiredListHeader = styled.div`
+	height: 20px;
+	margin-bottom: 20px;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+`
 
 const ToggleButton = styled.div`
 	cursor: pointer;
@@ -152,7 +197,9 @@ const ToggleButton = styled.div`
 `
 
 const AnimatedDiv = styled.div`
-    max-height: ${({ isVisible }) => (isVisible ? '1000px' : '0')};
-    overflow: hidden;
+    max-height: ${({ isVisible }) => (isVisible ? 'auto' : '0')};
+	display: ${({ isVisible }) => (isVisible ? 'flex' : 'none')};
+	flex-direction: column;
+	gap: 20px;
     transition: max-height 0.5s ease-in-out;
 `;

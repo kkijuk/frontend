@@ -28,6 +28,7 @@
 		"react-ga4": "^2.1.0",
 		"react-hook-form": "^7.52.2",
 		"react-query": "^3.39.3",
+		"react-responsive": "^10.0.1",
 		"react-router-dom": "^6.25.1",
 		"react-scripts": "5.0.1",
 		"react-slick": "^0.30.2",

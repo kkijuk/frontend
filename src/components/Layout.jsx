@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from '../constants/theme';
 
@@ -33,7 +34,8 @@ const Container = styled.div`
 const Top = styled.div`
 	width: 820px;
 	max-width: 820px;
-	height: 68px;
+	height: ${({ hide }) => (hide ? '0' : '68px')};
+	overflow: hidden; // 높이 0일 때 내용 숨김
 
 	@media (max-width: 1280px) {
 		width: 100%;
@@ -41,7 +43,7 @@ const Top = styled.div`
 	}
 
 	@media (max-width: ${theme.breakpoints.md}) {
-		height: auto;
+		height: ${({ hide }) => (hide ? '0' : 'auto')};
 		box-sizing: border-box;
 	}
 `;
@@ -99,15 +101,18 @@ const TitleText = styled.div`
 `;
 
 export default function Layout({ title, children, leftAsideContent, rightAsideContent }) {
+	const location = useLocation();
+
 	const isApplyPage = title === '지원관리';
 	const isHistoryPage = title === '서류준비';
+	const isHistoryApplySelectPage = location.pathname.includes('/history/select');
 
 	return (
 		<Wrapper>
 			<Container>
 				<LeftAside>{leftAsideContent}</LeftAside>
 				<Section>
-					<Top>
+					<Top hide={isHistoryApplySelectPage}>
 						<TitleText isLeftAlign={isApplyPage || isHistoryPage}>{title}</TitleText>
 					</Top>
 					{children}

@@ -128,9 +128,6 @@ const BackgroundDiv = styled.div`
 	height: 100%;
 	display: flex;
 	justify-content: center;
-	@media (max-width: ${theme.breakpoints.md}) {
-		margin-top: 32px;
-	}
 `;
 
 const BaseDiv = styled.div`
@@ -167,6 +164,7 @@ const ContentTitle = styled.div`
 	@media (max-width: ${theme.breakpoints.md}) {
 		flex-direction: column;
 		align-items: flex-start;
+		margin-block: 32px;
 	}
 `;
 
@@ -220,7 +218,7 @@ const EditButton = styled.button`
 	cursor: pointer;
 `;
 
-const RecruitTitle = styled.p`
+const RecruitTitle = styled.div`
 	font-family: 'Semibold';
 	font-weight: 700;
 	font-size: 28px;

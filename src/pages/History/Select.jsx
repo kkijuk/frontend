@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
 import SvgIcon from "../../components/shared/SvgIcon";
@@ -13,6 +14,7 @@ import { Color } from "../../constants/color";
 
 const Select = () => {
   const navigate = useNavigate();
+  const isMobile = useMediaQuery({ query: `(max-width: ${theme.breakpoints.md})` }); // 모바일 여부 미디어 쿼리로 확인
 
   // useState
   const [isModalOpen, setIsModalOpen] = useState(false); // 공고 추가 모달 보이기
@@ -29,10 +31,16 @@ const Select = () => {
         const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')} ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}`; 
         
         const response = await getValidRecruitList(formattedDate);
+        console.log("미지원 공고 리스트:", response);
+
+        // 마감일 빠른 순으로 재정렬
+        const sortedRecruitList = response.unapplied.recruits.sort(
+          (a, b) => new Date(a.endTime) - new Date(b.endTime)
+        );
         
-        setRecruitList(response.unapplied.recruits);
-        if(response.data.unapplied.recruits.length > 0) {
-          setSelectedJob(response.unapplied.recruits[0].id);
+        setRecruitList(sortedRecruitList);
+        if(sortedRecruitList > 0) {
+          setSelectedJob(sortedRecruitList[0].id);
         }
       } catch (error) {
         console.error("Failed to fetch recruit list:", error);
@@ -122,26 +130,26 @@ const Select = () => {
   }
 
   return (
-    <Layout title="서류준비">
+    <Layout>
       {isModalOpen && 
         <AddApplyModal 
           onClose={()=>setIsModalOpen(false)} 
           onSave = {(id) => {handleAddApply(id)}}
       />}
       {isLoading && <LoadingSpinner message="자기소개서 생성 중 ..."/>}
-      <SectionPadding>
+      <BaseDiv>
         <ContentWrapper>
-          {/* <div style={{height:'100px'}}/> */}
-          <RecruitTitle isMobile={false}><h2>자기소개서를 작성할 공고를 선택해주세요.</h2></RecruitTitle>
+          <RecruitTitle isMobile={false}>자기소개서를 작성할 공고를 선택해주세요.</RecruitTitle>
           <RecruitTitleWrapper style={{width:'280px'}}>
             <RecruitTitle isMobile={true}>자기소개서를 작성할 공고를</RecruitTitle>
             <RecruitTitle isMobile={true}>선택해주세요.</RecruitTitle>
           </RecruitTitleWrapper>
+
           <ListBox>
             <ColumnHeaderSection>
-              <ColumnHeader style={{marginRight:'80px'}}>공고 이름</ColumnHeader>
-              <ColumnHeader style={{marginRight:'136px'}}>접수 마감</ColumnHeader>
-              <ColumnHeader style={{marginRight:'184px'}}>태그</ColumnHeader>
+              <ColumnHeader>공고 이름</ColumnHeader>
+              <ColumnHeader>접수 마감</ColumnHeader>
+              <ColumnHeader>태그</ColumnHeader>
               <ColumnHeader>공고 링크</ColumnHeader>
             </ColumnHeaderSection>
 
@@ -152,6 +160,7 @@ const Select = () => {
                   onClick={() => handleSelectJob(recruit.id)}
                   isSelected={selectedJob === recruit.id}
                 >
+                  {isMobile ? (
                     <Header>
                       <Title>
                         {recruit.title.length > 20 ? `${recruit.title.slice(0, 20)}...` : recruit.title}
@@ -160,29 +169,41 @@ const Select = () => {
                         {calculateDaysLeft(recruit.endTime)}
                       </DueDate>
                     </Header>
-                    <TagContainer>
-                      {recruit.tags.map((tag) => (
-                        <Tag key={tag}>{tag}</Tag>
-                      ))}
-                    </TagContainer>
-                    <JobLinkBox 
-                      onClick={
-                        recruit.link
-                        ? (e) => { 
-                          e.stopPropagation(); 
-                          window.open(recruit.link, '_blank'); 
-                        }
-                        : undefined
+                  ) : (
+                    <>
+                      <Title>
+                        {recruit.title.length > 20 ? `${recruit.title.slice(0, 20)}...` : recruit.title}
+                      </Title>
+                      <DueDate isUrgent={parseInt(calculateDaysLeft(recruit.endTime).replace("D-", "")) <= 7}>
+                        {calculateDaysLeft(recruit.endTime)}
+                      </DueDate>
+                    </>
+                  )}
+
+                  <TagContainer>
+                    {recruit.tags.map((tag) => (
+                      <Tag key={tag}>{tag}</Tag>
+                    ))}
+                  </TagContainer>
+                  <JobLinkBox 
+                    onClick={
+                      recruit.link
+                      ? (e) => { 
+                        e.stopPropagation(); 
+                        window.open(recruit.link, '_blank'); 
+                      }
+                      : undefined
                     }
                     disabled={!recruit.link}
                     >
                       공고 보러가기
-                      <SvgIcon name="jobLink" size={15} />
-                    </JobLinkBox>
+                    <SvgIcon name="jobLink" size={15} />
+                  </JobLinkBox>
                 </ListItem>
               ))}
             </ListSection>
           </ListBox>
+
           <AddNewJob onClick = {() => {
             setIsModalOpen(true);
             trackEvent('add_click', {
@@ -200,7 +221,7 @@ const Select = () => {
             다음
           </NextButton>
         </ContentWrapper>
-      </SectionPadding>
+      </BaseDiv>
       {/* <div style={{height:'500px'}}>dfawe</div> */}
     </Layout>
   )
@@ -208,41 +229,20 @@ const Select = () => {
 
 export default Select;
 
-const SectionPadding = styled.div`
-  width: 100%;
-  padding: 20px;
+const BaseDiv = styled.div`
+  margin-block: 40px 72px;
 `;
 
 const ContentWrapper = styled.div`
-  width: 740px;
+  box-sizing: border-box;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  @media (max-width: ${theme.breakpoints.md}) {
-    width: 100%;
-  }
-`
 
-const ListBox = styled.div`
-  width: 704px;
-  height:409px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  margin-top:30px;
-  border-radius: 12px;
-  border: 1px solid ${Color.gray03};
-  font-family: Regular;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
   @media (max-width: ${theme.breakpoints.md}) {
-    width: 100%;
-    padding: 20px 18px;
-  } 
-`
-const Header = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+    padding-inline: 20px;
+  }
 `
 
 const RecruitTitleWrapper = styled.div`
@@ -251,85 +251,131 @@ const RecruitTitleWrapper = styled.div`
   align-items: center;
   gap: 0;
 
-    font-family: 'Bold';
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 28.64px;
+  font-family: 'Bold';
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 28.64px;
 `
 
 const RecruitTitle = styled.div`
   display: ${(props) => (props.isMobile ? 'none' : 'block')};
+  margin-block: 0px;
+
+  font-family: 'SemiBold';
+  font-size: 24px;
+  font-weight: 700;
+
   @media (max-width: ${theme.breakpoints.md}) {
     display: ${(props) => (props.isMobile ? 'block' : 'none')};
     white-space: nowrap;
   }
 `
 
-const ColumnHeaderSection = styled.div`
-  width: 100%;
+const ListBox = styled.div`
+  height: 365px;
+  margin-block:32px 20px;
+  padding: 20px 18px;
+
   display: flex;
-  padding-left: 95px;
-  margin-top:25px;
+  flex-direction: column;
+
+  border-radius: 12px;
+  border: 1px solid ${Color.gray03};
+  font-family: Regular;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    height: auto;
+    max-height: 685px;
+  } 
+`
+
+const ColumnHeaderSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 24px;
+
   @media (max-width: ${theme.breakpoints.md}) {
     display: none;
   }
 `
 
 const ColumnHeader = styled.div`
+  &:nth-child(1) { width: 170px; }
+  &:nth-child(2) { width: 60px; }
+  &:nth-child(3) { width: 244px; }
+  &:nth-child(4) { width: 118px; }
+
+  text-align: center;
   font-family: Regular;
-  color: ${Color.gray02};
   font-size: 14px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-
-  margin-bottom:20px;
+  color: ${Color.gray02};
 `
 
 const ListSection = styled.div`
-  margin-top: 10px;
-  // padding-top: 280px;
+  margin-top: 20px;
+
+  flex: 1 1 auto;
+  min-height: 0; /* Flexbox에서 자식 요소가 최소 높이를 가지도록 설정 */
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap:20px;
+  gap:12px;
 
   //scroll
-  overflow-y: overlay; 
-  -ms-overflow-style: none; /* IE */
-  scrollbar-width: none; /* Firefox */
+  overflow-y: auto; 
+  -ms-overflow-style: none; /* IE 에서 스크롤바 숨기기*/
+  scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
   &::-webkit-scrollbar {
-    display: none; 
+    display: none;  /* Chrome, Safari, Opera에서 스크롤바 숨기기 */
+  }
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    gap: 10px;
   }
 `
 
 const ListItem = styled.div`
   height: 28px;
   padding: 14px 16px;
+
   display: flex;
   flex-direction: row;
-  // justify-content: center;
-  gap: 32px;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
   border-radius: 10px;
   border: ${(props) => (props.isSelected ? `2px solid ${Color.main01}` : `2px solid ${Color.gray06}`)};
-  background: ${Color.gray06};
+
   background: ${(props) => (props.isSelected ? Color.main03 : Color.gray06)};
   font-family: Regular;
   cursor: pointer;
 
-  & > div {
-    line-height: 28px; /* 텍스트가 높이 기준으로 수직 중앙 정렬 */
-  }
+  // & > div {
+  //   line-height: 28px; /* 텍스트가 높이 기준으로 수직 중앙 정렬 */
+  // }
 
   @media (max-width: ${theme.breakpoints.md}) {
     flex-direction: column;
     height: auto;
+    padding: 16px;
     gap: 12px;
+    align-items: normal;
   }
 `
 
+const Header = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+`
+
 const Title = styled.div`
-  width: 190px;
+  width: 170px;
   max-width: 190px;
   height: 17px;
   font-size: 14px;
@@ -339,25 +385,28 @@ const Title = styled.div`
 `
 
 const DueDate = styled.div`
-  width: 35px;
+  width: 60px;
   height: 17px;
   font-size: 14px;
+  text-align: center;
   color: ${(props) => (props.isUrgent ? "#FC5555" : Color.gray02)};
   font-family: Bold;
   font-weight: 700;
-  // margin-right:50px;
-  
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    text-align: right;
+  }
 `
 
 const TagContainer = styled.div`
-  width: 250px;
-  height: 22px;
-  padding-top:5px;
+  width: 244px;
+
   display: flex;
   flex-direction: row;
   gap: 8px;
 
-    //scroll
+
+  //scroll
   overflow-x: overlay; 
   overflow-y: hidden;
   -ms-overflow-style: none; /* IE */
@@ -366,6 +415,10 @@ const TagContainer = styled.div`
     display: none; 
   }
 
+  @media (max-width: ${theme.breakpoints.md}) {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
 `
 
 const Tag = styled.div` 
@@ -383,7 +436,7 @@ const Tag = styled.div`
 `
 
 const JobLinkBox = styled.div`
-  width: 120px;
+  width: 118px;
   height: 28px;
   display: flex;
   flex-direction: row;
@@ -399,16 +452,17 @@ const JobLinkBox = styled.div`
 `
 
 const AddNewJob = styled.div`
-  width: 700px;
+  width: 720px;
   height: 42px;
-  margin-top: 20px;
-  flex-shrink: 0;
-  border-radius: 10px;
-  border: 1px solid ${Color.gray04};
-  background: ${Color.white};
+
   display: flex;
   justify-content: center;
   align-items: center;
+
+  border-radius: 10px;
+  border: 1px solid ${Color.gray04};
+  background: ${Color.white};
+
   color: ${Color.gray02};
   text-align: center;
   font-family: Regular;
@@ -416,6 +470,7 @@ const AddNewJob = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+
   cursor: pointer;
   @media (max-width: ${theme.breakpoints.md}) {
     width: 100%;
@@ -423,15 +478,18 @@ const AddNewJob = styled.div`
 `
 
 const NextButton = styled.div`
-  width: 700px;
+  width: 720px;
   height: 50px;
-  margin-top: 50px;
-  border-radius: 10px;
-  background: ${(props) => (props.disabled ? Color.gray03 : Color.main01)};
+  margin-top: 40px;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-shrink: 0;
+
+  border-radius: 10px;
+  background: ${(props) => (props.disabled ? Color.gray03 : Color.main01)};
+
+
   color: ${(props) => (props.disabled ? Color.gray02 : Color.white)};
   text-align: center;
   font-family: Regular;
@@ -439,8 +497,11 @@ const NextButton = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+
   @media (max-width: ${theme.breakpoints.md}) {
     width: 100%;
+    margin-top: 32px;
   }
 `
