@@ -91,7 +91,7 @@ export {DateInput2};
 
 const DateInputWrapper = styled.div`
 	position: relative;
-	width: 260px;
+	// width: 260px;
 	@media (max-width: ${theme.breakpoints.md}) {
 		width: 153px !important;
 	}
@@ -101,10 +101,10 @@ const InputDate = styled.input`
 	// position: absolute;
 	font-family: Regular;
 	font-size: 16px;
-	width: 245px;
+	// width: 245px;
 	height: 60px;
 	padding: 15px 20px;
-	margin-bottom: 25px;
+	// margin-bottom: 25px;
 	border: 1px solid ${Color.gray05};
 	border-radius: 10px;
 	background: ${(props) => (props.disabled ? Color.gray04 : Color.gray06)};
