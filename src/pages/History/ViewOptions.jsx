@@ -17,7 +17,11 @@ const ViewOptions = () => {
 	const location = useLocation();
 
 	//(Data) 토글 체크, 현재 선택한 공고, 리스트 조회 상태, 자기소개서 목록
-	const [isChecked, setIsChecked] = useState(location.path !== '/history/list');
+	// 현재 경로가 '/history/master'가 아닐 때 true, 체크 된 것으로 간주
+	// const [isChecked, setIsChecked] = useState(location.path !== '/history/master');
+
+	// 현재 경로가 '/history/master'일 때 체크 된 것(토글이 오른쪽)으로 간주
+	const [isChecked, setIsChecked] = useState(location.path == '/history/master');
 	const [currentApply, setCurrentApply] = useState('master');
 	const [state, setState] = useState(3); //3: 전체, 0: 작성중, 1: 작성완료, 2: 보관
 	const [recruits, setRecruits] = useState([]);
@@ -39,7 +43,8 @@ const ViewOptions = () => {
 	//토글 클릭
 	const handleToggleClick = () => {
 		isChecked ? navigate('/history/list/3') : navigate('/history/master');
-		// setIsChecked(!isChecked);
+		// isChecked ? navigate('/history/master') : navigate('/history/list/3');
+
 		window.scrollTo(0, 0); // 스크롤을 최상단으로 이동
 	};
 
@@ -84,26 +89,7 @@ const ViewOptions = () => {
 	return (
 		<BaseDiv>
 			<SButtonContainer>
-				{isChecked && (
-					<SButton
-						type="button"
-						onClick={() => handleApplyClick('master')}
-						style={{ backgroundColor: currentApply === 'master' ? `${Color.main03}` : `${Color.gray06}` }}
-					>
-						Master
-					</SButton>
-				)}
-				{isChecked &&
-					recruits.map((resume) => (
-						<SButton
-							type="button"
-							key={resume.id}
-							onClick={() => handleApplyClick(resume.id)}
-							style={{ backgroundColor: currentApply === String(resume.id) ? `${Color.main03}` : `${Color.gray06}` }}
-						>
-							{resume.recruitTitle}
-						</SButton>
-					))}
+				{/* 토글이 왼쪽에 있는 경우, 목록보기 options */}
 				{!isChecked && (
 					<>
 						<SButton
@@ -136,6 +122,29 @@ const ViewOptions = () => {
 						</SButton>
 					</>
 				)}
+
+				{/* 토글이 오른쪽에 있는 경우, 개별보기 options */}
+				{isChecked && (
+					<SButton
+						type="button"
+						onClick={() => handleApplyClick('master')}
+						style={{ backgroundColor: currentApply === 'master' ? `${Color.main03}` : `${Color.gray06}` }}
+					>
+						Master
+					</SButton>
+				)}
+				{isChecked &&
+					recruits.map((resume) => (
+						<SButton
+							type="button"
+							key={resume.id}
+							onClick={() => handleApplyClick(resume.id)}
+							style={{ backgroundColor: currentApply === String(resume.id) ? `${Color.main03}` : `${Color.gray06}` }}
+						>
+							{resume.recruitTitle}
+						</SButton>
+					))
+				}
 			</SButtonContainer>
 			<ToggleWrapper>
 				<Toggle checked={isChecked} onChange={handleToggleClick} />

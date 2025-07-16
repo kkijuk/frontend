@@ -7,32 +7,31 @@ const Toggle = ({ checked, onChange }) => {
 	return (
 		<ToggleContainer>
 			<ToggleCheckbox type="checkbox" id="toggle" checked={checked} onChange={onChange} />
-			<ToggleLabel htmlFor="toggle">
+			<ToggleWrappper htmlFor="toggle">
 				<ToggleSwitch checked={checked} />
-				<ToggleText
-					className="individual"
-					checked={checked}
-					style={{ color: !checked ? 'grey' : 'black', padding: '5px 0px 5px 8px', left: '5px' }}
-				>
-					개별보기
-				</ToggleText>
 				<ToggleText
 					className="list"
 					checked={checked}
-					style={{ color: !checked ? 'black' : 'grey', padding: '5px 8px 5px 0px', left: '85px' }}
 				>
 					목록보기
 				</ToggleText>
-			</ToggleLabel>
+				<ToggleText
+					className="individual"
+					checked={checked}
+				>
+					개별보기
+				</ToggleText>
+			</ToggleWrappper>
 		</ToggleContainer>
 	);
 };
 
 const ToggleContainer = styled.div`
 	position: relative;
-	width: 132px;
+	width: 134px;
 	height: 25px;
 	padding: 5px 8px;
+
 	@media (max-width: ${theme.breakpoints.md}) {
 		top: -199px;
 	}
@@ -45,42 +44,48 @@ const ToggleCheckbox = styled.input`
 	margin: 0;
 `;
 
-const ToggleLabel = styled.label`
+const ToggleWrappper = styled.label`
 	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	justify-content: center;
 	align-items: center;
-	justify-content: space-between;
+	
 	position: absolute;
-	cursor: pointer;
 	top: 0;
 	left: 0;
 	right: 0;
 	bottom: 0;
+
 	background-color: ${Color.gray06};
 	border-radius: 10px;
+	
+	cursor: pointer;
 	transition: background-color 0.4s;
 `;
 
 const ToggleText = styled.span`
+	z-index: 2;
+
 	font-family: 'Regular';
 	font-weight: 500px;
 	font-size: 14px;
 	line-height: 16.71px;
 	text-align: center;
-	transition: color 0.4s;
-	position: absolute;
-	z-index: 2;
 
-	&.individual {
+	transition: color 0.4s;
+
+	&.list {
 		color: ${(props) => (!props.checked ? Color.black : Color.gray03)};
 	}
 
-	&.list {
+	&.individual {
 		color: ${(props) => (!props.checked ? Color.gray03 : Color.black)};
 	}
 `;
 
 const ToggleSwitch = styled.span`
-	width: 49px;
+	width: 55px;
 	height: 17px;
 	padding: 4px 8px;
 
@@ -92,7 +97,7 @@ const ToggleSwitch = styled.span`
 	border-radius: 10px;
 	transition: transform 0.4s;
 
-	transform: ${(props) => (!props.checked ? 'translateX(70px)' : 'none')};
+	transform: ${(props) => (props.checked ? 'translateX(67px)' : 'none')};
 `;
 
 export default Toggle;
