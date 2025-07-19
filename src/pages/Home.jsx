@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 import CareerTimeline from '../components/Mycareer/CareerTimeline';
 import OnboardingModal from '../components/Modal/OnboardingModal';
+import AddQuickCareerDetailModal from '@/components/Modal/AddQuickCareerDetailModal/AddQuickCareerDetailModal';
 import SvgIcon from '@/components/shared/SvgIcon';
 import { theme } from '../constants/theme';
 import { Color } from '@/constants/color';
@@ -189,6 +190,7 @@ const bannerDummy = [
 export default function Home() {
 	const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
 	const [showOnboarding, setShowOnboarding] = useState(false);
+	const [showAddQuickCareerDetailModal, setShowAddQuickCareerDetailModal] = useState(false);
 	const [careerDetails, setCareerDetails] = useState([
 		{ id: 1, title: '업데이트 예정' },
 		{ id: 2, title: '업데이트 예정' },
@@ -210,10 +212,14 @@ export default function Home() {
 		setShowOnboarding(false);
 	};
 
+	const handleCloseAddQuickCareerDetailModal = () => {
+		setShowAddQuickCareerDetailModal(false);
+	};
+
 	return (
 		<>
 			{showOnboarding && <OnboardingModal onClose={handleCloseOnboarding} />}
-
+			{showAddQuickCareerDetailModal && <AddQuickCareerDetailModal onClose={handleCloseAddQuickCareerDetailModal} />}
 			<Container>
 				<Top>
 					<TopBox1>
@@ -229,7 +235,7 @@ export default function Home() {
 				<Bottom>
 					<BottomText>최근 이런 활동을 기록했어요</BottomText>
 					<CareerDeatailWrapper>
-						<AddCareerDetailBox onClick={() => console.log('Add Career Detail')}>
+						<AddCareerDetailBox onClick={() => setShowAddQuickCareerDetailModal(true)}>
 							<SvgIcon
 								name="addButton"
 							/>
