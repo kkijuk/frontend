@@ -10,7 +10,7 @@ import { theme } from "@/constants/theme";
 import { Color } from "@/constants/color";
 import { use } from "react";
 
-const AddQuickCareerDetailModal = ({onClose}) => {
+const AddQuickCareerDetailModal = ({onSave, onClose}) => {
     const [careerId, setCareerId] = useState('');
     const [careerType, setCareerType] = useState(''); // categoryEnName
     const [title, setTitle] = useState('');
@@ -62,7 +62,26 @@ const AddQuickCareerDetailModal = ({onClose}) => {
 
     // [폼 제출]
     // 저장하면 무슨 동작해야하는지?
-    const handleSubmit = () => {console.log('제출됨')}; 
+    const handleSubmit = () => {
+        // console.log('커리어 정보', careerId, ',', careerType);
+        // console.log('제목:', title);
+        // console.log('날짜:', selectedDate);
+        // console.log('내용:', content);
+        // console.log('태그 리스트:', tagList);
+        if (!careerId || !careerType || !title || !selectedDate || !content) {
+            setErrorMessage('모든 필드를 입력해주세요.');
+            return;
+        }
+        onSave({
+            careerId,
+            careerType,
+            title,
+            selectedDate,
+            content,
+            tagList
+        });
+        onClose(); // 모달 닫기
+    }
 
     // [utils]
     // 모달 열릴 때마다 스크롤 잠금

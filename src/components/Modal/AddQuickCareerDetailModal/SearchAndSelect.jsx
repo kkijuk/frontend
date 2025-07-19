@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import SearchBar from '@/components/shared/SearchBar';
+import SvgIcon from '@/components/shared/SvgIcon';
 import { getActivitySearch } from '@/api/MycareerSearch/getActivitySearch';
 import { Color } from '@/constants/color';
 
 const SearchAndSelect = ({onChange}) => {
     const [selectedItem, setSelectedItem] = useState({});
     const [filteredItems, setFilteredItems] = useState([]);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const handleSelect = (item) => {
         console.log('선택된 아이템:', item);
@@ -27,29 +29,61 @@ const SearchAndSelect = ({onChange}) => {
         }
     };
 
+    const toggleDropdown = () => {
+        console.log('드롭다운 토글');
+        setIsDropdownOpen(!isDropdownOpen);
+    }
+
+    const colorByCategory = (category) => {
+        switch (category) {
+            case 'CIRCLE':
+                return Color.subYe;
+            case 'ACTIVITY':
+                return Color.subBu;
+            case 'COM':
+                return Color.subPu;
+            case 'PROJECT':
+                return '#78D333';
+            case 'EMP':
+                return Color.subRd;
+            case 'EDU':
+                return Color.subOg;
+            default:
+                return Color.gray02;
+        }
+    };
+
     return (
         <Container>
             <SelectedItem>
                 {selectedItem?.careerTitle ?? '활동을 선택해주세요.'}
+                <ToggleIcon onClick={() => toggleDropdown()} >
+                    <SvgIcon 
+                        name={isDropdownOpen ? "chevron-up" : "chevron-down"} 
+                        fill={Color.gray02} 
+                    />
+                </ToggleIcon>
             </SelectedItem>
-            <ResultDropDown>
-                <SearchBar
-                    onDebounceSearch={onDebounceSearch}
-                    placeholder='활동 선택'
-                />
-                <ItemList>
-                    {filteredItems.map((item, index) => (
-                        <Item
-                            key={index}
-                            onClick={() => handleSelect(item)}
-                        >
-                            {item.category.categoryEnName}
-                            {item.careerTitle}
-                            <span>{item.careerAlias? `(${item.careerAlias})` : ''}</span>
-                        </Item>
-                    ))}
-                </ItemList>
-            </ResultDropDown>
+            { isDropdownOpen && (
+                <ResultDropDown>
+                    <SearchBar
+                        onDebounceSearch={onDebounceSearch}
+                        placeholder='활동 선택'
+                    />
+                    <ItemList>
+                        {filteredItems.map((item, index) => (
+                            <Item
+                                key={index}
+                                onClick={() => {handleSelect(item); toggleDropdown();}}
+                            >
+                                <SvgIcon name="career-ellipse" color={colorByCategory(item.category.categoryEnName)} size={14} />
+                                {item.careerTitle}
+                                <span>{item.careerAlias? `(${item.careerAlias})` : ''}</span>
+                            </Item>
+                        ))}
+                    </ItemList>
+                </ResultDropDown>
+            )}
         </Container>
     );
 }
@@ -91,13 +125,14 @@ const SelectedItem = styled.div`
     font-size: 14px;
     font-weight: 400;
     color: ${Color.gray02};
+`;
 
-    & svg {
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-    }
+const ToggleIcon = styled.div`
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
 `;
 
 const ItemList = styled.div`

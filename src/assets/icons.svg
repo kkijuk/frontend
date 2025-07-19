@@ -69,6 +69,21 @@
   <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 5" id="ellipse">
     <circle cx="0.5" cy="1" r="0.5" fill="#FF7979"></circle>
   </symbol>
+
+  <!-- Career Ellipse -->
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 15" id="career-ellipse">
+    <circle cx="7" cy="7.5" r="7" fill="currentColor"></circle>
+  </symbol>
+
+  <!-- chevron-up -->
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="chevron-up">
+    <path d="M17 14L11.9992 9.42L7 14" stroke="#0A090B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+  </symbol>
+
+  <!-- chevron-down -->
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 24" id="chevron-down">
+    <path d="M7.5 10L12.5008 14.58L17.5 10" stroke="#707070" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+  </symbol>
 </svg>
 
 
