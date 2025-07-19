@@ -100,26 +100,45 @@ const List = () => {
 
 				{/* 자기소개서 목록 */}
 				<OthersWrapper>
-					{sortedData
-						.filter((item) => item.state !== 2) // state가 2가 아닌 항목만 필터링
-						.map((item) => (
-							<ListItem
-								key={item.id}
-								title={item.recruitTitle}
-								updated_at={item.updatedAt}
-								deadline={item.deadline}
-								state={item.state}
-								timeSinceUpdate={item.timeSinceUpdate}
-								onClick={() => navigate(`/history/others/${item.id}`)}
-							/>
-						))
-					}
+					{ state === '2' ? (
+						<>
+						{sortedExpiredData
+							.map((item) => (
+								<ListItem
+									key={item.id}
+									title={item.recruitTitle}
+									updated_at={item.updatedAt}
+									deadline={item.deadline}
+									state={2} // 보관 상태는 직접 설정(백에서 내려 오는 상태 0 or 1)
+									timeSinceUpdate={item.timeSinceUpdate}
+									onClick={() => navigate(`/history/others/${item.id}`)}
+								/>
+							))
+						}
+						</>	
+						) : (
+						<>
+						{sortedData
+							.map((item) => (
+								<ListItem
+									key={item.id}
+									title={item.recruitTitle}
+									updated_at={item.updatedAt}
+									deadline={item.deadline}
+									state={item.state}
+									timeSinceUpdate={item.timeSinceUpdate}
+									onClick={() => navigate(`/history/others/${item.id}`)}
+								/>
+							))
+						}
+						</>
+					)}
 				</OthersWrapper>
 			</MasterAndOthersWrapper>
 
 			{/* 만료된 자기소개서 목록 */}
 			{/* <br></br> */}
-			{expiredRecruits.length > 0 && (
+			{(expiredRecruits.length > 0 && state !== '2') && (
 				<ExpiredRecruitsWrapper>
 					<ExpiredListHeader>					
 						<h3>마감일이 지난 자기소개서 보기</h3>
@@ -134,7 +153,7 @@ const List = () => {
 								title={item.recruitTitle}
 								updated_at={item.updatedAt}
 								deadline={item.deadline}
-								state={item.state}
+								state={2} // 보관 상태는 직접 설정(백에서 내려 오는 상태 0 or 1)
 								timeSinceUpdate={item.timeSinceUpdate}
 								onClick={() => navigate(`/history/others/${item.id}`)}
 							/>

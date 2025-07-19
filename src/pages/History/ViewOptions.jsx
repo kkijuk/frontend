@@ -17,9 +17,6 @@ const ViewOptions = () => {
 	const location = useLocation();
 
 	//(Data) 토글 체크, 현재 선택한 공고, 리스트 조회 상태, 자기소개서 목록
-	// 현재 경로가 '/history/master'가 아닐 때 true, 체크 된 것으로 간주
-	// const [isChecked, setIsChecked] = useState(location.path !== '/history/master');
-
 	// 현재 경로가 '/history/master'일 때 체크 된 것(토글이 오른쪽)으로 간주
 	const [isChecked, setIsChecked] = useState(location.path == '/history/master');
 	const [currentApply, setCurrentApply] = useState('master');
@@ -43,7 +40,6 @@ const ViewOptions = () => {
 	//토글 클릭
 	const handleToggleClick = () => {
 		isChecked ? navigate('/history/list/3') : navigate('/history/master');
-		// isChecked ? navigate('/history/master') : navigate('/history/list/3');
 
 		window.scrollTo(0, 0); // 스크롤을 최상단으로 이동
 	};
@@ -56,7 +52,6 @@ const ViewOptions = () => {
 			const match = location.pathname.match(/\/history\/others\/(\d+)/);
 			if (match) {
 				setCurrentApply(match[1]); //n번 자소서로 이동
-				// console.log(match[1]);
 			}
 		}
 	}, [location.pathname]);
