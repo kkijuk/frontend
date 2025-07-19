@@ -240,11 +240,23 @@ export default function MycareerDetail() {
           )}
         </CareerListBox>
 
-        <CareerPlus onClick={() => {
-          trackEvent('add_click', { category: 'mycareer', detail: 'career_detail', action_type: 'add', label: '활동 기록 추가' });
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-          handleAddButtonClick();
-        }} disabled={editingDetailId !== null}>활동 기록 추가</CareerPlus>
+        <CareerPlus
+          onClick={() => {
+            trackEvent('add_click', {
+              category: 'mycareer',
+              detail: 'career_detail',
+              action_type: 'add',
+              label: '활동 기록 추가',
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            handleAddButtonClick();
+          }}
+          disabled={editingDetailId !== null}
+          $isFixed={isFixed}
+        >
+          활동 기록 추가
+        </CareerPlus>
+
 
         {isModalOpen && modalData && (
           <AddCareerModal onClose={closeModal} mode="edit" initialData={modalData} onRefresh={refetchDetails} />
