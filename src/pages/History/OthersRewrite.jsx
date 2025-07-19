@@ -4,7 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import './history.css';
 import Alert from '../../components/Intro/Alert';
-import EditApplyModal from '../../components/Intro/EditApplyModal.jsx';
+// import EditApplyModal from '../../components/Intro/EditApplyModal.jsx';
+import EditApplyModal from '@/components/Apply/EditApplyModal.jsx';
 import { trackEvent } from '../../utils/ga4.js';
 import SvgIcon from '../../components/shared/SvgIcon.jsx';
 import { theme } from '../../constants/theme.js';
@@ -32,6 +33,15 @@ const OthersRewrite = () => {
 		timeSinceUpdate: '',
 		updatedAt: '',
 		state: 0,
+		applyDate: '',
+	});
+	const [recruitModalContents, setRecruitModalContents] = useState({
+		title: '',
+		startTime: '',
+		endTime: '',
+		tags: [],
+		link: '',
+		applyDate: '',
 	});
 	const [modalOpend, setModalOpend] = useState(false); //삭제하시겠습니까?
 	const [dropdownOpend, setDropdownOpend] = useState(false); //작성 상태 드롭다운
@@ -79,6 +89,7 @@ const OthersRewrite = () => {
 			tags: introData.tags,
 			timeSinceUpdate: introData.timeSinceUpdate,
 			updatedAt: introData.updatedAt,
+			applyDate: introData.applyDate,
 		});
 		setIsCompleted(introData.state);
 	}, [introData]);
@@ -88,12 +99,20 @@ const OthersRewrite = () => {
 		if(!recruitData) return;
 		console.log('공고 데이터: ', recruitData);
 		
-		setContents((prev) => ({
-			...prev,
+		// setContents((prev) => ({
+		// 	...prev,
+		// 	title: recruitData.title,
+		// 	startTime: recruitData.startTime,
+		// 	endTime: recruitData.endTime,
+		// }));
+		setRecruitModalContents({
 			title: recruitData.title,
 			startTime: recruitData.startTime,
 			endTime: recruitData.endTime,
-		}));
+			tags: recruitData.tags,
+			link: recruitData.link,
+			applyDate: recruitData.applyDate,
+		});
 	}, [recruitData]);
 
 	// 자소서 수정
@@ -160,6 +179,7 @@ const OthersRewrite = () => {
 			status: status,
 			tags: data.tags,
 			link: data.link,
+			applyDate: data.applyDate,
 		};
 
 		mutateRecruit(
@@ -305,7 +325,7 @@ const OthersRewrite = () => {
 					<EditApplyModal
 						onClose={toggleEditApplyModal}
 						onSave={(data) => handleEditApply(data)}
-						job={contents}
+						job={recruitModalContents}
 						style={{ position: 'relative', zIndex: 1000 }}
 					></EditApplyModal>
 				)}
