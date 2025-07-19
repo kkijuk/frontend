@@ -41,7 +41,7 @@ const SubNav = () => {
                         <NavItems onClick={() => navigate('/history')} active={isResumeActive}>
                             이력서
                         </NavItems>
-                        <NavItems onClick={() => navigate('/history/master')} active={!isResumeActive && !isPortfolioActive}>
+                        <NavItems onClick={() => navigate('/history/list/3')} active={!isResumeActive && !isPortfolioActive}>
                             자기소개서
                         </NavItems>
                         <NavItems onClick={() => navigate('/history/portfolio')} active={isPortfolioActive}>
