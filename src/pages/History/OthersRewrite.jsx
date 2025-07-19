@@ -99,12 +99,6 @@ const OthersRewrite = () => {
 		if(!recruitData) return;
 		console.log('공고 데이터: ', recruitData);
 		
-		// setContents((prev) => ({
-		// 	...prev,
-		// 	title: recruitData.title,
-		// 	startTime: recruitData.startTime,
-		// 	endTime: recruitData.endTime,
-		// }));
 		setRecruitModalContents({
 			title: recruitData.title,
 			startTime: recruitData.startTime,

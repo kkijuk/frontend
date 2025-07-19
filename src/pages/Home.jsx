@@ -11,7 +11,9 @@ import { useNavigate } from 'react-router-dom';
 
 import CareerTimeline from '../components/Mycareer/CareerTimeline';
 import OnboardingModal from '../components/Modal/OnboardingModal';
+import SvgIcon from '@/components/shared/SvgIcon';
 import { theme } from '../constants/theme';
+import { Color } from '@/constants/color';
 
 const Container = styled.div`
 	display: flex;
@@ -119,6 +121,46 @@ const BottomText = styled.div`
 \	align-self: flex-start;
 `;
 
+const CareerDeatailWrapper = styled.div`
+	box-sizing: border-box;
+	width: auto;
+	height: auto;
+	padding: 24px 30px;
+
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+	gap: 24px;
+
+	border-radius: 10px;
+	background: ${Color.gray06};
+`
+
+const CareerDetailContentBox = styled.div`
+	box-sizing: border-box;
+	height: 212px;
+
+	border-radius: 10px;
+	background: ${Color.white};
+	box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
+	cursor: pointer;
+`
+
+const AddCareerDetailBox = styled(CareerDetailContentBox)`
+	padding: 16px 24px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`
+
+const CareerDetailBox = styled(CareerDetailContentBox)`
+	padding: 16px 24px 20px 24px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 20px;
+`
+
+
 const ActivityBox = styled.div`
 	width: auto; /*820*/
 	height: auto; /*194*/
@@ -147,6 +189,11 @@ const bannerDummy = [
 export default function Home() {
 	const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
 	const [showOnboarding, setShowOnboarding] = useState(false);
+	const [careerDetails, setCareerDetails] = useState([
+		{ id: 1, title: '업데이트 예정' },
+		{ id: 2, title: '업데이트 예정' },
+		{ id: 3, title: '업데이트 예정' },
+	]);
 
 	//localStorage를 확인해서 오늘은 모달을 보이지 않도록 처리
 	useEffect(() => {
@@ -179,6 +226,27 @@ export default function Home() {
 				<Middle>
 					<BannerComponent banners={bannerDummy} />
 				</Middle>
+				<Bottom>
+					<BottomText>최근 이런 활동을 기록했어요</BottomText>
+					<CareerDeatailWrapper>
+						<AddCareerDetailBox onClick={() => console.log('Add Career Detail')}>
+							<SvgIcon
+								name="addButton"
+							/>
+						</AddCareerDetailBox>
+						{careerDetails.map((detail, index) => (
+							<CareerDetailBox
+								key={index}
+								onClick={() => {
+									console.log('click');
+								}}
+							>
+								{detail.title}
+							</CareerDetailBox>
+						))}
+					</CareerDeatailWrapper>
+				</Bottom>
+
 				<Bottom>
 					<BottomText>잠깐! 잊지 않으셨죠?</BottomText>
 					<ActivityBox>
