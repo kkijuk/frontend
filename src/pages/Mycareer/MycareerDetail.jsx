@@ -70,10 +70,11 @@ export default function MycareerDetail() {
 	const [isFixed, setIsFixed] = useState(false);
 
 	const [isEditModalOpen, setIsEditModalOpen] = useState(false); // AddCareerModal용
-	const [isExitModalOpen, setIsExitModalOpen] = useState(false); // PageExitModal용
 
+	const [isExitModalOpen, setIsExitModalOpen] = useState(false);
 	const [nextLocation, setNextLocation] = useState(null);
-	// 페이지 이동 막기
+
+	// 이동 차단 훅
 	useBlockNavigation(isAdding, (tx) => {
 		setIsExitModalOpen(true);
 		setNextLocation(() => tx.retry);
@@ -81,8 +82,8 @@ export default function MycareerDetail() {
 
 	const handleConfirmLeave = () => {
 		setIsExitModalOpen(false);
-		setIsAdding(false);
-		nextLocation();
+		setIsAdding(false); // 추가 상태 해제
+		nextLocation(); // tx.retry() 실행 = 이동 계속
 	};
 
 	const handleCancelLeave = () => {
