@@ -56,7 +56,15 @@ const SearchAndSelect = ({onChange}) => {
     return (
         <Container>
             <SelectedItem>
-                {selectedItem?.careerTitle ?? '활동을 선택해주세요.'}
+                {selectedItem?.careerTitle 
+                ? (
+                <Item isSearchedList={false}>
+                    <SvgIcon name="career-ellipse" color={colorByCategory(selectedItem.category.categoryEnName)} size={14} />
+                    {selectedItem.careerTitle}
+                    <span>{selectedItem.careerAlias? `/ ${selectedItem.careerAlias}` : ''}</span>
+                </Item>) 
+                : '활동을 선택해주세요.'
+                }
                 <ToggleIcon onClick={() => toggleDropdown()} >
                     <SvgIcon 
                         name={isDropdownOpen ? "chevron-up" : "chevron-down"} 
@@ -78,7 +86,7 @@ const SearchAndSelect = ({onChange}) => {
                             >
                                 <SvgIcon name="career-ellipse" color={colorByCategory(item.category.categoryEnName)} size={14} />
                                 {item.careerTitle}
-                                <span>{item.careerAlias? `(${item.careerAlias})` : ''}</span>
+                                <span>{item.careerAlias? `/ ${item.careerAlias}` : ''}</span>
                             </Item>
                         ))}
                     </ItemList>
@@ -153,20 +161,20 @@ const ItemList = styled.div`
 const Item = styled.div`
     box-sizing: border-box;
     width: 100%;
-    padding: 8px 12px;
+    padding: ${props => props.isSearchedList ? '8px 12px' : '0px'};
 
     display: flex;
     flex-direction: row;
     gap: 8px;
 
-    background-color: ${Color.white};
+    background-color: ${props => props.isSearchedList ? Color.white : 'none'};
     font-family: 'SemiBold';
     font-size: 12px;
 
     cursor: pointer;
 
     &:hover {
-        background-color: ${Color.gray06};
+        background-color: ${props => props.isSearchedList ? Color.gray06 : 'none'};
     }
 
     & > span {

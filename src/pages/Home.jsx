@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import api from '@/Axios';
+
+import { AddDetail } from '@/api/Mycareer/AddDetail';
 
 import ProfileBox from '../components/Home/Profile';
 
@@ -161,7 +164,6 @@ const CareerDetailBox = styled(CareerDetailContentBox)`
 	gap: 20px;
 `
 
-
 const ActivityBox = styled.div`
 	width: auto; /*820*/
 	height: auto; /*194*/
@@ -179,6 +181,17 @@ const ActivityBox = styled.div`
 	}
 `;
 
+const AddButton = styled.button`
+	width: 60px;
+	height: 60px;
+	border: none;
+	border-radius: 50%;
+	background-color: ${Color.main01};
+	color: white;
+	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+`
+
+
 const bannerDummy = [
 	{
 		image: require('../assets/banner/serviceBanner1.png'),
@@ -189,15 +202,49 @@ const bannerDummy = [
 
 export default function Home() {
 	const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
-	const [showOnboarding, setShowOnboarding] = useState(false);
-	const [showAddQuickCareerDetailModal, setShowAddQuickCareerDetailModal] = useState(false);
-	const [careerDetails, setCareerDetails] = useState([
+
+	const [showOnboarding, setShowOnboarding] = useState(false); // 온보딩 모달 상태
+	const [showAddQuickCareerDetailModal, setShowAddQuickCareerDetailModal] = useState(false); // 빠른 활동 기록 추가 모달 상태
+	const [dummyCareerDetails, setDummyCareerDetails] = useState([ // 최근 활동 기록 (더미 데이터)
 		{ id: 1, title: '업데이트 예정' },
 		{ id: 2, title: '업데이트 예정' },
 		{ id: 3, title: '업데이트 예정' },
 	]);
 
-	//localStorage를 확인해서 오늘은 모달을 보이지 않도록 처리
+	const [recentCareerDetails, setRecentCareerDetails] = useState([ // 최근 활동 기록 (이걸로 변경하기)
+		{
+			careerId: 0,
+			careerName: '',
+			alias: '',
+			category: '',
+			detailId: 0,
+			detailTitle: '',
+			detailContent: '',
+			detailStartDate: '',
+			detailEndDate: '',
+			detailTag: [],
+		}
+	]);
+
+	// [useQuery]] 최근 활동 기록 가져오기
+	// [useQuery] 빠른 활동 기록 추가 후 최근 활동 기록 업데이트
+
+	// 빠른 활동 기록 추가 
+	const handleSaveQuickCareerDetail = async (careerId, data) => {
+		console.log('빠른 활동 기록 추가 요청:', careerId, ',', data);
+		try {
+			const response = await AddDetail(
+				careerId,
+				data
+			);
+			console.log('빠른 활동 기록 추가 성공:', response.data);
+			setShowAddQuickCareerDetailModal(false);
+		} catch (error) {
+			console.error('빠른 활동 기록 추가 실패:', error);
+		}
+	};
+
+	//localStorage를 확인해서 오늘은 온보딩 모달을 보이지 않도록 처리
 	useEffect(() => {
 		const lastClosedDate = localStorage.getItem('hideOnboardingModal');
 		const today = new Date().toISOString().split('T')[0]; // 오늘 날짜 (YYYY-MM-DD)
@@ -207,11 +254,12 @@ export default function Home() {
 		}
 	}, []);
 
-	//모달 닫기 함수
+	// 온보딩 모달 닫기 함수
 	const handleCloseOnboarding = () => {
 		setShowOnboarding(false);
 	};
 
+	// 빠른 활동 기록 추가 모달 닫기 함수
 	const handleCloseAddQuickCareerDetailModal = () => {
 		setShowAddQuickCareerDetailModal(false);
 	};
@@ -219,7 +267,12 @@ export default function Home() {
 	return (
 		<>
 			{showOnboarding && <OnboardingModal onClose={handleCloseOnboarding} />}
-			{showAddQuickCareerDetailModal && <AddQuickCareerDetailModal onClose={handleCloseAddQuickCareerDetailModal} />}
+			{showAddQuickCareerDetailModal && 
+				<AddQuickCareerDetailModal 
+					onClose={handleCloseAddQuickCareerDetailModal} 
+					onSave={(careerId, data) => handleSaveQuickCareerDetail(careerId, data)}
+				/>
+			}
 			<Container>
 				<Top>
 					<TopBox1>
@@ -236,18 +289,22 @@ export default function Home() {
 					<BottomText>최근 이런 활동을 기록했어요</BottomText>
 					<CareerDeatailWrapper>
 						<AddCareerDetailBox onClick={() => setShowAddQuickCareerDetailModal(true)}>
-							<SvgIcon
-								name="addButton"
-							/>
+							<AddButton>
+								<SvgIcon
+									name="addButton"
+									size={18}
+									color={Color.white}
+								/>
+							</AddButton>
 						</AddCareerDetailBox>
-						{careerDetails.map((detail, index) => (
+						{dummyCareerDetails.map((activity, index) => (
 							<CareerDetailBox
 								key={index}
 								onClick={() => {
 									console.log('click');
 								}}
 							>
-								{detail.title}
+								{activity.title}
 							</CareerDetailBox>
 						))}
 					</CareerDeatailWrapper>

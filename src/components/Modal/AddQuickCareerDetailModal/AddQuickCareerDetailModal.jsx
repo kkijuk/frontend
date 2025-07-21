@@ -3,12 +3,22 @@ import moment from "moment";
 import styled from "styled-components";
 import SearchAndSelect from './SearchAndSelect';
 import TagBox from "@/components/shared/TagBox";
-import ReactCalendar from "@/components/Apply/ApplyCalendar";
+import ReactCalendar from "@/components/MyCareerDetail/Calendar";
 import { DateBox } from "@/components/MyCareerDetail/DetailAdd.styles";
 import SvgIcon from "@/components/shared/SvgIcon";
 import { theme } from "@/constants/theme";
 import { Color } from "@/constants/color";
 import { use } from "react";
+
+const categoryToTypeMap = {
+  대외활동: 'activity',
+  동아리: 'circle',
+  프로젝트: 'project',
+  교육: 'edu',
+  공모전대회: 'competition',
+  경력: 'employment',
+  기타: 'etc',
+};
 
 const AddQuickCareerDetailModal = ({onSave, onClose}) => {
     const [careerId, setCareerId] = useState('');
@@ -43,7 +53,7 @@ const AddQuickCareerDetailModal = ({onSave, onClose}) => {
 
     // 날짜 선택 핸들러
     const handleDateChange = (date) => {
-        if (Array.isArray(date) && date.length === 2) {
+        if (Array.isArray(date) && date.length === 2) { // 기간으로 선택 시
             const [startDate, endDate] = date;
             const formattedStartDate = moment(startDate).format('YYYY-MM-DD');
             const formattedEndDate = moment(endDate).format('YYYY-MM-DD');
@@ -53,7 +63,7 @@ const AddQuickCareerDetailModal = ({onSave, onClose}) => {
             } else {
                 setSelectedDate(`${formattedStartDate} ~ ${formattedEndDate}`);
             }
-        } else {
+        } else { // 단일 날짜 선택 시
             const formattedDate = moment(date).format('YYYY-MM-DD');
             setSelectedDate(formattedDate);
         }
@@ -72,14 +82,21 @@ const AddQuickCareerDetailModal = ({onSave, onClose}) => {
             setErrorMessage('모든 필드를 입력해주세요.');
             return;
         }
-        onSave({
-            careerId,
+
+        const [startDate, endDate] = selectedDate.split(' ~ ');
+        const data = {
             careerType,
             title,
-            selectedDate,
+            startDate,
+            endDate,
             content,
             tagList
-        });
+        }
+
+        onSave(
+            careerId,
+            data,
+        );
         onClose(); // 모달 닫기
     }
 
@@ -110,7 +127,7 @@ const AddQuickCareerDetailModal = ({onSave, onClose}) => {
                         <SearchAndSelect 
                             onChange={(item) => {
                                 setCareerId(item.careerId);
-                                setCareerType(item.category.categoryEnName);
+                                setCareerType(categoryToTypeMap[item.category.categoryKoName]);
                             }}
                         />
                     </FormItem>
