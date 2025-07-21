@@ -8,6 +8,7 @@ import AddCareerModal from '../../components/Modal/AddCareerModal/AddCareerModal
 import Careerbox from '../../components/MyCareerDetail/CareerBox';
 import CareerList from '../../components/MyCareerDetail/CareerList';
 import SearchBar from '../../components/Mycareer/shareSearchBar';
+import PageExitModal from '@/components/Modal/PageExitModal';
 import { CareertextEdit } from '../../api/Mycareer/CareerEdit';
 import { trackEvent } from '../../utils/ga4';
 import { formatDate } from '../../utils/formateDate';
