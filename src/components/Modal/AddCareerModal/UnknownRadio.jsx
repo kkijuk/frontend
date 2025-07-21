@@ -21,8 +21,8 @@ const RadioContainer = styled.div`
 	display: flex;
 	justify-content: right;
 	align-items: center;
-	position: relative;
-	top: -30px;
+	// position: relative;
+	// top: -30px;
 	@media (max-width: ${theme.breakpoints.md}) {
 		right: 10px;
 		top: -20px;

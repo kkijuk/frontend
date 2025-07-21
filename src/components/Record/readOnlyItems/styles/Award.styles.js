@@ -16,8 +16,8 @@ const EditButton = styled.button`
 `;
 
 const Container = styled.div`
-  display: flex;
   width:100%;
+  display: flex;
   padding: 10px;
   font-family:Regular;
   margin-bottom: 20px;

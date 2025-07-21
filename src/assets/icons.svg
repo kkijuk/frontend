@@ -64,6 +64,11 @@
   <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="addButton">
     <path d="M6.59829 16V9.36752H0V6.59829H6.59829V0H9.36752V6.59829H16V9.36752H9.36752V16H6.59829Z" fill="#BDBDBD"></path>
   </symbol>
+
+  <!-- Ellipse -->
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 5" id="ellipse">
+    <circle cx="0.5" cy="1" r="0.5" fill="#FF7979"></circle>
+  </symbol>
 </svg>
 
 

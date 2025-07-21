@@ -198,7 +198,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 				<Oval category={displayKoName} isPastDue={checkPastDue}></Oval>
 				<Line category={displayKoName} isLastItem={isLastItem} isPastDue={checkPastDue} isSummaryEditMode={isSummaryEditMode}></Line>
 			</TimeLine>
-			<Container onClick = {!isSummaryEditMode ? handleNavigate : null}>
+			<Container onClick = {!isSummaryEditMode ? handleNavigate : null} isLastItem={isLastItem}>
 				<div style={{width:'100%'}}>
 					<LevelTag category={displayKoName}>{displayKoName}</LevelTag>
 					<SchoolInfo>

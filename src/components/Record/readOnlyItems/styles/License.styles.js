@@ -17,11 +17,13 @@ const EditButton = styled.button`
 `;
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
   width:100%;
-  padding: 10px;
+  display: flex;
   font-family:Regular;
+
+  flex-direction: column;
+  padding: 10px;
+
   margin-bottom: 20px;
   position: relative;
 	&:hover ${EditButton} {

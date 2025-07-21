@@ -80,9 +80,13 @@ const Container = styled.div`
 	width: 100%;
 	display: flex;
 	align-items: flex-start;
-	margin-bottom: 45px;
+	margin-bottom: ${({ isLastItem }) => (isLastItem ? '0' : '42px')};
 	font-family: 'Regular';
 	positon: relative;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		margin-bottom: ${({ isLastItem }) => (isLastItem ? '0' : '40px')};
+	};
 `;
 
 const widthByLevelTagCategory = {

@@ -231,7 +231,6 @@ const History = () => {
 			) : (
 
 					<div style={{width:'100%', minHeight:'100vh',}}>
-						{/* <AddCareerModal></AddCareerModal> */}
 						<ScrollNavigatorContainer>
 							<ScrollNavigator
 								sections = {sections}
@@ -700,11 +699,12 @@ const UserDetailsContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-block: 30px;
+	margin-block: 20px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		display: block;
 		margin-left: 0px;
+		margin-block: 24px;
 	}
 `
 const ProfileAndInfoWrapper = styled.div`
@@ -719,9 +719,6 @@ const ProfileAndInfoWrapper = styled.div`
 
 const UpdatedAt = styled.div`
   width: 100%;
-  position: relative;
-  top: 0;
-  right: 20px;
   font-size: 14px;
   color: ${Color.gray02};
   font-family: Regular;
@@ -746,9 +743,15 @@ const UserInfoWrapper = styled.div`
 const InfoTable = styled.div`
 	display: grid;
 	grid-template-columns: auto 1fr; 
-	row-gap: 15px; 
-	column-gap: 30px;
-	margin-top: 20px;
+	row-gap: 16px; 
+	column-gap: 32px;
+	margin-top: 15.5px;
+
+	@media (max-width: ${theme.breakpoints.md}) {
+		row-gap: 12px;
+		column-gap: 20px;
+		margin-top: 24px;
+	}
 `
 
 const InfoLabel = styled.div`
@@ -768,14 +771,14 @@ const InfoValue = styled.div`
 `;
 
 const SectionWrapper = styled.div`
-  margin-bottom: 40px;
-  width:100%;
-  padding-top:25px;
-  padding-bottom:25px;
+	margin-block: 32px;
 `;
 
 const SectionTitle = styled.h2`
   font-size: 24px;
+  font-family: 'normal';
+  font-weight: 700;
+  line-height: normal;
 
   @media (max-width: ${theme.breakpoints.md}) {
     font-size: 20px;
@@ -783,17 +786,11 @@ const SectionTitle = styled.h2`
 `;
 
 const SectionHeader = styled.div`
-	width:100%;
-	height: auto;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin:0px;
-.
-  h2 {
-    font-size: 24px;
-    font-weight: bold;
-  }
+	margin-bottom: 24px;
+	padding: 0px;
 
   button {
     background: ${Color.main01};
@@ -810,7 +807,6 @@ const ContentWrapper = styled.div`
     flex-direction: column;
     align-items: center; /* 수평 가운데 정렬 */
     justify-content: center; /* 수직 가운데 정렬 (필요 시) */
-    margin-top: 20px; /* SectionHeader와 간격 조절 */
     width: 100%; /* 부모 컨테이너의 너비 사용 */
 `;
 

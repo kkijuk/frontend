@@ -4,6 +4,7 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Toggle from '../../components/Intro/Toggle';
 import AddButton from '../../components/Intro/AddButton';
+import { readIntroList } from '@/api/Intro/introList';
 import { trackEvent } from '../../utils/ga4';
 import { theme } from '../../constants/theme';
 import { Color } from '../../constants/color';
@@ -23,17 +24,16 @@ const ViewOptions = () => {
 
 	//(API) 자기소개서 목록 불러오기
 	useEffect(() => {
-		api
-			.get('/history/intro/list')
-			.then((response) => {
-				console.log(response.data);
-				const Data = response.data.data;
+		const fetchIntroList = async () => {
+			try {
+				const Data = await readIntroList();
+				console.log('자소서 목록 조회:', Data);
 				setRecruits(Data);
-				console.log(Data);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+			} catch (error) {
+				console.error('Error:', error);
+			}
+		}
+		fetchIntroList();
 	}, []);
 
 	//토글 클릭
@@ -82,7 +82,7 @@ const ViewOptions = () => {
 	};
 
 	return (
-		<>
+		<BaseDiv>
 			<SButtonContainer>
 				{isChecked && (
 					<SButton
@@ -150,18 +150,25 @@ const ViewOptions = () => {
 					});
 				}}
 			/>
-			<Outlet key={location.pathname} />
-		</>
+			<Section>
+				<Outlet key={location.pathname} />
+			</Section>
+		</BaseDiv>
 	);
 };
 export default ViewOptions;
+
+const BaseDiv = styled.div`
+	width: 100%;
+`;
 
 const SButtonContainer = styled.div`
 	width: 650px;
 	display: flex;
 	overflow-x: auto;
 	white-space: nowrap;
-	padding-bottom: 10px;
+	// padding-bottom: 10px;
+	margin-top: 20px;
 
 	/* Hide scrollbar for all browsers */
 	scrollbar-width: none; /* Firefox */
@@ -171,6 +178,7 @@ const SButtonContainer = styled.div`
 		display: none; /* Safari and Chrome */
 	}
 	@media (max-width: ${theme.breakpoints.md}) {
+		margin-top: 16px;
 		width: 100%;
 		overflow-x: auto;
 	}
@@ -179,12 +187,16 @@ const SButtonContainer = styled.div`
 const SButton = styled.button`
 	height: 35px;
 	margin-right: 12px;
-	font-family: 'Regular';
+	padding: 6px 16px;
 	border: none;
 	border-radius: 10px;
-	padding: 6px 16px;
-	background-color: ${Color.gray06};
+
+	font-family: 'Regular';
+	font-size: 14px;
 	color: ${Color.gray02};
+
+	background-color: ${Color.gray06};
+
 	cursor: pointer;
 	white-space: nowrap;
 
@@ -197,11 +209,20 @@ const SButton = styled.button`
 const ToggleWrapper = styled.div`
 	display: inline-block;
 	position: absolute;
-	right: 20px;
-	top: 90px;
+	right: 0px;
+	top: 80px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		top: 130px;
 		right: 10px;
 	}
+`;
+
+const Section = styled.div`
+    height: 100%;
+    width: 100%;
+    
+    @media (max-width: ${theme.breakpoints.md}) {
+        padding: 0;
+    }
 `;
