@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import ModalTagBox from '../Apply/ModalTagBox';  // 일관성 있게 사용
 import { createRecruit } from '../../api/Apply/Recruit';
 import { trackEvent } from '../../utils/ga4'; 
+import useScrollLock from '@/utils/scrollLock';
  
 const ModalBackdrop = styled.div`
 	position: fixed;
@@ -386,6 +387,8 @@ const LabelContainer = styled.div`
 `;
 
 const AddApplyModal = ({ onClose, onSave }) => {
+	useScrollLock();
+	
 	const [title, setTitle] = useState('');
 	const [startTime, setStartTime] = useState('');
 	const [endTime, setEndTime] = useState('');

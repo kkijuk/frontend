@@ -18,10 +18,12 @@ import DeletePopup from './DeletePopup';
 import { trackEvent } from '../../../utils/ga4';
 import { theme } from '../../../constants/theme';
 import { Color } from '../../../constants/color';
+import useScrollLock from '@/utils/scrollLock';
 
 const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 	const navigate = useNavigate();
 	const currentLocation = useLocation(); // 기존의 `location`과 충돌 방지
+	useScrollLock();
 
 	// console.log('initialData:', initialData);
 
@@ -1112,12 +1114,12 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 	};
 
 	// 모달 열릴 때마다 스크롤 잠금
-	useEffect(() => {
-		document.body.style.overflow = 'hidden';
-		return () => {
-			document.body.style.overflow = 'unset';
-		};
-	}, []);
+	// useEffect(() => {
+	// 	document.body.style.overflow = 'hidden';
+	// 	return () => {
+	// 		document.body.style.overflow = 'unset';
+	// 	};
+	// }, []);
 
 	return (
 		<ModalBackground>

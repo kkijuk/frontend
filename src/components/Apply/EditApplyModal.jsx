@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ModalTagBox from '../Apply/ModalTagBox';  
+import useScrollLock from '@/utils/scrollLock';
+import { use } from 'react';
 
 
 const ModalBackdrop = styled.div`
@@ -374,6 +376,8 @@ const formatDateTimeToLocal = (dateString) => {
 
 
 const EditApplyModal = ({ onClose, onSave, job }) => {
+	useScrollLock();
+	
 	const [title, setTitle] = useState('');
 	const [startTime, setStartTime] = useState('');
 	const [endTime, setEndTime] = useState('');
