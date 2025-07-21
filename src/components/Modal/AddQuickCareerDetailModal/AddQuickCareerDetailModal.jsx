@@ -3,14 +3,26 @@ import moment from "moment";
 import styled from "styled-components";
 import SearchAndSelect from './SearchAndSelect';
 import TagBox from "@/components/shared/TagBox";
-import ReactCalendar from "@/components/Apply/ApplyCalendar";
+import ReactCalendar from "@/components/MyCareerDetail/Calendar";
 import { DateBox } from "@/components/MyCareerDetail/DetailAdd.styles";
 import SvgIcon from "@/components/shared/SvgIcon";
 import { theme } from "@/constants/theme";
 import { Color } from "@/constants/color";
-import { use } from "react";
+import useScrollLock from "@/utils/scrollLock";
+
+const categoryToTypeMap = {
+  대외활동: 'activity',
+  동아리: 'circle',
+  프로젝트: 'project',
+  교육: 'edu',
+  공모전대회: 'competition',
+  경력: 'employment',
+  기타: 'etc',
+};
 
 const AddQuickCareerDetailModal = ({onSave, onClose}) => {
+    useScrollLock();
+    
     const [careerId, setCareerId] = useState('');
     const [careerType, setCareerType] = useState(''); // categoryEnName
     const [title, setTitle] = useState('');
@@ -43,7 +55,7 @@ const AddQuickCareerDetailModal = ({onSave, onClose}) => {
 
     // 날짜 선택 핸들러
     const handleDateChange = (date) => {
-        if (Array.isArray(date) && date.length === 2) {
+        if (Array.isArray(date) && date.length === 2) { // 기간으로 선택 시
             const [startDate, endDate] = date;
             const formattedStartDate = moment(startDate).format('YYYY-MM-DD');
             const formattedEndDate = moment(endDate).format('YYYY-MM-DD');
@@ -53,7 +65,7 @@ const AddQuickCareerDetailModal = ({onSave, onClose}) => {
             } else {
                 setSelectedDate(`${formattedStartDate} ~ ${formattedEndDate}`);
             }
-        } else {
+        } else { // 단일 날짜 선택 시
             const formattedDate = moment(date).format('YYYY-MM-DD');
             setSelectedDate(formattedDate);
         }
@@ -61,36 +73,28 @@ const AddQuickCareerDetailModal = ({onSave, onClose}) => {
     }
 
     // [폼 제출]
-    // 저장하면 무슨 동작해야하는지?
     const handleSubmit = () => {
-        // console.log('커리어 정보', careerId, ',', careerType);
-        // console.log('제목:', title);
-        // console.log('날짜:', selectedDate);
-        // console.log('내용:', content);
-        // console.log('태그 리스트:', tagList);
         if (!careerId || !careerType || !title || !selectedDate || !content) {
             setErrorMessage('모든 필드를 입력해주세요.');
             return;
         }
-        onSave({
-            careerId,
+
+        const [startDate, endDate] = selectedDate.split(' ~ ');
+        const data = {
             careerType,
             title,
-            selectedDate,
+            startDate,
+            endDate,
             content,
             tagList
-        });
+        }
+
+        onSave(
+            careerId,
+            data,
+        );
         onClose(); // 모달 닫기
     }
-
-    // [utils]
-    // 모달 열릴 때마다 스크롤 잠금
-    useEffect(() => {
-        document.body.style.overflow = 'hidden';
-        return () => {
-            document.body.style.overflow = 'unset';
-        };
-    }, []);
 
     return (
         <ModalBackground>
@@ -110,7 +114,7 @@ const AddQuickCareerDetailModal = ({onSave, onClose}) => {
                         <SearchAndSelect 
                             onChange={(item) => {
                                 setCareerId(item.careerId);
-                                setCareerType(item.category.categoryEnName);
+                                setCareerType(categoryToTypeMap[item.category.categoryKoName]);
                             }}
                         />
                     </FormItem>

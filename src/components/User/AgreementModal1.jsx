@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../constants/theme';
+import useScrollLock from '@/utils/scrollLock';
 
 const StyledModal = styled.div`
 	display: ${(props) => (props.show ? 'flex' : 'none')}; /* 중앙 정렬을 위해 flex 사용 */
@@ -85,6 +86,8 @@ const StyledModal = styled.div`
 
 
 const AgreementModal = ({ show, handleModal }) => {
+	useScrollLock();
+	
 	useEffect(() => {
 		if (show) {
 			document.body.style.overflow = ''; // 모달이 열릴 때 배경 스크롤 방지
