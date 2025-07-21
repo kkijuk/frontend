@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useNavigate } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useCareerList, useCareerDetail } from '@/hooks/MycareerDetail/useCareerQueries';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Layout from '../../components/Layout';
 import DetailAdd from '../../components/MyCareerDetail/DetailAdd';
 import DetailAddEdit from '../../components/MyCareerDetail/DetailAddEdit';
