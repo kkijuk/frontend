@@ -99,7 +99,7 @@ const ExitButton = styled.div`
 `;
 
 export default function PageExitModal({ isOpen, onClose, onConfirm }) {
-	const [open, setOpen] = useState(isOpen);
+	if (!isOpen) return null; // 추가: 모달이 열리지 않으면 null 반환
 
 	return (
 		<Overlay onClick={onClose}>
