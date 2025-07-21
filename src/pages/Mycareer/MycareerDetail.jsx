@@ -13,6 +13,7 @@ import { CareertextEdit } from '../../api/Mycareer/CareerEdit';
 import { trackEvent } from '../../utils/ga4';
 import { formatDate } from '../../utils/formateDate';
 import { useBlockNavigation } from '@/hooks/useBlockNavigation';
+import { useBeforeUnload } from '@/hooks/useBeforeUnload';
 import {
 	Container,
 	SearchIcon,
@@ -74,16 +75,20 @@ export default function MycareerDetail() {
 	const [isExitModalOpen, setIsExitModalOpen] = useState(false);
 	const [nextLocation, setNextLocation] = useState(null);
 
-	// 이동 차단 훅
+	// react-router-dom 차단 (Link, navigate)
 	useBlockNavigation(isAdding, (tx) => {
 		setIsExitModalOpen(true);
 		setNextLocation(() => tx.retry);
 	});
 
+	// 브라우저 새로고침, 닫기 차단
+	useBeforeUnload(isAdding);
+
+	// 모달 확인/취소 처리
 	const handleConfirmLeave = () => {
 		setIsExitModalOpen(false);
-		setIsAdding(false); // 추가 상태 해제
-		nextLocation(); // tx.retry() 실행 = 이동 계속
+		setIsAdding(false); // 꼭 상태 초기화
+		if (nextLocation) nextLocation(); // tx.retry()
 	};
 
 	const handleCancelLeave = () => {
