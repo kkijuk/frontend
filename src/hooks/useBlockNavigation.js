@@ -5,7 +5,7 @@ export function useBlockNavigation(shouldBlock, onNavigate) {
 	const navigator = useContext(NavigationContext).navigator;
 
 	useEffect(() => {
-		if (!shouldBlock) return;
+		if (!shouldBlock || typeof navigator.block !== 'function') return;
 
 		const unblock = navigator.block((tx) => {
 			onNavigate(tx); // tx.retry()로 이동 재시도 가능
