@@ -12,6 +12,7 @@ const FieldEdit = lazy(() => import('@pages/Mypage/FieldEdit'));
 //const PasswordReset = lazy(() => import('@/pages/NotUse/PasswordReset'));
 //const ResetSuccess = lazy(() => import('@pages/Mypage/ResetSuccess'));
 const DeleteAccount = lazy(() => import('@pages/Mypage/DeleteAccount'));
+const Test = lazy(() => import('@pages/Mypage/Test'));
 
 export const mypageRoutes = [
 	{ path: ROUTES.MYPAGE, element: <MyPage /> },
@@ -24,4 +25,5 @@ export const mypageRoutes = [
 	//{ path: ROUTES.MYPAGE_PASSWORD_RESET, element: <PasswordReset /> },
 	//{ path: ROUTES.MYPAGE_RESET_SUCCESS, element: <ResetSuccess /> },
 	{ path: ROUTES.DELETE_ACCOUNT, element: <DeleteAccount /> },
+	{ path: ROUTES.TEST, element: <Test /> },
 ];

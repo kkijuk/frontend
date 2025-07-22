@@ -177,34 +177,44 @@ export const CareerListBox = styled.div`
 `;
 
 export const CareerPlus = styled.button`
-  position: fixed;
-  bottom: 80px; //원래 20 -> footer 가림
-  left: 50%;
-  transform: translateX(-50%);
+	max-width: 720px;
+	width: 100%;
+	height: 50px;
+	border-radius: 10px;
+	background: var(--main-01, #3aaf85);
+	border: none;
+	color: white;
+	cursor: pointer;
+	position: sticky; /* fixed → absolute */
 
-  z-index: 1000;
+	left: 0;
+	right: 0;
+	margin: auto;
 
-  max-width: 720px;
-  width: 100%;
-  height: 50px;
-  border-radius: 10px;
-  background: var(--main-01, #3aaf85);
-  border: none;
-  color: white;
-  cursor: pointer;
-  padding: 0 16px;
+	bottom: ${(props) => (props.isFixed ? '220px' : '30px')}; /* 🚀 기본적으로 30px, 남은 높이 200px 이하일 때는 200px */
+	transition: bottom 0.2s ease-in-out; /* 부드러운 이동 효과 뭘까이건*/
 
-  font-family: Pretendard;
-  font-size: 18px;
-  font-weight: 500;
-  line-height: normal;
+	margin-top: 20px;
+	margin-bottom: 20px;
 
-  background: ${(props) => (props.disabled ? '#D9D9D9' : '#3AAF85')};
-  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+	z-index: 10;
+	color: #fff;
 
-  @media (max-width: ${(props) => props.theme.breakpoints.md}) {
-    max-width: calc(100% - 32px);
-  }
+	text-align: center;
+	font-family: Pretendard;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+
+	background: ${(props) => (props.disabled ? 'var(--gray-03, #D9D9D9)' : 'var(--main-01, #3AAF85)')};
+	cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		max-width: 100%;
+		width: 100%;
+		box-sizing: border-box;ㄴ
+	}
 `;
 
 export const EditActivityContent = styled.div`
@@ -369,6 +379,14 @@ export const EditTag = styled.div`
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
+`;
+
+export const Box = styled.div`
+	width: 100%;
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;
 
 export const categoryToColorMap = {
