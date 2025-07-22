@@ -17,7 +17,7 @@ const BaseDiv = styled.div`
     width: 820px;
     max-width: 820px;
     position: relative;
-    z-index: 999;
+    z-index: 998;
 
     @media (max-width: ${theme.breakpoints.md}) {
         width: 100%;
