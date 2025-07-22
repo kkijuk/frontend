@@ -16,7 +16,7 @@ import CareerTimeline from '../components/Mycareer/CareerTimeline';
 import OnboardingModal from '../components/Modal/OnboardingModal';
 import AddQuickCareerDetailModal from '@/components/Modal/AddQuickCareerDetailModal/AddQuickCareerDetailModal';
 import SvgIcon from '@/components/shared/SvgIcon';
-import { theme } from '../constants/theme';
+import { theme } from '../constants/theme';   
 import { Color } from '@/constants/color';
 
 const Container = styled.div`
@@ -188,6 +188,7 @@ const AddButton = styled.button`
 	border-radius: 50%;
 	background-color: ${Color.main01};
 	color: white;
+	cursor: pointer;
 	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `
 
@@ -205,11 +206,32 @@ export default function Home() {
 
 	const [showOnboarding, setShowOnboarding] = useState(false); // 온보딩 모달 상태
 	const [showAddQuickCareerDetailModal, setShowAddQuickCareerDetailModal] = useState(false); // 빠른 활동 기록 추가 모달 상태
-	const [dummyCareerDetails, setDummyCareerDetails] = useState([ // 최근 활동 기록 (더미 데이터)
-		{ id: 1, title: '업데이트 예정' },
-		{ id: 2, title: '업데이트 예정' },
-		{ id: 3, title: '업데이트 예정' },
-	]);
+	const [dummyCareerDetails, setDummyCareerDetails] = useState([
+  {
+    id: 1,
+    category: '앱 서비스 개발 동아리 / UMC',
+    title: '아이디어톤',
+    date: '2024.05.26 ~ 2024.05.26',
+    content: `기획한 웹/앱 서비스를 발표하고 피드백을 교환함\n투표 결과 우수상 수상`,
+    tags: ['커뮤니케이션 능력', '앱 서비스 기획', '수상'],
+  },
+  {
+    id: 2,
+    category: '앱 서비스 개발 동아리 / UMC',
+    title: '아이디어톤',
+    date: '2024.05.26 ~ 2024.05.26',
+    content: `기획한 웹/앱 서비스를 발표하고 피드백을 교환함\n투표 결과 우수상 수상`,
+    tags: ['커뮤니케이션 능력', '앱 서비스 기획', '수상'],
+  },
+  {id: 3,
+    category: '앱 서비스 개발 동아리 / UMC',
+    title: '아이디어톤',
+    date: '2024.05.26 ~ 2024.05.26',
+    content: `기획한 웹/앱 서비스를 발표하고 피드백을 교환함\n투표 결과 우수상 수상`,
+    tags: ['커뮤니케이션 능력', '앱 서비스 기획', '수상'],
+  },
+]);
+
 
 	const [recentCareerDetails, setRecentCareerDetails] = useState([ // 최근 활동 기록 (이걸로 변경하기)
 		{
@@ -265,59 +287,118 @@ export default function Home() {
 	};
 
 	return (
-		<>
-			{showOnboarding && <OnboardingModal onClose={handleCloseOnboarding} />}
-			{showAddQuickCareerDetailModal && 
-				<AddQuickCareerDetailModal 
-					onClose={handleCloseAddQuickCareerDetailModal} 
-					onSave={(careerId, data) => handleSaveQuickCareerDetail(careerId, data)}
-				/>
-			}
-			<Container>
-				<Top>
-					<TopBox1>
-						<ProfileBox></ProfileBox>
-					</TopBox1>
-					<TopBox2>
-						<CareerTimeline />
-					</TopBox2>
-				</Top>
-				<Middle>
-					<BannerComponent banners={bannerDummy} />
-				</Middle>
-				<Bottom>
-					<BottomText>최근 이런 활동을 기록했어요</BottomText>
-					<CareerDeatailWrapper>
-						<AddCareerDetailBox onClick={() => setShowAddQuickCareerDetailModal(true)}>
-							<AddButton>
-								<SvgIcon
-									name="addButton"
-									size={18}
-									color={Color.white}
-								/>
-							</AddButton>
-						</AddCareerDetailBox>
-						{dummyCareerDetails.map((activity, index) => (
-							<CareerDetailBox
-								key={index}
-								onClick={() => {
-									console.log('click');
-								}}
-							>
-								{activity.title}
-							</CareerDetailBox>
-						))}
-					</CareerDeatailWrapper>
-				</Bottom>
+  <>
+    {showOnboarding && <OnboardingModal onClose={handleCloseOnboarding} />}
+    {showAddQuickCareerDetailModal && (
+      <AddQuickCareerDetailModal
+        onClose={handleCloseAddQuickCareerDetailModal}
+        onSave={(careerId, data) => handleSaveQuickCareerDetail(careerId, data)}
+      />
+    )}
+    <Container>
+      <Top>
+        <TopBox1>
+          <ProfileBox />
+        </TopBox1>
+        <TopBox2>
+          <CareerTimeline />
+        </TopBox2>
+      </Top>
 
-				<Bottom>
-					<BottomText>잠깐! 잊지 않으셨죠?</BottomText>
-					<ActivityBox>
-						<Noti></Noti>
-						<CLNoti></CLNoti>
-					</ActivityBox>
-				</Bottom>
-			</Container>
-		</>
-	);
+      <Middle>
+        <BannerComponent banners={bannerDummy} />
+      </Middle>
+
+      <Bottom>
+        <BottomText>최근 이런 활동을 기록했어요</BottomText>
+        <CareerDeatailWrapper>
+          <AddCareerDetailBox>
+            <AddButton onClick={() => setShowAddQuickCareerDetailModal(true)}>
+              <SvgIcon name="addButton" size={18} color={Color.white} />
+            </AddButton>
+          </AddCareerDetailBox>
+
+          {dummyCareerDetails.map((activity, index) => (
+            <CareerDetailBox key={index}>
+              {/* 상단 카테고리 */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <div
+                    style={{
+                      width: '10px',
+                      height: '10px',
+                      borderRadius: '50%',
+                      backgroundColor: '#FFD600',
+                    }}
+                  />
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: '#444' }}>
+                    {activity.category}
+                  </span>
+                </div>
+              </div>
+
+              {/* 제목 + 날짜 */}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginTop: '6px',
+                }}
+              >
+                <div style={{ fontWeight: 700, fontSize: '17px', color: '#111' }}>
+                  {activity.title}
+                </div>
+                <div style={{ fontSize: '12px', color: '#999' }}>{activity.date}</div>
+              </div>
+
+              {/* 본문 */}
+              <div
+                style={{
+                  fontSize: '13px',
+                  color: '#333',
+                  marginTop: '6px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                }}
+              >
+                {activity.content}
+              </div>
+
+              {/* 태그 */}
+              <div style={{ marginTop: 'auto', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                {activity.tags.map((tag, idx) => (
+                  <span
+                    key={idx}
+                    style={{
+                      backgroundColor: Color.gray06,
+                      color: Color.main01,
+                      fontSize: '11px',
+                      padding: '4px 10px',
+                      borderRadius: '16px',
+                    }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </CareerDetailBox>
+          ))}
+        </CareerDeatailWrapper>
+      </Bottom>
+
+      <Bottom>
+        <BottomText>잠깐! 잊지 않으셨죠?</BottomText>
+        <ActivityBox>
+          <Noti />
+          <CLNoti />
+        </ActivityBox>
+      </Bottom>
+    </Container>
+  </>
+);
+
 }
