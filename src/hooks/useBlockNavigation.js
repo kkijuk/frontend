@@ -1,17 +1,19 @@
-// useBlockNavigation.js (hooks 폴더에 만들어서 재사용 가능)
-import { useEffect } from 'react';
-import { UNSAFE_NavigationContext as NavigationContext } from 'react-router-dom';
-import { useContext } from 'react';
+// hooks/useBlockNavigation.js
+import { useEffect, useContext } from 'react';
+import { UNSAFE_NavigationContext } from 'react-router-dom';
 
 export function useBlockNavigation(shouldBlock, onBlock) {
-	const navigator = useContext(NavigationContext).navigator;
+	const navigator = useContext(UNSAFE_NavigationContext)?.navigator;
 
 	useEffect(() => {
-		if (!shouldBlock) return;
+		if (!shouldBlock || !navigator?.block) return;
 
 		const unblock = navigator.block((tx) => {
-			onBlock(tx); // tx.retry()를 저장해두고 나중에 실행 가능
+			onBlock(tx); // tx.retry()
 		});
-		return unblock;
+
+		return () => {
+			unblock();
+		};
 	}, [shouldBlock, onBlock, navigator]);
 }
