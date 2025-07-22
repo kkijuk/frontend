@@ -13,7 +13,6 @@ import { CareertextEdit } from '../../api/Mycareer/CareerEdit';
 import { trackEvent } from '../../utils/ga4';
 import { formatDate } from '../../utils/formateDate';
 import { useBlockNavigation } from '@/hooks/useBlockNavigation';
-import { useBeforeUnload } from '@/hooks/useBeforeUnload';
 import {
 	Container,
 	SearchIcon,
@@ -38,6 +37,7 @@ import {
 	ContentWrapper,
 	EditTag,
 	NameTag,
+	Box,
 	categoryToColorMap,
 } from './MycareerDetail.styles';
 
@@ -75,31 +75,51 @@ export default function MycareerDetail() {
 	const [isExitModalOpen, setIsExitModalOpen] = useState(false);
 	const [nextLocation, setNextLocation] = useState(null);
 
-	// react-router-dom 차단 (Link, navigate)
+	//추가하래서 일단 추가함
+	const [nextTransition, setNextTransition] = useState(null);
+
 	useBlockNavigation(isAdding, (tx) => {
 		setIsExitModalOpen(true);
-		setNextLocation(() => tx.retry);
+		setNextTransition(tx); // tx.retry()로 다시 시도 가능
 	});
-
-	// 브라우저 새로고침, 닫기 차단
-	useBeforeUnload(isAdding);
-
-	// 모달 확인/취소 처리
-	const handleConfirmLeave = () => {
-		setIsExitModalOpen(false);
-		setIsAdding(false); // 꼭 상태 초기화
-		if (nextLocation) nextLocation(); // tx.retry()
-	};
 
 	const handleCancelLeave = () => {
 		setIsExitModalOpen(false);
 	};
+	//여기까지
 
 	useEffect(() => {
 		if (details) {
 			setSummary(details.summary || '');
 		}
 	}, [details]);
+
+	//상세 활동 추가 컴포넌트 열려있을 때 외부 화면 클릭 시 모달 띄우기
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (!isAdding) return;
+			const addComponent = document.getElementById('detail-add');
+			if (addComponent && !addComponent.contains(event.target)) {
+				event.stopPropagation();
+				event.preventDefault();
+				setIsExitModalOpen(true);
+				setNextLocation(() => () => event.target.click());
+			}
+		};
+		document.addEventListener('mousedown', handleClickOutside, true);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside, true);
+		};
+	}, [isAdding]);
+	//얘도 추가한거
+	const handleConfirmLeave = () => {
+		setIsExitModalOpen(false);
+		setIsAdding(false);
+		if (nextLocation) {
+			nextLocation();
+			setNextLocation(null);
+		}
+	};
 
 	const careerBoxRef = useRef(null);
 	let isDragging = false;
@@ -309,7 +329,7 @@ export default function MycareerDetail() {
 						</NoContents>
 					)}
 				</CareerListBox>
-
+				<Box></Box>
 				<CareerPlus
 					onClick={() => {
 						trackEvent('add_click', {
