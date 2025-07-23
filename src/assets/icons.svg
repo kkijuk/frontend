@@ -84,6 +84,17 @@
   <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 24" id="chevron-down">
     <path d="M7.5 10L12.5008 14.58L17.5 10" stroke="#707070" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
   </symbol>
+
+  <!-- check (스크롤 내비케이터)-->
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 17" id="check">
+    <path d="M4 8.50065L6.66667 11.1673L12 5.83398" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+  </symbol>
+
+  <!-- Line 32 (스크롤 내비게이터)-->
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 2" id="Line-32">
+    <path d="M1 1L129 1.00001" stroke="#BDBDBD" stroke-linecap="round"></path>
+  </symbol>
+
 </svg>
 
 

@@ -309,19 +309,19 @@ export default function Home() {
         <BannerComponent banners={bannerDummy} />
       </Middle>
 
-      {/* <Bottom>
+      <Bottom>
         <BottomText>최근 이런 활동을 기록했어요</BottomText>
         <CareerDeatailWrapper>
           <AddCareerDetailBox>
             <AddButton onClick={() => setShowAddQuickCareerDetailModal(true)}>
               <SvgIcon name="addButton" size={18} color={Color.white} />
             </AddButton>
-          </AddCareerDetailBox> */}
+          </AddCareerDetailBox>
 
-          {/* {dummyCareerDetails.map((activity, index) => (
-            <CareerDetailBox key={index}> */}
+          {dummyCareerDetails.map((activity, index) => (
+            <CareerDetailBox key={index}>
               {/* 상단 카테고리 */}
-              {/* <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <div
                     style={{
@@ -335,10 +335,10 @@ export default function Home() {
                     {activity.category}
                   </span>
                 </div>
-              </div> */}
+              </div>
 
               {/* 제목 + 날짜 */}
-              {/* <div
+              <div
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
@@ -350,10 +350,10 @@ export default function Home() {
                   {activity.title}
                 </div>
                 <div style={{ fontSize: '12px', color: '#999' }}>{activity.date}</div>
-              </div> */}
+              </div>
 
               {/* 본문 */}
-              {/* <div
+              <div
                 style={{
                   fontSize: '13px',
                   color: '#333',
@@ -366,10 +366,10 @@ export default function Home() {
                 }}
               >
                 {activity.content}
-              </div> */}
+              </div>
 
               {/* 태그 */}
-              {/* <div style={{ marginTop: 'auto', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+              <div style={{ marginTop: 'auto', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                 {activity.tags.map((tag, idx) => (
                   <span
                     key={idx}
@@ -388,7 +388,7 @@ export default function Home() {
             </CareerDetailBox>
           ))}
         </CareerDeatailWrapper>
-      </Bottom> */}
+      </Bottom>
 
       <Bottom>
         <BottomText>잠깐! 잊지 않으셨죠?</BottomText>
