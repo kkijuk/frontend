@@ -6,6 +6,7 @@ import './history.css';
 import Alert from '../../components/Intro/Alert';
 // import EditApplyModal from '../../components/Intro/EditApplyModal.jsx';
 import EditApplyModal from '@/components/Apply/EditApplyModal.jsx';
+import RightSideBar from '@/components/Intro/RightSideBar.jsx';
 import { trackEvent } from '../../utils/ga4.js';
 import SvgIcon from '../../components/shared/SvgIcon.jsx';
 import { theme } from '../../constants/theme.js';
@@ -53,6 +54,7 @@ const OthersRewrite = () => {
 	const [nextQuestionId, setNextQuestionId] = useState(1);
 	const [showAutoSaveMessage, setShowAutoSaveMessage] = useState(false); // 자동 저장 메시지
 	const [autoSaveTime, setAutoSaveTime] = useState(''); // 자동 저장 시간
+	const [isSideBarOpen, setIsSideBarOpen] = useState(false); // 사이드바 열림 상태
 
 
 	useEffect(() => {
@@ -312,18 +314,24 @@ const OthersRewrite = () => {
 	}
 
 	return (
+		<>
+		{modalOpend && <Alert closeModal={toggleModal} deleteResume={deleteResume}></Alert>}
+		<div style={{ position: 'relative', zIndex: 1000 }}>
+			{isEditApplyModalOpend && (
+				<EditApplyModal
+					onClose={toggleEditApplyModal}
+					onSave={(data) => handleEditApply(data)}
+					job={recruitModalContents}
+					style={{ position: 'relative', zIndex: 1000 }}
+				></EditApplyModal>
+			)}
+		</div>
+		{/* <button onClick={() => setIsSideBarOpen(true)}>사이드바열기 </button>
+		<RightSideBar isOpen={isSideBarOpen} onClose={() => setIsSideBarOpen(false)}>
+			<p>test</p>
+		</RightSideBar> */}
+		
 		<BackgroundDiv>
-			{modalOpend && <Alert closeModal={toggleModal} deleteResume={deleteResume}></Alert>}
-			<div style={{ position: 'relative', zIndex: 1000 }}>
-				{isEditApplyModalOpend && (
-					<EditApplyModal
-						onClose={toggleEditApplyModal}
-						onSave={(data) => handleEditApply(data)}
-						job={recruitModalContents}
-						style={{ position: 'relative', zIndex: 1000 }}
-					></EditApplyModal>
-				)}
-			</div>
 			<BaseDiv>
 				<IntroHeader>
 					<Header>
@@ -483,6 +491,7 @@ const OthersRewrite = () => {
 				</IntroFooter>
 			</BaseDiv>
 		</BackgroundDiv>
+		</>
 	);
 };
 
