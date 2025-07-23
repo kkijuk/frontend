@@ -326,10 +326,10 @@ const OthersRewrite = () => {
 				></EditApplyModal>
 			)}
 		</div>
-		<button onClick={() => setIsSideBarOpen(true)}>사이드바열기 </button>
+		{/* <button onClick={() => setIsSideBarOpen(true)}>사이드바열기 </button>
 		<RightSideBar isOpen={isSideBarOpen} onClose={() => setIsSideBarOpen(false)}>
 			<p>test</p>
-		</RightSideBar>
+		</RightSideBar> */}
 		
 		<BackgroundDiv>
 			<BaseDiv>
