@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import ReactCalendar from './Calendar';
 import moment from 'moment';
 import TagBox from '../shared/TagBox';
-import { AddDetail } from '../../api/Mycareer/AddDetail';
 import { trackEvent } from '../../utils/ga4';
+import { useCareerDetailAdd } from '@/hooks/MycareerDetail/useCareerDetailMutations';
 
 import {
 	Box,
@@ -25,17 +25,18 @@ import {
 } from './DetailAdd.styles';
 
 export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
-	// careerId도 prop으로 받음
 	const [showCalendar, setShowCalendar] = useState(false);
 	const [selectedDate, setSelectedDate] = useState('');
 	const [title, setTitle] = useState('');
 	const [content, setContent] = useState('');
-	const [tagList, setTagList] = useState([]); // 태그 ID 리스트를 상태로 관리
+	const [tagList, setTagList] = useState([]);
 	const [errorMessage, setErrorMessage] = useState('');
 
-	const [textAreaHeight, setTextAreaHeight] = useState('100px');
+	const addMutation = useCareerDetailAdd(() => {
+		onSave();
+		onCancel();
+	});
 
-	console.log('careerId:', careerId);
 	const handleDateClick = () => {
 		setShowCalendar(!showCalendar);
 	};
@@ -58,49 +59,34 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 		setShowCalendar(false);
 	};
 
-	const handleSave = async () => {
-		if (!title) {
-			setErrorMessage('제목을 입력해주세요.');
-			return;
-		}
-		if (!selectedDate) {
-			setErrorMessage('날짜를 선택해주세요.');
-			return;
-		}
-		if (!content) {
-			setErrorMessage('입력한 내용이 없습니다.');
-			return;
-		}
+	const handleSave = () => {
+		if (!title) return setErrorMessage('제목을 입력해주세요.');
+		if (!selectedDate) return setErrorMessage('날짜를 선택해주세요.');
+		if (!content) return setErrorMessage('입력한 내용이 없습니다.');
+
 		const [startDate, endDate] = selectedDate.split(' ~ ');
 		const data = {
-			careerType, // 받아온 careerType을 그대로 사용
+			careerType,
 			title,
 			content,
 			startDate,
-			endDate: endDate || startDate, // 날짜가 하나만 있으면 startDate로 설정
-			tagList: tagList,
+			endDate: endDate || startDate,
+			tagList,
 		};
 
-		await AddDetail(careerId, data);
-		onSave();
-		onCancel(); // 부모 컴포넌트의 상태를 변경하여 창을 닫습니다.
+		addMutation.mutate({ careerId, data });
 	};
 
 	const saveTitle = (event) => {
-		const inputText = event.target.value.slice(0, 30); // 30자 제한
-
+		const inputText = event.target.value.slice(0, 30);
 		setTitle(inputText);
 	};
 
 	const saveContent = (event) => {
-		const inputText = event.target.value.slice(0, 800); // 800자 제한
-
+		const inputText = event.target.value.slice(0, 800);
 		setContent(inputText);
-
-		// height 자동 조절
-		const textarea = event.target;
-		textarea.style.height = 'auto'; // 높이 초기화
-		textarea.style.height = `${textarea.scrollHeight}px`; // 내용에 따라 늘리기
+		event.target.style.height = 'auto';
+		event.target.style.height = `${event.target.scrollHeight}px`;
 	};
 
 	return (
@@ -120,7 +106,7 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 				<Label>내용</Label>
 				<TextArea width="720px" placeholder="활동 세부 내용을 작성하세요" value={content} onChange={saveContent} />
 			</Middle>
-			<TagBox onTagListChange={setTagList} /> {/* 태그 박스에서 선택한 태그 관리 */}
+			<TagBox onTagListChange={setTagList} />
 			<Button>
 				<ButtonRow>
 					<Cancel onClick={onCancel}>취소</Cancel>
@@ -133,8 +119,10 @@ export default function DetailAdd({ onCancel, onSave, careerId, careerType }) {
 								label: '저장',
 							});
 							handleSave();
-						}}>
-						저장
+						}}
+						disabled={addMutation.isLoading}
+					>
+						{addMutation.isLoading ? '저장 중...' : '저장'}
 					</Save>
 				</ButtonRow>
 				{errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
