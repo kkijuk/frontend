@@ -34,8 +34,12 @@ export const CareerBoxContainer = styled.div`
 	overflow-y: hidden; /*세로 스크롤 방지 */
 	white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
 	position: relative; /* 제발*/
-
 	box-sizing: border-box;
+
+	scrollbar-width: none; /* Firefox */
+	&::-webkit-scrollbar {
+		display: none; /* Chrome/Safari */
+	}
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		max-width: 100%;
@@ -375,6 +379,14 @@ export const EditTag = styled.div`
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
+`;
+
+export const Box = styled.div`
+	width: 100%;
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;
 
 export const categoryToColorMap = {

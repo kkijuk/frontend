@@ -1,0 +1,83 @@
+import styled from 'styled-components';
+import { theme } from '@/constants/theme';
+import { Color } from '@/constants/color';
+
+const EditButton = styled.button`
+	border: none;
+	position: absolute;
+	right: 0;
+	top:10px;
+	background-color: transparent;
+	opacity: 0;
+	padding: 0px 50px 70px 0px;
+    z-index: 1000;
+    @media (max-width: ${theme.breakpoints.md}) {
+        opacity: 1;
+    }
+`;
+
+const Container = styled.div`
+  width:100%;
+  display: flex;
+  font-family:Regular;
+
+  flex-direction: column;
+  padding: 10px;
+
+  margin-bottom: 20px;
+  position: relative;
+	&:hover ${EditButton} {
+		opacity: 1;
+		cursor: pointer;
+	}
+  @media (max-width: ${theme.breakpoints.md}) {
+    margin-bottom: 0px;
+  }
+`;
+
+const EditContainer = styled.div`
+	width: 820px;
+	display: flex;
+	// justify-content: center;
+	align-items: flex-start;
+	// margin-bottom: 45px;
+	font-family: 'Regular';
+  margin-left: ${({ isSecondColumn }) => (isSecondColumn ? '-365px' : '0')};
+  @media (max-width: ${theme.breakpoints.md}) {
+    position: relative;
+    left: ${({ isSecondColumn }) => (isSecondColumn ? '300px' : '-60px')};
+  }
+`
+
+const LicenseInfo = styled.div`
+    flex: 1;
+`;
+
+const LicenseName = styled.div`
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Regular';
+
+    @media (max-width: ${theme.breakpoints.md}) {
+        font-size: 16px;
+    }
+`;
+
+const LicenseDetails = styled.div`
+    font-size: 16px;
+    color: ${Color.gray01};
+    font-family: 'Regular';
+    margin-top: 5px;
+    @media (max-width: ${theme.breakpoints.md}) {
+        font-size: 14px;
+    }
+`;
+
+export {
+    EditButton,
+    Container,
+    EditContainer,
+    LicenseInfo,
+    LicenseName,
+    LicenseDetails
+};

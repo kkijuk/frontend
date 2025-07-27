@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import api from '@/Axios';
+
+import { AddDetail } from '@/api/Mycareer/AddDetail';
 
 import ProfileBox from '../components/Home/Profile';
 
@@ -11,7 +14,10 @@ import { useNavigate } from 'react-router-dom';
 
 import CareerTimeline from '../components/Mycareer/CareerTimeline';
 import OnboardingModal from '../components/Modal/OnboardingModal';
-import { theme } from '../constants/theme';
+import AddQuickCareerDetailModal from '@/components/Modal/AddQuickCareerDetailModal/AddQuickCareerDetailModal';
+import SvgIcon from '@/components/shared/SvgIcon';
+import { theme } from '../constants/theme';   
+import { Color } from '@/constants/color';
 
 const Container = styled.div`
 	display: flex;
@@ -119,6 +125,45 @@ const BottomText = styled.div`
 \	align-self: flex-start;
 `;
 
+const CareerDeatailWrapper = styled.div`
+	box-sizing: border-box;
+	width: auto;
+	height: auto;
+	padding: 24px 30px;
+
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+	gap: 24px;
+
+	border-radius: 10px;
+	background: ${Color.gray06};
+`
+
+const CareerDetailContentBox = styled.div`
+	box-sizing: border-box;
+	height: 212px;
+
+	border-radius: 10px;
+	background: ${Color.white};
+	box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
+	cursor: pointer;
+`
+
+const AddCareerDetailBox = styled(CareerDetailContentBox)`
+	padding: 16px 24px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`
+
+const CareerDetailBox = styled(CareerDetailContentBox)`
+	padding: 16px 24px 20px 24px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 20px;
+`
+
 const ActivityBox = styled.div`
 	width: auto; /*820*/
 	height: auto; /*194*/
@@ -136,6 +181,18 @@ const ActivityBox = styled.div`
 	}
 `;
 
+const AddButton = styled.button`
+	width: 60px;
+	height: 60px;
+	border: none;
+	border-radius: 50%;
+	background-color: ${Color.main01};
+	color: white;
+	cursor: pointer;
+	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+`
+
+
 const bannerDummy = [
 	{
 		image: require('../assets/banner/serviceBanner1.png'),
@@ -146,9 +203,70 @@ const bannerDummy = [
 
 export default function Home() {
 	const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
-	const [showOnboarding, setShowOnboarding] = useState(false);
 
-	//localStorage를 확인해서 오늘은 모달을 보이지 않도록 처리
+	const [showOnboarding, setShowOnboarding] = useState(false); // 온보딩 모달 상태
+	const [showAddQuickCareerDetailModal, setShowAddQuickCareerDetailModal] = useState(false); // 빠른 활동 기록 추가 모달 상태
+	const [dummyCareerDetails, setDummyCareerDetails] = useState([
+  {
+    id: 1,
+    category: '앱 서비스 개발 동아리 / UMC',
+    title: '아이디어톤',
+    date: '2024.05.26 ~ 2024.05.26',
+    content: `기획한 웹/앱 서비스를 발표하고 피드백을 교환함\n투표 결과 우수상 수상`,
+    tags: ['커뮤니케이션 능력', '앱 서비스 기획', '수상'],
+  },
+  {
+    id: 2,
+    category: '앱 서비스 개발 동아리 / UMC',
+    title: '아이디어톤',
+    date: '2024.05.26 ~ 2024.05.26',
+    content: `기획한 웹/앱 서비스를 발표하고 피드백을 교환함\n투표 결과 우수상 수상`,
+    tags: ['커뮤니케이션 능력', '앱 서비스 기획', '수상'],
+  },
+  {id: 3,
+    category: '앱 서비스 개발 동아리 / UMC',
+    title: '아이디어톤',
+    date: '2024.05.26 ~ 2024.05.26',
+    content: `기획한 웹/앱 서비스를 발표하고 피드백을 교환함\n투표 결과 우수상 수상`,
+    tags: ['커뮤니케이션 능력', '앱 서비스 기획', '수상'],
+  },
+]);
+
+
+	const [recentCareerDetails, setRecentCareerDetails] = useState([ // 최근 활동 기록 (이걸로 변경하기)
+		{
+			careerId: 0,
+			careerName: '',
+			alias: '',
+			category: '',
+			detailId: 0,
+			detailTitle: '',
+			detailContent: '',
+			detailStartDate: '',
+			detailEndDate: '',
+			detailTag: [],
+		}
+	]);
+
+	// [useQuery]] 최근 활동 기록 가져오기
+	// [useQuery] 빠른 활동 기록 추가 후 최근 활동 기록 업데이트
+
+	// 빠른 활동 기록 추가 
+	const handleSaveQuickCareerDetail = async (careerId, data) => {
+		console.log('빠른 활동 기록 추가 요청:', careerId, ',', data);
+		try {
+			const response = await AddDetail(
+				careerId,
+				data
+			);
+			console.log('빠른 활동 기록 추가 성공:', response.data);
+			setShowAddQuickCareerDetailModal(false);
+		} catch (error) {
+			console.error('빠른 활동 기록 추가 실패:', error);
+		}
+	};
+
+	//localStorage를 확인해서 오늘은 온보딩 모달을 보이지 않도록 처리
 	useEffect(() => {
 		const lastClosedDate = localStorage.getItem('hideOnboardingModal');
 		const today = new Date().toISOString().split('T')[0]; // 오늘 날짜 (YYYY-MM-DD)
@@ -158,35 +276,129 @@ export default function Home() {
 		}
 	}, []);
 
-	//모달 닫기 함수
+	// 온보딩 모달 닫기 함수
 	const handleCloseOnboarding = () => {
 		setShowOnboarding(false);
 	};
 
-	return (
-		<>
-			{showOnboarding && <OnboardingModal onClose={handleCloseOnboarding} />}
+	// 빠른 활동 기록 추가 모달 닫기 함수
+	const handleCloseAddQuickCareerDetailModal = () => {
+		setShowAddQuickCareerDetailModal(false);
+	};
 
-			<Container>
-				<Top>
-					<TopBox1>
-						<ProfileBox></ProfileBox>
-					</TopBox1>
-					<TopBox2>
-						<CareerTimeline />
-					</TopBox2>
-				</Top>
-				<Middle>
-					<BannerComponent banners={bannerDummy} />
-				</Middle>
-				<Bottom>
-					<BottomText>잠깐! 잊지 않으셨죠?</BottomText>
-					<ActivityBox>
-						<Noti></Noti>
-						<CLNoti></CLNoti>
-					</ActivityBox>
-				</Bottom>
-			</Container>
-		</>
-	);
+	return (
+  <>
+    {showOnboarding && <OnboardingModal onClose={handleCloseOnboarding} />}
+    {showAddQuickCareerDetailModal && (
+      <AddQuickCareerDetailModal
+        onClose={handleCloseAddQuickCareerDetailModal}
+        onSave={(careerId, data) => handleSaveQuickCareerDetail(careerId, data)}
+      />
+    )}
+    <Container>
+      <Top>
+        <TopBox1>
+          <ProfileBox />
+        </TopBox1>
+        <TopBox2>
+          <CareerTimeline />
+        </TopBox2>
+      </Top>
+
+      <Middle>
+        <BannerComponent banners={bannerDummy} />
+      </Middle>
+
+      {/* <Bottom>
+        <BottomText>최근 이런 활동을 기록했어요</BottomText>
+        <CareerDeatailWrapper>
+          <AddCareerDetailBox>
+            <AddButton onClick={() => setShowAddQuickCareerDetailModal(true)}>
+              <SvgIcon name="addButton" size={18} color={Color.white} />
+            </AddButton>
+          </AddCareerDetailBox> */}
+
+          {/* {dummyCareerDetails.map((activity, index) => (
+            <CareerDetailBox key={index}> */}
+              {/* 상단 카테고리 */}
+              {/* <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <div
+                    style={{
+                      width: '10px',
+                      height: '10px',
+                      borderRadius: '50%',
+                      backgroundColor: '#FFD600',
+                    }}
+                  />
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: '#444' }}>
+                    {activity.category}
+                  </span>
+                </div>
+              </div> */}
+
+              {/* 제목 + 날짜 */}
+              {/* <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginTop: '6px',
+                }}
+              >
+                <div style={{ fontWeight: 700, fontSize: '17px', color: '#111' }}>
+                  {activity.title}
+                </div>
+                <div style={{ fontSize: '12px', color: '#999' }}>{activity.date}</div>
+              </div> */}
+
+              {/* 본문 */}
+              {/* <div
+                style={{
+                  fontSize: '13px',
+                  color: '#333',
+                  marginTop: '6px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                }}
+              >
+                {activity.content}
+              </div> */}
+
+              {/* 태그 */}
+              {/* <div style={{ marginTop: 'auto', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                {activity.tags.map((tag, idx) => (
+                  <span
+                    key={idx}
+                    style={{
+                      backgroundColor: Color.gray06,
+                      color: Color.main01,
+                      fontSize: '11px',
+                      padding: '4px 10px',
+                      borderRadius: '16px',
+                    }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </CareerDetailBox>
+          ))}
+        </CareerDeatailWrapper>
+      </Bottom> */}
+
+      <Bottom>
+        <BottomText>잠깐! 잊지 않으셨죠?</BottomText>
+        <ActivityBox>
+          <Noti />
+          <CLNoti />
+        </ActivityBox>
+      </Bottom>
+    </Container>
+  </>
+);
+
 }

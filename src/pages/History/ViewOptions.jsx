@@ -4,8 +4,10 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Toggle from '../../components/Intro/Toggle';
 import AddButton from '../../components/Intro/AddButton';
+import { readIntroList } from '@/api/Intro/introList';
 import { trackEvent } from '../../utils/ga4';
 import { theme } from '../../constants/theme';
+import { Color } from '../../constants/color';
 
 // Todo
 // - 옵션 로직 수정
@@ -15,30 +17,30 @@ const ViewOptions = () => {
 	const location = useLocation();
 
 	//(Data) 토글 체크, 현재 선택한 공고, 리스트 조회 상태, 자기소개서 목록
-	const [isChecked, setIsChecked] = useState(location.path !== '/history/list');
+	// 현재 경로가 '/history/master'일 때 체크 된 것(토글이 오른쪽)으로 간주
+	const [isChecked, setIsChecked] = useState(location.path == '/history/master');
 	const [currentApply, setCurrentApply] = useState('master');
 	const [state, setState] = useState(3); //3: 전체, 0: 작성중, 1: 작성완료, 2: 보관
 	const [recruits, setRecruits] = useState([]);
 
 	//(API) 자기소개서 목록 불러오기
 	useEffect(() => {
-		api
-			.get('/history/intro/list')
-			.then((response) => {
-				console.log(response.data);
-				const Data = response.data.data;
+		const fetchIntroList = async () => {
+			try {
+				const Data = await readIntroList();
+				console.log('자소서 목록 조회:', Data);
 				setRecruits(Data);
-				console.log(Data);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+			} catch (error) {
+				console.error('Error:', error);
+			}
+		}
+		fetchIntroList();
 	}, []);
 
 	//토글 클릭
 	const handleToggleClick = () => {
 		isChecked ? navigate('/history/list/3') : navigate('/history/master');
-		// setIsChecked(!isChecked);
+
 		window.scrollTo(0, 0); // 스크롤을 최상단으로 이동
 	};
 
@@ -50,7 +52,6 @@ const ViewOptions = () => {
 			const match = location.pathname.match(/\/history\/others\/(\d+)/);
 			if (match) {
 				setCurrentApply(match[1]); //n번 자소서로 이동
-				// console.log(match[1]);
 			}
 		}
 	}, [location.pathname]);
@@ -81,13 +82,48 @@ const ViewOptions = () => {
 	};
 
 	return (
-		<>
+		<BaseDiv>
 			<SButtonContainer>
+				{/* 토글이 왼쪽에 있는 경우, 목록보기 options */}
+				{!isChecked && (
+					<>
+						<SButton
+							type="button"
+							onClick={() => handleStateClick(3)}
+							style={{ backgroundColor: state === 3 ? `${Color.main03}` : `${Color.gray06}` }}
+						>
+							전체
+						</SButton>
+						<SButton
+							type="button"
+							onClick={() => handleStateClick(0)}
+							style={{ backgroundColor: state === 0 ? `${Color.main03}` : `${Color.gray06}` }}
+						>
+							작성중
+						</SButton>
+						<SButton
+							type="button"
+							onClick={() => handleStateClick(1)}
+							style={{ backgroundColor: state === 1 ? `${Color.main03}` : `${Color.gray06}` }}
+						>
+							작성완료
+						</SButton>
+						<SButton
+							type="button"
+							onClick={() => handleStateClick(2)}
+							style={{ backgroundColor: state === 2 ? `${Color.main03}` : `${Color.gray06}` }}
+						>
+							보관
+						</SButton>
+					</>
+				)}
+
+				{/* 토글이 오른쪽에 있는 경우, 개별보기 options */}
 				{isChecked && (
 					<SButton
 						type="button"
 						onClick={() => handleApplyClick('master')}
-						style={{ backgroundColor: currentApply === 'master' ? '#E1FAED' : '#F5F5F5' }}
+						style={{ backgroundColor: currentApply === 'master' ? `${Color.main03}` : `${Color.gray06}` }}
 					>
 						Master
 					</SButton>
@@ -98,43 +134,12 @@ const ViewOptions = () => {
 							type="button"
 							key={resume.id}
 							onClick={() => handleApplyClick(resume.id)}
-							style={{ backgroundColor: currentApply === String(resume.id) ? '#E1FAED' : '#F5F5F5' }}
+							style={{ backgroundColor: currentApply === String(resume.id) ? `${Color.main03}` : `${Color.gray06}` }}
 						>
 							{resume.recruitTitle}
 						</SButton>
-					))}
-				{!isChecked && (
-					<>
-						<SButton
-							type="button"
-							onClick={() => handleStateClick(3)}
-							style={{ backgroundColor: state === 3 ? '#E1FAED' : '#F5F5F5' }}
-						>
-							전체
-						</SButton>
-						<SButton
-							type="button"
-							onClick={() => handleStateClick(0)}
-							style={{ backgroundColor: state === 0 ? '#E1FAED' : '#F5F5F5' }}
-						>
-							작성중
-						</SButton>
-						<SButton
-							type="button"
-							onClick={() => handleStateClick(1)}
-							style={{ backgroundColor: state === 1 ? '#E1FAED' : '#F5F5F5' }}
-						>
-							작성완료
-						</SButton>
-						<SButton
-							type="button"
-							onClick={() => handleStateClick(2)}
-							style={{ backgroundColor: state === 2 ? '#E1FAED' : '#F5F5F5' }}
-						>
-							보관
-						</SButton>
-					</>
-				)}
+					))
+				}
 			</SButtonContainer>
 			<ToggleWrapper>
 				<Toggle checked={isChecked} onChange={handleToggleClick} />
@@ -149,18 +154,25 @@ const ViewOptions = () => {
 					});
 				}}
 			/>
-			<Outlet key={location.pathname} />
-		</>
+			<Section>
+				<Outlet key={location.pathname} />
+			</Section>
+		</BaseDiv>
 	);
 };
 export default ViewOptions;
+
+const BaseDiv = styled.div`
+	width: 100%;
+`;
 
 const SButtonContainer = styled.div`
 	width: 650px;
 	display: flex;
 	overflow-x: auto;
 	white-space: nowrap;
-	padding-bottom: 10px;
+	// padding-bottom: 10px;
+	margin-top: 20px;
 
 	/* Hide scrollbar for all browsers */
 	scrollbar-width: none; /* Firefox */
@@ -170,6 +182,7 @@ const SButtonContainer = styled.div`
 		display: none; /* Safari and Chrome */
 	}
 	@media (max-width: ${theme.breakpoints.md}) {
+		margin-top: 16px;
 		width: 100%;
 		overflow-x: auto;
 	}
@@ -178,29 +191,42 @@ const SButtonContainer = styled.div`
 const SButton = styled.button`
 	height: 35px;
 	margin-right: 12px;
-	font-family: 'Regular';
+	padding: 6px 16px;
 	border: none;
 	border-radius: 10px;
-	padding: 6px 16px;
-	background-color: #f5f5f5;
-	color: #707070;
+
+	font-family: 'Regular';
+	font-size: 14px;
+	color: ${Color.gray02};
+
+	background-color: ${Color.gray06};
+
 	cursor: pointer;
 	white-space: nowrap;
 
 	&:first-child {
-		background-color: #e1faed;
-		color: #000000;
+		background-color: ${Color.main03};
+		color: ${Color.black};
 	}
 `;
 
 const ToggleWrapper = styled.div`
 	display: inline-block;
 	position: absolute;
-	right: 20px;
-	top: 90px;
+	right: 0px;
+	top: 80px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		top: 130px;
 		right: 10px;
 	}
+`;
+
+const Section = styled.div`
+    height: 100%;
+    width: 100%;
+    
+    @media (max-width: ${theme.breakpoints.md}) {
+        padding: 0;
+    }
 `;

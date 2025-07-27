@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
-import styled from "styled-components";
-import { theme } from "../../constants/theme"; // theme import
+import { Container, FileNameField, Button } from "./subComponents.styles"; 
 
 const FileSearch = ({onFileSelect}) => {
   const fileInputRef = useRef(null); // 숨겨진 파일 입력 필드 참조
@@ -58,63 +57,4 @@ const FileSearch = ({onFileSelect}) => {
 
 export default FileSearch;
 
-const Container = styled.div`
-  width: 444px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-  @media (max-width: ${theme.breakpoints.md}) {
-    width: auto;
-  }
-`
 
-const FileNameField = styled.div`
-  width: 450px;
-  height: 45px;
-  flex-shrink: 0;
-  padding: 10px 20px;
-  border:none;
-  border-radius: 10px;
-  background: var(--white, #FFF);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  position: relative;
-
-  p:{
-    font-size: 16px;
-    font-family: 'Regular';
-    font-weight: 400;
-    margin:0;
-  }
-
-  @media (max-width: ${theme.breakpoints.md}) {
-    width: ${(props) => props.mdWidth || "238px"};
-    height: 17px;
-    padding: 12px 20px;
-  }
-`;
-
-const Button = styled.button`
-  width: 85px;
-  height: 45px;
-  position: absolute;
-  right: 20px;
-  border: none;
-  background: none;
-  color: #707070;
-  font-family:'Regular';
-  font-size: 16px;
-  font-weight: 400;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor:pointer;
-  text-decoration-line: underline;
-  text-decoration-style: solid;
-  text-decoration-skip-ink: none;
-  text-decoration-thickness: auto;
-  text-underline-offset: auto;
-  text-underline-position: from-font;
-`

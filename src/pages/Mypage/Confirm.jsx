@@ -12,168 +12,18 @@ import { fetchLogindata, fetchEmail } from '../../api/Mypage/mypage';
 
 //내 정보 이메일 재입력
 
-const Container = styled.div`
-	max-width: 820px;
-	width: 100%
-	height: auto;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	margin-top: 0;
-	margin-right: auto;
-	margin-bottom: 50px;
-	margin-left: auto;
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 100%;
-		padding: 0 16px;
-		box-sizing: border-box;
-	}
-`;
-
-const Text = styled.div`
-	/*설명 텍스트*/
-	max-width: 500px;
-	width: 100%;
-	height: 100%;
-	color: var(--black, #000);
-	text-align: center;
-	font-family: Pretendard;
-	font-size: 16px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: normal;
-
-	margin-top: 52px;
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 100%;
-	}
-`;
-
-const EmailBox = styled.div`
-	display: flex;
-	flex-direction: column;
-	max-width: 400px;
-	width: 100%;
-	height: 100%;
-
-	margin-top: 48px;
-	gap: 12px; /*input이랑 위에 이메일 글씨 사이에 12gap*/
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 100%;
-	}
-`;
-
-const EmailTextBox = styled.div`
-	max-width: 400px;
-	width: 100%;
-	height: 100%;
-	gap: 8px;
-
-	display: flex;
-	align-items: center;
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 100%;
-	}
-`;
-
-const EmailText = styled.div`
-	/*이메일 글씨*/
-	color: var(--main-01, #3aaf85);
-	font-family: Pretendard;
-	font-size: 18px;
-	font-style: normal;
-	font-weight: 500;
-	line-height: normal;
-
-	margin-right: 8px;
-`;
-
-const Email = styled.div`
-	/*이메일 가린거 보여주기*/
-	color: var(--gray-02, #707070);
-	font-family: Pretendard;
-	font-size: 16px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: normal;
-`;
-
-const Tag = styled.div`
-	width: 65px;
-	height: 25px;
-	border-radius: 10px;
-	background: ${(props) => (props.socialType === 'KAKAO' ? 'var(--sub-ye, #fcc400)' : '#03C75A')};
-	color: var(--white, #fff);
-	text-align: center;
-	font-family: Pretendard;
-	font-size: 14px;
-	font-style: normal;
-	font-weight: 500;
-	line-height: 25px;
-`;
-
-const Input = styled.input`
-	width: 400px;
-	height: 50px;
-	padding-left: 20px;
-	border: none; /* 테두리 제거 */
-	outline: none; /* 포커스 시 라인 제거 */
-	border-radius: 10px;
-	background: #f5f5f5;
-
-	color: #707070;
-	font-family: Pretendard;
-	font-size: 16px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: normal;
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 100%;
-		box-sizing: border-box;
-	}
-`;
-
-const ErrorMessage = styled.p`
-	color: var(--error, #ff7979);
-	font-family: Pretendard;
-	font-size: 14px;
-	font-weight: 500;
-	margin-top: 8px;
-`;
-
-const Button = styled.button`
-	max-width: 400px;
-	width: 100%;
-	height: 50px;
-	border-radius: 10px;
-	background: var(--main-01, #3aaf85);
-
-	border: none; /* 테두리 제거 */
-	outline: none; /* 포커스 시 라인 제거 */
-	color: #fff;
-	text-align: center;
-	font-family: Pretendard;
-	font-size: 18px;
-	font-style: normal;
-	font-weight: 500;
-	line-height: normal;
-
-	margin: 48px auto 200px auto;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
-		width: 100%;
-		padding: 0 16px;
-		box-sizing: border-box;
-	}
-`;
+import {
+	Container,
+	Text,
+	EmailBox,
+	EmailTextBox,
+	EmailText,
+	Email,
+	Tag,
+	Input,
+	ErrorMessage,
+	Button,
+} from './Confirm.styles';
 
 export default function Confirm() {
 	const [inputEmail, setInputEmail] = useState('');

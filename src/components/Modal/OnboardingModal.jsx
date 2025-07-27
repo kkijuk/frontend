@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
+import useScrollLock from '@/utils/scrollLock';
 
 import Slide1 from '../../assets/onboarding/onboarding1.png';
 import Slide2 from '../../assets/onboarding/onboarding2.png';
@@ -13,6 +14,7 @@ import Slide4 from '../../assets/onboarding/onboarding4.png';
 
 import OnboardingButton from '../shared/OnboardingButton';
 import LastButton from '../shared/OnboardingLastButton';
+import { use } from 'react';
 
 const BlurContainer = styled.div`
 	position: absolute;
@@ -147,6 +149,8 @@ const SlideImage = styled.img`
 `;
 
 export default function OnboardingModal({ onClose }) {
+	useScrollLock();
+	
 	const [isChecked, setIsChecked] = useState(false);
 	const [isVisible, setIsVisible] = useState(true);
 	const swiperRef = useRef(null);

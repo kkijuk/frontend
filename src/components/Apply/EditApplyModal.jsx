@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ModalTagBox from '../Apply/ModalTagBox';  
+import useScrollLock from '@/utils/scrollLock';
+import { use } from 'react';
 
 
 const ModalBackdrop = styled.div`
@@ -151,7 +153,7 @@ const Input = styled.input`
 	background: #f5f5f5;
 	font-size: 1em;
 	margin-top: 10px;
-	height: 50px;
+	height: 25px;
 	font-family: 'ExtraLight';
 	font-size: 16px;
 	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -165,9 +167,9 @@ const Input = styled.input`
 `;
 
 const InputDateStart = styled.input`
-	width: 305px;
-	padding: 13px;
-	height: 50px;
+	width: 300px;
+	padding: 12px;
+	height: 25px;
 	margin-bottom: 10px;
 	margin-left: 85px;
 	border: 1px solid #f5f5f5;
@@ -189,9 +191,9 @@ const InputDateStart = styled.input`
 `;
 
 const InputDateEnd = styled.input`
-	width: 305px;
-	height: 50px;
-	padding: 13px;
+	width: 300px;
+	height: 25px;
+	padding: 12px;
 	margin-bottom: 15px;
 	margin-right: 75px;
 	border: 1px solid #f5f5f5;
@@ -374,6 +376,8 @@ const formatDateTimeToLocal = (dateString) => {
 
 
 const EditApplyModal = ({ onClose, onSave, job }) => {
+	useScrollLock();
+	
 	const [title, setTitle] = useState('');
 	const [startTime, setStartTime] = useState('');
 	const [endTime, setEndTime] = useState('');
