@@ -4,20 +4,19 @@ import { Color } from '@/constants/color';
 
 const Container = styled.button`
 	display: flex;
-	// width: 65px;    // 텍스트 + padding 기준 자동 크기 원할 경우 주석 유지
-	// height: 25px;
+	//width: 65px;
+	//height: 25px;
 	padding: 4px 20px;
 	justify-content: center;
 	align-items: center;
 	gap: 10px;
 	flex-shrink: 0;
-	border-radius: 10px;
-	background: ${Color.gray06};
-	border: none;
-	cursor: pointer;
+	border: 1px solid var(--gray-04, #d0d0d0);
+	background: var(--white, #fff);
 
 	&:hover {
-		background: ${Color.gray05};
+		border: 1px solid var(--gray-04, #d0d0d0);
+		background: var(--gray-06, #f5f5f5);
 	}
 `;
 

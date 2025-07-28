@@ -28,9 +28,9 @@ export default function Test() {
 			<ButtonCircleSecondary />
 
 			{/* Small Buttons */}
-			<ButtonSmallPrimary text="기본" />
-			<ButtonSmallSecondary text="보조" />
-			<ButtonSmallOutline text="외곽선" />
+			<ButtonSmallPrimary text="기본" width="fit-content" />
+			<ButtonSmallSecondary text="보조" width="fit-content" />
+			<ButtonSmallOutline text="외곽선" width="fit-content" />
 
 			{/* Text Button */}
 			<ButtonText text="텍스트 버튼" />
