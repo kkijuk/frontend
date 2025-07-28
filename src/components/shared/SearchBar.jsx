@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import styled from "styled-components";
 import { theme } from "@/constants/theme";
 import { Color } from "@/constants/color";
+import { last } from "lodash";
 
-// 엔터키 누를 시 함수 지금처럼 실행해도 괜찮은 지.
+const DEBOUNCE_DELAY = 500; // 0.5초
+const REPEAT_WINDOW = 3000; // 3초
+const REPEAT_INTERVAL = 500; // 0.5초
 
 const SearchBar = ({initialKeyword = '', onDebounceSearch, placeholder = ''}) => {
     const [searchValue, setSearchValue] = useState(initialKeyword);
@@ -48,7 +51,7 @@ const SearchBar = ({initialKeyword = '', onDebounceSearch, placeholder = ''}) =>
                 placeholder={placeholder || "검색어를 입력하세요..."}
                 value={searchValue}
                 onChange={handleChange}
-                onKeyPress={handleKeyPress}
+                onKeyDown={(e) => e.key === 'Enter' && searchValue.trim() && handleKeyPress()}
             />
         </SearchBarContainer>
     );
@@ -65,6 +68,7 @@ const SearchBarContainer = styled.div`
 	border: 1px solid ${Color.gray03};
 	box-sizing: border-box;
 	width: 100%;
+    background: ${Color.white};
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		max-width: 100%;
