@@ -23,3 +23,5 @@ const getIntroSearch = async (keyword) => {
         }
     }
 }
+
+export default getIntroSearch;

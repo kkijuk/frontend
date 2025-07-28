@@ -65,6 +65,7 @@ const SearchBarContainer = styled.div`
 	border: 1px solid ${Color.gray03};
 	box-sizing: border-box;
 	width: 100%;
+    background: ${Color.white};
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		max-width: 100%;
