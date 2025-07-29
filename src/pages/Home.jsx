@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import api from '@/Axios';
 
 import { AddDetail } from '@/api/Mycareer/AddDetail';
-
+import getColorByCategory from '@/utils/getColorByCategory';
 import ProfileBox from '../components/Home/Profile';
 import { getRecentCareerDetails } from '@/api/Home/getRecentCareerDetails';
 import BannerComponent from '../components/Home/Banner';
@@ -305,7 +305,7 @@ export default function Home() {
 												width: '10px',
 												height: '10px',
 												borderRadius: '50%',
-												backgroundColor: '#FFD600',
+												backgroundColor: getColorByCategory(activity.category?.categoryKoName),
 											}}
 										/>
 										<span style={{ fontSize: '13px', fontWeight: 600, color: '#444' }}>
