@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
+import { Color } from '@/constants/color';
 import Convert from './Convert';
 
 const SubNav = () => {
@@ -58,7 +59,7 @@ const Box = styled.div`
 
 const Linear = styled.div`
 	height: 4px;
-	background-color: #f1f1f1;
+	background-color: ${Color.gray07};
 	margin-top: 12px;
 	margin-bottom: 28px;
 `;

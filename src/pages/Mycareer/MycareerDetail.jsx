@@ -50,6 +50,7 @@ const categoryToTypeMap = {
 	경력: 'employment',
 	기타: 'etc',
 };
+// ...생략: import 문은 동일...
 
 export default function MycareerDetail() {
 	const location = useLocation();
@@ -72,54 +73,39 @@ export default function MycareerDetail() {
 
 	const [isEditModalOpen, setIsEditModalOpen] = useState(false); // AddCareerModal용
 
-	const [isExitModalOpen, setIsExitModalOpen] = useState(false);
-	const [nextLocation, setNextLocation] = useState(null);
+	const [pendingTx, setPendingTx] = useState(null);
+	const [showExitModal, setShowExitModal] = useState(false);
 
-	//추가하래서 일단 추가함
-	const [nextTransition, setNextTransition] = useState(null);
-
+	//이거 페이지 이동 차단 코드
+	// 차단 훅 사용: isAdding일 때만 이동 차단
 	useBlockNavigation(isAdding, (tx) => {
-		setIsExitModalOpen(true);
-		setNextTransition(tx); // tx.retry()로 다시 시도 가능
+		setPendingTx(tx);
+		setShowExitModal(true); // 모달 띄우기
 	});
 
-	const handleCancelLeave = () => {
-		setIsExitModalOpen(false);
+	// 떠나기 → 차단된 트랜잭션 실행
+	const handleExit = () => {
+		setShowExitModal(false);
+		setIsAdding(false);
+		if (pendingTx) {
+			pendingTx.retry();
+			setPendingTx(null);
+		}
 	};
-	//여기까지
+
+	// 닫기 → 이동 취소
+	const handleCloseModal = () => {
+		setShowExitModal(false);
+		setPendingTx(null);
+	};
+
+	//여기까지 페이지 이동 차단 코드
 
 	useEffect(() => {
 		if (details) {
 			setSummary(details.summary || '');
 		}
 	}, [details]);
-
-	//상세 활동 추가 컴포넌트 열려있을 때 외부 화면 클릭 시 모달 띄우기
-	useEffect(() => {
-		const handleClickOutside = (event) => {
-			if (!isAdding) return;
-			const addComponent = document.getElementById('detail-add');
-			if (addComponent && !addComponent.contains(event.target)) {
-				event.stopPropagation();
-				event.preventDefault();
-				setIsExitModalOpen(true);
-				setNextLocation(() => () => event.target.click());
-			}
-		};
-		document.addEventListener('mousedown', handleClickOutside, true);
-		return () => {
-			document.removeEventListener('mousedown', handleClickOutside, true);
-		};
-	}, [isAdding]);
-	//얘도 추가한거
-	const handleConfirmLeave = () => {
-		setIsExitModalOpen(false);
-		setIsAdding(false);
-		if (nextLocation) {
-			nextLocation();
-			setNextLocation(null);
-		}
-	};
 
 	const careerBoxRef = useRef(null);
 	let isDragging = false;
@@ -189,7 +175,6 @@ export default function MycareerDetail() {
 		await refetchDetails();
 	};
 
-	// 활동 수정 모달 열기
 	const openModal = () => {
 		setModalData({ ...details });
 		setIsEditModalOpen(true);
@@ -349,8 +334,7 @@ export default function MycareerDetail() {
 				{isEditModalOpen && modalData && (
 					<AddCareerModal onClose={closeModal} mode="edit" initialData={modalData} onRefresh={refetchDetails} />
 				)}
-
-				{isExitModalOpen && <PageExitModal isOpen={true} onClose={handleCancelLeave} onConfirm={handleConfirmLeave} />}
+				{showExitModal && <PageExitModal isOpen={true} onClose={handleCloseModal} onConfirm={handleExit} />}
 			</PageContainer>
 		</Layout>
 	);

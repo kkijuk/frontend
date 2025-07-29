@@ -1,6 +1,10 @@
 // Profile.styles.js
 import styled from 'styled-components';
+<<<<<<< HEAD
 import { Color } from '../../constants/color';
+=======
+import { Color } from '@/constants/color';
+>>>>>>> 9b67320c0f0ccf558849a1835ad82db9a97e3aab
 
 export const Container = styled.div`
 	width: 220px;
@@ -29,7 +33,7 @@ export const Top = styled.div`
 `;
 
 export const Text = styled.div`
-	color: var(--black, #000);
+	color: ${Color.black};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 14px;
@@ -37,7 +41,7 @@ export const Text = styled.div`
 `;
 
 export const BoldText = styled.div`
-	color: ${(props) => props.color || 'var(--black, #000)'};
+	color: ${(props) => props.color || Color.black};
 	font-family: Pretendard;
 	font-size: 14px;
 	font-weight: 700;
@@ -77,7 +81,7 @@ export const ActivityBox = styled.div`
 	justify-content: center;
 	align-items: center;
 	border-radius: 10px;
-	background: var(--gray-06, #f5f5f5);
+	background: ${Color.gray06};
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
@@ -98,7 +102,7 @@ export const CenteredTextRow = styled.span`
 `;
 
 export const ActivityTitle = styled.div`
-	color: var(--black, #000);
+	color: ${Color.black};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 12px;
@@ -106,7 +110,7 @@ export const ActivityTitle = styled.div`
 `;
 
 export const ActivityNum = styled.div`
-	color: var(--black, #000);
+	color: ${Color.black};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 12px;
@@ -121,8 +125,13 @@ export const Button = styled.button`
 	align-items: center;
 	border: none;
 	border-radius: 10px;
+<<<<<<< HEAD
 	background: var(--main-01, ${Color.main01});
 	color: var(--white, #fff);
+=======
+	background: ${Color.main01};
+	color: ${Color.white};
+>>>>>>> 9b67320c0f0ccf558849a1835ad82db9a97e3aab
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 12px;

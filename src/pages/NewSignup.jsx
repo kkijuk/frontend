@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import signupLogo from '../assets/signuplogo.svg';
 import useAuthStore from '../stores/useAuthStore';
 import { theme } from '../constants/theme';
+import { Color } from '../constants/color';
 
 const Container = styled.div`
   max-width: 500px;

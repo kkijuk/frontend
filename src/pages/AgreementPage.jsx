@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import AgreementImage from '../components/User/Agree1.svg';
 import { theme } from '@constants/theme';
+import { Color } from '../constants/color';
 
 const StyledPage = styled.div`
     
@@ -20,9 +21,9 @@ const StyledPage = styled.div`
     }
 
     .page-content {
-        background: #FFF;
+        background: ${Color.white};
         padding: 20px;
-        border: 2px solid #FFF;
+        border: 2px solid ${Color.white};
         width: 100%;
         min-height: 100vh; 
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
@@ -35,7 +36,7 @@ const StyledPage = styled.div`
 
 
     h2 {
-        color: #000;
+        color: ${Color.black};
         font-family: Pretendard;
         font-size: 22px;
         font-style: normal;
@@ -48,7 +49,7 @@ const StyledPage = styled.div`
     }
 
     p {
-        color: var(--gray-02, #707070);
+        color: ${Color.gray02};
         font-family: Pretendard;
         font-size: 14px;
         font-style: normal;

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Color } from '@/constants/color';
 
 export const Box = styled.div`
 	height: auto;
@@ -71,8 +72,8 @@ export const DateBox = styled.div`
 	width: 240px;
 	padding: 15px 20px;
 	box-sizing: border-box;
-	background: #f5f5f5;
-	color: var(--gray-02, #707070);
+	background: ${Color.gray06};
+	color: ${Color.gray02};
 	font-family: Pretendard;
 	font-size: 16px;
 	font-style: normal;
@@ -99,12 +100,12 @@ export const Cancel = styled.div`
 	height: 50px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	border: 1.5px solid var(--sub-rd, #fa7c79);
+	border: 1.5px solid ${Color.subRd};
 	box-sizing: border-box;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: var(--sub-rd, #fa7c79);
+	color: ${Color.subRd};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 18px;
@@ -124,11 +125,11 @@ export const Save = styled.div`
 	height: 50px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	background: var(--main-01, #3aaf85);
+	background: ${Color.main01};
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: #fff;
+	color: ${Color.white};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 18px;
@@ -145,7 +146,7 @@ export const Save = styled.div`
 export const Line = styled.div`
 	width: 800px;
 	height: 2px;
-	background: var(--gray-03, #d9d9d9);
+	background: ${Color.gray03};
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
@@ -154,14 +155,14 @@ export const Line = styled.div`
 
 export const Input = styled.input`
 	border-radius: 10px;
-	background: #f5f5f5;
+	background: ${Color.gray06};
 	flex-shrink: 0;
 	height: ${(props) => props.height || 'auto'};
 	width: ${(props) => props.width || 'auto'};
 	border: none;
 	font-family: Pretendard;
 	font-size: 16px;
-	color: var(--black, #000);
+	color: ${Color.black};
 	padding: 15px 20px;
 	box-sizing: border-box;
 	z-index: 1;
@@ -174,7 +175,7 @@ export const Input = styled.input`
 
 export const TextArea = styled.textarea`
 	border-radius: 10px;
-	background: #f5f5f5;
+	background: ${Color.gray06};
 	flex-shrink: 0;
 	/*height: ${(props) => props.height || 'auto'};*/
 	min-height: 100px;
@@ -196,7 +197,7 @@ export const TextArea = styled.textarea`
 `;
 
 export const ErrorMessage = styled.div`
-	color: var(--error, #ff7979);
+	color: ${Color.error};
 	font-family: Pretendard;
 	font-size: 14px;
 	font-weight: 500;

@@ -1,23 +1,27 @@
 import api from '../../Axios.js';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import './history.css';
 import Alert from '../../components/Intro/Alert';
 // import EditApplyModal from '../../components/Intro/EditApplyModal.jsx';
 import EditApplyModal from '@/components/Apply/EditApplyModal.jsx';
+import RightSideBar from '@/components/Intro/RightSideBar/RightSideBar.jsx';
+import RightSideBarContents from '@/components/Intro/RightSideBar/RightSideBarContents.jsx';
 import { trackEvent } from '../../utils/ga4.js';
 import SvgIcon from '../../components/shared/SvgIcon.jsx';
 import { theme } from '../../constants/theme.js';
 import { Color } from '../../constants/color.js';
 import { useReadIntro, useUpdateIntro, useReadRecruitAtIntro, useUpdateRecruitAtIntro } from '@/hooks/Intro/useIntro.js';
 import { BackgroundDiv, BaseDiv, IntroHeader, Header, TagWrapper, Tag, Dropdown, DropdownItem, IntroInfoWrapper, LastUpdatedDate, Linear, IntroBody,
-	 QnAItem, TitleWrapper, NumberLabel, DeleteButton, InputTitle, AnswerWrapper, InputAnswer, CharCount, AddButton, IntroFooter,
-	 FooterButton, SaveBtnWrapper, AutoSaveMessage } from './Rewrite.styles.js';
+	 QnAItem, TitleWrapper, NumberLabel, DeleteButton, InputTitle, AnswerWrapper, InputAnswer, CharCount, InsertOverlay, AddButton, IntroFooter,
+	 FooterButton, SaveBtnWrapper, AutoSaveMessage, SidebarButton } from './Rewrite.styles.js';
+import { set } from 'lodash';
 
 const OthersRewrite = () => {
 	// 1. 기본 설정 & 초기값
 	const navigate = useNavigate();
+	const inputRef = useRef({});
 	const { id } = useParams();
 	const introId = Number(id);
 
@@ -53,11 +57,18 @@ const OthersRewrite = () => {
 	const [nextQuestionId, setNextQuestionId] = useState(1);
 	const [showAutoSaveMessage, setShowAutoSaveMessage] = useState(false); // 자동 저장 메시지
 	const [autoSaveTime, setAutoSaveTime] = useState(''); // 자동 저장 시간
+	const [isSideBarOpen, setIsSideBarOpen] = useState(false); // 사이드바 열림 상태
+	const [hoveredQuestion, setHoveredQuestion] = useState(null); // 현재 호버된 질문 번호
+	const [pendingResult, setPendingResult] = useState(null); // 검색 문단
 
 
 	useEffect(() => {
 		console.log('isCompleted:', isCompleted);
 	}, [isCompleted]);
+
+	useEffect(() => {
+		console.log('questions:', questions);
+	}, [questions]);
 
 	// 2. 서버 통신 
 	// query hooks(useIntro) 연결
@@ -208,11 +219,6 @@ const OthersRewrite = () => {
 		const textarea = event.target;
 		const value = textarea.value;
 
-		if (field === 'content') {
-			textarea.style.height = 'auto'; // 높이 초기화
-			textarea.style.height = `${textarea.scrollHeight}px`; // 높이 조정
-		}
-
 		const newQuestions = questions.map((question) =>
 			question.number === number ? { ...question, [field]: value } : question
 		);
@@ -222,6 +228,15 @@ const OthersRewrite = () => {
 			question.content && question.content !== 'string' ? question.content.length : 0
 		))
 	};
+
+	useEffect(() => {
+		Object.values(inputRef.current).forEach((input) => {
+			if (input) {
+				input.style.height = 'auto'; // 높이 초기화
+				input.style.height = `${input.scrollHeight}px`; // 높이 조정
+			}
+		});
+	}, [questions]);
 
 	// 질문 추가
 	const handleAddClick = () => {
@@ -312,18 +327,29 @@ const OthersRewrite = () => {
 	}
 
 	return (
+		<>
+		{modalOpend && <Alert closeModal={toggleModal} deleteResume={deleteResume}></Alert>}
+		<div style={{ position: 'relative', zIndex: 1000 }}>
+			{isEditApplyModalOpend && (
+				<EditApplyModal
+					onClose={toggleEditApplyModal}
+					onSave={(data) => handleEditApply(data)}
+					job={recruitModalContents}
+					style={{ position: 'relative', zIndex: 1000 }}
+				></EditApplyModal>
+			)}
+		</div>
+		<SidebarButton onClick={() => setIsSideBarOpen(true)}>사이드바열기 </SidebarButton>
+		<RightSideBar isOpen={isSideBarOpen} onClose={() => setIsSideBarOpen(false)}>
+			<RightSideBarContents
+				onClick={(result) => {
+					setPendingResult(result);
+					setIsSideBarOpen(false);
+				}}
+			/>
+		</RightSideBar>
+		
 		<BackgroundDiv>
-			{modalOpend && <Alert closeModal={toggleModal} deleteResume={deleteResume}></Alert>}
-			<div style={{ position: 'relative', zIndex: 1000 }}>
-				{isEditApplyModalOpend && (
-					<EditApplyModal
-						onClose={toggleEditApplyModal}
-						onSave={(data) => handleEditApply(data)}
-						job={recruitModalContents}
-						style={{ position: 'relative', zIndex: 1000 }}
-					></EditApplyModal>
-				)}
-			</div>
 			<BaseDiv>
 				<IntroHeader>
 					<Header>
@@ -438,7 +464,10 @@ const OthersRewrite = () => {
 										삭제
 								</DeleteButton>
 							</TitleWrapper>
-							<AnswerWrapper>
+							<AnswerWrapper
+								onMouseEnter={() => setHoveredQuestion(question.number)}
+								onMouseLeave={() => setHoveredQuestion(null)}
+							>
 								<InputAnswer
 									placeholder='답변을 작성하세요'
 									value={
@@ -446,10 +475,31 @@ const OthersRewrite = () => {
 										? question.content
 										: ''}
 									onChange={(e) => handleInputChange(question.number, 'content', e)}
+									ref={el => inputRef.current[question.number] = el}
 								/>
 								<CharCount>
 									{charCounts[index]} (공백포함)
 								</CharCount>
+								{hoveredQuestion === question.number && pendingResult && (
+									<InsertOverlay
+										onClick={(() => {
+										if (pendingResult) {
+											setQuestions(prev => 
+												prev.map(q => 
+													q.number === question.number
+													? { ...q, content: (q.content || '') + pendingResult }
+													: q
+												)
+											)
+											
+											setPendingResult(null);
+											setHoveredQuestion(null);
+											}
+										})}
+									>
+										삽입
+									</InsertOverlay>
+								)}
 							</AnswerWrapper>
 						</QnAItem>
 					);
@@ -483,6 +533,7 @@ const OthersRewrite = () => {
 				</IntroFooter>
 			</BaseDiv>
 		</BackgroundDiv>
+		</>
 	);
 };
 

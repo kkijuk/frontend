@@ -20,7 +20,7 @@ import { updateRecruitApplyDate } from '../../api/Apply/RecruitApplydate';
 import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
 import { trackEvent } from '../../utils/ga4';
 import { formatDate, formateDateDashToDot } from '../../utils/formateDate';
-
+import { Color } from '../../constants/color';
 
 const SvgIcon = styled.svg`
 	width: 20px;

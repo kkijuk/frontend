@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Color } from '@/constants/color';
 
 export const Container1 = styled.div`
 	display: flex;
@@ -57,8 +58,8 @@ export const Tag = styled.div`
 	width: 65px;
 	height: 25px;
 	border-radius: 10px;
-	background: ${(props) => (props.socialType === 'KAKAO' ? 'var(--sub-ye, #fcc400)' : '#03C75A')};
-	color: var(--white, #fff);
+	background: ${(props) => (props.socialType === 'KAKAO' ? Color.subYe : '#03C75A')}; //네이버 색상 직접 유지
+	color: ${Color.white};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 14px;
@@ -68,7 +69,7 @@ export const Tag = styled.div`
 
 export const ContentName = styled.div`
 	height: 21px;
-	color: var(--main-01, #3aaf85);
+	color: ${Color.main01};
 	font-family: Pretendard;
 	font-size: 18px;
 	font-weight: 500;
@@ -92,7 +93,7 @@ export const Box = styled.div`
 
 export const Content = styled.div`
 	height: 25px;
-	color: #000;
+	color: ${Color.black};
 	font-family: Pretendard;
 	font-size: 16px;
 	font-weight: 400;
@@ -102,10 +103,10 @@ export const EditButton = styled.button`
 	width: 65px;
 	height: 25px;
 	border-radius: 10px;
-	background: var(--gray-06, #f5f5f5);
+	background: ${Color.gray06};
 	border: none;
 	cursor: pointer;
-	color: var(--gray-02, #707070);
+	color: ${Color.gray02};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 14px;
@@ -134,13 +135,13 @@ export const EmailInput = styled.input`
 	width: 280px;
 	height: 50px;
 	border-radius: 10px;
-	background: #f5f5f5;
+	background: ${Color.gray06};
 	border: none;
 	padding-left: 20px;
 	box-sizing: border-box;
 	font-family: Pretendard;
 	font-size: 15px;
-	color: #000;
+	color: ${Color.black};
 `;
 
 export const EmailButtonGroup = styled.div`
@@ -157,13 +158,13 @@ export const EmailButtonGroup = styled.div`
 export const NumInput = styled.input`
 	height: 50px;
 	border-radius: 10px;
-	background: #f5f5f5;
+	background: ${Color.gray06};
 	border: none;
 	padding-left: 20px;
 	box-sizing: border-box;
 	font-family: Pretendard;
 	font-size: 15px;
-	color: #000;
+	color: ${Color.black};
 	margin-top: 5px;
 `;
 
@@ -172,8 +173,8 @@ export const RequestButton = styled.button`
 	height: 40px;
 	padding: 6px 10px;
 	border-radius: 10px;
-	background: #3aaf85;
-	color: white;
+	background: ${Color.main01};
+	color: ${Color.white};
 	border: none;
 	font-family: Pretendard;
 	font-size: 13px;
@@ -190,9 +191,9 @@ export const CancelButton = styled.button`
 	height: 40px;
 	padding: 6px 10px;
 	border-radius: 10px;
-	border: 1px solid #707070;
-	background: #fff;
-	color: #707070;
+	border: 1px solid ${Color.gray02};
+	background: ${Color.white};
+	color: ${Color.gray02};
 	font-family: Pretendard;
 	font-size: 13px;
 	cursor: pointer;
@@ -207,8 +208,8 @@ export const VerifyButton = styled.button`
 	height: 40px;
 	padding: 6px 10px;
 	border-radius: 10px;
-	background: #3aaf85;
-	color: white;
+	background: ${Color.main01};
+	color: ${Color.white};
 	border: none;
 	font-family: Pretendard;
 	font-size: 13px;
@@ -227,21 +228,21 @@ export const TimerText = styled.div`
 	right: 20px;
 	top: 50%;
 	transform: translateY(-50%);
-	color: #fa7c79;
+	color: ${Color.subRd};
 	font-family: Pretendard;
 	font-size: 14px;
 	font-weight: 500;
 `;
 
 export const ErrorText = styled.div`
-	color: #fa7c79;
+	color: ${Color.subRd};
 	font-family: Pretendard;
 	font-size: 14px;
 	margin-top: 5px;
 `;
 
 export const ErrorMessage = styled.p`
-	color: var(--sub-rd, #fa7c79);
+	color: ${Color.subRd};
 	font-family: Pretendard;
 	font-size: 14px;
 	font-weight: 500;
@@ -267,7 +268,7 @@ export const PhoneInput = styled.input`
 	height: 50px;
 	padding: 16px 20px;
 	border-radius: 10px;
-	background: #f5f5f5;
+	background: ${Color.gray06};
 	border: none;
 	box-sizing: border-box;
 `;
@@ -288,8 +289,8 @@ export const ConfirmButton = styled.button`
 	height: 40px;
 	padding: 6px 10px;
 	border-radius: 10px;
-	background: #3aaf85;
-	color: white;
+	background: ${Color.main01};
+	color: ${Color.white};
 	border: none;
 	font-family: Pretendard;
 	font-size: 13px;
@@ -305,9 +306,9 @@ export const CancelButton2 = styled.button`
 	height: 40px;
 	padding: 6px 10px;
 	border-radius: 10px;
-	border: 1px solid #707070;
-	background: #fff;
-	color: #707070;
+	border: 1px solid ${Color.gray02};
+	background: ${Color.white};
+	color: ${Color.gray02};
 	font-family: Pretendard;
 	font-size: 13px;
 
@@ -350,17 +351,17 @@ export const CustomCheckBox = styled.input.attrs({ type: 'checkbox' })`
 	width: 19px;
 	height: 19px;
 	border-radius: 4px;
-	border: 1px solid var(--gray-03, #d9d9d9);
-	background: #fff;
+	border: 1px solid ${Color.gray03};
+	background: ${Color.white};
 `;
 
 export const Button = styled.button`
 	width: 400px;
 	height: 50px;
 	border-radius: 10px;
-	background: var(--main-01, #3aaf85);
+	background: ${Color.main01};
 	border: none;
-	color: #fff;
+	color: ${Color.white};
 	margin-left: 32px;
 	margin-top: 48px;
 	font-family: Pretendard;
@@ -377,7 +378,7 @@ export const DeleteAccount = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	color: var(--gray-02, #707070);
+	color: ${Color.gray02};
 	font-family: Pretendard;
 	font-size: 16px;
 	font-weight: 400;
@@ -410,7 +411,7 @@ export const ModalContainer = styled.div`
 `;
 
 export const Text1 = styled.div`
-	color: var(--black, #000);
+	color: ${Color.black};
 	font-family: Pretendard;
 	font-size: 20px;
 	font-weight: 700;
