@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Color } from '../../constants/color';
 
 const ViewToggleStyled = styled.div`
 	display: flex;
@@ -8,7 +9,7 @@ const ViewToggleStyled = styled.div`
 `;
 
 const ToggleContainer = styled.div`
-	background-color: #f5f5f5;
+	background-color: ${Color.gray06};
 	border-radius: 10px;
 	margin-right: -5px;
 	display: flex;
@@ -25,16 +26,16 @@ const ToggleContainer = styled.div`
 const ToggleButton = styled.button`
 	padding: 5px 8px;
 	border-radius: 10px;
-	background-color: ${(props) => (props.active ? 'white' : '#F5F5F5')};
+	background-color: ${(props) => (props.active ? Color.white : Color.gray06)};
 	cursor: pointer;
-	border: 2px solid ${(props) => (props.active ? 'white' : '#F5F5F5')};
+	border: 2px solid ${(props) => (props.active ? Color.white : Color.gray06)};
 	width: 65px;
 	height: 25px;
 	display: flex;
 	white-space: nowrap;
 	align-items: center;
 	justify-content: center;
-	color: ${(props) => (props.active ? '#000' : '#666')};
+	color: ${(props) => (props.active ? Color.black : Color.gray02)};
 	text-align: center;
 	font-family: 'Regular';
 	font-size: 14px;

@@ -2,6 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { Color } from '../../constants/color';
 
 const Container = styled.div`
 	width: 350px;
@@ -32,7 +33,7 @@ const Button = styled.div`
 	justify-content: center;
 	align-items: center;
 	border-radius: 10px;
-	background: var(--main-01, #3aaf85);
+	background: var(--main-01, ${Color.main01});
 	border: none;
 	cursor: pointer;
 

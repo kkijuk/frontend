@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Color } from '../../constants/color';
 
 const Box = styled.div`
 	width: 820px;
@@ -120,9 +121,9 @@ const Tag = styled.div`
 	height: 25px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	background: ${(props) => (props.clicked ? 'var(--main-03, #E1FAED)' : 'var(--gray-06, #F5F5F5)')};
-	outline: ${(props) => (props.clicked ? '1px solid var(--main-01, #3AAF85)' : 'none')};
-	color: ${(props) => (props.clicked ? 'var(--main-01, #3AAF85)' : 'var(--gray-01, #424242)')};
+	background: ${(props) => (props.clicked ? Color.main03 : Color.gray06)};
+	outline: ${(props) => (props.clicked ? `1px solid ${Color.main01}` : 'none')};
+	color: ${(props) => (props.clicked ? Color.main01 : Color.gray01)};
 	font-weight: ${(props) => (props.clicked ? 600 : 400)};
 
 	text-align: center;
@@ -138,7 +139,7 @@ const Tag = styled.div`
 `;
 
 const Text = styled.div`
-	color: ${(props) => (props.clicked ? 'var(--main-01, #3AAF85)' : 'var(--gray-01, #424242)')};
+	color: ${(props) => (props.clicked ? Color.main01 : Color.gray01)};
 	font-weight: ${(props) => (props.clicked ? 600 : 400)};
 	margin-right: 20px;
 	font-family: Pretendard;
@@ -170,7 +171,7 @@ const Apply = styled.div`
 	height: 25px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	background: var(--main-01, #3aaf85);
+	background: var(--main-01, ${Color.main01});
 
 	color: var(--white, #fff);
 	text-align: center;

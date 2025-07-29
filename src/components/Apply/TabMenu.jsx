@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import SearchBar from './SearchBar';
+import { Color } from '../../constants/color';
 
 const TabMenuContainer = styled.div`
   display: flex;
@@ -47,11 +48,11 @@ const TabButton = styled.button`
   border: none;
   background: none;
   cursor: pointer;
-  font-family: 'Bold';
+  font-family: 'SemiBold';
   font-size: 25px;
   font-weight: 700;
   white-space: nowrap;
-  color: ${(props) => (props.active ? 'black' : '#E0E0E0')};
+  color: ${(props) => (props.active ? Color.black : Color.gray04)};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 24px; 
@@ -79,7 +80,7 @@ const InvisibleSearchBar = styled.div`
 const Underline = styled.div`
   height: 4px;
   width: 821px; /* 고정된 길이 */
-  background: var(--gray-05, #F1F1F1);
+   background: ${Color.gray05};
   margin: 0 auto; /* 중앙 정렬 */
 
    @media (max-width: ${({ theme }) => theme.breakpoints.md}) {

@@ -8,10 +8,11 @@ import SvgIconBefore from '../../assets/before.svg';
 import Layout from '../../components/Layout'; 
 import { useLocation } from 'react-router-dom';
 import { trackEvent } from '../../utils/ga4';
+import { Color } from '../../constants/color';
 
 const Container = styled.div`
   padding: 24px 40px;
-  background-color: white;
+  background-color: ${Color.white};
   border-radius: 15px;
   max-width: 850px;
   margin: 0 auto;
@@ -32,7 +33,7 @@ const SortOptionButton = styled.button`
     padding: 5px 10px;
     background: none;
     border: none;
-    color: ${(props) => (props.active ? 'black' : '#E0E0E0')};
+    color: ${(props) => (props.active ? Color.black : Color.gray04)};
     cursor: pointer;
     font-family: medium;
     margin-bottom: 9px;
@@ -83,7 +84,7 @@ const TabButton = styled.button`
 	background: none;
 	cursor: pointer;
 	justify-content: flex-start;
-	color: ${(props) => (props.active ? 'black' : '#E0E0E0')};
+	color: ${(props) => (props.active ? Color.black : Color.gray04)};
 	font-family: 'Bold';
 	font-size: 18px;
 	font-weight: 700;
@@ -108,7 +109,7 @@ const TopBar = styled.div`
 const SearchBarContainer = styled.div`
 	display: flex;
 	align-items: center;
-	background-color: #f5f5f5;
+	 background-color: ${Color.gray06};
 	padding: 10px 20px;
 	border-radius: 12px;
 	margin-bottom: 10px;
@@ -126,9 +127,9 @@ const SearchInput = styled.input`
 	background: none;
 	outline: none;
 	font-size: 16px;
-	color: #707070;
+	color: ${Color.gray02};
 	margin-left: 20px;
-@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 300px;
 	margin: 0 auto;      
     position: static;     
@@ -139,7 +140,7 @@ const SearchInput = styled.input`
 const BackLink = styled(Link)`
 	display: inline-flex;
 	align-items: center;
-	color: black;
+	 color: ${Color.black};
 	font-size: 16px;
 	font-weight: 500;
 	margin-bottom: 5px;
@@ -168,8 +169,8 @@ const ResultsContainer = styled.div`
 `;
 
 const Title = styled.h1`
-	color: var(--black, #000);
-	font-family: 'Bold';
+	color: ${Color.black};
+	font-family: 'SemiBold';
 	font-size: 30px;
 	font-weight: 700;
 	margin-top: 11px;
@@ -190,7 +191,7 @@ const DividerWrapper = styled.div`
 
 const Divider = styled.div`
   height: 4px;
-  background-color: #F1F1F1;
+  background-color: ${Color.gray05};
   margin-top: 0px; 
   width: 820px;
   position: relative;
@@ -207,7 +208,7 @@ const Divider = styled.div`
 `;
 
 const SearchResultsTitle = styled.h2`
-	color: var(--black, #000);
+	color: ${Color.black};
 	font-family: Pretendard;
 	font-size: 24px;
 	font-weight: 700;

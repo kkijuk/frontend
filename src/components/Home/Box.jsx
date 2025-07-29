@@ -47,7 +47,7 @@ const Text = styled.div`
 `;
 
 const Date = styled.div`
-	color: var(--main-01, #3aaf85);
+	color: var(--main-01, ${Color.main01});
 	font-family: Pretendard;
 	font-size: 18px;
 	font-style: normal;

@@ -42,7 +42,7 @@ const BoldText = styled.h5`
 `;
 
 const GreenSpan = styled.span`
-	color: #3aaf85;
+	color: ${Color.main01};
 `;
 
 const BoxContainer = styled.div`
@@ -87,7 +87,7 @@ const OKButton = styled.button`
 	flex-shrink: 0;
 	border: none;
 	border-radius: 10px;
-	background: var(--main-01, #3aaf85);
+	background: var(--main-01, ${Color.main01});
 	margin-bottom: 8px;
 
 	color: var(--white, #fff);
@@ -113,7 +113,7 @@ const LoginButton = styled.button`
 	flex-shrink: 0;
 	border: none;
 	border-radius: 10px;
-	background: var(--main-01, #3aaf85);
+	background: var(--main-01, ${Color.main01});
 	margin-bottom: 8px;
 	margin-top: 20px;
 

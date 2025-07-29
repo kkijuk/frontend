@@ -6,6 +6,7 @@ import moment from 'moment';
 import { editReview } from '../../api/Apply/ReviewEdit';
 import { deleteReview } from '../../api/Apply/DeleteReview';
 import ReviewDeleteModal from '../../components/Apply/ReviewDeleteModal';
+import { Color } from '../../constants/color';
 
 const Box = styled.div`
 	/*height: 142px;*/
@@ -58,8 +59,8 @@ const DateBox = styled.div`
 	width: 240px;
 	padding: 15px 20px;
 	box-sizing: border-box;
-	background: #f5f5f5;
-	color: var(--gray-02, #707070);
+	background: ${Color.gray06};  
+	color: ${Color.gray02};
 	font-family: Pretendard;
 	font-size: 16px;
 	font-style: normal;
@@ -70,7 +71,7 @@ const DateBox = styled.div`
 	}
 `;
 const Label = styled.div`
-	color: var(--black, #000);
+	color: ${Color.black};
 	font-family: semibold;
 	font-size: 18px;
 	font-style: normal;
@@ -83,12 +84,12 @@ const Cancel = styled.div`
 	height: 50px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	border: 1.5px solid var(--sub-rd, #fa7c79);
+	border: 1.5px solid ${Color.subRed};  
+	color: ${Color.subRed};
 	box-sizing: border-box;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: var(--sub-rd, #fa7c79);
 	text-align: center;
 	font-family: regular;
 	font-size: 18px;
@@ -105,11 +106,11 @@ const Save = styled.div`
 	height: 50px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	background: var(--main-01, #3aaf85);
+	background: var(--main-01, ${Color.main01});
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: #fff;
+	 color: ${Color.white};
 	text-align: center;
 	font-family: regular;
 	font-size: 18px;
@@ -124,7 +125,7 @@ const Save = styled.div`
 const Line = styled.div`
 	width: 800px;
 	height: 2px;
-	background: var(--gray-03, #d9d9d9);
+	background: ${Color.gray03};
 	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	width: 350px;
 	}

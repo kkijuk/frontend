@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Color } from '../../constants/color';
 
 const TitleStyled = styled.h1`
-	color: var(--black, #000);
+	color: ${Color.black};
 	font-family: Pretendard;
 	font-size: 28px;
 	font-weight: 700;
