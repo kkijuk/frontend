@@ -6,7 +6,7 @@ import ModalTagBox from '../Apply/ModalTagBox';  // 일관성 있게 사용
 import { createRecruit } from '../../api/Apply/Recruit';
 import { trackEvent } from '../../utils/ga4'; 
 import useScrollLock from '@/utils/scrollLock';
- 
+import { Color } from '../../constants/color';
 const ModalBackdrop = styled.div`
 	position: fixed;
 	top: 0;
@@ -277,7 +277,7 @@ const ButtonWrapper = styled.div`
 const SaveButton = styled.button`
 	width: 640px;
 	height: 50px;
-	background-color: #3aaf85;
+	background-color: ${Color.main01};
 	color: white;
 	padding: 10px 20px;
 	border: none;

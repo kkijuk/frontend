@@ -4,7 +4,7 @@ import { trackEvent } from '../../utils/ga4';
 import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
 import { useUserInfo } from '../../hooks/Home/useUserInfo'; // react-query 사용 코드로 변경
 //v2
-
+import { Color } from '../../constants/color';
 import {
 	Container,
 	Top,
@@ -90,7 +90,7 @@ export default function ProfileBox() {
 				<Top>
 					<Text>안녕하세요 {userName}님,</Text>
 					<CenteredTextRow>
-						<BoldText color="#3aaf85">끼적</BoldText>
+						<BoldText color={Color.main01}>끼적</BoldText>
 						<BoldText>한 지 {monthDuration}개월이 지났어요!</BoldText>
 					</CenteredTextRow>
 				</Top>

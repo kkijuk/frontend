@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import ModalTagBox from '../Apply/ModalTagBox';  
 import useScrollLock from '@/utils/scrollLock';
 import { use } from 'react';
-
+import { Color } from '../../constants/color';
 
 const ModalBackdrop = styled.div`
 	position: fixed;
@@ -19,7 +19,7 @@ const ModalBackdrop = styled.div`
 `;
 
 const ModalContent = styled.div`
-	background: white;
+	background: ${Color.white};
 	padding: 20px;
 	border-radius: 10px;
 	width: 850px;
@@ -46,7 +46,7 @@ const CloseButton = styled.button`
 	background: transparent;
 	border: none;
 	font-size: 2em;
-	color: #999;
+	color: ${Color.gray03};
 	cursor: pointer;
 `;
 
@@ -67,7 +67,7 @@ const ModalTitle = styled.h2`
 const Divider = styled.div`
 	width: 650px;
 	height: 6px;
-	background-color: #ccc;
+	background-color: ${Color.gray04};
 	margin-bottom: 20px;
 	margin: 0 auto 20px;
 	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -85,7 +85,7 @@ const Label = styled.label`
 	font-size: 18px;
 	&::after {
 		content: ' *';
-		color: #fc5555;
+		color: ${Color.error};
 	}
 		@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	width: 310px;
@@ -105,7 +105,7 @@ const LabelStart = styled.label`
 	font-size: 18px;
 	&::after {
 		content: ' *';
-		color: #fc5555;
+		color: ${Color.error};
 	}
 	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	width: 310px;
@@ -125,7 +125,7 @@ const LabelEnd = styled.label`
 	font-size: 18px;
 	&::after {
 		content: ' *';
-		color: #fc5555;
+		color: ${Color.error};
 	}
 		@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	width: 310px;
@@ -148,9 +148,9 @@ const Input = styled.input`
 	width: 640px;
 	padding: 12px;
 	margin-bottom: 15px;
-	border: 1px solid #f5f5f5;
+	border: 1px solid ${Color.gray06};
 	border-radius: 10px;
-	background: #f5f5f5;
+	background: ${Color.gray06};
 	font-size: 1em;
 	margin-top: 10px;
 	height: 25px;
@@ -172,9 +172,9 @@ const InputDateStart = styled.input`
 	height: 25px;
 	margin-bottom: 10px;
 	margin-left: 85px;
-	border: 1px solid #f5f5f5;
+	border: 1px solid ${Color.gray06};
 	border-radius: 10px;
-	background: #f5f5f5;
+	background: ${Color.gray06};
 	font-size: 1em;
 	margin-top: -10px;
 	font-family: 'ExtraLight';
@@ -196,9 +196,9 @@ const InputDateEnd = styled.input`
 	padding: 12px;
 	margin-bottom: 15px;
 	margin-right: 75px;
-	border: 1px solid #f5f5f5;
+	border: 1px solid ${Color.gray06};
 	border-radius: 10px;
-	background: #f5f5f5;
+	background: ${Color.gray06};
 	font-size: 1em;
 	margin-top: -10px;
 	font-family: 'ExtraLight';
@@ -251,8 +251,8 @@ const ButtonWrapper = styled.div`
 const SaveButton = styled.button`
 	width: 640px;
 	height: 50px;
-	background-color: #3aaf85;
-	color: white;
+	background-color: ${Color.main01};
+	color: ${Color.white};
 	padding: 10px 20px;
 	border: none;
 	border-radius: 11px;
@@ -264,7 +264,7 @@ const SaveButton = styled.button`
 	font-family: 'ExtraLight';
 	font-size: 18px;
 	&:hover {
-		background-color: #35a576;
+		background-color:  ${Color.main_hover};
 	}
 		@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 		margin-left: 0;
@@ -284,7 +284,7 @@ const LabelTag = styled.label`
 	font-size: 18px;
 	&::after {
 		content: ' *';
-		color: #fc5555;
+		color: ${Color.error};
 	}
 	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	width: 310px;
@@ -337,7 +337,7 @@ const TagBoxWrapper = styled.div`
 `;
 
 const ErrorMessage = styled.p`
-	color: red;
+	color: ${Color.error};
 	font-size: 0.9em;
 	margin-top: 10px;
 	text-align: center;

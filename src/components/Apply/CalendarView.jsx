@@ -7,6 +7,7 @@ import { getRecruitCalendar } from '../../api/Apply/RecruitCalendar';
 import { getRecruitListEndDate } from '../../api/Apply/RecruitEndDate';
 import { useNavigate } from 'react-router-dom';
 import { theme } from '../../constants/theme'; // theme import 추가
+import { Color } from '../../constants/color';
 
 const AdCalendarStyled = styled.div`
 	margin-bottom: 20px;
@@ -20,10 +21,10 @@ const StyledCalendar = styled(Calendar)`
 	width: 100%;
 	max-width: 800px;
 	 min-width: 800px;
-	background: white;
+	background: ${Color.white};
+	color: ${Color.black};
 	border: 0.5px solid rgba(0, 0, 0, 0.1);
 	border-radius: 15px;
-	color: #000;
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 17px;
@@ -47,8 +48,8 @@ const StyledCalendar = styled(Calendar)`
 		text-align: center;
 		text-transform: uppercase;
 		font-family: black;
-		color: #707070;
-		background-color: #f5f5f5;
+		color: ${Color.gray02};
+		background-color: ${Color.gray06};
 		height: 40px;
 		padding: 5px 0;
 		font-size: 15px;
@@ -63,11 +64,11 @@ const StyledCalendar = styled(Calendar)`
 	}
 
 	.react-calendar__month-view__weekdays__weekday:nth-child(7) abbr {
-		color: #fa7c79;
+		color: ${Color.subRd};
 	}
 
 	.react-calendar__month-view__weekdays__weekday:nth-child(6) abbr {
-		color: #77aff2;
+		color: ${Color.subBu};
 	}
 
 	.react-calendar__month-view__days__day {
@@ -100,7 +101,7 @@ const StyledCalendar = styled(Calendar)`
 
 	.react-calendar__tile--now {
 		background: none !important;
-		color: #3aaf85 !important;
+		color: ${Color.main01} !important;
 		font-weight: bold !important;
 		box-shadow:
 			inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.15),
@@ -120,7 +121,7 @@ const StyledCalendar = styled(Calendar)`
 		position: absolute;
 		width: 26px;
 		height: 26px;
-		background-color: #3aaf85;
+		background-color: ${Color.main01};
 		border-radius: 50%;
 		top: 35%;
 		left: 50%;
@@ -131,11 +132,11 @@ const StyledCalendar = styled(Calendar)`
 	.react-calendar__tile--active > * {
 		position: relative;
 		z-index: 1;
-		color: white;
+		color: ${Color.white};
 	}
 
 	.react-calendar__tile--now.react-calendar__tile--active {
-		color: #3aaf85 !important;
+		color: ${Color.main01} !important;
 
 		box-shadow:
 			inset 0 -0.5px 0 0 rgba(0, 0, 0, 0.25),
@@ -347,11 +348,11 @@ const CalendarView = ({ date, setDate }) => {
 							}
 						};
 
-						addMarks(day.unapplied, '#D9D9D9');
-						addMarks(day.planned, '#B0B0B0');
-						addMarks(day.applying, '#707070');
-						addMarks(day.accepted, '#78D333');
-						addMarks(day.rejected, '#FA7C79');
+			addMarks(day.unapplied, Color.gray04);
+			addMarks(day.planned, Color.gray03);
+			addMarks(day.applying, Color.gray02);
+			addMarks(day.accepted, Color.subGn);
+			addMarks(day.rejected, Color.subRd);
 
 						return marksForDay;
 					})

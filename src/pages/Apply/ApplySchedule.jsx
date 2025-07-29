@@ -15,6 +15,7 @@ import { getRecruitDetails } from '../../api/Apply/RecruitDetails';
 import useAuthRedirect from '../../stores/useAuthRedirect'; 
 import { getValidRecruitList } from '../../api/Apply/RecruitValid';
 import { theme } from '../../constants/theme';
+import { Color } from '../../constants/color';
 
 const PageWrapper = styled.div`
   width: 100%;
@@ -22,7 +23,7 @@ const PageWrapper = styled.div`
 `;
 
 const Title = styled.h1`
-	color: var(--black, #000);
+	color: ${Color.black};
 	font-family: 'Bold';
 	font-size: 30px;
 	font-weight: 700;

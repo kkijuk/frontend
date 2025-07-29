@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { verifyAuthCode } from '../../api/Signup/verifyAuthCode';
 import { requestEmailVerification } from '../../api/Signup/requestEmailVerification';
-
+//안씀
 const FormContainer = styled.div`
 	display: flex;
 	flex-direction: column;

@@ -7,12 +7,13 @@ import { createRecord } from '../../api/Record/record';
 import { createMaster } from '../../api/Intro/master';
 import { trackEvent } from '../../utils/ga4';
 import { theme } from '../../constants/theme';
+import { Color } from '../../constants/color';
 
 const StepTwoContainer = styled.div`
   max-width: 600px;
   margin: 0 auto;
   padding: 40px 20px;
-  background: white;
+   background: ${Color.white};
   border-radius: 10px;
   text-align: center;
   margin-top: 40px;
@@ -30,18 +31,18 @@ const StepTwoContainer = styled.div`
     height: 50px;
     border: none;
     border-radius: 10px;
-    background: #f5f5f5;
+    background: ${Color.gray06};
     font-size: 16px;
     font-weight: 700;
     font-family: normal;
-    color: #707070;
+    color: ${Color.gray02};
     cursor: pointer;
     transition: background 0.3s, color 0.3s;
 
     &.active {
-      background: var(--main-01, #E1FAED);
-      color: #3AAF85;
-      border: 2px solid var(--main-01, #3AAF85);
+      background: ${Color.main03};
+      color: ${Color.main01};
+      border: 2px solid ${Color.main01};
     }
       @media (max-width: ${theme.breakpoints.md}) {
     width: 165px; 
@@ -61,16 +62,16 @@ const ButtonContainer = styled.div`
 const CompleteButton = styled.button`
   width: 400px;
   height: 50px;
-   background: ${({ disabled }) => (disabled ? '#D9D9D9' : '#3aaf85')};
-  color: white;
+  background: ${({ disabled }) => (disabled ? Color.gray04 : Color.main01)};
+  color: ${Color.white};
   border: none;
   border-radius: 10px;
   font-size: 17px;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   transition: background 0.3s;
 
- &:hover {
-    background: ${({ disabled }) => (disabled ? '#D9D9D9' : '#2a9f72')};
+  &:hover {
+    background: ${({ disabled }) => (disabled ? Color.gray04 : Color.main_hover)};
   }
     @media (max-width: ${theme.breakpoints.md}) {
     width: 342px; 
@@ -79,7 +80,7 @@ const CompleteButton = styled.button`
 `;
 
 const Title = styled.div`
-color: #333;
+color: ${Color.gray01};
 text-align: center;
 font-family: normal;
 font-size: 16px;
@@ -100,7 +101,7 @@ const ErrorMessage = styled.div`
   justify-content: center; 
   align-items: center;
   z-index: 1000;
-  color: var(--error, #FF7979);
+  color: ${Color.error};
   text-align: center;
   font-family: normal;
   width: 100%; 

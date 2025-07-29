@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import api from '../../Axios';
 import { getRecruitDetails } from '../../api/Apply/RecruitDetails'; // API 호출을 위해 import
+import { Color } from '../../constants/color';
 
 const BackgroundSection = styled.div`
     position: relative;
     width: 100vw;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #f0f0f0;
+    background-color: ${Color.gray06};
     padding: 20px 0;
     min-height: 110vh;  
     box-sizing: border-box;
@@ -23,7 +24,7 @@ const ContentSection = styled.div`
     max-width: 820px;
     margin: 0 auto;
     padding: -40px;
-    background-color: #f0f0f0;
+    background-color: ${Color.gray06};
     border-radius: 15px;
     margin-top: -50px;
     
@@ -37,8 +38,8 @@ const AdListStyled = styled.div`
 `;
 
 const AdItem = styled.div`
-    background-color: white;
-    border: 1px solid #ddd;
+    background-color: ${Color.white};
+  border: 1px solid ${Color.gray04};
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 10px;
@@ -49,7 +50,7 @@ const AdItem = styled.div`
 `;
 
 const AdDetails = styled.div`
-    color: #555;
+    color: ${Color.gray01};
 `;
 
 const AdTitleContainer = styled.div`
@@ -60,7 +61,7 @@ const AdTitleContainer = styled.div`
 `;
 
 const RecruitTitleForRecruitResult = styled.div`
-    color: var(--black, #000);
+    color: ${Color.black};
     font-family: Pretendard;
     font-size: 18px;
     font-style: normal;
@@ -73,7 +74,7 @@ const RecruitTitleForRecruitResult = styled.div`
 `;
 
 const RecruitTitleForReviewResult = styled.div`
-    color: var(--black, #000);
+    color: ${Color.black};
     font-family: Pretendard;
     font-size: 14px;
     font-style: normal;
@@ -96,7 +97,7 @@ const ReviewHeader = styled.div`
 `;
 
 const ReviewTitle = styled.div`
-    color: var(--black, #000);
+    color: ${Color.black};
     font-family: Medium;
     font-size: 18px;
     font-style: normal;
@@ -112,7 +113,7 @@ const ReviewTitle = styled.div`
 `;
 
 const ReviewContent = styled.div`
-    color: var(--black, #000);
+   color: ${Color.black};
      font-family: Regular;
     font-size: 15px;
     font-style: normal;
@@ -127,7 +128,7 @@ const ReviewContent = styled.div`
 `;
 
 const ReviewDate = styled.div`
-   color: var(--gray-02, #707070);
+   color: ${Color.gray02};
    text-align: right;
    font-family: Normal;
    line-height: normal;
@@ -152,11 +153,11 @@ const TagContainer = styled.div`
 `;
 
 const Tag = styled.span`
-    background: #f5f5f5;
-    border-radius: 10px;
-    padding: 4px 8px;
-    font-size: 12px;
-    color: #707070;
+  background: ${Color.gray06};
+  border-radius: 10px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: ${Color.gray02};
 `;
 
 const StatusCircleForRecruitResult = styled.span`
@@ -165,12 +166,12 @@ const StatusCircleForRecruitResult = styled.span`
     height: 15px;
     border-radius: 50%;
     background-color: ${({ status }) => {
-        if (status === 'UNAPPLIED') return '#D9D9D9';
-        if (status === 'PLANNED') return '#B0B0B0';
-        if (status === 'APPLYING') return '#707070';
-        if (status === 'ACCEPTED') return '#78D333';
-        if (status === 'REJECTED') return '#FA7C79';
-        return '#707070';
+         if (status === '미지원') return Color.gray04;
+    if (status === '지원 예정') return Color.gray03;
+    if (status === '진행 중') return Color.gray02;
+    if (status === '합격') return Color.subGn;
+    if (status === '불합격') return Color.subRd;
+    return Color.gray02;
     }};
     margin-right: 10px; 
     margin-top: 5px;
@@ -182,12 +183,12 @@ const StatusCircleForReviewResult = styled.span`
     height: 15px;
     border-radius: 50%;
     background-color: ${({ status }) => {
-        if (status === 'UNAPPLIED') return '#D9D9D9';
-        if (status === 'PLANNED') return '#B0B0B0';
-        if (status === 'APPLYING') return '#707070';
-        if (status === 'ACCEPTED') return '#78D333';
-        if (status === 'REJECTED') return '#FA7C79';
-        return '#707070';
+         if (status === '미지원') return Color.gray04;
+    if (status === '지원 예정') return Color.gray03;
+    if (status === '진행 중') return Color.gray02;
+    if (status === '합격') return Color.subGn;
+    if (status === '불합격') return Color.subRd;
+    return Color.gray02;
     }};
     margin-left: -5px; 
     margin-right: 9px;
@@ -196,7 +197,7 @@ const StatusCircleForReviewResult = styled.span`
 
 
 const DateContainer = styled.div`
-    color: var(--gray-02, #707070);
+    color: ${Color.gray02};
     text-align: right;
     font-size: 12px;
     font-family: Normal;
@@ -216,7 +217,7 @@ const DateContainer = styled.div`
 `;
 
 const CategoryTitle = styled.div`
-    color: var(--black, #000);
+    color: ${Color.black};
     font-family: Pretendard;
     font-size: 18px;
     font-style: normal;
@@ -228,7 +229,7 @@ const CategoryTitle = styled.div`
 
 const ReviewDivider = styled.div`
   height: 1px;
-  background-color: #e0e0e0;
+   background-color: ${Color.gray04};
   margin: 16px 0 10px 29px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -272,7 +273,7 @@ const SearchList = ({ recruits, activeTab, searchTerm, isSearchClicked, onTabCha
                 <button 
                     onClick={() => navigate('/apply-status')} 
                     style={{ 
-                        backgroundColor: '#3AAF85', 
+                        backgroundColor: Color.main01, 
                         color: 'white', 
                         whiteSpace: 'nowrap', 
                         padding: '7px 45px', 
