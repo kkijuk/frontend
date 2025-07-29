@@ -4,7 +4,7 @@ import { Color } from '../../constants/color';
 
 const BackgroundSection = styled.div`
   width: 100vw;
-  background-color: ${Color.gray03};
+  background-color: ${Color.gray06};
   margin-top: 20px;
   min-height: 100vh; 
   position: relative;
@@ -18,7 +18,7 @@ const ContentSection = styled.div`
   margin: 0 auto;
   width: 100%;
   padding: 20px;
-  background-color: ${Color.gray03};
+  background-color: ${Color.gray06};
   border-radius: 15px;
   position: relative;
 

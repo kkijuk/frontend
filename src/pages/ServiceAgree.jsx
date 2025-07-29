@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { theme } from '@constants/theme';
+import { Color } from '../constants/color';
 
 const StyledPage = styled.div`
     padding: 20px;
@@ -9,11 +10,10 @@ const StyledPage = styled.div`
     box-sizing: border-box;
 
     .page-content {
-        background-color: #fefefe;
         border-radius: 10px;
-        background: #FFF;
+        background: ${Color.white};
         padding: 20px;
-        border: 2px solid #FFF;
+         border: 2px solid ${Color.white};
         width: 100%;
         min-height: 100vh;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -26,7 +26,7 @@ const StyledPage = styled.div`
     }
 
     h2 {
-        color: #000;
+        color: ${Color.black};
         font-family: Pretendard;
         font-size: 22px;
         font-weight: 600;
@@ -37,7 +37,7 @@ const StyledPage = styled.div`
     }
 
     p {
-        color: #707070;
+         color: ${Color.gray02};
         font-family: Pretendard;
         font-size: 14px;
         font-weight: 400;

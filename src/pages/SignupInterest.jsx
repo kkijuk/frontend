@@ -9,11 +9,12 @@ import { trackEvent } from '../utils/ga4';
 import useAuthStore from '../stores/useAuthStore';
 import { theme } from '../constants/theme';
 import messageIcon from '../assets/main/message.svg';
+import { Color } from '../constants/color';
 
 const ContentArea = styled.div`
   margin: 0 auto;
   padding: 20px;
-  background-color: white;
+  background-color: ${Color.white};
   width: 400px;
   display: flex;
   justify-content: center;
@@ -45,7 +46,7 @@ const InterestArea = styled.div`
 `;
 
 const CloseButton = styled.button`
-	color: #707070;
+	 color: ${Color.gray02};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 16px;
@@ -63,7 +64,7 @@ const CloseButton = styled.button`
 
 const Title = styled.h2`
 	margin-bottom: 10px;
-	color: var(--black, #000);
+	 color: ${Color.black};
     text-align: center;
     font-family: Pretendard;
     font-size: 24px;
@@ -73,7 +74,7 @@ const Title = styled.h2`
 `;
 
 const Label = styled.label`
-	color: #707070;
+	 color: ${Color.gray02};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 16px;
@@ -88,8 +89,8 @@ const SaveButton = styled.button`
 	width: 100%;
 	height: 52px;
 	flex-shrink: 0;
-	background-color: #3aaf85;
-	color: white;
+	 background-color: ${Color.main01};
+  color: ${Color.white};
 	padding: 10px 20px;
 	border: none;
 	border-radius: 10px;
@@ -106,7 +107,7 @@ const SaveButton = styled.button`
 	margin-top: 30px;
 
 	&:hover {
-		background-color: #35a576;
+		 background-color: ${Color.main01Hover};
 	}
  @media (max-width: ${theme.breakpoints.md}) {
     width: 342px; 
@@ -126,7 +127,7 @@ const Popup = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
+  background-color: ${Color.white};
   padding: 24px 32px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);

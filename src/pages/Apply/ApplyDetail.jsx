@@ -101,7 +101,7 @@ const ConfirmButton = styled.button`
 `;
 
 const DateInput = styled.div`
-	color: #707070;
+	color: ${Color.gray02};
 	font-size: 16px;
 	margin-left: 20px;
 	cursor: pointer;
@@ -112,14 +112,14 @@ const DateInput = styled.div`
 const DateDisplay = styled.div`
 	display: flex;
 	align-items: center;
-	color: #707070;
+	color: ${Color.gray02};
 	font-size: 16px;
 	margin-left: 20px;
 	cursor: pointer;
 `;
 
 const EditDateButton = styled.div`
-	color: #707070;
+	color: ${Color.gray02};
 	font-size: 14px;
 	margin-left: 10px;
 	background: #f5f5f5;
