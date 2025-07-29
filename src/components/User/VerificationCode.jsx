@@ -1,5 +1,5 @@
 import React from 'react';
-
+// 안씀
 const VerificationCode = ({ verificationCode, setVerificationCode }) => (
 	<div className="verification-code">
 		<input

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../constants/theme';
 import useScrollLock from '@/utils/scrollLock';
+import { Color } from '../../constants/color';
 
 const StyledModal = styled.div`
 	display: ${(props) => (props.show ? 'flex' : 'none')}; /* 중앙 정렬을 위해 flex 사용 */
@@ -18,12 +19,12 @@ const StyledModal = styled.div`
 	overflow: auto;
 
 	.modal-content {
-		background-color: #fefefe;
+		background-color: ${Color.white};
 		border-radius: 10px;
 		position: relative;
 		margin: 0; /* 기존 margin 제거 */
 		padding: 20px;
-		border: 2px solid #FFF;
+		border: 2px solid ${Color.white};
 		width: 540px;
 		max-height: 80vh; 
 		overflow-y: auto; 
@@ -37,7 +38,7 @@ const StyledModal = styled.div`
 	}
 
 	.close {
-		color: #aaa;
+		color: ${Color.gray03};
 		float: right;
 		font-size: 28px;
 		font-weight: bold;
@@ -45,24 +46,24 @@ const StyledModal = styled.div`
 		position: sticky;  
 		top: -20px; 
 		z-index: 10; 
-		background-color: #fefefe;
+		background-color: ${Color.white};
 		padding: 3px;
 	}
 
 	.close:hover,
 	.close:focus {
-		color: black;
+		 color: ${Color.black};
 		text-decoration: none;
 	}
 
 	h2 {
-		color: #000;
+		 color: ${Color.black};
 		font-family: Pretendard;
 		font-size: 22px;
 		font-weight: 600;
 		position: sticky;  
 		top: -20px;  
-		background-color: #fefefe;
+		 background-color: ${Color.white};
 		padding: 8px 0;
 		z-index: 5;
 
@@ -73,7 +74,7 @@ const StyledModal = styled.div`
 
 
 	p {
-		color: #707070;
+		color: ${Color.gray02};
 		font-family: Pretendard;
 		font-size: 14px;
 		font-weight: 400;
