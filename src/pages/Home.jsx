@@ -247,6 +247,7 @@ export default function Home() {
 		try {
 			const data = await getRecentCareerDetails();
 			setRecentCareerDetails(data);
+			console.log(data)
 		} catch (error) {
 			console.error('최근 활동 기록 가져오기 실패:', error);
 		}
