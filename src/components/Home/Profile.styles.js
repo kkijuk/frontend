@@ -1,10 +1,6 @@
 // Profile.styles.js
 import styled from 'styled-components';
-<<<<<<< HEAD
-import { Color } from '../../constants/color';
-=======
 import { Color } from '@/constants/color';
->>>>>>> 9b67320c0f0ccf558849a1835ad82db9a97e3aab
 
 export const Container = styled.div`
 	width: 220px;
@@ -125,13 +121,8 @@ export const Button = styled.button`
 	align-items: center;
 	border: none;
 	border-radius: 10px;
-<<<<<<< HEAD
-	background: var(--main-01, ${Color.main01});
-	color: var(--white, #fff);
-=======
 	background: ${Color.main01};
 	color: ${Color.white};
->>>>>>> 9b67320c0f0ccf558849a1835ad82db9a97e3aab
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 12px;
