@@ -73,6 +73,34 @@ export default function MycareerDetail() {
 
 	const [isEditModalOpen, setIsEditModalOpen] = useState(false); // AddCareerModal용
 
+	const [pendingTx, setPendingTx] = useState(null);
+	const [showExitModal, setShowExitModal] = useState(false);
+
+	//이거 페이지 이동 차단 코드
+	// 차단 훅 사용: isAdding일 때만 이동 차단
+	useBlockNavigation(isAdding, (tx) => {
+		setPendingTx(tx);
+		setShowExitModal(true); // 모달 띄우기
+	});
+
+	// 떠나기 → 차단된 트랜잭션 실행
+	const handleExit = () => {
+		setShowExitModal(false);
+		setIsAdding(false);
+		if (pendingTx) {
+			pendingTx.retry();
+			setPendingTx(null);
+		}
+	};
+
+	// 닫기 → 이동 취소
+	const handleCloseModal = () => {
+		setShowExitModal(false);
+		setPendingTx(null);
+	};
+
+	//여기까지 페이지 이동 차단 코드
+
 	useEffect(() => {
 		if (details) {
 			setSummary(details.summary || '');
@@ -306,6 +334,7 @@ export default function MycareerDetail() {
 				{isEditModalOpen && modalData && (
 					<AddCareerModal onClose={closeModal} mode="edit" initialData={modalData} onRefresh={refetchDetails} />
 				)}
+				{showExitModal && <PageExitModal isOpen={true} onClose={handleCloseModal} onConfirm={handleExit} />}
 			</PageContainer>
 		</Layout>
 	);

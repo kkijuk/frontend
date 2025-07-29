@@ -1,18 +1,19 @@
 import styled from 'styled-components';
 import { theme } from '../../constants/theme';
+import { Color } from '@/constants/color';
 
 export const Container = styled.div`
 	width: 100%;
 	max-width: 820px;
 	margin: 0 auto;
-	background-color: white;
+	background-color: ${Color.white};
 	box-sizing: border-box;
 `;
 
 export const BackgroundSection = styled.div`
 	width: 100vw;
 	min-height: 100vh;
-	background-color: #f0f0f0;
+	background-color: ${Color.gray06};
 	position: relative;
 	box-sizing: border-box;
 	display: flex;

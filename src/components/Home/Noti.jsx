@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getRecruitRemind } from '../../api/Home/getRecruitRemind';
 import DashboardNothing from './DashboardN';
+import { Color } from '@/constants/color';
 
 const Container = styled.div`
 	display: flex;
@@ -17,7 +18,7 @@ const Container = styled.div`
 	box-sizing: border-box;
 
 	border-radius: 10px;
-	background: var(--gray-06, #f5f5f5);
+	background: ${Color.gray06};
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
@@ -29,7 +30,7 @@ const Container = styled.div`
 
 const Title = styled.div`
 	align-self: stretch;
-	color: var(--black, #000);
+	color: ${Color.black};
 	font-family: Pretendard;
 	font-size: 16px;
 	font-style: normal;
@@ -60,8 +61,8 @@ const List = styled.div`
 	height: 40px;
 	flex-shrink: 0;
 	border-radius: 4px;
-	border: 1px solid var(--gray-03, #d9d9d9);
-	background: var(--white, #fff);
+	border: 1px solid ${Color.gray03};
+	background: ${Color.white};
 	padding: 0 20px;
 
 	display: flex;
@@ -75,7 +76,7 @@ const List = styled.div`
 `;
 
 const ListText = styled.div`
-	color: ${(props) => (props.empty ? '#d9d9d9' : 'var(--black, #000)')};
+	color: ${(props) => (props.empty ? Color.gray03 : Color.black)};
 	font-family: Pretendard;
 	font-size: 14px;
 	font-style: normal;
@@ -86,10 +87,10 @@ const ListText = styled.div`
 const ListTag = styled.div`
 	flex-shrink: 0;
 	border-radius: 12px;
-	background: var(--gray-06, #f5f5f5);
+	background: ${Color.gray06};
 	padding: 4px 16px; /* 위아래 4px, 양옆 16px */
 
-	color: ${(props) => props.color || 'var(--gray-02, #707070)'};
+	color: ${(props) => props.color || Color.gray02};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 14px;

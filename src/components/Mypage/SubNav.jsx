@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
+import { Color } from '@/constants/color';
 
 const SubNav = () => {
 	const navigate = useNavigate();
@@ -68,12 +69,12 @@ const NavItems = styled.li`
 	margin-right: 50px;
 	cursor: pointer;
 
-	color: ${({ active }) => (active ? '#000000' : '#E0E0E0')};
+	color: ${({ active }) => (active ? Color.black : Color.gray04)};
 `;
 
 const Linear = styled.div`
 	height: 4px;
-	background-color: #f1f1f1;
+	background-color: ${Color.gray07};
 	margin-top: 12px;
 	margin-bottom: 28px;
 `;

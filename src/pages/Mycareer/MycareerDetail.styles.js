@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { theme } from '../../constants/theme';
+import { Color } from '@/constants/color';
 
 export const Container = styled.div`
 	display: flex;
@@ -18,7 +19,7 @@ export const SearchIcon = styled.svg`
 	width: 25px;
 	height: 25px;
 	flex-shrink: 0;
-	fill: var(--gray-02, #707070);
+	fill: ${Color.gray02};
 	cursor: pointer;
 `;
 
@@ -105,8 +106,7 @@ export const IconWrapper = styled.div`
 `;
 
 export const Title = styled.div`
-	color: #000;
-
+	color: ${Color.black};
 	font-family: Pretendard;
 	font-size: 24px;
 	font-style: normal;
@@ -116,7 +116,7 @@ export const Title = styled.div`
 
 export const Date = styled.div`
 	height: 15px;
-	color: #707070;
+	color: ${Color.gray02};
 
 	margin-top: 8px;
 	margin-bottom: 20px;
@@ -131,7 +131,7 @@ export const Date = styled.div`
 export const Content = styled.div`
 	width: 720px;
 	height: auto;
-	color: ${({ hasSummary }) => (hasSummary ? '#000' : 'var(--gray-02, #707070)')};
+	color: ${({ hasSummary }) => (hasSummary ? Color.black : Color.gray02)};
 	font-family: Pretendard;
 	font-size: 16px;
 	font-style: normal;
@@ -150,7 +150,7 @@ export const Line = styled.div`
 	max-width: 800px;
 	height: 6px;
 	margin-bottom: 2px; /*추가*/
-	background: var(--gray-03, #d9d9d9);
+	background: ${Color.gray03};
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		max-width: 100%;
@@ -176,6 +176,8 @@ export const CareerListBox = styled.div`
 	}
 `;
 
+//뭐야 이거 스타일 꼬라지 왜잉래;;;; background가 두개...
+//이거 어차피 컴포넌트로 바꿀거니까 일단 그냥 놔둠
 export const CareerPlus = styled.button`
 	max-width: 720px;
 	width: 100%;
@@ -247,7 +249,7 @@ export const Textbox = styled.textarea`
 	outline: none; /* 파란색 테두리 제거 */
 
 	border-radius: 10px;
-	background: #f5f5f5;
+	background: ${Color.gray06};
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
@@ -277,9 +279,8 @@ export const CancelButton = styled.button`
 	height: 40px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	border: 1px solid var(--sub-bu, #77aff2);
-
-	color: var(--sub-bu, #77aff2);
+	border: 1px solid ${Color.subBu};
+	color: ${Color.subBu};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 18px;
@@ -298,7 +299,7 @@ export const EditButton = styled.button`
 	height: 60px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	background: var(--main-01, #3aaf85);
+	background: ${Color.main01};
 	border: none;
 
 	color: #fff;
@@ -337,7 +338,7 @@ export const NoContents = styled.div`
 	justify-content: center;
 	align-items: center;
 	margin: 0 auto;
-	color: #707070;
+	color: ${Color.gray02};
 	font-family: Pretendard;
 	font-size: 18px;
 	font-style: normal;
@@ -365,10 +366,10 @@ export const EditTag = styled.div`
 	height: 25px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	background: var(--gray-06, #f5f5f5);
+	background: ${Color.gray06};
 
 	margin-left: auto; /* 오른쪽 정렬 */
-	color: var(--gray-02, #707070);
+	color: ${Color.gray02};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 14px;
