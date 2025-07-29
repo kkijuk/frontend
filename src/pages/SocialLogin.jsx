@@ -15,6 +15,7 @@ import useAuthRedirect from '../stores/useAuthRedirect';
 import { trackEvent } from '../utils/ga4';
 import { theme } from '../constants/theme';
 import { ROUTES } from '../constants/routes'; 
+import { Color } from '../constants/color';
 
 const PageContainer = styled.div`
   display: flex;
@@ -52,7 +53,7 @@ const CustomFooter = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 16px;
-  color: #333;
+   color: ${Color.gray03};
   z-index: 10; s
   position: relative;
 `;
@@ -66,7 +67,7 @@ const FooterStyle = styled.div`
   padding: 30px 50px;
   box-sizing: border-box;
   font-family: Pretendard;
-  color: #707070;
+   color: ${Color.gray02};
 
   .left {
     display: flex;
@@ -97,7 +98,7 @@ const FooterStyle = styled.div`
 
     .copyright {
       font-size: 11px;
-      color: #424242;
+       color: ${Color.gray01};
     }
   }
 
@@ -107,7 +108,7 @@ const FooterStyle = styled.div`
     .contact-title {
       font-size: 12px;
       margin-bottom: 15px;
-      color: #424242;
+      color: ${Color.gray01};
     }
 
     .icons {
@@ -129,7 +130,7 @@ const FooterStyle = styled.div`
       .email {
         margin-bottom: 10px;
         cursor: pointer;
-        color: #707070;
+        color: ${Color.gray02};
       }
 
       div {
@@ -166,7 +167,7 @@ line-height: normal;
   }
 	&.kakao {
 		background-color: #ffe812;
-		color: #000;
+		color: ${Color.black};
 		svg {
 			width: 28px;
 			height: 28px;
@@ -183,7 +184,7 @@ line-height: normal;
 	}
 	&.naver {
 		background-color: #03c75a;
-		color: #fff;
+		color: ${Color.white};
 		svg {
 			width: 49px;
 			height: 49px;
@@ -216,9 +217,9 @@ const TopButton = styled.button`
   align-items: center;
   padding: 4px 16px;
   border-radius: 10px;
-  border: 1px solid var(--main-02, #88d1b6);
-  background: #fff;
-  color: var(--main-02, #88d1b6);
+  border: 1px solid ${Color.main02};
+  background: ${Color.white};
+  color: ${Color.main02};
   font-family: Regular;
   font-size: 14px;
   font-style: normal;
@@ -257,7 +258,7 @@ const TextContainer = styled.div`
 
 
 const Title = styled.div`
-  color: var(--main-01, #3aaf85);
+ color: ${Color.main01};
   font-size: 19px;
   font-style: normal;
   font-weight: 800;
@@ -298,7 +299,7 @@ const Logo = styled.img`
 `;
 
 const Description = styled.p`
-  color: #424242;
+  color: ${Color.gray01};
   font-family: Light;
   font-size: 21px;
   font-weight: 800;
@@ -315,7 +316,7 @@ const Description = styled.p`
   }
 
   .highlight {
-    color: var(--main-01, #3aaf85);
+    color: ${Color.main01};
   }
 `;
 

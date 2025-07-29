@@ -7,7 +7,7 @@ import { Color } from '../../constants/color';
 
 const CalendarBackgroundSection = styled.div`
   width: 100vw; 
-   background-color: ${Color.gray05};
+   background-color: ${Color.gray06};
   margin-top: 20px;
    min-height: 110vh;
   position: relative;
