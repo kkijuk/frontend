@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Color } from '@/constants/color';
 
 export const Wrapper = styled.div`
 	display: flex;
@@ -31,7 +32,7 @@ export const Container = styled.div`
 `;
 
 export const TitleText = styled.div`
-	color: var(--black, #000);
+	color: ${Color.black};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 24px;
@@ -49,7 +50,7 @@ export const Container2 = styled.div`
 
 export const Text = styled.div`
 	align-self: stretch;
-	color: var(--gray-02, #707070);
+	color: ${Color.gray02};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 16px;
@@ -61,10 +62,10 @@ export const MainButton = styled.button`
 	height: 52px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	background: var(--gray-02, #707070);
+	background: ${Color.gray02};
 	border: none;
 
-	color: #fff;
+	color: ${Color.white};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 18px;

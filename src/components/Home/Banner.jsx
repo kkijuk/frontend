@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
+import { Color } from '@/constants/color';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'; // Autoplay 모듈 추가
 import 'swiper/css';
@@ -16,7 +16,7 @@ const Container = styled.div`
 
 	flex-shrink: 0;
 	border-radius: 10px;
-	/*background: var(--gray-05, #f1f1f1);*/
+	/*	background: ${Color.gray05}; */
 	z-index: 1;
 	overflow: hidden;
 
