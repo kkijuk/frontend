@@ -137,8 +137,8 @@ const SignupSuccess = () => {
 		$body.addEventListener('touchmove', preventScroll, { passive: false });
 
 		if (!hasCalled) {
-			createMaster();
-			createResume(address, profileImageUrl);
+			// createMaster();
+			// createResume(address, profileImageUrl);
 			setHasCalled(true); // 호출 후 true로 설정
 		}
 
