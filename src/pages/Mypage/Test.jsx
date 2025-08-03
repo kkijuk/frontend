@@ -12,6 +12,9 @@ import ButtonSmallSecondary from '@/components/Button/button-small/secondary';
 import ButtonSmallOutline from '@/components/Button/button-small/outline';
 import ButtonText from '@/components/Button/button-text/text';
 
+import ButtonLinkPrimary from '@/components/Button/button-link/button-outline';
+import { Button } from './Confirm.styles';
+
 export default function Test() {
 	return (
 		<>
@@ -34,6 +37,8 @@ export default function Test() {
 
 			{/* Text Button */}
 			<ButtonText text="텍스트 버튼" />
+
+			<ButtonLinkPrimary text="링크 버튼" width="fit-content" height="25px" />
 		</>
 	);
 }
