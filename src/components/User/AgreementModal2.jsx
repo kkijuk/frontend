@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import AgreementImage from './Agree1.svg';
 import { theme } from '../../constants/theme';
+import { Color } from '../../constants/color';
+
 const StyledModal = styled.div`
 	display: ${(props) => (props.show ? 'block' : 'none')};
 	position: fixed;
@@ -25,12 +27,12 @@ const StyledModal = styled.div`
 		height: auto;
 	}
 	.modal-content {
-		background-color: #fefefe;
+		background-color: ${Color.white};
 		border-radius: 10px;
         background: #FFF;
 		margin: 5% auto; /* 모달이 화면 중앙에 오도록 조정 */
 		padding: 20px;
-		border: 2px solid #FFF;
+		border: 2px solid ${Color.white};
 		width: 540px;
         height: 350px;
         flex-shrink: 0;
@@ -42,7 +44,7 @@ const StyledModal = styled.div`
 }
 
 	.close {
-		color: #aaa;
+		color: ${Color.gray03}; 
 		float: right;
 		font-size: 28px;
 		font-weight: bold;
@@ -50,13 +52,13 @@ const StyledModal = styled.div`
 
 	.close:hover,
 	.close:focus {
-		color: black;
+		color: ${Color.black};
 		text-decoration: none;
 		cursor: pointer;
 	}
 
 	h2 {
-    color: #000;
+    color: ${Color.black};
     font-family: Pretendard;
     font-size: 22px;
     font-style: normal;
@@ -68,7 +70,7 @@ const StyledModal = styled.div`
 	}
 
 	p {
-	color: var(--gray-02, #707070);
+	color: ${Color.gray02};
 font-family: Pretendard;
 font-size: 14px;
 font-style: normal;

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { Color } from '../../constants/color';
 
 const Background = styled.div`
 	position: fixed;
@@ -17,7 +18,7 @@ const Background = styled.div`
 const Modal = styled.div`
 	width: 310px;
 	height: 150px;
-	background: rgba(255, 255, 255, 1);
+	background: ${Color.white};
 	border-radius: 10px;
 	padding: 20px;
 	display: flex;
@@ -30,7 +31,7 @@ const Modal = styled.div`
 `;
 
 const ModalTitle = styled.div`
-	color: #333;
+	color: ${Color.gray01};
 	text-align: center;
 	font-family: normal;
 	font-size: 16px;
@@ -55,9 +56,9 @@ const CancelButton = styled.button`
     cursor: pointer;
     font-family: Regular;
     font-size: 15px;
-    border: 1.5px solid #E0E0E0;
-    background: #fff;
-    color: #707070;
+   border: 1.5px solid ${Color.gray04};
+	background: ${Color.white};
+	color: ${Color.gray02};
     text-align: center;
     display: flex;
     align-items: center;
@@ -74,9 +75,9 @@ const ConfirmButton = styled.button`
     cursor: pointer;
     font-family: Regular;
     font-size: 15px;
-    border: 1.5px solid #FF7979;
-    background: #FF7979;
-    color: white;
+    border: 1.5px solid ${Color.error};
+	background: ${Color.error};
+	color: ${Color.white};
     text-align: center;
     display: flex;
     align-items: center;

@@ -17,7 +17,7 @@ const BaseDiv = styled.div`
     width: 820px;
     max-width: 820px;
     position: relative;
-    z-index: 999;
+    z-index: 998;
 
     @media (max-width: ${theme.breakpoints.md}) {
         width: 100%;
@@ -349,6 +349,25 @@ const CharCount = styled.div`
 	background: ${Color.gray06};
 `;
 
+const InsertOverlay = styled.div`
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 10px;
+	background: rgba(0, 0, 0, 0.5);
+	color: ${Color.white};
+	font-family: Regular;
+	font-size: 16px;
+	cursor: pointer;
+`;
+
+
 const AddButton = styled.button`
 	width: 820px;
 	height: 50px;
@@ -425,6 +444,24 @@ const AutoSaveMessage = styled.div`
 	color: ${Color.gray02};
 `;
 
+const SidebarButton = styled.button`
+	position: fixed;
+	top: 100px;
+	right: 20px;
+	width: 100px;
+	height: 40px;
+	background-color: ${Color.main01};
+	color: ${Color.white};
+	border: none;
+	border-radius: 10px;
+	font-family: Regular;
+	font-size: 16px;
+	cursor: pointer;
+	&:hover {
+		background-color: ${Color.main_hover};
+	}
+`;
+
 export {
     BackgroundDiv,
     BaseDiv,
@@ -446,9 +483,11 @@ export {
 	AnswerWrapper,
 	InputAnswer,
 	CharCount,
+	InsertOverlay,
 	AddButton,
 	IntroFooter,
 	FooterButton,
 	SaveBtnWrapper,
-	AutoSaveMessage
+	AutoSaveMessage,
+	SidebarButton
 }

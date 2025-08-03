@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import MessageIcon from '../../assets/message.svg';
 import { theme } from '../../constants/theme';
-
+// 안씀
 const Background = styled.div`
 	position: fixed;
 	top: 0;

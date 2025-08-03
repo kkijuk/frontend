@@ -165,22 +165,24 @@ const History = () => {
 	const sections = [
 		{id: "user", name: "인적사항"},
 		{id: "educations", name: "학력"},
-		{id: "employments", name: "경력"},
-		{id: "activitiesAndExperiences", name: "활동 및 경험"},
-		{id: "projects", name: "프로젝트"},
-		{id: "eduCareers", name: "교육"},
-		{id: "awards", name: "수상"},
-		{id: "licenses", name: "자격증 · 외국어"},
-		{id: "skills", name: "스킬"},
-		{id:"etc", name: "추가자료"}
+		{id: "employments", name: "경력", count: employments.length},
+		{id: "activitiesAndExperiences", name: "활동 및 경험", count: activitiesAndExperiences.length},
+		{id: "projects", name: "프로젝트", count: projects.length},
+		{id: "eduCareers", name: "교육", count: eduCareers.length},
+		{id: "awards", name: "수상", count: awards.length},
+		{id: "licenses", name: "자격증 · 외국어", count: licenses.length},
+		{id: "skills", name: "스킬", count: skills.length},
+		{id:"etc", name: "추가자료", count: files.length}
 	];
 	
 
 	//(2) 인디케이터 메뉴 클릭
 	const scrollToSection = (id) => {
 		const element = document.getElementById(id);
-		if(element) {
-			element.scrollIntoView({behavior: "smooth", block: "start"});
+
+		if (element) {
+			const y = element.getBoundingClientRect().top + window.pageYOffset - 70; // 네비게이션 높이만큼 보정
+			window.scrollTo({ top: y, behavior: 'smooth' });
 		}
 	}
 
@@ -245,11 +247,7 @@ const History = () => {
 								onClose={() => setIsCareerModalOpen(false)}
 							/>
 						}
-						<UserDetailsContainer>
-							<div
-								id = {sections[0].id}	
-								key = {sections[0].id}	
-							/>
+						<UserDetailsContainer id={sections[0].id} key={sections[0].id}>
 							<UpdatedAt>마지막 수정 일시: {updated_at}</UpdatedAt>
 							<ProfileAndInfoWrapper>
 								<Profile

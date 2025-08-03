@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ViewToggleStyled } from '../Mycareer/CareerView.styles';
-
+import { Color } from '../../constants/color';
 const Overlay = styled.div`
 	position: fixed;
 	top: 0;
@@ -95,7 +95,7 @@ const ExitButton = styled.div`
 	border: none;
 
 	border-radius: 10px;
-	background: var(--main-01, #3aaf85);
+	background: var(--main-01,  ${Color.main01});
 `;
 
 export default function PageExitModal({ isOpen, onClose, onConfirm }) {

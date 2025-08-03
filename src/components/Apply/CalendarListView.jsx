@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import api from '../../Axios';
 import { getRecruitDetails } from '../../api/Apply/RecruitDetails'; // API 호출을 위해 import
+import { Color } from '../../constants/color';
 
 const CalendarBackgroundSection = styled.div`
   width: 100vw; 
-  background-color: #f0f0f0;
+   background-color: ${Color.gray06};
   margin-top: 20px;
    min-height: 110vh;
   position: relative;
@@ -41,7 +42,7 @@ const CalendarAdListStyled = styled.div`
 `;
 const CalendarAdDate = styled.div`
   font-size: 14px;
-  color: var(--black, #000);
+   color: ${Color.black};
   font-family: Regular;
   font-size: 16px;
   font-style: normal;
@@ -65,8 +66,8 @@ const CalendarAdDateSection = styled.div`
 `;
 
 const CalendarAdItem = styled.div`
-	background-color: white;
-	border: 1px solid #ddd;
+ background-color: ${Color.white};
+  border: 1px solid ${Color.gray04};
 	border-radius: 10px;
 	padding: 15px;
 	margin-bottom: 10px;
@@ -91,7 +92,7 @@ const CalendarAdTitleContainer = styled.div`
 `;
 
 const CalendarAdTitle = styled.div`
-	color: var(--black, #000);
+	color: ${Color.black};
 	font-family: Pretendard;
 	font-size: 18px;
 	font-style: normal;
@@ -113,11 +114,11 @@ const CalendarTagContainer = styled.div`
 `;
 
 const CalendarTag = styled.span`
-	background: #f5f5f5;
+	 background: ${Color.gray06};
 	border-radius: 10px;
 	padding: 4px 8px;
 	font-size: 13px;
-	color: #707070;
+	color: ${Color.gray02};
 	font-family: Light;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -127,16 +128,16 @@ const CalendarTag = styled.span`
 
 const ReviewTag = styled.span`
   background: ${({ status }) => {
-	if (status === 'UNAPPLIED') return '#D9D9D9';
-    if (status === 'PLANNED') return '#B0B0B0';
-    if (status === 'APPLYING') return '#707070';
-    if (status === 'ACCEPTED') return '#78D333';
-    if (status === 'REJECTED') return '#FA7C79';
-    return '#D9D9D9';
+	if (status === 'UNAPPLIED') return Color.gray04;
+    if (status === 'PLANNED') return Color.gray03;
+    if (status === 'APPLYING') return Color.gray02;
+    if (status === 'ACCEPTED') return Color.subGn;
+    if (status === 'REJECTED') return Color.subRd;
+    return Color.gray04;
   }};
   border-radius: 10px;
   padding: 4px 8px;
-  color: var(--white, #FFF);
+  color: ${Color.white};
   text-align: center;
   font-family: Light;
   font-size: 12px;
@@ -152,12 +153,12 @@ const CalendarStatusCircle = styled.span`
   height: 15px;
   border-radius: 50%;
   background-color: ${({ status }) => {
-    if (status === 'UNAPPLIED') return '#D9D9D9';
-    if (status === 'PLANNED') return '#B0B0B0';
-    if (status === 'APPLYING') return '#707070';
-    if (status === 'ACCEPTED') return '#78D333';
-    if (status === 'REJECTED') return '#FA7C79';
-    return '#707070';
+     if (status === 'UNAPPLIED') return Color.gray04;
+    if (status === 'PLANNED') return Color.gray03;
+    if (status === 'APPLYING') return Color.gray02;
+    if (status === 'ACCEPTED') return Color.subGn;
+    if (status === 'REJECTED') return Color.subRd;
+    return Color.gray02;
   }};
   margin-right: 10px;
   margin-top: 5px;

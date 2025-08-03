@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import moment from 'moment';
 import 'react-calendar/dist/Calendar.css';
+import { Color } from '../../constants/color';
 
 const CalendarWrapper = styled.div`
 	.react-calendar {
@@ -10,8 +11,8 @@ const CalendarWrapper = styled.div`
 		height: 263px;
 		flex-shrink: 0;
 		border-radius: 10px;
-		border: 1px solid var(--gray-03, #d9d9d9);
-		background: var(--white, #fff);
+		border: 1px solid ${Color.gray04};
+		background: ${Color.white};
 		position: absolute;
 		z-index: 10;
 	}
@@ -40,16 +41,16 @@ const CalendarWrapper = styled.div`
 	}
 
 	.react-calendar__month-view__weekdays__weekday:nth-child(1) {
-		color: var(--sub-rd, #fa7c79);
+		color: ${Color.subRd};
 	}
 
 	.react-calendar__month-view__weekdays__weekday:nth-child(7) {
-		color: var(--sub-bu, #77aff2);
+		color: ${Color.subBu};
 	}
 
 	.react-calendar__tile {
-		background: #fff;
-		color: #000;
+		background: ${Color.white};
+		color: ${Color.black};
 		margin-top: 3px;
 		margin-bottom: 3px;
 		height: 24px;
@@ -70,8 +71,8 @@ const CalendarWrapper = styled.div`
 		align-items: center;
 		justify-content: center;
 		border-radius: 5px;
-		background: var(--main-01, #3aaf85) !important;
-		color: var(--white, #fff) !important;
+		background: var(--main-01, ${Color.main01}) !important;
+		color: ${Color.white} !important;
 	}
 
 	.react-calendar__tile--active {
@@ -81,8 +82,8 @@ const CalendarWrapper = styled.div`
 		align-items: center;
 		justify-content: center;
 		border-radius: 5px;
-		background: var(--main-01, #3aaf85) !important;
-		color: var(--white, #fff) !important;
+		background: var(--main-01, ${Color.main01}) !important;
+		color: ${Color.white} !important;
 	}
 
 	.react-calendar__month-view__days__day--neighboringMonth {

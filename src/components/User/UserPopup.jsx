@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Color } from '../../constants/color';
 
 const PopupBackground = styled.div`
   position: fixed;
@@ -18,7 +19,7 @@ const PopupContainer = styled.div`
   width: 500px;
   height: 370px;
   flex-shrink: 0;
-  background: #fff;
+  background: ${Color.white};
   border-radius: 12px;
   padding: 30px;
   text-align: center;
@@ -34,7 +35,7 @@ const Title = styled.div`
 
 const Content = styled.p`
   font-size: 14px;
-  color: #333;
+  color: ${Color.gray01};
   text-align: center;
   margin-bottom: 20px;
   line-height: 1.6;
@@ -64,8 +65,8 @@ const PopupButton = styled.button`
   cursor: pointer;
   font-size: 16px;
   font-weight: 600;
-  color: #fff;
-  background-color: ${({ disabled }) => (disabled ? '#ddd' : '#3aaf85')};
+  color: ${Color.white};
+  background-color: ${({ disabled }) => (disabled ? Color.gray04 : Color.main01)};
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
 `;
 
@@ -77,7 +78,7 @@ const CloseButton = styled.button`
   border: none;
   font-size: 40px;
   cursor: pointer;
-  color: gray;
+   color: ${Color.gray02};
 `;
 
 export default function UserPopup({ onClose, onConfirm }) {
