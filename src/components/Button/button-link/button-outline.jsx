@@ -4,8 +4,8 @@ import { Color } from '@/constants/color';
 
 const Container = styled.button`
 	display: flex;
-	width: 65px;
-	height: 25px;
+	width: ${({ width }) => width || '65px'};
+	height: ${({ height }) => height || '25px'};
 	padding: 4px 20px;
 	justify-content: center;
 	align-items: center;
