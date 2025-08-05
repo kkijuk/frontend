@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import logo from '../assets/logo.png';
 import { logout } from '../api/Login/Logout'; 
 import { theme } from '../constants/theme';
+import { Color } from '../constants/color';
 
 const HeaderWrapper = styled.div`
 	position: fixed;  
@@ -57,7 +58,7 @@ const Nav = styled.nav`
 		cursor: pointer;
 		color: #333;
 		font-family: Pretendard;
-		font-size: 22px;
+		font-size: 21px;
 		font-style: normal;
 		font-weight: 700;
 		line-height: normal;
@@ -90,7 +91,7 @@ const Nav = styled.nav`
 		position: absolute;
 		width: 100%;
 		height: 5px;
-		background-color: #3aaf85;
+		background-color: ${Color.main01};
 		bottom: -22px;
 		left: 0;
 

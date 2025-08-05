@@ -20,7 +20,7 @@ import { updateRecruitApplyDate } from '../../api/Apply/RecruitApplydate';
 import { getRecruitListAfterDate } from '../../api/Apply/RecruitAfter';
 import { trackEvent } from '../../utils/ga4';
 import { formatDate, formateDateDashToDot } from '../../utils/formateDate';
-
+import { Color } from '../../constants/color';
 
 const SvgIcon = styled.svg`
 	width: 20px;
@@ -101,7 +101,7 @@ const ConfirmButton = styled.button`
 `;
 
 const DateInput = styled.div`
-	color: #707070;
+	color: ${Color.gray02};
 	font-size: 16px;
 	margin-left: 20px;
 	cursor: pointer;
@@ -112,14 +112,14 @@ const DateInput = styled.div`
 const DateDisplay = styled.div`
 	display: flex;
 	align-items: center;
-	color: #707070;
+	color: ${Color.gray02};
 	font-size: 16px;
 	margin-left: 20px;
 	cursor: pointer;
 `;
 
 const EditDateButton = styled.div`
-	color: #707070;
+	color: ${Color.gray02};
 	font-size: 14px;
 	margin-left: 10px;
 	background: #f5f5f5;

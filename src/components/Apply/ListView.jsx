@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Color } from '../../constants/color';
 
 const BackgroundSection = styled.div`
   width: 100vw;
-  background-color: #f0f0f0;
+  background-color: ${Color.gray06};
   margin-top: 20px;
   min-height: 100vh; 
   position: relative;
@@ -17,7 +18,7 @@ const ContentSection = styled.div`
   margin: 0 auto;
   width: 100%;
   padding: 20px;
-  background-color: #f0f0f0;
+  background-color: ${Color.gray06};
   border-radius: 15px;
   position: relative;
 
@@ -45,7 +46,7 @@ const AdDateSection = styled.div`
 
 const AdDate = styled.div`
   font-size: 16px;
-  color: var(--black, #000);
+  color: ${Color.black}; 
   font-family: Regular;
   font-weight: 500;
   margin-bottom: 10px;
@@ -57,8 +58,8 @@ const AdDate = styled.div`
 `;
 
 const AdItem = styled.div`
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: ${Color.white}; 
+  border: 1px solid ${Color.gray04};
   border-radius: 10px;
   padding: 15px;
   margin-bottom: 10px;
@@ -67,7 +68,7 @@ const AdItem = styled.div`
 `;
 
 const AdDetails = styled.div`
-  color: #555;
+   color: ${Color.gray01};
 `;
 
 const AdTitleContainer = styled.div`
@@ -82,7 +83,7 @@ const AdTitleContainer = styled.div`
 `;
 
 const AdTitle = styled.div`
-  color: var(--black, #000);
+   color: ${Color.black};
   font-family: Pretendard;
   font-size: 18px;
   font-weight: 700;
@@ -102,11 +103,11 @@ const TagContainer = styled.div`
 `;
 
 const DefaultTag = styled.span`
-  background: #f5f5f5;
+ background: ${Color.gray05}; 
   border-radius: 10px;
   padding: 4px 8px;
   font-size: 13px;
-  color: #707070;
+  color: ${Color.gray02}; 
   font-family: Light;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -121,12 +122,12 @@ const StatusCircle = styled.span`
   height: 15px;
   border-radius: 50%;
   background-color: ${({ status }) => {
-    if (status === 'UNAPPLIED') return '#d9d9d9';
-    if (status === 'PLANNED') return '#b0b0b0';
-    if (status === 'APPLYING') return '#707070';
-    if (status === 'ACCEPTED') return '#78d333';
-    if (status === 'REJECTED') return '#fa7c79';
-    return '#707070';
+     if (status === 'UNAPPLIED') return Color.gray04;
+    if (status === 'PLANNED') return Color.gray03;
+    if (status === 'APPLYING') return Color.gray02;
+    if (status === 'ACCEPTED') return Color.subGn;
+    if (status === 'REJECTED') return Color.subRd;
+    return Color.gray02;
   }};
   margin-right: 10px;
   margin-top: 5px;
@@ -139,16 +140,16 @@ const StatusCircle = styled.span`
 
 const ReviewTag = styled.span`
   background: ${({ status }) => {
-    if (status === 'UNAPPLIED') return '#D9D9D9';
-    if (status === 'PLANNED') return '#B0B0B0';
-    if (status === 'APPLYING') return '#707070';
-    if (status === 'ACCEPTED') return '#78D333';
-    if (status === 'REJECTED') return '#FA7C79';
-    return '#D9D9D9';
+    if (status === 'UNAPPLIED') return Color.gray04;
+    if (status === 'PLANNED') return Color.gray03;
+    if (status === 'APPLYING') return Color.gray02;
+    if (status === 'ACCEPTED') return Color.subGn;
+    if (status === 'REJECTED') return Color.subRd;
+    return Color.gray04;
   }};
   border-radius: 10px;
   padding: 4px 8px;
-  color: var(--white, #FFF);
+   color: ${Color.white};
   text-align: center;
   font-family: Light;
   font-size: 12px;

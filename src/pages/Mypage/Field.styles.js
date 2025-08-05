@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Color } from '@/constants/color';
 
 export const Box = styled.div`
 	display: flex;
@@ -19,7 +20,7 @@ export const Top = styled.div`
 `;
 
 export const Title = styled.h2`
-	color: var(--black, #000);
+	color: ${Color.black};
 	font-family: Pretendard;
 	font-size: 20px;
 	font-style: normal;
@@ -33,11 +34,11 @@ export const EditButton = styled.button`
 	flex-shrink: 0;
 	border-radius: 10px;
 	border: none;
-	background: var(--gray-06, #f5f5f5);
+	background: ${Color.gray06};
 	margin-left: 10px;
 	cursor: pointer;
 
-	color: var(--gray-02, #707070);
+	color: ${Color.gray02};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 14px;

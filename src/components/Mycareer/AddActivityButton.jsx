@@ -3,12 +3,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { theme } from '../../constants/theme';
+import { Color } from '../../constants/color';
 
 const Button = styled.button`
 	position: fixed;
 	bottom: 20px;
 	right: 20px;
-	background-color: #3aaf85;
+	background-color: ${Color.main01};
 	color: white;
 	border: none;
 	border-radius: 50%;

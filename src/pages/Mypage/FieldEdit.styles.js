@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Color } from '@/constants/color';
 
 export const Box = styled.div`
 	display: flex;
@@ -14,7 +15,7 @@ export const Top = styled.div`
 `;
 
 export const Title = styled.h2`
-	color: var(--black, #000);
+	color: ${Color.black};
 	font-family: Pretendard;
 	font-size: 20px;
 	font-style: normal;
@@ -24,7 +25,7 @@ export const Title = styled.h2`
 
 export const ContentArea = styled.div`
 	margin: 0 auto;
-	background-color: white;
+	background-color: ${Color.white};
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -47,8 +48,8 @@ export const SaveButton = styled.button`
 	width: 100%;
 	height: 52px;
 	flex-shrink: 0;
-	background-color: #3aaf85;
-	color: white;
+	background-color: ${Color.main01};
+	color: ${Color.white};
 	padding: 10px 20px;
 	border: none;
 	border-radius: 10px;
@@ -69,6 +70,6 @@ export const SaveButton = styled.button`
 	line-height: normal;
 
 	&:hover {
-		background-color: #35a576;
+		background-color: ${Color.main_hover};
 	}
 `;

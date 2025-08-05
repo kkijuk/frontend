@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import AgreementImage from "../components/User/Agree.svg";
+import { Color } from '../constants/color';
 
 const PrivacyContainer = styled.div`
   display: flex;
@@ -9,17 +10,18 @@ const PrivacyContainer = styled.div`
   justify-content: center;
   min-height: 100vh;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: ${Color.gray06};
 
   .content {
     border-radius: 10px;
     padding: 30px;
+    background-color: ${Color.white};
     width: 600px;
     text-align: center;
   }
 
   h2 {
-    color: #000;
+    color: ${Color.black};
     text-align: center;
     font-family: Pretendard;
     font-size: 24px;
@@ -28,7 +30,7 @@ const PrivacyContainer = styled.div`
   }
 
   p {
-    color: #707070;
+    color: ${Color.gray02};
     font-family: Pretendard;
     font-size: 15px;
     text-align: center;

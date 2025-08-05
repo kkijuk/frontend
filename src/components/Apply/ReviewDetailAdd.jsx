@@ -5,6 +5,7 @@ import ReactCalendar from './ReviewCalendar';
 import moment from 'moment';
 import { ReviewAdd } from '../../api/Apply/ReviewAdd'; 
 import { trackEvent } from '../../utils/ga4';
+import { Color } from '../../constants/color';
 
 const Box = styled.div`
     /*height: 142px;*/
@@ -65,8 +66,8 @@ const DateBox = styled.div`
     width: 240px;
     padding: 15px 20px;
     box-sizing: border-box;
-    background: #F5F5F5;
-    color: var(--gray-02, #707070);
+    background: ${Color.gray06};
+	color: ${Color.gray02};
     font-family: Pretendard;
     font-size: 16px;
     font-style: normal;
@@ -78,7 +79,7 @@ const DateBox = styled.div`
 `;
 
 const Label = styled.div`
-    color: var(--black, #000);
+    color: ${Color.black};
     font-family: semibold;
     font-size: 18px;
     font-style: normal;
@@ -92,12 +93,12 @@ const Cancel = styled.div`
     height: 50px;
     flex-shrink: 0;
     border-radius: 10px;
-    border: 1.5px solid var(--sub-rd, #E0E0E0);
+   border: 1.5px solid ${Color.gray04};
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--sub-rd, #707070);  
+    color: ${Color.gray02};
     text-align: center;
     font-family: regular;
     font-size: 18px;
@@ -114,11 +115,11 @@ const Save = styled.div`
     height: 50px;
     flex-shrink: 0;
     border-radius: 10px;
-    background: var(--main-01, #3AAF85);
+    background: var(--main-01, ${Color.main01});
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #FFF;
+    color: ${Color.white};
     text-align: center;
     font-family: regular;
     font-size: 18px;
@@ -133,7 +134,7 @@ const Save = styled.div`
 const Line = styled.div`
     width : 800px;
     height: 2px;
-    background: var(--gray-03, #D9D9D9);
+    background: ${Color.gray03};
     @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	width: 350px;
     width: 320px;

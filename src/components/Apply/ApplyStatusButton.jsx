@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { trackEvent } from '../../utils/ga4';
+import { Color } from '../../constants/color';
 
 const StatusContainer = styled.div`
 	display: flex;
@@ -44,8 +45,8 @@ const StatusButton = styled.button`
 	padding: 9px 18px;
 	color: ${(props) =>
 		props.active && props.statusType !== 'unapplied' && props.statusType !== 'planned'
-			? '#fff'
-			: 'black'};
+			? Color.white
+			: Color.black};
 	cursor: pointer;
 	background: ${(props) => (props.active ? props.borderColor : 'transparent')};
 	margin-bottom: -12px;
@@ -85,56 +86,61 @@ const ApplyStatusButton = ({ activeStatus, onStatusClick, statusCounts }) => {
 
 	return (
 		<ScrollWrapper>
-		<StatusContainer>
-			<StatusButton
-				active={activeStatus === 'all'}
-				onClick={() => handleClick('all')}
-				borderColor="#3AAF85"
-				statusType="all"
-			>
-				전체보기 <StatusText>({statusCounts.all})</StatusText>
-			</StatusButton>
-			<StatusButton
-				active={activeStatus === 'unapplied'}
-				onClick={() => handleClick('unapplied')}
-				borderColor="#D9D9D9"
-				statusType="unapplied"
-			>
-				미지원 <StatusText>({statusCounts.unapplied})</StatusText>
-			</StatusButton>
-			<StatusButton
-				active={activeStatus === 'planned'}
-				onClick={() => handleClick('planned')}
-				borderColor="#B0B0B0"
-				statusType="planned"
-			>
-				지원 예정 <StatusText>({statusCounts.planned})</StatusText>
-			</StatusButton>
-			<StatusButton
-				active={activeStatus === 'applying'}
-				onClick={() => handleClick('applying')}
-				borderColor="#707070"
-				statusType="applying"
-			>
-				진행 중 <StatusText>({statusCounts.applying})</StatusText>
-			</StatusButton>
-			<StatusButton
-				active={activeStatus === 'accepted'}
-				onClick={() => handleClick('accepted')}
-				borderColor="#78D333"
-				statusType="accepted"
-			>
-				합격 <StatusText>({statusCounts.accepted})</StatusText>
-			</StatusButton>
-			<StatusButton
-				active={activeStatus === 'rejected'}
-				onClick={() => handleClick('rejected')}
-				borderColor="#FA7C79"
-				statusType="rejected"
-			>
-				불합격 <StatusText>({statusCounts.rejected})</StatusText>
-			</StatusButton>
-		</StatusContainer>
+			<StatusContainer>
+				<StatusButton
+					active={activeStatus === 'all'}
+					onClick={() => handleClick('all')}
+					borderColor={Color.main01}
+					statusType="all"
+				>
+					전체보기 <StatusText>({statusCounts.all})</StatusText>
+				</StatusButton>
+
+				<StatusButton
+					active={activeStatus === 'unapplied'}
+					onClick={() => handleClick('unapplied')}
+					borderColor={Color.gray04}
+					statusType="unapplied"
+				>
+					미지원 <StatusText>({statusCounts.unapplied})</StatusText>
+				</StatusButton>
+
+				<StatusButton
+					active={activeStatus === 'planned'}
+					onClick={() => handleClick('planned')}
+					borderColor={Color.gray03}
+					statusType="planned"
+				>
+					지원 예정 <StatusText>({statusCounts.planned})</StatusText>
+				</StatusButton>
+
+				<StatusButton
+					active={activeStatus === 'applying'}
+					onClick={() => handleClick('applying')}
+					borderColor={Color.gray02}
+					statusType="applying"
+				>
+					진행 중 <StatusText>({statusCounts.applying})</StatusText>
+				</StatusButton>
+
+				<StatusButton
+					active={activeStatus === 'accepted'}
+					onClick={() => handleClick('accepted')}
+					borderColor={Color.subGn}
+					statusType="accepted"
+				>
+					합격 <StatusText>({statusCounts.accepted})</StatusText>
+				</StatusButton>
+
+				<StatusButton
+					active={activeStatus === 'rejected'}
+					onClick={() => handleClick('rejected')}
+					borderColor={Color.subRd}
+					statusType="rejected"
+				>
+					불합격 <StatusText>({statusCounts.rejected})</StatusText>
+				</StatusButton>
+			</StatusContainer>
 		</ScrollWrapper>
 	);
 };

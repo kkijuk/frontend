@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Color } from '../../constants/color';
 
 const StatusItem = styled.div`
-	background-color: #f5f5f5;
+	background-color: ${Color.gray06};
 	border-radius: 12px;
 	padding: 9px;
 	margin-right: 24px;
@@ -20,7 +21,7 @@ const StatusItem = styled.div`
 `;
 
 const StatusText = styled.span`
-	color: var(--black, #000);
+	color: ${Color.black};
 	text-align: center;
 	font-family: Light;
 	font-size: 14px;
