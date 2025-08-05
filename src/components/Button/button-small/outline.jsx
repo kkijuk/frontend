@@ -4,7 +4,7 @@ import { Color } from '@/constants/color';
 
 const Container = styled.button`
 	width: fit-content;
-	
+
 	display: flex;
 	//width: 65px;
 	//height: 25px;
@@ -13,6 +13,7 @@ const Container = styled.button`
 	align-items: center;
 	gap: 10px;
 	flex-shrink: 0;
+	border-radius: 10px;
 	border: 1px solid var(--gray-04, #d0d0d0);
 	background: var(--white, #fff);
 
