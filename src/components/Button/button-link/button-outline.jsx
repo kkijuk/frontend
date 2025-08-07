@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.button`
+	width: fit-content;	
 	display: flex;
 	padding: 4px 20px;
 	justify-content: center;
@@ -10,7 +11,7 @@ const Container = styled.button`
 	flex-shrink: 0;
 	border-radius: 10px;
 	border: 1px solid ${({ disabled }) => (disabled ? '#D0D0D0' : 'var(--gray-04, #d0d0d0)')};
-	background: ${({ disabled }) => (disabled ? '#D0D0D0' : 'var(--white, #fff)')};
+	background: var(--white, #fff);
 	cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
 	&:hover {

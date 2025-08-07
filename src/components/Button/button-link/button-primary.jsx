@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.button`
+	width: fit-content;
+	
 	display: flex;
 	padding: 4px 20px;
 	justify-content: center;
@@ -9,18 +11,18 @@ const Container = styled.button`
 	gap: 10px;
 	flex-shrink: 0;
 	border-radius: 10px;
-	border: 1px solid ${({ disabled }) => (disabled ? '#D0D0D0' : '#3aaf85')};
-	background: ${({ disabled }) => (disabled ? '#D0D0D0' : '#fff')};
+	border: 1px solid ${({ disabled }) => (disabled ? '#D0D0D0' : '#3AAF85')};
+	background: #fff; /* 항상 흰색 배경 */
 	cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
 	&:hover {
-		border: 1px solid ${({ disabled }) => (disabled ? '#D0D0D0' : '#3aaf85')};
-		background: ${({ disabled }) => (disabled ? '#D0D0D0' : '#c4e7da')};
+		border: 1px solid ${({ disabled }) => (disabled ? '#D0D0D0' : '#3AAF85')};
+		background: ${({ disabled }) => (disabled ? '#fff' : '#C4E7DA')};
 	}
 `;
 
 const Text = styled.div`
-	color: ${({ disabled }) => (disabled ? '#D0D0D0' : '#3aaf85')};
+	color: ${({ disabled }) => (disabled ? '#D0D0D0' : '#3AAF85')};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 14px;
