@@ -87,7 +87,7 @@
 
   <!-- check (스크롤 내비케이터)-->
   <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 17" id="check">
-    <path d="M4 8.50065L6.66667 11.1673L12 5.83398" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M4 8.50065L6.66667 11.1673L12 5.83398" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
   </symbol>
 
   <!-- Line 32 (스크롤 내비게이터)-->

@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import styled from "styled-components";
 import { theme } from "@/constants/theme";
 import { Color } from "@/constants/color";
-import { last } from "lodash";
-import { clear } from "@testing-library/user-event/dist/clear";
+import { normalizeKeyword } from "@/utils/normalizeKeyword";
 
 
 const SearchBar = ({initialKeyword = '', onDebounceSearch, placeholder = ''}) => {
@@ -11,9 +10,13 @@ const SearchBar = ({initialKeyword = '', onDebounceSearch, placeholder = ''}) =>
     const timeRef = useRef(null);
 
     useEffect(() => {
+        console.log('value: ', normalizeKeyword(searchValue));
+    }, [searchValue]);
+
+    useEffect(() => {
         clearTimeout(timeRef.current); // 이전 타이머 정리
 
-        const trimmed= searchValue.trim();
+        const trimmed= normalizeKeyword(searchValue);
         if (trimmed) {
             timeRef.current = setTimeout(() => {
                 onDebounceSearch(trimmed);
@@ -34,7 +37,7 @@ const SearchBar = ({initialKeyword = '', onDebounceSearch, placeholder = ''}) =>
     const handleKeyPress = (e) => {
         if (e.key === 'Enter' && searchValue.trim()) {
             clearTimeout(timeRef.current); // 타이머 정리
-            onDebounceSearch(searchValue.trim()); // 즉시 검색 호출
+            onDebounceSearch(normalizeKeyword(searchValue)); // 즉시 검색 호출
         }   
     }
 

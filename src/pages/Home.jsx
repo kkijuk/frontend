@@ -243,7 +243,7 @@ export default function Home() {
 		setShowAddQuickCareerDetailModal(false);
 	};
 
-  const fetchRecentCareerDetails = async () => {
+  	const fetchRecentCareerDetails = async () => {
 		try {
 			const data = await getRecentCareerDetails();
 			setRecentCareerDetails(data);
