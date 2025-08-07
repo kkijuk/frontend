@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import SearchBar from '@/components/shared/SearchBar';
 import SvgIcon from '@/components/shared/SvgIcon';
 import { getActivitySearch } from '@/api/MycareerSearch/getActivitySearch';
+import { getActivitySearchForAQCModal } from '@/api/MycareerSearch/getActivitySearchForAQCModal';
 import { Color } from '@/constants/color';
+import { set } from 'lodash';
 
 const SearchAndSelect = ({onChange}) => {
     const [selectedItem, setSelectedItem] = useState({});
     const [filteredItems, setFilteredItems] = useState([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const hasFirstOpenedRef = useRef(false); // 드롭다운 첫 오픈 여부를 추적하는 ref
 
     const handleSelect = (item) => {
-        console.log('선택된 아이템:', item);
+        // console.log('선택된 아이템:', item);
         setSelectedItem(item);
         onChange(item); // 선택된 아이템을 부모 컴포넌트로 전달
         setFilteredItems([]); // 선택 후 검색 결과 초기화
@@ -30,9 +33,30 @@ const SearchAndSelect = ({onChange}) => {
     };
 
     const toggleDropdown = () => {
-        console.log('드롭다운 토글');
+        // console.log('드롭다운 토글');
         setIsDropdownOpen(!isDropdownOpen);
     }
+
+    useEffect(() => {
+        if(isDropdownOpen && !hasFirstOpenedRef.current) {
+            console.log('드롭다운이 처음 열렸습니다.');
+            hasFirstOpenedRef.current = true;
+
+            (async () => {
+                try {
+                    const response = await getActivitySearchForAQCModal();
+                    console.log('최초 활동 검색 결과:', response.data);
+                    setFilteredItems(response.data.map(({title, alias, ...rest}) => ({
+                        ...rest,
+                        careerTitle: title,
+                        careerAlias: alias,
+                    })));
+                } catch (error) {
+                    console.error('최초 검색 중 오류 발생:', error);
+                }
+            })();
+        }
+    }, [isDropdownOpen]);
 
     const colorByCategory = (category) => {
         switch (category) {
@@ -79,16 +103,23 @@ const SearchAndSelect = ({onChange}) => {
                         placeholder='활동 선택'
                     />
                     <ItemList>
-                        {filteredItems.map((item, index) => (
-                            <Item
-                                key={index}
-                                onClick={() => {handleSelect(item); toggleDropdown();}}
-                            >
-                                <SvgIcon name="career-ellipse" color={colorByCategory(item.category.categoryEnName)} size={14} />
-                                {item.careerTitle}
-                                <span>{item.careerAlias? `/ ${item.careerAlias}` : ''}</span>
-                            </Item>
-                        ))}
+                        {filteredItems.length > 0 ? (
+                            filteredItems.map((item, index) => (
+                                <Item
+                                    key={index}
+                                    onClick={() => {handleSelect(item); toggleDropdown();}}
+                                >
+                                    <SvgIcon name="career-ellipse" color={colorByCategory(item.category.categoryEnName)} size={14} />
+                                    {item.careerTitle}
+                                    <span>{item.careerAlias? `/ ${item.careerAlias}` : ''}</span>
+                                </Item>
+                            ))
+                        ) : (
+                            <NotFoundDiv>
+                                활동을 찾을 수 없습니다.
+                            </NotFoundDiv>
+                        )}
+
                     </ItemList>
                 </ResultDropDown>
             )}
@@ -161,23 +192,39 @@ const ItemList = styled.div`
 const Item = styled.div`
     box-sizing: border-box;
     width: 100%;
-    padding: ${props => props.isSearchedList ? '8px 12px' : '0px'};
+    height: auto;
+    padding: 12px 8px;
 
     display: flex;
     flex-direction: row;
     gap: 8px;
 
-    background-color: ${props => props.isSearchedList ? Color.white : 'none'};
     font-family: 'SemiBold';
     font-size: 12px;
 
+    border-radius: 10px;
     cursor: pointer;
 
     &:hover {
-        background-color: ${props => props.isSearchedList ? Color.gray06 : 'none'};
+        background-color: ${Color.gray06};
     }
 
     & > span {
         font-family: 'Regular';
     }
+`;
+
+const NotFoundDiv = styled.div`
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 24px 36px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: 'Regular';
+    font-size: 14px;
+    color: ${Color.gray02};
 `;
