@@ -127,7 +127,7 @@ const BottomText = styled.div`
 
 const CareerDeatailWrapper = styled.div`
 	box-sizing: border-box;
-	width: auto;
+	width: 100%;
 	height: auto;
 	padding: 24px 30px;
 
@@ -141,6 +141,7 @@ const CareerDeatailWrapper = styled.div`
 
 const CareerDetailContentBox = styled.div`
 	box-sizing: border-box;
+	width: 100%;
 	height: 212px;
 
 	border-radius: 10px;
@@ -191,6 +192,7 @@ const AddButton = styled.button`
 	cursor: pointer;
 	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `;
+
 
 const bannerDummy = [
 	{
