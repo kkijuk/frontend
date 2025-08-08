@@ -120,7 +120,7 @@ const AddQuickCareerDetailModal = ({onSave, onClose}) => {
                     </FormItem>
 
                     <FormsWrapper>
-                        <FormItem style={{ width: '380px'}}>
+                        <FormItem>
                             <FormTitle>
                                 제목
                                 <SvgIcon name="ellipse"/>
@@ -135,7 +135,7 @@ const AddQuickCareerDetailModal = ({onSave, onClose}) => {
                             />
                         </FormItem>
 
-                        <FormItem style={{ width: '171px'}}>
+                        <FormItem>
                             <FormTitle>날짜</FormTitle>
                             <DateBox 
                                 style ={{ width: '100%' }}
@@ -195,8 +195,8 @@ const ModalBackground = styled.div`
 	z-index: 999;
 
 	@media (max-width: ${theme.breakpoints.md}) {
-		width: 100vw;
-		height: 100vh;
+		background-color: none;
+        
 	}
 `;
 
@@ -222,10 +222,8 @@ const ModalContainer = styled.div`
     gap: 40px; // 여백 추가 조정 필요(하단은 32px)
 
 	@media (max-width: ${theme.breakpoints.md}) {
-		${ModalBackground} {
-			background-color: transparent; // 배경 비활성화
-		}
-        padding: 90px;
+        top: calc(50% + 70px);
+        padding: 20px 24px;
 		width: 100vw;
 		height: 100vh;
 		border-radius: 0;
@@ -261,10 +259,14 @@ const ModalBody = styled.div`
 `;
 
 const FormsWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 38fr 17fr;
     gap: 24px;
     width: 100%;
+
+    @media (max-width: ${theme.breakpoints.md}) {
+        grid-template-columns: 1fr;
+    }
 `;
 
 const FormItem = styled.div`
@@ -273,6 +275,10 @@ const FormItem = styled.div`
     display: flex;
     flex-direction: column;
     gap: 4px;
+
+    @media (max-width: ${theme.breakpoints.md}) {
+        width: auto;
+    }
 `;
 
 const FormTitle = styled.div`
@@ -358,6 +364,10 @@ const CloseButton = styled(ButtonBase)`
     color: ${Color.gray02};
     background-color: ${Color.white};
     border: 1.5px solid ${Color.gray04};
+
+    @media (max-width: ${theme.breakpoints.md}) {
+        display: none;
+    }
 `;
 
 const SubmitButton = styled(ButtonBase)`
@@ -365,6 +375,10 @@ const SubmitButton = styled(ButtonBase)`
     color: ${Color.white};
     background-color: ${Color.main01};
     border: none;
+
+    @media (max-width: ${theme.breakpoints.md}) {
+        width: 100%;
+    }
 `;
 
 const ErrorMessage = styled.div`
