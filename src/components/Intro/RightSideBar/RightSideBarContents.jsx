@@ -7,6 +7,7 @@ import { getActivityDetailSearch } from "@/api/MycareerSearch/getActivityDetailS
 import SearchBar from "../../shared/SearchBar";
 import ResultItem from "./ResultItem";
 import CareerTagSearch from "@/components/chip/CareerTagSearch";
+import { se } from "date-fns/locale";
 
 
 const RightSideBarContents = ({ onClick }) => {
@@ -16,8 +17,8 @@ const RightSideBarContents = ({ onClick }) => {
     const [careerTag, setCareerTag] = useState(['이거', '저거']); // 최근 추가한 태그
     const [currentTag, setCurrentTag] = useState(''); // 현재 선택된 태그
 
-    const items = resultByType[currentMenu];
-    const keyword = keywordByType[currentMenu];
+    const items = resultByType[currentMenu]; // 검색결과 표시값
+    const searchInput = keywordByType[currentMenu]; //검색창 표시값
 
     useEffect(()=>{
         console.log('저장 결과: ', resultByType);
@@ -51,6 +52,8 @@ const RightSideBarContents = ({ onClick }) => {
 
                 if(useTag) {
                     console.log('활동 기록 태그 검색:', tag);
+                    setCurrentTag(tag);
+                    setKeywordByType(prev => ({...prev, activity: tag}));
                     // const results = await getActivityByTag(tag, 'recent');
                     // const flat = normalizeActivity(results?.data?.data ?? []);
                     // setResultByType(prev => ({ ...prev, activity: flat }));
@@ -60,25 +63,39 @@ const RightSideBarContents = ({ onClick }) => {
                 
                 if (useKeyword) {
                     console.log('활동기록 키워드 검색:', keyword);
+                    setCurrentTag(''); // 태그 초기화
+                    setKeywordByType(prev => ({...prev, activity: keyword}));
+
                     const results = await getActivityDetailSearch(keyword, 'recent');
                     console.log('키워드 검색 결과:', results.data);
                     const flat = normalizeActivity(Array.isArray(results.data.data) ? results.data.data : []);
+
                     setResultByType(prev => ({...prev, activity: flat}));
                     setKeywordByType(prev => ({...prev, activity: keyword}));
                     return;
                 }
+
+                // 아무 것도 없을 때
+                setCurrentTag('');
+                setKeywordByType(prev => ({...prev, activity: ''}));
+                setResultByType(prev => ({...prev, activity: []}));
+                return;
             }
             else if (currentMenu === 'intro') {
                 // 자기소개서 검색 로직
                 console.log('자기소개서 검색:', keyword);
+                setKeywordByType(prev => ({...prev, intro: keyword}));
                 const results = await getIntroSearch(keyword);
                 if (results?.data) {
                     console.log('검색 결과:', results.data);
                     // setSearchedResults(results.data.map(item => item.content)); // content만 추출하여 상태 업데이트
                     setResultByType(prev => ({...prev, intro: results.data}));
-                    setKeywordByType(prev => ({...prev, intro: keyword}));
                     return;
-                };
+                }
+                else {
+                    setResultByType(prev => ({...prev, intro: []}));
+                    return;
+                }
             }
         } catch (error) {
             console.error('Error during search:', error);
@@ -107,18 +124,22 @@ const RightSideBarContents = ({ onClick }) => {
                     <SearchBar
                         placeholder="검색어를 입력하세요."
                         onDebounceSearch={(kw) => handleSearch({keyword : kw})}
+                        value = {searchInput}
+                        onChangeValue={(v) => {
+                            setKeywordByType(prev => ({...prev, [currentMenu]: v}));
+                            if(currentMenu === 'activity' && currentTag) setCurrentTag(''); // 타이핑하면 태그 선택 해제
+
+                        }}
                     />
                     {currentMenu === 'activity' && (
                         <TagContainer>
                             {careerTag.map(tag => (
                                 <CareerTagSearch
+                                    key = {tag}
                                     tag = {tag}
                                     surface = 'white'
                                     isSelected = {currentTag === tag}
-                                    onClick = {() => {
-                                        setCurrentTag(tag);
-                                        handleSearch({tag});
-                                    }}
+                                    onClick = {() => {handleSearch({tag})}}
                                 />
                             ))}
                         </TagContainer>
@@ -132,7 +153,7 @@ const RightSideBarContents = ({ onClick }) => {
                         items.map((item) => (
                             <ResultItem 
                                 currentMenu={currentMenu}
-                                keyword={keyword}
+                                keyword={searchInput}
                                 data={item}
                                 onClick={() => {onClick(item.content)}}
                             />
