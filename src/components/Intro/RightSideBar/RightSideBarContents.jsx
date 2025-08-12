@@ -3,17 +3,44 @@ import styled from "styled-components";
 import { theme } from "@/constants/theme";
 import { Color } from "@/constants/color";
 import getIntroSearch from "@/api/Intro/introSearch";
+import { getActivityDetailSearch } from "@/api/MycareerSearch/getActivityDetailSearch";
 import SearchBar from "../../shared/SearchBar";
 import ResultItem from "./ResultItem";
-import { set } from "lodash";
+import { result, set } from "lodash";
+import { de } from "date-fns/locale";
+
+const dummyTagData = ['이거', '저거'];
 
 const RightSideBarContents = ({ onClick }) => {
     const [currentMenu, setCurrentMenu] = useState('intro');
-    const [searchedResults, setSearchedResults] = useState([]);
+    const [resultByType, setResultByType] = useState({activity: [], intro: []});
+    const [keywordByType, setKeywordByType] = useState({activity: '', intro: ''});
+    const [careerTag, setCareerTag] = useState(dummyTagData);
 
-    useEffect(() => { // 검색어 초기화
-        setSearchedResults([]);
-    }, [currentMenu]);
+    const items = resultByType[currentMenu];
+    const keyword = keywordByType[currentMenu];
+
+    useEffect(()=>{
+        console.log('저장 결과: ', resultByType);
+    },[resultByType]);
+
+    const normalizeActivity = (activityArr = []) => {
+        return activityArr.flatMap(act => 
+        (act.detailList || []).map(detail => ({
+            // 활동 기록 정보
+            detailId: detail.detailId,
+            title: detail.title,
+            content: detail.content,
+            startDate: detail.startDate,
+            endDate: detail.endDate,
+            detailTag: detail.detailTag, //Array
+            // 활동 정보
+            careerId: act.careerId,
+            careerTitle: act.careerTitle,
+            careerAlias: act.careerAlias,
+            category: act.category.categoryId
+        })))
+    };
 
     // 현재 메뉴에 따라 검색 api 호출
     const handleSearch = async (keyword) => {
@@ -21,7 +48,14 @@ const RightSideBarContents = ({ onClick }) => {
             if (currentMenu === 'activity') {
                 // 활동기록 검색 로직
                 console.log('활동기록 검색:', keyword);
-                // 여기에 활동기록 검색 API 호출 로직 추가
+                const results = await getActivityDetailSearch(keyword, 'recent');
+                
+                if (results?.data) {
+                    console.log('검색 결과:', results.data);
+                    const flat = normalizeActivity(Array.isArray(results.data.data) ? results.data.data : []);
+                    setResultByType(prev => ({...prev, activity: flat}));
+                    setKeywordByType(prev => ({...prev, activity: keyword}));
+                }
             }
             else if (currentMenu === 'intro') {
                 // 자기소개서 검색 로직
@@ -30,7 +64,8 @@ const RightSideBarContents = ({ onClick }) => {
                 if (results?.data) {
                     console.log('검색 결과:', results.data);
                     // setSearchedResults(results.data.map(item => item.content)); // content만 추출하여 상태 업데이트
-                    setSearchedResults(results.data);
+                    setResultByType(prev => ({...prev, intro: results.data}));
+                    setKeywordByType(prev => ({...prev, intro: keyword}));
                 };
             }
         } catch (error) {
@@ -53,15 +88,16 @@ const RightSideBarContents = ({ onClick }) => {
             </Header>
             <Body>
                 <SearchedHeaderInfo>
-                    <p>총 {searchedResults.length}건</p>
+                    <p>총 {items.length}건</p>
                 </SearchedHeaderInfo>
                 <ResultListBox>
-                    {searchedResults.length > 0 ? (
-                        searchedResults.map((result, index) => (
+                    {items.length > 0 ? (
+                        items.map((item) => (
                             <ResultItem 
-                                key={index}
-                                data={result}
-                                onClick={() => {onClick(result.content)}}
+                                currentMenu={currentMenu}
+                                keyword={keyword}
+                                data={item}
+                                onClick={() => {onClick(item.content)}}
                             />
                         ))
                     ) : (
@@ -85,7 +121,7 @@ export default RightSideBarContents;
 
 const RightSideBarContainer = styled.div`
     box-sizing: border-box;
-    padding: 0px 20px;
+    padding: 0px 15px;
 `
 
 const Header = styled.div`
@@ -96,7 +132,7 @@ const Header = styled.div`
 
 const HeaderTitle = styled.p`
     font-size: 20px;
-    font-weight: 700;
+    font-family: 'Bold';
     color: ${Color.black};
     text-align: center;
 `;
@@ -110,6 +146,7 @@ const HeaderMenu = styled.div`
 
 const MenuItem = styled.div`
     width: 100%;
+    padding-bottom: 4px;
     cursor: pointer;
     color: ${props => props.curMenu ? Color.black : Color.gray02};
     font-weight: ${props => props.curMenu ? '700' : '400'};
@@ -120,7 +157,6 @@ const MenuItem = styled.div`
 const Body = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 12px;
     scroll: auto;
 `;
 

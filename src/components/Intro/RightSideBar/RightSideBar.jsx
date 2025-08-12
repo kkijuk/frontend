@@ -39,9 +39,9 @@ const SidebarContainer = styled.div`
     position: fixed;
     top: 70px; // 내비게이터 높이 제외
     right: ${props => (props.isOpen ? "0" : "-100%")}; // 디자인 나오면 너비에 맞춰 조정하기
-    width: 500px; // 너비 조정
+    width: 382px; // 너비 조정
     height: calc(100vh - 70px); // 내비게이터 높이 제외
-    background: ${Color.gray04};
+    background: ${Color.white};
     transition: right 0.3s ease-in-out;
     z-index: 1000;
 `;
