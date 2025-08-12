@@ -4,7 +4,7 @@ import { theme } from "@/constants/theme";
 import { Color } from "@/constants/color";
 import { normalizeKeyword } from "@/utils/normalizeKeyword";
 
-
+// onDebounceSearch : 검색 api를 여기에 연결하면 됩니다. debounce로 0.5초마다 해당 api 호출하는 로직
 const SearchBar = ({initialKeyword = '', onDebounceSearch, placeholder = ''}) => {
     const [searchValue, setSearchValue] = useState(initialKeyword);
     const timeRef = useRef(null);

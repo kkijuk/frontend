@@ -6,16 +6,15 @@ import getIntroSearch from "@/api/Intro/introSearch";
 import { getActivityDetailSearch } from "@/api/MycareerSearch/getActivityDetailSearch";
 import SearchBar from "../../shared/SearchBar";
 import ResultItem from "./ResultItem";
-import { result, set } from "lodash";
-import { de } from "date-fns/locale";
+import CareerTagSearch from "@/components/chip/CareerTagSearch";
 
-const dummyTagData = ['이거', '저거'];
 
 const RightSideBarContents = ({ onClick }) => {
-    const [currentMenu, setCurrentMenu] = useState('intro');
-    const [resultByType, setResultByType] = useState({activity: [], intro: []});
-    const [keywordByType, setKeywordByType] = useState({activity: '', intro: ''});
-    const [careerTag, setCareerTag] = useState(dummyTagData);
+    const [currentMenu, setCurrentMenu] = useState('activity'); // 현재 메뉴
+    const [resultByType, setResultByType] = useState({activity: [], intro: []}); // 검색 결과
+    const [keywordByType, setKeywordByType] = useState({activity: '', intro: ''}); // 검색어
+    const [careerTag, setCareerTag] = useState(['이거', '저거']); // 최근 추가한 태그
+    const [currentTag, setCurrentTag] = useState(''); // 현재 선택된 태그
 
     const items = resultByType[currentMenu];
     const keyword = keywordByType[currentMenu];
@@ -24,6 +23,7 @@ const RightSideBarContents = ({ onClick }) => {
         console.log('저장 결과: ', resultByType);
     },[resultByType]);
 
+    // 활동 기록 검색 결과 정규화
     const normalizeActivity = (activityArr = []) => {
         return activityArr.flatMap(act => 
         (act.detailList || []).map(detail => ({
@@ -43,18 +43,29 @@ const RightSideBarContents = ({ onClick }) => {
     };
 
     // 현재 메뉴에 따라 검색 api 호출
-    const handleSearch = async (keyword) => {
+    const handleSearch = async ({keyword='', tag=''}) => {
         try {
             if (currentMenu === 'activity') {
-                // 활동기록 검색 로직
-                console.log('활동기록 검색:', keyword);
-                const results = await getActivityDetailSearch(keyword, 'recent');
+                const useTag = !!tag; // 태그 우선 검색
+                const useKeyword = !!keyword && !useTag; // 키워드 우선 검색
+
+                if(useTag) {
+                    console.log('활동 기록 태그 검색:', tag);
+                    // const results = await getActivityByTag(tag, 'recent');
+                    // const flat = normalizeActivity(results?.data?.data ?? []);
+                    // setResultByType(prev => ({ ...prev, activity: flat }));
+                    setResultByType(prev => ({...prev, activity: []})); // 임시로 초기화
+                    return;
+                }
                 
-                if (results?.data) {
-                    console.log('검색 결과:', results.data);
+                if (useKeyword) {
+                    console.log('활동기록 키워드 검색:', keyword);
+                    const results = await getActivityDetailSearch(keyword, 'recent');
+                    console.log('키워드 검색 결과:', results.data);
                     const flat = normalizeActivity(Array.isArray(results.data.data) ? results.data.data : []);
                     setResultByType(prev => ({...prev, activity: flat}));
                     setKeywordByType(prev => ({...prev, activity: keyword}));
+                    return;
                 }
             }
             else if (currentMenu === 'intro') {
@@ -66,11 +77,20 @@ const RightSideBarContents = ({ onClick }) => {
                     // setSearchedResults(results.data.map(item => item.content)); // content만 추출하여 상태 업데이트
                     setResultByType(prev => ({...prev, intro: results.data}));
                     setKeywordByType(prev => ({...prev, intro: keyword}));
+                    return;
                 };
             }
         } catch (error) {
             console.error('Error during search:', error);
         }
+    };
+
+    // 태그 클릭 시
+    const handleTagClick = (tag) => {
+        console.log('태그 클릭:', tag);
+        setCurrentTag({tag});
+        // 태그에 대한 검색 수행
+        // handleSearch(tag);
     };
 
     return (
@@ -81,12 +101,29 @@ const RightSideBarContents = ({ onClick }) => {
                     <MenuItem curMenu={currentMenu === 'activity'} onClick={()=>{setCurrentMenu('activity')}}>활동기록</MenuItem>
                     <MenuItem curMenu={currentMenu === 'intro'} onClick={()=>{setCurrentMenu('intro')}}>자기소개서</MenuItem>
                 </HeaderMenu>
-                <SearchBar
-                    placeholder="검색어를 입력하세요."
-                    onDebounceSearch={handleSearch}
-                />
             </Header>
             <Body>
+                <SearchContainer>
+                    <SearchBar
+                        placeholder="검색어를 입력하세요."
+                        onDebounceSearch={(kw) => handleSearch({keyword : kw})}
+                    />
+                    {currentMenu === 'activity' && (
+                        <TagContainer>
+                            {careerTag.map(tag => (
+                                <CareerTagSearch
+                                    tag = {tag}
+                                    surface = 'white'
+                                    isSelected = {currentTag === tag}
+                                    onClick = {() => {
+                                        setCurrentTag(tag);
+                                        handleSearch({tag});
+                                    }}
+                                />
+                            ))}
+                        </TagContainer>
+                    )}
+                </SearchContainer>
                 <SearchedHeaderInfo>
                     <p>총 {items.length}건</p>
                 </SearchedHeaderInfo>
@@ -121,13 +158,16 @@ export default RightSideBarContents;
 
 const RightSideBarContainer = styled.div`
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
     padding: 0px 15px;
 `
 
 const Header = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 27px;
 `;
 
 const HeaderTitle = styled.p`
@@ -135,6 +175,7 @@ const HeaderTitle = styled.p`
     font-family: 'Bold';
     color: ${Color.black};
     text-align: center;
+    margin-bottom: 0;
 `;
 
 const HeaderMenu = styled.div`
@@ -157,20 +198,40 @@ const MenuItem = styled.div`
 const Body = styled.div`
     display: flex;
     flex-direction: column;
-    scroll: auto;
+    gap: 20px;
+    overflow-y: auto;
 `;
+
+const SearchContainer = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+`
+
+const TagContainer = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    overflow-x: auto;
+`
 
 const SearchedHeaderInfo = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
     font-size: 16px;
+
+    & p {
+        margin: 0;
+    }
 `;
 
 const ResultListBox = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
 
     /* 스크롤 영역 설정 */
     max-height: 600px;

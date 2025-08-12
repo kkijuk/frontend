@@ -2,20 +2,20 @@ import styled from 'styled-components';
 import { theme } from '@/constants/theme';
 import { Color } from '@/constants/color';
 
-// 공통 속성만, 나머지 속성(hover 등) 상속해서 사용
+// 공통 속성만, 나머지 속성(padding, hover 등) 상속해서 사용
 // props: surface, isSelected
 const TagContainer = styled.div`
     height: 22px;
     display: flex;
     align-items: center;
 
-    background-color: ${({$surface = 'white', isSelected}) => 
+    background-color: ${({$surface = 'white', $selected}) => 
         $surface === 'gray'
         ? Color.white
-        : (isSelected ? Color.white : Color.gray06)};
+        : ($selected ? Color.white : Color.gray06)};
     
     border-radius: 10px;
-    border: ${({isSelected}) => (isSelected ? `1px solid ${Color.main01}` : 'none')};
+    border: ${({$selected}) => ($selected ? `1px solid ${Color.main01}` : 'none')};
 
     font-size: 12px;
     font-family: 'Regular';

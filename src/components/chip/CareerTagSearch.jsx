@@ -18,6 +18,7 @@ const CareerTagSearch = ({tag, surface = 'white', isSelected = false, onClick}) 
 export default CareerTagSearch;
 
 const SearchTagContainer = styled(TagContainer)`
+    padding: 0px 16px;
     &:hover {
         background-color: ${Color.gray05};
     }
