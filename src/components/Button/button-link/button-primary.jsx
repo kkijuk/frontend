@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.button`
+	width: fit-content;
+	
 	display: flex;
 	padding: 4px 20px;
 	justify-content: center;

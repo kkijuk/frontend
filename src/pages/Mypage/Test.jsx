@@ -15,6 +15,9 @@ import ButtonText from '@/components/Button/button-text/text';
 import ButtonLinkPrimary from '@/components/Button/button-link/button-outline';
 import ButtonLinkOutline from '@/components/Button/button-link/button-outline';
 import { Button } from './Confirm.styles';
+import DatePickerMultiCalendar from '@/components/Calendar/DatePickerMultiCalendar';
+import DatePickerSingleCalendar from '@/components/Calendar/DatePickerSingleCalendar';
+
 
 export default function Test() {
 	return (
@@ -40,6 +43,9 @@ export default function Test() {
 
 			<ButtonLinkPrimary text="지원하러 가기" disabled />
 			<ButtonLinkOutline text="공고 보러가기" disabled />
+
+			<DatePickerMultiCalendar/>
+			<DatePickerSingleCalendar />
 		</>
 	);
 }

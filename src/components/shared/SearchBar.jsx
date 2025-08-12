@@ -3,26 +3,28 @@ import styled from "styled-components";
 import { theme } from "@/constants/theme";
 import { Color } from "@/constants/color";
 import { last } from "lodash";
+import { clear } from "@testing-library/user-event/dist/clear";
 
-const DEBOUNCE_DELAY = 500; // 0.5초
-const REPEAT_WINDOW = 3000; // 3초
-const REPEAT_INTERVAL = 500; // 0.5초
 
 const SearchBar = ({initialKeyword = '', onDebounceSearch, placeholder = ''}) => {
     const [searchValue, setSearchValue] = useState(initialKeyword);
+    const timeRef = useRef(null);
 
     useEffect(() => {
-        const handler = setTimeout(() => {
-            if(searchValue.trim()) {
-                onDebounceSearch(searchValue.trim());
-            }
-        }, 500); // 500ms(0.5초) 후에 검색어를 전달
+        clearTimeout(timeRef.current); // 이전 타이머 정리
+
+        const trimmed= searchValue.trim();
+        if (trimmed) {
+            timeRef.current = setTimeout(() => {
+                onDebounceSearch(trimmed);
+            }, 500); // 500ms 후에 검색 함수 호출
+        }
 
         // 이전 타이머를 정리해서 입력 중엔 호출되지 않도록 함 
         return () => {
-            clearTimeout(handler);
+            clearTimeout(timeRef.current);
         }
-    }, [searchValue, onDebounceSearch]);
+    }, [searchValue]);
 
     const handleChange = (e) => {
         setSearchValue(e.target.value);
@@ -30,10 +32,9 @@ const SearchBar = ({initialKeyword = '', onDebounceSearch, placeholder = ''}) =>
 
     // 엔터키로 즉시 검색
     const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            if (searchValue.trim()) {
-                onDebounceSearch(searchValue.trim());
-            }
+        if (e.key === 'Enter' && searchValue.trim()) {
+            clearTimeout(timeRef.current); // 타이머 정리
+            onDebounceSearch(searchValue.trim()); // 즉시 검색 호출
         }   
     }
 
@@ -51,7 +52,7 @@ const SearchBar = ({initialKeyword = '', onDebounceSearch, placeholder = ''}) =>
                 placeholder={placeholder || "검색어를 입력하세요..."}
                 value={searchValue}
                 onChange={handleChange}
-                onKeyDown={(e) => e.key === 'Enter' && searchValue.trim() && handleKeyPress()}
+                onKeyDown={handleKeyPress}
             />
         </SearchBarContainer>
     );
