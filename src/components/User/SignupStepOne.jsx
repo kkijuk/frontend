@@ -6,6 +6,7 @@ import AgreementModal2 from './AgreementModal2';
 import AgreementModal3 from './AgreementModal3';
 import { trackEvent } from '../../utils/ga4';
 import { theme } from '../../constants/theme';
+import { Color } from '../../constants/color';
 
 const StyledButton = styled.button`
   width: 400px;
@@ -14,8 +15,8 @@ const StyledButton = styled.button`
   margin: 10px auto;
   border: none;
   border-radius: 10px;
-  background-color: ${({ disabled }) => (disabled ? '#D9D9D9' : '#3aaf85')};
-  color: white;
+ background-color: ${({ disabled }) => (disabled ? Color.gray04 : Color.main01)};
+  color: ${Color.white};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   font-family: Regular;
   font-size: 17px;
@@ -25,7 +26,7 @@ const StyledButton = styled.button`
   margin-top: 40px;
   
   &:hover {
-    background: ${({ disabled }) => (disabled ? '#D9D9D9' : '#2a9f72')};
+    background: ${({ disabled }) => (disabled ? Color.gray04 : Color.main_hover)};
   }
     @media (max-width: ${theme.breakpoints.md}) {
     width: 342px; /* 태블릿 이하에서는 342px 고정 */
@@ -40,7 +41,7 @@ const FormContainer = styled.div`
   max-width: 400px;
   margin: 50px auto;
   padding: 20px;
-  background: white;
+   background: ${Color.white};
   border-radius: 10px;
   text-align: center;
 
@@ -56,8 +57,8 @@ const FormContainer = styled.div`
   .agreement input[type='checkbox'] {
     appearance: none;
     -webkit-appearance: none;
-    background-color: #e0e0e0;
-    border: 1px solid #e0e0e0;
+     background-color: ${Color.gray05};
+    border: 1px solid ${Color.gray05};
     padding: 9px;
     border-radius: 50%;
     display: inline-block;
@@ -79,15 +80,15 @@ const FormContainer = styled.div`
   }
 
   .agreement input[type='checkbox']:checked {
-    background-color: #000;
-    border: 1px solid #000;
+   background-color: ${Color.black};
+    border: 1px solid ${Color.black};
   }
 
   .agreement label {
     flex-grow: 1;
     text-align: left;
     white-space: nowrap;
-    color: black;
+     color: ${Color.black};
   }
 
   .agreement .arrow {
@@ -101,7 +102,7 @@ const Divider = styled.div`
   width: 395px;
   height: 0px;
   flex-shrink: 0;
-  border-bottom: 1px solid var(--gray-03, #D9D9D9);
+    border-bottom: 1px solid ${Color.gray04};
   margin: 5px auto;
   margin-top: -7px;
   margin-bottom: 20px;
@@ -112,7 +113,7 @@ const Divider = styled.div`
 `;
 
 const Title = styled.h2`
-  color: #333;
+    color: ${Color.gray01};
 text-align: center;
 font-family: normal;
 font-size: 16px;
@@ -136,14 +137,14 @@ const AllAgreementContainer = styled.div`
   align-items: center;
   padding: 0 10px;
   stroke-width: 1px;
-  stroke: var(--gray-03, #D9D9D9);
+   stroke: ${Color.gray04};
    margin: 10px auto;
 
   input[type='checkbox'] {
     appearance: none;
     -webkit-appearance: none;
-    background-color: #e0e0e0;
-    border: 1px solid #e0e0e0;
+   background-color: ${Color.gray05};
+    border: 1px solid ${Color.gray05};
     padding: 9px;
     border-radius: 50%;
     display: inline-block;
@@ -166,15 +167,15 @@ const AllAgreementContainer = styled.div`
   }
 
   input[type='checkbox']:checked {
-    background-color: #000;
-    border: 1px solid #000;
+    background-color: ${Color.black};
+    border: 1px solid ${Color.black};
   }
 
   label {
     flex-grow: 1;
     text-align: left;
     white-space: nowrap;
-    color: black;
+     color: ${Color.black};
     font-size: 14px;
   }
     

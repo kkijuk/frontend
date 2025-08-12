@@ -6,6 +6,7 @@ import linkIcon from '../../assets/link.svg';
 import { ReviewAdd } from '../../api/Apply/ReviewAdd'; 
 import { useNavigate } from 'react-router-dom';
 import { formateDateDashToDot } from '../../utils/formateDate';
+import { Color } from '../../constants/color';
 
 const Box = styled.div`
 	display: flex;
@@ -29,7 +30,7 @@ const TitleWrapper = styled.div`
 `;
 
 const Title = styled.div`
-	color: var(--black, #000);
+	color: ${Color.black};
 	font-family: Pretendard;
 	font-size: 18px;
 	font-style: normal;
@@ -38,7 +39,7 @@ const Title = styled.div`
 `;
 
 const Contents = styled.div`
-	color: var(--black, #000);
+	color: ${Color.black};
 	font-family: Pretendard;
 	font-size: 16px;
 	font-style: normal;
@@ -50,7 +51,7 @@ const Contents = styled.div`
 `;
 
 const NoContentText = styled.p`
-	color: var(--gray-02, #707070);
+	color: ${Color.gray02};
 	font-family: Pretendard;
 	font-size: 14px;
 	font-style: normal;
@@ -59,7 +60,7 @@ const NoContentText = styled.p`
 `;
 
 const Date = styled.div`
-	color: var(--gray-02, #707070);
+	color: ${Color.gray02};
 	text-align: right;
 	font-family: Pretendard;
 	font-size: 14px;
@@ -78,7 +79,7 @@ const TitleDateContainer = styled.div`
 const Line = styled.div`
 	width: 800px;
 	height: 2px;
-	background: var(--gray-03, #d9d9d9);
+	background: ${Color.gray03};
 
 	@media (max-width: ${({ theme }) => theme.breakpoints.md}) {
 	width: 350px;
@@ -98,17 +99,17 @@ const LinkButton = styled.button`
 	gap: 7px; /* 아이콘과 텍스트 간격 */
 	justify-content: center;
 	border-radius: 10px;
-	border: 1px solid var(--black, #000);
+	border: 1px solid ${Color.black};
 	width: 110px;
 	height: 28px;
 	flex-shrink: 0;
-	background: white;
+	background: ${Color.white};
 	cursor: pointer;
 	font-size: 14px;
 	font-family: Pretendard;
 	
 	&:hover {
-		background: #f5f5f5;
+		background: ${Color.gray06};
 	}
 `;
 

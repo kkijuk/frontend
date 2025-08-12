@@ -1,0 +1,261 @@
+.rdp-root {
+  --rdp-selected-border: none;
+ 
+  --rdp-accent-color: transparent;
+}
+
+.rdp-month {
+    display: flex;
+    height: 239px;
+    padding: 15px 28px;
+    flex-direction: column;
+    align-items: center;
+    gap: 19px;
+    align-self: stretch;
+    border-radius: 10px;
+    border: 1px solid var(--gray-03, #BDBDBD);
+    background: var(--white, #FFF);
+}
+
+
+.rdp-caption_label{
+
+    color: #000;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+}
+
+.rdp-chevron{
+    width: 20px;
+    height: 20px;
+    fill: black;
+}
+
+.rdp-button_previous,
+.rdp-button_next {
+    padding: 0;
+    width: 180px;
+    height: 48px !important;
+}
+
+.rdp-weekdays{
+    height: 20px;
+}
+
+.rdp-weekday{
+    height: 20px;
+    padding: 0;    
+    vertical-align: middle;
+}
+
+/*일요일-첫 번째*/
+.rdp-weekdays th:nth-child(1) {
+  color: #FA7C79;
+}
+
+/*토요일-일곱 번째*/
+.rdp-weekdays th:nth-child(7) {
+  color: #77AFF2;
+}
+
+
+.rdp-week {
+    height: 24px;
+}
+
+.rdp-day {
+    height: 24px;
+    width: 32px;
+
+}
+
+.rdp-day_button {
+    height: 24px;
+    width: 32px;
+    color: var(--gray-01, #333);
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+}
+
+/*hover시*/
+.rdp-day_button:hover {
+    display: flex;
+    width: 32px;
+    height: 24px;
+    padding: 2px 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: var(--gray-05, #E1E1E1);
+    color: var(--gray-01, #333);
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+}
+
+/*오늘 날짜*/
+.rdp-today > button {
+  color: var(--gray-01, #333);
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%;
+}
+
+/*오늘 날짜 + 선택됨*/
+.rdp-today.rdp-selected > button {
+    display: flex;
+    width: 32px;
+    height: 24px;
+    padding: 2px 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: var(--main-01, #3AAF85);
+    color: var(--white, #FFF);
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%; /* 19.6px */
+}
+
+/*오늘 날짜 + hover됨*/
+.rdp-today > button:hover{
+    display: flex;
+    width: 32px;
+    height: 24px;
+    padding: 2px 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: var(--gray-05, #E1E1E1);
+    color: var(--gray-01, #333);
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%; /* 19.6px */
+}
+
+/*특정 날짜 선택*/
+.rdp-selected > button{
+    display: flex;
+    width: 32px;
+    height: 24px;
+    padding: 2px 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: var(--main-01, #3AAF85);
+    color: var(--white, #FFF);
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+}
+
+.rdp-day.rdp-outside {
+    color: var(--gray-04, #D0D0D0);
+ 
+}
+
+.rdp-selected.rdp-range_start > button{
+    display: flex;
+    width: 32px;
+    height: 24px;
+    padding: 2px 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: var(--main-01, #3AAF85);
+    color: var(--white, #FFF);
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+}
+
+.rdp-selected.rdp-range_end > button{
+    display: flex;
+    width: 32px;
+    height: 24px;
+    padding: 2px 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: var(--main-01, #3AAF85);
+    color: var(--white, #FFF);
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+}
+
+.rdp-selected.rdp-range_middle > button{
+    display: flex;
+    width: 32px;
+    height: 20px;
+    padding: 2px 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    background: var(--main-03, #E1FAED);
+    color: var(--white, #000);
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+}
+
+/* td 자체에도 배경색을 적용 */
+.rdp-day.rdp-selected.rdp-range_middle {
+  background: var(--main-03, #fff);
+}
+
+
+
+
+/*날짜들 사이에 여백 제거 -> range middle 부분  background 띄엄띄엄보이지 않게..*/
+.rdp-day {
+  padding: 0 !important;
+  margin: 0 !important;
+  border-spacing: 0 !important;
+}
+

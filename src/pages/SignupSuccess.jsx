@@ -7,12 +7,13 @@ import signupLogo from '../assets/signuplogo.svg';
 import { trackEvent } from '../utils/ga4';
 import useAuthStore from '../stores/useAuthStore';
 import { theme } from '../constants/theme';
+import { Color } from '../constants/color';
 
 const SignupSuccessScreen = styled.div`
 	max-width: flex;
 	margin: 50px auto;
 	padding: 20px;
-	background: white;
+	 background: ${Color.white};
 	border-radius: 10px;
 	text-align: center;
 	margin-bottom: 90px;
@@ -21,7 +22,7 @@ const SignupSuccessScreen = styled.div`
 
 	p {
 		margin-bottom: 10px;
-		color: var(--main-01, #3aaf85);
+		color: ${Color.main01};
 		text-align: center;
 		font-family: Regular;
 		font-size: 27px;
@@ -42,8 +43,8 @@ const SignupSuccessScreen = styled.div`
 		margin: 10px 0;
 		border: none;
 		border-radius: 10px;
-		background-color: #3aaf85;
-		color: white;
+		 background-color: ${Color.main01};
+    color: ${Color.white};
 		font-family: 'Light';
 		font-size: 19px;
 		font-weight: 500;
@@ -58,7 +59,7 @@ const SignupSuccessScreen = styled.div`
 	}
 
 	.Interests-text1 {
-		color: #707070;
+		color: ${Color.gray02};
 		text-align: center;
 		font-family: Light;
 		font-size: 19px;
@@ -73,7 +74,7 @@ const SignupSuccessScreen = styled.div`
 
 	.Interests-text2 {
 		margin-top: -5px;
-		color: #707070;
+		color: ${Color.gray02};
 		text-align: center;
 		font-family: Light;
 		font-size: 19px;
@@ -136,8 +137,8 @@ const SignupSuccess = () => {
 		$body.addEventListener('touchmove', preventScroll, { passive: false });
 
 		if (!hasCalled) {
-			createMaster();
-			createResume(address, profileImageUrl);
+			// createMaster();
+			// createResume(address, profileImageUrl);
 			setHasCalled(true); // 호출 후 true로 설정
 		}
 

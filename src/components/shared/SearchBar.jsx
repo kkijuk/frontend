@@ -1,25 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import styled from "styled-components";
 import { theme } from "@/constants/theme";
 import { Color } from "@/constants/color";
+import { normalizeKeyword } from "@/utils/normalizeKeyword";
 
-// 엔터키 누를 시 함수 지금처럼 실행해도 괜찮은 지.
 
 const SearchBar = ({initialKeyword = '', onDebounceSearch, placeholder = ''}) => {
     const [searchValue, setSearchValue] = useState(initialKeyword);
+    const timeRef = useRef(null);
 
     useEffect(() => {
-        const handler = setTimeout(() => {
-            if(searchValue.trim()) {
-                onDebounceSearch(searchValue.trim());
-            }
-        }, 500); // 500ms(0.5초) 후에 검색어를 전달
+        console.log('value: ', normalizeKeyword(searchValue));
+    }, [searchValue]);
+
+    useEffect(() => {
+        clearTimeout(timeRef.current); // 이전 타이머 정리
+
+        const trimmed= normalizeKeyword(searchValue);
+        if (trimmed) {
+            timeRef.current = setTimeout(() => {
+                onDebounceSearch(trimmed);
+            }, 500); // 500ms 후에 검색 함수 호출
+        }
 
         // 이전 타이머를 정리해서 입력 중엔 호출되지 않도록 함 
         return () => {
-            clearTimeout(handler);
+            clearTimeout(timeRef.current);
         }
-    }, [searchValue, onDebounceSearch]);
+    }, [searchValue]);
 
     const handleChange = (e) => {
         setSearchValue(e.target.value);
@@ -27,10 +35,9 @@ const SearchBar = ({initialKeyword = '', onDebounceSearch, placeholder = ''}) =>
 
     // 엔터키로 즉시 검색
     const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            if (searchValue.trim()) {
-                onDebounceSearch(searchValue.trim());
-            }
+        if (e.key === 'Enter' && searchValue.trim()) {
+            clearTimeout(timeRef.current); // 타이머 정리
+            onDebounceSearch(normalizeKeyword(searchValue)); // 즉시 검색 호출
         }   
     }
 
@@ -48,7 +55,7 @@ const SearchBar = ({initialKeyword = '', onDebounceSearch, placeholder = ''}) =>
                 placeholder={placeholder || "검색어를 입력하세요..."}
                 value={searchValue}
                 onChange={handleChange}
-                onKeyPress={handleKeyPress}
+                onKeyDown={handleKeyPress}
             />
         </SearchBarContainer>
     );
@@ -65,6 +72,7 @@ const SearchBarContainer = styled.div`
 	border: 1px solid ${Color.gray03};
 	box-sizing: border-box;
 	width: 100%;
+    background: ${Color.white};
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		max-width: 100%;

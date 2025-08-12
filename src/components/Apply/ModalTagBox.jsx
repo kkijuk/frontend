@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { fetchModalTags, addModalTag, deleteModalTag } from '../../api/ApplyTag/Tag.js';
 import TagDeleteModal from './TagDeleteModal';
+import { Color } from '../../constants/color';
 
 const Box = styled.div`
   width: 833px;
@@ -25,7 +26,7 @@ const TagInputContainer = styled.div`
   align-items: center;
   flex-wrap: wrap;
   border-radius: 10px;
-  background: #f5f5f5;
+  background: ${Color.gray06};
   padding: 5px 10px;
   gap: 5px;
   font-family: Light;
@@ -37,13 +38,13 @@ const TagInputContainer = styled.div`
 const TagInput = styled.input`
   flex: 1;
   border: none;
-  background: #f5f5f5;
+  background: ${Color.gray06};
   font-family: Light;
   font-size: 16px;
-  color: #999;
+  color: ${Color.gray01};
   &:focus {
     outline: none;
-    color: #000;
+   color: ${Color.black};
   }
 `;
 
@@ -52,8 +53,8 @@ const TagBoxList = styled.div`
   max-height: 200px;
   overflow-y: auto;
   border-radius: 10px;
-  background: var(--white, #fff);
-  box-shadow: 0px 5px 10px 0px #d9d9d9;
+   background: ${Color.white};
+  box-shadow: 0px 5px 10px 0px ${Color.gray04};
   position: absolute;
   top: 40px;
   left: 0;
@@ -73,7 +74,7 @@ const TagBoxListContainer = styled.div`
 const CloseButton = styled.button`
   background: none;
   border: none;
-  color: #999;
+  color: ${Color.gray02};
   font-size: 12px;
   cursor: pointer;
   padding: 0;
@@ -83,8 +84,8 @@ const CloseButton = styled.button`
 const Tag = styled.div`
   display: flex;
   align-items: center;
-  background: ${({ isWhite }) => (isWhite ? '#fff' : '#F5F5F5')};
-  color: var(--main-01, #3aaf85);
+  background: ${({ isWhite }) => (isWhite ? Color.white : Color.gray06)};
+  color: ${Color.main01};
   border-radius: 10px;
   padding: 4px 8px;
   font-size: 13px;

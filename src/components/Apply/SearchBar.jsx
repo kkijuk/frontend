@@ -3,12 +3,14 @@ import styled from 'styled-components';
 import FilterPage from './FilterPage';
 import { useNavigate } from 'react-router-dom';
 import searchIcon from '../../assets/search.svg';
+import { Color } from '../../constants/color';
 
 const SearchBarContainer = styled.div`
   display: flex;
   align-items: center;
-  background-color: #f5f5f5;
+   background-color: ${Color.gray01};
   padding: 10px 20px;
+  background-color: ${Color.gray06};
   border-radius: 12px;
   margin-left: 5px;
 
@@ -25,7 +27,7 @@ const SearchInput = styled.input`
   outline: none;
   flex-grow: 1;
   font-size: 17px;
-  color: #707070;
+  color: ${Color.gray02};
   font-family: Light;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {

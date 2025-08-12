@@ -12,7 +12,6 @@ import PageExitModal from '@/components/Modal/PageExitModal';
 import { CareertextEdit } from '../../api/Mycareer/CareerEdit';
 import { trackEvent } from '../../utils/ga4';
 import { formatDate } from '../../utils/formateDate';
-import { useBlockNavigation } from '@/hooks/useBlockNavigation';
 import {
 	Container,
 	SearchIcon,
@@ -72,6 +71,13 @@ export default function MycareerDetail() {
 	const [isFixed, setIsFixed] = useState(false);
 
 	const [isEditModalOpen, setIsEditModalOpen] = useState(false); // AddCareerModal용
+
+	const [pendingTx, setPendingTx] = useState(null);
+	const [showExitModal, setShowExitModal] = useState(false);
+
+	//이거 페이지 이동 차단 코드
+
+	//여기까지 페이지 이동 차단 코드
 
 	useEffect(() => {
 		if (details) {

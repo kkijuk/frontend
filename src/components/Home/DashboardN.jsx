@@ -1,6 +1,7 @@
 //ver2
 import React from 'react';
 import styled from 'styled-components';
+import { Color } from '@/constants/color';
 import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
@@ -16,7 +17,7 @@ const Container = styled.div`
 
 const Text = styled.div`
 	align-self: stretch;
-	color: var(--gray-02, #707070);
+	color: ${Color.gray02};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 14px;
@@ -32,11 +33,11 @@ const Button = styled.div`
 	justify-content: center;
 	align-items: center;
 	border-radius: 10px;
-	background: var(--main-01, #3aaf85);
+	background: ${Color.main01};
 	border: none;
 	cursor: pointer;
 
-	color: var(--white, #fff);
+	color: ${Color.white};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 12px;

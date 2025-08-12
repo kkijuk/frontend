@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import signupLogo from '../assets/signuplogo.svg';
 import useAuthStore from '../stores/useAuthStore';
 import { theme } from '../constants/theme';
+import { Color } from '../constants/color';
 
 const Container = styled.div`
   max-width: 500px;
@@ -35,7 +36,7 @@ const TitleContainer = styled.div`
 const Title = styled.h1`
   font-size: 23px;
   font-family: Regular;
-  color: #3a3a3a;
+  color: ${Color.gray01};
   margin-bottom: 20px;
   text-align: center;
   font-weight: 700;
@@ -58,7 +59,7 @@ const StepBar = styled.div`
   width: 163px;
   height: 6px;
   border-radius: 6px;
-  background-color: ${(props) => (props.active ? '#88D1B6' : '#e0e0e0')};
+  background-color: ${(props) => (props.active ? Color.main02 : Color.gray05)};
   margin: 0 5px;
   transition: background-color 0.7s;
   cursor: pointer;

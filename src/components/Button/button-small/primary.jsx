@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Color } from '@/constants/color';
 
 const Container = styled.button`
+	width: fit-content;
+	
 	display: flex;
 	// width: 65px;    // ← 텍스트 + padding 기준으로 유동 크기 원할 경우 주석 유지
 	// height: 25px;

@@ -1,5 +1,6 @@
 // components/ReactCalendar.styles.js
 import styled from 'styled-components';
+import { Color } from '@/constants/color';
 import React from 'react';
 
 export const CalendarWrapper = styled.div`
@@ -8,8 +9,8 @@ export const CalendarWrapper = styled.div`
 		height: 263px;
 		flex-shrink: 0;
 		border-radius: 10px;
-		border: 1px solid var(--gray-03, #d9d9d9);
-		background: var(--white, #fff);
+		border: 1px solid ${Color.gray03};
+		background: ${Color.white};
 		position: absolute;
 		z-index: 10;
 	}
@@ -35,16 +36,16 @@ export const CalendarWrapper = styled.div`
 	}
 
 	.react-calendar__month-view__weekdays__weekday:nth-child(1) {
-		color: var(--sub-rd, #fa7c79);
+		color: ${Color.subRd};
 	}
 
 	.react-calendar__month-view__weekdays__weekday:nth-child(7) {
-		color: var(--sub-bu, #77aff2);
+		color: ${Color.subBu};
 	}
 
 	.react-calendar__tile {
-		background: #fff;
-		color: #000;
+		background: ${Color.white};
+		color: ${Color.black};
 		margin-top: 3px;
 		margin-bottom: 3px;
 		height: 24px;
@@ -65,12 +66,12 @@ export const CalendarWrapper = styled.div`
 		align-items: center;
 		justify-content: center;
 		border-radius: 5px;
-		background: var(--main-01, #3aaf85) !important;
-		color: var(--white, #fff) !important;
+		background: ${Color.main01} !important;
+		color: ${Color.white} !important;
 	}
 
 	.react-calendar--selectRange .react-calendar__tile--hover {
-		background-color: var(--main-03, #e1faed);
+		background-color: ${Color.main03};
 	}
 
 	.react-calendar__tile--active {
@@ -80,8 +81,8 @@ export const CalendarWrapper = styled.div`
 		align-items: center;
 		justify-content: center;
 		border-radius: 5px;
-		background: var(--main-01, #3aaf85) !important;
-		color: var(--white, #fff) !important;
+		background: ${Color.main01} !important;
+		color: ${Color.white} !important;
 	}
 
 	.react-calendar__month-view__days__day--neighboringMonth {

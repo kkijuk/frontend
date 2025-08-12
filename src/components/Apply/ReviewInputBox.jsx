@@ -1,15 +1,16 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
+import { Color } from '../../constants/color';
 
 const Input = styled.input`
     border-radius: 10px;
-    background: #f5f5f5;
+     background: ${Color.gray06};
     height: ${(props) => props.height || '50px'};
     width: ${(props) => props.width || '100%'};
     border: none;
     font-family: Pretendard;
     font-size: 16px;
-    color: var(--black, #000);
+    color: ${Color.black};
     padding: 15px 20px;
     box-sizing: border-box;
     z-index: 1;
@@ -18,12 +19,12 @@ const Input = styled.input`
     overflow: hidden; /* 스크롤 없애기 */
 
     ::placeholder {
-        color: #707070;
+         color: ${Color.gray02};
         opacity: 1;
     }
 
     ${(props) => props.disabled && `
-        background: #e0e0e0; 
+        background: ${Color.gray04};
         color: #b0b0b0;
         cursor: not-allowed;
     `}
@@ -35,13 +36,13 @@ const Input = styled.input`
 
 const Textarea = styled.textarea`
     border-radius: 10px;
-    background: #f5f5f5;
+    background: ${Color.gray06}; 
     height: ${(props) => props.height || '100px'};
     width: ${(props) => props.width || '100%'};
     border: none;
     font-family: Pretendard;
     font-size: 16px;
-    color: var(--black, #000);
+    color: ${Color.black};
     padding: 15px 20px;
     box-sizing: border-box;
     z-index: 1;
@@ -54,12 +55,12 @@ const Textarea = styled.textarea`
     white-space: pre-wrap;
 
     ::placeholder {
-        color: #707070;
+        color: ${Color.gray02};
         opacity: 1;
     }
 
     ${(props) => props.disabled && `
-        background: #e0e0e0; 
+        background: ${Color.gray04}; 
         color: #b0b0b0;
         cursor: not-allowed;
     `}

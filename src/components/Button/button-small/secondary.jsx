@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Color } from '@/constants/color';
 
 const Container = styled.button`
+	width: fit-content;
+	
 	display: flex;
 	//width: 65px;
 	//height: 25px;

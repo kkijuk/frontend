@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Color } from '@/constants/color';
 
 export const Container = styled.div`
 	max-width: 820px;
@@ -20,7 +21,7 @@ export const Container = styled.div`
 export const Text = styled.div`
 	max-width: 500px;
 	width: 100%;
-	color: var(--black, #000);
+	color: ${Color.black};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 16px;
@@ -58,7 +59,7 @@ export const EmailTextBox = styled.div`
 `;
 
 export const EmailText = styled.div`
-	color: var(--main-01, #3aaf85);
+	color: ${Color.main01};
 	font-family: Pretendard;
 	font-size: 18px;
 	font-weight: 500;
@@ -66,7 +67,7 @@ export const EmailText = styled.div`
 `;
 
 export const Email = styled.div`
-	color: var(--gray-02, #707070);
+	color: ${Color.gray02};
 	font-family: Pretendard;
 	font-size: 16px;
 	font-weight: 400;
@@ -76,8 +77,8 @@ export const Tag = styled.div`
 	width: 65px;
 	height: 25px;
 	border-radius: 10px;
-	background: ${(props) => (props.socialType === 'KAKAO' ? 'var(--sub-ye, #fcc400)' : '#03C75A')};
-	color: var(--white, #fff);
+	background: ${(props) => (props.socialType === 'KAKAO' ? Color.subYe : '#03C75A')};
+	color: ${Color.white};
 	text-align: center;
 	font-family: Pretendard;
 	font-size: 14px;
@@ -92,8 +93,8 @@ export const Input = styled.input`
 	border: none;
 	outline: none;
 	border-radius: 10px;
-	background: #f5f5f5;
-	color: #707070;
+	background: ${Color.gray06};
+	color: ${Color.gray02};
 	font-family: Pretendard;
 	font-size: 16px;
 
@@ -104,7 +105,7 @@ export const Input = styled.input`
 `;
 
 export const ErrorMessage = styled.p`
-	color: var(--error, #ff7979);
+	color: ${Color.error};
 	font-family: Pretendard;
 	font-size: 14px;
 	font-weight: 500;
@@ -116,7 +117,7 @@ export const Button = styled.button`
 	width: 100%;
 	height: 50px;
 	border-radius: 10px;
-	background: var(--main-01, #3aaf85);
+	background: ${Color.main01};
 	border: none;
 	outline: none;
 	color: #fff;

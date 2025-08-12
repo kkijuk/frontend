@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Color } from '../../constants/color';
 
 const Background = styled.div`
 	position: fixed;
@@ -17,7 +18,7 @@ const Background = styled.div`
 const Modal = styled.div`
 	width: 300px;
 	height: 230px;
-	background: rgba(255, 255, 255, 1);
+	background: ${Color.white};
 	border-radius: 10px;
 	padding: 20px;
 	display: flex;
@@ -28,7 +29,7 @@ const Modal = styled.div`
 `;
 
 const ModalTitle = styled.div`
-	color: #333;
+	color: ${Color.gray01}
 	text-align: center;
 	font-family: normal;
 	font-size: 16px;
@@ -47,7 +48,9 @@ const CancelButton = styled.button`
 	width: 120px;
 	height: 35px;
 	border-radius: 10px;
-    border: 1px solid var(--gray-04, #E0E0E0);
+    border: 1.5px solid ${Color.gray04};
+	background: ${Color.white};
+	color: ${Color.gray02};
 	cursor: pointer;
 	font-family: Regular;
 	font-size: 15px;
@@ -61,6 +64,9 @@ const ConfirmButton = styled.button`
 	width: 120px;
 	height: 35px;
 	border-radius: 12px;
+	border: 1.5px solid ${Color.red01};
+	background: ${Color.red01};
+	color: ${Color.white};
 	cursor: pointer;
 	font-family: Regular;
 	font-size: 15px;
@@ -81,12 +87,8 @@ const TagDeleteModal = ({ onCancel, onConfirm }) => (
 				그래도 삭제하시겠습니까?
 			</ModalTitle>
 			<ButtonContainer>
-				<CancelButton onClick={onCancel} style={{ border: '1.5px solid #E0E0E0', background: '#FFF', color: '#707070' }}>
-					취소
-				</CancelButton>
-				<ConfirmButton onClick={onConfirm} style={{ border: '1.5px solid #FF7979', background: '#FF7979', color: 'white' }}>
-					삭제
-				</ConfirmButton>
+				<CancelButton onClick={onCancel}>취소</CancelButton>
+				<ConfirmButton onClick={onConfirm}>삭제</ConfirmButton>
 			</ButtonContainer>
 		</Modal>
 	</Background>

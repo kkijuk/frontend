@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import api from '@/Axios';
 
 import { AddDetail } from '@/api/Mycareer/AddDetail';
-
+import getColorByCategory from '@/utils/getColorByCategory';
 import ProfileBox from '../components/Home/Profile';
-
+import { getRecentCareerDetails } from '@/api/Home/getRecentCareerDetails';
 import BannerComponent from '../components/Home/Banner';
 import Noti from '../components/Home/Noti';
 import CLNoti from '../components/Home/CLNoti';
@@ -16,7 +16,7 @@ import CareerTimeline from '../components/Mycareer/CareerTimeline';
 import OnboardingModal from '../components/Modal/OnboardingModal';
 import AddQuickCareerDetailModal from '@/components/Modal/AddQuickCareerDetailModal/AddQuickCareerDetailModal';
 import SvgIcon from '@/components/shared/SvgIcon';
-import { theme } from '../constants/theme';   
+import { theme } from '../constants/theme';
 import { Color } from '@/constants/color';
 
 const Container = styled.div`
@@ -63,7 +63,7 @@ const TopBox1 = styled.div`
 	justify-content: center;
 	align-items: center;
 	border-radius: 10px;
-	border: 1px solid var(--gray-03, #d9d9d9);
+	border: 1px solid ${Color.gray03};
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
@@ -77,7 +77,7 @@ const TopBox2 = styled.div`
 	flex-shrink: 0;
 	border-radius: 10px;
 	/*border: 1px solid var(--gray-03, #d9d9d9); 수정*/
-	background: var(--white, #fff);
+	background: ${Color.white};
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		/*width: 368px;*/ //TopBox1과 맞춰주기
 		width: 100%;
@@ -116,7 +116,7 @@ const Bottom = styled.div`
 `;
 
 const BottomText = styled.div`
-	color: var(--black, #000);
+	color: ${Color.black};
 	font-family: Pretendard;
 	font-size: 20px;
 	font-style: normal;
@@ -127,7 +127,7 @@ const BottomText = styled.div`
 
 const CareerDeatailWrapper = styled.div`
 	box-sizing: border-box;
-	width: auto;
+	width: 100%;
 	height: auto;
 	padding: 24px 30px;
 
@@ -137,24 +137,25 @@ const CareerDeatailWrapper = styled.div`
 
 	border-radius: 10px;
 	background: ${Color.gray06};
-`
+`;
 
 const CareerDetailContentBox = styled.div`
 	box-sizing: border-box;
+	width: 100%;
 	height: 212px;
 
 	border-radius: 10px;
 	background: ${Color.white};
 	box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
 	cursor: pointer;
-`
+`;
 
 const AddCareerDetailBox = styled(CareerDetailContentBox)`
 	padding: 16px 24px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-`
+`;
 
 const CareerDetailBox = styled(CareerDetailContentBox)`
 	padding: 16px 24px 20px 24px;
@@ -162,7 +163,7 @@ const CareerDetailBox = styled(CareerDetailContentBox)`
 	flex-direction: column;
 	justify-content: center;
 	gap: 20px;
-`
+`;
 
 const ActivityBox = styled.div`
 	width: auto; /*820*/
@@ -190,7 +191,7 @@ const AddButton = styled.button`
 	color: white;
 	cursor: pointer;
 	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-`
+`;
 
 
 const bannerDummy = [
@@ -206,63 +207,21 @@ export default function Home() {
 
 	const [showOnboarding, setShowOnboarding] = useState(false); // 온보딩 모달 상태
 	const [showAddQuickCareerDetailModal, setShowAddQuickCareerDetailModal] = useState(false); // 빠른 활동 기록 추가 모달 상태
-	const [dummyCareerDetails, setDummyCareerDetails] = useState([
-  {
-    id: 1,
-    category: '앱 서비스 개발 동아리 / UMC',
-    title: '아이디어톤',
-    date: '2024.05.26 ~ 2024.05.26',
-    content: `기획한 웹/앱 서비스를 발표하고 피드백을 교환함\n투표 결과 우수상 수상`,
-    tags: ['커뮤니케이션 능력', '앱 서비스 기획', '수상'],
-  },
-  {
-    id: 2,
-    category: '앱 서비스 개발 동아리 / UMC',
-    title: '아이디어톤',
-    date: '2024.05.26 ~ 2024.05.26',
-    content: `기획한 웹/앱 서비스를 발표하고 피드백을 교환함\n투표 결과 우수상 수상`,
-    tags: ['커뮤니케이션 능력', '앱 서비스 기획', '수상'],
-  },
-  {id: 3,
-    category: '앱 서비스 개발 동아리 / UMC',
-    title: '아이디어톤',
-    date: '2024.05.26 ~ 2024.05.26',
-    content: `기획한 웹/앱 서비스를 발표하고 피드백을 교환함\n투표 결과 우수상 수상`,
-    tags: ['커뮤니케이션 능력', '앱 서비스 기획', '수상'],
-  },
-]);
-
-
-	const [recentCareerDetails, setRecentCareerDetails] = useState([ // 최근 활동 기록 (이걸로 변경하기)
-		{
-			careerId: 0,
-			careerName: '',
-			alias: '',
-			category: '',
-			detailId: 0,
-			detailTitle: '',
-			detailContent: '',
-			detailStartDate: '',
-			detailEndDate: '',
-			detailTag: [],
-		}
-	]);
+	
+    const [recentCareerDetails, setRecentCareerDetails] = useState([]);
 
 	// [useQuery]] 최근 활동 기록 가져오기
 	// [useQuery] 빠른 활동 기록 추가 후 최근 활동 기록 업데이트
 
-	// 빠른 활동 기록 추가 
+	// 빠른 활동 기록 추가
 	const handleSaveQuickCareerDetail = async (careerId, data) => {
-		console.log('빠른 활동 기록 추가 요청:', careerId, ',', data);
 		try {
-			const response = await AddDetail(
-				careerId,
-				data
-			);
-			console.log('빠른 활동 기록 추가 성공:', response.data);
+			const response = await AddDetail(careerId, data);
+			console.log('활동 기록 추가 성공:', response.data);
 			setShowAddQuickCareerDetailModal(false);
+			fetchRecentCareerDetails(); 
 		} catch (error) {
-			console.error('빠른 활동 기록 추가 실패:', error);
+			console.error('활동 기록 추가 실패:', error);
 		}
 	};
 
@@ -286,119 +245,135 @@ export default function Home() {
 		setShowAddQuickCareerDetailModal(false);
 	};
 
+  	const fetchRecentCareerDetails = async () => {
+		try {
+			const data = await getRecentCareerDetails();
+			setRecentCareerDetails(data);
+			console.log(data)
+		} catch (error) {
+			console.error('최근 활동 기록 가져오기 실패:', error);
+		}
+	};
+
+	useEffect(() => {
+		fetchRecentCareerDetails();
+
+		const lastClosedDate = localStorage.getItem('hideOnboardingModal');
+		const today = new Date().toISOString().split('T')[0];
+		if (lastClosedDate !== today) {
+			setShowOnboarding(true);
+		}
+	}, []); 
+
 	return (
-  <>
-    {showOnboarding && <OnboardingModal onClose={handleCloseOnboarding} />}
-    {showAddQuickCareerDetailModal && (
-      <AddQuickCareerDetailModal
-        onClose={handleCloseAddQuickCareerDetailModal}
-        onSave={(careerId, data) => handleSaveQuickCareerDetail(careerId, data)}
-      />
-    )}
-    <Container>
-      <Top>
-        <TopBox1>
-          <ProfileBox />
-        </TopBox1>
-        <TopBox2>
-          <CareerTimeline />
-        </TopBox2>
-      </Top>
+		<>
+			{showOnboarding && <OnboardingModal onClose={handleCloseOnboarding} />}
+			{showAddQuickCareerDetailModal && (
+				<AddQuickCareerDetailModal
+					onClose={handleCloseAddQuickCareerDetailModal}
+					onSave={(careerId, data) => handleSaveQuickCareerDetail(careerId, data)}
+				/>
+			)}
+			<Container>
+				<Top>
+					<TopBox1>
+						<ProfileBox />
+					</TopBox1>
+					<TopBox2>
+						<CareerTimeline />
+					</TopBox2>
+				</Top>
 
-      <Middle>
-        <BannerComponent banners={bannerDummy} />
-      </Middle>
+				<Middle>
+					<BannerComponent banners={bannerDummy} />
+				</Middle>
 
-      {/* <Bottom>
-        <BottomText>최근 이런 활동을 기록했어요</BottomText>
-        <CareerDeatailWrapper>
-          <AddCareerDetailBox>
-            <AddButton onClick={() => setShowAddQuickCareerDetailModal(true)}>
-              <SvgIcon name="addButton" size={18} color={Color.white} />
-            </AddButton>
-          </AddCareerDetailBox> */}
+				<Bottom>
+					<BottomText>최근 이런 활동을 기록했어요</BottomText>
+					<CareerDeatailWrapper>
+						<AddCareerDetailBox>
+							<AddButton onClick={() => setShowAddQuickCareerDetailModal(true)}>
+								<SvgIcon name="addButton" size={18} color={Color.white} />
+							</AddButton>
+						</AddCareerDetailBox>
 
-          {/* {dummyCareerDetails.map((activity, index) => (
-            <CareerDetailBox key={index}> */}
-              {/* 상단 카테고리 */}
-              {/* <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div
-                    style={{
-                      width: '10px',
-                      height: '10px',
-                      borderRadius: '50%',
-                      backgroundColor: '#FFD600',
-                    }}
-                  />
-                  <span style={{ fontSize: '13px', fontWeight: 600, color: '#444' }}>
-                    {activity.category}
-                  </span>
-                </div>
-              </div> */}
+						{recentCareerDetails.map((activity, index) => (
+							<CareerDetailBox key={index}>
+								{/* 상단 카테고리 */}
+								<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+									<div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+										<div
+											style={{
+												width: '10px',
+												height: '10px',
+												borderRadius: '50%',
+												backgroundColor: getColorByCategory(activity.category?.categoryKoName),
+											}}
+										/>
+										<span style={{ fontSize: '13px', fontWeight: 600, color: '#444' }}>
+											{activity.category?.categoryKoName || '카테고리 없음'}
+										</span>
+									</div>
+								</div>
 
-              {/* 제목 + 날짜 */}
-              {/* <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginTop: '6px',
-                }}
-              >
-                <div style={{ fontWeight: 700, fontSize: '17px', color: '#111' }}>
-                  {activity.title}
-                </div>
-                <div style={{ fontSize: '12px', color: '#999' }}>{activity.date}</div>
-              </div> */}
+								{/* 제목 + 날짜 */}
+								<div
+									style={{
+										display: 'flex',
+										justifyContent: 'space-between',
+										alignItems: 'center',
+										marginTop: '6px',
+									}}>
+									<div style={{ fontWeight: 700, fontSize: '17px', color: '#111' }}>{activity.detailTitle}</div>
+									<div style={{ fontSize: '12px', color: '#999' }}>
+										{activity.detailStartDate} ~ {activity.detailEndDate}
+									</div>
+								</div>
 
-              {/* 본문 */}
-              {/* <div
-                style={{
-                  fontSize: '13px',
-                  color: '#333',
-                  marginTop: '6px',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  display: '-webkit-box',
-                  WebkitLineClamp: 3,
-                  WebkitBoxOrient: 'vertical',
-                }}
-              >
-                {activity.content}
-              </div> */}
+								{/* 본문 */}
+								<div
+									style={{
+										fontSize: '13px',
+										color: '#333',
+										marginTop: '6px',
+										overflow: 'hidden',
+										textOverflow: 'ellipsis',
+										display: '-webkit-box',
+										WebkitLineClamp: 3,
+										WebkitBoxOrient: 'vertical',
+									}}>
+									{activity.detailContent}
+								</div>
 
-              {/* 태그 */}
-              {/* <div style={{ marginTop: 'auto', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                {activity.tags.map((tag, idx) => (
-                  <span
-                    key={idx}
-                    style={{
-                      backgroundColor: Color.gray06,
-                      color: Color.main01,
-                      fontSize: '11px',
-                      padding: '4px 10px',
-                      borderRadius: '16px',
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </CareerDetailBox>
-          ))}
-        </CareerDeatailWrapper>
-      </Bottom> */}
+								{/* 태그 */}
+								<div style={{ marginTop: 'auto', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+									{activity.tags.map((tag, idx) => (
+										<span
+											key={idx}
+											style={{
+												backgroundColor: Color.gray06,
+												color: Color.main01,
+												fontSize: '11px',
+												padding: '4px 10px',
+												borderRadius: '16px',
+											}}>
+											{tag.tagName}
+										</span>
+									))}
+								</div>
+							</CareerDetailBox>
+						))}
+					</CareerDeatailWrapper>
+				</Bottom>
 
-      <Bottom>
-        <BottomText>잠깐! 잊지 않으셨죠?</BottomText>
-        <ActivityBox>
-          <Noti />
-          <CLNoti />
-        </ActivityBox>
-      </Bottom>
-    </Container>
-  </>
-);
-
+				<Bottom>
+					<BottomText>잠깐! 잊지 않으셨죠?</BottomText>
+					<ActivityBox>
+						<Noti />
+						<CLNoti />
+					</ActivityBox>
+				</Bottom>
+			</Container>
+		</>
+	);
 }
