@@ -70,7 +70,7 @@ const Line = styled.div`
 	border-top: none;
 	border-right: none;
 	border-bottom: none;
-	margin-left: 9.5px;
+	margin-left: 11px;
 	@media (max-width: ${theme.breakpoints.md}) {
 		margin-left: 9.5px;
 		// height: ${(props) => (props.isSummaryEditMode ? '303px' : '166px')};

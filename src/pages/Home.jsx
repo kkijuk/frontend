@@ -291,8 +291,8 @@ export default function Home() {
 				<Bottom>
 					<BottomText>최근 이런 활동을 기록했어요</BottomText>
 					<CareerDeatailWrapper>
-						<AddCareerDetailBox>
-							<AddButton onClick={() => setShowAddQuickCareerDetailModal(true)}>
+						<AddCareerDetailBox onClick={() => setShowAddQuickCareerDetailModal(true)}>
+							<AddButton>
 								<SvgIcon name="addButton" size={18} color={Color.white} />
 							</AddButton>
 						</AddCareerDetailBox>
