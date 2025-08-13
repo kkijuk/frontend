@@ -91,7 +91,7 @@ const ResultItemContainer = styled.div`
     border-radius: 10px;
     background-color: ${Color.white};
     box-shadow: 1px 1px 6px 0 rgba(112, 112, 112, 0.25);
-    // cursor: pointer;
+    cursor: pointer;
 
     // &:hover {
     //     background-color: ${Color.gray01};
