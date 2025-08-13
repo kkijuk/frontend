@@ -109,15 +109,14 @@ const RightSideBarContents = ({ onAddClick }) => {
         if (currentMenu === 'activity') {
             setDetailTarget({type: 'activity', id: item.careerId, careerType: item.category});
             setView('detail');
-            return;
         } else {
             const isMaster = !!item.masterIntroId;
             const id = isMaster ? item.masterIntroId : item.introId;
             setDetailTarget({type: 'intro', id, introKind: isMaster ? 'master' : 'regular'});
             setView('detail');
-            return;
         }
         console.log('리스트에서 상세로 전환', item);
+        return;
     };
 
     // 상세 -> 리스트로 전환
@@ -168,10 +167,12 @@ export default RightSideBarContents;
 
 const RightSideBarContainer = styled.div`
     box-sizing: border-box;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
     padding: 0px 15px;
+    min-height: 0;
 `
 
 const Header = styled.div`
@@ -206,9 +207,13 @@ const MenuItem = styled.div`
 `;
 
 const Body = styled.div`
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     gap: 20px;
     overflow-y: auto;
+
 `;
 

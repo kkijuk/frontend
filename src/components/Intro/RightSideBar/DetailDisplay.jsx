@@ -6,46 +6,18 @@ import CareerTagSearch from "@/components/chip/CareerTagSearch";
 import { readMaster } from "@/api/Intro/master";
 import { readIntro } from "@/api/Intro/intro";
 import { ViewCareerDetail } from "@/api/Mycareer/ViewCareerDetail";
-import { ca } from "date-fns/locale";
+import useIntroHelperDetail from "@/hooks/Intro/useIntroHelperDetail";
 
 const tags = ["동아리", "서비스 기획", "디자인", "개발"]; // 예시 태그
 
-const categoryMapping = {
-				ACTIVITY: 'activity',
-				PROJECT: 'project',
-				EDU: 'edu',
-				EMP: 'employment',
-				CIRCLE: 'circle',
-				COM: 'competition',
-				ETC: 'ETC',
-			};
-
-// {type: 'activity', id: item.careerId, careerType: item.category}
-// 또는 {type: 'intro', id, introKind: isMaster ? 'master' : 'regular'}
 const DetailDisplay =({target, onBack}) => {
-    
+    const {data: vm, isLoading, isError, error} = useIntroHelperDetail(target);
+
     useEffect(() => {
-        console.log('target: ', target);
-        const fetchDetail = async () => {
-            try{
-                if (target.type === 'activity') {
-                    const result = await ViewCareerDetail(target.id, categoryMapping[target.careerType.categoryEnName]);
-                    console.log('activity result:', result);
-                } 
-                else if (target.type === 'intro' && target.introKind === 'master') {
-                    const result = await readMaster();
-                    console.log('master intro result:', result);
-                } 
-                else if (target.type === 'intro' && target.introKind === 'regular') {
-                    const result = await readIntro(target.id);
-                    console.log('regular intro result:', result);
-                }
-            } catch (error) {
-                console.error('Error fetching detail:', error);
-            }
-        };
-        fetchDetail();
-    }, [target]);
+        if (vm) {
+            console.log('상세 조회 결과:', vm);
+        }
+    }, [vm]);
 
     return(
         <DetailContainer>
@@ -53,36 +25,66 @@ const DetailDisplay =({target, onBack}) => {
                 <SvgIcon name="Arrow-back" color={Color.gray02} />
                 <p>검색 결과</p>
             </GoBackWrapper>
-            <DetailHeader>
-                <subTitle>앱 서비스 개발 동아리/UMC</subTitle>
-                <Title>UMC 6기 디자인 부원 모집</Title>
-                <TagDateRow>
-                    <TagContainer>
-                        {tags.map((tag, index) => (
-                            <CareerTagSearch
-                                key = {tag}
-                                tag = {tag}
-                                surface = 'white'
-                            />
-                        ))}
-                    </TagContainer>
-                    <Date>2025.03.15</Date>
-                </TagDateRow>
-            </DetailHeader>
-            <DetailBody>
-                <QnAWrapper>
-                    <Question>이 공고에 지원하려면 어떻게 하나요?</Question>
-                    <Answer>지원하려면 아래의 지원 버튼을 클릭하세요.</Answer>
-                </QnAWrapper>
-                <QnAWrapper>
-                    <Question>이 공고에 지원하려면 어떻게 하나요?</Question>
-                    <Answer>지원하려면 아래의 지원 버튼을 클릭하세요.</Answer>
-                </QnAWrapper>
-                <QnAWrapper>
-                    <Question>이 공고에 지원하려면 어떻게 하나요?</Question>
-                    <Answer>지원하려면 아래의 지원 버튼을 클릭하세요.</Answer>
-                </QnAWrapper>
-            </DetailBody>
+
+            {isLoading && <p>로딩 중...</p>}
+            {isError && <p>에러 발생: {error.message}</p>}
+
+            {!isLoading && !isError && vm && (
+                <>
+                <DetailHeader>
+                    {vm.subTitle ? <SubTitle>{vm.title} / {vm.subTitle}</SubTitle> : null}
+
+                    {(vm.kind === "intro-master" || vm.kind === "intro-regular") && (
+                        <>
+                            <Title>{vm.title}</Title>
+                            <TagDateRow>
+                                <TagContainer>
+                                    {vm.tags?.map((tag) => (
+                                        <CareerTagSearch
+                                            key = {tag}
+                                            tag = {tag}
+                                            surface = 'white'
+                                        />
+                                    ))}
+                                </TagContainer>
+                                <Date>{vm.dateText}</Date>
+                            </TagDateRow>
+                        </>
+                    )}
+                </DetailHeader>
+
+                <DetailBody>
+                    {vm.kind === "activity" ? (
+                        vm.blocks.map((b,i) => (
+                            <QnAWrapper key={i}>
+                                <Title>{b.title}</Title>
+                                <TagDateRow>
+                                    <TagContainer>
+                                        {b.tags?.map((tag, j) => (
+                                            <CareerTagSearch
+                                                key={j}
+                                                tag={tag.tagName}
+                                                surface='white'
+                                            />
+                                        ))}
+                                    </TagContainer>
+                                    <Date>{b.dateText}</Date>
+                                </TagDateRow>
+                                <Answer>{b.content}</Answer>
+                            </QnAWrapper>
+                        ))
+                    ) : (
+                        vm.qna.map((q, i) => (
+                            <QnAWrapper key={i}>
+                                <Question>{q.number !== null ? `${q.number}. ${q.title}` : q.title}</Question>
+                                <Answer>{q.content}</Answer>
+                            </QnAWrapper>
+                        ))
+                    )}
+                
+                </DetailBody>
+                </>
+            )}
         </DetailContainer>
     )
 }
@@ -90,7 +92,9 @@ const DetailDisplay =({target, onBack}) => {
 export default DetailDisplay;
 
 const DetailContainer = styled.div`
+    flex: 1 1 auto;
     width: 100%;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -113,6 +117,7 @@ const GoBackWrapper = styled.div`
 `;
 
 const DetailHeader = styled.div`
+    flex: 0 0 auto;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -124,16 +129,19 @@ const DetailBody = styled.div`
     display: flex;
     flex-direction: column;
     gap: 24px;
+
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
 `;
 
-const Title = styled.p`
+const Title = styled.div`
     font-size: 28px;
     font-family: 'Bold';
     color: ${Color.black};
-    margin: 0;
 `;
 
-const subTitle = styled.p`
+const SubTitle = styled.p`
     font-size: 12px;
     font-family: 'Regular';
     color: ${Color.gray01};

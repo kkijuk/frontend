@@ -3,8 +3,11 @@ import styled from "styled-components";
 import { theme } from "@/constants/theme";
 import { Color } from "@/constants/color";
 import useScrollLock from "@/utils/scrollLock";
+import { use } from "react";
 
 const RightSideBar = ({ isOpen, onClose, children }) => {
+    useScrollLock(isOpen);
+
     return (
         <>
             <Overlay isOpen={isOpen} onClick={onClose}/>
@@ -36,14 +39,24 @@ const Overlay = styled.div`
 `;
 
 const SidebarContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    width: 382px; // 너비 조정
+    height: calc(100vh - 70px); // 내비게이터 높이 제외
+    @supports (height: 100dvh) {
+        height: calc(100dvh - 70px);
+    }
+    min-height: 0;
+
     position: fixed;
     top: 70px; // 내비게이터 높이 제외
     right: ${props => (props.isOpen ? "0" : "-100%")}; // 디자인 나오면 너비에 맞춰 조정하기
-    width: 382px; // 너비 조정
-    height: calc(100vh - 70px); // 내비게이터 높이 제외
+    z-index: 1000;
+
     background: ${Color.white};
     transition: right 0.3s ease-in-out;
-    z-index: 1000;
+    
 `;
 
 const CloseButton = styled.button`
