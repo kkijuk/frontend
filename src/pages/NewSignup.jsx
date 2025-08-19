@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SignupStepOne from '../components/User/SignupStepOne';
 import SignupStepTwo from '../components/User/SignupStepTwo';
 import styled from 'styled-components';
 import signupLogo from '../assets/signuplogo.svg';
@@ -79,27 +78,14 @@ const StepBar = styled.div`
 
 
 const NewSignup = () => {
-  const [step, setStep] = useState(1);
   const navigate = useNavigate();
   const { isProfileComplete } = useAuthStore(); // Zustand에서 프로필 완료 여부 가져오기
-
-  const [agreements, setAgreements] = useState({
-    isTermsAgreed: false,
-    isPrivacyAgreed: false,
-    isMarketingAgreed: false,
-  });
 
   useEffect(() => {
     if (isProfileComplete) {
       navigate('/home'); // 프로필이 완료된 경우 홈으로 리다이렉트
     }
   }, [isProfileComplete, navigate]);
-
-  
-
-  const handleAgreementChange = (key, value) => {
-    setAgreements((prev) => ({ ...prev, [key]: value }));
-  };
 
   const handleSignup = () => {
     console.log('회원가입 완료');
@@ -113,23 +99,11 @@ const NewSignup = () => {
   return (
     <Container>
       <TitleContainer>
-      <Logo src={signupLogo} alt="Signup Logo" onClick={handleLogoClick} />
+   
         <Title>회원가입</Title>
       </TitleContainer>
-      <StepBarContainer>
-        <StepBar active={step === 1} onClick={() => setStep(1)} />
-        <StepBar active={step === 2} onClick={() => setStep(2)} />
-      </StepBarContainer>
-      {step === 1 && (
-        <SignupStepOne
-          agreements={agreements}
-          setAgreements={handleAgreementChange}
-          handleNextStep={() => setStep(2)} // 다음 단계로 넘어가는 버튼
-        />
-      )}
-      {step === 2 && (
-        <SignupStepTwo handleSignup={handleSignup} agreements={agreements} />
-      )}
+     
+        <SignupStepTwo handleSignup={handleSignup} />
     </Container>
   );
 };
