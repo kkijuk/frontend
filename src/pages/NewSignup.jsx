@@ -79,13 +79,18 @@ const StepBar = styled.div`
 
 const NewSignup = () => {
   const navigate = useNavigate();
-  const { isProfileComplete } = useAuthStore(); // Zustand에서 프로필 완료 여부 가져오기
+  const { isLoggedIn,isProfileComplete } = useAuthStore(); // Zustand에서 프로필 완료 여부 가져오기
 
   useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/');
+      return;
+    }
+
     if (isProfileComplete) {
       navigate('/home'); // 프로필이 완료된 경우 홈으로 리다이렉트
     }
-  }, [isProfileComplete, navigate]);
+  }, [isLoggedIn, isProfileComplete, navigate]);
 
   const handleSignup = () => {
     console.log('회원가입 완료');
