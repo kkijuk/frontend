@@ -191,6 +191,87 @@ const AddButton = styled.button`
 	cursor: pointer;
 	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `;
+// 기존 CareerDetailBox는 그대로 두고 내부 박스만 분리
+const CategoryRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const CategoryLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`;
+
+const CategoryDot = styled.div`
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: ${(props) => props.color};
+`;
+
+const CategoryName = styled.span`
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+`;
+
+const TitleRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+`;
+
+const DetailTitle = styled.div`
+  font-weight: 700;
+  font-size: 17px;
+  color: #111;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;  
+  max-width: 170px;
+`;
+
+
+const DetailDate = styled.div`
+  font-size: 12px;
+  color: #999;
+`;
+
+const DetailContent = styled.div`
+  font-size: 13px;
+  color: #333;
+  margin-top: -10px;
+
+  display: -webkit-box;             
+  -webkit-line-clamp: 3;            
+  -webkit-box-orient: vertical;    
+  
+  overflow: hidden;                
+  text-overflow: ellipsis;       
+  white-space: normal;              
+  word-break: break-word;           
+`;
+
+
+const TagList = styled.div`
+  margin-top: auto;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+`;
+
+const Tag = styled.span`
+  background-color: ${Color.gray06};
+  color: ${Color.main01};
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 16px;
+`;
+
 
 const bannerDummy = [
 	{
@@ -296,71 +377,35 @@ export default function Home() {
 						</AddCareerDetailBox>
 
 						{recentCareerDetails.map((activity, index) => (
-							<CareerDetailBox key={index}>
-								{/* 상단 카테고리 */}
-								<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-									<div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-										<div
-											style={{
-												width: '10px',
-												height: '10px',
-												borderRadius: '50%',
-												backgroundColor: getColorByCategory(activity.category?.categoryKoName),
-											}}
-										/>
-										<span style={{ fontSize: '13px', fontWeight: 600, color: '#444' }}>
-											{activity.category?.categoryKoName || '카테고리 없음'}
-										</span>
-									</div>
-								</div>
+  <CareerDetailBox key={index}>
+    {/* 카테고리 */}
+    <CategoryRow>
+      <CategoryLeft>
+        <CategoryDot color={getColorByCategory(activity.category?.categoryKoName)} />
 
-								{/* 제목 + 날짜 */}
-								<div
-									style={{
-										display: 'flex',
-										justifyContent: 'space-between',
-										alignItems: 'center',
-										marginTop: '6px',
-									}}>
-									<div style={{ fontWeight: 700, fontSize: '17px', color: '#111' }}>{activity.detailTitle}</div>
-									<div style={{ fontSize: '12px', color: '#999' }}>
-										{activity.detailStartDate} ~ {activity.detailEndDate}
-									</div>
-								</div>
+        <CategoryName>{activity.category?.categoryKoName || '카테고리 없음'}</CategoryName>
+      </CategoryLeft>
+    </CategoryRow>
 
-								{/* 본문 */}
-								<div
-									style={{
-										fontSize: '13px',
-										color: '#333',
-										marginTop: '6px',
-										overflow: 'hidden',
-										textOverflow: 'ellipsis',
-										display: '-webkit-box',
-										WebkitLineClamp: 3,
-										WebkitBoxOrient: 'vertical',
-									}}>
-									{activity.detailContent}
-								</div>
+    {/* 제목 + 날짜 */}
+    <TitleRow>
+      <DetailTitle>{activity.detailTitle}</DetailTitle>
+      <DetailDate>
+        {activity.detailStartDate} ~ {activity.detailEndDate}
+      </DetailDate>
+    </TitleRow>
 
-								{/* 태그 */}
-								<div style={{ marginTop: 'auto', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-									{activity.tags.map((tag, idx) => (
-										<span
-											key={idx}
-											style={{
-												backgroundColor: Color.gray06,
-												color: Color.main01,
-												fontSize: '11px',
-												padding: '4px 10px',
-												borderRadius: '16px',
-											}}>
-											{tag.tagName}
-										</span>
-									))}
-								</div>
-							</CareerDetailBox>
-						))}
+    {/* 본문 */}
+    <DetailContent>{activity.detailContent}</DetailContent>
+
+    {/* 태그 */}
+    <TagList>
+      {activity.tags.map((tag, idx) => (
+        <Tag key={idx}>{tag.tagName}</Tag>
+      ))}
+    </TagList>
+  </CareerDetailBox>
+))}
 					</CareerDeatailWrapper>
 				</Bottom>
 
