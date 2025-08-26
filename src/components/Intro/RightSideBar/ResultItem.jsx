@@ -29,7 +29,7 @@ import { formateDateDashToDot } from "@/utils/formateDate";
         //     });
         // }
 
-const ResultItem = ({ currentMenu, keyword, data, onClick }) => {
+const ResultItem = ({ currentMenu, keyword, data, onAddClick }) => {
     // const [data, setData] = useState(null);
     if(!data) return null;
 
@@ -58,7 +58,12 @@ const ResultItem = ({ currentMenu, keyword, data, onClick }) => {
                 <ButtonSmallPrimary text="삽입" width={21} height={14} />
             </AddThisItemButton> */}
             <Footer>
-                <AddThisItemButton onClick={onClick}>
+                <AddThisItemButton 
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onAddClick(data.content);
+                        console.log("data:", data.content);
+                    }}>
                     <ButtonSmallPrimary text="삽입" width={21} height={14} />
                 </AddThisItemButton>
             </Footer>
@@ -91,7 +96,6 @@ const ResultItemContainer = styled.div`
     border-radius: 10px;
     background-color: ${Color.white};
     box-shadow: 1px 1px 6px 0 rgba(112, 112, 112, 0.25);
-    cursor: pointer;
 
     // &:hover {
     //     background-color: ${Color.gray01};
