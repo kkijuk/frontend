@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import { theme } from '../../constants/theme';
+import { Color } from '@/constants/color';
+
+//컬러팔레트 적용 완료
 
 export const ViewToggleStyled = styled.div`
 	display: flex;
@@ -25,9 +28,9 @@ export const ToggleButtonsContainer = styled.div`
 export const ToggleButton = styled.button`
 	padding: 8px 20px;
 	border-radius: 10px 10px 0px 0px;
-	background-color: ${(props) => (props.active ? '#F1F1F1' : 'white')};
+	background-color: ${(props) => (props.active ? Color.gray06 : Color.white)};
 	cursor: pointer;
-	border: 2px solid ${(props) => (props.active ? '#F1F1F1' : 'white')};
+	border: 2px solid ${(props) => (props.active ? Color.gray06 : Color.white)};
 	width: 85px;
 	height: 30px;
 	display: flex;
@@ -47,7 +50,7 @@ export const ToggleButton = styled.button`
 `;
 
 export const ViewTitle = styled.div`
-	color: var(--black, #000);
+	color: ${Color.black};
 	font-family: Pretendard;
 	font-size: 20px;
 	font-weight: 600;
