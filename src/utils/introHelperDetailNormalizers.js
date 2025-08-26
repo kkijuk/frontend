@@ -8,8 +8,9 @@ export const normalizeActivityDetail = (data = {}) => {
     return {
         kind: 'activity',
         id: data.careerId,
-        title: data.careerTitle || "", // 현재 title은 안 불러와짐
+        title: data.name || "", // 현재 title은 안 불러와짐
         subTitle: data.alias || "",
+        category: data.category.categoryEnName || "",
         blocks: (data.detailList || []).map((d) => ({
             detailId: d.detailId,
             title: d.title || "",

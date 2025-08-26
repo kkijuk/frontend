@@ -4,6 +4,9 @@ import { theme } from "@/constants/theme";
 import { Color } from "@/constants/color";
 import ButtonSmallPrimary from "@/components/Button/button-small/primary";
 import { formateDateDashToDot } from "@/utils/formateDate";
+import SvgIcon from "@/components/shared/SvgIcon";
+import getColorByCategory from "@/utils/getColorByCategory";
+import { get } from "lodash";
 
 // data : {content, introId, title, createDate}
         // if (currentMenu === 'activity'){
@@ -41,10 +44,13 @@ const ResultItem = ({ currentMenu, keyword, data, onAddClick }) => {
     const subTitle = isActivity ? (data.title ?? "") : ""; // 디테일 제목
     const date = isActivity ? range(data.startDate, data.endDate) : (formateDateDashToDot(data.updatedDate) ?? "");
 
+    const careerColor = getColorByCategory(data.category.categoryEnName);
+
     return (
         <ResultItemContainer>
             <Header>
                 <Title>
+                    <SvgIcon name="career-ellipse" size={14} color={careerColor}/>
                     {mainTitle}
                     {isActivity && alias && ` / ${alias}`}
                 </Title>
@@ -62,7 +68,7 @@ const ResultItem = ({ currentMenu, keyword, data, onAddClick }) => {
                     onClick={(e) => {
                         e.stopPropagation();
                         onAddClick(data.content);
-                        console.log("data:", data.content);
+                        console.log("data:", data);
                     }}>
                     <ButtonSmallPrimary text="삽입" width={21} height={14} />
                 </AddThisItemButton>

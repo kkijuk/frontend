@@ -22,7 +22,7 @@ const TimeLine = styled.div`
 	margin: 0px 70px 0px 30px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
-		margin: 0px 24px 0px 20px;
+		margin: 0px 24px 0px 0px;
 	}
 `;
 
@@ -53,7 +53,7 @@ const Line = styled.div`
 			: props.status === '중퇴' || props.status === '편입' || props.status === '졸업'
 				? `2px solid ${Color.gray02}`
 				: `2px dashed ${Color.gray02}`};
-	margin-left: 9.3px;
+	margin-left: 11px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		margin-left: 9px;

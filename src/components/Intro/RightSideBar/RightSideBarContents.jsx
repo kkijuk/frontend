@@ -26,6 +26,10 @@ const RightSideBarContents = ({ onAddClick }) => {
         console.log('저장 결과: ', resultByType);
     },[resultByType]);
 
+    useEffect(()=> {
+        
+    },[currentMenu])
+
     // 활동 기록 검색 결과 정규화
     const normalizeActivity = (activityArr = []) => {
         return activityArr.flatMap(act => 
@@ -107,7 +111,7 @@ const RightSideBarContents = ({ onAddClick }) => {
     // 리스트 아이템 클릭 -> 상세로 전환
     const handleItemClick = (item) => {
         if (currentMenu === 'activity') {
-            setDetailTarget({type: 'activity', id: item.careerId, careerType: item.category});
+            setDetailTarget({type: 'activity', id: item.careerId, careerType: item.category, careerTitle: item.careerTitle, careerAlias: item.careerAlias});
             setView('detail');
         } else {
             const isMaster = !!item.masterIntroId;
@@ -213,7 +217,7 @@ const Body = styled.div`
     display: flex;
     flex-direction: column;
     gap: 20px;
-    overflow-y: auto;
+    // overflow-y: auto;
 
 `;
 
