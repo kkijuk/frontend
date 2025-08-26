@@ -7,6 +7,7 @@ import { readMaster } from "@/api/Intro/master";
 import { readIntro } from "@/api/Intro/intro";
 import { ViewCareerDetail } from "@/api/Mycareer/ViewCareerDetail";
 import useIntroHelperDetail from "@/hooks/Intro/useIntroHelperDetail";
+import getColorByCategory from "@/utils/getColorByCategory";
 
 const tags = ["동아리", "서비스 기획", "디자인", "개발"]; // 예시 태그
 
@@ -18,6 +19,10 @@ const DetailDisplay =({target, onBack}) => {
             console.log('상세 조회 결과:', vm);
         }
     }, [vm]);
+
+    //vm이 undefined가 아닐 때만 getColorByCategory 실행
+    const rawCategory = vm?.category || ""; 
+    const careerColor = getColorByCategory(rawCategory);
 
     return(
         <DetailContainer>
@@ -32,8 +37,13 @@ const DetailDisplay =({target, onBack}) => {
             {!isLoading && !isError && vm && (
                 <>
                 <DetailHeader>
-                    {vm.subTitle ? <SubTitle>{vm.title} / {vm.subTitle}</SubTitle> : null}
+                    {/* 활동 정보('활동기록 검색'에서만 활성화) */}
+                    <HeaderForActivity>
+                        <SvgIcon name="career-ellipse" size={14} color={careerColor}/>
+                        {vm.subTitle ? <SubTitle>{vm.title} / {vm.subTitle}</SubTitle> : null}
+                    </HeaderForActivity>
 
+                    {/* 활동기록 제목 or 자기소개서 상세내용 제목 */}
                     {(vm.kind === "intro-master" || vm.kind === "intro-regular") && (
                         <>
                             <Title>{vm.title}</Title>
@@ -122,6 +132,12 @@ const DetailHeader = styled.div`
     display: flex;
     flex-direction: column;
     gap: 12px;
+`;
+
+const HeaderForActivity = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
 `;
 
 const DetailBody = styled.div`

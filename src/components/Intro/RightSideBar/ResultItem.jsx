@@ -4,6 +4,9 @@ import { theme } from "@/constants/theme";
 import { Color } from "@/constants/color";
 import ButtonSmallPrimary from "@/components/Button/button-small/primary";
 import { formateDateDashToDot } from "@/utils/formateDate";
+import SvgIcon from "@/components/shared/SvgIcon";
+import getColorByCategory from "@/utils/getColorByCategory";
+import { get } from "lodash";
 
 // data : {content, introId, title, createDate}
         // if (currentMenu === 'activity'){
@@ -29,7 +32,7 @@ import { formateDateDashToDot } from "@/utils/formateDate";
         //     });
         // }
 
-const ResultItem = ({ currentMenu, keyword, data, onClick }) => {
+const ResultItem = ({ currentMenu, keyword, data, onAddClick }) => {
     // const [data, setData] = useState(null);
     if(!data) return null;
 
@@ -41,10 +44,18 @@ const ResultItem = ({ currentMenu, keyword, data, onClick }) => {
     const subTitle = isActivity ? (data.title ?? "") : ""; // 디테일 제목
     const date = isActivity ? range(data.startDate, data.endDate) : (formateDateDashToDot(data.updatedDate) ?? "");
 
+    const careerColor = () => { 
+        if (currentMenu === 'activity') {
+            return getColorByCategory(data.category.categoryEnName);
+        }
+        else return '#000000';
+    }
+
     return (
         <ResultItemContainer>
             <Header>
                 <Title>
+                    <SvgIcon name="career-ellipse" size={14} color={careerColor}/>
                     {mainTitle}
                     {isActivity && alias && ` / ${alias}`}
                 </Title>
@@ -58,7 +69,12 @@ const ResultItem = ({ currentMenu, keyword, data, onClick }) => {
                 <ButtonSmallPrimary text="삽입" width={21} height={14} />
             </AddThisItemButton> */}
             <Footer>
-                <AddThisItemButton onClick={onClick}>
+                <AddThisItemButton 
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onAddClick(data.content);
+                        console.log("data:", data);
+                    }}>
                     <ButtonSmallPrimary text="삽입" width={21} height={14} />
                 </AddThisItemButton>
             </Footer>
@@ -91,7 +107,6 @@ const ResultItemContainer = styled.div`
     border-radius: 10px;
     background-color: ${Color.white};
     box-shadow: 1px 1px 6px 0 rgba(112, 112, 112, 0.25);
-    cursor: pointer;
 
     // &:hover {
     //     background-color: ${Color.gray01};

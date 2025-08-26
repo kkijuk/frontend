@@ -4,6 +4,8 @@ import { theme } from "@/constants/theme";
 import { Color } from "@/constants/color";
 import getIntroSearch from "@/api/Intro/introSearch";
 import { getActivityDetailSearch } from "@/api/MycareerSearch/getActivityDetailSearch";
+import getMostUsedTags from "@/api/MycareerSearch/getMostUsedTags";
+import { getActivityByTag } from "@/api/MycareerSearch/getActivityByTag";
 import DefaultDisplay from "./DefaultDisplay";
 import DetailDisplay from "./DetailDisplay";
 
@@ -12,7 +14,7 @@ const RightSideBarContents = ({ onAddClick }) => {
     const [currentMenu, setCurrentMenu] = useState('activity'); // 현재 메뉴
     const [resultByType, setResultByType] = useState({activity: [], intro: []}); // 검색 결과
     const [keywordByType, setKeywordByType] = useState({activity: '', intro: ''}); // 검색어
-    const [careerTag, setCareerTag] = useState(['이거', '저거']); // 최근 추가한 태그
+    const [careerTag, setCareerTag] = useState(['이거',' 저거']); // 최근 추가한 태그
     const [currentTag, setCurrentTag] = useState(''); // 현재 선택된 태그
 
     const [view, setView] = useState('list'); // 현재 뷰 상태. 'list' | 'detail'
@@ -25,6 +27,16 @@ const RightSideBarContents = ({ onAddClick }) => {
     useEffect(()=>{
         console.log('저장 결과: ', resultByType);
     },[resultByType]);
+
+    useEffect(()=> {
+        const fetchMostUsedTags = async () => {
+            const tags = await getMostUsedTags();
+            const tagsName = tags.map(item => item.name);
+            setCareerTag(tagsName);
+            console.log('가장 많이 사용된 태그: ', tagsName);
+        };
+        fetchMostUsedTags();
+    },[currentMenu])
 
     // 활동 기록 검색 결과 정규화
     const normalizeActivity = (activityArr = []) => {
@@ -57,6 +69,7 @@ const RightSideBarContents = ({ onAddClick }) => {
                     setCurrentTag(tag);
                     setKeywordByType(prev => ({...prev, activity: tag}));
                     // const results = await getActivityByTag(tag, 'recent');
+                    // console.log('태그 검색 결과:', results.data);
                     // const flat = normalizeActivity(results?.data?.data ?? []);
                     // setResultByType(prev => ({ ...prev, activity: flat }));
                     setResultByType(prev => ({...prev, activity: []})); // 임시로 초기화
@@ -107,7 +120,7 @@ const RightSideBarContents = ({ onAddClick }) => {
     // 리스트 아이템 클릭 -> 상세로 전환
     const handleItemClick = (item) => {
         if (currentMenu === 'activity') {
-            setDetailTarget({type: 'activity', id: item.careerId, careerType: item.category});
+            setDetailTarget({type: 'activity', id: item.careerId, careerType: item.category, careerTitle: item.careerTitle, careerAlias: item.careerAlias});
             setView('detail');
         } else {
             const isMaster = !!item.masterIntroId;
@@ -140,7 +153,7 @@ const RightSideBarContents = ({ onAddClick }) => {
                         currentMenu={currentMenu}
                         items={items}
                         searchInput={searchInput}
-                        careerTag={careerTag}
+                        careerTag={careerTag ? careerTag : ''}
                         currentTag={currentTag}
                         onSearchChange={(v) => {
                             setKeywordByType(prev => ({ ...prev, [currentMenu]: v }));
@@ -213,7 +226,7 @@ const Body = styled.div`
     display: flex;
     flex-direction: column;
     gap: 20px;
-    overflow-y: auto;
+    // overflow-y: auto;
 
 `;
 

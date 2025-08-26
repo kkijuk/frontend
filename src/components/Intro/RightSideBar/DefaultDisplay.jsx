@@ -90,6 +90,11 @@ const TagContainer = styled.div`
     flex-direction: row;
     gap: 12px;
     overflow-x: auto;
+
+    /* 스크롤바 숨기기 */
+    &::-webkit-scrollbar {
+        display: none; /* Chrome, Safari */
+    }
 `
 
 const SearchedHeaderInfo = styled.div`

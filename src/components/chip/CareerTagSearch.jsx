@@ -18,7 +18,11 @@ const CareerTagSearch = ({tag, surface = 'white', isSelected = false, onClick}) 
 export default CareerTagSearch;
 
 const SearchTagContainer = styled(TagContainer)`
+    width: fit-content;
     padding: 0px 16px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     &:hover {
         background-color: ${Color.gray05};
     }

@@ -2,11 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { theme } from "@/constants/theme";
 import { Color } from "@/constants/color";
-import useScrollLock from "@/utils/scrollLock";
 import { use } from "react";
 
 const RightSideBar = ({ isOpen, onClose, children }) => {
-    useScrollLock(isOpen);
+    // useScrollLock(isOpen); <- 사용 ㄴㄴ
 
     return (
         <>

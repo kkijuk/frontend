@@ -7,6 +7,7 @@ const BackgroundDiv = styled.div`
 	margin-top: 40px;
 	display: flex;
 	justify-content: center;
+	overflow-y: auto;
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		padding: 0 20px;

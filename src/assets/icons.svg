@@ -72,7 +72,7 @@
 
   <!-- Career Ellipse -->
   <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 15" id="career-ellipse">
-    <circle cx="7" cy="7.5" r="7" fill="currentColor"></circle>
+    <circle cx="7" cy="8" r="7" fill="currentColor"></circle>
   </symbol>
 
   <!-- chevron-up -->
