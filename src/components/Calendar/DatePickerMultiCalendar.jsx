@@ -36,6 +36,7 @@ export default function DatePickerMultiCalendar() {
 					navLayout="around"
 					locale={ko}
 					selected={selected}
+					ㅎ
 					onDayClick={handleDayClick}
 					//onSelect={setSelected} //기존 코드(범위 -> 하루 선택 가능 전)
 					showOutsideDays
