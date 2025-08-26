@@ -76,6 +76,11 @@ export default function MyInformation() {
 	const [phoneError, setPhoneError] = useState(''); // 에러 메시지 상태 추가
 	const [errorMessage, setErrorMessage] = useState(''); // 새로운 상태 추가
 
+	const socialTypeMap = {
+		KAKAO: '카카오',
+		NAVER: '네이버',
+	};
+
 	//개인정보 가져오기
 	useEffect(() => {
 		const fetchUserData = async () => {
@@ -107,18 +112,18 @@ export default function MyInformation() {
 		fetchUserData();
 	}, []);
 
-	// 이메일 인증 요청
+	//이메일 인증 요청
 	const handleRequestVerification = async () => {
 		if (isRequesting) {
 			alert('전송 중입니다. 잠시만 기다려주세요.');
 			return;
 		}
 		try {
-			console.log('이메일 인증 요청 중:', emailInput); // ✅ 요청 전 확인
+			console.log('이메일 인증 요청 중:', emailInput);
 
 			setIsRequesting(true);
 			const response = await sendCode(emailInput);
-			console.log('이메일 인증 요청 성공:', response); // ✅ 요청 성공 확인
+			console.log('이메일 인증 요청 성공:', response);
 
 			setIsVerificationRequested(true);
 			setTimer(300); // 5분 설정
@@ -304,7 +309,7 @@ export default function MyInformation() {
 			<Container>
 				<TitleBox>
 					<Text1>개인정보 수정</Text1>
-					<Tag socialType={socialType}>{socialType}</Tag>
+					<Tag socialType={socialType}>{socialTypeMap[socialType] || socialType}</Tag>
 				</TitleBox>
 
 				<ContentBox>

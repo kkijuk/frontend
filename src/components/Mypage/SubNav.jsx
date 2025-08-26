@@ -74,7 +74,7 @@ const NavItems = styled.li`
 
 const Linear = styled.div`
 	height: 4px;
-	background-color: ${Color.gray07};
+	background-color: ${Color.gray05};
 	margin-top: 12px;
 	margin-bottom: 28px;
 `;

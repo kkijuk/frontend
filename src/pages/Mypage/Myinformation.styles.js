@@ -10,7 +10,7 @@ export const Container1 = styled.div`
 	width: 100%;
 	max-width: 820px;
 	padding: 0 40px;
-	margin: 0 auto;
+	/*margin: 0 auto;*/
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		padding: 0 16px;
