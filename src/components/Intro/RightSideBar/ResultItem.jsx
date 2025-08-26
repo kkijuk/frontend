@@ -44,7 +44,12 @@ const ResultItem = ({ currentMenu, keyword, data, onAddClick }) => {
     const subTitle = isActivity ? (data.title ?? "") : ""; // 디테일 제목
     const date = isActivity ? range(data.startDate, data.endDate) : (formateDateDashToDot(data.updatedDate) ?? "");
 
-    const careerColor = getColorByCategory(data.category.categoryEnName);
+    const careerColor = () => { 
+        if (currentMenu === 'activity') {
+            return getColorByCategory(data.category.categoryEnName);
+        }
+        else return '#000000';
+    }
 
     return (
         <ResultItemContainer>
