@@ -41,7 +41,7 @@ export default function DatePickerMultiCalendar() {
 					showOutsideDays
 					fixedWeeks
 					formatters={{
-						formatCaption: (date, options) => {
+						formatCaption: (date) => {
 							return format(date, 'yyyy\u00a0\u00a0\u00a0 M월', { locale: ko });
 						},
 					}}
