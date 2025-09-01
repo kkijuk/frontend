@@ -18,13 +18,45 @@ const DefaultDisplay = ({
     onItemClick,
     onAddClick,
 }) => {
-    
+
+    const [hasSearched, setHasSearched] = useState(false); // 온보딩 vs 검색 후 결과 없음 구분용
+    const [lastSearch, setLastSearch] = useState({type: null, query: ""}); // 마지막 검색어 기록용
+
+    // 메뉴 바뀌면 온보딩 다시 보여주기
+    useEffect(()=>{
+        setHasSearched(false);  
+        setLastSearch({type: null, query: ""});
+    }, [currentMenu])
+
+    useEffect(() => {
+        console.log('태그:', careerTag);
+    }, [careerTag]);
+
+    // 로컬 래퍼: 검색/태그 클릭 시 hasSearched = ture
+    const handleDebounceSearch =(kw)=>{
+        setHasSearched(true);
+        setLastSearch({type: "keyword", query: kw});
+        onDebounceSearch(kw);
+    }
+    const handleTagClick = (tagId) => {
+        // careerTag 배열에서 id 일치하는 객체 찾기
+        const found = careerTag.find(t => t.id === tagId);
+        const tagName = found? found.name : "";
+        setHasSearched(true);
+        setLastSearch({type: "tag", query: tagName});
+        onTagClick(tagId);
+    }
+
+    // 온보딩 vs 검색 후 결과 없음 구분
+    const showOnboarding = !hasSearched && items.length === 0;
+    const showNoResultAfterSearch = hasSearched && items.length === 0;
+
     return (
         <>
         <SearchContainer>
             <SearchBar
                 placeholder="검색어를 입력하세요."
-                onDebounceSearch={onDebounceSearch}
+                onDebounceSearch={handleDebounceSearch}
                 value = {searchInput}
                 onChangeValue={onSearchChange}
             />
@@ -36,7 +68,7 @@ const DefaultDisplay = ({
                             tag = {tag}
                             surface = 'white'
                             isSelected = {currentTag === tag}
-                            onClick = {() => onTagClick(tag)}
+                            onClick = {(tagId) => handleTagClick(tagId)}
                         />
                     ))}
                 </TagContainer>
@@ -60,16 +92,20 @@ const DefaultDisplay = ({
                         />
                     </Clickable>
                 ))
-            ) : (
+            ) :  showOnboarding ? (
                 <NoResultsMessage>
                     이곳에서 내가 끼적에 작성한&nbsp;
                     <span>활동</span>이나&nbsp;
                     <span>태그, 자기소개서</span>를 검색하고,
                     자소서 소재를 쉽게 가져오세요!
-                    검색어가 포함된 태그 혹은
-                    자기소개서 문단을 불러와요.
                 </NoResultsMessage>
-            )}
+            ) : showNoResultAfterSearch ? (
+                <NoResultsMessage>
+                    {lastSearch.type === "tag"
+                    ? "선택한 태그의 검색 결과가 없어요."
+                    : `${lastSearch.query}의 검색 결과가 없어요.`}
+                </NoResultsMessage>
+            ) : null}
         </ResultListBox>
         </> 
     );

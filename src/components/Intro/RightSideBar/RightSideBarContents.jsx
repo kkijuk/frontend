@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { theme } from "@/constants/theme";
 import { Color } from "@/constants/color";
@@ -14,12 +14,14 @@ const RightSideBarContents = ({ onAddClick }) => {
     const [currentMenu, setCurrentMenu] = useState('activity'); // 현재 메뉴
     const [resultByType, setResultByType] = useState({activity: [], intro: []}); // 검색 결과
     const [keywordByType, setKeywordByType] = useState({activity: '', intro: ''}); // 검색어
-    const [careerTag, setCareerTag] = useState(['이거',' 저거']); // 최근 추가한 태그
+    const [careerTag, setCareerTag] = useState([]); // 최근 추가한 태그
     const [currentTag, setCurrentTag] = useState(''); // 현재 선택된 태그
 
     const [view, setView] = useState('list'); // 현재 뷰 상태. 'list' | 'detail'
     // 상세보기 대상 { type: 'activity'|'intro', id: number|string, introKind?: 'master'|'regular' }
     const [detailTarget, setDetailTarget] = useState(null);
+
+    const latestReqRef = useRef({ activity: 0, intro: 0}); // 최근 요청 가드용(비동기 요청 경쟁 상태 제어)
 
     const items = resultByType[currentMenu]; // 검색결과 표시값
     const searchInput = keywordByType[currentMenu]; //검색창 표시값
@@ -31,9 +33,9 @@ const RightSideBarContents = ({ onAddClick }) => {
     useEffect(()=> {
         const fetchMostUsedTags = async () => {
             const tags = await getMostUsedTags();
-            const tagsName = tags.map(item => item.name);
-            setCareerTag(tagsName);
-            console.log('가장 많이 사용된 태그: ', tagsName);
+            // const tagsName = tags.map(item => item.name);
+            setCareerTag(tags);
+            console.log('가장 많이 사용된 태그: ', tags);
         };
         fetchMostUsedTags();
     },[currentMenu])
@@ -61,19 +63,31 @@ const RightSideBarContents = ({ onAddClick }) => {
     const handleSearch = async ({keyword='', tag=''}) => {
         try {
             if (currentMenu === 'activity') {
+                // 태그 클릭 후, 입력값(=태그)이 디바운스로 keyword 검색을 재호출하는 경우 무시
+                if(!tag && keyword && keyword === currentTag) {
+                    console.log('이미 선택된 태그입니다.');
+                    return;
+                }
+
+                console.log('활동기록 검색:', {keyword, tag});
                 const useTag = !!tag; // 태그 우선 검색
                 const useKeyword = !!keyword && !useTag; // 키워드 우선 검색
+
+                const reqId = ++latestReqRef.current.activity;
 
                 if(useTag) {
                     console.log('활동 기록 태그 검색:', tag);
                     setCurrentTag(tag);
                     setKeywordByType(prev => ({...prev, activity: tag}));
-                    // const results = await getActivityByTag(tag, 'recent');
-                    // console.log('태그 검색 결과:', results.data);
-                    // const flat = normalizeActivity(results?.data?.data ?? []);
-                    // setResultByType(prev => ({ ...prev, activity: flat }));
-                    setResultByType(prev => ({...prev, activity: []})); // 임시로 초기화
-                    return;
+                    const results = await getActivityByTag(tag, 'recent');
+                    
+                    
+                    if(results.data){
+                        console.log('태그 검색 결과:', results.data);
+                        const flat = normalizeActivity(Array.isArray(results.data.data) ? results.data.data : []);
+                        setResultByType(prev => ({...prev, activity: flat}));
+                        return;
+                    }
                 }
                 
                 if (useKeyword) {
@@ -82,12 +96,14 @@ const RightSideBarContents = ({ onAddClick }) => {
                     setKeywordByType(prev => ({...prev, activity: keyword}));
 
                     const results = await getActivityDetailSearch(keyword, 'recent');
-                    console.log('키워드 검색 결과:', results.data);
-                    const flat = normalizeActivity(Array.isArray(results.data.data) ? results.data.data : []);
+                    if (reqId !== latestReqRef.current.activity) return; // 오래된 응답 무시
 
-                    setResultByType(prev => ({...prev, activity: flat}));
-                    setKeywordByType(prev => ({...prev, activity: keyword}));
-                    return;
+                    if (results?.data) {
+                        console.log('키워드 검색 결과:', results.data);
+                        const flat = normalizeActivity(Array.isArray(results.data.data) ? results.data.data : []);
+                        setResultByType(prev => ({...prev, activity: flat}));
+                        return;
+                    }
                 }
 
                 // 아무 것도 없을 때
@@ -96,11 +112,15 @@ const RightSideBarContents = ({ onAddClick }) => {
                 setResultByType(prev => ({...prev, activity: []}));
                 return;
             }
-            else if (currentMenu === 'intro') {
+            if (currentMenu === 'intro') {
                 // 자기소개서 검색 로직
                 console.log('자기소개서 검색:', keyword);
+                const reqId = ++latestReqRef.current.intro;
+
                 setKeywordByType(prev => ({...prev, intro: keyword}));
                 const results = await getIntroSearch(keyword);
+                if (reqId !== latestReqRef.current.intro) return; // 오래된 응답 무시
+
                 if (results?.data) {
                     console.log('검색 결과:', results.data);
                     // setSearchedResults(results.data.map(item => item.content)); // content만 추출하여 상태 업데이트
@@ -160,7 +180,7 @@ const RightSideBarContents = ({ onAddClick }) => {
                             if (currentMenu === 'activity' && currentTag) setCurrentTag('');
                         }}
                         onDebounceSearch={(kw) => handleSearch({ keyword: kw })}
-                        onTagClick={(tag) => handleSearch({ tag })}
+                        onTagClick={(tag) => handleSearch({ tag: tag })}
                         onItemClick={handleItemClick}
                         onAddClick={onAddClick}
                     />

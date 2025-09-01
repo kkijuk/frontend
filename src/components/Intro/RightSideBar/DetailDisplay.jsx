@@ -73,7 +73,7 @@ const DetailDisplay =({target, onBack}) => {
                                         {b.tags?.map((tag, j) => (
                                             <CareerTagSearch
                                                 key={j}
-                                                tag={tag.tagName}
+                                                tag={tag}
                                                 surface='white'
                                             />
                                         ))}

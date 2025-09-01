@@ -19,6 +19,8 @@ import SvgIcon from '@/components/shared/SvgIcon';
 import { theme } from '../constants/theme';
 import { Color } from '@/constants/color';
 
+import getCoachmark from '@/coachmark';
+
 const Container = styled.div`
 	display: flex;
 	height: auto;
@@ -273,6 +275,11 @@ const Tag = styled.span`
   border-radius: 16px;
 `;
 
+const TourBtn = styled.button`
+	position: absolute;
+	bottom: 50px;
+	right: 100px;
+`
 
 
 const bannerDummy = [
@@ -346,6 +353,11 @@ export default function Home() {
 		}
 	}, []); 
 
+	const startTour = () => {
+		const tour = getCoachmark("home");
+		tour?.drive();
+	}
+
 	return (
 		<>
 			{showOnboarding && <OnboardingModal onClose={handleCloseOnboarding} />}
@@ -372,52 +384,57 @@ export default function Home() {
 				<Bottom>
 					<BottomText>최근 이런 활동을 기록했어요</BottomText>
 					<CareerDeatailWrapper>
-						<AddCareerDetailBox onClick={() => setShowAddQuickCareerDetailModal(true)}>
+						<AddCareerDetailBox 
+							data-coach = "add-careerDetail"
+							onClick={() => setShowAddQuickCareerDetailModal(true)}
+						>
 							<AddButton>
 								<SvgIcon name="addButton" size={18} color={Color.white} />
 							</AddButton>
 						</AddCareerDetailBox>
 
 						{recentCareerDetails.map((activity, index) => (
-  <CareerDetailBox key={index}>
-    {/* 카테고리 */}
-    <CategoryRow>
-      <CategoryLeft>
-        <CategoryDot color={getColorByCategory(activity.category?.categoryKoName)} />
+						<CareerDetailBox key={index}>
+							{/* 카테고리 */}
+							<CategoryRow>
+							<CategoryLeft>
+								<CategoryDot color={getColorByCategory(activity.category?.categoryKoName)} />
 
-        <CategoryName>{activity.category?.categoryKoName || '카테고리 없음'}</CategoryName>
-      </CategoryLeft>
-    </CategoryRow>
+								<CategoryName>{activity.category?.categoryKoName || '카테고리 없음'}</CategoryName>
+							</CategoryLeft>
+							</CategoryRow>
 
-    {/* 제목 + 날짜 */}
-    <TitleRow>
-      <DetailTitle>{activity.detailTitle}</DetailTitle>
-      <DetailDate>
-        {activity.detailStartDate} ~ {activity.detailEndDate}
-      </DetailDate>
-    </TitleRow>
+							{/* 제목 + 날짜 */}
+							<TitleRow>
+							<DetailTitle>{activity.detailTitle}</DetailTitle>
+							<DetailDate>
+								{activity.detailStartDate} ~ {activity.detailEndDate}
+							</DetailDate>
+							</TitleRow>
 
-    {/* 본문 */}
-    <DetailContent>{activity.detailContent}</DetailContent>
+							{/* 본문 */}
+							<DetailContent>{activity.detailContent}</DetailContent>
 
-    {/* 태그 */}
-    <TagList>
-      {activity.tags.map((tag, idx) => (
-        <Tag key={idx}>{tag.tagName}</Tag>
-      ))}
-    </TagList>
-  </CareerDetailBox>
-))}
+							{/* 태그 */}
+							<TagList>
+							{activity.tags.map((tag, idx) => (
+								<Tag key={idx}>{tag.tagName}</Tag>
+							))}
+							</TagList>
+						</CareerDetailBox>
+						))}
 					</CareerDeatailWrapper>
 				</Bottom>
 
 				<Bottom>
 					<BottomText>잠깐! 잊지 않으셨죠?</BottomText>
-					<ActivityBox>
+					<ActivityBox data-coach="noti-at-home">
 						<Noti />
 						<CLNoti />
 					</ActivityBox>
 				</Bottom>
+
+				{/* <TourBtn onClick={startTour}>투어 시작하기</TourBtn> */}
 			</Container>
 		</>
 	);
