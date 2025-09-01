@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Color } from "@/constants/color";
 import SvgIcon from "../shared/SvgIcon";
+import { isArray } from "lodash";
 // import {
 //     Container,
 //     List,
@@ -9,8 +10,8 @@ import SvgIcon from "../shared/SvgIcon";
 // } from './Components.styles';
 
 // sections = 
-// [{id: 'user', name: '인적사항'}, (count 없음)
-// {id: 'educations', name: '학력'}, (count 없음)
+// [{id: 'user', name: '인적사항', isAddress: true}, (count 없음)
+// {id: 'educations', name: '학력', counst: 2}, 
 // {id: 'employments', name: '경력', count: 2}, 
 // {id: 'activitiesAndExperiences', name: '활동 및 경험', count: 4}, 
 // {id: 'projects', name: '프로젝트', count: 1}, 
@@ -20,7 +21,20 @@ import SvgIcon from "../shared/SvgIcon";
 // {id: 'skills', name: '스킬', count: 5}, 
 // {id: 'etc', name: '추가자료', count: 3}]
 
-const ScrollNavigator =({ sections, activeSection, onClick})=>{
+//onClick(activeSection) : activeSection = sections의 id
+
+const ScrollNavigator =({ sections, onClick})=>{
+    useEffect(() => {
+        console.log("ScrollNavigator mounted", sections);
+        console.log("isArrayLengthZero", isArrayLengthZero(sections[0]));
+    }, [sections]);
+
+    const [activeSection, setActiveSection] = useState(sections[0]?.id || '');
+
+    const isArrayLengthZero = (section) => {
+        if (section.id ==='user') return section.isAddress === false; // 주소가 없는 경우
+        return section.count === 0; // count가 숫자인 경우
+    }
 
     return(
         <NavigatorContainer>
@@ -30,13 +44,21 @@ const ScrollNavigator =({ sections, activeSection, onClick})=>{
                     {sections.map((section)=>(
                             <Button key={section.id}
                                 isActive = {activeSection === section.id}
-                                onClick={()=>onClick(section.id)}
+                                isArrayLengthZero = {isArrayLengthZero(section)}
+                                onClick={()=>{
+                                    onClick(section.id);
+                                    setActiveSection(section.id);
+                                }}
                             >
                                 {section.name}
-                                <ButtonCount>
-                                    {section.count 
-                                    ? section.count
-                                    : <SvgIcon name="check" width={16} height={16} color={Color.gray01}/>}
+                                <ButtonCount
+                                    isArrayLengthZero = {isArrayLengthZero(section)}
+                                >
+                                    {(section.id === 'user' || section.id === 'educations')
+                                    ? <SvgIcon name="check" width={16} height={16} 
+                                        color={isArrayLengthZero(section) ? Color.gray04 : Color.gray01}
+                                        />
+                                    : section.count}
                                 </ButtonCount>
                             </Button>
                     ))}
@@ -103,7 +125,7 @@ const Button = styled.div`
 
     background: ${({ isActive }) => (isActive ? Color.gray06 : Color.white)};
 
-    color: black;
+    color: ${({isArrayLengthZero}) => (isArrayLengthZero ? Color.gray03 : Color.black)};
     border:none;
     border-radius: 8px;
     cursor: pointer;
@@ -120,7 +142,7 @@ const Button = styled.div`
 
 const ButtonCount = styled.span`
     font-size: 12px;
-    color: ${Color.gray02};
+    color: ${({isArrayLengthZero}) => (isArrayLengthZero ? Color.gray04 : Color.gray01)};
     font-family: 'Regular';
     font-weight: 500;
 `
