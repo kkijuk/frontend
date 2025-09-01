@@ -16,7 +16,7 @@ const StepTwoContainer = styled.div`
    background: ${Color.white};
   border-radius: 10px;
   text-align: center;
-  margin-top: 40px;
+  margin-top: -30px;
 
   .status-container {
     display: flex;
@@ -108,7 +108,7 @@ const ErrorMessage = styled.div`
   font-size: 15px;
 `;
 
-const SignupStepTwo = ({ agreements, handleSignup }) => {
+const SignupStepTwo = ({ handleSignup }) => {
   const [selectedStatuses, setSelectedStatuses] = useState([]);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const navigate = useNavigate();
@@ -152,14 +152,10 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
 
   
     const payload = {
-      isTermsAgreed: agreements.isTermsAgreed,
-      isPrivacyAgreed: agreements.isPrivacyAgreed,
-      isMarketingAgreed: agreements.isMarketingAgreed ? 'BOTH' : 'NONE',
-      memberJob: selectedStatuses,
-    };
-  
-    console.log('요청 데이터:', payload);
-  
+    memberJob: selectedStatuses, 
+  };
+
+  try {
     const response = await axios.post(
       `${process.env.REACT_APP_API_URL}/member/profile`,
       payload,
@@ -170,25 +166,24 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
         },
       }
     );
-  
+
     if (response?.data) {
       console.log('회원가입 성공:', response.data);
-  
+
       const createRecordResponse = await createRecord({
-        "address": "string",
-        "profileImageUrl": "string"
-      })
+        address: 'string',
+        profileImageUrl: 'string',
+      });
       console.log('이력서 생성 성공:', createRecordResponse);
 
-      // 자기소개서 생성
       const createMasterResponse = await createMaster({
         questionList: [
           { title: 'string', content: 'string', number: 0 },
           { title: 'string', content: 'string', number: 1 },
           { title: 'string', content: 'string', number: 2 },
         ],
-        "state": 0
-      })
+        state: 0,
+      });
       console.log('마스터 자소서 생성 성공:', createMasterResponse);
 
       handleSignup();
@@ -196,12 +191,20 @@ const SignupStepTwo = ({ agreements, handleSignup }) => {
       console.error('응답 데이터가 없습니다.');
       alert('서버 응답이 비어 있습니다.');
     }
-  };
+  } catch (error) {
+    console.error('회원가입 요청 실패:', error);
+    alert('회원가입 중 오류가 발생했습니다.');
+  }
+};
   
 
   return (
     <StepTwoContainer>
-      <Title>마지막 단계예요! 당신은 지금 어떤 상태인가요?</Title>
+       <Title>
+  끼적에 합류할 준비가 거의 완료되었어요!<br />
+  당신은 지금 어떤 상태인가요?
+</Title>
+
       <div className="status-container">
         {statuses.map((status) => (
           <button

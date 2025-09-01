@@ -264,7 +264,7 @@ const MasterRewrite = () => {
 						</QnAItem>
 						);
 					})}
-					<AddButton onClick={handleAddClick}>+</AddButton>
+					<AddButton type="button" onClick={handleAddClick}>+</AddButton>
 				</IntroBody>
 				
 				{/* <div style={{ height: '70px' }}></div> */}

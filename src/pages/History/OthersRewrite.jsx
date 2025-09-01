@@ -342,7 +342,7 @@ const OthersRewrite = () => {
 		<SidebarButton onClick={() => setIsSideBarOpen(true)}>사이드바열기 </SidebarButton>
 		<RightSideBar isOpen={isSideBarOpen} onClose={() => setIsSideBarOpen(false)}>
 			<RightSideBarContents
-				onClick={(result) => {
+				onAddClick={(result) => {
 					setPendingResult(result);
 					setIsSideBarOpen(false);
 				}}

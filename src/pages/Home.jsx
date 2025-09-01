@@ -192,6 +192,7 @@ const AddButton = styled.button`
 	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `;
 
+
 const bannerDummy = [
 	{
 		image: require('../assets/banner/banner1.png'),
@@ -246,6 +247,7 @@ export default function Home() {
 	};
 
 	const fetchRecentCareerDetails = async () => {
+
 		try {
 			const data = await getRecentCareerDetails();
 			setRecentCareerDetails(data);
@@ -264,6 +266,11 @@ export default function Home() {
 			setShowOnboarding(true);
 		}
 	}, []);
+
+	const startTour = () => {
+		const tour = getCoachmark("home");
+		tour?.drive();
+	}
 
 	return (
 		<>
@@ -291,88 +298,57 @@ export default function Home() {
 				<Bottom>
 					<BottomText>최근 이런 활동을 기록했어요</BottomText>
 					<CareerDeatailWrapper>
-						<AddCareerDetailBox>
-							<AddButton onClick={() => setShowAddQuickCareerDetailModal(true)}>
+						<AddCareerDetailBox 
+							data-coach = "add-careerDetail"
+							onClick={() => setShowAddQuickCareerDetailModal(true)}
+						>
+							<AddButton>
 								<SvgIcon name="addButton" size={18} color={Color.white} />
 							</AddButton>
 						</AddCareerDetailBox>
 
 						{recentCareerDetails.map((activity, index) => (
-							<CareerDetailBox key={index}>
-								{/* 상단 카테고리 */}
-								<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-									<div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-										<div
-											style={{
-												width: '10px',
-												height: '10px',
-												borderRadius: '50%',
-												backgroundColor: getColorByCategory(activity.category?.categoryKoName),
-											}}
-										/>
-										<span style={{ fontSize: '13px', fontWeight: 600, color: '#444' }}>
-											{activity.category?.categoryKoName || '카테고리 없음'}
-										</span>
-									</div>
-								</div>
+						<CareerDetailBox key={index}>
+							{/* 카테고리 */}
+							<CategoryRow>
+							<CategoryLeft>
+								<CategoryDot color={getColorByCategory(activity.category?.categoryKoName)} />
 
-								{/* 제목 + 날짜 */}
-								<div
-									style={{
-										display: 'flex',
-										justifyContent: 'space-between',
-										alignItems: 'center',
-										marginTop: '6px',
-									}}>
-									<div style={{ fontWeight: 700, fontSize: '17px', color: '#111' }}>{activity.detailTitle}</div>
-									<div style={{ fontSize: '12px', color: '#999' }}>
-										{activity.detailStartDate} ~ {activity.detailEndDate}
-									</div>
-								</div>
+								<CategoryName>{activity.category?.categoryKoName || '카테고리 없음'}</CategoryName>
+							</CategoryLeft>
+							</CategoryRow>
 
-								{/* 본문 */}
-								<div
-									style={{
-										fontSize: '13px',
-										color: '#333',
-										marginTop: '6px',
-										overflow: 'hidden',
-										textOverflow: 'ellipsis',
-										display: '-webkit-box',
-										WebkitLineClamp: 3,
-										WebkitBoxOrient: 'vertical',
-									}}>
-									{activity.detailContent}
-								</div>
+							{/* 제목 + 날짜 */}
+							<TitleRow>
+							<DetailTitle>{activity.detailTitle}</DetailTitle>
+							<DetailDate>
+								{activity.detailStartDate} ~ {activity.detailEndDate}
+							</DetailDate>
+							</TitleRow>
 
-								{/* 태그 */}
-								<div style={{ marginTop: 'auto', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-									{activity.tags.map((tag, idx) => (
-										<span
-											key={idx}
-											style={{
-												backgroundColor: Color.gray06,
-												color: Color.main01,
-												fontSize: '11px',
-												padding: '4px 10px',
-												borderRadius: '16px',
-											}}>
-											{tag.tagName}
-										</span>
-									))}
-								</div>
-							</CareerDetailBox>
+							{/* 본문 */}
+							<DetailContent>{activity.detailContent}</DetailContent>
+
+							{/* 태그 */}
+							<TagList>
+							{activity.tags.map((tag, idx) => (
+								<Tag key={idx}>{tag.tagName}</Tag>
+							))}
+							</TagList>
+						</CareerDetailBox>
 						))}
 					</CareerDeatailWrapper>
 				</Bottom>
 
 				<Bottom>
 					<BottomText>잠깐! 잊지 않으셨죠?</BottomText>
-					<ActivityBox>
+					<ActivityBox data-coach="noti-at-home">
 						<Noti />
 						<CLNoti />
 					</ActivityBox>
 				</Bottom>
+
+				{/* <TourBtn onClick={startTour}>투어 시작하기</TourBtn> */}
 			</Container>
 		</>
 	);

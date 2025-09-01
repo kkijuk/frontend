@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { trackEvent } from '../../utils/ga4';
 import AddCareerModal from '../Modal/AddCareerModal/AddCareerModal';
@@ -31,6 +31,7 @@ export default function ProfileBox() {
 	if (isError || !userInfo) return <div>사용자 정보를 불러오지 못했습니다.</div>;
 
 	const { userName, monthDuration, careerCount, recruitCount } = userInfo;
+
 
 	/*
 	const [userInfo, setUserInfo] = useState({
@@ -110,6 +111,7 @@ export default function ProfileBox() {
 						</ActivityBox>
 					</ActivityBoxContainer>
 					<Button
+						data-coach = "add-activity"
 						onClick={() => {
 							trackEvent('add_click', {
 								category: 'home',

@@ -1170,7 +1170,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 					</div>
 				) : (
 					<SaveButton type="button" onClick={handleAddCareer}>
-						저장
+						확인
 					</SaveButton>
 				)}
 			</ModalContainer>

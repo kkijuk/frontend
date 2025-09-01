@@ -163,8 +163,8 @@ const History = () => {
 	// 인디케이터 관련 로직
 	//(1) section, activeSection
 	const sections = [
-		{id: "user", name: "인적사항"},
-		{id: "educations", name: "학력"},
+		{id: "user", name: "인적사항", isAddress: address !== null && address !== ''},
+		{id: "educations", name: "학력", count: educations.length},
 		{id: "employments", name: "경력", count: employments.length},
 		{id: "activitiesAndExperiences", name: "활동 및 경험", count: activitiesAndExperiences.length},
 		{id: "projects", name: "프로젝트", count: projects.length},
@@ -183,6 +183,8 @@ const History = () => {
 		if (element) {
 			const y = element.getBoundingClientRect().top + window.pageYOffset - 70; // 네비게이션 높이만큼 보정
 			window.scrollTo({ top: y, behavior: 'smooth' });
+			setActiveSection(id); 
+			return activeSection;
 		}
 	}
 
@@ -236,8 +238,7 @@ const History = () => {
 						<ScrollNavigatorContainer>
 							<ScrollNavigator
 								sections = {sections}
-								activeSection={activeSection}
-								onClick={scrollToSection}
+								onClick={(activeSection) => scrollToSection(activeSection)}
 							/>
 						</ScrollNavigatorContainer>
 						{isCareerModalOpen &&
