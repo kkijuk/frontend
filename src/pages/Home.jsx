@@ -19,21 +19,178 @@ import SvgIcon from '@/components/shared/SvgIcon';
 import { theme } from '../constants/theme';
 import { Color } from '@/constants/color';
 
-import {
-	Container,
-	Top,
-	TopBox1,
-	TopBox2,
-	Middle,
-	Bottom,
-	BottomText,
-	CareerDeatailWrapper,
-	CareerDetailContentBox,
-	AddCareerDetailBox,
-	CareerDetailBox,
-	ActivityBox,
-	AddButton,
-} from './Home.styles';
+const Container = styled.div`
+	display: flex;
+	height: auto;
+	gap: 32px;
+	flex-direction: column;
+	margin: 48px auto 48px;
+	width: 100%; /*얘랑 아랫줄 추가*/
+	max-width: 820px;
+	box-sizing: border-box;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		margin: 24px auto;
+		padding: 0 16px;
+	}
+	/*border: 1px solid black;
+	box-sizing: border-box;*/
+`;
+
+const Top = styled.div`
+	width: 100%;
+	max-width: 820px;
+	height: auto; /*160*/
+	display: flex;
+	gap: 20px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+
+		flex-direction: column;
+		align-items: center;
+	}
+
+	/*border: 1px solid black;
+	box-sizing: border-box;*/
+`;
+
+const TopBox1 = styled.div`
+	display: flex;
+	width: 240px;
+	height: 160px;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border-radius: 10px;
+	border: 1px solid ${Color.gray03};
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		padding: 20px 0px;
+	}
+`;
+
+const TopBox2 = styled.div`
+	width: 560px;
+	height: 160px;
+	flex-shrink: 0;
+	border-radius: 10px;
+	/*border: 1px solid var(--gray-03, #d9d9d9); 수정*/
+	background: ${Color.white};
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		/*width: 368px;*/ //TopBox1과 맞춰주기
+		width: 100%;
+		/*max-width: 560px;*/
+	}
+`;
+
+const Middle = styled.div`
+	width: auto; /*820px*/
+	height: auto; /*기존 188px*/
+	max-width: 820px;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+	}
+
+	/*border: 1px solid black;
+	box-sizing: border-box;*/
+`;
+
+const Bottom = styled.div`
+	width: auto; /*820*/
+	max-width: 820px;
+
+	height: auto; /*194*/
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+
+	/*border: 1px solid black;
+	box-sizing: border-box;*/
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		align-items: center; /*가운데 정렬 */
+	}
+`;
+
+const BottomText = styled.div`
+	color: ${Color.black};
+	font-family: Pretendard;
+	font-size: 20px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+\	align-self: flex-start;
+`;
+
+const CareerDeatailWrapper = styled.div`
+	box-sizing: border-box;
+	width: auto;
+	height: auto;
+	padding: 24px 30px;
+
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+	gap: 24px;
+
+	border-radius: 10px;
+	background: ${Color.gray06};
+`;
+
+const CareerDetailContentBox = styled.div`
+	box-sizing: border-box;
+	height: 212px;
+
+	border-radius: 10px;
+	background: ${Color.white};
+	box-shadow: 1px 1px 6px 0px rgba(112, 112, 112, 0.25);
+	cursor: pointer;
+`;
+
+const AddCareerDetailBox = styled(CareerDetailContentBox)`
+	padding: 16px 24px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+
+const CareerDetailBox = styled(CareerDetailContentBox)`
+	padding: 16px 24px 20px 24px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 20px;
+`;
+
+const ActivityBox = styled.div`
+	width: auto; /*820*/
+	height: auto; /*194*/
+	display: flex;
+	justify-content: space-between;
+	gap: 16px;
+	box-sizing: border-box;
+
+	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
+		width: 100%;
+		display: flex;
+		gap: 16px;
+		flex-direction: column;
+		/*align-items: center;  가운데 정렬 */
+	}
+`;
+
+const AddButton = styled.button`
+	width: 60px;
+	height: 60px;
+	border: none;
+	border-radius: 50%;
+	background-color: ${Color.main01};
+	color: white;
+	cursor: pointer;
+	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+`;
 
 const bannerDummy = [
 	{
@@ -121,7 +278,7 @@ export default function Home() {
 				<Middle>
 					<BannerComponent banners={bannerDummy} />
 				</Middle>
-				{/* Middle 컴포넌트 위치 바꿈*/}
+				{/* Middle 컴포넌트 위치 바*/}
 				<Top>
 					<TopBox1>
 						<ProfileBox />
