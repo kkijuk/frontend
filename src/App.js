@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import AppRoutes from '@routes/AppRoutes';
 import { BrowserRouter } from 'react-router-dom';
+import { CoachmarkGlobalStyle } from '@/coachmark/coachmarkGlobalStyle';
 
 const AppContainer = styled.div`
 	display: flex;
