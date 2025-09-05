@@ -44,18 +44,19 @@ const ResultItem = ({ currentMenu, keyword, data, onAddClick }) => {
     const subTitle = isActivity ? (data.title ?? "") : ""; // 디테일 제목
     const date = isActivity ? range(data.startDate, data.endDate) : (formateDateDashToDot(data.updatedDate) ?? "");
 
-    const careerColor = () => { 
+    const DotColor = () => { 
         if (currentMenu === 'activity') {
+            console.log('data.category:', getColorByCategory(data.category.categoryEnName));
             return getColorByCategory(data.category.categoryEnName);
         }
-        else return '#000000';
+        else return '#707070';
     }
 
     return (
         <ResultItemContainer>
             <Header>
                 <Title>
-                    <SvgIcon name="career-ellipse" size={14} color={careerColor}/>
+                    <SvgIcon name="career-ellipse" size={14} color={DotColor()}/>
                     {mainTitle}
                     {isActivity && alias && ` / ${alias}`}
                 </Title>

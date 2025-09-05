@@ -41,7 +41,7 @@ export const CoachmarkGlobalStyle = createGlobalStyle`
     .driver-popover-next-btn {
         border-radius: 10px;
         padding: 8px 18px;
-        font-size: 14px;
+        font-size: 14px;    
         font-family: 'Regular';
         cursor: pointer;
     }
