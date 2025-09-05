@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import api from '@/Axios';
-
+import getCoachmark from '@/coachmark';
 import { AddDetail } from '@/api/Mycareer/AddDetail';
 import getColorByCategory from '@/utils/getColorByCategory';
 import ProfileBox from '../components/Home/Profile';
