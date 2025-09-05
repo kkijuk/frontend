@@ -103,8 +103,16 @@ export const setupApiInterceptors = (navigate) => {
 			}
 			// 404 → numerror 페이지로 이동
 			else if (error.response?.status === 404) {
-				navigate('/numerror'); // or use ROUTES.NUM_ERROR
-			}
+  const url = error.config?.url || '';
+  
+  // 대시보드 API는 404여도 리다이렉트하지 않음
+  if (url.includes('/career/detail/dashboard')) {
+    return Promise.reject(error); // 호출한 쪽에서 try/catch로 처리
+  }
+
+  navigate('/numerror');
+}
+
 
 			// 그 외 에러는 모두 /error 페이지로 이동
 			else if (error.response?.status >= 400) {

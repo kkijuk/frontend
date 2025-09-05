@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import api from '@/Axios';
-
+import getCoachmark from '@/coachmark';
 import { AddDetail } from '@/api/Mycareer/AddDetail';
 import getColorByCategory from '@/utils/getColorByCategory';
 import ProfileBox from '../components/Home/Profile';
@@ -18,8 +18,6 @@ import AddQuickCareerDetailModal from '@/components/Modal/AddQuickCareerDetailMo
 import SvgIcon from '@/components/shared/SvgIcon';
 import { theme } from '../constants/theme';
 import { Color } from '@/constants/color';
-
-import getCoachmark from '@/coachmark';
 
 const Container = styled.div`
 	display: flex;
@@ -113,7 +111,7 @@ const Bottom = styled.div`
 	box-sizing: border-box;*/
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
-		align-items: center; /*가운데 정렬 */
+		align-items: center; 
 	}
 `;
 
@@ -124,12 +122,12 @@ const BottomText = styled.div`
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
-\	align-self: flex-start;
+	align-self: flex-start;
 `;
 
 const CareerDeatailWrapper = styled.div`
 	box-sizing: border-box;
-	width: 100%;
+	width: auto;
 	height: auto;
 	padding: 24px 30px;
 
@@ -143,7 +141,6 @@ const CareerDeatailWrapper = styled.div`
 
 const CareerDetailContentBox = styled.div`
 	box-sizing: border-box;
-	width: 100%;
 	height: 212px;
 
 	border-radius: 10px;
@@ -194,7 +191,7 @@ const AddButton = styled.button`
 	cursor: pointer;
 	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `;
-// 기존 CareerDetailBox는 그대로 두고 내부 박스만 분리
+
 const CategoryRow = styled.div`
   display: flex;
   justify-content: space-between;
@@ -275,19 +272,28 @@ const Tag = styled.span`
   border-radius: 16px;
 `;
 
-const TourBtn = styled.button`
-	position: absolute;
-	bottom: 50px;
-	right: 100px;
-`
-
+const EmptyStateCard = styled.div`
+  grid-column: 1 / -1;        
+  min-height: 120px;
+  border-radius: 10px;
+  background: ${Color.gray06}; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${Color.gray03};
+  font-size: 18px;
+  text-align: center;
+  user-select: none;
+`;
 
 const bannerDummy = [
 	{
-		image: require('../assets/banner/serviceBanner1.png'),
+		image: require('../assets/banner/banner1.png'),
+	},
+	{
+		image: require('../assets/banner/banner2.png'),
 		url: 'https://docs.google.com/forms/d/e/1FAIpQLSfCNlO7_QQR7J3BYHV4tGhkpCyJp4VggIKX1bmBBhs7DYEzWQ/viewform?usp=sharing',
 	},
-	{ image: require('../assets/banner/main.png'), url: 'https://forms.gle/RuuoXu6DzMz9vpyk6' },
 ];
 
 export default function Home() {
@@ -295,8 +301,8 @@ export default function Home() {
 
 	const [showOnboarding, setShowOnboarding] = useState(false); // 온보딩 모달 상태
 	const [showAddQuickCareerDetailModal, setShowAddQuickCareerDetailModal] = useState(false); // 빠른 활동 기록 추가 모달 상태
-	
-    const [recentCareerDetails, setRecentCareerDetails] = useState([]);
+
+	const [recentCareerDetails, setRecentCareerDetails] = useState([]);
 
 	// [useQuery]] 최근 활동 기록 가져오기
 	// [useQuery] 빠른 활동 기록 추가 후 최근 활동 기록 업데이트
@@ -307,7 +313,7 @@ export default function Home() {
 			const response = await AddDetail(careerId, data);
 			console.log('활동 기록 추가 성공:', response.data);
 			setShowAddQuickCareerDetailModal(false);
-			fetchRecentCareerDetails(); 
+			fetchRecentCareerDetails();
 		} catch (error) {
 			console.error('활동 기록 추가 실패:', error);
 		}
@@ -333,11 +339,12 @@ export default function Home() {
 		setShowAddQuickCareerDetailModal(false);
 	};
 
-  	const fetchRecentCareerDetails = async () => {
+	const fetchRecentCareerDetails = async () => {
+
 		try {
 			const data = await getRecentCareerDetails();
 			setRecentCareerDetails(data);
-			console.log(data)
+			console.log(data);
 		} catch (error) {
 			console.error('최근 활동 기록 가져오기 실패:', error);
 		}
@@ -351,7 +358,7 @@ export default function Home() {
 		if (lastClosedDate !== today) {
 			setShowOnboarding(true);
 		}
-	}, []); 
+	}, []);
 
 	const startTour = () => {
 		const tour = getCoachmark("home");
@@ -377,24 +384,26 @@ export default function Home() {
 					</TopBox2>
 				</Top>
 
-				<Middle>
-					<BannerComponent banners={bannerDummy} />
-				</Middle>
-
 				<Bottom>
 					<BottomText>최근 이런 활동을 기록했어요</BottomText>
 					<CareerDeatailWrapper>
-						<AddCareerDetailBox 
-							data-coach = "add-careerDetail"
-							onClick={() => setShowAddQuickCareerDetailModal(true)}
-						>
-							<AddButton>
-								<SvgIcon name="addButton" size={18} color={Color.white} />
-							</AddButton>
-						</AddCareerDetailBox>
+  {recentCareerDetails.length === 0 ? (
+    <EmptyStateCard>
+      지금 첫 활동을 추가하고 홈에서 바로 기록을 남겨보세요!
+    </EmptyStateCard>
+  ) : (
+    <>
+      <AddCareerDetailBox
+        data-coach="add-careerDetail"
+        onClick={() => setShowAddQuickCareerDetailModal(true)}
+      >
+        <AddButton>
+          <SvgIcon name="addButton" size={18} color={Color.white} />
+        </AddButton>
+      </AddCareerDetailBox>
 
-						{recentCareerDetails.map((activity, index) => (
-						<CareerDetailBox key={index}>
+      {recentCareerDetails.map((activity, index) => (
+        <CareerDetailBox key={index}>
 							{/* 카테고리 */}
 							<CategoryRow>
 							<CategoryLeft>
@@ -423,7 +432,9 @@ export default function Home() {
 							</TagList>
 						</CareerDetailBox>
 						))}
-					</CareerDeatailWrapper>
+					</>
+  )}
+</CareerDeatailWrapper>
 				</Bottom>
 
 				<Bottom>

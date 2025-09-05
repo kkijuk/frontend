@@ -60,7 +60,6 @@ const Nav = styled.nav`
 		font-family: Pretendard;
 		font-size: 21px;
 		font-style: normal;
-		font-weight: 700;
 		line-height: normal;
 		position: relative;
 		font-family: Bold;
