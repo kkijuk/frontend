@@ -18,6 +18,9 @@ import AddQuickCareerDetailModal from '@/components/Modal/AddQuickCareerDetailMo
 import SvgIcon from '@/components/shared/SvgIcon';
 import { theme } from '../constants/theme';
 import { Color } from '@/constants/color';
+import banner1 from '@/assets/banner/banner1.png';
+import banner2 from '@/assets/banner/banner2.png';
+
 
 const Container = styled.div`
 	display: flex;
@@ -87,7 +90,7 @@ const TopBox2 = styled.div`
 
 const Middle = styled.div`
 	width: auto; /*820px*/
-	height: auto; /*기존 188px*/
+	height: 80px; /*기존 188px*/
 	max-width: 820px;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
@@ -291,6 +294,8 @@ const TourBtn = styled.button`
 	height: 40px;
 `
 
+
+/*
 const bannerDummy = [
 	{
 		image: require('../assets/banner/banner1.png'),
@@ -299,6 +304,13 @@ const bannerDummy = [
 		image: require('../assets/banner/banner2.png'),
 		url: 'https://docs.google.com/forms/d/e/1FAIpQLSfCNlO7_QQR7J3BYHV4tGhkpCyJp4VggIKX1bmBBhs7DYEzWQ/viewform?usp=sharing',
 	},
+];
+*/
+
+
+const bannerDummy = [
+  { image: banner1 },
+  { image: banner2, url: 'https://docs.google.com/forms/d/e/1FAIpQLSfCNlO7_QQR7J3BYHV4tGhkpCyJp4VggIKX1bmBBhs7DYEzWQ/viewform?usp=sharing'},
 ];
 
 export default function Home() {

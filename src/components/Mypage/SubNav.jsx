@@ -14,7 +14,7 @@ const SubNav = () => {
 		<BackgroundDiv>
 			<BaseDiv>
 				<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-					<h1 style={{ marginBottom: '36px', display: 'inline-block' }}>마이페이지</h1>
+					<h1 style={{ marginBottom: '36px', display: 'inline-block', fontWeight: 400 }}>마이페이지</h1>
 				</div>
 
 				<Nav>
@@ -63,7 +63,7 @@ const Nav = styled.ul`
 const NavItems = styled.li`
 	font-family: Bold;
 	font-size: 24px;
-	font-weight: 700;
+	/* font-weight: 700; */
 	line-height: 28.64px;
 	display: inline-block;
 	margin-right: 50px;
