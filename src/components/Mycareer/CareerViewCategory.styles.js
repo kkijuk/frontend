@@ -28,7 +28,7 @@ export const CategoryText = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
 	font-size: 16px;
-	font-weight: 400;
+	/* font-weight: 400; */
 	line-height: normal;
 
 	@media (max-width: ${theme.breakpoints.md}) {
@@ -58,7 +58,7 @@ export const AliasName = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
 	font-size: 16px;
-	font-weight: 400;
+	/* font-weight: 400; */
 	line-height: normal;
 	margin-bottom: 3px;
 
@@ -76,7 +76,7 @@ export const CareerName = styled.div`
 	color: var(--black, #000);
 	font-family: bold;
 	font-size: 16px;
-	font-weight: 700;
+	/* font-weight: 700; */
 	font-style: regular;
 	line-height: normal;
 	margin-bottom: 9px;
@@ -85,5 +85,5 @@ export const CareerName = styled.div`
 export const Date = styled.div`
 	font-size: 12px;
 	color: var(--gray-02, #707070);
-	font-weight: 400;
+	/* font-weight: 400; */
 `;
