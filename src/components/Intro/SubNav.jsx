@@ -85,7 +85,6 @@ const ItemsWrapper = styled.div`
 const NavItems = styled.li`
     font-family: Bold;
     font-size: 24px;
-    font-weight: 700;
     line-height: 28.64px;
     display: inline-block;
     margin-right: 32px;

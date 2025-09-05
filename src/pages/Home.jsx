@@ -286,6 +286,11 @@ const EmptyStateCard = styled.div`
   user-select: none;
 `;
 
+const TourBtn = styled.button`
+	width: 150px;
+	height: 40px;
+`
+
 const bannerDummy = [
 	{
 		image: require('../assets/banner/banner1.png'),
@@ -374,11 +379,7 @@ export default function Home() {
 					onSave={(careerId, data) => handleSaveQuickCareerDetail(careerId, data)}
 				/>
 			)}
-			<Container>
-				<Middle>
-					<BannerComponent banners={bannerDummy} />
-				</Middle>
-				{/* Middle 컴포넌트 위치 바*/}
+			<Container data-coach = "start-kkijuk">
 				<Top>
 					<TopBox1>
 						<ProfileBox />
@@ -449,7 +450,7 @@ export default function Home() {
 					</ActivityBox>
 				</Bottom>
 
-				{/* <TourBtn onClick={startTour}>투어 시작하기</TourBtn> */}
+				<TourBtn onClick={startTour}>투어 시작하기</TourBtn>
 			</Container>
 		</>
 	);

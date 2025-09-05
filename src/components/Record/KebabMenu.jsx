@@ -14,7 +14,7 @@ const KebabMenu1 = ({onModalOpen, onDetailOpen}) => {
             <SvgIcon name="kebab" />
           </IconButton>
           {isKebabMenuOpen && (
-            <DropDown>
+            <DropDown isKebabHaveTwoOption={true}>
               <MenuItem onClick={onModalOpen}>활동 수정하기</MenuItem>
               <MenuItem onClick={()=>{
                 setIsKebabMenuOpen(false);
@@ -41,7 +41,7 @@ const KebabMenu2 = ({onModalOpen}) => {
           <SvgIcon name="kebab" />
         </IconButton>
         {isKebabMenuOpen && (
-          <DropDown style={{height:'34px'}}>
+          <DropDown isKebabHaveTwoOption={false}>
             <MenuItem onClick={onModalOpen}>활동 수정하기</MenuItem>
           </DropDown>
         )}
