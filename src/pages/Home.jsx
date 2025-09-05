@@ -272,6 +272,19 @@ const Tag = styled.span`
   border-radius: 16px;
 `;
 
+const EmptyStateCard = styled.div`
+  grid-column: 1 / -1;        
+  min-height: 120px;
+  border-radius: 10px;
+  background: ${Color.gray06}; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${Color.gray03};
+  font-size: 18px;
+  text-align: center;
+  user-select: none;
+`;
 
 const bannerDummy = [
 	{
@@ -378,17 +391,23 @@ export default function Home() {
 				<Bottom>
 					<BottomText>최근 이런 활동을 기록했어요</BottomText>
 					<CareerDeatailWrapper>
-						<AddCareerDetailBox 
-							data-coach = "add-careerDetail"
-							onClick={() => setShowAddQuickCareerDetailModal(true)}
-						>
-							<AddButton>
-								<SvgIcon name="addButton" size={18} color={Color.white} />
-							</AddButton>
-						</AddCareerDetailBox>
+  {recentCareerDetails.length === 0 ? (
+    <EmptyStateCard>
+      지금 첫 활동을 추가하고 홈에서 바로 기록을 남겨보세요!
+    </EmptyStateCard>
+  ) : (
+    <>
+      <AddCareerDetailBox
+        data-coach="add-careerDetail"
+        onClick={() => setShowAddQuickCareerDetailModal(true)}
+      >
+        <AddButton>
+          <SvgIcon name="addButton" size={18} color={Color.white} />
+        </AddButton>
+      </AddCareerDetailBox>
 
-						{recentCareerDetails.map((activity, index) => (
-						<CareerDetailBox key={index}>
+      {recentCareerDetails.map((activity, index) => (
+        <CareerDetailBox key={index}>
 							{/* 카테고리 */}
 							<CategoryRow>
 							<CategoryLeft>
@@ -417,7 +436,9 @@ export default function Home() {
 							</TagList>
 						</CareerDetailBox>
 						))}
-					</CareerDeatailWrapper>
+					</>
+  )}
+</CareerDeatailWrapper>
 				</Bottom>
 
 				<Bottom>
