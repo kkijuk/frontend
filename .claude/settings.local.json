@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/D:\\project\\kkijuk\\frontend\\src\\pages/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
