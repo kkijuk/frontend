@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import api from '@/Axios';
-
+import getCoachmark from '@/coachmark';
 import { AddDetail } from '@/api/Mycareer/AddDetail';
 import getColorByCategory from '@/utils/getColorByCategory';
 import ProfileBox from '../components/Home/Profile';
@@ -111,7 +111,7 @@ const Bottom = styled.div`
 	box-sizing: border-box;*/
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
-		align-items: center; /*가운데 정렬 */
+		align-items: center; 
 	}
 `;
 
@@ -122,7 +122,7 @@ const BottomText = styled.div`
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
-\	align-self: flex-start;
+	align-self: flex-start;
 `;
 
 const CareerDeatailWrapper = styled.div`
@@ -190,6 +190,86 @@ const AddButton = styled.button`
 	color: white;
 	cursor: pointer;
 	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+`;
+
+const CategoryRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const CategoryLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`;
+
+const CategoryDot = styled.div`
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: ${(props) => props.color};
+`;
+
+const CategoryName = styled.span`
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+`;
+
+const TitleRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+`;
+
+const DetailTitle = styled.div`
+  font-weight: 700;
+  font-size: 17px;
+  color: #111;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;  
+  max-width: 170px;
+`;
+
+
+const DetailDate = styled.div`
+  font-size: 12px;
+  color: #999;
+`;
+
+const DetailContent = styled.div`
+  font-size: 13px;
+  color: #333;
+  margin-top: -10px;
+
+  display: -webkit-box;             
+  -webkit-line-clamp: 3;            
+  -webkit-box-orient: vertical;    
+  
+  overflow: hidden;                
+  text-overflow: ellipsis;       
+  white-space: normal;              
+  word-break: break-word;           
+`;
+
+
+const TagList = styled.div`
+  margin-top: auto;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+`;
+
+const Tag = styled.span`
+  background-color: ${Color.gray06};
+  color: ${Color.main01};
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 16px;
 `;
 
 
