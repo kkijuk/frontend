@@ -286,6 +286,11 @@ const EmptyStateCard = styled.div`
   user-select: none;
 `;
 
+const TourBtn = styled.button`
+	width: 150px;
+	height: 40px;
+`
+
 const bannerDummy = [
 	{
 		image: require('../assets/banner/banner1.png'),
