@@ -36,6 +36,14 @@ const homeCoachmark = (refs) => {
                     title: "공고 마감일 놓치지 않기!",
                     description: "등록한 공고의 마감일을 알려줘요. 아직 등록한 공고가 없다면 추가해보세요."
                 }
+            }, 
+            {
+                element: $('[data-coach="start-kkijuk"]'),
+                popover: {
+                    description: "막막하기만 했던 취준은 이제 안녕~ 이제부터 끼적과 함께 내 경험&커리어를 차곡차곡 쌓아가요!",
+                    content: "",
+                    showButtons: ['done']
+                }
             }
         ]
     })

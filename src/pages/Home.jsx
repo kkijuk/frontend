@@ -367,7 +367,7 @@ export default function Home() {
 					onSave={(careerId, data) => handleSaveQuickCareerDetail(careerId, data)}
 				/>
 			)}
-			<Container>
+			<Container data-coach = "start-kkijuk">
 				<Top>
 					<TopBox1>
 						<ProfileBox />
@@ -434,7 +434,7 @@ export default function Home() {
 					</ActivityBox>
 				</Bottom>
 
-				{/* <TourBtn onClick={startTour}>투어 시작하기</TourBtn> */}
+				<TourBtn onClick={startTour}>투어 시작하기</TourBtn>
 			</Container>
 		</>
 	);
