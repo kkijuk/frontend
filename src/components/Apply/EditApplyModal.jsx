@@ -370,7 +370,8 @@ const formatDateTimeToLocal = (dateString) => {
 	const hours = String(utcDate.getHours()).padStart(2, '0');
 	const minutes = String(utcDate.getMinutes()).padStart(2, '0');
 
-	return `${year}.${month}.${day}T${hours}:${minutes}`;
+	return `${year}-${month}-${day}T${hours}:${minutes}`;
+
 };
 
 
@@ -474,7 +475,7 @@ const EditApplyModal = ({ onClose, onSave, job }) => {
 	<ModalTagBox onTagListChange={handleTagListChange} initialTags={job?.tags || []} />
     </TagBoxWrapper>
   </InputWrapperTag>
-</FieldWrapper>
+</FieldWrapper>  
 
 				{/* 링크 필드 */}
 				<FieldWrapper>
