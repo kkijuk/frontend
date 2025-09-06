@@ -16,6 +16,8 @@ import OnboardingButton from '../shared/OnboardingButton';
 import LastButton from '../shared/OnboardingLastButton';
 import { use } from 'react';
 
+import getCoachmark from '@/coachmark';
+
 const BlurContainer = styled.div`
 	position: absolute;
 	top: 50%;
@@ -145,7 +147,8 @@ const CloseText = styled.div`
 
 const SlideImage = styled.img`
 	width: 100%;
-	height: auto;
+	height: 100%;
+	border-radius: 10px;
 `;
 
 export default function OnboardingModal({ onClose }) {
@@ -153,7 +156,7 @@ export default function OnboardingModal({ onClose }) {
 	
 	const [isChecked, setIsChecked] = useState(false);
 	const [isVisible, setIsVisible] = useState(true);
-	const swiperRef = useRef(null);
+	// const swiperRef = useRef(null);
 
 	// `console.log` 추가해서 상태 변화 확인
 	const toggleCheck = () => {
@@ -182,11 +185,17 @@ export default function OnboardingModal({ onClose }) {
 		onClose?.();
 	};
 
-	const goToNextSlide = () => {
-		if (swiperRef.current) {
-			swiperRef.current.slideTo(1); // 0부터 시작하는 인덱스이므로 1 = 두 번째 슬라이드
-		}
-	};
+	// const goToNextSlide = () => {
+	// 	if (swiperRef.current) {
+	// 		swiperRef.current.slideTo(1); // 0부터 시작하는 인덱스이므로 1 = 두 번째 슬라이드
+	// 	}
+	// };
+
+	const startTour = () => {
+		const tour = getCoachmark("home");
+		onClose?.();
+		tour?.drive();
+	}
 
 	if (!isVisible) return null;
 
@@ -197,24 +206,25 @@ export default function OnboardingModal({ onClose }) {
 					modules={[Pagination]}
 					pagination={{ clickable: true }}
 					slidesPerView={1}
-					onSwiper={(swiper) => (swiperRef.current = swiper)}>
+					// onSwiper={(swiper) => (swiperRef.current = swiper)}
+				>
 					<SwiperSlide>
 						<SlideImage src={Slide1} alt="온보딩 1" />
-						<OnboardingButton onClick={goToNextSlide} />
+						<OnboardingButton onClick={startTour} />
 					</SwiperSlide>
 
-					<SwiperSlide>
+					{/* <SwiperSlide>
 						<SlideImage src={Slide2} alt="온보딩 2" />
-					</SwiperSlide>
+					</SwiperSlide> */}
 
-					<SwiperSlide>
+					{/* <SwiperSlide>
 						<SlideImage src={Slide3} alt="온보딩 3" />
-					</SwiperSlide>
+					</SwiperSlide> */}
 
-					<SwiperSlide>
+					{/* <SwiperSlide>
 						<SlideImage src={Slide4} alt="온보딩 4" />
 						<LastButton onClick={handleClose} />
-					</SwiperSlide>
+					</SwiperSlide> */}
 				</SwiperStyled>
 				<CheckContainer>
 					<CheckBoxContainer onClick={toggleCheck}>

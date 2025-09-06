@@ -17,6 +17,7 @@ const Container = styled.div`
 `
 
 const FileNameField = styled.div`
+    box-sizing: border-box;
     width: 450px;
     height: 45px;
     flex-shrink: 0;

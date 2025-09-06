@@ -194,6 +194,39 @@ const AddButton = styled.button`
 `;
 
 
+
+const TagList = styled.div`
+  margin-top: auto;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+`;
+
+const Tag = styled.span`
+  background-color: ${Color.gray06};
+  color: ${Color.main01};
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 16px;
+`;
+
+const EmptyStateCard = styled.div`
+  grid-column: 1 / -1;        
+  min-height: 120px;
+  border-radius: 10px;
+  background: ${Color.gray06}; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${Color.gray03};
+  font-size: 18px;
+  text-align: center;
+  user-select: none;
+`;
+
+
+
+
 const bannerDummy = [
 	{
 		image: require('../assets/banner/serviceBanner1.png'),
@@ -263,7 +296,14 @@ export default function Home() {
 		if (lastClosedDate !== today) {
 			setShowOnboarding(true);
 		}
-	}, []); 
+
+	}, []);
+
+	// const startTour = () => {
+	// 	const tour = getCoachmark("home");
+	// 	tour?.drive();
+	// }
+
 
 	return (
 		<>
