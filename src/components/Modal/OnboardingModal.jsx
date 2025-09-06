@@ -149,6 +149,7 @@ const SlideImage = styled.img`
 	width: 100%;
 	height: 100%;
 	border-radius: 10px;
+	cursor: pointer;
 `;
 
 export default function OnboardingModal({ onClose }) {
@@ -209,7 +210,7 @@ export default function OnboardingModal({ onClose }) {
 					// onSwiper={(swiper) => (swiperRef.current = swiper)}
 				>
 					<SwiperSlide>
-						<SlideImage src={Slide1} alt="온보딩 1" />
+						<SlideImage onClick={startTour} src={Slide1} alt="온보딩 1" />
 						<OnboardingButton onClick={startTour} />
 					</SwiperSlide>
 

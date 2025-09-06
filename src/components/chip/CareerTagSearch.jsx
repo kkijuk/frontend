@@ -19,6 +19,7 @@ const CareerTagSearch = ({tag, surface = 'white', isSelected = false, onClick}) 
             $selected={isSelected}
             onClick={clickable ? () => onClick(tagId) : undefined}
             role={clickable ? 'button' : undefined}
+            maxLength={6} // 최대 길이 제한
         >
             {tagName}
         </SearchTagContainer>
@@ -28,12 +29,21 @@ const CareerTagSearch = ({tag, surface = 'white', isSelected = false, onClick}) 
 export default CareerTagSearch;
 
 const SearchTagContainer = styled(TagContainer)`
-    width: fit-content;
-    min-width: 21px;
-    padding: 0px 16px;
+    box-sizing: border-box;
+    flex: 0 0 auto;
     display: inline-flex;
     justify-content: center;
     align-items: center;
+
+    width: auto;
+    min-width: 53px;
+    max-width: 80px;
+    padding: 0px 16px;
+    
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
     &:hover {
         background-color: ${Color.gray05};
     }

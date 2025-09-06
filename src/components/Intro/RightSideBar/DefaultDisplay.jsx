@@ -151,7 +151,8 @@ const SearchContainer = styled.div`
 const TagContainer = styled.div`
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-wrap: nowrap;
+    // flex-direction: row;
     gap: 12px;
     overflow-x: auto;
 
