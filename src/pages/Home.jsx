@@ -331,11 +331,13 @@ export default function Home() {
 				<Bottom>
 					<BottomText>최근 이런 활동을 기록했어요</BottomText>
 					<CareerDeatailWrapper>
-						<AddCareerDetailBox>
-							<AddButton onClick={() => setShowAddQuickCareerDetailModal(true)}>
-								<SvgIcon name="addButton" size={18} color={Color.white} />
-							</AddButton>
-						</AddCareerDetailBox>
+						<div data-coach="add-career-detail">
+							<AddCareerDetailBox>
+								<AddButton onClick={() => setShowAddQuickCareerDetailModal(true)}>
+									<SvgIcon name="addButton" size={18} color={Color.white} />
+								</AddButton>
+							</AddCareerDetailBox>
+						</div>
 
 						{recentCareerDetails.map((activity, index) => (
 							<CareerDetailBox key={index}>
@@ -408,10 +410,12 @@ export default function Home() {
 
 				<Bottom>
 					<BottomText>잠깐! 잊지 않으셨죠?</BottomText>
-					<ActivityBox>
-						<Noti />
-						<CLNoti />
-					</ActivityBox>
+					<div data-coach="noti-at-home">
+						<ActivityBox>
+							<Noti />
+							<CLNoti />
+						</ActivityBox>
+					</div>
 				</Bottom>
 			</Container>
 		</>

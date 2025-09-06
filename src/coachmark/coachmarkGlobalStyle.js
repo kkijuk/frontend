@@ -64,7 +64,7 @@ export const CoachmarkGlobalStyle = createGlobalStyle`
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: normal;
+    line-height: 9px;
     text-shadow: none;
     text-align: center;
   }
