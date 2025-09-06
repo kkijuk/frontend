@@ -406,14 +406,15 @@ export default function Home() {
     </EmptyStateCard>
   ) : (
     <>
+	  <div data-coach="add-careerDetail">
       <AddCareerDetailBox
-        data-coach="add-careerDetail"
         onClick={() => setShowAddQuickCareerDetailModal(true)}
       >
         <AddButton>
           <SvgIcon name="addButton" size={18} color={Color.white} />
         </AddButton>
       </AddCareerDetailBox>
+	  </div>
 
       {recentCareerDetails.map((activity, index) => (
         <CareerDetailBox key={index}>
@@ -452,10 +453,12 @@ export default function Home() {
 
 				<Bottom>
 					<BottomText>잠깐! 잊지 않으셨죠?</BottomText>
-					<ActivityBox data-coach="noti-at-home">
-						<Noti />
-						<CLNoti />
-					</ActivityBox>
+					<div data-coach="noti-at-home">
+						<ActivityBox>
+							<Noti />
+							<CLNoti />
+						</ActivityBox>
+					</div>
 				</Bottom>
 			</Container>
 		</>
