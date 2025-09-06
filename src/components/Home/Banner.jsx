@@ -12,7 +12,7 @@ import 'swiper/css/pagination';
 const Container = styled.div`
 	width: 100%; /*820*/
 	max-width: 820px;
-	height: 80px; /*188*/
+	height: 88px;
 
 	flex-shrink: 0;
 	border-radius: 10px;
@@ -28,13 +28,13 @@ const Container = styled.div`
 
 const BannerImage = styled.img`
 	width: 100%; /*820*/
-	height: 80px; /*188*/
+	height: 88px; /*88*/
 	object-fit: cover;
 	cursor: pointer;
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		height: auto; /* 자동으로 비율 유지 */
-		aspect-ratio: 820 / 188; /* 비율을 유지해주기 위해 */
+		aspect-ratio: 820 / 88; /* 비율을 유지해주기 위해 */
 	}
 `;
 
@@ -53,11 +53,7 @@ const BannerComponent = ({ banners }) => {
 			>
 				{banners.map((banner, index) => (
 					<SwiperSlide key={index}>
-						<a href={banner.url} target="_blank" rel="noopener noreferrer">
-							{' '}
-							{/* 링크 추가 */}
-							<BannerImage src={banner.image} alt={`Banner ${index + 1}`} />
-						</a>
+						<BannerImage src={banner.image} alt={`Banner ${index + 1}`} />
 					</SwiperSlide>
 				))}
 			</Swiper>
