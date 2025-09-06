@@ -7,6 +7,7 @@ import { formateDateDashToDot } from "@/utils/formateDate";
 import SvgIcon from "@/components/shared/SvgIcon";
 import getColorByCategory from "@/utils/getColorByCategory";
 import { get } from "lodash";
+import { use } from "react";
 
 // data : {content, introId, title, createDate}
         // if (currentMenu === 'activity'){
@@ -44,18 +45,29 @@ const ResultItem = ({ currentMenu, keyword, data, onAddClick }) => {
     const subTitle = isActivity ? (data.title ?? "") : ""; // 디테일 제목
     const date = isActivity ? range(data.startDate, data.endDate) : (formateDateDashToDot(data.updatedDate) ?? "");
 
-    const careerColor = () => { 
+    const DotColor = () => { 
         if (currentMenu === 'activity') {
+            console.log('data.category:', getColorByCategory(data.category.categoryEnName));
             return getColorByCategory(data.category.categoryEnName);
         }
-        else return '#000000';
+        if (currentMenu === 'intro') {
+            console.log('data.applyStatus:', data.applyStatus);
+            if (data.applyStatus === 'UNAPPLIED') return Color.gray05;
+            if (data.applyStatus === 'PLANNED') return Color.gray03;
+            if (data.applyStatus === 'APPLYING') return Color.gray02;
+            else if (data.applyStatus === 'REJECTED') return Color.subRd;
+            else if (data.applyStatus === 'ACCEPTED') return Color.subGn;
+            else if (data.applyStatus === 'UNKNOWN') return Color.gray01;
+            else return Color.main01; // 마스터 자소서
+        }
+        else return Color.gray01;
     }
 
     return (
         <ResultItemContainer>
             <Header>
                 <Title>
-                    <SvgIcon name="career-ellipse" size={14} color={careerColor}/>
+                    <SvgIcon name="career-ellipse" size={14} color={DotColor()}/>
                     {mainTitle}
                     {isActivity && alias && ` / ${alias}`}
                 </Title>

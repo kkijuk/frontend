@@ -5,6 +5,8 @@ import { Color } from "@/constants/color";
 import SearchBar from "../../shared/SearchBar";
 import ResultItem from "./ResultItem";
 import CareerTagSearch from "@/components/chip/CareerTagSearch";
+import { attachRecruitStatusToItems } from "./attachRecruitStatusToItems";
+import { use } from "react";
 
 const DefaultDisplay = ({
     currentMenu,
@@ -21,6 +23,32 @@ const DefaultDisplay = ({
 
     const [hasSearched, setHasSearched] = useState(false); // 온보딩 vs 검색 후 결과 없음 구분용
     const [lastSearch, setLastSearch] = useState({type: null, query: ""}); // 마지막 검색어 기록용
+    const [itemsWithStatus, setItemsWithStatus] = useState([]); // intro 아이템에 공고 지원 상태 추가
+
+    useEffect(() => {
+        console.log('DefaultDisplay items:', items);
+    }, [items]);
+
+    useEffect(() => {
+        console.log('itemsWithStatus changed:', itemsWithStatus);
+    }, [itemsWithStatus]);
+
+    useEffect(() => {
+        let alive = true;
+
+        (async () => {
+            // intro 메뉴일 때만 상태 붙이기
+            if (currentMenu === 'intro' && items?.length) {
+            const merged = await attachRecruitStatusToItems(items);
+            if (alive) setItemsWithStatus(merged);
+            } else {
+            // activity 등 다른 메뉴면 원본 그대로
+            setItemsWithStatus(items ?? []);
+            }
+        })();
+
+        return () => { alive = false; }
+    }, [items, currentMenu]);
 
     // 메뉴 바뀌면 온보딩 다시 보여주기
     useEffect(()=>{
@@ -78,10 +106,10 @@ const DefaultDisplay = ({
             <p>총 {items.length}건</p>
         </SearchedHeaderInfo>
         <ResultListBox>
-            {items.length > 0 ? (
-                items.map((item) => (
+            {itemsWithStatus.length > 0 ? (
+                itemsWithStatus.map((item) => (
                     <Clickable
-                        key = {item.detailId ?? item.masterId ?? item.introId ?? item.title}
+                        key = {item.detailId ?? item.masterIntroId ?? item.introId ?? item.title}
                         onClick = {() => onItemClick(item)}
                     >
                         <ResultItem 

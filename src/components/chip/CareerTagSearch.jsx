@@ -6,12 +6,12 @@ import { TagContainer } from "./careerTag.styles";
 const CareerTagSearch = ({tag, surface = 'white', isSelected = false, onClick}) => {
     const clickable = typeof onClick === 'function';
 
-    const tagName = tag?.name || tag?.tagName || '';
+    const tagName = tag?.name || tag?.tagName || tag || '';
     const tagId = tag?.id;
 
-    // useEffect(() => {
-    //     console.log('CareerTagSearch 렌더링:', tag);
-    // }, [tag]);
+    useEffect(() => {
+        console.log('CareerTagSearch 렌더링:', tag);
+    }, [tag]);
 
     return (
         <SearchTagContainer
@@ -29,6 +29,7 @@ export default CareerTagSearch;
 
 const SearchTagContainer = styled(TagContainer)`
     width: fit-content;
+    min-width: 21px;
     padding: 0px 16px;
     display: inline-flex;
     justify-content: center;
