@@ -25,7 +25,7 @@ const homeCoachmark = (refs) => {
                 }
             }, 
             {
-                element: $('[data-coach="add-careerDetail"]'),
+                element: $('[data-coach="add-career-detail"]'),
                 popover: {
                     title: "활동기록 꾸준히 적기!",
                     description: "각 활동에서 무엇을 했고, 어떤 것을 느꼈는지 자세히 기록해보세요.",
