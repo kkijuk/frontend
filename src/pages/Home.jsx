@@ -275,6 +275,10 @@ export default function Home() {
 				/>
 			)}
 			<Container>
+				<Middle>
+					<BannerComponent banners={bannerDummy} />
+				</Middle>
+
 				<Top>
 					<TopBox1>
 						<ProfileBox />
@@ -283,10 +287,6 @@ export default function Home() {
 						<CareerTimeline />
 					</TopBox2>
 				</Top>
-
-				<Middle>
-					<BannerComponent banners={bannerDummy} />
-				</Middle>
 
 				<Bottom>
 					<BottomText>최근 이런 활동을 기록했어요</BottomText>
