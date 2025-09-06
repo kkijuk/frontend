@@ -239,7 +239,7 @@ const CareerItem = ({ data, isLastItem, onEditCareer }) => {
 					</SchoolInfo>
 				</div>
 			</Container>
-			<EditButton>
+			<EditButton $isEditing={isSummaryEditMode}>
 				<KebabMenu1
 					onModalOpen={() => onEditCareer(data)}
 					onDetailOpen={() => setIsSummaryEditMode(true)}

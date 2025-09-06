@@ -17,6 +17,9 @@ const DetailDisplay =({target, onBack}) => {
     useEffect(() => {
         if (vm) {
             console.log('상세 조회 결과:', vm);
+            if(vm.kind === 'intro-master' || vm.kind === 'intro-regular') {
+                console.log('태그:', vm.tags, typeof(vm.tags));
+            }
         }
     }, [vm]);
 
@@ -39,7 +42,9 @@ const DetailDisplay =({target, onBack}) => {
                 <DetailHeader>
                     {/* 활동 정보('활동기록 검색'에서만 활성화) */}
                     <HeaderForActivity>
-                        <SvgIcon name="career-ellipse" size={14} color={careerColor}/>
+                        {vm.kind === "activity" && (
+                            <SvgIcon name="career-ellipse" size={14} color={careerColor}/>
+                        )}
                         {vm.subTitle ? <SubTitle>{vm.title} / {vm.subTitle}</SubTitle> : null}
                     </HeaderForActivity>
 
@@ -51,9 +56,9 @@ const DetailDisplay =({target, onBack}) => {
                                 <TagContainer>
                                     {vm.tags?.map((tag) => (
                                         <CareerTagSearch
-                                            key = {tag}
-                                            tag = {tag}
-                                            surface = 'white'
+                                            key={tag}
+                                            tag={tag}
+                                            surface='white'
                                         />
                                     ))}
                                 </TagContainer>
