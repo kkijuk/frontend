@@ -79,7 +79,7 @@ export const CareerName = styled.div`
 	/* font-weight: 700; */
 	font-style: regular;
 	line-height: normal;
-	margin-bottom: 9px;
+	margin-bottom: 3px;
 `;
 
 export const Date = styled.div`
