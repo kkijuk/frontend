@@ -196,9 +196,10 @@ const AddButton = styled.button`
 
 const bannerDummy = [
 	{
-		image: require('../assets/banner/banner1.png'),
+		image: require('../assets/banner/serviceBanner1.png'),
+		url: 'https://docs.google.com/forms/d/e/1FAIpQLSfCNlO7_QQR7J3BYHV4tGhkpCyJp4VggIKX1bmBBhs7DYEzWQ/viewform?usp=sharing',
 	},
-	{ image: require('../assets/banner/banner2.png') },
+	{ image: require('../assets/banner/main.png'), url: 'https://forms.gle/RuuoXu6DzMz9vpyk6' },
 ];
 
 export default function Home() {
@@ -274,10 +275,6 @@ export default function Home() {
 				/>
 			)}
 			<Container>
-				<Middle>
-					<BannerComponent banners={bannerDummy} />
-				</Middle>
-
 				<Top>
 					<TopBox1>
 						<ProfileBox />
@@ -286,6 +283,10 @@ export default function Home() {
 						<CareerTimeline />
 					</TopBox2>
 				</Top>
+
+				<Middle>
+					<BannerComponent banners={bannerDummy} />
+				</Middle>
 
 				<Bottom>
 					<BottomText>최근 이런 활동을 기록했어요</BottomText>
