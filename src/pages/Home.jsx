@@ -286,10 +286,6 @@ const EmptyStateCard = styled.div`
   user-select: none;
 `;
 
-const TourBtn = styled.button`
-	width: 150px;
-	height: 40px;
-`
 
 const bannerDummy = [
 	{
@@ -365,10 +361,10 @@ export default function Home() {
 		}
 	}, []);
 
-	const startTour = () => {
-		const tour = getCoachmark("home");
-		tour?.drive();
-	}
+	// const startTour = () => {
+	// 	const tour = getCoachmark("home");
+	// 	tour?.drive();
+	// }
 
 	return (
 		<>
@@ -449,8 +445,6 @@ export default function Home() {
 						<CLNoti />
 					</ActivityBox>
 				</Bottom>
-
-				<TourBtn onClick={startTour}>투어 시작하기</TourBtn>
 			</Container>
 		</>
 	);
