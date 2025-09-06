@@ -1,7 +1,7 @@
 .rdp-root {
   --rdp-selected-border: none;
  
-  --rdp-accent-color: transparent;
+  --rdp-accent-color: var(--main-01, #3AAF85);
 }
 
 .rdp-month {
