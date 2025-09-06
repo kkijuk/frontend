@@ -229,10 +229,10 @@ const EmptyStateCard = styled.div`
 
 const bannerDummy = [
 	{
-		image: require('../assets/banner/serviceBanner1.png'),
-		url: 'https://docs.google.com/forms/d/e/1FAIpQLSfCNlO7_QQR7J3BYHV4tGhkpCyJp4VggIKX1bmBBhs7DYEzWQ/viewform?usp=sharing',
+		image: require('../assets/banner/banner1.png'),
+		url: 'https://www.kkijuk.com/',
 	},
-	{ image: require('../assets/banner/main.png'), url: 'https://forms.gle/RuuoXu6DzMz9vpyk6' },
+	{ image: require('../assets/banner/banner2.png'), url: 'https://docs.google.com/forms/d/e/1FAIpQLSfCNlO7_QQR7J3BYHV4tGhkpCyJp4VggIKX1bmBBhs7DYEzWQ/viewform?usp=sharing' },
 ];
 
 export default function Home() {
