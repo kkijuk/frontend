@@ -7,6 +7,7 @@ import { formateDateDashToDot } from "@/utils/formateDate";
 import SvgIcon from "@/components/shared/SvgIcon";
 import getColorByCategory from "@/utils/getColorByCategory";
 import { get } from "lodash";
+import { use } from "react";
 
 // data : {content, introId, title, createDate}
         // if (currentMenu === 'activity'){
@@ -49,7 +50,17 @@ const ResultItem = ({ currentMenu, keyword, data, onAddClick }) => {
             console.log('data.category:', getColorByCategory(data.category.categoryEnName));
             return getColorByCategory(data.category.categoryEnName);
         }
-        else return '#707070';
+        if (currentMenu === 'intro') {
+            console.log('data.applyStatus:', data.applyStatus);
+            if (data.applyStatus === 'UNAPPLIED') return Color.gray05;
+            if (data.applyStatus === 'PLANNED') return Color.gray03;
+            if (data.applyStatus === 'APPLYING') return Color.gray02;
+            else if (data.applyStatus === 'REJECTED') return Color.subRd;
+            else if (data.applyStatus === 'ACCEPTED') return Color.subGn;
+            else if (data.applyStatus === 'UNKNOWN') return Color.gray01;
+            else return Color.main01; // 마스터 자소서
+        }
+        else return Color.gray01;
     }
 
     return (
