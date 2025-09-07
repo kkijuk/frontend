@@ -4,13 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { readMaster, updateMaster } from '../../api/Intro/master';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import RightSideBar from '@/components/Intro/RightSideBar/RightSideBar';
+import RightSideBarContents from '@/components/Intro/RightSideBar/RightSideBarContents';
 import { use } from 'react';
 import { trackEvent } from '../../utils/ga4';
 import { theme } from '../../constants/theme';
 import { Color } from '@/constants/color';
 import { useReadMaster, useUpdateMaster } from '@/hooks/Intro/useMaster';
 import { BackgroundDiv, BaseDiv, IntroHeader, Header, TagWrapper, Tag, Dropdown, DropdownItem, Linear, IntroBody,
-	 QnAItem, TitleWrapper, NumberLabel, DeleteButton, InputTitle, AnswerWrapper, InputAnswer, CharCount, AddButton, IntroFooter, FooterButton, SaveBtnWrapper, AutoSaveMessage} 
+	 QnAItem, TitleWrapper, NumberLabel, DeleteButton, InputTitle, AnswerWrapper, InputAnswer, CharCount, AddButton, IntroFooter, FooterButton, SaveBtnWrapper, AutoSaveMessage, SidebarButton, InsertOverlay } 
 from './Rewrite.styles';
 
 const MasterRewrite = () => {
@@ -22,6 +24,9 @@ const MasterRewrite = () => {
 	const [dropdownOpened, setDropdownOpened] = useState(false); // 드롭다운 열림
 	const [showAutoSaveMessage, setShowAutoSaveMessage] = useState(false); // 자동 저장 메시지
 	const [autoSaveTime, setAutoSaveTime] = useState(''); // 자동 저장 시간
+	const [isSideBarOpen, setIsSideBarOpen] = useState(false); // 사이드바 열림 상태
+	const [hoveredQuestion, setHoveredQuestion] = useState(null); // 현재 호버된 질문 번호
+	const [pendingResult, setPendingResult] = useState(null); // 검색 문단
 
 	const [questions, setQuestions] = useState([]);
 	const [contents, setContents] = useState({
@@ -178,6 +183,16 @@ const MasterRewrite = () => {
 	};
 
 	return (
+		<>
+		<SidebarButton onClick={() => setIsSideBarOpen(true)}>자소서 도우미</SidebarButton>
+		<RightSideBar isOpen={isSideBarOpen} onClose={() => setIsSideBarOpen(false)}>
+			<RightSideBarContents 
+				onAddClick={(result) => {
+					setPendingResult(result);
+					setIsSideBarOpen(false);
+				}}
+			/>
+		</RightSideBar>
 		<BackgroundDiv>
 			{showLoadingSpinner && <LoadingSpinner message = "마스터 자소서 수정 중..."/>}
 			<BaseDiv>
@@ -251,7 +266,10 @@ const MasterRewrite = () => {
 											삭제
 									</DeleteButton>
 							</TitleWrapper>
-							<AnswerWrapper>
+							<AnswerWrapper
+								onMouseEnter={() => setHoveredQuestion(question.number)}
+								onMouseLeave={() => setHoveredQuestion(null)}
+							>
 								<InputAnswer
 									placeholder={contentPlaceholder}
 									value={currentContent}
@@ -260,6 +278,26 @@ const MasterRewrite = () => {
 								<CharCount>
 									{currentContent.length} (공백 포함)
 								</CharCount>
+								{hoveredQuestion === question.number && pendingResult && (
+									<InsertOverlay
+										onClick={(() => {
+										if (pendingResult) {
+											setQuestions(prev => 
+												prev.map(q => 
+													q.number === question.number
+													? { ...q, content: (q.content || '') + pendingResult }
+													: q
+												)
+											)
+											
+											setPendingResult(null);
+											setHoveredQuestion(null);
+											}
+										})}
+									>
+										삽입
+									</InsertOverlay>
+								)}
 							</AnswerWrapper>
 						</QnAItem>
 						);
@@ -286,6 +324,7 @@ const MasterRewrite = () => {
 				{/* <div style={{ height: '70px' }}></div> */}
 			</BaseDiv>
 		</BackgroundDiv>
+		</>
 	);
 };
 export default MasterRewrite;

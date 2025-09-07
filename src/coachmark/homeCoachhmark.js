@@ -1,5 +1,6 @@
 import { driver } from "driver.js";
 import defaultCoachmarkConfig, { COACHMARK_POPOVER_CLASS} from "./config";
+import coachmarkGIF from '@/assets/coachmarkGIF.gif';
 
 const $ = (sel) => () => document.querySelector(sel);
 
@@ -12,8 +13,8 @@ const homeCoachmark = (refs) => {
                 popover : {
                     title: "지금 바로 활동을 추가해보세요!",
                     description: "이전에 했었거나, 지금 하고 있는 활동에 대한 정보를 손쉽게 기록해요.",
-                    className: COACHMARK_POPOVER_CLASS,
                     position: "bottom",
+                    showButtons: ['next']
                 }
             },
             {
@@ -24,7 +25,7 @@ const homeCoachmark = (refs) => {
                 }
             }, 
             {
-                element: $('[data-coach="add-careerDetail"]'),
+                element: $('[data-coach="add-career-detail"]'),
                 popover: {
                     title: "활동기록 꾸준히 적기!",
                     description: "각 활동에서 무엇을 했고, 어떤 것을 느꼈는지 자세히 기록해보세요.",
@@ -35,6 +36,16 @@ const homeCoachmark = (refs) => {
                 popover: {
                     title: "공고 마감일 놓치지 않기!",
                     description: "등록한 공고의 마감일을 알려줘요. 아직 등록한 공고가 없다면 추가해보세요."
+                }
+            }, 
+            {
+                element: null,
+                popover: {
+                    description: `
+                        <img src="${coachmarkGIF}" alt="coachmark guide" style="width:100%; border-radius: 10px; margin-bottom: 12px;" />
+                        막막하기만 했던 취준은 이제 안녕~ 이제부터 끼적과 함께 내 경험&커리어를 차곡차곡 쌓아가요!
+                    `,
+                    showButtons: ['done']
                 }
             }
         ]

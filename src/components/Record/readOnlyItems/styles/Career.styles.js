@@ -118,11 +118,13 @@ const EditButton = styled.button`
 	background-color: transparent;
 	opacity: 0;
 	// transition: opacity 0.2s ease;
-	padding: 0px 50px 70px 0px;
+	// padding: 0px 50px 70px 0px;
 	@media (max-width: ${theme.breakpoints.md}) {
 		opacity: 1;
 		top: 0px;
 	}
+
+	pointer-events: ${(props) => (props.$isEditing ? 'none' : 'pointer')};
 `;
 
 const Container = styled.div`
@@ -246,7 +248,7 @@ const DetailTextArea = styled.textarea`
 	padding: 10px;
 	border-radius: 7px;
 	border: none;
-	background: ${Color.gray05};
+	background: ${Color.gray06};
 	font-family: 'Regular';
 	font-size: 16px;
 	resize: none;

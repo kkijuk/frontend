@@ -1,3 +1,4 @@
+import "driver.js/dist/driver.css"; 
 import React from 'react';
 import styled from 'styled-components';
 import AppRoutes from '@routes/AppRoutes';
@@ -13,6 +14,7 @@ const AppContainer = styled.div`
 export default function App() {
 	return (
 		<AppContainer>
+			<CoachmarkGlobalStyle />
 			<AppRoutes />
 		</AppContainer>
 	);

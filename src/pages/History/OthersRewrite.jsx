@@ -339,7 +339,7 @@ const OthersRewrite = () => {
 				></EditApplyModal>
 			)}
 		</div>
-		<SidebarButton onClick={() => setIsSideBarOpen(true)}>사이드바열기 </SidebarButton>
+		<SidebarButton onClick={() => setIsSideBarOpen(true)}>자소서 도우미</SidebarButton>
 		<RightSideBar isOpen={isSideBarOpen} onClose={() => setIsSideBarOpen(false)}>
 			<RightSideBarContents
 				onAddClick={(result) => {

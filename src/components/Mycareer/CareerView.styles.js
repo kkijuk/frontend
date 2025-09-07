@@ -38,7 +38,7 @@ export const ToggleButton = styled.button`
 	justify-content: center;
 	font-family: Pretendard;
 	font-size: 14px;
-	font-weight: 500;
+	/* font-weight: 500; */
 	color: ${(props) => (props.active ? '#3AAF85' : '#707070')};
 	transition: all 0.3s ease; /* 버튼 클릭 시 부드러운 전환 효과 */
 
@@ -53,7 +53,7 @@ export const ViewTitle = styled.div`
 	color: ${Color.black};
 	font-family: Pretendard;
 	font-size: 20px;
-	font-weight: 600;
+	/* font-weight: 600; */
 	margin-left: 6px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
