@@ -39,7 +39,7 @@ export const ROUTES = {
 	// 커리어 관련 라우트
 	MYCAREER: '/mycareer',
 	MYCAREER_SEARCH: '/mycareer_search',
-	MYCAREER_DETAIL: '/mycareer/:careerId/:category',
+	MYCAREER_DETAIL: '/mycareer/:category/:careerId',
 
 	// 지원 관련 라우트
 	APPLY_SCHEDULE: '/apply-schedule',
