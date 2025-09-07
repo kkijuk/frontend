@@ -398,7 +398,7 @@ const handleOpenActivity = (activity) => {
 				<Bottom>
 					<BottomText>최근 이런 활동을 기록했어요</BottomText>
 					<CareerDeatailWrapper>
-  {recentCareerDetails.length === 0 ? (
+  {(!Array.isArray(recentCareerDetails) || recentCareerDetails.length === 0) ? (
     <EmptyStateCard>
       지금 첫 활동을 추가하고 홈에서 바로 기록을 남겨보세요!
     </EmptyStateCard>
@@ -414,42 +414,41 @@ const handleOpenActivity = (activity) => {
       </AddCareerDetailBox>
 
       {recentCareerDetails.map((activity) => (
-  <CareerDetailBox
-    key={activity.detailId ?? activity.detailTitle}
-    onClick={() => handleOpenActivity(activity)}  
-    role="button"
-    tabIndex={0}
-    onKeyDown={(e) => { if (e.key === 'Enter') handleOpenActivity(activity); }}
-  >
-							{/* 카테고리 */}
-							<CategoryRow>
-							<CategoryLeft>
-								<CategoryDot color={getColorByCategory(activity.category?.categoryKoName)} />
+        <CareerDetailBox
+          key={activity.detailId ?? activity.detailTitle}
+          onClick={() => handleOpenActivity(activity)}  
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter') handleOpenActivity(activity); }}
+        >
+          {/* 카테고리 */}
+          <CategoryRow>
+            <CategoryLeft>
+              <CategoryDot color={getColorByCategory(activity.category?.categoryKoName)} />
+              <CategoryName>{activity.category?.categoryKoName || '카테고리 없음'}</CategoryName>
+            </CategoryLeft>
+          </CategoryRow>
 
-								<CategoryName>{activity.category?.categoryKoName || '카테고리 없음'}</CategoryName>
-							</CategoryLeft>
-							</CategoryRow>
+          {/* 제목 + 날짜 */}
+          <TitleRow>
+            <DetailTitle>{activity.detailTitle}</DetailTitle>
+            <DetailDate>
+              {activity.detailStartDate} ~ {activity.detailEndDate}
+            </DetailDate>
+          </TitleRow>
 
-							{/* 제목 + 날짜 */}
-							<TitleRow>
-							<DetailTitle>{activity.detailTitle}</DetailTitle>
-							<DetailDate>
-								{activity.detailStartDate} ~ {activity.detailEndDate}
-							</DetailDate>
-							</TitleRow>
+          {/* 본문 */}
+          <DetailContent>{activity.detailContent}</DetailContent>
 
-							{/* 본문 */}
-							<DetailContent>{activity.detailContent}</DetailContent>
-
-							{/* 태그 */}
-							<TagList>
-							{activity.tags.map((tag, idx) => (
-								<Tag key={idx}>{tag.tagName}</Tag>
-							))}
-							</TagList>
-						</CareerDetailBox>
-						))}
-					</>
+          {/* 태그 */}
+          <TagList>
+            {(activity.tags ?? []).map((tag, idx) => (
+              <Tag key={idx}>{tag.tagName}</Tag>
+            ))}
+          </TagList>
+        </CareerDetailBox>
+      ))}
+    </>
   )}
 </CareerDeatailWrapper>
 				</Bottom>
