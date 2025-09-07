@@ -339,6 +339,13 @@ export default function Home() {
 		setShowAddQuickCareerDetailModal(false);
 	};
 
+const handleOpenActivity = (activity) => {
+  if (!activity?.careerId || !activity?.detailId) return; // 방어
+  navigate(`/mycareer/${activity.careerId}/details/${activity.detailId}`, {
+    state: { from: 'home' }, // 필요시 전달
+  });
+};
+
 	const fetchRecentCareerDetails = async () => {
 
 		try {
@@ -406,8 +413,14 @@ export default function Home() {
         </AddButton>
       </AddCareerDetailBox>
 
-      {recentCareerDetails.map((activity, index) => (
-        <CareerDetailBox key={index}>
+      {recentCareerDetails.map((activity) => (
+  <CareerDetailBox
+    key={activity.detailId ?? activity.detailTitle}
+    onClick={() => handleOpenActivity(activity)}  
+    role="button"
+    tabIndex={0}
+    onKeyDown={(e) => { if (e.key === 'Enter') handleOpenActivity(activity); }}
+  >
 							{/* 카테고리 */}
 							<CategoryRow>
 							<CategoryLeft>
