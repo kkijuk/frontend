@@ -340,9 +340,13 @@ export default function Home() {
 	};
 
 const handleOpenActivity = (activity) => {
-  if (!activity?.careerId || !activity?.detailId) return; // 방어
-  navigate(`/mycareer/${activity.careerId}/details/${activity.detailId}`, {
-    state: { from: 'home' }, // 필요시 전달
+  if (!activity?.careerId || !activity?.category?.categoryKoName) return;
+
+  // 카테고리 한글 이름을 URL에 쓸 수 있게 encodeURIComponent 처리
+  const categoryName = encodeURIComponent(activity.category.categoryKoName);
+
+  navigate(`/mycareer/${categoryName}/${activity.careerId}`, {
+    state: { from: 'home', detailId: activity.detailId }, 
   });
 };
 
