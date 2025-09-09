@@ -408,7 +408,7 @@ const handleOpenActivity = (activity) => {
     </EmptyStateCard>
   ) : (
     <>
-		<div data-coach = "add-careeer-detail">
+		<div data-coach = "add-career-detail">
 			<AddCareerDetailBox
 				onClick={() => setShowAddQuickCareerDetailModal(true)}
 			>
