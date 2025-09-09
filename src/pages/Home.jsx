@@ -408,14 +408,15 @@ const handleOpenActivity = (activity) => {
     </EmptyStateCard>
   ) : (
     <>
-      <AddCareerDetailBox
-        data-coach="add-careerDetail"
-        onClick={() => setShowAddQuickCareerDetailModal(true)}
-      >
-        <AddButton>
-          <SvgIcon name="addButton" size={18} color={Color.white} />
-        </AddButton>
-      </AddCareerDetailBox>
+		<div data-coach = "add-careeer-detail">
+			<AddCareerDetailBox
+				onClick={() => setShowAddQuickCareerDetailModal(true)}
+			>
+				<AddButton>
+				<SvgIcon name="addButton" size={18} color={Color.white} />
+				</AddButton>
+			</AddCareerDetailBox>
+	  	</div>
 
       {recentCareerDetails.map((activity) => (
         <CareerDetailBox
