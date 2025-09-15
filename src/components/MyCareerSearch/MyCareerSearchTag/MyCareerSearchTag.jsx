@@ -34,7 +34,7 @@ const TagWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
-	margin-top: 20px;
+	/*margin-top: 20px;*/
 	margin-left: 10px;
 `;
 
