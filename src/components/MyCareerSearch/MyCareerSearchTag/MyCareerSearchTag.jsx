@@ -16,7 +16,7 @@ import { theme } from '../../../constants/theme';
 const Box = styled.div`
 	width: 98%;
 	margin: 10px auto;
-	padding: 10px 20px;
+	padding: 0 20px;
 	background-color: white;
 	border-radius: 10px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -35,6 +35,7 @@ const TagWrapper = styled.div`
 	flex-wrap: wrap;
 	gap: 10px;
 	margin-top: 20px;
+	margin-left: 10px;
 `;
 
 const TopWrapper = styled.div`
