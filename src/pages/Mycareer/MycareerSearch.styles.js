@@ -52,7 +52,7 @@ export const SearchQueryResult = styled.h1`
 `;
 
 export const BackgroundSection = styled.div`
-	width: 100vw;
+	width: 100%;
 	min-height: 100vh;
 	background-color: ${Color.gray06};
 	position: relative;
