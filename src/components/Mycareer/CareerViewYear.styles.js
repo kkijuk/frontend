@@ -64,7 +64,7 @@ export const CategoryTextBox = styled.div`
 export const CareerName = styled.div`
 	color: var(--black, #000);
 	font-family: bold;
-	font-size: 18px;
+	font-size: 16px;
 	/* font-weight: 700; */
 
 	@media (max-width: ${theme.breakpoints.md}) {
@@ -75,7 +75,7 @@ export const CareerName = styled.div`
 export const AliasName = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
-	font-size: 18px;
+	font-size: 16px;
 	/* font-weight: 400; */
 
 	@media (max-width: ${theme.breakpoints.md}) {
