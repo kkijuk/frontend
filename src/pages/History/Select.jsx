@@ -268,9 +268,8 @@ const RecruitTitle = styled.div`
   display: ${(props) => (props.isMobile ? 'none' : 'block')};
   margin-block: 0px;
 
-  font-family: 'SemiBold';
+  font-family: 'Bold';
   font-size: 24px;
-  font-weight: 700;
 
   @media (max-width: ${theme.breakpoints.md}) {
     display: ${(props) => (props.isMobile ? 'block' : 'none')};
@@ -315,10 +314,9 @@ const ColumnHeader = styled.div`
   &:nth-child(4) { width: 118px; }
 
   text-align: center;
-  font-family: Regular;
+  font-family: Bold;
   font-size: 14px;
   font-style: normal;
-  font-weight: 700;
   line-height: normal;
   color: ${Color.gray02};
 `

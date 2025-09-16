@@ -219,8 +219,7 @@ const EditButton = styled.button`
 `;
 
 const RecruitTitle = styled.div`
-	font-family: 'Semibold';
-	font-weight: 700;
+	font-family: 'bold';
 	font-size: 28px;
 	display: inline-block;
 	margin-right: 24px;
@@ -235,8 +234,7 @@ const RecruitTitle = styled.div`
 `;
 
 const QuestionTitle = styled.div`
-	font-family: 'Semibold';
-	font-weight: 500;
+	font-family: 'medium';
 	font-size: 20px;
 	margin-bottom: 24px;
 
