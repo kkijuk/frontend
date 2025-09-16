@@ -62,6 +62,7 @@ const OthersRewrite = () => {
 	const [pendingResult, setPendingResult] = useState(null); // 검색 문단
 
 
+	// 자소서 상태 확인
 	useEffect(() => {
 		console.log('isCompleted:', isCompleted);
 	}, [isCompleted]);
@@ -353,7 +354,7 @@ const OthersRewrite = () => {
 			<BaseDiv>
 				<IntroHeader>
 					<Header>
-						<h1 style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '60%', fontFamily: 'SemiBold', marginBlock: '0'}}>
+						<h1 style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '60%', fontFamily: 'bold', marginBlock: '0'}}>
 							{contents.recruitTitle}
 						</h1>
 						<TagWrapper>

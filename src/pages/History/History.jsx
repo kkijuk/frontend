@@ -775,8 +775,7 @@ const SectionWrapper = styled.div`
 
 const SectionTitle = styled.h2`
   font-size: 24px;
-  font-family: 'normal';
-  font-weight: 700;
+  font-family: 'bold';
   line-height: normal;
 
   @media (max-width: ${theme.breakpoints.md}) {

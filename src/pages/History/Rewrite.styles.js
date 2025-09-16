@@ -252,9 +252,9 @@ const InputTitle = styled.input`
 	background: ${Color.gray06};
 
 	color: ${Color.gray02};
-	font-family: Regular;
+	font-family: 'Regular';
 	font-size: 16px;
-	font-weight: 400;
+	// font-weight: 400;
 	line-height: normal;
 
 	resize: none;

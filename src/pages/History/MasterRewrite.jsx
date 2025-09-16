@@ -330,10 +330,10 @@ const MasterRewrite = () => {
 export default MasterRewrite;
 
 const Title = styled.div`
-	font-family: semibold;
+	font-family: bold;
 	font-size: 28px;
 	// margin-bottom: 20px;
-	font-weight: 700;
+	// font-weight: 700;
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		margin-bottom: 0px;

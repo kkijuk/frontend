@@ -117,10 +117,9 @@ const Bottom = styled.div`
 
 const BottomText = styled.div`
 	color: ${Color.black};
-	font-family: Pretendard;
+	font-family: 'Bold';
 	font-size: 20px;
 	font-style: normal;
-	font-weight: 700;
 	line-height: normal;
 	align-self: flex-start;
 `;

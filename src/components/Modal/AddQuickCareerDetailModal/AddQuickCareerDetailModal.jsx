@@ -247,7 +247,7 @@ const ModalHeader = styled.div`
 
 const ModalTitle = styled.div`
     font-size: 24px;
-    font-weight: 600;
+    font-family:'SemiBold';
     color: ${Color.black};
     text-align: center;
 `;
@@ -286,9 +286,8 @@ const FormTitle = styled.div`
     flex-direction: row;
     gap: 2px;
 
-    font-family: 'SemiBold';
+    font-family: 'Medium';
     font-size: 16px;
-    font-weight: 500;
 
     & span {
         color: ${Color.main01};
