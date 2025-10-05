@@ -62,6 +62,7 @@ const OthersRewrite = () => {
 	const [pendingResult, setPendingResult] = useState(null); // 검색 문단
 
 
+	// 자소서 상태 확인
 	useEffect(() => {
 		console.log('isCompleted:', isCompleted);
 	}, [isCompleted]);
@@ -339,10 +340,10 @@ const OthersRewrite = () => {
 				></EditApplyModal>
 			)}
 		</div>
-		<SidebarButton onClick={() => setIsSideBarOpen(true)}>사이드바열기 </SidebarButton>
+		<SidebarButton onClick={() => setIsSideBarOpen(true)}>자소서 도우미</SidebarButton>
 		<RightSideBar isOpen={isSideBarOpen} onClose={() => setIsSideBarOpen(false)}>
 			<RightSideBarContents
-				onClick={(result) => {
+				onAddClick={(result) => {
 					setPendingResult(result);
 					setIsSideBarOpen(false);
 				}}
@@ -353,7 +354,7 @@ const OthersRewrite = () => {
 			<BaseDiv>
 				<IntroHeader>
 					<Header>
-						<h1 style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '60%', fontFamily: 'SemiBold', marginBlock: '0'}}>
+						<h1 style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '60%', fontFamily: 'bold', marginBlock: '0'}}>
 							{contents.recruitTitle}
 						</h1>
 						<TagWrapper>

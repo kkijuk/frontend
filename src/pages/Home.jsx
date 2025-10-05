@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import api from '@/Axios';
-
+import getCoachmark from '@/coachmark';
 import { AddDetail } from '@/api/Mycareer/AddDetail';
 import getColorByCategory from '@/utils/getColorByCategory';
 import ProfileBox from '../components/Home/Profile';
@@ -111,23 +111,22 @@ const Bottom = styled.div`
 	box-sizing: border-box;*/
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		width: 100%;
-		align-items: center; /*가운데 정렬 */
+		align-items: center; 
 	}
 `;
 
 const BottomText = styled.div`
 	color: ${Color.black};
-	font-family: Pretendard;
+	font-family: 'Bold';
 	font-size: 20px;
 	font-style: normal;
-	font-weight: 700;
 	line-height: normal;
-\	align-self: flex-start;
+	align-self: flex-start;
 `;
 
 const CareerDeatailWrapper = styled.div`
 	box-sizing: border-box;
-	width: 100%;
+	width: auto;
 	height: auto;
 	padding: 24px 30px;
 
@@ -141,7 +140,6 @@ const CareerDeatailWrapper = styled.div`
 
 const CareerDetailContentBox = styled.div`
 	box-sizing: border-box;
-	width: 100%;
 	height: 212px;
 
 	border-radius: 10px;
@@ -193,13 +191,108 @@ const AddButton = styled.button`
 	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `;
 
+const CategoryRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const CategoryLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`;
+
+const CategoryDot = styled.div`
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: ${(props) => props.color};
+`;
+
+const CategoryName = styled.span`
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+`;
+
+const TitleRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+`;
+
+const DetailTitle = styled.div`
+  font-weight: 700;
+  font-size: 17px;
+  color: #111;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;  
+  max-width: 170px;
+`;
+
+
+const DetailDate = styled.div`
+  font-size: 12px;
+  color: #999;
+`;
+
+const DetailContent = styled.div`
+  font-size: 13px;
+  color: #333;
+  margin-top: -10px;
+
+  display: -webkit-box;             
+  -webkit-line-clamp: 3;            
+  -webkit-box-orient: vertical;    
+  
+  overflow: hidden;                
+  text-overflow: ellipsis;       
+  white-space: normal;              
+  word-break: break-word;           
+`;
+
+
+const TagList = styled.div`
+  margin-top: auto;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+`;
+
+const Tag = styled.span`
+  background-color: ${Color.gray06};
+  color: ${Color.main01};
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 16px;
+`;
+
+const EmptyStateCard = styled.div`
+  grid-column: 1 / -1;        
+  min-height: 120px;
+  border-radius: 10px;
+  background: ${Color.gray06}; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${Color.gray03};
+  font-size: 18px;
+  text-align: center;
+  user-select: none;
+`;
 
 const bannerDummy = [
 	{
-		image: require('../assets/banner/serviceBanner1.png'),
+		image: require('../assets/banner/banner1.png'),
+	},
+	{
+		image: require('../assets/banner/banner2.png'),
 		url: 'https://docs.google.com/forms/d/e/1FAIpQLSfCNlO7_QQR7J3BYHV4tGhkpCyJp4VggIKX1bmBBhs7DYEzWQ/viewform?usp=sharing',
 	},
-	{ image: require('../assets/banner/main.png'), url: 'https://forms.gle/RuuoXu6DzMz9vpyk6' },
 ];
 
 export default function Home() {
@@ -207,8 +300,8 @@ export default function Home() {
 
 	const [showOnboarding, setShowOnboarding] = useState(false); // 온보딩 모달 상태
 	const [showAddQuickCareerDetailModal, setShowAddQuickCareerDetailModal] = useState(false); // 빠른 활동 기록 추가 모달 상태
-	
-    const [recentCareerDetails, setRecentCareerDetails] = useState([]);
+
+	const [recentCareerDetails, setRecentCareerDetails] = useState([]);
 
 	// [useQuery]] 최근 활동 기록 가져오기
 	// [useQuery] 빠른 활동 기록 추가 후 최근 활동 기록 업데이트
@@ -219,7 +312,7 @@ export default function Home() {
 			const response = await AddDetail(careerId, data);
 			console.log('활동 기록 추가 성공:', response.data);
 			setShowAddQuickCareerDetailModal(false);
-			fetchRecentCareerDetails(); 
+			fetchRecentCareerDetails();
 		} catch (error) {
 			console.error('활동 기록 추가 실패:', error);
 		}
@@ -245,11 +338,23 @@ export default function Home() {
 		setShowAddQuickCareerDetailModal(false);
 	};
 
-  	const fetchRecentCareerDetails = async () => {
+const handleOpenActivity = (activity) => {
+  if (!activity?.careerId || !activity?.category?.categoryKoName) return;
+
+  // 카테고리 한글 이름을 URL에 쓸 수 있게 encodeURIComponent 처리
+  const categoryName = encodeURIComponent(activity.category.categoryKoName);
+
+  navigate(`/mycareer/${categoryName}/${activity.careerId}`, {
+    state: { from: 'home', detailId: activity.detailId }, 
+  });
+};
+
+	const fetchRecentCareerDetails = async () => {
+
 		try {
 			const data = await getRecentCareerDetails();
 			setRecentCareerDetails(data);
-			console.log(data)
+			console.log(data);
 		} catch (error) {
 			console.error('최근 활동 기록 가져오기 실패:', error);
 		}
@@ -263,7 +368,12 @@ export default function Home() {
 		if (lastClosedDate !== today) {
 			setShowOnboarding(true);
 		}
-	}, []); 
+	}, []);
+
+	const startTour = () => {
+		const tour = getCoachmark("home");
+		tour?.drive();
+	}
 
 	return (
 		<>
@@ -275,6 +385,10 @@ export default function Home() {
 				/>
 			)}
 			<Container>
+				<Middle>
+					<BannerComponent banners={bannerDummy} />
+				</Middle>
+				{/* Middle 컴포넌트 위치 바*/}
 				<Top>
 					<TopBox1>
 						<ProfileBox />
@@ -284,95 +398,74 @@ export default function Home() {
 					</TopBox2>
 				</Top>
 
-				<Middle>
-					<BannerComponent banners={bannerDummy} />
-				</Middle>
-
 				<Bottom>
 					<BottomText>최근 이런 활동을 기록했어요</BottomText>
 					<CareerDeatailWrapper>
-						<AddCareerDetailBox>
-							<AddButton onClick={() => setShowAddQuickCareerDetailModal(true)}>
-								<SvgIcon name="addButton" size={18} color={Color.white} />
-							</AddButton>
-						</AddCareerDetailBox>
+  {(!Array.isArray(recentCareerDetails) || recentCareerDetails.length === 0) ? (
+    <EmptyStateCard>
+      지금 첫 활동을 추가하고 홈에서 바로 기록을 남겨보세요!
+    </EmptyStateCard>
+  ) : (
+    <>
+		<div data-coach = "add-career-detail">
+			<AddCareerDetailBox
+				onClick={() => setShowAddQuickCareerDetailModal(true)}
+			>
+				<AddButton>
+				<SvgIcon name="addButton" size={18} color={Color.white} />
+				</AddButton>
+			</AddCareerDetailBox>
+	  	</div>
 
-						{recentCareerDetails.map((activity, index) => (
-							<CareerDetailBox key={index}>
-								{/* 상단 카테고리 */}
-								<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-									<div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-										<div
-											style={{
-												width: '10px',
-												height: '10px',
-												borderRadius: '50%',
-												backgroundColor: getColorByCategory(activity.category?.categoryKoName),
-											}}
-										/>
-										<span style={{ fontSize: '13px', fontWeight: 600, color: '#444' }}>
-											{activity.category?.categoryKoName || '카테고리 없음'}
-										</span>
-									</div>
-								</div>
+      {recentCareerDetails.map((activity) => (
+        <CareerDetailBox
+          key={activity.detailId ?? activity.detailTitle}
+          onClick={() => handleOpenActivity(activity)}  
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter') handleOpenActivity(activity); }}
+        >
+          {/* 카테고리 */}
+          <CategoryRow>
+            <CategoryLeft>
+              <CategoryDot color={getColorByCategory(activity.category?.categoryKoName)} />
+              <CategoryName>{activity.category?.categoryKoName || '카테고리 없음'}</CategoryName>
+            </CategoryLeft>
+          </CategoryRow>
 
-								{/* 제목 + 날짜 */}
-								<div
-									style={{
-										display: 'flex',
-										justifyContent: 'space-between',
-										alignItems: 'center',
-										marginTop: '6px',
-									}}>
-									<div style={{ fontWeight: 700, fontSize: '17px', color: '#111' }}>{activity.detailTitle}</div>
-									<div style={{ fontSize: '12px', color: '#999' }}>
-										{activity.detailStartDate} ~ {activity.detailEndDate}
-									</div>
-								</div>
+          {/* 제목 + 날짜 */}
+          <TitleRow>
+            <DetailTitle>{activity.detailTitle}</DetailTitle>
+            <DetailDate>
+              {activity.detailStartDate} ~ {activity.detailEndDate}
+            </DetailDate>
+          </TitleRow>
 
-								{/* 본문 */}
-								<div
-									style={{
-										fontSize: '13px',
-										color: '#333',
-										marginTop: '6px',
-										overflow: 'hidden',
-										textOverflow: 'ellipsis',
-										display: '-webkit-box',
-										WebkitLineClamp: 3,
-										WebkitBoxOrient: 'vertical',
-									}}>
-									{activity.detailContent}
-								</div>
+          {/* 본문 */}
+          <DetailContent>{activity.detailContent}</DetailContent>
 
-								{/* 태그 */}
-								<div style={{ marginTop: 'auto', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-									{activity.tags.map((tag, idx) => (
-										<span
-											key={idx}
-											style={{
-												backgroundColor: Color.gray06,
-												color: Color.main01,
-												fontSize: '11px',
-												padding: '4px 10px',
-												borderRadius: '16px',
-											}}>
-											{tag.tagName}
-										</span>
-									))}
-								</div>
-							</CareerDetailBox>
-						))}
-					</CareerDeatailWrapper>
+          {/* 태그 */}
+          <TagList>
+            {(activity.tags ?? []).map((tag, idx) => (
+              <Tag key={idx}>{tag.tagName}</Tag>
+            ))}
+          </TagList>
+        </CareerDetailBox>
+      ))}
+    </>
+  )}
+</CareerDeatailWrapper>
 				</Bottom>
 
 				<Bottom>
 					<BottomText>잠깐! 잊지 않으셨죠?</BottomText>
-					<ActivityBox>
+					<ActivityBox data-coach="noti-at-home">
 						<Noti />
 						<CLNoti />
 					</ActivityBox>
 				</Bottom>
+
+				{/* <TourBtn onClick={startTour}>투어 시작하기</TourBtn> */}
 			</Container>
 		</>
 	);

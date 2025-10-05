@@ -6,11 +6,11 @@ export const Container1 = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	margin-bottom: 50px;
+	margin: 0 auto 45px;
 	width: 100%;
 	max-width: 820px;
 	padding: 0 40px;
-	margin: 0 auto;
+	/*margin: 0 auto;*/
 
 	@media (max-width: ${(props) => props.theme.breakpoints.md}) {
 		padding: 0 16px;

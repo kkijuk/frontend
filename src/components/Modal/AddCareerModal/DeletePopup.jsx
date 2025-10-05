@@ -5,8 +5,7 @@ import { theme } from "../../../constants/theme";
 import { Color } from "@/constants/color";
 
 function DeletePopup({ onConfirm, onClose }) {
-    const message = `
-                    활동과 작성한 기록이 모두 삭제되며,
+    const message = `활동과 작성한 기록이 모두 삭제되며,
                     이 작업은 복구할 수 없습니다. 
                     그래도 삭제하시겠습니까?
     `
@@ -14,8 +13,10 @@ function DeletePopup({ onConfirm, onClose }) {
     return ReactDOM.createPortal(
         <PopupOverlay>
             <PopupContainer>
-                <PopupMessage>{message}</PopupMessage>
-                <div style={{height:'45px'}}></div>
+                <MessageWrapper>
+                    <PopupTitle>활동 삭제</PopupTitle>
+                    <PopupMessage>{message}</PopupMessage>
+                </MessageWrapper>
                 <ButtonWrapper>
                     <CancelButton onClick={onClose}>취소</CancelButton>
                     <ConfirmButton onClick={onConfirm}>삭제</ConfirmButton>
@@ -39,67 +40,74 @@ const PopupOverlay = styled.div`
 `;
 
 const PopupContainer = styled.div`
-    width: 300px;
-    height: 240px;
+    box-sizing: border-box;
+    max-width: 300px;
+    max-height: 240px;
+    padding: 32px 24px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
     background: ${Color.white};
     border-radius: 10px;
     text-align: center;
-    color: black;
-    font-size: 14px;
-    font-family: 'Regular';
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    color: black; 
 `;
 
-const PopupMessage = styled.p`
-    margin-bottom: 16px;
+const MessageWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+`;
+
+const PopupTitle = styled.div`
+    font-size: 16px;
+    font-weight: bold;
+`;
+
+const PopupMessage = styled.div`
     width: 200px;
-    height: 60px;
-    white-space: pre-line;
     font-size: 14px;
     font-family: 'Regular';
     text-align: center;
     line-height: 1.5;
+    white-space: pre-line;
 `;
 
 const ButtonWrapper = styled.div`
     display: flex;
-    gap: 20px;
+    gap: 12px;
     justify-content: center;
 `;
 
 const ConfirmButton = styled.button`
     width: 120px;
     height: 35px;
-    padding: 8px 16px;
-    background: ${Color.white};
+
+    background: ${Color.error};
     border-radius: 10px;
-    border: 1px solid ${Color.subRd};
-    color: ${Color.subRd};
+    border: none;
+
+    color: ${Color.white};
     font-family: 'Regular';
     font-size: 14px;
-    font-weight: 500;
-    display: flex;
-    gap: 8px;
-    justify-content: center;
+    
     cursor: pointer;
 `;
 
 const CancelButton = styled.button`
     width: 120px;
     height: 35px;
-    padding: 8px 16px;
+    
     background: white;
     border-radius: 10px;
-    border: 1px solid ${Color.subBu};
-    color: ${Color.subBu};
+    border: 1px solid ${Color.gray04};
+
+    color: ${Color.gray02};
     font-family: 'Regular';
     font-size: 14px;
-    font-weight: 500;
-    display: flex;
-    gap: 8px;
-    justify-content: center;
+
     cursor: pointer;
 `;

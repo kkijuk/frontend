@@ -1170,7 +1170,7 @@ const AddCareerModal = ({ onClose, mode = 'add', initialData, onRefresh }) => {
 					</div>
 				) : (
 					<SaveButton type="button" onClick={handleAddCareer}>
-						저장
+						확인
 					</SaveButton>
 				)}
 			</ModalContainer>
@@ -1227,7 +1227,7 @@ const FormItem = styled.div`
 		display: flex;
 		gap: 4px;
 		font-size: 18px;
-		font-family: 'SemiBold';
+		font-family: 'Medium';
 		@media (max-width: ${theme.breakpoints.md}) {
 			font-size: 16px;
 			font-weight: 400;
@@ -1398,7 +1398,7 @@ const Header = styled.div`
 
 const ModalTitle = styled.h2`
 	font-size: 28px;
-	font-family: 'Bold';
+	font-family: 'SemiBold';
 	margin-bottom: 20px;
 	text-align: center;
 	@media (max-width: ${theme.breakpoints.md}) {

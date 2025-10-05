@@ -11,7 +11,7 @@ export const Container = styled.div`
 `;
 
 export const BackgroundSection = styled.div`
-	width: 100vw;
+	width: 100%; /*100vw였었음 -> 스크롤 없애려고 바꿈*/
 	min-height: 100vh;
 	background-color: ${Color.gray06};
 	position: relative;

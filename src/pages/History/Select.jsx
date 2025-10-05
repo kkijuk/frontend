@@ -39,7 +39,7 @@ const Select = () => {
         );
         
         setRecruitList(sortedRecruitList);
-        if(sortedRecruitList > 0) {
+        if(sortedRecruitList.length > 0) {
           setSelectedJob(sortedRecruitList[0].id);
         }
       } catch (error) {
@@ -154,54 +154,61 @@ const Select = () => {
             </ColumnHeaderSection>
 
             <ListSection>
-              {recruitList.map((recruit) => (
-                <ListItem
-                  key={recruit.id}
-                  onClick={() => handleSelectJob(recruit.id)}
-                  isSelected={selectedJob === recruit.id}
-                >
-                  {isMobile ? (
-                    <Header>
-                      <Title>
-                        {recruit.title.length > 20 ? `${recruit.title.slice(0, 20)}...` : recruit.title}
-                      </Title>
-                      <DueDate isUrgent={parseInt(calculateDaysLeft(recruit.endTime).replace("D-", "")) <= 7}>
-                        {calculateDaysLeft(recruit.endTime)}
-                      </DueDate>
-                    </Header>
-                  ) : (
-                    <>
-                      <Title>
-                        {recruit.title.length > 20 ? `${recruit.title.slice(0, 20)}...` : recruit.title}
-                      </Title>
-                      <DueDate isUrgent={parseInt(calculateDaysLeft(recruit.endTime).replace("D-", "")) <= 7}>
-                        {calculateDaysLeft(recruit.endTime)}
-                      </DueDate>
-                    </>
-                  )}
+              {recruitList.length !== 0 ? (
+                recruitList.map((recruit) => (
+                  <ListItem
+                    key={recruit.id}
+                    onClick={() => handleSelectJob(recruit.id)}
+                    isSelected={selectedJob === recruit.id}
+                  >
+                    {isMobile ? (
+                      <Header>
+                        <Title>
+                          {recruit.title.length > 20 ? `${recruit.title.slice(0, 20)}...` : recruit.title}
+                        </Title>
+                        <DueDate isUrgent={parseInt(calculateDaysLeft(recruit.endTime).replace("D-", "")) <= 7}>
+                          {calculateDaysLeft(recruit.endTime)}
+                        </DueDate>
+                      </Header>
+                    ) : (
+                      <>
+                        <Title>
+                          {recruit.title.length > 20 ? `${recruit.title.slice(0, 20)}...` : recruit.title}
+                        </Title>
+                        <DueDate isUrgent={parseInt(calculateDaysLeft(recruit.endTime).replace("D-", "")) <= 7}>
+                          {calculateDaysLeft(recruit.endTime)}
+                        </DueDate>
+                      </>
+                    )}
 
-                  <TagContainer>
-                    {recruit.tags.map((tag) => (
-                      <Tag key={tag}>{tag}</Tag>
-                    ))}
-                  </TagContainer>
-                  <JobLinkBox 
-                    onClick={
-                      recruit.link
-                      ? (e) => { 
-                        e.stopPropagation(); 
-                        window.open(recruit.link, '_blank'); 
+                    <TagContainer>
+                      {recruit.tags.map((tag) => (
+                        <Tag key={tag}>{tag}</Tag>
+                      ))}
+                    </TagContainer>
+                    <JobLinkBox 
+                      onClick={
+                        recruit.link
+                        ? (e) => { 
+                          e.stopPropagation(); 
+                          window.open(recruit.link, '_blank'); 
+                        }
+                        : undefined
                       }
-                      : undefined
-                    }
-                    disabled={!recruit.link}
-                    >
-                      공고 보러가기
-                    <SvgIcon name="jobLink" size={15} />
-                  </JobLinkBox>
-                </ListItem>
-              ))}
-            </ListSection>
+                      disabled={!recruit.link}
+                      >
+                        공고 보러가기
+                      <SvgIcon name="jobLink" size={15} />
+                    </JobLinkBox>
+                  </ListItem>
+                ))
+              ) : (
+                <NoResultsMessage>
+                  자소서를 작성할 공고가 없어요.<br/>
+                  아래 버튼을 클릭해서 공고를 추가하세요!
+                </NoResultsMessage>
+              )}
+              </ListSection>
           </ListBox>
 
           <AddNewJob onClick = {() => {
@@ -261,9 +268,8 @@ const RecruitTitle = styled.div`
   display: ${(props) => (props.isMobile ? 'none' : 'block')};
   margin-block: 0px;
 
-  font-family: 'SemiBold';
+  font-family: 'Bold';
   font-size: 24px;
-  font-weight: 700;
 
   @media (max-width: ${theme.breakpoints.md}) {
     display: ${(props) => (props.isMobile ? 'block' : 'none')};
@@ -308,10 +314,9 @@ const ColumnHeader = styled.div`
   &:nth-child(4) { width: 118px; }
 
   text-align: center;
-  font-family: Regular;
+  font-family: Bold;
   font-size: 14px;
   font-style: normal;
-  font-weight: 700;
   line-height: normal;
   color: ${Color.gray02};
 `
@@ -505,3 +510,17 @@ const NextButton = styled.div`
     margin-top: 32px;
   }
 `
+
+const NoResultsMessage = styled.div`
+  white-space: pre-line; /* 줄바꿈 문자를 반영 */
+  color: ${Color.gray03};
+  font-family: Regular;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`;

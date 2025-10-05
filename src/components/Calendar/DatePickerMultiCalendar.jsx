@@ -6,7 +6,18 @@ import { format } from 'date-fns';
 import { ko } from "date-fns/locale";
 
 export default function DatePickerMultiCalendar(){
-const [selected, setSelected] = useState(null);
+const [selected, setSelected] = useState(undefined); // or useState<DateRange | undefined>(undefined)
+
+const handleDateSelect = (range) => {
+  if (!range) return setSelected(undefined);
+
+  // 같은 날짜(from === to)도 DateRange 형태로 유지
+  if (range.from && range.to && range.from.getTime() === range.to.getTime()) {
+    setSelected({ from: range.from, to: range.to }); // ← 여기!
+  } else {
+    setSelected(range);
+  }
+};
 
 
     return (
@@ -16,7 +27,7 @@ const [selected, setSelected] = useState(null);
             navLayout="around"
             locale={ko} 
             selected={selected}
-            onSelect={setSelected}
+            onSelect={handleDateSelect}
             showOutsideDays
             fixedWeeks
             formatters={{

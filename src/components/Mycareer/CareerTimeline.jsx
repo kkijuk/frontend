@@ -30,7 +30,7 @@ const ChartWrapper = styled.div`
 
 const CareerTimeline = () => {
 	return (
-		<TimelineBox>
+		<TimelineBox data-coach = "career-timeline">
 			<ChartWrapper>
 				<TimelineChart />
 			</ChartWrapper>

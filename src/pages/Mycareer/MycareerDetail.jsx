@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useCareerList, useCareerDetail } from '@/hooks/MycareerDetail/useCareerQueries';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+
 import Layout from '../../components/Layout';
 import DetailAdd from '../../components/MyCareerDetail/DetailAdd';
 import DetailAddEdit from '../../components/MyCareerDetail/DetailAddEdit';
@@ -55,7 +56,10 @@ export default function MycareerDetail() {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const { careerId, category } = location.state || {};
+	const { careerId: paramCareerId, category: paramCategory } = useParams();
+    const { careerId: stateCareerId, category: stateCategory } = location.state || {}; 
+	const careerId = stateCareerId || paramCareerId; 
+	const category = stateCategory || paramCategory;
 
 	const [selectedCareer, setSelectedCareer] = useState({ id: careerId || null, type: category || null });
 	const { data: careerList = [] } = useCareerList();

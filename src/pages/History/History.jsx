@@ -754,7 +754,7 @@ const InfoTable = styled.div`
 `
 
 const InfoLabel = styled.div`
-  font-size: 18px;
+  font-size: 16px;
   color: ${Color.gray02};
   font-family: Regular;
 
@@ -764,7 +764,7 @@ const InfoLabel = styled.div`
 `;
 
 const InfoValue = styled.div`
-  font-size: 14px;
+  font-size: 16px;
   color: ${Color.gray02};
   font-family: Regular;
 `;
@@ -775,8 +775,7 @@ const SectionWrapper = styled.div`
 
 const SectionTitle = styled.h2`
   font-size: 24px;
-  font-family: 'normal';
-  font-weight: 700;
+  font-family: 'bold';
   line-height: normal;
 
   @media (max-width: ${theme.breakpoints.md}) {

@@ -17,6 +17,7 @@ const Container = styled.div`
 `
 
 const FileNameField = styled.div`
+    box-sizing: border-box;
     width: 450px;
     height: 45px;
     flex-shrink: 0;
@@ -77,26 +78,41 @@ const IconButton = styled.button`
 `
 
 const DropDown = styled.div`
-    width: 136px;
-    height: 69px;
+    box-sizing: border-box;
+    width: 181px;
+    height: ${(props) => (props.isKebabHaveTwoOption ? '102px' : '34px')};
+    padding: ${(props) => (props.isKebabHaveTwoOption ? '12px' : '0')};
     background: ${Color.white};
     box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
     position: absolute;
     top: 24px;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 4px;
     @media (max-width: ${theme.breakpoints.md}) {
         right: 0px;
     }
 `
 const MenuItem = styled.div`
+    box-sizing: border-box;
     width: 100%;
-    height: 34px;
+    height: 100%;
+    padding: 4px 20px;
     font-size: 14px;
     font-family: 'Regular';
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    line-height: 34px;
+    line-height: normal;
     cursor: pointer;
+    border-radius: 10px;
+
+    &:hover {
+        background: ${Color.gray06};
+    }
 `
 
 export { IconButton, DropDown, MenuItem };

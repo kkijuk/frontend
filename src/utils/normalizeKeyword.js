@@ -1,9 +1,9 @@
 // 한글은 그대로, 영문은 소문자로 변환
-// @param {string} kework
+// @param {string} keword
 // @returns {string} Normalized keyword
 
 export const normalizeKeyword = (keyword) => {
-    if (!keyword) return '';
+    if (typeof keyword !== 'string') return '';
 
     const trimmed = keyword.trim();
 

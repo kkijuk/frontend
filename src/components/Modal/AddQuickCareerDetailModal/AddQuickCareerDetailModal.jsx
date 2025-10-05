@@ -205,16 +205,16 @@ const ModalContainer = styled.div`
     flex: 1 1 auto;
     width: 820px;
     height: auto;
-    padding: 40px 122px;
+    max-height: 820px;
 
 	position: fixed;
-	top: 50%;
+	top: calc(50% + 35px);
 	left: 50%;
 	transform: translate(-50%, -50%);
 
 	background-color: ${Color.white};
 	border-radius: 10px;
-	padding: 40px 120px;
+	padding: 40px 122px;
 	z-index: 1000;
 
 	display: flex;
@@ -247,7 +247,7 @@ const ModalHeader = styled.div`
 
 const ModalTitle = styled.div`
     font-size: 24px;
-    font-weight: 600;
+    font-family:'SemiBold';
     color: ${Color.black};
     text-align: center;
 `;
@@ -286,9 +286,8 @@ const FormTitle = styled.div`
     flex-direction: row;
     gap: 2px;
 
-    font-family: 'SemiBold';
+    font-family: 'Medium';
     font-size: 16px;
-    font-weight: 500;
 
     & span {
         color: ${Color.main01};

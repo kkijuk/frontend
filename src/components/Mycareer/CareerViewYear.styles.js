@@ -22,7 +22,7 @@ export const Year = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
 	font-size: 16px;
-	font-weight: 400;
+	/* font-weight: 400; */
 	margin-bottom: 12px;
 
 	@media (max-width: ${theme.breakpoints.md}) {
@@ -64,8 +64,8 @@ export const CategoryTextBox = styled.div`
 export const CareerName = styled.div`
 	color: var(--black, #000);
 	font-family: bold;
-	font-size: 18px;
-	font-weight: 700;
+	font-size: 16px;
+	/* font-weight: 700; */
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		font-size: 16px; /* 작은 화면에서 폰트 크기 축소 */
@@ -75,8 +75,8 @@ export const CareerName = styled.div`
 export const AliasName = styled.div`
 	color: var(--black, #000);
 	font-family: Pretendard;
-	font-size: 18px;
-	font-weight: 400;
+	font-size: 16px;
+	/* font-weight: 400; */
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		font-size: 16px; /* 작은 화면에서 폰트 크기 축소 */
@@ -94,7 +94,7 @@ export const CareerContainer = styled.div`
 export const Date = styled.div`
 	font-size: 12px;
 	color: var(--gray-02, #707070);
-	font-weight: 400;
+	/* font-weight: 400; */
 
 	@media (max-width: ${theme.breakpoints.md}) {
 		font-size: 12px; /* 작은 화면에서 폰트 크기 축소 */

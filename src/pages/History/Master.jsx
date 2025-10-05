@@ -161,8 +161,7 @@ const ContentTitle = styled.div`
 `;
 
 const OneLiner = styled.p`
-  font-family: 'Semibold';
-  font-weight: 700;
+  font-family: 'bold';
   font-size: 28px;
   display: inline-block;
   flex: 1;
@@ -188,8 +187,8 @@ const LastUpdated = styled.p`
 `;
 
 const QuestionTitle = styled.div`
-	font-family: 'Semibold';
-	font-weight: 500;
+	font-family: 'medium';
+	// font-weight: 500;
 	font-size: 20px;
 	margin-bottom: 24px;
 

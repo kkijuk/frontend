@@ -356,6 +356,7 @@ const Button = styled.div`
 	font-size: 18px;
 	background: var(--main-01, #3aaf85);
 	border: none;
+	z-index: 1000;
 	color: white;
 	cursor: pointer;
 	position: fixed;
